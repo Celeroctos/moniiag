@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<head>
+	<title>МИС МОНИИАГ</title>
+
+    <link href="/libs/bootstrap-3.0.0/less/bootstrap.less" rel="stylesheet/less" media="screen">
+	<link href="/css/main.less" rel="stylesheet/less" media="screen">
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet/css" media="screen">
+
+	<script type="text/javascript" src="/libs/less-1.4.1.min.js"></script>
+	<script type="text/javascript" src="/libs/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/libs/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/libs/colorpicker/js/bootstrap-colorpicker.js"></script>
+    <script type="text/javascript" src="/libs/ext-4.2.2.1144/ext-all-debug-w-comments.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/extjs/main.js"></script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">МИС МОНИИАГ</a>
+		</div>
+		<div class="navbar-collapse collapse">
+		  <ul class="nav navbar-nav">
+			<li><a href="#">Справка</a></li>
+            <li><a href="#">Об авторах</a></li>
+		  </ul>
+		  <form class="navbar-form navbar-right">
+			<div class="form-group">
+			  <input type="text" placeholder="Логин" class="form-control">
+			</div>
+			<div class="form-group">
+			  <input type="password" placeholder="Пароль" class="form-control">
+			</div>
+			<button type="submit" class="btn btn-success">Войти</button>
+		  </form>
+		</div>
+	  </div>
+	</div>
+	<div class="container-fluid" id="content">
+		<div class="row main-container">
+			<div class="col-xs-3">
+                <div role="complementary" class="bs-sidebar hidden-print affix " >
+                    <ul class="nav bs-sidenav" id="mainSideMenu">
+                        <li>
+                            <a href="#">Главная</a>
+                        </li>
+                        <li>
+                            <a href="#">Регистратура</a>
+                            <ul class="nav">
+                                <li>
+                                    <a href="#" >Добавление пациента</a>
+                                </li>
+                                <li>
+                                    <a href="#" >Постановка на учёт беременных</a>
+                                </li>
+                                <li>
+                                    <a href="#" >Расписание врачей</a>
+                                    <ul class="nav">
+                                        <li>
+                                            <a href="#" >Сводное</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" >По врачам</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="#" >Запись пациента</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="active">
+                            <a href="#">Справочники</a>
+                        </li>
+                    </ul>
+                </div>
+			</div>
+			<div class="col-xs-9">
+                <ul class="nav nav-tabs">
+                    <li>
+                        <a href="#">Пациенты</a>
+                    </li>
+                    <li>
+                        <a href="#">Врачи</a>
+                    </li>
+                    <li>
+                        <a href="#">Отделения</a>
+                    </li>
+                    <li>
+                        <a href="#">Кабинеты</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">Маркировки карт</a>
+                    </li>
+                </ul>
+                <h4>Редактирование справочника</h4>
+                <p class="text-left">
+                    Здесь можно добавить новую запись в справочник маркировок карт
+                </p>
+                <div class="row default-padding">
+                    <form class="form-horizontal col-xs-9" role="form">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group">
+                                    <label for="name" class="col-xs-3 control-label">Диагноз</label>
+                                    <div class="col-xs-9">
+                                        <input type="text" class="form-control" id="name" placeholder="Диагноз">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="markColorType" class="col-xs-3 control-label">Цвет</label>
+                                    <div class="col-xs-9">
+                                        <div data-color-format="rgb" data-color="rgb(255, 146, 180)" class="input-group colorpicker-component bscp custom-color" data-colorpicker-guid="3">
+                                            <input type="text" class="form-control" readonly="" value="" id="markColorType">
+                                            <span class="input-group-addon">
+                                                <i style="background-color: rgb(187, 65, 103);"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="add-patient-submit ">
+                                <button type="submit" class="btn btn-success">Добавить</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
