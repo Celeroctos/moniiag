@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<head>
+	<title>МИС МОНИИАГ</title>
+	<link href="/libs/bootstrap-3.0.0/less/bootstrap.less" rel="stylesheet/less" media="screen">
+    <link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet/less" media="screen">
+	<link href="/css/main.less" rel="stylesheet/less" media="screen">
+	<script type="text/javascript" src="/libs/less-1.4.1.min.js"></script>
+	<script type="text/javascript" src="/libs/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/libs/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/libs/ext-4.2.2.1144/ext-all-debug-w-comments.js"></script>
+    <script type="text/javascript" src="/js/main.js"></script>
+    <script type="text/javascript" src="/js/extjs/main.js"></script>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	  <div class="container">
+		<div class="navbar-header">
+		  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		  </button>
+		  <a class="navbar-brand" href="#">МИС МОНИИАГ</a>
+		</div>
+		<div class="navbar-collapse collapse">
+		  <ul class="nav navbar-nav">
+			<li><a href="#">Справка</a></li>
+            <li><a href="#">Об авторах</a></li>
+		  </ul>
+		  <form class="navbar-form navbar-right">
+			<div class="form-group">
+			  <input type="text" placeholder="Логин" class="form-control">
+			</div>
+			<div class="form-group">
+			  <input type="password" placeholder="Пароль" class="form-control">
+			</div>
+			<button type="submit" class="btn btn-success">Войти</button>
+		  </form>
+		</div>
+	  </div>
+	</div>
+	<div class="container-fluid" id="content">
+		<div class="row main-container">
+			<div class="col-xs-3">
+                <div role="complementary" class="bs-sidebar hidden-print affix " >
+                    <ul class="nav bs-sidenav" id="mainSideMenu">
+                        <li>
+                            <a href="#">Главная</a>
+                        </li>
+                        <li>
+                            <a href="#">Регистратура</a>
+                            <ul class="nav">
+                                <li>
+                                    <a href="#" >Добавление пациента</a>
+                                </li>
+                                <li>
+                                    <a href="#" >Постановка на учёт беременных</a>
+                                </li>
+                                <li class="active">
+                                    <a href="#" >Расписание врачей</a>
+                                    <ul class="nav">
+                                        <li class="active">
+                                            <a href="#" >Сводное</a>
+                                        </li>
+                                        <li >
+                                            <a href="#" >По врачам</a>
+                                        </li>
+                                    </ul>
+                                </li>
+								 <li>
+                                    <a href="#" >Запись пациента</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">Справочники</a>
+                        </li>
+                    </ul>
+                </div>
+			</div>
+			<div class="col-xs-8">
+                <h4>Сегодня <span class="text-danger">18.09.2013 г.</span></h4>
+                <p class="text-left">
+                    Кликните на дату левой кнопкой мыши, чтобы посмотреть расписание врача на этот день
+                </p>
+                <div class="row">
+                    <form class="form-horizontal col-xs-9" role="form">
+                        <div class="form-group">
+                            <label for="enterprise" class="col-xs-3 control-label">Учреждение</label>
+                            <div class="col-xs-9">
+                                <select class="form-control" id="enterprise">
+                                    <option>Поликлиника #1</option>
+                                    <option>Поликлиника #2</option>
+                                    <option>Поликлиника #3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="search-shedule-submit">
+                                <button type="submit" class="btn btn-success col-md-offset-2">Показать расписание</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="col-xs-10">
+                        <table class="table-bordered table">
+							<thead>
+								<tr>
+									<td>Отделение</td>
+									<td>Врач</td>
+									<td>Кабинет</td>
+									<td>Часы приёма</td>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td rowspan="3">
+										Хирургическое
+									</td>
+									<td>
+										<a href="#" title="Показать карточку врача">
+											Иванов А. И.
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей на текущую дату в этом кабинете">
+											24
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей, которые принимают в это время сегодня">
+											9.00 - 17.00
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<a href="#" title="Показать карточку врача">
+											Иванов А. И.
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей на текущую дату в этом кабинете">
+											24
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей, которые принимают в это время сегодня">
+											9.00 - 17.00
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<a href="#" title="Показать карточку врача">
+											Иванов А. И.
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей на текущую дату в этом кабинете">
+											24
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей, которые принимают в это время сегодня">
+											9.00 - 17.00
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td rowspan="2">
+										Неврологическое
+									</td>
+									<td>
+										<a href="#" title="Показать карточку врача">
+											Иванов А. И.
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей на текущую дату в этом кабинете">
+											24
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей, которые принимают в это время сегодня">
+											9.00 - 17.00
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<a href="#" title="Показать карточку врача">
+											Иванов А. И.
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей на текущую дату в этом кабинете">
+											24
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей, которые принимают в это время сегодня">
+											9.00 - 17.00
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Гинекологическое
+									</td>
+									<td>
+										<a href="#" title="Показать карточку врача">
+											Иванов А. И.
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей на текущую дату в этом кабинете">
+											24
+										</a>
+									</td>
+									<td>
+										<a href="#" title="Показать врачей, которые принимают в это время сегодня">
+											9.00 - 17.00
+										</a>
+									</td>
+								</tr>
+							</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</body>
+</html>
