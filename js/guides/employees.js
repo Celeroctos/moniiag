@@ -71,7 +71,8 @@ $(document).ready(function() {
         viewrecords: true,
         sortorder: "desc",
         caption:"Сотрудники",
-        height: 300
+        height: 300,
+        editurl:"someurl.php"
     });
 
     $("#employees").jqGrid('navGrid','#employeesPager',{

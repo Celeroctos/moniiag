@@ -31,8 +31,22 @@ $(document).ready(function() {
     });
 
     $("#wards").jqGrid('navGrid','#wardsPager',{
-        edit: true,
-        add: true,
-        del: true
+        edit: false,
+        add: false,
+        del: false
+    });
+
+    $("#addWard").click(function() {
+        $('#addWardPopup').modal({
+
+        });
+    });
+
+    $("#editWard").click(function() {
+
+    });
+
+    $("#deleteWard").click(function() {
+
     });
 });

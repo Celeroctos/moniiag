@@ -37,8 +37,23 @@ $(document).ready(function() {
     });
 
     $("#enterprises").jqGrid('navGrid','#enterprisesPager',{
-        edit: true,
-        add: true,
-        del: true
+        edit: false,
+        add: false,
+        del: false
+    });
+
+
+    $("#addEnterprise").click(function() {
+        $('#addEnterprisePopup').modal({
+
+        });
+    });
+
+    $("#editEnterprise").click(function() {
+
+    });
+
+    $("#deleteEnterprise").click(function() {
+
     });
 });

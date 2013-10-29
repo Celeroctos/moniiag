@@ -8113,6 +8113,7 @@ $.jgrid.extend({
 				var rtlb = $t.p.direction === "rtl" ? true :false,
 				bp = rtlb ? "nData" : "pData",
 				bn = rtlb ? "pData" : "nData";
+
 				createData(rowid,$t,tbl,maxCols);
 				// buttons at footer
 				var bP = "<a id='"+bp+"' class='fm-button ui-state-default ui-corner-left'><span class='ui-icon ui-icon-triangle-1-w'></span></a>",
@@ -8364,6 +8365,7 @@ $.jgrid.extend({
 				}
 			}
 			function createData(rowid,obj,tb,maxcols){
+
 				var nm, hc,trdata, cnt=0,tmp, dc, retpos=[], ind=false, i,
 				tdtmpl = "<td class='CaptionTD form-view-label ui-widget-content' width='"+p.labelswidth+"'>&#160;</td><td class='DataTD form-view-data ui-helper-reset ui-widget-content'>&#160;</td>", tmpl="",
 				tdtmpl2 = "<td class='CaptionTD form-view-label ui-widget-content'>&#160;</td><td class='DataTD form-view-data ui-widget-content'>&#160;</td>",
@@ -8524,6 +8526,7 @@ $.jgrid.extend({
 				});
 				// set the id.
 				$(frm).append(tbl);
+
 				createData(rowid, $t, tbl, maxCols);
 				var rtlb = $t.p.direction === "rtl" ? true :false,
 				bp = rtlb ? "nData" : "pData",

@@ -3757,3 +3757,14 @@ JOIN "mis"."titul" "t" ON d.titul_id = t.id
 JOIN "mis"."wards" "w" ON d.ward_code = w.id.
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (34)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/29 19:15:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "someurl.php".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('someurl.php')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('someurl.php')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/employees/someurl.php
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
