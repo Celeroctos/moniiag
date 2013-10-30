@@ -4,7 +4,29 @@ class EnterprisesController extends Controller {
     public $defaultAction = 'view';
 
     public function actionView() {
-        $this->render('view', array());
+        try {
+            // Модель формы для добавления и редактирования записи
+            $formAddEdit = new FormEnterpriseAdd;
+
+            // Список вариантов для типов учреждений
+            $connection = Yii::app()->db;
+            $typesListDb = $connection->createCommand()
+                ->select('et.*')
+                ->from('mis.enterprise_types et')
+                ->queryAll();
+
+            $typesList = array();
+            foreach($typesListDb as $value) {
+                $typesList[(string)$value['id']] = $value['name'];
+            }
+
+            $this->render('view', array(
+                'model' => $formAddEdit,
+                'typesList' => $typesList
+            ));
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function actionEdit() {
@@ -14,6 +36,35 @@ class EnterprisesController extends Controller {
     public function actionDelete() {
 
 
+    }
+
+    public function actionAdd() {
+        $model = new FormEnterpriseAdd();
+        if(isset($_POST['FormEnterpriseAdd'])) {
+            $model->attributes = $_POST['FormEnterpriseAdd'];
+            if($model->validate()) {
+                $enterprise = new Enterprise();
+
+                $enterprise->address_fact = $model->addressFact;
+                $enterprise->address_jur = $model->addressJur;
+                $enterprise->phone = $model->phone;
+                $enterprise->shortname = $model->shortName;
+                $enterprise->fullname = $model->fullName;
+                $enterprise->bank = $model->bank;
+                $enterprise->bank_account = $model->bankAccount;
+                $enterprise->inn = $model->inn;
+                $enterprise->kpp = $model->kpp;
+                $enterprise->type = $model->type;
+
+                if($enterprise->save()) {
+                    echo CJSON::encode(array('success' => true,
+                                             'text' => 'Новое учреждение успешно добавлено.'));
+                }
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
     }
 
     public function actionGet() {

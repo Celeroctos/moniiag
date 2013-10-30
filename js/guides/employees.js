@@ -11,7 +11,7 @@ $(document).ready(function() {
                   'Звание',
                   'Дата начала действия',
                   'Дата окончания действия',
-                  'Код отделения'],
+                  'Отделение'],
         colModel:[
             {
                 name:'id',
@@ -41,7 +41,7 @@ $(document).ready(function() {
             {
                 name: 'degree',
                 index: 'degree',
-                width: 70
+                width: 90
             },
             {
                 name: 'titul',
@@ -79,5 +79,50 @@ $(document).ready(function() {
         edit: true,
         add: true,
         del: true
+    });
+
+    $("#addEmployee").click(function() {
+        $('#addEmployeePopup').modal({
+
+        });
+    });
+
+    // Инициализация дейтпикеров
+    $('#dateBegin-cont').datetimepicker({
+        format: 'yyyy-MM-dd hh:mm:ss'
+    });
+    $('#dateEnd-cont').datetimepicker({
+        format: 'yyyy-MM-dd hh:mm:ss'
+    });
+
+    $("#employee-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#addEmployeePopup').modal('hide');
+            // Перезагружаем таблицу
+            $("#employees").trigger("reloadGrid");
+            $("#employee-add-form")[0].reset(); // Сбрасываем форму
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddEmployeePopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddEmployeePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
+
+            $('#errorAddEmployeePopup').modal({
+
+            });
+        }
+    });
+
+    $("#editEmployee").click(function() {
+
+    });
+
+    $("#deleteEmployee").click(function() {
+
     });
 });

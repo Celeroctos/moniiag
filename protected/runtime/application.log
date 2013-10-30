@@ -3768,3 +3768,1188 @@ Stack trace:
 REQUEST_URI=/index.php/guides/employees/someurl.php
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
 ---
+2013/10/29 21:33:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "vie".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('vie')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('vie')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/enterprises/vie
+---
+2013/10/30 12:20:18 [error] [exception.CException] exception 'CException' with message 'Property "CActiveForm.role" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWidgetFactory.php(161): CComponent->__set('role', 'form')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(EnterprisesController), 'CActiveForm', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(189): CBaseController->createWidget('CActiveForm', Array)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(22): CBaseController->beginWidget('CActiveForm', Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(7): CController->render('view', Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 12:21:40 [error] [exception.CException] exception 'CException' with message 'EnterprisesController contains improperly nested widget tags in its view "F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php". A CActiveForm widget does not have an endWidget() call.' in F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php:101
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(7): CController->render('view', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/writepatientstepone
+---
+2013/10/30 12:21:41 [error] [exception.CException] exception 'CException' with message 'EnterprisesController contains improperly nested widget tags in its view "F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php". A CActiveForm widget does not have an endWidget() call.' in F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php:101
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(7): CController->render('view', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/writepatientstepone
+---
+2013/10/30 12:21:42 [error] [exception.CException] exception 'CException' with message 'EnterprisesController contains improperly nested widget tags in its view "F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php". A CActiveForm widget does not have an endWidget() call.' in F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php:101
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(7): CController->render('view', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/writepatientstepone
+---
+2013/10/30 12:26:25 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php:20)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(7): EnterprisesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (20)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (7)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:35:55 [error] [php] include(FormEnterpriseAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(8): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:39:13 [error] [php] include(FormEnterpriseAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(8): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:39:14 [error] [php] include(FormEnterpriseAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(8): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:39:47 [error] [php] include(FormEnterpriseAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(8): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:40:33 [error] [php] include(FormEnterpriseAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(8): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:40:33 [error] [php] include(FormEnterpriseAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(8): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 12:56:36 [error] [exception.CException] exception 'CException' with message 'FormEnterpriseAdd has an invalid validation rule. The rule must specify attributes to be validated and the validator name.' in F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php:289
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): CModel->createValidators()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): CModel->getValidators('shortName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): CModel->isAttributeRequired('shortName')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): CHtml::activeLabelEx(Object(FormEnterpriseAdd), 'shortName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx(Object(FormEnterpriseAdd), 'shortName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:28:26 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.fullName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('fullName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'fullName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'fullName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'fullName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(55): CActiveForm->textField(Object(FormEnterpriseAdd), 'fullName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:29:25 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.addressFact" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('addressFact')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'addressFact')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'addressFact', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'addressFact', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(61): CActiveForm->textField(Object(FormEnterpriseAdd), 'addressFact', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:29:26 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.addressFact" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('addressFact')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'addressFact')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'addressFact', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'addressFact', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(61): CActiveForm->textField(Object(FormEnterpriseAdd), 'addressFact', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:29:29 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.fullName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('fullName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'fullName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'fullName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'fullName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(55): CActiveForm->textField(Object(FormEnterpriseAdd), 'fullName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:30:44 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.fullName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('fullName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'fullName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'fullName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'fullName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(55): CActiveForm->textField(Object(FormEnterpriseAdd), 'fullName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:30:45 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.fullName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('fullName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'fullName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'fullName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'fullName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(55): CActiveForm->textField(Object(FormEnterpriseAdd), 'fullName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:30:46 [error] [exception.CException] exception 'CException' with message 'Property "FormEnterpriseAdd.fullName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('fullName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormEnterpriseAdd), 'fullName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormEnterpriseAdd), 'fullName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormEnterpriseAdd), 'fullName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(55): CActiveForm->textField(Object(FormEnterpriseAdd), 'fullName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): CController->render('view', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/guides/enterprises/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 13:38:31 [error] [php] Undefined variable: typesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php:159)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(11): EnterprisesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (159)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 13:51:50 [error] [php] Missing argument 2 for CDbCommand::join(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php on line 15 and defined (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:870)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (15)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 13:51:53 [error] [php] Missing argument 2 for CDbCommand::join(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php on line 15 and defined (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:870)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (15)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 13:59:24 [error] [php] Missing argument 2 for CHtml::ajaxSubmitButton(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php on line 169 and defined (F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php:1231)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (169)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 14:06:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "add".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('add')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/enterprises/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/30 14:14:21 [error] [exception.CException] exception 'CException' with message 'FormEnterpriseAdd and its behaviors do not have a method or closure named "isValid".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(45): CComponent->__call('isValid', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(45): FormEnterpriseAdd->isValid()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/guides/enterprises/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/30 14:22:39 [error] [exception.CDbException] exception 'CDbException' with message 'The table "enterprise_params" for active record class "Enterprise" cannot be found in the database.' in F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php:2362
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Enterprise))
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(46): CActiveRecord->__construct()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/enterprises/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/30 14:28:09 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
+DETAIL:  Ошибочная строка содержит (4, 67, 7, 2, 4, 9, 8, 7, 5, null, 1).. The SQL statement executed was: INSERT INTO "mis"."enterprise_params" ("address_fact", "address_jur", "phone", "shortname", "fullname", "bank", "bank_account", "inn", "kpp", "type") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (59)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 14:28:09 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
+DETAIL:  Ошибочная строка содержит (4, 67, 7, 2, 4, 9, 8, 7, 5, null, 1).. The SQL statement executed was: INSERT INTO "mis"."enterprise_params" ("address_fact", "address_jur", "phone", "shortname", "fullname", "bank", "bank_account", "inn", "kpp", "type") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(59): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/enterprises/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/30 14:31:10 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "enterprise_params_pkey"
+DETAIL:  Ключ "(id)=(1)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."enterprise_params" ("address_fact", "address_jur", "phone", "shortname", "fullname", "bank", "bank_account", "inn", "kpp", "type") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (59)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 14:31:10 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "enterprise_params_pkey"
+DETAIL:  Ключ "(id)=(1)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."enterprise_params" ("address_fact", "address_jur", "phone", "shortname", "fullname", "bank", "bank_account", "inn", "kpp", "type") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(59): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/enterprises/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/30 15:42:56 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\wards\view.php:16)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): WardsController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): WardsController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(7): WardsController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): WardsController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): WardsController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): WardsController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): WardsController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/wards/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\wards\view.php (16)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (7)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 15:45:00 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\wards\view.php:15)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): WardsController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): WardsController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(7): WardsController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): WardsController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): WardsController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): WardsController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): WardsController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/wards/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\wards\view.php (15)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (7)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 15:47:51 [error] [php] Undefined index: name (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php:20)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): WardsController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): WardsController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): WardsController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/wards/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (20)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:05:38 [error] [exception.CException] exception 'CException' with message 'Property "FormWardAdd.addressFact" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(48): CComponent->__get('addressFact')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): WardsController->actionAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/wards/ad...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/index.php/guides/wards/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/10/30 16:06:32 [error] [exception.CException] exception 'CException' with message 'Property "Ward.enterprise" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(161): CComponent->__set('enterprise', '7')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(48): CActiveRecord->__set('enterprise', '7')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): WardsController->actionAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/wards/ad...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/guides/wards/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/10/30 16:06:55 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
+DETAIL:  Ошибочная строка содержит (null, Травмотологическое, 7).. The SQL statement executed was: INSERT INTO "mis"."wards" ("enterprise_id", "name") VALUES (:yp0, :yp1).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (51)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:06:55 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
+DETAIL:  Ошибочная строка содержит (null, Травмотологическое, 7).. The SQL statement executed was: INSERT INTO "mis"."wards" ("enterprise_id", "name") VALUES (:yp0, :yp1)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(51): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): WardsController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/wards/ad...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/wards/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/10/30 16:08:32 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "wards_pkey"
+DETAIL:  Ключ "(id)=(1)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."wards" ("enterprise_id", "name") VALUES (:yp0, :yp1).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (51)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:08:32 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "wards_pkey"
+DETAIL:  Ключ "(id)=(1)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."wards" ("enterprise_id", "name") VALUES (:yp0, :yp1)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(51): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): WardsController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/wards/ad...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/wards/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/10/30 16:16:43 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\medworkers\view.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): MedworkersController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): MedworkersController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php(7): MedworkersController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): MedworkersController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): MedworkersController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): MedworkersController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): MedworkersController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/medworkers/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\medworkers\view.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (7)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:26:42 [error] [php] include(Medworker.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php(46): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): MedworkersController->actionAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): MedworkersController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): MedworkersController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): MedworkersController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/medworkers/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (46)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:27:22 [error] [exception.CDbException] exception 'CDbException' with message 'The table "mis.medworkers" for active record class "Medworker" cannot be found in the database.' in F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php:2362
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Medworker))
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php(46): CActiveRecord->__construct()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): MedworkersController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/medworke...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/medworkers/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/medworkers/view
+---
+2013/10/30 16:37:17 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EmployeesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EmployeesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(7): EmployeesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (7)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:38:43 [error] [php] include(FormEmployeeAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(9): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (9)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:38:46 [error] [php] include(FormEmployeeAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(9): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (9)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:57:28 [error] [php] Undefined variable: postsList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php:76)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EmployeesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EmployeesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(26): EmployeesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php (76)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:59:09 [error] [php] Undefined variable: contactCodesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php:101)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EmployeesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EmployeesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(29): EmployeesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php (101)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 16:59:30 [error] [php] Undefined variable: titulsList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php:125)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EmployeesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EmployeesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(30): EmployeesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\employees\view.php (125)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:00:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "add".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('add')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:25:59 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.employee_types" не существует
+LINE 2: FROM "mis"."employee_types" "et"
+             ^. The SQL statement executed was: SELECT "et".*
+FROM "mis"."employee_types" "et".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (16)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:26:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.employee_types" не существует
+LINE 2: FROM "mis"."employee_types" "et"
+             ^. The SQL statement executed was: SELECT "et".*
+FROM "mis"."employee_types" "et".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (16)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:27:19 [error] [php] Undefined variable: typesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php:25)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (25)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:07 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:07 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:07 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:15 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:15 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:15 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:20 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:20 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:20 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:24 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:24 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:46:24 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:47:14 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:47:14 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:47:14 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:47:14 [error] [exception.CException] exception 'CException' with message 'Property "FormEmployeeAdd.addressFact" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(86): CComponent->__get('addressFact')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:49:04 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:49:04 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:49:04 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:49:04 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "10/17/2013 17:45"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:49:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "10/17/2013 17:45"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(98): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:56:06 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:06 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:06 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:06 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "08-55-2013 17:55:08"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:06 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "08-55-2013 17:55:08"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(98): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:56:48 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:48 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:48 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:48 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "08-55-2013 17:55:08"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:56:48 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "08-55-2013 17:55:08"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(98): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:57:11 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:57:11 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:57:11 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:57:11 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-09-56 17:56:24"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:57:11 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-09-56 17:56:24"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(98): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:58:39 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:58:39 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:58:39 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:58:39 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
+DETAIL:  Ошибочная строка содержит (null, 1, 2, 3, 4, null, null, null, null, null, 2013-10-09, 2013-10-15, 1).. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:58:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
+DETAIL:  Ошибочная строка содержит (null, 1, 2, 3, 4, null, null, null, null, null, 2013-10-09, 2013-10-15, 1).. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(98): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:59:56 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:59:56 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:59:56 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:59:56 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "doctors_pkey"
+DETAIL:  Ключ "(id)=(1)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:59:56 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "doctors_pkey"
+DETAIL:  Ключ "(id)=(1)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."doctors" ("first_name", "middle_name", "last_name", "post_id", "tabel_number", "contact_code", "degree_id", "titul_id", "date_begin", "date_end", "ward_code") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(98): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/employees/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/30 17:59:57 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:59:57 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 17:59:57 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:06:20 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:06:20 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:06:20 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:07:47 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:07:47 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:07:47 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:08:58 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:08:58 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:08:58 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:09:12 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:09:12 [warning] [application] Failed to set unsafe attribute "degreeId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:09:12 [warning] [application] Failed to set unsafe attribute "titulId" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:12:50 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEmployeeAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(547): FormEmployeeAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(468): FormEmployeeAdd->getSafeAttributeNames()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php(152): FormEmployeeAdd->setAttributes()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(82): FormEmployeeAdd->__set()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:13:46 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEmployeeAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(547): FormEmployeeAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(468): FormEmployeeAdd->getSafeAttributeNames()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php(152): FormEmployeeAdd->setAttributes()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(82): FormEmployeeAdd->__set()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:17:13 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:17:57 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEmployeeAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(547): FormEmployeeAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(468): FormEmployeeAdd->getSafeAttributeNames()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php(152): FormEmployeeAdd->setAttributes()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php(82): FormEmployeeAdd->__set()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EmployeesController->actionAdd()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:18:32 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:20:18 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/30 18:23:53 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

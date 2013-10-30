@@ -49,6 +49,29 @@ $(document).ready(function() {
         });
     });
 
+    $("#enterprise-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#addEnterprisePopup').modal('hide');
+            // Перезагружаем таблицу
+            $("#enterprises").trigger("reloadGrid");
+            $("#enterprise-add-form")[0].reset(); // Сбрасываем форму
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddEnterprisePopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddEnterprisePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
+
+            $('#errorAddEnterprisePopup').modal({
+
+            });
+        }
+    });
+
     $("#editEnterprise").click(function() {
 
     });

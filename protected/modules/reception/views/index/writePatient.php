@@ -49,6 +49,15 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="birthday" class="col-xs-3 control-label">Дата рождения</label>
+            <div class="col-xs-9 input-group date" id="birthday-cont">
+                <input type="text" class="form-control" id="birthday" placeholder="Дата рождения" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="search-shedule-submit">
                 <button type="submit" class="btn btn-success col-md-offset-2">Найти</button>
             </div>
@@ -70,9 +79,9 @@
                 <td>
                     Номер карты
                 </td>
-                <td>
+               <!-- <td>
                     Год регистрации
-                </td>
+                </td> -->
                 <td>
                     Редактировать
                 </td>
@@ -92,9 +101,6 @@
                     <a href="#" title="Посмотреть историю карты">
                         1134/87
                     </a>
-                </td>
-                <td>
-                    2012
                 </td>
                 <td>
                     <a href="#">
@@ -119,9 +125,6 @@
                     </a>
                 </td>
                 <td>
-                    2011
-                </td>
-                <td>
                     <a href="#">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
@@ -144,9 +147,6 @@
                     </a>
                 </td>
                 <td>
-                    2011
-                </td>
-                <td>
                     <a href="#">
                         <span class="glyphicon glyphicon-pencil"></span>
                     </a>
@@ -167,9 +167,6 @@
                     <a href="#" title="Посмотреть историю карты">
                         1134/83
                     </a>
-                </td>
-                <td>
-                    2012
                 </td>
                 <td>
                     <a href="#">

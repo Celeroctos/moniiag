@@ -13,80 +13,189 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Добавить учреждение</h4>
             </div>
+            <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'focus' => array($model,'shortName'),
+                'id' => 'enterprise-add-form',
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/enterprises/add'),
+                'htmlOptions' => array(
+                    'class' => 'form-horizontal col-xs-12',
+                    'role' => 'form'
+                )
+            ));
+            ?>
             <div class="modal-body">
-                <form class="form-horizontal col-xs-12" role="form">
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="form-group">
-                                <label for="shortName" class="col-xs-3 control-label">Краткое название</label>
+                                <?php echo $form->labelEx($model,'shortName', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="shortName" placeholder="Краткое название">
+                                    <?php echo $form->textField($model,'shortName', array(
+                                        'id' => 'shortName',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Краткое название'
+                                    )); ?>
+                                    <?php echo $form->error($model,'shortName'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="fullName" class="col-xs-3 control-label">Полное название</label>
+                                <?php echo $form->labelEx($model,'fullName', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="fullName" placeholder="Полное название">
+                                    <?php echo $form->textField($model,'fullName', array(
+                                        'id' => 'fullName',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Полное название'
+                                    )); ?>
+                                    <?php echo $form->error($model,'fullName'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="addressFact" class="col-xs-3 control-label">Адрес фактический</label>
+                                <?php echo $form->labelEx($model,'addressFact', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="addressFact" placeholder="Адрес фактический">
+                                    <?php echo $form->textField($model,'addressFact', array(
+                                        'id' => 'addressFact',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Адрес фактический'
+                                    )); ?>
+                                    <?php echo $form->error($model,'addressFact'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="addressJur" class="col-xs-3 control-label">Адрес юридический</label>
+                                <?php echo $form->labelEx($model,'addressJur', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="addressJur" placeholder="Адрес юридический">
+                                    <?php echo $form->textField($model,'addressJur', array(
+                                        'id' => 'addressJur',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Адрес юридический'
+                                    )); ?>
+                                    <?php echo $form->error($model,'addressJur'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="phone" class="col-xs-3 control-label">Телефон</label>
+                                <?php echo $form->labelEx($model,'phone', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="phone" placeholder="Телефон">
+                                    <?php echo $form->textField($model,'phone', array(
+                                        'id' => 'phone',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Телефон'
+                                    )); ?>
+                                    <?php echo $form->error($model,'phone'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="bank" class="col-xs-3 control-label">Банк</label>
+                                <?php echo $form->labelEx($model,'bank', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="bank" placeholder="Банк">
+                                    <?php echo $form->textField($model,'bank', array(
+                                        'id' => 'bank',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Банк'
+                                    )); ?>
+                                    <?php echo $form->error($model,'bank'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="bankAccount" class="col-xs-3 control-label">Расчётный счёт</label>
+                                <?php echo $form->labelEx($model,'bankAccount', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="bankAccount" placeholder="Расчётный счёт">
+                                    <?php echo $form->textField($model,'bankAccount', array(
+                                        'id' => 'bankAccount',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Расчётный счёт'
+                                    )); ?>
+                                    <?php echo $form->error($model,'bankAccount'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inn" class="col-xs-3 control-label">ИНН</label>
+                                <?php echo $form->labelEx($model,'inn', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="inn" placeholder="ИНН">
+                                    <?php echo $form->textField($model,'inn', array(
+                                        'id' => 'inn',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'ИНН'
+                                    )); ?>
+                                    <?php echo $form->error($model,'inn'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="kpp" class="col-xs-3 control-label">КПП</label>
+                                <?php echo $form->labelEx($model,'kpp', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <input type="text" class="form-control" id="kpp" placeholder="КПП">
+                                    <?php echo $form->textField($model,'kpp', array(
+                                        'id' => 'kpp',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'КПП'
+                                    )); ?>
+                                    <?php echo $form->error($model,'kpp'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="post" class="col-xs-3 control-label">Тип</label>
+                                <?php echo $form->labelEx($model,'type', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
                                 <div class="col-xs-9">
-                                    <select class="form-control" id="type">
-                                        <option>Поликлиника</option>
-                                        <option>Стационар</option>
-                                    </select>
+                                    <?php echo $form->dropDownList($model, 'type', $typesList, array(
+                                        'id' => 'type',
+                                        'class' => 'form-control'
+                                    )); ?>
+                                    <?php echo $form->error($model,'type'); ?>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Добавить</button>
+                <!--<button type="button" class="btn btn-primary">Добавить</button>-->
+                <?php echo CHtml::ajaxSubmitButton(
+                        'Добавить',
+                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/enterprises/add'),
+                        array(
+                            'success' => 'function(data, textStatus, jqXHR) {
+                                $("#enterprise-add-form").trigger("success", [data, textStatus, jqXHR])
+                            }'
+                        ),
+                        array(
+                            'class' => 'btn btn-primary'
+                        )
+                ); ?>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="errorAddEnterprisePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>При заполнении формы возникли следующие ошибки:</h4>
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>

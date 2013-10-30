@@ -40,9 +40,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="birthday" class="col-xs-3 control-label">День рождения</label>
+                    <label for="birthday" class="col-xs-3 control-label">Дата рождения</label>
                     <div class="col-xs-9 input-group date" id="birthday-cont">
-                        <input type="text" class="form-control" id="birthday" placeholder="День рождения" />
+                        <input type="text" class="form-control" id="birthday" placeholder="Дата рождения" />
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>

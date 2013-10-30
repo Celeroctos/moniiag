@@ -35,4 +35,41 @@ $(document).ready(function() {
         add: true,
         del: true
     });
+
+    $("#addMedworker").click(function() {
+        $('#addMedworkerPopup').modal({
+
+        });
+    });
+
+    $("#medworker-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#addMedworkerPopup').modal('hide');
+            // Перезагружаем таблицу
+            $("#medworkers").trigger("reloadGrid");
+            $("#medworker-add-form")[0].reset(); // Сбрасываем форму
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddMedworkerPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddMedworkerPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
+
+            $('#errorAddMedworkerPopup').modal({
+
+            });
+        }
+    });
+
+    $("#editMedworker").click(function() {
+
+    });
+
+    $("#deleteMedworker").click(function() {
+
+    });
 });

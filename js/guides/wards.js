@@ -42,6 +42,29 @@ $(document).ready(function() {
         });
     });
 
+    $("#ward-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#addWardPopup').modal('hide');
+            // Перезагружаем таблицу
+            $("#wards").trigger("reloadGrid");
+            $("#ward-add-form")[0].reset(); // Сбрасываем форму
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddWardPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddWardPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
+
+            $('#errorAddWardPopup').modal({
+
+            });
+        }
+    });
+
     $("#editWard").click(function() {
 
     });

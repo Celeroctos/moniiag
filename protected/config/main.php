@@ -35,7 +35,12 @@ return array(
             'class' => 'application.modules.reception.ReceptionModule',
         ),
         'guides' => array(
-            'class' => 'application.modules.guides.GuidesModule'
+            'class' => 'application.modules.guides.GuidesModule',
+            'import'=>array(
+                'application.modules.guides.models.*',
+                'application.modules.guides.components.*',
+                'application.modules.guides.controllers.*'
+            ),
         )
 	),
 
