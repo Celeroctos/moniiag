@@ -13,6 +13,7 @@ class FormEmployeeAdd extends CFormModel
     public $dateBegin;
     public $dateEnd;
     public $wardCode;
+    public $id;
 
 
     public function rules()
@@ -22,7 +23,7 @@ class FormEmployeeAdd extends CFormModel
                 'firstName, middleName, lastName, postId, dateBegin, dateEnd, wardCode', 'required'
             ),
             array(
-                'degreeId, titulId', 'numerical'
+                'degreeId, titulId, tabelNumber', 'numerical'
             )
         );
     }

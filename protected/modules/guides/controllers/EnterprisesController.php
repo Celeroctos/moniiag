@@ -30,7 +30,35 @@ class EnterprisesController extends Controller {
     }
 
     public function actionEdit() {
+        $model = new FormEnterpriseAdd();
+        if(isset($_POST['FormEnterpriseAdd'])) {
+            $model->attributes = $_POST['FormEnterpriseAdd'];
+            if($model->validate()) {
+                $enterprise = Enterprise::model()->find('id=:id', array(':id' => $_POST['FormEnterpriseAdd']['id']));
+                $this->addEditModel($enterprise, $model, 'Учреждение успешно отредактировано.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
+    }
 
+    private function addEditModel($enterprise, $model, $msg) {
+        $enterprise->address_fact = $model->addressFact;
+        $enterprise->address_jur = $model->addressJur;
+        $enterprise->phone = $model->phone;
+        $enterprise->shortname = $model->shortName;
+        $enterprise->fullname = $model->fullName;
+        $enterprise->bank = $model->bank;
+        $enterprise->bank_account = $model->bankAccount;
+        $enterprise->inn = $model->inn;
+        $enterprise->kpp = $model->kpp;
+        $enterprise->type = $model->type;
+
+        if($enterprise->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'text' => $msg));
+        }
     }
 
     public function actionDelete() {
@@ -84,6 +112,14 @@ class EnterprisesController extends Controller {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+    public function actionGetone($id) {
+        $model = new Enterprise();
+        $enterprise = $model->getOne($id);
+        echo CJSON::encode(array('success' => true,
+                                 'data' =>$enterprise)
+                        );
     }
 }
 

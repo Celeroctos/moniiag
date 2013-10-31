@@ -30,7 +30,18 @@ class WardsController extends Controller {
     }
 
     public function actionEdit() {
+        $model = new FormWardAdd();
+        if(isset($_POST['FormWardAdd'])) {
+            $model->attributes = $_POST['FormWardAdd'];
+            if($model->validate()) {
+                $ward = Ward::model()->find('id=:id', $_POST['FormWardAdd']['id']);
 
+                $this->addEditModel($ward, $model, 'Новое отделение успешно добавлено.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
     }
 
     public function actionDelete() {
@@ -45,17 +56,21 @@ class WardsController extends Controller {
             if($model->validate()) {
                 $ward = new Ward();
 
-                $ward->enterprise_id = $model->enterprise;
-                $ward->name = $model->name;
-
-                if($ward->save()) {
-                    echo CJSON::encode(array('success' => true,
-                                             'text' => 'Новое отделение успешно добавлено.'));
-                }
+                $this->addEditModel($ward, $model, 'Новое отделение успешно добавлено.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
             }
+        }
+    }
+
+    private function addEditModel($ward, $model, $msg) {
+        $ward->enterprise_id = $model->enterprise;
+        $ward->name = $model->name;
+
+        if($ward->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'text' => $msg));
         }
     }
 
@@ -71,6 +86,14 @@ class WardsController extends Controller {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+    public function actionGetone($id) {
+        $model = new Ward();
+        $ward = $model->getOne($id);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $ward)
+        );
     }
 }
 

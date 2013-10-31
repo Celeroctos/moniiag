@@ -4,6 +4,7 @@ class FormMedworkerAdd extends CFormModel
 {
     public $name;
     public $type;
+    public $id;
 
     public function rules()
     {

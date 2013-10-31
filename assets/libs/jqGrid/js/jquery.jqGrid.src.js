@@ -10747,7 +10747,6 @@ $.jgrid.extend({
 				
 				twrap += "></div></div>";
 				$($t.rows[i].cells[expCol]).wrapInner("<span class='cell-wrapper"+lf+"'></span>").prepend(twrap);
-
 				if(curLevel !== parseInt($t.p.tree_root_level,10)) {
 					var pn = $($t).jqGrid('getNodeParent',ldat);
 					expan = pn && pn.hasOwnProperty(expanded) ? pn[expanded] : true;
@@ -11122,7 +11121,7 @@ $.jgrid.extend({
 		return this.each(function(){
 			if(!this.grid || !this.p.treeGrid) {return;}
 			var expanded = this.p.treeReader.expanded_field;
-			if(rc[expanded]) {
+            if(rc[expanded]) {
 				rc[expanded] = false;
 				var id = $.jgrid.getAccessor(rc,this.p.localReader.id);
 				var rc1 = $("#" + this.p.idPrefix + $.jgrid.jqID(id),this.grid.bDiv)[0];

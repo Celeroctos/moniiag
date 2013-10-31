@@ -9,6 +9,22 @@ class Medworker extends CActiveRecord {
     {
         return 'mis.medpersonal';
     }
+
+    public function getOne($id) {
+        try {
+            $connection = Yii::app()->db;
+            $medworker = $connection->createCommand()
+                ->select('m.*')
+                ->from('mis.medpersonal m')
+                ->where('m.id = :id', array(':id' => $id))
+                ->queryRow();
+
+            return $medworker;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

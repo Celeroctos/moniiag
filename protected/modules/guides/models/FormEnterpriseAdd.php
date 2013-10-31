@@ -12,6 +12,7 @@ class FormEnterpriseAdd extends CFormModel
     public $inn;
     public $kpp;
     public $type;
+    public $id;
 
     /**
      * Declares the validation rules.

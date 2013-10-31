@@ -72,13 +72,14 @@ $(document).ready(function() {
         sortorder: "desc",
         caption:"Сотрудники",
         height: 300,
-        editurl:"someurl.php"
+        editurl:"someurl.php",
+        ondblClickRow: editEmployee
     });
 
     $("#employees").jqGrid('navGrid','#employeesPager',{
-        edit: true,
-        add: true,
-        del: true
+        edit: false,
+        add: false,
+        del: false
     });
 
     $("#addEmployee").click(function() {
@@ -92,6 +93,12 @@ $(document).ready(function() {
         format: 'yyyy-MM-dd hh:mm:ss'
     });
     $('#dateEnd-cont').datetimepicker({
+        format: 'yyyy-MM-dd hh:mm:ss'
+    });
+    $('#dateBeginEdit-cont').datetimepicker({
+        format: 'yyyy-MM-dd hh:mm:ss'
+    });
+    $('#dateEndEdit-cont').datetimepicker({
         format: 'yyyy-MM-dd hh:mm:ss'
     });
 
@@ -118,9 +125,108 @@ $(document).ready(function() {
         }
     });
 
-    $("#editEmployee").click(function() {
+    // Редактирование строки
+    $("#employee-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#editEmployeePopup').modal('hide');
+            // Перезагружаем таблицу
+            $("#employees").trigger("reloadGrid");
+            $("#employee-edit-form")[0].reset(); // Сбрасываем форму
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddEmployeePopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddEmployeePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
 
+            $('#errorAddEmployeePopup').modal({
+
+            });
+        }
     });
+
+    function editEmployee() {
+        var currentRow = $('#employees').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/guides/employees/getone?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        // Заполняем форму значениями
+                        var form = $('#editEmployeePopup form')
+                        // Соответствия формы и модели
+                        var fields = [
+                            {
+                                modelField: 'id',
+                                formField: 'id'
+                            },
+                            {
+                                modelField: 'first_name',
+                                formField: 'firstName'
+                            },
+                            {
+                                modelField: 'middle_name',
+                                formField: 'middleName'
+                            },
+                            {
+                                modelField: 'last_name',
+                                formField: 'lastName'
+                            },
+                            {
+                                modelField: 'post_id',
+                                formField: 'postId'
+                            },
+                            {
+                                modelField: 'tabel_number',
+                                formField: 'tabelNumber'
+                            },
+                            {
+                                modelField: 'contact_code',
+                                formField: 'contactCode'
+                            },
+                            {
+                                modelField: 'degree_id',
+                                formField: 'degreeId'
+                            },
+                            {
+                                modelField: 'titul_id',
+                                formField: 'titulId'
+                            },
+                            {
+                                modelField: 'date_begin',
+                                formField: 'dateBegin'
+                            },
+                            {
+                                modelField: 'date_end',
+                                formField: 'dateEnd'
+                            },
+                            {
+                                modelField: 'ward_code',
+                                formField: 'wardCode'
+                            },
+                        ];
+                        for(var i = 0; i < fields.length; i++) {
+                            form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+                        }
+                        $("#editEmployeePopup").modal({
+
+                        });
+                    }
+                }
+            })
+        }
+    }
+
+
+    $("#editEmployee").click(editEmployee);
 
     $("#deleteEmployee").click(function() {
 

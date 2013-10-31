@@ -9,6 +9,22 @@ class Employee extends CActiveRecord {
     {
         return 'mis.doctors';
     }
+
+    public function getOne($id) {
+        try {
+            $connection = Yii::app()->db;
+            $employee = $connection->createCommand()
+                ->select('m.*')
+                ->from('mis.doctors m')
+                ->where('m.id = :id', array(':id' => $id))
+                ->queryRow();
+
+            return $employee;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

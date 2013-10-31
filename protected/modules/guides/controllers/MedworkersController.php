@@ -30,12 +30,33 @@ class MedworkersController extends Controller {
     }
 
     public function actionEdit() {
+        $model = new FormMedworkerAdd();
+        if(isset($_POST['FormMedworkerAdd'])) {
+            $model->attributes = $_POST['FormMedworkerAdd'];
+            if($model->validate()) {
+                $medworker = Medworker::model()->find('id=:id', $_POST['FormMedworkerAdd']['id']);
 
+                $this->addEditModel($medworker, $model, 'Тип работника успешно отредактирован.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
     }
 
     public function actionDelete() {
 
 
+    }
+
+    public function addEditModel($medworker, $model, $msg) {
+        $medworker->name = $model->name;
+        $medworker->type = $model->type;
+
+        if($medworker->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'text' => $msg));
+        }
     }
 
     public function actionAdd() {
@@ -45,13 +66,7 @@ class MedworkersController extends Controller {
             if($model->validate()) {
                 $medworker = new Medworker();
 
-                $medworker->name = $model->name;
-                $medworker->type = $model->type;
-
-                if($medworker->save()) {
-                    echo CJSON::encode(array('success' => true,
-                        'text' => 'Новый тип работника успешно добавлено.'));
-                }
+                $this->addEditModel($medworker, $model, 'Новый тип работника успешно добавлен.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
@@ -73,6 +88,15 @@ class MedworkersController extends Controller {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+
+    public function actionGetone($id) {
+        $model = new Medworker();
+        $medworker = $model->getOne($id);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $medworker)
+        );
     }
 }
 

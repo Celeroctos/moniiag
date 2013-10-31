@@ -9,6 +9,22 @@ class Ward extends CActiveRecord {
     {
         return 'mis.wards';
     }
+
+    public function getOne($id) {
+        try {
+            $connection = Yii::app()->db;
+            $ward = $connection->createCommand()
+                ->select('w.*')
+                ->from('mis.wards w')
+                ->where('w.id = :id', array(':id' => $id))
+                ->queryRow();
+
+            return $ward;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

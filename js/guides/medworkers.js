@@ -27,13 +27,14 @@ $(document).ready(function() {
         viewrecords: true,
         sortorder: "desc",
         caption:"Медицинские работники",
-        height: 300
+        height: 300,
+        ondblClickRow: editMedworker
     });
 
-    $("#medworkers").jqGrid('navGrid','#wardsPager',{
-        edit: true,
-        add: true,
-        del: true
+    $("#medworkers").jqGrid('navGrid','#medworkersPager',{
+        edit: false,
+        add: false,
+        del: false
     });
 
     $("#addMedworker").click(function() {
@@ -65,9 +66,70 @@ $(document).ready(function() {
         }
     });
 
-    $("#editMedworker").click(function() {
+    $("#medworker-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#editMedworkerPopup').modal('hide');
+            // Перезагружаем таблицу
+            $("#medworkers").trigger("reloadGrid");
+            $("#medworker-edit-form")[0].reset(); // Сбрасываем форму
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddMedworkerPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddMedworkerPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
 
+            $('#errorAddMedworkerPopup').modal({
+
+            });
+        }
     });
+
+    function editMedworker() {
+        var currentRow = $('#medworkers').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/guides/medworkers/getone?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        // Заполняем форму значениями
+                        var form = $('#editMedworkerPopup form')
+                        // Соответствия формы и модели
+                        var fields = [
+                            {
+                                modelField: 'id',
+                                formField: 'id'
+                            },
+                            {
+                                modelField: 'name',
+                                formField: 'name'
+                            },
+                            {
+                                modelField: 'type',
+                                formField: 'type'
+                            },
+                        ];
+                        for(var i = 0; i < fields.length; i++) {
+                            form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+                        }
+                        $("#editMedworkerPopup").modal({
+
+                        });
+                    }
+                }
+            })
+        }
+    }
+
+    $("#editMedworker").click(editMedworker);
 
     $("#deleteMedworker").click(function() {
 

@@ -4,6 +4,7 @@ class FormWardAdd extends CFormModel
 {
     public $name;
     public $enterprise;
+    public $id;
 
     public function rules()
     {

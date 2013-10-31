@@ -4953,3 +4953,769 @@ in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
 2013/10/30 18:23:53 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 10:03:26 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 10:04:06 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 12:17:48 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getone')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/enterprises/getone?id=1&_=1383207444669
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/31 12:19:44 [error] [exception.CException] exception 'CException' with message 'Enterprise and its behaviors do not have a method or closure named "getOne".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('getOne', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(91): CActiveRecord->__call('getOne', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(91): Enterprise->getOne('1')
+#3 [internal function]: EnterprisesController->actionGetone('1')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(EnterprisesController), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(EnterprisesController), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/guides/enterprises/getone?id=1&_=1383207444670
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/31 13:24:45 [error] [system.db.CDbCommand] CDbCommand::fetch() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "et" отсутствует в предложении FROM
+LINE 1: SELECT "ep".*, "et"."name" AS "enterprise_type"
+                       ^. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+WHERE ep.id = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (91)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:38:04 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:336
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/index.php/guides/enterprises/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/31 15:38:17 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:336
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/index.php/guides/enterprises/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/31 15:38:27 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:336
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/index.php/guides/enterprises/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/31 15:38:36 [error] [php] Undefined variable: id (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php:38)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/edit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (38)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:43:50 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEnterpriseAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormEnterpriseAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormEnterpriseAdd->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:44:41 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEnterpriseAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormEnterpriseAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormEnterpriseAdd->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:45:42 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:428)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEnterpriseAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormEnterpriseAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormEnterpriseAdd->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:46:01 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEnterpriseAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormEnterpriseAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormEnterpriseAdd->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:48:00 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEnterpriseAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormEnterpriseAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormEnterpriseAdd->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:48:01 [error] [php] include(save.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormEnterpriseAdd->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormEnterpriseAdd->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormEnterpriseAdd->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php(35): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): EnterprisesController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): EnterprisesController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): EnterprisesController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(26): EnterprisesController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\enterprises\view.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 15:56:16 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:336
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/enterpri...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/index.php/guides/enterprises/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/10/31 15:56:29 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:00:38 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:00:59 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:09:28 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:09:44 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:10:21 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:10:48 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:21:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getone')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/wards/ge...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/wards/getone?id=2&_=1383222063081
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/10/31 16:23:12 [error] [exception.CException] exception 'CException' with message 'Ward and its behaviors do not have a method or closure named "getOne".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('getOne', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(78): CActiveRecord->__call('getOne', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php(78): Ward->getOne('2')
+#3 [internal function]: WardsController->actionGetone('2')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(WardsController), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(WardsController), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/wards/ge...')
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/guides/wards/getone?id=2&_=1383222063082
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/10/31 16:31:04 [warning] [application] Failed to set unsafe attribute "id" of "FormWardAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:43:14 [warning] [application] Failed to set unsafe attribute "id" of "FormEnterpriseAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 16:53:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getone')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/medworke...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/medworkers/getone?id=8&_=1383223998141
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/medworkers/view
+---
+2013/10/31 17:05:18 [warning] [application] Failed to set unsafe attribute "id" of "FormMedworkerAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 17:05:35 [warning] [application] Failed to set unsafe attribute "id" of "FormMedworkerAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 17:07:15 [warning] [application] Failed to set unsafe attribute "id" of "FormMedworkerAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 17:07:23 [warning] [application] Failed to set unsafe attribute "id" of "FormMedworkerAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:12:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getone')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/employees/getone?id=8&_=1383228732600
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/31 18:29:54 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:29:54 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:35:17 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:35:17 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:36:55 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:36:55 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:38:47 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:38:47 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:39:24 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:39:24 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:39:34 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:39:34 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:40:35 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:40:35 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:41:06 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:41:06 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:41:24 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:41:24 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:43:15 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:43:15 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:43:40 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:43:40 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:44:26 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:44:26 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:44:54 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:44:54 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:45:14 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:45:14 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:45:53 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:45:53 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:47:51 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:47:51 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:48:02 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:48:02 [warning] [application] Failed to set unsafe attribute "tabelNumber" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 18:54:07 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 19:23:44 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 19:40:11 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 19:53:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/mkb10/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/vi...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/mkb10/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/31 19:55:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/mkb10/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/vi...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/mkb10/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/31 19:56:42 [error] [exception.CException] exception 'CException' with message 'Mkb10Controller cannot find the requested view "view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(7): CController->render('view', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): Mkb10Controller->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/vi...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/guides/mkb10/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/31 19:57:10 [error] [exception.CException] exception 'CException' with message 'Mkb10Controller cannot find the requested view "view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(7): CController->render('view', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): Mkb10Controller->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/vi...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/guides/mkb10/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/31 19:57:11 [error] [exception.CException] exception 'CException' with message 'Mkb10Controller cannot find the requested view "view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(7): CController->render('view', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): Mkb10Controller->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/vi...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/guides/mkb10/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/employees/view
+---
+2013/10/31 20:54:25 [error] [exception.CException] exception 'CException' with message 'Mkb10 and its behaviors do not have a method or closure named "getRowsyLevel".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('getRowsyLevel', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(17): CActiveRecord->__call('getRowsyLevel', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(17): Mkb10->getRowsyLevel(false)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): Mkb10Controller->actionGet()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?_search=false&nd=1383238446051&rows=30&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 20:54:43 [error] [exception.CException] exception 'CException' with message 'Mkb10 and its behaviors do not have a method or closure named "getRowsyLevel".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('getRowsyLevel', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(17): CActiveRecord->__call('getRowsyLevel', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(17): Mkb10->getRowsyLevel(false)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): Mkb10Controller->actionGet()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?_search=false&nd=1383238463759&rows=30&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 20:54:56 [error] [php] Missing argument 2 for Mkb10::getRowsByLevel(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php on line 17 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php:13)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?_search=false&nd=1383238477286&rows=30&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (13)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 20:56:07 [error] [php] Object of class CDbCommand could not be converted to int (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?_search=false&nd=1383238547532&rows=30&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:25:15 [error] [php] Undefined index: rows (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php:11)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?level=2&nd_=1383240295836&id=3707
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:42:44 [error] [exception.CHttpException.400] exception 'CHttpException' with message 'Your request is invalid.' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:336
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(309): CController->invalidActionParams(Object(CInlineAction))
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?key=0&_search=false&nd=1383241344840&rows=10000&page=1&sidx=id&sord=asc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 21:43:15 [error] [php] Undefined variable: level (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php:17)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?key=0&_search=false&nd=1383241375540&rows=10000&page=1&sidx=id&sord=asc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:43:38 [error] [php] Undefined variable: level (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php:17)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?key=0&_search=false&nd=1383241398477&rows=10000&page=1&sidx=id&sord=asc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:50:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (22)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:50:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(22): Mkb10->getRowsByLevel('', 'id', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1383241808077&rows=10000&page=1&sidx=id&sord=asc&nodeid=&n_level=&parentid=&filters=
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 21:50:51 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (22)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:50:51 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(22): Mkb10->getRowsByLevel('', 'id', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1383241831875&rows=10000&page=1&sidx=id&sord=asc&nodeid=&n_level=&parentid=&filters=
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 21:52:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 21:52:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(24): Mkb10->getRowsByLevel('', 'id', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1383241944270&rows=10000&page=1&sidx=id&sord=asc&nodeid=&n_level=&parentid=&filters=
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 22:49:26 [error] [php] Undefined index: id (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1383245346459&rows=10000&page=1&sidx=id&sord=asc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/10/31 22:49:46 [error] [exception.CException] exception 'CException' with message 'Mkb10Controller and its behaviors do not have a method or closure named "getRowsByLevel".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(29): CComponent->__call('getRowsByLevel', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(29): Mkb10Controller->getRowsByLevel(1)
+#2 [internal function]: Mkb10Controller->actionGet('0')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1383245365999&rows=10000&page=1&sidx=id&sord=asc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/10/31 22:50:00 [error] [php] Undefined variable: resultMkb10 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php:37)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): Mkb10Controller->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): Mkb10Controller->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): Mkb10Controller->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1383245380064&rows=10000&page=1&sidx=id&sord=asc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (37)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

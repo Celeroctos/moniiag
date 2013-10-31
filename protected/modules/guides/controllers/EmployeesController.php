@@ -68,12 +68,42 @@ class EmployeesController extends Controller {
     }
 
     public function actionEdit() {
-
+        $model = new FormEmployeeAdd();
+        if(isset($_POST['FormEmployeeAdd'])) {
+            $model->attributes = $_POST['FormEmployeeAdd'];
+            if($model->validate()) {
+                $employee = Employee::model()->find('id=:id', array(':id' => $_POST['FormEmployeeAdd']['id']));
+                $this->addEditModel($employee, $model, 'Медицинский персонал успешно отредактирован.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                    'errors' => $model->errors));
+            }
+        }
     }
 
     public function actionDelete() {
 
 
+    }
+
+    private function addEditModel($employee, $model, $msg) {
+
+        $employee->first_name = $model->firstName;
+        $employee->middle_name = $model->middleName;
+        $employee->last_name = $model->lastName;
+        $employee->post_id = $model->postId;
+        $employee->tabel_number = $model->tabelNumber;
+        $employee->contact_code = $model->contactCode;
+        $employee->degree_id = $model->degreeId;
+        $employee->titul_id = $model->titulId;
+        $employee->date_begin = $model->dateBegin;
+        $employee->date_end = $model->dateEnd;
+        $employee->ward_code = $model->wardCode;
+
+        if($employee->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'text' => $msg));
+        }
     }
 
     public function actionAdd() {
@@ -82,23 +112,7 @@ class EmployeesController extends Controller {
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
                 $employee = new Employee();
-
-                $employee->first_name = $model->firstName;
-                $employee->middle_name = $model->middleName;
-                $employee->last_name = $model->lastName;
-                $employee->post_id = $model->postId;
-                $employee->tabel_number = $model->tabelNumber;
-                $employee->contact_code = $model->contactCode;
-                $employee->degree_id = $model->degreeId;
-                $employee->titul_id = $model->titulId;
-                $employee->date_begin = $model->dateBegin;
-                $employee->date_end = $model->dateEnd;
-                $employee->ward_code = $model->wardCode;
-
-                if($employee->save()) {
-                    echo CJSON::encode(array('success' => true,
-                        'text' => 'Новое учреждение успешно добавлено.'));
-                }
+                $this->addEditModel($employee, $model, 'Медицинский персонал успешно добавлен.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
                     'errors' => $model->errors));
@@ -134,6 +148,15 @@ class EmployeesController extends Controller {
             echo $e->getMessage();
         }
     }
+
+    public function actionGetone($id) {
+        $model = new Employee();
+        $employee = $model->getOne($id);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $employee)
+        );
+    }
+
 }
 
 ?>
