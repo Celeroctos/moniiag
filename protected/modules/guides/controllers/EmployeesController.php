@@ -7,6 +7,20 @@ class EmployeesController extends Controller {
         try {
             // Модель формы для добавления и редактирования записи
             $formAddEdit = new FormEmployeeAdd;
+            // Модель формы для фильтра
+            $formFilter = new FormEmployeeFilter;
+
+            // Список учреждений
+            $connection = Yii::app()->db;
+            $enterprisesListDb = $connection->createCommand()
+                ->select('ep.*')
+                ->from('mis.enterprise_params ep')
+                ->queryAll();
+
+            $enterprisesList = array('-1' => 'Нет');
+            foreach($enterprisesListDb as $value) {
+                $enterprisesList[(string)$value['id']] = $value['shortname'];
+            }
 
             // Список должностей
             $connection = Yii::app()->db;
@@ -37,11 +51,11 @@ class EmployeesController extends Controller {
                 ->from('mis.wards w')
                 ->queryAll();
 
-            $wardsList = array();
+            $wardsList = array('-1' => 'Нет');
+            $wardsListForAdd = array();
             foreach($wardsListDb as $value) {
-                $wardsList[(string)$value['id']] = $value['name'];
+                $wardsListForAdd[(string)$value['id']] = $value['name'];
             }
-
 
             // Список степеней
             $degreesListDb = $connection->createCommand()
@@ -54,13 +68,24 @@ class EmployeesController extends Controller {
                 $degreesList[(string)$value['id']] = $value['name'];
             }
 
+            // Список контактов
+            $contactModel = new Contact();
+            $contactsListDb = $contactModel->getAllWithoutDoctor();
+            $contactsList = array();
+            foreach($contactsListDb as $value) {
+                $contactsList[(string)$value['id']] = $value['contact_value'];
+            }
+
             $this->render('view', array(
                 'model' => $formAddEdit,
+                'modelFilter' => $formFilter,
                 'titulsList' => $titulsList,
                 'postsList' => $postsList,
                 'wardsList' => $wardsList,
+                'wardsListForAdd' => $wardsListForAdd,
                 'degreesList' => $degreesList,
-                'contactCodesList' => array()
+                'enterprisesList' => $enterprisesList,
+                'contactCodesList' => $contactsList
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -79,6 +104,11 @@ class EmployeesController extends Controller {
                     'errors' => $model->errors));
             }
         }
+    }
+
+    public function actionFilter() {
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => array()));
     }
 
     public function actionDelete() {
@@ -129,14 +159,24 @@ class EmployeesController extends Controller {
                           m.name as post,
                           de.name as degree,
                           t.name as titul,
-                          w.name as ward
+                          w.name as ward,
+                          c.contact_value as contact
                           ')
                 ->from('mis.doctors as d')
                 ->join('mis.medpersonal m', 'd.post_id = m.id')
                 ->leftJoin('mis.degrees de', 'd.degree_id = de.id')
                 ->leftJoin('mis.tituls t', 'd.titul_id = t.id')
-                ->join('mis.wards w', 'd.ward_code = w.id')
-                ->queryAll();
+                ->leftJoin('mis.contacts c', 'd.contact_code = c.id')
+                ->join('mis.wards w', 'd.ward_code = w.id');
+
+            if(isset($_GET['wardid']) && $_GET['wardid'] != -1) {
+                $employees->where('d.ward_code=:ward_code', array(':ward_code' => $_GET['wardid']));
+            }
+            if(isset($_GET['enterpriseid']) && $_GET['enterpriseid'] != -1) {
+                $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $_GET['enterpriseid']));
+            }
+
+            $employees = $employees->queryAll();
 
             foreach($employees as $key => &$employee) {
                 $employee['fio'] = $employee['first_name'].' '.$employee['middle_name'].' '.$employee['last_name'];

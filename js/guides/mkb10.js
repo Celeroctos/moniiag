@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#mkb10").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/mkb10/get?nodeid=0',
         datatype: "json",
-        colNames:['Код', 'Описание'],
+        colNames:['Код', 'Описание', 'Родитель'],
         colModel:[
             {
                 name:'id',
@@ -15,6 +15,11 @@ $(document).ready(function() {
                 name: 'description',
                 index: 'name',
                 width: 1000
+            },
+            {
+                name: 'parent',
+                index: 'parent',
+                hidden: true
             }
         ],
         rowNum: 30,
@@ -29,7 +34,7 @@ $(document).ready(function() {
         treeGridModel: 'adjacency',
         ExpandColumn: 'description',
         ExpandColClick: true
-});
+    });
 
     $("#mkb10").jqGrid('navGrid','#mkb10Pager',{
         edit: false,

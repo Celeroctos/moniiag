@@ -23,7 +23,7 @@ class FormEmployeeAdd extends CFormModel
                 'firstName, middleName, lastName, postId, dateBegin, dateEnd, wardCode', 'required'
             ),
             array(
-                'degreeId, titulId, tabelNumber', 'numerical'
+                'degreeId, titulId, tabelNumber, contactCode', 'numerical'
             )
         );
     }

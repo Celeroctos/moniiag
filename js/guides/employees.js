@@ -7,6 +7,7 @@ $(document).ready(function() {
                   'Медработник',
                   'Табельный номер',
                   'Код списка контактов',
+                  'Контакт',
                   'Степень',
                   'Звание',
                   'Дата начала действия',
@@ -36,6 +37,11 @@ $(document).ready(function() {
             {
                 name: 'contact_code',
                 index: 'contact_code',
+                hidden: true
+            },
+            {
+                name: 'contact',
+                index: 'contact',
                 width: 155
             },
             {
@@ -145,6 +151,37 @@ $(document).ready(function() {
 
             $('#errorAddEmployeePopup').modal({
 
+            });
+        }
+    });
+
+    // Форма фильтрации сотрудника
+    $("#employee-filter-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var url = '/index.php/guides/employees/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val();
+        $("#employees").jqGrid('setGridParam', { url: url });
+        $("#employees").trigger("reloadGrid");
+    });
+
+    // Форма фильтрации сотрудника: подгрузка отделений учреждения
+    $("#enterpriseCode").on('change', function(e) {
+        var enterpriseCode = $(this).val();
+        if(enterpriseCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
+            $.ajax({
+                'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        $("#wardCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+                        $("#wardCodeFilter").val('-1'); // По дефолту - Нет
+                        // Заполняем из пришедших данных
+                        for(var i = 0; i < data.data.length; i++) {
+                            $("#wardCodeFilter").append('<option value="' + data.data[i].id + '">' + data.data[i].name + '</option>')
+                        }
+                        $("#wardCodeFilter").parents('.no-display').removeClass('no-display');
+                    }
+                }
             });
         }
     });

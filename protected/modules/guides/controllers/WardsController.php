@@ -95,6 +95,14 @@ class WardsController extends Controller {
                                  'data' => $ward)
         );
     }
+
+    public function actionGetByEnterprise($id) {
+        $model = new Ward();
+        $wards = $model->getByEnterprise($id);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $wards)
+        );
+    }
 }
 
 ?>

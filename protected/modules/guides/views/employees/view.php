@@ -1,3 +1,56 @@
+<div class="row">
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'employee-filter-form',
+        'enableAjaxValidation' => true,
+        'enableClientValidation' => true,
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/filter'),
+        'htmlOptions' => array(
+            'class' => 'form-horizontal col-xs-12',
+            'role' => 'form'
+        )
+    ));
+    ?>
+    <div class="form-group">
+        <?php echo $form->label($modelFilter,'enterpriseCode', array(
+            'class' => 'col-xs-2 control-label text-left'
+        )); ?>
+        <div class="col-xs-3">
+            <?php echo $form->dropDownList($modelFilter, 'enterpriseCode', $enterprisesList, array(
+                'id' => 'enterpriseCode',
+                'class' => 'form-control'
+            )); ?>
+            <?php echo $form->error($modelFilter,'wardCode'); ?>
+        </div>
+    </div>
+    <div class="form-group no-display">
+        <?php echo $form->label($modelFilter,'wardCode', array(
+            'class' => 'col-xs-2 control-label text-left'
+        )); ?>
+        <div class="col-xs-3">
+            <?php echo $form->dropDownList($modelFilter, 'wardCode', $wardsList, array(
+                'id' => 'wardCodeFilter',
+                'class' => 'form-control',
+            )); ?>
+            <?php echo $form->error($modelFilter,'wardCode'); ?>
+        </div>
+    </div>
+    <div class="form-group">
+        <?php echo CHtml::ajaxSubmitButton(
+            'Фильтровать',
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/filter'),
+            array(
+                'success' => 'function(data, textStatus, jqXHR) {
+                                    $("#employee-filter-form").trigger("success", [data, textStatus, jqXHR])
+                                }'
+            ),
+            array(
+                'class' => 'btn btn-success'
+            )
+        ); ?>
+    </div>
+    <?php $this->endWidget(); ?>
+</div>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/employees.js"></script>
 <table id="employees"></table>
 <div id="employeesPager"></div>
@@ -164,7 +217,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'wardCode', $wardsList, array(
+                                <?php echo $form->dropDownList($model, 'wardCode', $wardsListForAdd, array(
                                     'id' => 'wardCode',
                                     'class' => 'form-control'
                                 )); ?>
@@ -356,7 +409,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'wardCode', $wardsList, array(
+                                <?php echo $form->dropDownList($model, 'wardCode', $wardsListForAdd, array(
                                     'id' => 'wardCode',
                                     'class' => 'form-control'
                                 )); ?>

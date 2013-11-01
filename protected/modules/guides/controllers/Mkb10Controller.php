@@ -33,6 +33,7 @@ class Mkb10Controller extends Controller {
            }
             $node['loaded'] = false;
             $node['expanded'] = false;
+            $node['parent'] = $node['parent_id']; // Суррогат для схлопывания таблицы
         }
        // var_dump($mkb10);
         echo CJSON::encode(
