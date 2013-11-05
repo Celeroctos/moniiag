@@ -133,6 +133,28 @@ $(document).ready(function() {
     $("#editWard").click(editWard);
 
     $("#deleteWard").click(function() {
+        var currentRow = $('#wards').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/guides/wards/delete?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
+                        $("#wards").trigger("reloadGrid");
+                    } else {
+                        // Удаляем предыдущие ошибки
+                        $('#errorAddWardPopup .modal-body .row p').remove();
+                        $('#errorAddWardPopup .modal-body .row').append("<p>" + data.error + "</p>")
 
+                        $('#errorAddWardPopup').modal({
+
+                        });
+                    }
+                }
+            })
+        }
     });
 });

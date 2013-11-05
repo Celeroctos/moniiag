@@ -22,7 +22,7 @@ class Mkb10 extends CActiveRecord {
             $mkb10->where('m.parent_id = :parent_id', array(':parent_id' => $parentId));
         }
 
-        if($sidx && $sord && $start && $limit) {
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
             $mkb10->order($sidx.' '.$sord);
             $mkb10->limit($limit, $start);
         }

@@ -6356,3 +6356,362 @@ in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
 DETAIL:  На ключ (id)=(3) всё ещё есть ссылки в таблице "doctors".. The SQL statement executed was: DELETE FROM "mis"."contacts" WHERE "mis"."contacts"."id"=3.
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (44)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/02 20:01:04 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  UPDATE или DELETE в таблице "contacts" нарушает ограничение внешнего ключа "doctors_contact_code_fkey" таблицы "doctors"
+DETAIL:  На ключ (id)=(3) всё ещё есть ссылки в таблице "doctors".. The SQL statement executed was: DELETE FROM "mis"."contacts" WHERE "mis"."contacts"."id"=3.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (44)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 09:34:25 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  UPDATE или DELETE в таблице "contacts" нарушает ограничение внешнего ключа "doctors_contact_code_fkey" таблицы "doctors"
+DETAIL:  На ключ (id)=(2) всё ещё есть ссылки в таблице "doctors".. The SQL statement executed was: DELETE FROM "mis"."contacts" WHERE "mis"."contacts"."id"=2.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (44)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 14:45:49 [error] [php] Undefined variable: wards (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php:88)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): WardsController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): WardsController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): WardsController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/wards/get?_search=false&nd=1383648359838&rows=10&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (88)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 15:05:31 [error] [php] Undefined variable: medpersonals (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php:106)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): MedworkersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): MedworkersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): MedworkersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/medworkers/get?_search=false&nd=1383649503109&rows=10&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (106)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 15:12:52 [error] [php] Missing argument 1 for Employee::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php on line 170 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/get?_search=false&nd=1383649944516&rows=10&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 15:13:24 [error] [php] Undefined index: enterpriseid (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php:170)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/get?_search=false&nd=1383649976351&rows=10&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 15:39:07 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 4: ORDER BY "fio" ASC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "c".*, "d"."first_name", "d"."middle_name", "d"."last_name"
+FROM "mis"."contacts" "c"
+LEFT JOIN "mis"."doctors" "d" ON d.contact_code = c.id
+ORDER BY "fio" ASC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Contact.php (60)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (92)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 15:39:10 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 4: ORDER BY "fio" ASC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "c".*, "d"."first_name", "d"."middle_name", "d"."last_name"
+FROM "mis"."contacts" "c"
+LEFT JOIN "mis"."doctors" "d" ON d.contact_code = c.id
+ORDER BY "fio" ASC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Contact.php (60)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (92)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 17:45:21 [error] [php] Undefined index: groupOn (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:23)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659092642&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:45:46 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:11)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=false&nd=1383659118043&rows=10&page=1&sidx=id&sord=desc&filters=&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:45:55 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:11)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=false&nd=1383659126947&rows=10&page=1&sidx=id&sord=desc&filters=&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:46:03 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:11)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=false&nd=1383659134803&rows=10&page=1&sidx=id&sord=desc&filters=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:47:15 [error] [php] Undefined index: groupOn (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:23)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659206663&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:47:50 [error] [php] Undefined index: groupOn (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:24)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659241985&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:48:33 [error] [php] Undefined index: groupOn (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:23)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659285537&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:49:14 [error] [php] Undefined index: groupOn (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:24)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659326089&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 17:49:52 [error] [php] Undefined index: id (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:36)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(122): Enterprise->getRows()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659363984&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+2013/11/05 17:50:19 [error] [php] Undefined index: id (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:37)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(122): Enterprise->getRows()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383659391201&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (37)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (28)
+2013/11/05 17:51:38 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42702]: Ambiguous column: 7 ОШИБКА:  неоднозначная ссылка на колонку "id"
+LINE 4: WHERE id = $1
+              ^. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE id = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 17:53:49 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[HY093]: Invalid parameter number: :mis.id. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE mis.id = :mis.id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 17:55:53 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "mis" отсутствует в предложении FROM
+LINE 4: WHERE mis.id = $1
+              ^. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE mis.id = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 18:07:40 [error] [php] Missing argument 4 for MisActiveRecord::getSearchConditions(), called in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php on line 31 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:11)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383660431671&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%228%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (31)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+2013/11/05 18:09:10 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "mis" отсутствует в предложении FROM
+LINE 4: WHERE mis.id = $1
+              ^. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE mis.id = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (38)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 18:12:40 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:808)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php(30): Enterprise->getSearchConditions()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(122): Enterprise->getRows()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383660732488&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22requisits%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%222323%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (84)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (30)
+2013/11/05 18:13:42 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:808)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php(30): Enterprise->getSearchConditions()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(122): Enterprise->getRows()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383660793833&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22requisits%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%222323%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (86)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (22)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (30)
+2013/11/05 18:17:02 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:808)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php(30): Enterprise->getSearchConditions()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php(122): Enterprise->getRows()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): EnterprisesController->actionGet()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EnterprisesController->runAction()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EnterprisesController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EnterprisesController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/enterprises/get?_search=true&nd=1383660994061&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22requisits%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%222323%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (47)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (30)
+2013/11/05 18:25:54 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  оператор не существует: integer ~~ unknown
+LINE 4: WHERE "ep"."id" LIKE '%45%'
+                        ^
+HINT:  Оператор с данными именем и типами аргументов не найден. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE "ep"."id" LIKE '%45%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (38)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 18:25:58 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  оператор не существует: integer ~~ unknown
+LINE 4: WHERE "ep"."id" LIKE '%455%'
+                        ^
+HINT:  Оператор с данными именем и типами аргументов не найден. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE "ep"."id" LIKE '%455%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (38)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 18:49:59 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка et.enterprise_type не существует
+LINE 4: WHERE "et"."enterprise_type" LIKE '%кл%'
+              ^. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE "et"."enterprise_type" LIKE '%кл%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (39)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 18:55:10 [warning] [application] Failed to set unsafe attribute "id" of "FormWardAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 19:10:53 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 20:14:00 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22021]: Character not in repertoire: 7 ОШИБКА:  неверная последовательность байт для кодировки "UTF8": 0xf0 0xb3 0x25 0x20. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE (((LOWER(ep.bank) LIKE '%�% ') OR (LOWER(ep.bank_account) LIKE '%�% ')) OR (LOWER(ep.inn) LIKE '%�% ')) OR (LOWER(ep.kpp) LIKE '%�% ').
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (44)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 20:15:01 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22021]: Character not in repertoire: 7 ОШИБКА:  неверная последовательность байт для кодировки "UTF8": 0xf0 0xb2 0x25 0x20. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+WHERE (((LOWER(ep.bank) LIKE '%�% ') OR (LOWER(ep.bank_account) LIKE '%�% ')) OR (LOWER(ep.inn) LIKE '%�% ')) OR (LOWER(ep.kpp) LIKE '%�% ').
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (44)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

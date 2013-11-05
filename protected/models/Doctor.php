@@ -1,5 +1,5 @@
 <?php
-class Doctor extends CActiveRecord {
+class Doctor extends MisActiveRecord  {
     public static function model($className=__CLASS__)
     {
         return parent::model($className);

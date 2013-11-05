@@ -111,9 +111,17 @@ class EmployeesController extends Controller {
                                  'data' => array()));
     }
 
-    public function actionDelete() {
-
-
+    public function actionDelete($id) {
+        try {
+            $employee = Employee::model()->findByPk($id);
+            $employee->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Сотрудник успешно удалён.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'На данную запись есть ссылки!'));
+        }
     }
 
     private function addEditModel($employee, $model, $msg) {
@@ -153,37 +161,36 @@ class EmployeesController extends Controller {
 
     public function actionGet() {
         try {
-            $connection = Yii::app()->db;
-            $employees = $connection->createCommand()
-                ->select('d.*,
-                          m.name as post,
-                          de.name as degree,
-                          t.name as titul,
-                          w.name as ward,
-                          c.contact_value as contact
-                          ')
-                ->from('mis.doctors as d')
-                ->join('mis.medpersonal m', 'd.post_id = m.id')
-                ->leftJoin('mis.degrees de', 'd.degree_id = de.id')
-                ->leftJoin('mis.tituls t', 'd.titul_id = t.id')
-                ->leftJoin('mis.contacts c', 'd.contact_code = c.id')
-                ->join('mis.wards w', 'd.ward_code = w.id');
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
 
-            if(isset($_GET['wardid']) && $_GET['wardid'] != -1) {
-                $employees->where('d.ward_code=:ward_code', array(':ward_code' => $_GET['wardid']));
-            }
-            if(isset($_GET['enterpriseid']) && $_GET['enterpriseid'] != -1) {
-                $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $_GET['enterpriseid']));
+            $model = new Employee();
+            if(isset($_GET['enterpriseid'], $_GET['wardid'])) {
+                $num = $model->getRows($_GET['enterpriseid'], $_GET['wardid']);
+            } else {
+                $num = $model->getRows(-1, -1);
             }
 
-            $employees = $employees->queryAll();
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            if(isset($_GET['enterpriseid'], $_GET['wardid'])) {
+                $employees = $model->getRows($_GET['enterpriseid'], $_GET['wardid'], $sidx, $sord, $start, $rows);
+            } else {
+                $employees = $model->getRows(-1, -1, $sidx, $sord, $start, $rows);
+            }
 
             foreach($employees as $key => &$employee) {
                 $employee['fio'] = $employee['first_name'].' '.$employee['middle_name'].' '.$employee['last_name'];
             }
 
-            echo CJSON::encode($employees);
-
+            echo CJSON::encode(
+                array('rows' => $employees,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
         } catch(Exception $e) {
             echo $e->getMessage();
         }

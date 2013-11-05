@@ -132,6 +132,28 @@ $(document).ready(function() {
     $("#editMedworker").click(editMedworker);
 
     $("#deleteMedworker").click(function() {
+        var currentRow = $('#medworkers').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/guides/medworkers/delete?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
+                        $("#medworkers").trigger("reloadGrid");
+                    } else {
+                        // Удаляем предыдущие ошибки
+                        $('#errorAddMedworkerPopup .modal-body .row p').remove();
+                        $('#errorAddMedworkerPopup .modal-body .row').append("<p>" + data.error + "</p>")
 
+                        $('#errorAddMedworkerPopup').modal({
+
+                        });
+                    }
+                }
+            })
+        }
     });
 });

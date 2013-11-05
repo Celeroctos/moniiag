@@ -1,5 +1,5 @@
 <?php
-class Medworker extends CActiveRecord {
+class Medworker extends MisActiveRecord  {
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -8,6 +8,22 @@ class Medworker extends CActiveRecord {
     public function tableName()
     {
         return 'mis.medpersonal';
+    }
+
+    public function getRows($sidx = false, $sord = false, $start = false, $limit = false) {
+        $connection = Yii::app()->db;
+        $medworkers = $connection->createCommand()
+            ->select('m.*, mt.name as medpersonal_type')
+            ->from('mis.medpersonal m')
+            ->join('mis.medpersonal_types mt', 'm.type = mt.id');
+
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+            $medworkers->order($sidx.' '.$sord);
+            $medworkers->limit($limit, $start);
+        }
+
+        return $medworkers->queryAll();
+
     }
 
     public function getOne($id) {

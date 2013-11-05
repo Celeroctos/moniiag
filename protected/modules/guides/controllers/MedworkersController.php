@@ -44,9 +44,17 @@ class MedworkersController extends Controller {
         }
     }
 
-    public function actionDelete() {
-
-
+    public function actionDelete($id) {
+        try {
+            $medworker = Medworker::model()->findByPk($id);
+            $medworker->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Медицинский работник успешно удалён.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'На данную запись есть ссылки!'));
+        }
     }
 
     public function addEditModel($medworker, $model, $msg) {
@@ -76,15 +84,24 @@ class MedworkersController extends Controller {
 
     public function actionGet() {
         try {
-            $connection = Yii::app()->db;
-            $medpersonals = $connection->createCommand()
-                ->select('m.*, mt.name as medpersonal_type')
-                ->from('mis.medpersonal m')
-                ->join('mis.medpersonal_types mt', 'm.type = mt.id')
-                ->queryAll();
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
 
-            echo CJSON::encode($medpersonals);
+            $model = new Medworker();
+            $num = $model->getRows();
 
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $medworkers = $model->getRows($sidx, $sord, $start, $rows);
+
+            echo CJSON::encode(
+                array('rows' => $medworkers,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
         } catch(Exception $e) {
             echo $e->getMessage();
         }

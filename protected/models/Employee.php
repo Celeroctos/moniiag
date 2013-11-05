@@ -1,5 +1,5 @@
 <?php
-class Employee extends CActiveRecord {
+class Employee extends MisActiveRecord  {
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -24,6 +24,38 @@ class Employee extends CActiveRecord {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+    public function getRows($enterpriseId, $wardId, $sidx = false, $sord = false, $start = false, $limit = false) {
+        $connection = Yii::app()->db;
+        $employees = $connection->createCommand()
+            ->select('d.*,
+                      m.name as post,
+                      de.name as degree,
+                      t.name as titul,
+                      w.name as ward,
+                      c.contact_value as contact
+                      ')
+            ->from('mis.doctors as d')
+            ->join('mis.medpersonal m', 'd.post_id = m.id')
+            ->leftJoin('mis.degrees de', 'd.degree_id = de.id')
+            ->leftJoin('mis.tituls t', 'd.titul_id = t.id')
+            ->leftJoin('mis.contacts c', 'd.contact_code = c.id')
+            ->join('mis.wards w', 'd.ward_code = w.id');
+
+        if(isset($_GET['wardid']) && $_GET['wardid'] != -1) {
+            $employees->where('d.ward_code=:ward_code', array(':ward_code' => $wardId));
+        }
+        if(isset($_GET['enterpriseid']) && $_GET['enterpriseid'] != -1) {
+            $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $enterpriseId));
+        }
+
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+            $employees->order($sidx.' '.$sord);
+            $employees->limit($limit, $start);
+        }
+
+        return $employees->queryAll();
     }
 }
 

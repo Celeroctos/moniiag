@@ -38,10 +38,19 @@ $(document).ready(function() {
     });
 
     $("#enterprises").jqGrid('navGrid','#enterprisesPager',{
-        edit: false,
-        add: false,
-        del: false
-    });
+            edit: false,
+            add: false,
+            del: false
+        },
+        {},
+        {},
+        {},
+        {
+            closeOnEscape:true,
+            multipleSearch :true,
+            closeAfterSearch: true
+        }
+    );
 
 
     $("#addEnterprise").click(function() {
@@ -171,6 +180,28 @@ $(document).ready(function() {
     $("#editEnterprise").click(editEnterprise());
 
     $("#deleteEnterprise").click(function() {
+        var currentRow = $('#enterprises').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/guides/enterprises/delete?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
+                        $("#enterprises").trigger("reloadGrid");
+                    } else {
+                        // Удаляем предыдущие ошибки
+                        $('#errorAddEnterprisePopup .modal-body .row p').remove();
+                        $('#errorAddEnterprisePopup .modal-body .row').append("<p>" + data.error + "</p>")
 
+                        $('#errorAddEnterprisePopup').modal({
+
+                        });
+                    }
+                }
+            })
+        }
     });
 });

@@ -61,9 +61,17 @@ class EnterprisesController extends Controller {
         }
     }
 
-    public function actionDelete() {
-
-
+    public function actionDelete($id) {
+        try {
+            $enterprise = Enterprise::model()->findByPk($id);
+            $enterprise->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Учреждение успешно удалено.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'На данную запись есть ссылки!'));
+        }
     }
 
     public function actionAdd() {
@@ -97,17 +105,36 @@ class EnterprisesController extends Controller {
 
     public function actionGet() {
         try {
-            $connection = Yii::app()->db;
-            $enterprises = $connection->createCommand()
-                            ->select('ep.*, et.name as enterprise_type')
-                            ->from('mis.enterprise_params ep')
-                            ->join('mis.enterprise_types et', 'ep.type = et.id')
-                            ->queryAll();
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
+           // var_dump($filters);
+            $model = new Enterprise();
+            $num = $model->getRows($filters);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $enterprises = $model->getRows($filters, $sidx, $sord, $start, $rows);
 
             foreach($enterprises as $key => &$enterprise) {
                 $enterprise['requisits'] = 'Банк '.$enterprise['bank'].', '.$enterprise['bank_account'].', ИНН '.$enterprise['inn'].', КПП '.$enterprise['kpp'];
             }
-            echo CJSON::encode($enterprises);
+
+            echo CJSON::encode(
+                array('rows' => $enterprises,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
 
         } catch(Exception $e) {
             echo $e->getMessage();

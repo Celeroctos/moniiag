@@ -44,9 +44,17 @@ class WardsController extends Controller {
         }
     }
 
-    public function actionDelete() {
-
-
+    public function actionDelete($id) {
+        try {
+            $ward = Ward::model()->findByPk($id);
+            $ward->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Отделение успешно удалено.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array('success' => 'false',
+                'error' => 'На данную запись есть ссылки!'));
+        }
     }
 
     public function actionAdd() {
@@ -76,13 +84,24 @@ class WardsController extends Controller {
 
     public function actionGet() {
         try {
-            $connection = Yii::app()->db;
-            $wards = $connection->createCommand()
-                ->select('mw.*, e.shortname as enterprise_name')
-                ->from('mis.wards mw')
-                ->join('mis.enterprise_params e', 'mw.enterprise_id = e.id')
-                ->queryAll();
-            echo CJSON::encode($wards);
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            $model = new Ward();
+            $num = $model->getRows();
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $wards = $model->getRows($sidx, $sord, $start, $rows);
+
+            echo CJSON::encode(
+                array('rows' => $wards,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
         } catch(Exception $e) {
             echo $e->getMessage();
         }

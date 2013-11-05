@@ -266,6 +266,28 @@ $(document).ready(function() {
     $("#editEmployee").click(editEmployee);
 
     $("#deleteEmployee").click(function() {
+        var currentRow = $('#employees').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/guides/employees/delete?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
+                        $("#employees").trigger("reloadGrid");
+                    } else {
+                        // Удаляем предыдущие ошибки
+                        $('#errorAddEmployeePopup .modal-body .row p').remove();
+                        $('#errorAddEmployeePopup .modal-body .row').append("<p>" + data.error + "</p>")
 
+                        $('#errorAddEmployeePopup').modal({
+
+                        });
+                    }
+                }
+            })
+        }
     });
 });

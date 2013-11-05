@@ -26,6 +26,23 @@ class Ward extends CActiveRecord {
         }
     }
 
+
+    public function getRows($sidx = false, $sord = false, $start = false, $limit = false) {
+        $connection = Yii::app()->db;
+        $wards = $connection->createCommand()
+            ->select('mw.*, e.shortname as enterprise_name')
+            ->from('mis.wards mw')
+            ->join('mis.enterprise_params e', 'mw.enterprise_id = e.id');
+
+
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+            $wards->order($sidx.' '.$sord);
+            $wards->limit($limit, $start);
+        }
+
+        return $wards->queryAll();
+    }
+
     public function getByEnterprise($id) {
         try {
             $connection = Yii::app()->db;

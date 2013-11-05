@@ -78,20 +78,30 @@ class ContactsController extends Controller {
 
     public function actionGet() {
         try {
-            $connection = Yii::app()->db;
-            $contacts = $connection->createCommand()
-                ->select('c.*, d.first_name, d.middle_name, d.last_name')
-                ->from('mis.contacts c')
-                ->leftJoin('mis.doctors d', 'd.contact_code = c.id')
-                ->queryAll();
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            $model = new Contact();
+            $num = $model->getRows();
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $contacts = $model->getRows($sidx, $sord, $start, $rows);
 
             foreach($contacts as $key => &$contact) {
                 $contact['fio'] = $contact['first_name'].' '.$contact['middle_name'].' '.$contact['last_name'];
                 $contact['type'] = $this->contactTypes[$contact['type']];
             }
 
+            echo CJSON::encode(
+                array('rows' => $contacts,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
 
-            echo CJSON::encode($contacts);
         } catch(Exception $e) {
             echo $e->getMessage();
         }
