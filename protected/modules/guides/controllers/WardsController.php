@@ -89,13 +89,20 @@ class WardsController extends Controller {
             $sidx = $_GET['sidx'];
             $sord = $_GET['sord'];
 
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
             $model = new Ward();
-            $num = $model->getRows();
+            $num = $model->getRows($filters);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $wards = $model->getRows($sidx, $sord, $start, $rows);
+            $wards = $model->getRows($filters, $sidx, $sord, $start, $rows);
 
             echo CJSON::encode(
                 array('rows' => $wards,

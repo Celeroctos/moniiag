@@ -43,12 +43,26 @@ class Contact extends MisActiveRecord  {
 
     }
 
-    public function getRows($sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $contacts = $connection->createCommand()
             ->select('c.*, d.first_name, d.middle_name, d.last_name')
             ->from('mis.contacts c')
             ->leftJoin('mis.doctors d', 'd.contact_code = c.id');
+
+        if($filters !== false) {
+            $this->getSearchConditions($contacts, $filters, array(
+                'fio' => array(
+                    'first_name',
+                    'last_name',
+                    'middle_name',
+                )
+            ), array(
+                'c' => array('id', 'type', 'contact_value'),
+                'd' => array('fio', 'first_name', 'last_name', 'middle_name')
+            ), array(
+            ));
+        }
 
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
             $contacts->order($sidx.' '.$sord);

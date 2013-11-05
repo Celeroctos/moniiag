@@ -33,9 +33,6 @@ class Enterprise extends MisActiveRecord {
             ));
         }
 
-        //echo $enterprises->text;
-        //exit();
-
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
             $enterprises->order($sidx.' '.$sord);
             $enterprises->limit($limit, $start);

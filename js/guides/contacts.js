@@ -37,10 +37,19 @@ $(document).ready(function() {
     });
 
     $("#contacts").jqGrid('navGrid','#contactsPager',{
-        edit: false,
-        add: false,
-        del: false
-    });
+            edit: false,
+            add: false,
+            del: false
+        },
+        {},
+        {},
+        {},
+        {
+            closeOnEscape:true,
+            multipleSearch :true,
+            closeAfterSearch: true
+        }
+    );
 
     $("#addContact").click(function() {
         $('#addContactPopup').modal({

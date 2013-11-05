@@ -166,20 +166,27 @@ class EmployeesController extends Controller {
             $sidx = $_GET['sidx'];
             $sord = $_GET['sord'];
 
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
             $model = new Employee();
             if(isset($_GET['enterpriseid'], $_GET['wardid'])) {
-                $num = $model->getRows($_GET['enterpriseid'], $_GET['wardid']);
+                $num = $model->getRows($_GET['enterpriseid'], $_GET['wardid'], $filters);
             } else {
-                $num = $model->getRows(-1, -1);
+                $num = $model->getRows(-1, -1, $filters);
             }
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
             if(isset($_GET['enterpriseid'], $_GET['wardid'])) {
-                $employees = $model->getRows($_GET['enterpriseid'], $_GET['wardid'], $sidx, $sord, $start, $rows);
+                $employees = $model->getRows($_GET['enterpriseid'], $_GET['wardid'], $filters, $sidx, $sord, $start, $rows);
             } else {
-                $employees = $model->getRows(-1, -1, $sidx, $sord, $start, $rows);
+                $employees = $model->getRows(-1, -1, $filters, $sidx, $sord, $start, $rows);
             }
 
             foreach($employees as $key => &$employee) {

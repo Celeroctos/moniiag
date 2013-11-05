@@ -83,13 +83,20 @@ class ContactsController extends Controller {
             $sidx = $_GET['sidx'];
             $sord = $_GET['sord'];
 
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
             $model = new Contact();
-            $num = $model->getRows();
+            $num = $model->getRows($filters);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $contacts = $model->getRows($sidx, $sord, $start, $rows);
+            $contacts = $model->getRows($filters, $sidx, $sord, $start, $rows);
 
             foreach($contacts as $key => &$contact) {
                 $contact['fio'] = $contact['first_name'].' '.$contact['middle_name'].' '.$contact['last_name'];

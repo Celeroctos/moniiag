@@ -35,7 +35,16 @@ $(document).ready(function() {
         edit: false,
         add: false,
         del: false
-    });
+        },
+        {},
+        {},
+        {},
+        {
+            closeOnEscape:true,
+            multipleSearch :true,
+            closeAfterSearch: true
+        }
+    );
 
     $("#addMedworker").click(function() {
         $('#addMedworkerPopup').modal({

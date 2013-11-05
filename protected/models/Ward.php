@@ -1,5 +1,5 @@
 <?php
-class Ward extends CActiveRecord {
+class Ward extends MisActiveRecord {
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -27,13 +27,23 @@ class Ward extends CActiveRecord {
     }
 
 
-    public function getRows($sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $wards = $connection->createCommand()
             ->select('mw.*, e.shortname as enterprise_name')
             ->from('mis.wards mw')
             ->join('mis.enterprise_params e', 'mw.enterprise_id = e.id');
 
+        if($filters !== false) {
+            $this->getSearchConditions($wards, $filters, array(
+
+            ), array(
+                'mw' => array('id', 'name'),
+                'e' => array('enterprise_name')
+            ), array(
+                'enterprise_name' => 'shortname'
+            ));
+        }
 
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
             $wards->order($sidx.' '.$sord);

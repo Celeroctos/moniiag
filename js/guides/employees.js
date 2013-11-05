@@ -83,10 +83,19 @@ $(document).ready(function() {
     });
 
     $("#employees").jqGrid('navGrid','#employeesPager',{
-        edit: false,
-        add: false,
-        del: false
-    });
+            edit: false,
+            add: false,
+            del: false
+        },
+        {},
+        {},
+        {},
+        {
+            closeOnEscape:true,
+            multipleSearch :true,
+            closeAfterSearch: true
+        }
+    );
 
     $("#addEmployee").click(function() {
         $('#addEmployeePopup').modal({

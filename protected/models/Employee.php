@@ -26,7 +26,7 @@ class Employee extends MisActiveRecord  {
         }
     }
 
-    public function getRows($enterpriseId, $wardId, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($enterpriseId, $wardId, $filters = false, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $employees = $connection->createCommand()
             ->select('d.*,
@@ -48,6 +48,29 @@ class Employee extends MisActiveRecord  {
         }
         if(isset($_GET['enterpriseid']) && $_GET['enterpriseid'] != -1) {
             $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $enterpriseId));
+        }
+
+        if($filters !== false) {
+            $this->getSearchConditions($employees, $filters, array(
+                'fio' => array(
+                    'first_name',
+                    'last_name',
+                    'middle_name'
+                )
+            ), array(
+                'd' => array('id', 'fio', 'tabel_number', 'date_begin', 'date_end', 'first_name', 'middle_name', 'last_name'),
+                'm' => array('post'),
+                'de' => array('degree'),
+                't' => array('titul'),
+                'w' => array('ward'),
+                'c' => array('contact')
+            ), array(
+                'post' => 'name',
+                'degree' => 'name',
+                'titul' => 'name',
+                'ward' => 'name',
+                'contact' => 'contact_value'
+            ));
         }
 
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {

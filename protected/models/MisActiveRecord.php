@@ -53,6 +53,7 @@ class MisActiveRecord extends CActiveRecord {
         }
     }
 
+    // Поиск алиаса для поля
     protected function searchAlias($field, $aliasesArr) {
         foreach($aliasesArr as $alias => $fields) {
             foreach($fields as $key => $fieldName) {

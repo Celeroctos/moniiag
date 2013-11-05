@@ -6715,3 +6715,122 @@ WHERE (((LOWER(ep.bank) LIKE '%�% ') OR (LOWER(ep.bank_account) LIKE '%�% ')) 
 in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (44)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (122)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:25:44 [error] [php] Missing argument 1 for Ward::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php on line 100 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\Ward.php:30)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): WardsController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): WardsController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): WardsController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/wards/get?_search=false&nd=1383672315787&rows=10&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Ward.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (100)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:27:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка e.enterprise_name не существует
+LINE 4: WHERE LOWER(e.enterprise_name) LIKE '%о%'
+                    ^. The SQL statement executed was: SELECT "mw".*, "e"."shortname" AS "enterprise_name"
+FROM "mis"."wards" "mw"
+JOIN "mis"."enterprise_params" "e" ON mw.enterprise_id = e.id
+WHERE LOWER(e.enterprise_name) LIKE '%о%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Ward.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (100)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:28:15 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка e.name не существует
+LINE 4: WHERE LOWER(e.name) LIKE '%о%'
+                    ^. The SQL statement executed was: SELECT "mw".*, "e"."shortname" AS "enterprise_name"
+FROM "mis"."wards" "mw"
+JOIN "mis"."enterprise_params" "e" ON mw.enterprise_id = e.id
+WHERE LOWER(e.name) LIKE '%о%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Ward.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (100)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:29:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка e.name не существует
+LINE 4: WHERE LOWER(e.name) LIKE '%о%'
+                    ^. The SQL statement executed was: SELECT "mw".*, "e"."shortname" AS "enterprise_name"
+FROM "mis"."wards" "mw"
+JOIN "mis"."enterprise_params" "e" ON mw.enterprise_id = e.id
+WHERE LOWER(e.name) LIKE '%о%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Ward.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\WardsController.php (100)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:40:17 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(integer) не существует
+LINE 4: WHERE (LOWER(m.name) LIKE '%з%') AND (LOWER(m.id) IN ('7'))
+                                              ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+WHERE (LOWER(m.name) LIKE '%з%') AND (LOWER(m.id) IN ('7')).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Medworker.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\MedworkersController.php (100)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:51:47 [error] [php] Undefined variable: enterprises (F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): EmployeesController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): EmployeesController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): EmployeesController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/employees/get?_search=true&nd=1383673878384&rows=10&page=1&sidx=id&sord=desc&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%2215%22%7D%5D%7D&searchField=&searchString=&searchOper=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:52:14 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(integer) не существует
+LINE 8: WHERE LOWER(d.id) LIKE '%15'
+              ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+WHERE LOWER(d.id) LIKE '%15'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:52:18 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(integer) не существует
+LINE 8: WHERE LOWER(d.id) LIKE '%1'
+              ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+WHERE LOWER(d.id) LIKE '%1'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:52:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(integer) не существует
+LINE 8: WHERE LOWER(d.id) LIKE '%1'
+              ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+WHERE LOWER(d.id) LIKE '%1'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 21:52:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(integer) не существует
+LINE 8: WHERE LOWER(d.id) LIKE '%2'
+              ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+WHERE LOWER(d.id) LIKE '%2'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
