@@ -92,10 +92,10 @@ class MisActiveRecord extends CActiveRecord {
                 $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' >= :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' >= :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
             break;
             case 'bw' :
-                $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'])) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%')) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%'));
             break;
             case 'bn' :
-                $chainOp == 'AND' ? $conn->andWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'])) : $conn->orWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%')) : $conn->orWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%'));
             break;
             case 'in' :
                 $chainOp == 'AND' ? $conn->andWhere(array('in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data']))) : $conn->orWhere(array('in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data'])));
@@ -104,10 +104,10 @@ class MisActiveRecord extends CActiveRecord {
                 $chainOp == 'AND' ? $conn->andWhere(array('not in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data']))) : $conn->orWhere(array('not in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data'])));
             break;
             case 'ew' :
-                $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%')) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%'));
+                $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'])) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data']));
             break;
             case 'en' :
-                $chainOp == 'AND' ? $conn->andWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%')) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%'));
+                $chainOp == 'AND' ? $conn->andWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'])) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data']));
             break;
             case 'cn' :
                 $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'].'%')) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'].'%'));

@@ -174,4 +174,63 @@ $(document).ready(function() {
             })
         }
     });
+
+    // Форма фильтрации контактов
+    $("#contact-filter-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var url = '/index.php/guides/contacts/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val() + '&employeeid=' + $("#employeeCodeFilter").val();
+        $("#contacts").jqGrid('setGridParam', { url: url });
+        $("#contacts").trigger("reloadGrid");
+    });
+
+    // Форма фильтрации контактов: подгрузка отделений учреждения
+    $("#enterpriseCode").on('change', function(e) {
+        var enterpriseCode = $(this).val();
+        if(enterpriseCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
+            $.ajax({
+                'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        $("#wardCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+                        $("#wardCodeFilter").val('-1'); // По дефолту - Нет
+
+                        $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+                        $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
+
+                        // Заполняем из пришедших данных
+                        for(var i = 0; i < data.data.length; i++) {
+                            $("#wardCodeFilter").append('<option value="' + data.data[i].id + '">' + data.data[i].name + '</option>')
+                        }
+                        $("#wardCodeFilter").parents('.no-display').removeClass('no-display');
+                    }
+                }
+            });
+        }
+    });
+
+    // Форма фильтрации контактов: подгрузка сотрудников отделения
+    $("#wardCodeFilter").on('change', function(e) {
+        var wardCode = $(this).val();
+        if(wardCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
+            $.ajax({
+                'url' : '/index.php/guides/employees/getbyward?id=' + wardCode,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+                        $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
+                        // Заполняем из пришедших данных
+                        for(var i = 0; i < data.data.length; i++) {
+                            $("#employeeCodeFilter").append('<option value="' + data.data[i].id + '">' + data.data[i].first_name + ' ' + data.data[i].last_name + ' ' + data.data[i].middle_name + '</option>')
+                        }
+                        $("#employeeCodeFilter").parents('.no-display').removeClass('no-display');
+                    }
+                }
+            });
+        }
+    });
 });

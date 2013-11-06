@@ -153,7 +153,7 @@ class EmployeesController extends Controller {
                 $this->addEditModel($employee, $model, 'Медицинский персонал успешно добавлен.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
-                    'errors' => $model->errors));
+                                         'errors' => $model->errors));
             }
         }
 
@@ -191,6 +191,10 @@ class EmployeesController extends Controller {
 
             foreach($employees as $key => &$employee) {
                 $employee['fio'] = $employee['first_name'].' '.$employee['middle_name'].' '.$employee['last_name'];
+                $employee['more_info'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть подробную информацию по '.$employee['fio'].'"><span class="glyphicon glyphicon-share-alt"></span>
+</a>';
+                $employee['contact_see'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
+</a>';
             }
 
             echo CJSON::encode(
@@ -208,6 +212,15 @@ class EmployeesController extends Controller {
         $employee = $model->getOne($id);
         echo CJSON::encode(array('success' => true,
                                  'data' => $employee)
+        );
+    }
+
+    public function actionGetByWard($id) {
+        $model = new Employee();
+        $employees = $model->getByWard($id);
+
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $employees)
         );
     }
 

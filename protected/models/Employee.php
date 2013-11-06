@@ -80,6 +80,22 @@ class Employee extends MisActiveRecord  {
 
         return $employees->queryAll();
     }
+
+    public function getByWard($id) {
+        try {
+            $connection = Yii::app()->db;
+            $employees = $connection->createCommand()
+                ->select('d.*')
+                ->from('mis.doctors d')
+                ->where('d.ward_code = :id', array(':id' => $id))
+                ->queryAll();
+
+            return $employees;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

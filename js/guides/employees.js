@@ -4,10 +4,12 @@ $(document).ready(function() {
         datatype: "json",
         colNames:['Код',
                   'ФИО',
+                  '',
                   'Медработник',
                   'Табельный номер',
                   'Код списка контактов',
-                  'Контакт',
+                  'Контакты',
+                  '',
                   'Степень',
                   'Звание',
                   'Дата начала действия',
@@ -22,17 +24,31 @@ $(document).ready(function() {
             {
                 name: 'fio',
                 index: 'fio',
-                width: 200
+                width: 400
+            },
+            {
+                name: 'more_info',
+                index: 'more_info',
+                width: 20,
+                search: false
             },
             {
                 name: 'post',
                 index:'post',
-                width: 120
+                width: 120,
+                hidden: true,
+                searchoptions: {
+                    searchhidden: true
+                }
             },
             {
                 name: 'tabel_number',
                 index: 'tabel_number',
-                width: 130
+                width: 130,
+                hidden: true,
+                searchoptions: {
+                    searchhidden: true
+                }
             },
             {
                 name: 'contact_code',
@@ -42,27 +58,47 @@ $(document).ready(function() {
             {
                 name: 'contact',
                 index: 'contact',
-                width: 155
+                width: 155,
+                hidden: true
+            },
+            {
+                name: 'contact_see',
+                index: 'contact_see',
+                width: 20,
+                search: false
             },
             {
                 name: 'degree',
                 index: 'degree',
-                width: 90
+                width: 90,
+                hidden: true,
+                searchoptions: {
+                    searchhidden: true
+                }
             },
             {
                 name: 'titul',
                 index: 'titul',
-                width: 70
+                width: 70,
+                hidden: true,
+                searchoptions: {
+                    searchhidden: true
+                }
             },
             {
                 name: 'date_begin',
                 index: 'date_begin',
-                width: 160
+                width: 160,
+                hidden: true,
+                searchoptions: {
+                    searchhidden: true
+                }
             },
             {
                 name: 'date_end',
                 index: 'date_end',
-                width: 180
+                width: 180,
+                hidden: true
             },
             {
                 name: 'ward',
@@ -299,4 +335,20 @@ $(document).ready(function() {
             })
         }
     });
+
+    // Фикс для того, чтобы узнать информацию о столбце: нативно по одиночному клику такая информация не выводится
+    $("#employees").click(function(e) {
+        var el = e.target;
+        if (el.nodeName !== "TD") {
+            el = $(el, this.rows).closest("td");
+        }
+        var iCol = $(el).index();
+        var nCol = $(el).siblings().length;
+        var row = $(el,this.rows).closest("tr.jqgrow");
+        var rowId = row[0].id;
+        if(iCol == 2) {
+            editEmployee();
+        }
+    });
+
 });

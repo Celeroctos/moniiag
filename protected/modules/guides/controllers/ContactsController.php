@@ -13,10 +13,21 @@ class ContactsController extends Controller {
         try {
             // Модель формы для добавления и редактирования записи
             $formAddEdit = new FormContactAdd;
+            $formFilter = new FormContactFilter;
+
+            $enterprises = new Enterprise();
+            $enterprisesArr = array('-1' => 'Нет');
+            foreach($enterprises->getRows(false) as $enterprise) {
+                $enterprisesArr[$enterprise['id']] = $enterprise['shortname'];
+            }
 
             $this->render('view', array(
                 'model' => $formAddEdit,
-                'contactsTypesList' => $this->contactTypes
+                'modelFilter' => $formFilter,
+                'contactsTypesList' => $this->contactTypes,
+                'enterprisesList' => $enterprisesArr,
+                'wardsList' => array('-1' => 'Нет'),
+                'employeesList' => array('-1' => 'Нет')
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -90,13 +101,36 @@ class ContactsController extends Controller {
                 $filters = false;
             }
 
+            // Фильтры "в разрезе"
+            // Учреждение
+            if(isset($_GET['enterpriseid']) && trim($_GET['enterpriseid']) != '') {
+                $enterpriseId = CJSON::decode($_GET['enterpriseid']);
+            } else {
+                $enterpriseId = false;
+            }
+
+            // Отделение
+            if(isset($_GET['wardid']) && trim($_GET['wardid']) != '') {
+                $wardId = CJSON::decode($_GET['wardid']);
+            } else {
+                $wardId = false;
+            }
+
+            // Сотрудник
+            if(isset($_GET['employeeid']) && trim($_GET['employeeid']) != '') {
+                $employeeId = CJSON::decode($_GET['employeeid']);
+            } else {
+                $employeeId = false;
+            }
+
+
             $model = new Contact();
-            $num = $model->getRows($filters);
+            $num = $model->getRows($filters, false, false, false, false, $enterpriseId, $wardId, $employeeId);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $contacts = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $contacts = $model->getRows($filters, $sidx, $sord, $start, $rows, $enterpriseId, $wardId, $employeeId);
 
             foreach($contacts as $key => &$contact) {
                 $contact['fio'] = $contact['first_name'].' '.$contact['middle_name'].' '.$contact['last_name'];
@@ -120,6 +154,11 @@ class ContactsController extends Controller {
         echo CJSON::encode(array('success' => true,
                                  'data' => $contact)
         );
+    }
+
+    public function actionFilter() {
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => array()));
     }
 }
 

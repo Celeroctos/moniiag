@@ -165,7 +165,8 @@
                             <div class="col-xs-9">
                                 <?php echo $form->dropDownList($model, 'degreeId', $degreesList, array(
                                     'id' => 'degreeId',
-                                    'class' => 'form-control'
+                                    'class' => 'form-control',
+                                    'options' => array('-1' => array('selected' => true))
                                 )); ?>
                                 <?php echo $form->error($model,'degreeId'); ?>
                             </div>
@@ -177,7 +178,8 @@
                             <div class="col-xs-9">
                                 <?php echo $form->dropDownList($model, 'titulId', $titulsList, array(
                                     'id' => 'titulId',
-                                    'class' => 'form-control'
+                                    'class' => 'form-control',
+                                    'options' => array('-1' => array('selected' => true))
                                 )); ?>
                                 <?php echo $form->error($model,'titulId'); ?>
                             </div>
@@ -275,6 +277,19 @@
                                 'id' => 'id',
                                 'class' => 'form-control'
                             )); ?>
+                            <?php echo $form->labelEx($model,'lastName', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'lastName', array(
+                                    'id' => 'lastName',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Фамилия'
+                                )); ?>
+                                <?php echo $form->error($model,'lastName'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'firstName', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -298,19 +313,6 @@
                                     'placeholder' => 'Отчество'
                                 )); ?>
                                 <?php echo $form->error($model,'middleName'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'lastName', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'lastName', array(
-                                    'id' => 'lastName',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Фамилия'
-                                )); ?>
-                                <?php echo $form->error($model,'lastName'); ?>
                             </div>
                         </div>
                         <div class="form-group">

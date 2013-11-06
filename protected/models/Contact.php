@@ -43,12 +43,13 @@ class Contact extends MisActiveRecord  {
 
     }
 
-    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $enterpriseId = false, $wardId = false, $employeeId = false) {
         $connection = Yii::app()->db;
         $contacts = $connection->createCommand()
             ->select('c.*, d.first_name, d.middle_name, d.last_name')
             ->from('mis.contacts c')
-            ->leftJoin('mis.doctors d', 'd.contact_code = c.id');
+            ->leftJoin('mis.doctors d', 'd.contact_code = c.id')
+            ->leftJoin('mis.wards w', 'w.id = d.ward_code');
 
         if($filters !== false) {
             $this->getSearchConditions($contacts, $filters, array(
@@ -62,6 +63,16 @@ class Contact extends MisActiveRecord  {
                 'd' => array('fio', 'first_name', 'last_name', 'middle_name')
             ), array(
             ));
+        }
+
+        if($enterpriseId !== false) {
+            $contacts->andWhere('w.enterprise_id = :enterprise_id', array(':enterprise_id' => $enterpriseId));
+        }
+        if($wardId !== false) {
+            $contacts->andWhere('d.ward_code = :ward_code', array(':ward_code' => $wardId));
+        }
+        if($employeeId !== false) {
+            $contacts->andWhere('d.id = :id', array(':id' => $employeeId));
         }
 
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {

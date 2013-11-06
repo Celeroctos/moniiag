@@ -6834,3 +6834,264 @@ WHERE LOWER(d.id) LIKE '%2'.
 in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (180)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/05 22:09:23 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(integer) не существует
+LINE 4: WHERE LOWER(c.type) LIKE 'моб%'
+              ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "c".*, "d"."first_name", "d"."middle_name", "d"."last_name"
+FROM "mis"."contacts" "c"
+LEFT JOIN "mis"."doctors" "d" ON d.contact_code = c.id
+WHERE LOWER(c.type) LIKE 'моб%'.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Contact.php (74)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (94)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 12:55:17 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" ASC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" ASC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (41)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EnterprisesController.php (127)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 16:26:02 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (98)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:16:57 [error] [php] Undefined variable: modelFilter (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php:15)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): ContactsController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): ContactsController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php(20): ContactsController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): ContactsController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): ContactsController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): ContactsController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): ContactsController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/contacts/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php (15)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (20)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:17:01 [error] [php] Undefined variable: modelFilter (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php:15)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): ContactsController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): ContactsController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php(20): ContactsController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): ContactsController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): ContactsController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): ContactsController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): ContactsController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/contacts/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php (15)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (20)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:21:26 [error] [php] Undefined variable: enterprisesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php:19)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): ContactsController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): ContactsController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php(22): ContactsController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): ContactsController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): ContactsController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): ContactsController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): ContactsController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/contacts/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php (19)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (22)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:21:27 [error] [php] Undefined variable: enterprisesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php:19)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): ContactsController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): ContactsController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php(22): ContactsController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): ContactsController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): ContactsController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): ContactsController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): ContactsController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/contacts/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\views\contacts\view.php (19)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (22)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:48:14 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "more_info" не существует
+LINE 8: ORDER BY "more_info" ASC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+ORDER BY "more_info" ASC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (189)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:48:16 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "more_info" не существует
+LINE 8: ORDER BY "more_info" DESC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+ORDER BY "more_info" DESC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (189)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:48:18 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "more_info" не существует
+LINE 8: ORDER BY "more_info" DESC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+ORDER BY "more_info" DESC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (189)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:48:30 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "contact_see" не существует
+LINE 8: ORDER BY "contact_see" ASC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+ORDER BY "contact_see" ASC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (189)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:48:30 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "contact_see" не существует
+LINE 8: ORDER BY "contact_see" DESC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "c"."contact_value" AS "contact"
+FROM "mis"."doctors" "d"
+JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."contacts" "c" ON d.contact_code = c.id
+JOIN "mis"."wards" "w" ON d.ward_code = w.id
+ORDER BY "contact_see" DESC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (81)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (189)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 17:48:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "filter".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('filter')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('filter')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/contacts...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/contacts/filter
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/contacts/view
+---
+2013/11/06 18:26:01 [error] [php] Missing argument 1 for Enterprise::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php on line 19 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php:13)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): ContactsController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): ContactsController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): ContactsController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/contacts/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Enterprise.php (13)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (19)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 18:55:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getbyward".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getbyward')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getbyward')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/employee...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/employees/getbyward?id=5&_=1383749692545
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/contacts/view
+---
+2013/11/06 19:00:42 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "w" отсутствует в предложении FROM
+LINE 3: WHERE w.ward_code = $1
+              ^. The SQL statement executed was: SELECT "d".*
+FROM "mis"."doctors" "d"
+WHERE w.ward_code = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (91)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (220)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 19:06:25 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 4: ORDER BY "fio" ASC LIMIT 10
+                 ^. The SQL statement executed was: SELECT "c".*, "d"."first_name", "d"."middle_name", "d"."last_name"
+FROM "mis"."contacts" "c"
+LEFT JOIN "mis"."doctors" "d" ON d.contact_code = c.id
+ORDER BY "fio" ASC LIMIT 10.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Contact.php (74)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (110)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/06 19:08:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "filter".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('filter')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('filter')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/contacts...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/contacts/filter
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/contacts/view
+---
+2013/11/06 19:13:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "filter".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('filter')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('filter')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/contacts...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/contacts/filter
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/contacts/view
+---
+2013/11/06 19:13:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "filter".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('filter')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('filter')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/contacts...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/contacts/filter
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/contacts/view
+---
+2013/11/06 19:13:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "filter".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('filter')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('filter')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/contacts...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/guides/contacts/filter
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/contacts/view
+---
+2013/11/06 19:29:20 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка d.enterprise_id не существует
+LINE 5: WHERE ((d.enterprise_id = $1) AND (d.ward_code = $2)) AND (d...
+                ^. The SQL statement executed was: SELECT "c".*, "d"."first_name", "d"."middle_name", "d"."last_name"
+FROM "mis"."contacts" "c"
+LEFT JOIN "mis"."doctors" "d" ON d.contact_code = c.id
+LEFT JOIN "mis"."wards" "w" ON w.id = d.ward_code
+WHERE ((d.enterprise_id = :enterprise_id) AND (d.ward_code = :ward_code)) AND (d.id = :id).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Contact.php (85)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\ContactsController.php (128)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
