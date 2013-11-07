@@ -7,7 +7,6 @@ class FormEmployeeAdd extends CFormModel
     public $lastName;
     public $postId;
     public $tabelNumber;
-    public $contactCode;
     public $degreeId;
     public $titulId;
     public $dateBegin;
@@ -23,7 +22,7 @@ class FormEmployeeAdd extends CFormModel
                 'firstName, middleName, lastName, postId, dateBegin, dateEnd, wardCode', 'required'
             ),
             array(
-                'degreeId, titulId, tabelNumber, contactCode', 'numerical'
+                'degreeId, titulId, tabelNumber', 'numerical'
             )
         );
     }
@@ -37,7 +36,6 @@ class FormEmployeeAdd extends CFormModel
             'lastName' => 'Отчество',
             'postId' => 'Мед. работник',
             'tabelNumber' => 'Табельный номер',
-            'contactCode' => 'Код контакта',
             'degreeId' => 'Степень',
             'titulId' => 'Звание',
             'dateBegin' => 'Дата начала действия',

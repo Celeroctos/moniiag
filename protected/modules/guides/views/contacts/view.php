@@ -19,12 +19,12 @@
             <?php echo $form->dropDownList($modelFilter, 'enterpriseCode', $enterprisesList, array(
                 'id' => 'enterpriseCode',
                 'class' => 'form-control',
-                'options' => array('-1' => array('selected' => true))
+                'options' => array($selectedEnterprise => array('selected' => true))
             )); ?>
             <?php echo $form->error($modelFilter,'wardCode'); ?>
         </div>
     </div>
-    <div class="form-group no-display">
+    <div class="form-group <?php echo $selectedWard == -1 ? 'no-display' : '' ?>">
         <?php echo $form->label($modelFilter,'wardCode', array(
             'class' => 'col-xs-2 control-label text-left'
         )); ?>
@@ -32,19 +32,20 @@
             <?php echo $form->dropDownList($modelFilter, 'wardCode', $wardsList, array(
                 'id' => 'wardCodeFilter',
                 'class' => 'form-control',
-                'options' => array('-1' => array('selected' => true))
+                'options' => array($selectedWard => array('selected' => true))
             )); ?>
             <?php echo $form->error($modelFilter,'wardCode'); ?>
         </div>
     </div>
-    <div class="form-group no-display">
+    <div class="form-group <?php echo $selectedWard == -1 ? 'no-display' : '' ?> ">
         <?php echo $form->label($modelFilter,'employeeCode', array(
             'class' => 'col-xs-2 control-label text-left'
         )); ?>
         <div class="col-xs-3">
-            <?php echo $form->dropDownList($modelFilter, 'employeeCode', $wardsList, array(
+            <?php echo $form->dropDownList($modelFilter, 'employeeCode', $employeesList, array(
                 'id' => 'employeeCodeFilter',
                 'class' => 'form-control',
+                'options' => array($selectedEmployee => array('selected' => true))
             )); ?>
             <?php echo $form->error($modelFilter,'employeeCode'); ?>
         </div>
@@ -69,7 +70,7 @@
 <table id="contacts"></table>
 <div id="contactsPager"></div>
 <div class="btn-group default-margin-top">
-    <button type="button" class="btn btn-default" id="addContact">Добавить запись</button>
+    <button type="button" class="btn btn-default" id="addContact" disabled>Добавить запись</button>
     <button type="button" class="btn btn-default" id="editContact">Редактировать выбранную запись</button>
     <button type="button" class="btn btn-default" id="deleteContact">Удалить выбранные</button>
 </div>
@@ -97,6 +98,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="form-group">
+                            <?php echo $form->hiddenField($model,'employeeId', array(
+                                'id' => 'employeeId',
+                                'class' => 'form-control'
+                            )); ?>
                             <?php echo $form->labelEx($model,'type', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>

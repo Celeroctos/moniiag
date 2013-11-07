@@ -7,7 +7,6 @@ $(document).ready(function() {
                   '',
                   'Медработник',
                   'Табельный номер',
-                  'Код списка контактов',
                   'Контакты',
                   '',
                   'Степень',
@@ -49,11 +48,6 @@ $(document).ready(function() {
                 searchoptions: {
                     searchhidden: true
                 }
-            },
-            {
-                name: 'contact_code',
-                index: 'contact_code',
-                hidden: true
             },
             {
                 name: 'contact',
@@ -269,10 +263,6 @@ $(document).ready(function() {
                             {
                                 modelField: 'tabel_number',
                                 formField: 'tabelNumber'
-                            },
-                            {
-                                modelField: 'contact_code',
-                                formField: 'contactCode'
                             },
                             {
                                 modelField: 'degree_id',

@@ -68,14 +68,6 @@ class EmployeesController extends Controller {
                 $degreesList[(string)$value['id']] = $value['name'];
             }
 
-            // Список контактов
-            $contactModel = new Contact();
-            $contactsListDb = $contactModel->getAllWithoutDoctor();
-            $contactsList = array();
-            foreach($contactsListDb as $value) {
-                $contactsList[(string)$value['id']] = $value['contact_value'];
-            }
-
             $this->render('view', array(
                 'model' => $formAddEdit,
                 'modelFilter' => $formFilter,
@@ -84,8 +76,7 @@ class EmployeesController extends Controller {
                 'wardsList' => $wardsList,
                 'wardsListForAdd' => $wardsListForAdd,
                 'degreesList' => $degreesList,
-                'enterprisesList' => $enterprisesList,
-                'contactCodesList' => $contactsList
+                'enterprisesList' => $enterprisesList
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -131,7 +122,6 @@ class EmployeesController extends Controller {
         $employee->last_name = $model->lastName;
         $employee->post_id = $model->postId;
         $employee->tabel_number = $model->tabelNumber;
-        $employee->contact_code = $model->contactCode;
         $employee->degree_id = $model->degreeId;
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
@@ -193,7 +183,7 @@ class EmployeesController extends Controller {
                 $employee['fio'] = $employee['first_name'].' '.$employee['middle_name'].' '.$employee['last_name'];
                 $employee['more_info'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть подробную информацию по '.$employee['fio'].'"><span class="glyphicon glyphicon-share-alt"></span>
 </a>';
-                $employee['contact_see'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
+                $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
 </a>';
             }
 

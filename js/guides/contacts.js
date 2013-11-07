@@ -1,8 +1,8 @@
 $(document).ready(function() {
     $("#contacts").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/contacts/get',
-        datatype: "json",
-        colNames:['Код', 'Сотрудник', 'Тип контакта', 'Значение контакта'],
+        datatype: "local",
+        colNames:['Код', 'Сотрудник', 'Тип контакта', 'Значение контакта', ''],
         colModel:[
             {
                 name:'id',
@@ -23,7 +23,13 @@ $(document).ready(function() {
                 name: 'contact_value',
                 index:'contact_value',
                 width: 150
-            }
+            },
+            {
+                name:'employee_id',
+                index:'employee_id',
+                width: 150,
+                hidden: true
+            },
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -52,6 +58,9 @@ $(document).ready(function() {
     );
 
     $("#addContact").click(function() {
+        var form = $('#addContactPopup form');
+        form.find('#employeeId').val($("#employeeCodeFilter").val());
+
         $('#addContactPopup').modal({
 
         });
@@ -131,8 +140,8 @@ $(document).ready(function() {
                                 formField: 'type'
                             },
                             {
-                                modelField: 'doctor_id',
-                                formField: 'doctorId'
+                                modelField: 'employee_id',
+                                formField: 'employeeId'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
@@ -178,7 +187,11 @@ $(document).ready(function() {
     // Форма фильтрации контактов
     $("#contact-filter-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var url = '/index.php/guides/contacts/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val() + '&employeeid=' + $("#employeeCodeFilter").val();
-        $("#contacts").jqGrid('setGridParam', { url: url });
+        $("#contacts").jqGrid('setGridParam', {
+            url: url,
+            datatype: 'json'
+        });
+        $("#addContact").attr('disabled', false);
         $("#contacts").trigger("reloadGrid");
     });
 
@@ -198,6 +211,8 @@ $(document).ready(function() {
 
                         $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
                         $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
+
+                        $("#addContact").attr('disabled', true);
 
                         // Заполняем из пришедших данных
                         for(var i = 0; i < data.data.length; i++) {
@@ -223,6 +238,9 @@ $(document).ready(function() {
                     if(data.success == true) {
                         $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
                         $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
+
+                        $("#addContact").attr('disabled', true);
+
                         // Заполняем из пришедших данных
                         for(var i = 0; i < data.data.length; i++) {
                             $("#employeeCodeFilter").append('<option value="' + data.data[i].id + '">' + data.data[i].first_name + ' ' + data.data[i].last_name + ' ' + data.data[i].middle_name + '</option>')
@@ -233,4 +251,26 @@ $(document).ready(function() {
             });
         }
     });
+
+    $("#employeeCodeFilter").on('change', function(e) {
+        if($(this).val() != -1) {
+            $("#addContact").attr('disabled', false);
+        } else {
+            $("#addContact").attr('disabled', true);
+        }
+    });
+
+    // При загрузке: если заданы параметры сотрудника, раскрыть кнопку добавления контакта и отфильтровать таблицу
+    (function() {
+        if($("#employeeCodeFilter").val() != -1 &&  $("#wardCodeFilter").val() != -1 &&  $("#enterpriseCode").val() != -1) {
+            $("#addContact").attr('disabled', true);
+            $("#contact-filter-form").trigger('success');
+        } else {
+            // Простая загрузка всей таблицы
+            $("#contacts").jqGrid('setGridParam', {
+                datatype: 'json'
+            });
+            $("#contacts").trigger("reloadGrid");
+        }
+    })();
 });

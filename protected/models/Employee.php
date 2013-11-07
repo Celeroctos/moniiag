@@ -34,13 +34,13 @@ class Employee extends MisActiveRecord  {
                       de.name as degree,
                       t.name as titul,
                       w.name as ward,
-                      c.contact_value as contact
+                      w.id as ward_id,
+                      w.enterprise_id as enterprise_id
                       ')
             ->from('mis.doctors as d')
             ->join('mis.medpersonal m', 'd.post_id = m.id')
             ->leftJoin('mis.degrees de', 'd.degree_id = de.id')
             ->leftJoin('mis.tituls t', 'd.titul_id = t.id')
-            ->leftJoin('mis.contacts c', 'd.contact_code = c.id')
             ->join('mis.wards w', 'd.ward_code = w.id');
 
         if(isset($_GET['wardid']) && $_GET['wardid'] != -1) {

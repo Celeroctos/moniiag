@@ -26,29 +26,12 @@ class Contact extends MisActiveRecord  {
 
     }
 
-    public function getAllWithoutDoctor() {
-        try {
-            $connection = Yii::app()->db;
-            $contacts = $connection->createCommand()
-                ->select('c.*')
-                ->from('mis.contacts c')
-                ->where('NOT EXISTS(SELECT * FROM mis.doctors d WHERE d.contact_code = c.id)')
-                ->queryAll();
-
-            return $contacts;
-
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
-
-    }
-
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $enterpriseId = false, $wardId = false, $employeeId = false) {
         $connection = Yii::app()->db;
         $contacts = $connection->createCommand()
             ->select('c.*, d.first_name, d.middle_name, d.last_name')
             ->from('mis.contacts c')
-            ->leftJoin('mis.doctors d', 'd.contact_code = c.id')
+            ->leftJoin('mis.doctors d', 'd.id = c.employee_id')
             ->leftJoin('mis.wards w', 'w.id = d.ward_code');
 
         if($filters !== false) {

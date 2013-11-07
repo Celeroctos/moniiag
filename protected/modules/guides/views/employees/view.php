@@ -147,18 +147,6 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <?php echo $form->labelEx($model,'contactCode', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'contactCode', $contactCodesList, array(
-                                    'id' => 'contactCode',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'contactCode'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
                             <?php echo $form->labelEx($model,'degreeId', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -338,18 +326,6 @@
                                     'placeholder' => 'Табельный номер'
                                 )); ?>
                                 <?php echo $form->error($model,'tabelNumber'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'contactCode', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'contactCode', $contactCodesList, array(
-                                    'id' => 'contactCode',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'contactCode'); ?>
                             </div>
                         </div>
                         <div class="form-group">

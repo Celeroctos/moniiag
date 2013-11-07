@@ -4,6 +4,7 @@ class FormContactAdd extends CFormModel
 {
     public $contactValue;
     public $type;
+    public $employeeId;
     public $id;
 
     public function rules()
@@ -13,7 +14,7 @@ class FormContactAdd extends CFormModel
                 'type', 'required'
             ),
             array(
-                'contactValue', 'safe'
+                'contactValue, employeeId', 'safe'
             ),
             array(
                 'type', 'numerical'
@@ -25,7 +26,8 @@ class FormContactAdd extends CFormModel
     {
         return array(
             'contactValue'=> 'Значение контакта',
-            'type' => 'Тип'
+            'type' => 'Тип',
+            'employeeId' => 'Сотрудник'
         );
     }
 }

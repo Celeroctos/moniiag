@@ -21,13 +21,43 @@ class ContactsController extends Controller {
                 $enterprisesArr[$enterprise['id']] = $enterprise['shortname'];
             }
 
+            if(isset($_GET['employeeid'], $_GET['enterpriseid'], $_GET['wardid']) && trim($_GET['employeeid']) != '' && trim($_GET['wardid']) != '' && trim($_GET['enterpriseid']) != '') {
+                $ward = new Ward();
+                $employee = new Employee();
+
+                $wardsList = array('-1' => 'Нет');
+                $employeesList = array('-1' => 'Нет');
+
+                $wardsListDb = $ward->getByEnterprise($_GET['enterpriseid']);
+                foreach($wardsListDb as $ward) {
+                    $wardsList[$ward['id']] = $ward['name'];
+                }
+                $employeesListDb = $employee->getByWard($_GET['wardid']);
+                foreach($employeesListDb as $employee) {
+                    $employeesList[$employee['id']] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'];
+                }
+
+                $selectedEnterprise = $_GET['enterpriseid'];
+                $selectedEmployee = $_GET['employeeid'];
+                $selectedWard = $_GET['wardid'];
+            } else {
+                $wardsList = array('-1' => 'Нет');
+                $employeesList = array('-1' => 'Нет');
+                $selectedEnterprise = -1;
+                $selectedEmployee = -1;
+                $selectedWard = -1;
+            }
+
             $this->render('view', array(
                 'model' => $formAddEdit,
                 'modelFilter' => $formFilter,
                 'contactsTypesList' => $this->contactTypes,
                 'enterprisesList' => $enterprisesArr,
-                'wardsList' => array('-1' => 'Нет'),
-                'employeesList' => array('-1' => 'Нет')
+                'wardsList' => $wardsList,
+                'employeesList' => $employeesList,
+                'selectedEnterprise' => $selectedEnterprise,
+                'selectedWard' => $selectedWard,
+                'selectedEmployee' => $selectedEmployee
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -39,9 +69,8 @@ class ContactsController extends Controller {
         if(isset($_POST['FormContactAdd'])) {
             $model->attributes = $_POST['FormContactAdd'];
             if($model->validate()) {
-                $ward = Contact::model()->find('id=:id', $_POST['FormContactAdd']['id']);
-
-                $this->addEditModel($ward, $model, 'Контакт успешно отредактирован.');
+                $contact = Contact::model()->findByPk($_POST['FormContactAdd']['id']);
+                $this->addEditModel($contact, $model, 'Контакт успешно отредактирован.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
@@ -68,6 +97,7 @@ class ContactsController extends Controller {
             $model->attributes = $_POST['FormContactAdd'];
             if($model->validate()) {
                 $contact = new Contact();
+                $contact->employee_id = $model->employeeId;
 
                 $this->addEditModel($contact, $model, 'Новый контакт успешно добавлен.');
             } else {
@@ -103,21 +133,21 @@ class ContactsController extends Controller {
 
             // Фильтры "в разрезе"
             // Учреждение
-            if(isset($_GET['enterpriseid']) && trim($_GET['enterpriseid']) != '') {
+            if(isset($_GET['enterpriseid']) && trim($_GET['enterpriseid']) != '' && trim($_GET['enterpriseid']) != -1) {
                 $enterpriseId = CJSON::decode($_GET['enterpriseid']);
             } else {
                 $enterpriseId = false;
             }
 
             // Отделение
-            if(isset($_GET['wardid']) && trim($_GET['wardid']) != '') {
+            if(isset($_GET['wardid']) && trim($_GET['wardid']) != '' && trim($_GET['wardid']) != -1) {
                 $wardId = CJSON::decode($_GET['wardid']);
             } else {
                 $wardId = false;
             }
 
             // Сотрудник
-            if(isset($_GET['employeeid']) && trim($_GET['employeeid']) != '') {
+            if(isset($_GET['employeeid']) && trim($_GET['employeeid']) != '' && trim($_GET['employeeid']) != -1) {
                 $employeeId = CJSON::decode($_GET['employeeid']);
             } else {
                 $employeeId = false;
