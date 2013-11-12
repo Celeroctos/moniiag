@@ -191,12 +191,22 @@ $(document).ready(function() {
             url: url,
             datatype: 'json'
         });
-        $("#addContact").attr('disabled', false);
+        if($("#employeeCodeFilter").val() != -1) {
+            $("#addContact").attr('disabled', false);
+        } else {
+            $("#addContact").attr('disabled', true);
+        }
         $("#contacts").trigger("reloadGrid");
     });
 
     // Форма фильтрации контактов: подгрузка отделений учреждения
     $("#enterpriseCode").on('change', function(e) {
+        $("#wardCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+        $("#wardCodeFilter").val('-1'); // По дефолту - Нет
+
+        $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+        $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
+
         var enterpriseCode = $(this).val();
         if(enterpriseCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
             $.ajax({
@@ -206,14 +216,6 @@ $(document).ready(function() {
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == true) {
-                        $("#wardCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
-                        $("#wardCodeFilter").val('-1'); // По дефолту - Нет
-
-                        $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
-                        $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
-
-                        $("#addContact").attr('disabled', true);
-
                         // Заполняем из пришедших данных
                         for(var i = 0; i < data.data.length; i++) {
                             $("#wardCodeFilter").append('<option value="' + data.data[i].id + '">' + data.data[i].name + '</option>')
@@ -227,6 +229,9 @@ $(document).ready(function() {
 
     // Форма фильтрации контактов: подгрузка сотрудников отделения
     $("#wardCodeFilter").on('change', function(e) {
+        $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
+        $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
+
         var wardCode = $(this).val();
         if(wardCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
             $.ajax({
@@ -236,11 +241,6 @@ $(document).ready(function() {
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == true) {
-                        $("#employeeCodeFilter option[value != -1]").remove(); // Удалить все, кроме отсутствующего
-                        $("#employeeCodeFilter").val('-1'); // По дефолту - Нет
-
-                        $("#addContact").attr('disabled', true);
-
                         // Заполняем из пришедших данных
                         for(var i = 0; i < data.data.length; i++) {
                             $("#employeeCodeFilter").append('<option value="' + data.data[i].id + '">' + data.data[i].first_name + ' ' + data.data[i].last_name + ' ' + data.data[i].middle_name + '</option>')
@@ -263,7 +263,6 @@ $(document).ready(function() {
     // При загрузке: если заданы параметры сотрудника, раскрыть кнопку добавления контакта и отфильтровать таблицу
     (function() {
         if($("#employeeCodeFilter").val() != -1 &&  $("#wardCodeFilter").val() != -1 &&  $("#enterpriseCode").val() != -1) {
-            $("#addContact").attr('disabled', true);
             $("#contact-filter-form").trigger('success');
         } else {
             // Простая загрузка всей таблицы

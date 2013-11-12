@@ -7,9 +7,9 @@ class IndexController extends Controller {
        $this->render('index', array());
    }
 
-   // Добавление пациента
-   public function actionAddPatient() {
-       $this->render('addPatient', array());
+   // Поиск пациента и его запись
+   public function actionSearchPatient() {
+       $this->render('searchPatient', array());
    }
 
    // Запись пациента

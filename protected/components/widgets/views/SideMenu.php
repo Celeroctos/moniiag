@@ -6,11 +6,18 @@
         <li <?php echo $controller == 'index' && $module == 'reception' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Регистратура', array('/reception/index/index')) ?>
             <ul class="nav">
-                <li <?php echo $controller == 'index' && $module == 'reception' && $action == 'addpatient' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Добавление пациента', array('/reception/index/addpatient')) ?>
-                </li>
                 <li>
-                    <a href="#" >Постановка на учёт беременных</a>
+                    <li <?php echo $controller == 'patient' && $module == 'reception' ? 'class="active"' : ''; ?>>
+                        <?php echo CHtml::link('Работа с пациентами', array('/reception/patient/index')) ?>
+                    </li>
+                    <ul class="nav">
+                        <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewsearch' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Поиск пациента', array('/reception/patient/viewsearch')) ?>
+                        </li>
+                        <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewadd' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Добавление пациента', array('/reception/patient/viewadd')) ?>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="#" >Расписание врачей</a>
@@ -30,6 +37,9 @@
         </li>
         <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Справочники', array('/guides/enterprises/view')) ?>
+        </li>
+        <li>
+            <a href="http://moniiag.toonftp.ru/changelog.txt" class='bold red-color'>Лог изменений</a>
         </li>
     </ul>
 </div>

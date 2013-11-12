@@ -142,8 +142,15 @@
   background: #FEFBED;
 }
 
+.red-color {
+  color: #B94A48;
+}
+
 body {
   font-size: @default-font-size;
+}
+.bold {
+  font-weight: bold;
 }
 
 #content {
@@ -251,13 +258,32 @@ form span.required {
   font-weight: bold;
   color: #ff0000;
 }
-#employee-filter-form, #contact-filter-form {
-    input[type='submit'] {
+#employee-filter-form, #contact-filter-form, #patient-search-form {
+    input[type='submit'],  input[type='button'] {
         margin-left: 18%;
     }
 }
+
+
 /* Модальные окна */
 
 .error-popup .modal-body .row p {
   margin-left: @default-margin;
+}
+/* Навигация вверху */
+.navbar-blue {
+  background: #81BEF7;
+  color: #ffffff;
+  a {
+    color: #ffffff;
+  }
+  .nav > li {
+    a:focus, a:hover {
+      background: #2E9AFE;
+    }
+  }
+}
+/* Таблицы */
+tr.header {
+  font-weight: bold;
 }
