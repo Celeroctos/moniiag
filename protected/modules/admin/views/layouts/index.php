@@ -30,7 +30,6 @@
             <?php $this->widget('application.components.widgets.SideMenu') ?>
         </div>
         <div class="col-xs-8">
-            <?php $this->widget('application.components.widgets.GuidesTabMenu') ?>
             <?php echo $content; ?>
         </div>
     </div>

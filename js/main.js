@@ -35,4 +35,31 @@
 
 
     this.initFields();
+
+    $('#loginSuccessPopup').on('hidden.bs.modal', function() {
+        window.location.reload();
+    });
+
+    // Форма логина-разлогина
+    $("#login-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == 'true') { // Логин прошёл удачно
+            $('#loginSuccessPopup').modal({
+
+            });
+        } else if(ajaxData.success == 'notfound') {
+            $('#loginNotFoundPopup').modal({
+
+            });
+        } else {
+            $('#loginErrorPopup').modal({
+
+            });
+        }
+    });
+
+    // Форма разлогина
+    $("#logout-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        window.location.reload();
+    });
 });

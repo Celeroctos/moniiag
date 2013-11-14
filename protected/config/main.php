@@ -46,6 +46,14 @@ return array(
                 'application.modules.guides.components.*',
                 'application.modules.guides.controllers.*'
             ),
+        ),
+        'admin' => array(
+            'class' => 'application.modules.admin.AdminModule',
+            'import'=>array(
+                'application.modules.admin.models.*',
+                'application.modules.admin.components.*',
+                'application.modules.admin.controllers.*'
+            ),
         )
 	),
 

@@ -31,12 +31,31 @@
                     </ul>
                 </li>
                 <li <?php echo $controller == 'index' && $module == 'reception' && $action == 'writepatientstepone' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Запись пациента', array('/reception/index/writepatientstepone')) ?>
+                    <?php echo CHtml::link('Запись пациента', array('/reception/patient/writepatientstepone')) ?>
                 </li>
             </ul>
         </li>
         <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Справочники', array('/guides/enterprises/view')) ?>
+        </li>
+        <li <?php echo $module == 'settings' ? 'class="active"' : ''; ?>>
+            <?php echo CHtml::link('Настройки', array('/settings/profile/index')) ?>
+            <ul class="nav">
+                <li <?php echo $controller == 'profile' && $module == 'settings' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Профиль', array('/settings/profile/view')) ?>
+                </li>
+                <li <?php echo $controller == 'system' && $module == 'settings' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Система', array('/settings/system/view')) ?>
+                </li>
+            </ul>
+        </li>
+        <li <?php echo $module == 'admin' ? 'class="active"' : ''; ?>>
+            <?php echo CHtml::link('Администрирование', array('/admin/index/index')) ?>
+            <ul class="nav">
+                <li <?php echo $controller == 'users' && $module == 'admin' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Пользователи', array('/admin/users/view')) ?>
+                </li>
+            </ul>
         </li>
         <li>
             <a href="http://moniiag.toonftp.ru/changelog.txt" class='bold red-color'>Лог изменений</a>

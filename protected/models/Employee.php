@@ -35,13 +35,15 @@ class Employee extends MisActiveRecord  {
                       t.name as titul,
                       w.name as ward,
                       w.id as ward_id,
-                      w.enterprise_id as enterprise_id
+                      w.enterprise_id as enterprise_id,
+                      ep.shortname as enterprise
                       ')
             ->from('mis.doctors as d')
             ->join('mis.medpersonal m', 'd.post_id = m.id')
             ->leftJoin('mis.degrees de', 'd.degree_id = de.id')
             ->leftJoin('mis.tituls t', 'd.titul_id = t.id')
-            ->join('mis.wards w', 'd.ward_code = w.id');
+            ->join('mis.wards w', 'd.ward_code = w.id')
+            ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id');
 
         if(isset($_GET['wardid']) && $_GET['wardid'] != -1) {
             $employees->where('d.ward_code=:ward_code', array(':ward_code' => $wardId));
@@ -76,6 +78,8 @@ class Employee extends MisActiveRecord  {
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
             $employees->order($sidx.' '.$sord);
             $employees->limit($limit, $start);
+        } else {
+            $employees->order('d.last_name, d.first_name, d.middle_name desc');
         }
 
         return $employees->queryAll();

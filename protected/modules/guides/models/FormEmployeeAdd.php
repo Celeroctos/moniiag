@@ -32,8 +32,8 @@ class FormEmployeeAdd extends FormMisDefault
     {
         return array(
             'firstName'=> 'Имя',
-            'middleName' => 'Фамилия',
-            'lastName' => 'Отчество',
+            'middleName' => 'Отчество',
+            'lastName' => 'Фамилия',
             'postId' => 'Мед. работник',
             'tabelNumber' => 'Табельный номер',
             'degreeId' => 'Степень',

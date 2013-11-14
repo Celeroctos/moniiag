@@ -9052,3 +9052,1549 @@ Stack trace:
 REQUEST_URI=/index.php/guides/cabinets/add
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/cabinets/view
 ---
+2013/11/14 12:57:16 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 13:13:03 [error] [php] Undefined variable: form (F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBar.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): MainNavBar->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php(8): MainNavBar->render()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): MainNavBar->run()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php(14): IndexController->widget()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): IndexController->renderInternal()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): IndexController->renderFile()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): IndexController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): IndexController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): IndexController->runActionWithFilters()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): IndexController->run()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBar.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php (8)
+in F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php (14)
+2013/11/14 13:45:24 [error] [exception.CException] exception 'CException' with message 'Property "UserIdentity._id" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\components\UserIdentity.php(14): CComponent->__set('_id', 1)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\UsersController.php(10): UserIdentity->authenticate()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('login')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('users/login')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/users/login
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php
+---
+2013/11/14 14:01:43 [error] [exception.CException] exception 'CException' with message 'MainNavBar cannot find the view "application.components.widgets.views.MainNavBar".' in F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php:246
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php(8): CWidget->render('application.com...', Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): MainNavBar->run()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php(14): CBaseController->widget('application.com...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): CController->render('index', Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php
+---
+2013/11/14 14:03:32 [error] [php] Undefined variable: loginForm (F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php:12)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): IndexController->renderInternal()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): IndexController->renderFile()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): IndexController->render()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): IndexController->runAction()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): IndexController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): IndexController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php (12)
+in F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php (6)
+2013/11/14 14:03:41 [error] [php] Undefined variable: loginFormModel (F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): MainNavBar->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php(11): MainNavBar->render()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): MainNavBar->run()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php(14): IndexController->widget()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): IndexController->renderInternal()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): IndexController->renderFile()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): IndexController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): IndexController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): IndexController->runActionWithFilters()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): IndexController->run()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php (14)
+2013/11/14 14:13:38 [error] [php] Undefined variable: usename (F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): MainNavBar->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php(12): MainNavBar->render()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): MainNavBar->run()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php(14): IndexController->widget()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): IndexController->renderInternal()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): IndexController->renderFile()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): IndexController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): IndexController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): IndexController->runActionWithFilters()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): IndexController->run()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php (12)
+in F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php (14)
+2013/11/14 14:13:50 [error] [php] Undefined variable: username (F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): MainNavBar->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php(12): MainNavBar->render()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): MainNavBar->run()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php(14): IndexController->widget()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): IndexController->renderInternal()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): IndexController->renderFile()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): IndexController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): IndexController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): IndexController->runActionWithFilters()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): IndexController->run()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php (12)
+in F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php (14)
+2013/11/14 14:13:51 [error] [php] Undefined variable: username (F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php:18)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): MainNavBar->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php(12): MainNavBar->render()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): MainNavBar->run()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php(14): IndexController->widget()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): IndexController->renderInternal()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): IndexController->renderFile()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(6): IndexController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): IndexController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): IndexController->runActionWithFilters()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): IndexController->run()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\views\MainNavBarLogged.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\MainNavBar.php (12)
+in F:\Hosts\Celeroctos\moniiag\www\protected\views\layouts\index.php (14)
+2013/11/14 14:27:11 [error] [php] include(CControllr.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(2): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php(429): include()
+#2 unknown(0): autoload()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php(2): spl_autoload_call()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(354): require()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(276): CWebApplication->createController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (2)
+in F:\Hosts\Celeroctos\moniiag\www\protected\controllers\IndexController.php (2)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 14:39:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:39:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:39:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:40:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:40:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:52:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:52:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 14:53:48 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 16:57:18 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 16:57:32 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 16:57:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/11/14 16:57:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 16:57:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 16:57:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 16:58:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 16:58:22 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/wards/view
+---
+2013/11/14 17:00:59 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 17:01:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 17:01:14 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 17:01:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 17:01:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 17:01:26 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 17:01:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 19:06:47 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/addpatient
+---
+2013/11/14 19:14:10 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/14 19:14:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/11/14 19:14:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 19:14:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 19:14:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 19:14:28 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 19:14:54 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 19:14:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 19:14:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/11/14 19:15:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "writepatientstepone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 19:15:03 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "writepatientstepone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 19:15:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "writepatientstepone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/11/14 19:26:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 19:26:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 19:26:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 19:26:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "writepatientstepone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 19:27:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 19:40:20 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 19:40:40 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/index
+---
+2013/11/14 19:40:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 19:40:44 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/users/usersview".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/use...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/users/usersview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:40:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/usersview
+---
+2013/11/14 19:40:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 19:42:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/11/14 19:42:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:42:10 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:45:07 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:45:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/index/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:46:22 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\IndexController.php(7): CController->render('index', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('index')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:46:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/users/usersview".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/use...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/users/usersview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:47:29 [error] [exception.CException] exception 'CException' with message 'Alias "application.components.widgets.AdminUsersTabMenu" is invalid. Make sure it points to an existing PHP file and the file is readable.' in F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:322
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWidgetFactory.php(146): YiiBase::import('application.com...', true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(IndexController), 'application.com...', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(172): CBaseController->createWidget('application.com...', Array)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\layouts\index.php(32): CBaseController->widget('application.com...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\IndexController.php(7): CController->render('index', Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('index')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/usersview
+---
+2013/11/14 19:48:42 [error] [exception.CException] exception 'CException' with message 'Alias "application.components.widgets.AdminUsersTabMenu" is invalid. Make sure it points to an existing PHP file and the file is readable.' in F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:322
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWidgetFactory.php(146): YiiBase::import('application.com...', true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(IndexController), 'application.com...', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(172): CBaseController->createWidget('application.com...', Array)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\layouts\index.php(32): CBaseController->widget('application.com...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\IndexController.php(7): CController->render('index', Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('index')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/usersview
+---
+2013/11/14 19:49:55 [error] [exception.CException] exception 'CException' with message 'AdminUsersTabMenu cannot find the view "application.components.widgets.views.AdminUsersTabMenu".' in F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php:246
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\AdminUsersTabMenu.php(8): CWidget->render('application.com...', Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): AdminUsersTabMenu->run()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\layouts\index.php(32): CBaseController->widget('application.com...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\IndexController.php(7): CController->render('index', Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('index')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/usersview
+---
+2013/11/14 19:49:57 [error] [exception.CException] exception 'CException' with message 'AdminUsersTabMenu cannot find the view "application.components.widgets.views.AdminUsersTabMenu".' in F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php:246
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\components\widgets\AdminUsersTabMenu.php(8): CWidget->render('application.com...', Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(173): AdminUsersTabMenu->run()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\layouts\index.php(32): CBaseController->widget('application.com...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(784): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\IndexController.php(7): CController->render('index', Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionIndex()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('index')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/index/ind...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/index/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/usersview
+---
+2013/11/14 19:53:37 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "usersview".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('usersview')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('usersview')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/use...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/usersview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/index/index
+---
+2013/11/14 19:55:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/roles/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/roles/vi...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/roles/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 19:57:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/roles/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/roles/vi...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/roles/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 19:57:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/roles/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/roles/vi...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/roles/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 19:58:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/roles/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/roles/vi...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/roles/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:02:03 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php:19)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): UsersController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): UsersController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(7): UsersController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php (19)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (7)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 20:07:19 [error] [php] Undefined variable: typesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php:155)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): UsersController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): UsersController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(10): UsersController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php (155)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (10)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 20:07:20 [error] [php] Undefined variable: typesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php:155)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): UsersController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): UsersController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(10): UsersController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php (155)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (10)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 20:18:32 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.username" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('username')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'username')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'username', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'username', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php(42): CActiveForm->textField(Object(FormUserAdd), 'username', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(13): CController->render('index', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/vie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/admin/users/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/view
+---
+2013/11/14 20:24:32 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.shortName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('shortName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'shortName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'shortName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'shortName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php(143): CActiveForm->textField(Object(FormUserAdd), 'shortName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(13): CController->render('index', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/vie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/admin/users/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/view
+---
+2013/11/14 20:31:19 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/users/get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/users/ge...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/users/get?_search=false&nd=1384446638993&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:33:08 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('get')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/get?_search=false&nd=1384446747647&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:36:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('get')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/get?_search=false&nd=1384446955881&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:36:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('get')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/get?_search=false&nd=1384446965243&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:36:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('get')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/get?_search=false&nd=1384446978128&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:37:47 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('get')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/get?_search=false&nd=1384447027088&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:39:18 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('get')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/get?_search=false&nd=1384447117412&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:45:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getone')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/getone?id=1&_=1384447457731
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:48:35 [error] [exception.CException] exception 'CException' with message 'User and its behaviors do not have a method or closure named "getOne".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('getOne', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(50): CActiveRecord->__call('getOne', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(50): User->getOne('1')
+#3 [internal function]: UsersController->actionGetone('1')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(UsersController), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(UsersController), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getone')
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get...')
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/admin/users/getone?id=1&_=1384447673823
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 20:55:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "add".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('add')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/add')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:06:10 [error] [exception.CDbException] exception 'CDbException' with message 'Column name must be either a string or an array.' in F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1746): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), NULL, '', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1124): CActiveRecord->updateByPk(NULL, Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(106): CActiveRecord->save()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(62): UsersController->addEditModel(Object(User), Object(FormUserAdd), '???????????????...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionEdit()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/edi...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/users/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:07:29 [error] [exception.CDbException] exception 'CDbException' with message 'Column name must be either a string or an array.' in F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1746): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), NULL, '', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1124): CActiveRecord->updateByPk(NULL, Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(106): CActiveRecord->save()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(62): UsersController->addEditModel(Object(User), Object(FormUserAdd), '???????????????...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionEdit()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/edi...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/users/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:08:10 [error] [exception.CDbException] exception 'CDbException' with message 'Column name must be either a string or an array.' in F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1746): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), NULL, '', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1124): CActiveRecord->updateByPk(NULL, Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(106): CActiveRecord->save()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(62): UsersController->addEditModel(Object(User), Object(FormUserAdd), '???????????????...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionEdit()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/edi...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/users/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:08:19 [error] [exception.CDbException] exception 'CDbException' with message 'Column name must be either a string or an array.' in F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1746): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), NULL, '', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1124): CActiveRecord->updateByPk(NULL, Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(106): CActiveRecord->save()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(62): UsersController->addEditModel(Object(User), Object(FormUserAdd), '???????????????...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionEdit()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/edi...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/users/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:08:40 [error] [exception.CDbException] exception 'CDbException' with message 'Column name must be either a string or an array.' in F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1746): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), NULL, '', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1124): CActiveRecord->updateByPk(NULL, Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(105): CActiveRecord->save()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(62): UsersController->addEditModel(Object(User), Object(FormUserAdd), '???????????????...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionEdit()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/edi...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/users/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:09:51 [error] [exception.CDbException] exception 'CDbException' with message 'Column name must be either a string or an array.' in F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1746): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), NULL, '', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1124): CActiveRecord->updateByPk(NULL, Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(106): CActiveRecord->save()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(62): UsersController->addEditModel(Object(User), Object(FormUserAdd), '???????????????...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionEdit()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/edi...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/users/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:19:14 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.passwordRepeat" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('passwordRepeat')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'passwordRepeat')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'passwordRepeat', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'passwordRepeat', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php(243): CActiveForm->textField(Object(FormUserAdd), 'passwordRepeat', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(13): CController->render('index', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/vie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/admin/users/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/view
+---
+2013/11/14 21:21:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:27:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "changepass".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('changepass')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('changepass')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/cha...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/changepass
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 21:45:39 [error] [system.db.CDbCommand] CDbCommand::fetch() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT * FROM "mis"."users" "t" WHERE id=:id LIMIT 1.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (101)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 21:45:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT * FROM "mis"."users" "t" WHERE id=:id LIMIT 1' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(415): CDbCommand->queryInternal('fetch', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryRow()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1456): CActiveRecord->query(Object(CDbCriteria))
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(101): CActiveRecord->find('id=:id', Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionChangepass()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('changepass')
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/cha...')
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/admin/users/changepass
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 22:02:02 [error] [php] Undefined variable: employeesList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php:177)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): UsersController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): UsersController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(13): UsersController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php (177)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (13)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:07:08 [error] [php] Missing argument 2 for Employee::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php on line 11 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Employee.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (11)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:07:27 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:07:45 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:07:55 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:08:00 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:08:15 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:08:21 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:08:22 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:08:50 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:10:13 [error] [php] Undefined index: enterprise (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php:14)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): UsersController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): UsersController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/users/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (14)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:10:47 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.employeeId" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('employeeId')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1802): CHtml::resolveValue(Object(FormUserAdd), 'employeeId')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(847): CHtml::activeDropDownList(Object(FormUserAdd), 'employeeId', Array, Array)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\users\index.php(180): CActiveForm->dropDownList(Object(FormUserAdd), 'employeeId', Array, Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php(23): CController->render('index', Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): UsersController->actionView()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/vie...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/users/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/view
+---
+2013/11/14 22:26:31 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка " " не существует
+LINE 1: ...mployee_id, u.role_id, u.id, CONCAT(d.last_name + " " + d.fi...
+                                                             ^. The SQL statement executed was: SELECT u.login, u.username, u.employee_id, u.role_id, u.id, CONCAT(d.last_name + " " + d.first_name + " " + d.middle_name) as employee
+FROM "mis"."users" "u"
+LEFT JOIN "mis"."doctors" "d" ON d.id = u.employee_id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\User.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (41)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:27:59 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка " " не существует
+LINE 1: ...employee_id, u.role_id, u.id, CONCAT(d.last_name, " ", d.fir...
+                                                             ^. The SQL statement executed was: SELECT u.login, u.username, u.employee_id, u.role_id, u.id, CONCAT(d.last_name, " ", d.first_name, " ", d.middle_name) as employee
+FROM "mis"."users" "u"
+LEFT JOIN "mis"."doctors" "d" ON d.id = u.employee_id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\User.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (41)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:28:19 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка " " не существует
+LINE 1: ..._id, u.id, CONCAT(d.last_name, ' ', d.first_name, " ", d.mid...
+                                                             ^. The SQL statement executed was: SELECT u.login, u.username, u.employee_id, u.role_id, u.id, CONCAT(d.last_name, ' ', d.first_name, " ", d.middle_name) as employee
+FROM "mis"."users" "u"
+LEFT JOIN "mis"."doctors" "d" ON d.id = u.employee_id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\User.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\UsersController.php (41)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:35:15 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:35:56 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "writepatientstepone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2013/11/14 22:35:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientstepone
+---
+2013/11/14 22:36:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "writepatientstepone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/14 22:36:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 22:36:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/index
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 22:36:15 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/profile/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/profil...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/profile/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/index
+---
+2013/11/14 22:38:53 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:39:12 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 22:39:22 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

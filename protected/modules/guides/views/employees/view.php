@@ -83,6 +83,19 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="form-group">
+                            <?php echo $form->labelEx($model,'lastName', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'lastName', array(
+                                    'id' => 'lastName',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Фамилия'
+                                )); ?>
+                                <?php echo $form->error($model,'lastName'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'firstName', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -106,19 +119,6 @@
                                     'placeholder' => 'Отчество'
                                 )); ?>
                                 <?php echo $form->error($model,'middleName'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'lastName', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'lastName', array(
-                                    'id' => 'lastName',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Фамилия'
-                                )); ?>
-                                <?php echo $form->error($model,'lastName'); ?>
                             </div>
                         </div>
                         <div class="form-group">

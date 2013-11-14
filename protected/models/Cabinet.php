@@ -39,10 +39,12 @@ class Cabinet extends MisActiveRecord {
             $this->getSearchConditions($cabinets, $filters, array(
 
             ), array(
-               // 'mw' => array('id', 'name'),
-               // 'e' => array('enterprise_name')
+               'c' => array('id', 'cab_number', 'description'),
+               'e' => array('enterprise'),
+               'w' => array('ward')
             ), array(
-               // 'enterprise_name' => 'shortname'
+               'enterprise' => 'shortname',
+               'ward'  => 'name'
             ));
         }
 
