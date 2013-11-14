@@ -14,6 +14,9 @@
     <li <?php echo $controller == 'contacts' && $action == 'view' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Контакты', array('/guides/contacts/view')) ?>
     </li>
+    <li <?php echo $controller == 'cabinets' && $action == 'view' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Кабинеты', array('/guides/cabinets/view')) ?>
+    </li>
     <li <?php echo $controller == 'mkb10' && $action == 'view' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('МКБ-10', array('/guides/mkb10/view')) ?>
     </li>

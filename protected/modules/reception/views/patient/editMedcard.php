@@ -1,16 +1,16 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
-<h4>Первичная регистрация пациента и добавление первой ЭМК</h4>
+<h4>Редактирование карты пациента</h4>
 <p class="text-left">
-    Не нашли в списке пациентов нужного? Добавьте запись о нём, заполнив поля формы.
+    Заполните поля формы, чтобы отредактировать карту существующего пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>, карта №<?php echo $card_number; ?>)</span>
 </p>
 <div class="row default-padding">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
-        'id' => 'patient-withoutcard-form',
+        'id' => 'patient-medcard-edit-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -19,85 +19,10 @@
     ?>
         <div class="row">
             <div class="col-xs-6">
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'policy', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-5">
-                        <?php echo $form->textField($model,'policy', array(
-                            'id' => 'policy',
-                            'class' => 'form-control',
-                            'placeholder' => 'Номер полиса'
-                        )); ?>
-                        <?php echo $form->error($model,'policy'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'lastName', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-9">
-                        <?php echo $form->textField($model,'lastName', array(
-                            'id' => 'lastName',
-                            'class' => 'form-control',
-                            'placeholder' => 'Фамилия'
-                        )); ?>
-                        <?php echo $form->error($model,'lastName'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'firstName', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-9">
-                        <?php echo $form->textField($model,'firstName', array(
-                            'id' => 'firstName',
-                            'class' => 'form-control',
-                            'placeholder' => 'Имя'
-                        )); ?>
-                        <?php echo $form->error($model,'firstName'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'middleName', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-9">
-                        <?php echo $form->textField($model,'middleName', array(
-                            'id' => 'middleName',
-                            'class' => 'form-control',
-                            'placeholder' => 'Отчество'
-                        )); ?>
-                        <?php echo $form->error($model,'middleName'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'gender', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-5">
-                        <?php echo $form->dropDownList($model, 'gender', array('Женский', 'Мужской'), array(
-                            'id' => 'gender',
-                            'class' => 'form-control'
-                        )); ?>
-                        <?php echo $form->error($model,'gender'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'birthday', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-6 input-group date" id="birthday-cont">
-                        <?php echo $form->textField($model,'birthday', array(
-                            'id' => 'birthday',
-                            'class' => 'form-control',
-                            'placeholder' => 'Дата рождения'
-                        )); ?>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
+                <?php echo $form->hiddenField($model,'cardNumber', array(
+                    'id' => 'cardNumber',
+                    'class' => 'form-control'
+                )); ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'doctype', array(
                         'class' => 'col-xs-3 control-label'
@@ -164,8 +89,6 @@
                         </span>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-6">
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'addressReg', array(
                         'class' => 'col-xs-3 control-label'
@@ -192,6 +115,8 @@
                         <?php echo $form->error($model,'address'); ?>
                     </div>
                 </div>
+            </div>
+            <div class="col-xs-6">
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'workPlace', array(
                         'class' => 'col-xs-3 control-label'
@@ -274,11 +199,11 @@
         <div class="form-group">
             <div class="add-patient-submit">
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+                    'Редактировать',
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                    $("#patient-withoutcard-form").trigger("success", [data, textStatus, jqXHR])
+                                    $("#patient-medcard-edit-form").trigger("success", [data, textStatus, jqXHR])
                                 }'
                     ),
                     array(
@@ -316,7 +241,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?></p>
+                    <p>Вы успешно отредактировали карту.</p>
                 </div>
             </div>
             <div class="modal-footer">

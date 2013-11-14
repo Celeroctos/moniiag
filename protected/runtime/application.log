@@ -7825,3 +7825,1230 @@ Stack trace:
 REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=2
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
 ---
+2013/11/13 09:57:16 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 11:22:46 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=1
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:22:50 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:23:26 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:24:15 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:24:17 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:27 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:28 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:29 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:37 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:37 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:40 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:25:41 [error] [php] include(FormPatientAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(17): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 11:26:36 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/addpatient
+---
+2013/11/13 11:44:33 [error] [exception.CException] exception 'CException' with message 'PatientController contains improperly nested widget tags in its view "F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithoutCard.php". A CActiveForm widget does not have an endWidget() call.' in F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php:101
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(36): CController->render('addPatientWitho...', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+---
+2013/11/13 11:52:39 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/addpatient
+---
+2013/11/13 11:52:47 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php
+---
+2013/11/13 11:53:05 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 12:02:58 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "add".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('add')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 12:18:04 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "add".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('add')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 12:37:46 [error] [php] include(Medcard.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(47): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (47)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 12:40:55 [error] [exception.CException] exception 'CException' with message 'PatientController and its behaviors do not have a method or closure named "addEditModelOms".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:266
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(49): CComponent->__call('addEditModelOms', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(49): PatientController->addEditModelOms(Object(Oms), Object(FormPatientAdd))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 12:59:16 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientAdd.fisrtName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(61): CComponent->__get('fisrtName')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(49): PatientController->addEditModelOms(Object(Oms), Object(FormPatientAdd))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 13:22:38 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  INSERT или UPDATE в таблице "medcards" нарушает ограничение внешнего ключа "medcards_doctype_fkey" 
+DETAIL:  Ключ (doctype)=(0) отсутствует в таблице "doctypes".. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "gender", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "invalid_group", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (92)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (50)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 13:22:38 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  INSERT или UPDATE в таблице "medcards" нарушает ограничение внешнего ключа "medcards_doctype_fkey" 
+DETAIL:  Ключ (doctype)=(0) отсутствует в таблице "doctypes".. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "gender", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "invalid_group", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(92): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(50): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 13:29:41 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(1/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "gender", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "invalid_group", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (95)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (50)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 13:29:41 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(1/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "gender", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "invalid_group", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(95): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(50): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 13:31:08 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(1/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "gender", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "invalid_group", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (95)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (50)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 13:31:08 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(1/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "gender", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "invalid_group", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(95): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(50): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 13:36:35 [error] [exception.CException] exception 'CException' with message 'PatientController cannot find the requested view "addPatientWithoutCard".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(36): CController->render('addPatientWitho...', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+---
+2013/11/13 13:54:27 [error] [exception.CException] exception 'CException' with message 'Property "Medcard.reg_year" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(161): CComponent->__set('reg_year', '2013-11-13')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(90): CActiveRecord->__set('reg_year', '2013-11-13')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(50): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/11/13 14:17:57 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithcard.php:23)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(25): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=25
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithcard.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (25)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 14:17:58 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithcard.php:23)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(25): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=25
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithcard.php (23)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (25)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 14:31:33 [error] [exception.CException] exception 'CException' with message 'Property "Oms.policy_id" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(145): CComponent->__get('policy_id')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(26): CActiveRecord->__get('policy_id')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=25
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 14:33:33 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "addcard".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('addcard')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=25
+---
+2013/11/13 14:33:39 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "addcard".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('addcard')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=25
+---
+2013/11/13 14:34:04 [warning] [application] Failed to set unsafe attribute "policy" of "FormPatientWithCardAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (68)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 14:34:26 [warning] [application] Failed to set unsafe attribute "policy" of "FormPatientWithCardAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (68)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 14:34:52 [warning] [application] Failed to set unsafe attribute "policy" of "FormPatientWithCardAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (68)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 14:35:02 [warning] [application] Failed to set unsafe attribute "policy" of "FormPatientWithCardAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (68)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 14:37:48 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.gender" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(104): CComponent->__get('gender')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(73): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientWithCardAdd), Object(Oms))
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAddCard()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=25
+---
+2013/11/13 15:21:42 [error] [exception.CException] exception 'CException' with message 'PatientController cannot find the requested view "editCard".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editCard', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(103): CController->render('editCard', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcard')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:21:50 [error] [php] Undefined variable: fio (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(103): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (103)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:22:57 [error] [php] Undefined variable: fio (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(107): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (107)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:22:58 [error] [php] Undefined variable: fio (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(107): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (107)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:22:59 [error] [php] Undefined variable: fio (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(107): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (107)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:23:00 [error] [php] Undefined variable: fio (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(107): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (107)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:23:01 [error] [php] Undefined variable: fio (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(107): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (107)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:30:40 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:110)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/1
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (110)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:38:02 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.cardNumber" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(118): CComponent->__set('cardNumber', '2/13')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcard')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+---
+2013/11/13 15:38:18 [error] [php] Object of class Medcard could not be converted to string (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:122)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:38:20 [error] [php] Object of class Medcard could not be converted to string (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:122)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=2/13
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 15:45:24 [error] [exception.CException] exception 'CException' with message 'Property "Medcard.workAddress" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(145): CComponent->__get('workAddress')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(127): CActiveRecord->__get('workAddress')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCard()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcard')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=1/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:52:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "editcard".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('editcard')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcard')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/editcard/?cardid=3/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:56:05 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.card_number" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('card_number')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormPatientWithCardAdd), 'card_number')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormPatientWithCardAdd), 'card_number', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php(25): CActiveForm->hiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editMedcard', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(138): CController->render('editMedcard', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCardView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcardview')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/reception/patient/editcardview/?cardid=3/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:56:43 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.card_number" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('card_number')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormPatientWithCardAdd), 'card_number')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormPatientWithCardAdd), 'card_number', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php(25): CActiveForm->hiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editMedcard', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(138): CController->render('editMedcard', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCardView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcardview')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/reception/patient/editcardview/?cardid=3/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:56:46 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.card_number" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('card_number')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormPatientWithCardAdd), 'card_number')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormPatientWithCardAdd), 'card_number', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php(25): CActiveForm->hiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editMedcard', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(138): CController->render('editMedcard', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCardView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcardview')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/reception/patient/editcardview/?cardid=3/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:57:02 [error] [exception.CException] exception 'CException' with message 'Property "Medcard.card_nmber" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(145): CComponent->__get('card_nmber')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(130): CActiveRecord->__get('card_nmber')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCardView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcardview')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/editcardview/?cardid=3/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:57:06 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.card_number" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('card_number')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormPatientWithCardAdd), 'card_number')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormPatientWithCardAdd), 'card_number', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editMedcard.php(25): CActiveForm->hiddenField(Object(FormPatientWithCardAdd), 'card_number', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editMedcard', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(138): CController->render('editMedcard', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditCardView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcardview')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/reception/patient/editcardview/?cardid=3/13
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 15:57:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "editcard".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('editcard')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editcard')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/editcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=3/13
+---
+2013/11/13 16:51:45 [error] [php] Undefined variable: medcard (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:157)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (157)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:51:46 [error] [php] Undefined variable: medcard (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:157)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (157)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:51:55 [error] [php] Undefined variable: medcard (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:160)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (160)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:52:03 [error] [exception.CException] exception 'CException' with message 'PatientController cannot find the requested view "editOms".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editOms', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('editOms', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editomsview')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 16:52:28 [error] [php] Undefined variable: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (161)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:53:38 [error] [php] Undefined variable: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (161)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:53:39 [error] [php] Undefined variable: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (161)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:53:58 [error] [php] Undefined variable: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (161)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:55:02 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.lastName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('lastName')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormPatientWithCardAdd), 'lastName')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormPatientWithCardAdd), 'lastName', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormPatientWithCardAdd), 'lastName', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php(44): CActiveForm->textField(Object(FormPatientWithCardAdd), 'lastName', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('editOms', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('editOms', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editomsview')
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#16 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#18 {main}
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 16:57:13 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.firstName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(155): CComponent->__set('firstName', '????????????')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editomsview')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 16:57:14 [error] [exception.CException] exception 'CException' with message 'Property "FormPatientWithCardAdd.firstName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(155): CComponent->__set('firstName', '????????????')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editomsview')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/13 16:57:26 [error] [php] include(FormPatientWithoutCardAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(154): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (154)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 16:57:29 [error] [php] include(FormPatientWithoutCardAdd.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(154): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (154)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 17:05:29 [error] [php] Undefined index: cardNumber (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:194)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#4 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#5 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editoms
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (194)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/13 17:08:56 [error] [php] include(numeric.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(186): import()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(287): createValidator()
+#2 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(260): FormOmsEdit->createValidators()
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(304): FormOmsEdit->getValidators()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1414): FormOmsEdit->isAttributeRequired()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(597): activeLabelEx()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php(29): CActiveForm->labelEx()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): PatientController->renderInternal()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(167): PatientController->render()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): PatientController->runAction()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\editOms.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (167)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 11:05:26 [error] [exception.CException] exception 'CException' with message 'Property "FormOmsEdit.birthday" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:173
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(161): CComponent->__set('birthday', NULL)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionEditOmsView()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('editomsview')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#9 {main}
+REQUEST_URI=/index.php/reception/patient/editomsview/?omsid=30
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/11/14 11:13:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/cabinets/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/cabinets...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/cabinets/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/enterprises/view
+---
+2013/11/14 11:14:39 [error] [exception.CException] exception 'CException' with message 'IndexController cannot find the requested view "writePatient".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('writePatient', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\IndexController.php(17): CController->render('writePatient', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): IndexController->actionWritePatientStepOne()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/index...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/reception/index/writepatientstepone
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/index/index
+---
+2013/11/14 11:44:04 [error] [php] include(Cabinet.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:429)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php(125): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): CabinetsController->actionGet()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CabinetsController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CabinetsController->runActionWithFilters()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CabinetsController->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#7 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#8 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cabinets/get?_search=false&nd=1384415004855&rows=10&page=1&sidx=id&sord=desc&filters=
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (125)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 11:45:05 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:13)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): CabinetsController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CabinetsController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CabinetsController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CabinetsController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cabinets/get?_search=false&nd=1384415066296&rows=10&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (13)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Cabinet.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (129)
+2013/11/14 11:52:07 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.enterprises_params" не существует
+LINE 3: LEFT JOIN "mis"."enterprises_params" "e" ON c.enterprise_id ...
+                  ^. The SQL statement executed was: SELECT "c".*, "w"."name" AS "ward", "e"."name" AS "enterprise"
+FROM "mis"."cabinets" "c"
+LEFT JOIN "mis"."enterprises_params" "e" ON c.enterprise_id = e.id
+LEFT JOIN "mis"."wards" "w" ON c.ward_id = w.id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Cabinet.php (46)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (117)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 11:52:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка e.name не существует
+LINE 1: SELECT "c".*, "w"."name" AS "ward", "e"."name" AS "enterpris...
+                                            ^. The SQL statement executed was: SELECT "c".*, "w"."name" AS "ward", "e"."name" AS "enterprise"
+FROM "mis"."cabinets" "c"
+LEFT JOIN "mis"."enterprise_params" "e" ON c.enterprise_id = e.id
+LEFT JOIN "mis"."wards" "w" ON c.ward_id = w.id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Cabinet.php (46)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (117)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 11:52:56 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:13)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): CabinetsController->actionGet()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CabinetsController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CabinetsController->runActionWithFilters()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CabinetsController->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#6 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#7 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cabinets/get?_search=false&nd=1384415536678&rows=10&page=1&sidx=id&sord=desc&filters=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (13)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Cabinet.php (38)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (125)
+2013/11/14 12:01:54 [error] [exception.CException] exception 'CException' with message 'Property "FormCabinetAdd.firstName" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php(70): CComponent->__get('firstName')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php(93): CabinetsController->addEditModel(Object(Cabinet), Object(FormCabinetAdd), '???????????????...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): CabinetsController->actionAdd()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/cabinets...')
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/index.php/guides/cabinets/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/cabinets/view
+---
+2013/11/14 12:03:12 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  INSERT или UPDATE в таблице "cabinets" нарушает ограничение внешнего ключа "cabinets_type_id_fkey" 
+DETAIL:  Ключ (enterprise_id)=(1) отсутствует в таблице "cabinet_types".. The SQL statement executed was: INSERT INTO "mis"."cabinets" ("enterprise_id", "ward_id", "description", "cab_number") VALUES (:yp0, :yp1, :yp2, :yp3).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (75)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php (87)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/11/14 12:03:12 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  INSERT или UPDATE в таблице "cabinets" нарушает ограничение внешнего ключа "cabinets_type_id_fkey" 
+DETAIL:  Ключ (enterprise_id)=(1) отсутствует в таблице "cabinet_types".. The SQL statement executed was: INSERT INTO "mis"."cabinets" ("enterprise_id", "ward_id", "description", "cab_number") VALUES (:yp0, :yp1, :yp2, :yp3)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php(75): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CabinetsController.php(87): CabinetsController->addEditModel(Object(Cabinet), Object(FormCabinetAdd), '???????????????...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): CabinetsController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(286): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/cabinets...')
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/guides/cabinets/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/cabinets/view
+---

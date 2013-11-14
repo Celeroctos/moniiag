@@ -1,6 +1,6 @@
 <?php
 
-class FormEmployeeAdd extends CFormModel
+class FormEmployeeAdd extends FormMisDefault
 {
     public $firstName;
     public $middleName;

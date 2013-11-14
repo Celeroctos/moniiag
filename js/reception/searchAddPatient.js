@@ -72,11 +72,16 @@ $(document).ready(function() {
         for(var i = 0; i < data.length; i++) {
             table.append(
                 '<tr>' +
-                    '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].first_name + ' ' + data[i].last_name + ' ' + data[i].middle_name + '</a></td>' +
+                    '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' +
                         '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
+                        '</a>' +
+                    '</td>' +
+                    '<td>' +
+                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                            '<span class="glyphicon glyphicon-edit"></span>' +
                         '</a>' +
                     '</td>' +
                 '</tr>'
@@ -93,7 +98,7 @@ $(document).ready(function() {
         for(var i = 0; i < data.length; i++) {
             table.append(
                 '<tr>' +
-                    '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].first_name + ' ' + data[i].last_name + ' ' + data[i].middle_name + '</a></td>' +
+                    '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' + data[i].reg_date + '</td>' +
                     '<td>' + data[i].card_number + '</td>' +
@@ -102,9 +107,45 @@ $(document).ready(function() {
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
+                    '<td>' +
+                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
+                            '<span class="glyphicon glyphicon-edit"></span>' +
+                        '</a>' +
+                    '</td>' +
+                    '<td>' +
+                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                            '<span class="glyphicon glyphicon-edit"></span>' +
+                        '</a>' +
+                    '</td>' +
                 '</tr>'
             );
         }
         table.parents('div.no-display').removeClass('no-display');
     }
+
+    // Отобразить ошибки формы добавления пациента
+    $("#patient-withoutcard-form, #patient-withcard-form, #patient-medcard-edit-form, #patient-oms-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            if($(this).attr('id') == '#patient-withcard-form' || $(this).attr('id') == '#patient-withoutcard-form') {
+                $(this)[0].reset();
+            }
+            $('#successAddPopup').modal({
+
+            });
+        } else {
+            // Удаляем предыдущие ошибки
+            $('#errorAddPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorAddPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
+
+            $('#errorAddPopup').modal({
+
+            });
+        }
+    });
 });

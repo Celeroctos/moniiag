@@ -33,6 +33,11 @@ return array(
 		*/
         'reception' => array(
             'class' => 'application.modules.reception.ReceptionModule',
+            'import'=>array(
+                'application.modules.reception.models.*',
+                'application.modules.reception.components.*',
+                'application.modules.reception.controllers.*'
+            ),
         ),
         'guides' => array(
             'class' => 'application.modules.guides.GuidesModule',
