@@ -1,8 +1,8 @@
 $(document).ready(function() {
-    $("#categories").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/categories/get',
+    $("#elements").jqGrid({
+        url: globalVariables.baseUrl + '/index.php/admin/elements/get',
         datatype: "json",
-        colNames:['Код', 'Название'],
+        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка', '', '', ''],
         colModel:[
             {
                 name:'id',
@@ -10,23 +10,53 @@ $(document).ready(function() {
                 width: 150
             },
             {
-                name: 'name',
-                index:'name',
-                width: 250
+                name: 'type',
+                index:'type',
+                width: 150
             },
+            {
+                name: 'guide',
+                index:'guide',
+                width: 150
+            },
+            {
+                name: 'categorie',
+                index:'categorie',
+                width: 150
+            },
+            {
+                name: 'label',
+                index: 'label',
+                width: 150
+            },
+            {
+                name: 'categorie_id',
+                index: 'categorie_id',
+                hidden: true
+            },
+            {
+                name: 'guide_id',
+                index: 'guide_id',
+                hidden: true
+            },
+            {
+                name: 'type_id',
+                index: 'type_id',
+                hidden: true
+            }
         ],
         rowNum: 10,
         rowList:[10,20,30],
-        pager: '#categoriesPager',
+        pager: '#elementsPager',
         sortname: 'id',
         viewrecords: true,
         sortorder: "desc",
-        caption:"Категории",
+        caption:"Врачебные справочники",
         height: 300,
-        ondblClickRow: editCategorie
+        ondblClickRow: editElement
     });
 
-    $("#categories").jqGrid('navGrid','#categoriesPager',{
+    $("#elements").jqGrid('navGrid','#elementsPager',{
             edit: false,
             add: false,
             del: false
@@ -42,73 +72,73 @@ $(document).ready(function() {
     );
 
 
-    $("#addCategorie").click(function() {
-        $('#addCategoriePopup').modal({
+    $("#addElement").click(function() {
+        $('#addElementPopup').modal({
 
         });
     });
 
-    $("#categorie-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+    $("#element-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
-            $('#addCategoriePopup').modal('hide');
+            $('#addElementPopup').modal('hide');
             // Перезагружаем таблицу
-            $("#categories").trigger("reloadGrid");
-            $("#categorie-add-form")[0].reset(); // Сбрасываем форму
+            $("#elements").trigger("reloadGrid");
+            $("#element-add-form")[0].reset(); // Сбрасываем форму
         } else {
             // Удаляем предыдущие ошибки
-            $('#errorAddCategoriePopup .modal-body .row p').remove();
+            $('#errorAddElementPopup .modal-body .row p').remove();
             // Вставляем новые
             for(var i in ajaxData.errors) {
                 for(var j = 0; j < ajaxData.errors[i].length; j++) {
-                    $('#errorAddCategoriePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                    $('#errorAddElementPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
 
-            $('#errorAddCategoriePopup').modal({
+            $('#errorAddElementPopup').modal({
 
             });
         }
     });
 
-    $("#categorie-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+    $("#element-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
-            $('#editCategoriePopup').modal('hide');
+            $('#editElementPopup').modal('hide');
             // Перезагружаем таблицу
-            $("#categories").trigger("reloadGrid");
-            $("#categorie-edit-form")[0].reset();
+            $("#elements").trigger("reloadGrid");
+            $("#element-edit-form")[0].reset();
 
         } else {
             // Удаляем предыдущие ошибки
-            $('#errorAddCategoriePopup .modal-body .row p').remove();
+            $('#errorAddElementPopup .modal-body .row p').remove();
             // Вставляем новые
             for(var i in ajaxData.errors) {
                 for(var j = 0; j < ajaxData.errors[i].length; j++) {
-                    $('#errorAddCategoriePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                    $('#errorAddElementPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
 
-            $('#errorAddCategoriePopup').modal({
+            $('#errorAddElementPopup').modal({
 
             });
         }
     });
 
 
-    function editCategorie() {
-        var currentRow = $('#categories').jqGrid('getGridParam','selrow');
+    function editElement() {
+        var currentRow = $('#elements').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/categories/getone?id=' + currentRow,
+                'url' : '/index.php/admin/elements/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == true) {
                         // Заполняем форму значениями
-                        var form = $('#editCategoriePopup form')
+                        var form = $('#editElementPopup form')
                         // Соответствия формы и модели
                         var fields = [
                             {
@@ -123,7 +153,7 @@ $(document).ready(function() {
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
-                        $("#editCategoriePopup").modal({
+                        $("#editElementPopup").modal({
 
                         });
                     }
@@ -132,26 +162,26 @@ $(document).ready(function() {
         }
     }
 
-    $("#editCategorie").click(editCategorie);
+    $("#editElement").click(editElement);
 
-    $("#deleteCategorie").click(function() {
-        var currentRow = $('#categories').jqGrid('getGridParam','selrow');
+    $("#deleteElement").click(function() {
+        var currentRow = $('#elements').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/categories/delete?id=' + currentRow,
+                'url' : '/index.php/admin/elements/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == 'true') {
-                        $("#categories").trigger("reloadGrid");
+                        $("#elements").trigger("reloadGrid");
                     } else {
                         // Удаляем предыдущие ошибки
-                        $('#errorAddCategoriePopup .modal-body .row p').remove();
-                        $('#errorAddCategoriePopup .modal-body .row').append("<p>" + data.error + "</p>")
+                        $('#errorAddElementPopup .modal-body .row p').remove();
+                        $('#errorAddElementPopup .modal-body .row').append("<p>" + data.error + "</p>")
 
-                        $('#errorAddCategoriePopup').modal({
+                        $('#errorAddElementPopup').modal({
 
                         });
                     }

@@ -21,7 +21,7 @@ $(document).ready(function() {
         sortname: 'id',
         viewrecords: true,
         sortorder: "desc",
-        caption:"Роли",
+        caption:"Врачебные справочники",
         height: 300,
         ondblClickRow: editGuide
     });

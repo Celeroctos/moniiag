@@ -16,7 +16,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Добавить контакт</h4>
+                <h4 class="modal-title">Добавить справочник</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -74,7 +74,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Редактировать контакт</h4>
+                <h4 class="modal-title">Редактировать справочник</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
