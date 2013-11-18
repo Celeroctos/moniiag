@@ -1,4 +1,4 @@
-<div role="complementary" class="bs-sidebar hidden-print affix " >
+<div role="complementary" class="bs-sidebar hidden-print" >
     <ul class="nav bs-sidenav" id="mainSideMenu">
         <li <?php echo $controller == 'index' && $module == null ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Главная', array('/')) ?>
@@ -35,6 +35,17 @@
                 </li>
             </ul>
         </li>
+        <li <?php echo $module == 'doctors' ? 'class="active"' : ''; ?>>
+            <?php echo CHtml::link('АРМ врача', array('/doctors/index/view')) ?>
+            <ul class="nav">
+                <li <?php echo $controller == 'shedule' && $module == 'doctors' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Приём больных', array('/doctors/shedule/view')) ?>
+                </li>
+                <li <?php echo $controller == 'system' && $module == 'settings' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Ведение беременных', array('/settings/system/view')) ?>
+                </li>
+            </ul>
+        </li>
         <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Справочники', array('/guides/enterprises/view')) ?>
         </li>
@@ -54,6 +65,9 @@
             <ul class="nav">
                 <li <?php echo $controller == 'users' && $module == 'admin' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Пользователи', array('/admin/users/view')) ?>
+                </li>
+                <li <?php echo $controller == 'doctors' && $module == 'admin' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Рабочее место врача', array('/admin/categories/view')) ?>
                 </li>
             </ul>
         </li>

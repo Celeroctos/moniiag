@@ -56,7 +56,9 @@
 <div id="employeesPager"></div>
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addEmployee">Добавить запись</button>
+    <?php if($canEdit) { ?>
     <button type="button" class="btn btn-default" id="editEmployee">Редактировать выбранную запись</button>
+    <?php } ?>
     <button type="button" class="btn btn-default" id="deleteEmployee">Удалить выбранные</button>
 </div>
 <div class="modal fade" id="addEmployeePopup">

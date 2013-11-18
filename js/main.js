@@ -3,7 +3,8 @@
         dateFields: [
             '#birthday-cont',
             '#document-givedate-cont',
-            '#search-date-cont'
+            '#search-date-cont',
+            '#current-date-cont'
         ],
         colorPickerFields: [
             '.custom-color' // Маркировка анкет

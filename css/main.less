@@ -122,9 +122,9 @@
 
 @default-padding: 20px 0 0 0;
 @default-margin: 20px;
-@default-font-size: 13px;
+@default-font-size: 12px;
 @default-border-radius: 4px;
-@small-font: 12px;
+@small-font: 11px;
 @default-table-border: 1px solid #DDDDDD;
 @input-height: 30px;
 
@@ -172,6 +172,11 @@ body {
         ul {
             margin: 0 0 0 10px;
             font-size: @small-font;
+        }
+        li {
+          a {
+            padding: 3px 15px;
+          }
         }
         li.active {
             font-weight: bold;
@@ -263,6 +268,15 @@ form span.required {
         margin-left: 18%;
     }
 }
+#change-date-form {
+    input[type='submit'],  input[type='button'] {
+      margin-left: 27%;
+    }
+
+    + div {
+      margin: 10px 0 0 0;
+    }
+}
 
 
 /* Модальные окна */
@@ -287,4 +301,20 @@ form span.required {
 /* Таблицы */
 tr.header {
   font-weight: bold;
+}
+
+/* Аккордеон */
+.accordion-group {
+  border: 1px solid #E5E5E5;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+.accordion-heading .accordion-toggle {
+  display: block;
+  padding: 8px 15px;
+}
+
+.accordion-inner {
+  border-top: 1px solid #E5E5E5;
+  padding: 9px 15px;
 }

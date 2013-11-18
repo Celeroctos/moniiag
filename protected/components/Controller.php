@@ -1,5 +1,27 @@
 <?php
 class Controller extends CController {
+    /* Неправильное использование, но пока непонятно, как переопределить конструктор */
+    // Фильтр для выполнения запроса по поводу прав доступа
+    public function filterGetAccessHierarchy($filterChain) {
+        $roleModel = new Role();
+        $currentRole = $roleModel->getCurrentUserRole();
+        // Создаём иерархию для текущей роли пользователя
+        $auth = Yii::app()->authManager;
+        $role = $auth->createRole('r'.$currentRole['id'], '');
+        $result = $auth->assign('r'.$currentRole['id'], Yii::app()->user->getId()); // Текущему юзеру назначаем эту роль
+        foreach($currentRole['actions'] as $id => $action) {
+            $auth->createOperation($action);
+            $role->addChild($action);
+        }
+
+        $filterChain->run();
+    }
+
+    public function filters() {
+        return array(
+            'GetAccessHierarchy'
+        );
+    }
 
     public function actionError() {
         if($error = Yii::app()->errorHandler->error)  {

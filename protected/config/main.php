@@ -54,6 +54,14 @@ return array(
                 'application.modules.admin.components.*',
                 'application.modules.admin.controllers.*'
             ),
+        ),
+        'doctors' => array(
+            'class' => 'application.modules.doctors.DoctorsModule',
+            'import'=>array(
+                'application.modules.doctors.models.*',
+                'application.modules.doctors.components.*',
+                'application.modules.doctors.controllers.*'
+            ),
         )
 	),
 

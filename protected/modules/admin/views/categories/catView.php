@@ -1,26 +1,30 @@
-<?php $this->widget('application.components.widgets.AdminUsersTabMenu') ?>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/roles.js"></script>
-<table id="roles"></table>
-<div id="rolesPager"></div>
+<h4>Краткая справка</h4>
+<p>Раздел предназначен для редактирования содержания медицинской карты для рабочего места врача. Карта у врача разбита на категории (раскрывающиеся списки), внутри них имеются управляющие элементы, которые могут представлять собой в том числе выбор значения из справочника.
+    При формировании шаблона карты требуется определить группы, поля карты, справочники и привязать последние к определённым полям. Справочники при необходимости можно дополнять значениями.
+</p>
+<?php $this->widget('application.components.widgets.DoctorCardTabMenu') ?>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/categories.js"></script>
+<table id="categories"></table>
+<div id="categoriesPager"></div>
 <div class="btn-group default-margin-top">
-    <button type="button" class="btn btn-default" id="addRole">Добавить запись</button>
-    <button type="button" class="btn btn-default" id="editRole">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteRole">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="addCategorie">Добавить запись</button>
+    <button type="button" class="btn btn-default" id="editCategorie">Редактировать выбранную запись</button>
+    <button type="button" class="btn btn-default" id="deleteCategorie">Удалить выбранные</button>
 </div>
-<div class="modal fade" id="addRolePopup">
+<div class="modal fade" id="addCategoriePopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Добавить роль</h4>
+                <h4 class="modal-title">Добавить контакт</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
-                'focus' => array($model,'roleName'),
-                'id' => 'role-add-form',
+                'focus' => array($model,'name'),
+                'id' => 'categorie-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -38,34 +42,11 @@
                                 <?php echo $form->textField($model,'name', array(
                                     'id' => 'name',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Название'
+                                    'placeholder' => 'Название категории'
                                 )); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'parentId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'parentId', $rolesList, array(
-                                    'id' => 'parentId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'roleId'); ?>
-                            </div>
-                        </div>
-                        <h4>Права доступа</h4>
-                        <?php foreach($actions as $key => $actionGroup) { ?>
-                        <h5><strong><?php echo $key; ?></strong></h5>
-                        <div class="form-group">
-                            <?php foreach($actionGroup as $key2 => $action) { ?>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>"> <?php echo $action; ?>
-                                </label>
-                            <?php } ?>
-                        </div>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -73,10 +54,10 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                $("#role-add-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#categorie-add-form").trigger("success", [data, textStatus, jqXHR])
                             }'
                     ),
                     array(
@@ -88,20 +69,20 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editRolePopup">
+<div class="modal fade" id="editCategoriePopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Редактировать роль</h4>
+                <h4 class="modal-title">Редактировать контакт</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
-                'focus' => array($model,'shortName'),
-                'id' => 'role-edit-form',
+                'focus' => array($model,'name'),
+                'id' => 'categorie-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -123,34 +104,11 @@
                                 <?php echo $form->textField($model,'name', array(
                                     'id' => 'name',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Название'
+                                    'placeholder' => 'Название категории'
                                 )); ?>
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'parentId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'parentId', $rolesList, array(
-                                    'id' => 'parentId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'roleId'); ?>
-                            </div>
-                        </div>
-                        <h4>Права доступа:</h4>
-                        <?php foreach($actions as $key => $actionGroup) { ?>
-                            <h5><strong><?php echo $key; ?></strong></h5>
-                            <div class="form-group">
-                                <?php foreach($actionGroup as $key2 => $action) { ?>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>" /> <?php echo $action; ?>
-                                    </label>
-                                <?php } ?>
-                            </div>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -158,10 +116,10 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Отредактировать',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                $("#role-edit-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#categorie-edit-form").trigger("success", [data, textStatus, jqXHR])
                             }'
                     ),
                     array(
@@ -173,7 +131,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade error-popup" id="errorAddRolePopup">
+<div class="modal fade error-popup" id="errorAddCategoriePopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

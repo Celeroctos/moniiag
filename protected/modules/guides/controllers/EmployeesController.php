@@ -76,7 +76,8 @@ class EmployeesController extends Controller {
                 'wardsList' => $wardsList,
                 'wardsListForAdd' => $wardsListForAdd,
                 'degreesList' => $degreesList,
-                'enterprisesList' => $enterprisesList
+                'enterprisesList' => $enterprisesList,
+                'canEdit' => Yii::app()->user->checkAccess('editGuides')
             ));
         } catch(Exception $e) {
             echo $e->getMessage();

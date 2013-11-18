@@ -21,7 +21,7 @@
                             <a href="#">Редактирование профиля</a>
                         </li>
                         <li>
-                            <a href="#">Просмотр пациентов</a>
+                            <?php echo CHtml::link('Просмотр пациентов', array('/doctors/shedule/view')); ?>
                         </li>
                     </ul>
                 </li>

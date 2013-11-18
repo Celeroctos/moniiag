@@ -14,12 +14,18 @@ class UsersController extends Controller {
             $employeesList[$employee['id']] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.mb_strtolower($employee['ward'], 'UTF-8').' отделение, '.$employee['enterprise'].')';
         }
 
+        // Список ролей
+        $roleModel = new Role();
+        $roles = $roleModel->getRows(false);
+        $rolesList = array();
+        foreach($roles as $key => $role) {
+            $rolesList[$role['id']] = $role['name'];
+        }
+
         $this->render('index', array(
             'model' => $formUserAdd,
             'employeesList' => $employeesList,
-            'rolesList' => array(
-                '1' => 'Администратор'
-            )
+            'rolesList' => $rolesList
         ));
     }
 

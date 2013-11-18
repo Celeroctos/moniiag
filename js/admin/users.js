@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#users").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/users/get',
         datatype: "json",
-        colNames:['Код', 'Отображается', 'Логин', 'Роль', '', 'Сотрудник'],
+        colNames:['Код', 'Отображается', 'Логин', 'Роль', '', '', 'Сотрудник'],
         colModel:[
             {
                 name:'id',
@@ -20,9 +20,14 @@ $(document).ready(function() {
                 width: 150
             },
             {
+                name: 'rolename',
+                index:'rolename',
+                width: 150
+            },
+            {
                 name: 'role_id',
                 index:'role_id',
-                width: 150
+                hidden: true
             },
             {
                 name:  'employee_id',
