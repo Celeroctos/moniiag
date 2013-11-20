@@ -20,7 +20,7 @@ class ElementsController extends Controller {
         // Справочники
         $guidesModel = new MedcardGuide();
         $guides = $guidesModel->getRows(false);
-        $guidesList = array();
+        $guidesList = array('-1' => 'Нет');
         foreach($guides as $index => $guide) {
             $guidesList[$guide['id']] = $guide['name'];
         }
@@ -58,6 +58,9 @@ class ElementsController extends Controller {
                 $temp = $element['type'];
                 $element['type_id'] = $temp;
                 $element['type'] = $this->typesList[$element['type']];
+                if($element['guide_id'] == null) {
+                    $element['guide_id'] = -1;
+                }
             }
             echo CJSON::encode(
                 array('rows' => $elements,
@@ -102,7 +105,9 @@ class ElementsController extends Controller {
         $element->type = $model->type;
         $element->categorie_id = $model->categorieId;
         $element->label = $model->label;
-        $element->guide_id = $model->guideId;
+        if($model->guideId != -1) { // Если справочник выбран
+            $element->guide_id = $model->guideId;
+        }
 
         if($element->save()) {
             echo CJSON::encode(array('success' => true,
@@ -126,8 +131,11 @@ class ElementsController extends Controller {
     public function actionGetone($id) {
         $model = new MedcardElement();
         $element = $model->getOne($id);
+        if($element['guide_id'] == null) {
+            $element['guide_id'] = -1;
+        }
         echo CJSON::encode(array('success' => true,
-                'data' => $element)
+                                 'data' => $element)
         );
     }
 }

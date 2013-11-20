@@ -94,8 +94,124 @@ class GuidesController extends Controller {
         $model = new MedcardGuide();
         $guide = $model->getOne($id);
         echo CJSON::encode(array('success' => true,
-                'data' => $guide)
+                                 'data' => $guide)
         );
+    }
+
+    // Экшн просмотра всех справочников
+    public function actionAllView() {
+        $this->layout = 'application.modules.admin.views.layouts.medguides';
+        $medguidesTabWidget = CWidget::createWidget('application.modules.admin.components.widgets.MedguidesTabMenu');
+        $currentGuide = $medguidesTabWidget->getCurrentGuide($medguidesTabWidget->getGuidesList());
+        $this->render('medguidesView', array(
+            'model' => new FormValueAdd(),
+            'currentGuideId' => $currentGuide
+        ));
+    }
+
+    // Экшн просмотра значений определённого справочника
+    public function actionGetValues($id = false) {
+        try {
+            // Если вынимаем у непонятно чего - давать поворот-отворот
+            if($id == false) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'error' => 'Без указания справочника.'));
+                exit();
+            }
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
+            $model = new MedcardGuideValue();
+            $num = $model->getRows($filters, $id);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $values = $model->getRows($filters, $id, $sidx, $sord, $start, $rows);
+
+            echo CJSON::encode(
+                array('rows' => $values,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    // Добавить значение в справочник
+    public function actionAddInGuide($id = false) {
+        // Если вынимаем у непонятно чего - давать поворот-отворот
+        if($id == false) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'Без указания справочника.'));
+            exit();
+        }
+        $model = new FormValueAdd();
+        if(isset($_POST['FormValueAdd'])) {
+            $model->attributes = $_POST['FormValueAdd'];
+            if($model->validate()) {
+                $guideValue = new MedcardGuideValue();
+                $guideValue->guide_id = $id;
+                $this->addEditValueModel($guideValue, $model, 'Значение успешно добавлено.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
+    }
+
+    // Редактировать значение в справочнике
+    public function actionEditInGuide() {
+        $model = new FormValueAdd();
+        if(isset($_POST['FormValueAdd'])) {
+            $model->attributes = $_POST['FormValueAdd'];
+            if($model->validate()) {
+                $guideValue = MedcardGuideValue::model()->find('id=:id', array(':id' => $_POST['FormValueAdd']['id']));
+                $this->addEditValueModel($guideValue, $model, 'Значение успешно добавлено.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
+    }
+
+    private function addEditValueModel($guideValue, $model, $msg) {
+        $guideValue->value = $model->value;
+        if($guideValue->save()) {
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => $msg));
+        }
+    }
+
+    public function actionGetoneValue($id) {
+        $model = new MedcardGuideValue();
+        $value = $model->getOne($id);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $value)
+        );
+    }
+
+    public function actionDeleteInGuide($id) {
+        try {
+            $guideValue = MedcardGuideValue::model()->findByPk($id);
+            $guideValue->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Значение справочника успешно удалено.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'На данную запись есть ссылки!'));
+        }
     }
 }
 

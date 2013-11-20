@@ -146,13 +146,27 @@ $(document).ready(function() {
                                 formField: 'id'
                             },
                             {
-                                modelField: 'name',
-                                formField: 'name'
+                                modelField: 'type',
+                                formField: 'type'
+                            },
+                            {
+                                modelField: 'categorie_id',
+                                formField: 'categorieId'
+                            },
+                            {
+                                modelField: 'label',
+                                formField: 'label'
+                            },
+                            {
+                                modelField: 'guide_id',
+                                formField: 'guideId'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
+                        $.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
+
                         $("#editElementPopup").modal({
 
                         });
@@ -187,6 +201,20 @@ $(document).ready(function() {
                     }
                 }
             })
+        }
+    });
+
+    // Открытие списка справочников
+    $("select#type").on('change', function(e) {
+        // Если это список с выбором
+        var form = $(this).parents('form');
+        if($(this).val() == 2 || $(this).val() == 3) {
+            form.find("select#guideId").prop('disabled', false);
+        } else {
+            // Поставить на дефолт
+            form.find("select#guideId")
+                .val(-1)
+                .prop('disabled', true);
         }
     });
 });

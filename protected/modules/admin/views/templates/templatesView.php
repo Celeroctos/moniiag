@@ -3,15 +3,15 @@
     При формировании шаблона карты требуется определить группы, поля карты, справочники и привязать последние к определённым полям. Справочники при необходимости можно дополнять значениями.
 </p>
 <?php $this->widget('application.components.widgets.DoctorCardTabMenu') ?>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/elements.js"></script>
-<table id="elements"></table>
-<div id="elementsPager"></div>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/templates.js"></script>
+<table id="templates"></table>
+<div id="templatesPager"></div>
 <div class="btn-group default-margin-top">
-    <button type="button" class="btn btn-default" id="addElement">Добавить запись</button>
-    <button type="button" class="btn btn-default" id="editElement">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteElement">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="addTemplate">Добавить запись</button>
+    <button type="button" class="btn btn-default" id="editTemplate">Редактировать выбранную запись</button>
+    <button type="button" class="btn btn-default" id="deleteTemplate">Удалить выбранные</button>
 </div>
-<div class="modal fade" id="addElementPopup">
+<div class="modal fade" id="addTemplatePopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -21,10 +21,10 @@
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'focus' => array($model,'name'),
-                'id' => 'element-add-form',
+                'id' => 'template-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -35,54 +35,41 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="form-group">
-                            <?php echo $form->labelEx($model,'type', array(
+                            <?php echo $form->labelEx($model,'name', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'type', $typesList, array(
-                                    'id' => 'type',
+                                <?php echo $form->textField($model,'name', array(
+                                    'id' => 'name',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Название'
+                                )); ?>
+                                <?php echo $form->error($model,'name'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'categorieIds', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'categorieIds', $categoriesList, array(
+                                    'id' => 'categorieIds',
+                                    'class' => 'form-control',
+                                    'multiple' => 'multiple'
+                                )); ?>
+                                <?php echo $form->error($model,'categorieIds'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'pageId', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'pageId', $pagesList, array(
+                                    'id' => 'pageId',
                                     'class' => 'form-control'
                                 )); ?>
-                                <?php echo $form->error($model,'type'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'categorieId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'categorieId', $categoriesList, array(
-                                    'id' => 'categorieId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'categorieId'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'label', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'label', array(
-                                    'id' => 'label',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Метка'
-                                )); ?>
-                                <?php echo $form->error($model,'label'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'guideId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'guideId', $guidesList, array(
-                                    'id' => 'guideId',
-                                    'class' => 'form-control',
-                                    'disabled' => true,
-                                    'options' => array('selected' => -1)
-                                )); ?>
-                                <?php echo $form->error($model,'guideId'); ?>
+                                <?php echo $form->error($model,'pageId'); ?>
                             </div>
                         </div>
                     </div>
@@ -92,10 +79,10 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                $("#element-add-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#template-add-form").trigger("success", [data, textStatus, jqXHR])
                             }'
                     ),
                     array(
@@ -107,7 +94,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="editElementPopup">
+<div class="modal fade" id="editTemplatePopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -117,10 +104,10 @@
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'focus' => array($model,'name'),
-                'id' => 'element-edit-form',
+                'id' => 'template-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -131,57 +118,47 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="form-group">
-                            <?php echo $form->hiddenField($model,'id', array(
-                                'id' => 'id',
-                                'class' => 'form-control'
-                            )); ?>
-                            <?php echo $form->labelEx($model,'type', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'type', $typesList, array(
-                                    'id' => 'type',
+                            <div class="form-group">
+                                <?php echo $form->hiddenField($model,'id', array(
+                                    'id' => 'id',
                                     'class' => 'form-control'
                                 )); ?>
-                                <?php echo $form->error($model,'type'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'categorieId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'categorieId', $categoriesList, array(
-                                    'id' => 'categorieId',
-                                    'class' => 'form-control'
+                                <?php echo $form->labelEx($model,'name', array(
+                                    'class' => 'col-xs-3 control-label'
                                 )); ?>
-                                <?php echo $form->error($model,'categorieId'); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->textField($model,'name', array(
+                                        'id' => 'name',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Название'
+                                    )); ?>
+                                    <?php echo $form->error($model,'name'); ?>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'label', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'label', array(
-                                    'id' => 'label',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Метка'
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model,'categorieIds', array(
+                                    'class' => 'col-xs-3 control-label'
                                 )); ?>
-                                <?php echo $form->error($model,'label'); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->dropDownList($model, 'categorieIds', $categoriesList, array(
+                                        'id' => 'categorieIds',
+                                        'class' => 'form-control',
+                                        'multiple' => 'multiple'
+                                    )); ?>
+                                    <?php echo $form->error($model,'categorieIds'); ?>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'guideId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'guideId', $guidesList, array(
-                                    'id' => 'guideId',
-                                    'class' => 'form-control',
-                                    'disabled' => true
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model,'pageId', array(
+                                    'class' => 'col-xs-3 control-label'
                                 )); ?>
-                                <?php echo $form->error($model,'guideId'); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->dropDownList($model, 'pageId', $pagesList, array(
+                                        'id' => 'pageId',
+                                        'class' => 'form-control'
+                                    )); ?>
+                                    <?php echo $form->error($model,'pageId'); ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -191,10 +168,10 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Отредактировать',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                $("#element-edit-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])
                             }'
                     ),
                     array(
@@ -206,7 +183,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade error-popup" id="errorAddElementPopup">
+<div class="modal fade error-popup" id="errorAddTemplatePopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

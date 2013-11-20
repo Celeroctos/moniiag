@@ -1,4 +1,7 @@
 <ul class="nav nav-tabs  default-margin-bottom">
+    <li <?php echo $controller == 'templates' && $action == 'view' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Шаблоны', array('/admin/templates/view')) ?>
+    </li>
     <li <?php echo $controller == 'categories' && $action == 'view' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Категории', array('/admin/categories/view')) ?>
     </li>

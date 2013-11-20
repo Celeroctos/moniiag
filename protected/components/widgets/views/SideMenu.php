@@ -63,12 +63,17 @@
         <li <?php echo $module == 'admin' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Администрирование', array('/admin/index/index')) ?>
             <ul class="nav">
-                <li <?php echo $controller == 'users' && $module == 'admin' ? 'class="active"' : ''; ?>>
+                <li <?php echo (($controller == 'users' || $controller == 'roles') && $module == 'admin') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Пользователи', array('/admin/users/view')) ?>
                 </li>
-                <li <?php echo $controller == 'doctors' && $module == 'admin' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Рабочее место врача', array('/admin/categories/view')) ?>
+                <li <?php echo ($controller == 'templates' || $controller == 'categories' || $controller == 'guides' || $controller == 'elements') && $module == 'admin' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Рабочее место врача', array('/admin/templates/view')) ?>
                 </li>
+                <ul class="nav">
+                    <li <?php echo $controller == 'guides' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
+                        <?php echo CHtml::link('Врачебные справочники', array('/admin/guides/allview')) ?>
+                    </li>
+                </ul>
             </ul>
         </li>
         <li>
