@@ -1,18 +1,39 @@
 <div class="row">
     <div class="col-xs-5">
         <h5><strong>Список пациентов на <span class="text-danger">23.05.2013</span></strong></h5>
-        <form method="post" id="change-date-form" action="/index.php/guides/enterprises/add" id="enterprise-add-form" role="form" class="form-horizontal col-xs-12">
+        <?php
+        $filterForm = $this->beginWidget('CActiveForm', array(
+            'id' => 'change-date-form',
+            'enableAjaxValidation' => true,
+            'enableClientValidation' => true,
+            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/view'),
+            'htmlOptions' => array(
+                'class' => 'form-horizontal col-xs-12',
+                'role' => 'form'
+            )
+        ));
+        ?>
             <div class="form-group">
-                <label for="FormPatientAdd_birthday" class="col-xs-3 control-label required">Дата</label>
-                <div id="current-date-cont" class="col-xs-6 input-group date">
-                    <input type="text" name="" placeholder="Выберите дату" class="form-control" id="sheduleDate" disabled="true">
+                <?php echo $filterForm->labelEx($filterModel,'date', array(
+                    'class' => 'col-xs-3 control-label'
+                )); ?>
+                <div class="col-xs-6 input-group date" id="date-cont">
+                    <?php echo $filterForm->textField($filterModel,'date', array(
+                        'id' => 'filterDate',
+                        'class' => 'form-control',
+                        'placeholder' => 'Выберите дату',
+                    )); ?>
                     <span class="input-group-addon">
-                        <span class="glyphicon-calendar glyphicon"></span>
+                        <span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
             </div>
-            <input type="submit" id="yt0" value="Выбрать" name="yt0" class="btn btn-success">
-        </form>
+            <?php echo CHtml::submitButton(
+                        'Показать',
+                        array('class' => 'btn btn-success')
+                      );
+            ?>
+        <?php $this->endWidget(); ?>
         <div class="row">
             <div class="col-xs-12 borderedBox">
                 <table id="omsSearchWithCardResult" class="table table-condensed table-hover">
@@ -30,34 +51,43 @@
                     </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($patients as $key => $patient) { ?>
                         <tr>
                             <td>
-                                <a href="#">Иванов Иван Иванович</a>
+                                <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'])); ?>
                             </td>
                             <td>
-                                15.30
+                                <?php echo $patient['patient_time']; ?>
                             </td>
                             <td>
-                                <a href="http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=1/13"><span class="glyphicon glyphicon-edit"></span></a>
+                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id'])); ?>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <a href="#">Иванов Иван Иванович</a>
-                            </td>
-                            <td>
-                                15.30
-                            </td>
-                            <td>
-                                <a href="http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=1/13"><span class="glyphicon glyphicon-edit"></span></a>
-                            </td>
-                        </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <?php if($currentPatient !== false) { ?>
     <div class="col-xs-7">
+        <?php
+        $form = $this->beginWidget('CActiveForm', array(
+            'id' => 'shedule-edit-form',
+            'enableAjaxValidation' => true,
+            'enableClientValidation' => true,
+            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+            'htmlOptions' => array(
+                'class' => 'form-horizontal col-xs-12',
+                'role' => 'form'
+            )
+        ));
+        echo $form->hiddenField($model,'medcardId', array(
+            'id' => 'medcardId',
+            'class' => 'form-control',
+            'value' => $currentPatient
+        ));
+        ?>
         <div id="myAccordion" class="accordion">
             <div class="accordion-group">
                 <div class="accordion-heading">
@@ -69,56 +99,78 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <?php foreach($categories  as $index => $template) {
+                foreach($template  as $key => $categorie) {
+        ?>
+        <div id="myAccordion2" class="accordion">
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a href="#collapseTwo" data-parent="#myAccordion" data-toggle="collapse" class="accordion-toggle">Анамнез</a>
+                    <a href="#collapse<?php echo $categorie['id']; ?>" data-parent="#myAccordion" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?></a>
                 </div>
-                <div class="accordion-body collapse in" id="collapseTwo">
+                <div class="accordion-body collapse in" id="collapse<?php echo $categorie['id']; ?>">
                     <div class="accordion-inner">
-                        <p>Twitter Bootstrap is a powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#collapseThree" data-parent="#myAccordion" data-toggle="collapse" class="accordion-toggle">Жалобы</a>
-                </div>
-                <div class="accordion-body collapse" id="collapseThree">
-                    <div class="accordion-inner">
-                        <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#collapseFour" data-parent="#myAccordion" data-toggle="collapse" class="accordion-toggle">Объективно</a>
-                </div>
-                <div class="accordion-body collapse" id="collapseFour">
-                    <div class="accordion-inner">
-                        <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#collapseFive" data-parent="#myAccordion" data-toggle="collapse" class="accordion-toggle">Обследование</a>
-                </div>
-                <div class="accordion-body collapse" id="collapseFive">
-                    <div class="accordion-inner">
-                        <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a href="#collapseSix" data-parent="#myAccordion" data-toggle="collapse" class="accordion-toggle">Диагноз</a>
-                </div>
-                <div class="accordion-body collapse" id="collapseSix">
-                    <div class="accordion-inner">
-                        <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
+                        <?php foreach($categorie['elements'] as $element) { ?>
+                            <div class="form-group">
+                                <div class="col-xs-3">
+                                    <?php echo $form->labelEx($model,'f'.$element['id'], array(
+                                        'class' => 'col-xs-12 control-label'
+                                    )); ?>
+                                </div>
+                                <div class="col-xs-9">
+                                    <?php
+                                    if($element['type'] == 0) {
+                                        echo $form->textField($model,'f'.$element['id'], array(
+                                            'id' => 'f'.$element['id'],
+                                            'class' => 'form-control',
+                                            'placeholder' => ''
+                                        ));
+                                    } elseif($element['type'] == 1) {
+                                        echo $form->textArea($model,'f'.$element['id'], array(
+                                            'id' => 'f'.$element['id'],
+                                            'class' => 'form-control',
+                                            'placeholder' => ''
+                                        ));
+                                    } elseif($element['type'] == 2) {
+                                        echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], array(
+                                            'id' => 'f'.$element['id'],
+                                            'class' => 'form-control',
+                                            'placeholder' => '',
+                                            'options' => $element['selected']
+                                        ));
+                                    } elseif($element['type'] == 3) {
+                                        echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], array(
+                                            'id' => 'f'.$element['id'],
+                                            'class' => 'form-control',
+                                            'placeholder' => '',
+                                            'multiple' => 'multiple',
+                                            'options' => $element['selected']
+                                        ));
+                                    } ?>
+                                </div>
+                            </div>
+                        <?php  } ?>
                     </div>
                 </div>
             </div>
         </div>
+            <?php } ?>
+        <?php } ?>
+        <div class="form-group submitEditPatient">
+            <?php echo CHtml::ajaxSubmitButton(
+                'Сохранить',
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/patientedit'),
+                array(
+                    'success' => 'function(data, textStatus, jqXHR) {
+
+                            }'
+                ),
+                array(
+                    'class' => 'btn btn-primary'
+                )
+            ); ?>
+        </div>
+    <?php $this->endWidget(); ?>
     </div>
+    <?php } ?>
 </div>

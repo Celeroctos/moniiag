@@ -1,5 +1,5 @@
 <?php
-class MedcardElement extends MisActiveRecord {
+class MedcardElementForPatient extends MisActiveRecord {
     private $typesList = array( // Типы контролов
         'Текстовое поле',
         'Текстовая область',
@@ -14,16 +14,16 @@ class MedcardElement extends MisActiveRecord {
 
     public function tableName()
     {
-        return 'mis.medcard_elements';
+        return 'mis.medcard_elements_patient';
     }
 
-    public function getOne($id) {
+    public function getOne($medcardId, $fieldId) {
         try {
             $connection = Yii::app()->db;
             $element = $connection->createCommand()
-                ->select('mc.*')
-                ->from('mis.medcard_elements mc')
-                ->where('mc.id = :id', array(':id' => $id))
+                ->select('mcp.*')
+                ->from('mis.medcard_elements_patient mcp')
+                ->where('mcp.medcard_id = :medcard_id AND mcp.element_id = :element_id', array(':medcard_id' => $medcardId, ':element_id' => $fieldId))
                 ->queryRow();
 
             return $element;

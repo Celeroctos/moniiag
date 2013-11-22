@@ -1,7 +1,7 @@
 <?php
 class TemplatesController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
-    private $pagesList = array( // Типы контролов
+    private $pagesList = array( // Страницы
         'Приём больных'
     );
 
@@ -27,6 +27,10 @@ class TemplatesController extends Controller {
             'pagesList' => $this->pagesList,
             'categoriesList' => $categoriesList
         ));
+    }
+
+    public function getPagesList() {
+        return $this->pagesList;
     }
 
     public function actionGet() {
@@ -129,7 +133,7 @@ class TemplatesController extends Controller {
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
-                'error' => 'На данную запись есть ссылки!'));
+                                     'error' => 'На данную запись есть ссылки!'));
         }
     }
 

@@ -1,12 +1,6 @@
 <?php
 class ElementsController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
-    private  $typesList = array( // Типы контролов
-        'Текстовое поле',
-        'Текстовая область',
-        'Выпадающий список',
-        'Выпадающий список с множественным выбором'
-    );
 
     public function actionView() {
         // Категории
@@ -25,9 +19,10 @@ class ElementsController extends Controller {
             $guidesList[$guide['id']] = $guide['name'];
         }
 
+        $elementModel = new MedcardElement();
         $this->render('elementsView', array(
             'model' => new FormElementAdd(),
-            'typesList' => $this->typesList,
+            'typesList' => $elementModel->getTypesList(),
             'categoriesList' => $categoriesList,
             'guidesList' => $guidesList
         ));
@@ -54,10 +49,11 @@ class ElementsController extends Controller {
             $start = $page * $rows - $rows;
 
             $elements = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $typesList = $model->getTypesList();
             foreach($elements as $key => &$element) {
                 $temp = $element['type'];
                 $element['type_id'] = $temp;
-                $element['type'] = $this->typesList[$element['type']];
+                $element['type'] = $typesList[$element['type']];
                 if($element['guide_id'] == null) {
                     $element['guide_id'] = -1;
                 }
