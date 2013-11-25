@@ -457,7 +457,7 @@ class PatientController extends Controller {
         $model = new FormPregnantAdd();
         if($cardNumber != null) { // Пациентка была уже выбрана
             // Выбрать по карте все параметры беременности
-            $pregnant = Pregnant::model()->find('card_id = :card_id', $cardNumber);
+            $pregnant = Pregnant::model()->find('card_id = :card_id', array(':card_id' => $cardNumber));
             if($pregnant != null) {
                 $model->id = $pregnant->id;
                 $model->registerType = $pregnant->register_type;

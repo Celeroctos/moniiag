@@ -36,7 +36,7 @@ echo $form->hiddenField($model,'medcardId', array(
                 <div class="accordion-heading">
                     <a href="#collapse<?php echo $categorie['id']; ?>" data-parent="#accordion<?php echo $index; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?></a>
                 </div>
-                <div class="accordion-body collapse in" id="collapse<?php echo $categorie['id']; ?>">
+                <div class="accordion-body collapse" id="collapse<?php echo $categorie['id']; ?>">
                     <div class="accordion-inner">
                         <?php foreach($categorie['elements'] as $element) { ?>
                             <div class="form-group">
