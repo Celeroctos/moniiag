@@ -34,8 +34,7 @@ class MedworkersController extends Controller {
         if(isset($_POST['FormMedworkerAdd'])) {
             $model->attributes = $_POST['FormMedworkerAdd'];
             if($model->validate()) {
-                $medworker = Medworker::model()->find('id=:id', $_POST['FormMedworkerAdd']['id']);
-
+                $medworker = Medworker::model()->findByPk($_POST['FormMedworkerAdd']['id']);
                 $this->addEditModel($medworker, $model, 'Тип работника успешно отредактирован.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
@@ -60,6 +59,7 @@ class MedworkersController extends Controller {
     public function addEditModel($medworker, $model, $msg) {
         $medworker->name = $model->name;
         $medworker->type = $model->type;
+        $medworker->is_for_pregnants = $model->isForPregnants;
 
         if($medworker->save()) {
             echo CJSON::encode(array('success' => true,
@@ -103,6 +103,12 @@ class MedworkersController extends Controller {
             $start = $page * $rows - $rows;
 
             $medworkers = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            foreach($medworkers as &$medworker) {
+                if($medworker['is_for_pregnants'] == null) {
+                    $medworker['is_for_pregnants'] = 0;
+                }
+                $medworker['pregnants'] = $medworker['is_for_pregnants'] ? 'Да' : 'Нет';
+            }
 
             echo CJSON::encode(
                 array('rows' => $medworkers,

@@ -18,7 +18,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Здравствуйте, <strong><?php echo $userName; ?>!</strong> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="#">Редактирование профиля</a>
+                            <?php echo CHtml::link('Редактирование профиля', array('/settings/profile/view')); ?>
                         </li>
                         <li>
                             <?php echo CHtml::link('Просмотр пациентов', array('/doctors/shedule/view')); ?>

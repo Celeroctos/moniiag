@@ -54,6 +54,18 @@
                                 <?php echo $form->error($model,'type'); ?>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isForPregnants', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isForPregnants', array('Нет', 'Да'), array(
+                                    'id' => 'isForPregnants',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'isForPregnants'); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,6 +138,18 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'type'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isForPregnants', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isForPregnants', array('Нет', 'Да'), array(
+                                    'id' => 'isForPregnants',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'isForPregnants'); ?>
                             </div>
                         </div>
                     </div>

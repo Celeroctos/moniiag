@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#medworkers").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип персонала'],
+        colNames:['Код', 'Наименование', 'Тип персонала', 'Может обслуживать беременных', ''],
         colModel:[
             {
                 name:'id',
@@ -18,7 +18,18 @@ $(document).ready(function() {
                 name: 'medpersonal_type',
                 index:'medpersonal_type',
                 width: 150
-            }
+            },
+            {
+                name: 'pregnants',
+                index:'pregnants',
+                width: 240
+            },
+            {
+                name: 'is_for_pregnants',
+                index: 'is_for_pregnants',
+                width: 150,
+                hidden: true
+            },
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -124,6 +135,10 @@ $(document).ready(function() {
                             {
                                 modelField: 'type',
                                 formField: 'type'
+                            },
+                            {
+                                modelField: 'is_for_pregnants',
+                                formField: 'isForPregnants'
                             },
                         ];
                         for(var i = 0; i < fields.length; i++) {

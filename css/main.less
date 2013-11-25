@@ -263,7 +263,7 @@ form span.required {
   font-weight: bold;
   color: #ff0000;
 }
-#employee-filter-form, #contact-filter-form, #patient-search-form {
+#employee-filter-form, #contact-filter-form, #patient-search-form, #edit-profile-form, #pregnant-search-form {
     input[type='submit'],  input[type='button'] {
         margin-left: 18%;
     }
@@ -283,7 +283,12 @@ select[multiple="multiple"] {
 .submitEditPatient input[type='submit'] {
   margin: 10px 0 0 80%
 }
-
+#pregnant-addedit-form {
+  margin-left: @default-margin;
+  input[type='submit'] {
+    margin-left: 36%;
+  }
+}
 /* Модальные окна */
 
 .error-popup .modal-body .row p {

@@ -17,6 +17,9 @@
                         <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewadd' ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('Добавление пациента', array('/reception/patient/viewadd')) ?>
                         </li>
+                        <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'addpregnant' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Постановка на учёт беременных', array('/reception/patient/addpregnant')) ?>
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -41,8 +44,8 @@
                 <li <?php echo $controller == 'shedule' && $module == 'doctors' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Приём больных', array('/doctors/shedule/view')) ?>
                 </li>
-                <li <?php echo $controller == 'system' && $module == 'settings' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Ведение беременных', array('/settings/system/view')) ?>
+                <li <?php echo $controller == 'prechild' && $module == 'doctors' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Ведение беременных', array('/doctors/prechild/view')) ?>
                 </li>
             </ul>
         </li>
@@ -50,7 +53,7 @@
             <?php echo CHtml::link('Справочники', array('/guides/enterprises/view')) ?>
         </li>
         <li <?php echo $module == 'settings' ? 'class="active"' : ''; ?>>
-            <?php echo CHtml::link('Настройки', array('/settings/profile/index')) ?>
+            <?php echo CHtml::link('Настройки', array('/settings/index/view')) ?>
             <ul class="nav">
                 <li <?php echo $controller == 'profile' && $module == 'settings' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Профиль', array('/settings/profile/view')) ?>

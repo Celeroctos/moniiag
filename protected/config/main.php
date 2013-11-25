@@ -62,6 +62,14 @@ return array(
                 'application.modules.doctors.components.*',
                 'application.modules.doctors.controllers.*'
             ),
+        ),
+        'settings' => array(
+            'class' => 'application.modules.settings.SettingsModule',
+            'import'=>array(
+                'application.modules.settings.models.*',
+                'application.modules.settings.components.*',
+                'application.modules.settings.controllers.*'
+            ),
         )
 	),
 

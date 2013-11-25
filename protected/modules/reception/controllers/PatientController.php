@@ -259,30 +259,7 @@ class PatientController extends Controller {
 
     // Поиск пациента и его запись
     public function actionSearch() {
-        if(!isset($_GET['filters']) || trim($_GET['filters']) == '') {
-            echo CJSON::encode(array('success' => false,
-                                     'data' => 'Задан пустой поисковой запрос.')
-            );
-            exit();
-        }
-
-        $filters = CJSON::decode($_GET['filters']);
-        $allEmpty = true;
-        foreach($filters['rules'] as $key => $filter) {
-            if(trim($filter['data']) != '') {
-                $allEmpty = false;
-            }
-        }
-
-        if($allEmpty) {
-            echo CJSON::encode(array('success' => false,
-                                     'data' => 'Задан пустой поисковой запрос.')
-            );
-            exit();
-        }
-
-        $model = new Oms();
-        $oms = $model->getRows($filters);
+        $oms = $this->searchPatients();
         $omsWith = array();
         $omsWithout = array();
 
@@ -300,6 +277,195 @@ class PatientController extends Controller {
                                  'data' => array('without' => $omsWithout,
                                                  'with' => $omsWith)
         ));
+    }
+
+    private function searchPatients($filters = false) {
+        if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
+            echo CJSON::encode(array('success' => false,
+                                     'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
+
+        $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
+        $allEmpty = true;
+        foreach($filters['rules'] as $key => $filter) {
+            if(trim($filter['data']) != '') {
+                $allEmpty = false;
+            }
+        }
+
+        if($allEmpty) {
+            echo CJSON::encode(array('success' => false,
+                    'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
+
+        $model = new Oms();
+        $oms = $model->getRows($filters);
+        return $oms;
+    }
+
+
+    // Постановка на учёт беременных, вьюха
+    public function actionAddPregnant() {
+        $searchModel = $this->fillAndGetSearchFields();
+        $addEditModel = $this->fillAndGetPregnantFields($searchModel->cardNumber);
+
+        $doctorsList = array('-1' => 'Нет');
+        // Получаем список врачей, которых можно прикрепить к пациентке
+        $employeeModel = new Employee();
+        $employees = $employeeModel->getRows(false, false, array(
+            'groupOp' => 'AND',
+            'rules' => array(
+                array(
+                    'field' => 'is_for_pregnants',
+                    'op' => 'eq',
+                    'data' => 1 // Всех, кто может обслуживать беременных
+                )
+            )
+        ));
+        foreach($employees as $employee) {
+            $doctorsList[$employee['id']] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.mb_strtolower($employee['ward'], 'UTF-8').' отделение, '.$employee['enterprise'].')';
+        }
+
+        echo $this->render('pregnant', array(
+            'model' => $searchModel,
+            'modelAddEdit' => $addEditModel,
+            'doctorsList' => $doctorsList
+        ));
+    }
+
+    // Постановка на учёт беременных: сам экшн формы
+    public function actionAddEditPregnant() {
+        $model = new FormPregnantAdd();
+        if(isset($_POST['FormPregnantAdd'])) {
+            $model->attributes = $_POST['FormPregnantAdd'];
+            if($model->validate()) {
+                $pregnant = Pregnant::model()->findByPk($_POST['FormPregnantAdd']['id']);
+                if($pregnant == null) {
+                    $pregnant = new Pregnant();
+                }
+                $this->addEditModelPregnant($pregnant, $model);
+                echo CJSON::encode(array('success' => 'true',
+                                         'msg' => 'Запись успешно отредактирована.'));
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                    'errors' => $model->errors));
+            }
+        }
+    }
+
+    public function addEditModelPregnant($pregnant, $model) {
+        $pregnant->doctor_id = $model->doctorId;
+        $pregnant->register_type = $model->registerType;
+        $pregnant->card_id = $model->cardId;
+
+        if(!$pregnant->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'error' => 'Произошла ошибка записи данных о беременной.'));
+            exit();
+        }
+    }
+
+    // Поиск беременных
+    public function actionSearchPregnant() {
+        $model = new FormPregnantSearch();
+        if(isset($_POST['FormPregnantSearch'])) {
+            $model->attributes = $_POST['FormPregnantSearch'];
+            if($model->validate()) {
+                $filters = array(
+                    'groupOp' => 'AND',
+                    'rules' => array(
+                        array(
+                            'field' => 'first_name',
+                            'op' => 'cn',
+                            'data' => $model->firstName
+                        ),
+                        array(
+                            'field' => 'last_name',
+                            'op' => 'cn',
+                            'data' => $model->lastName
+                        ),
+                        array(
+                            'field' => 'middle_name',
+                            'op' => 'cn',
+                            'data' => $model->middleName
+                        ),
+                        array(
+                            'field' => 'oms_number',
+                            'op' => 'cn',
+                            'data' => $model->omsNumber
+                        ),
+                        array(
+                            'field' => 'card_number',
+                            'op' => 'cn',
+                            'data' => $model->cardNumber
+                        ),
+                        array(
+                            'field' => 'gender',
+                            'op' => 'eq',
+                            'data' => 0
+                        )
+                    )
+                );
+                // Проверим, не задан ли пустой поисковой запрос
+                $isNotEmpty = false;
+                foreach($filters['rules'] as $filter) {
+                    if(trim($filter['data']) != '' && $filter['field'] != 'gender') {
+                        $isNotEmpty = true;
+                        break;
+                    }
+                }
+                $result = $this->searchPatients($isNotEmpty !== false ? CJSON::encode($filters) : false);
+                echo CJSON::encode(array('success' => 'true',
+                                         'data' => $result));
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
+    }
+
+    // Сделать поисковую модель
+    private function fillAndGetSearchFields() {
+        $model = new FormPregnantSearch();
+        if(isset($_GET['cardid']) && trim($_GET['cardid']) != '') {
+            // Сначала ищем медкарту, а потом по ней - полис.
+            $medcard = Medcard::model()->findByPk($_GET['cardid']);
+            if($medcard == null) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => 'Невозможно найти медкарту!'));
+                exit();
+            }
+            $oms = Oms::model()->findByPk($medcard->policy_id);
+            if($oms != null && $oms->gender == 0) { // Женский пол
+                $model->cardNumber = $medcard->card_number;
+                $model->omsNumber = $oms->oms_number;
+                $model->firstName = $oms->first_name;
+                $model->lastName = $oms->last_name;
+                $model->middleName = $oms->middle_name;
+                $model->id = $oms->id;
+            }
+        }
+        return $model;
+    }
+
+    // Сделать модель данных о беременной
+    private function fillAndGetPregnantFields($cardNumber) {
+        $model = new FormPregnantAdd();
+        if($cardNumber != null) { // Пациентка была уже выбрана
+            // Выбрать по карте все параметры беременности
+            $pregnant = Pregnant::model()->find('card_id = :card_id', $cardNumber);
+            if($pregnant != null) {
+                $model->id = $pregnant->id;
+                $model->registerType = $pregnant->register_type;
+                $model->doctorId = $pregnant->doctor_id;
+            }
+            $model->cardId = $cardNumber;
+        }
+        return $model;
     }
 }
 

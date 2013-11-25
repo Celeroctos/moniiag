@@ -61,7 +61,7 @@ class Employee extends MisActiveRecord  {
                 )
             ), array(
                 'd' => array('id', 'fio', 'tabel_number', 'date_begin', 'date_end', 'first_name', 'middle_name', 'last_name'),
-                'm' => array('post'),
+                'm' => array('post', 'is_for_pregnants'),
                 'de' => array('degree'),
                 't' => array('titul'),
                 'w' => array('ward'),

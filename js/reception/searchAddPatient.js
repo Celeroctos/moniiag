@@ -117,6 +117,11 @@ $(document).ready(function() {
                             '<span class="glyphicon glyphicon-edit"></span>' +
                         '</a>' +
                     '</td>' +
+                    '<td>' +
+                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/addpregnant/?cardid=' + data[i].card_number + '">' +
+                        ((data[i].gender == 0) ? '<span class="glyphicon glyphicon-edit"></span>' : '') +
+                        '</a>' +
+                    '</td>' +
                 '</tr>'
             );
         }
