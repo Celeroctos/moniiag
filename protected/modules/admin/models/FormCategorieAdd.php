@@ -4,13 +4,17 @@ class FormCategorieAdd extends CFormModel
 {
     public $name;
     public $id;
+	public $parentId;
 
     public function rules()
     {
         return array(
             array(
-                'name', 'required'
-            )
+                'name, parentId', 'required'
+            ),
+			array(
+				'parentId', 'numerical'
+			),
         );
     }
 
@@ -18,6 +22,7 @@ class FormCategorieAdd extends CFormModel
     {
         return array(
             'name' => 'Название категории',
+			'parentId' => 'Категория-родитель'
         );
     }
 }

@@ -30,8 +30,9 @@ class MedcardCategorie extends MisActiveRecord {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $categories = $connection->createCommand()
-            ->select('mc.*')
-            ->from('mis.medcard_categories mc');
+            ->select('mc.*, mc2.name as parent')
+            ->from('mis.medcard_categories mc')
+			->leftJoin('mis.medcard_categories mc2', 'mc.parent_id = mc2.id');
 
         if($filters !== false) {
             $this->getSearchConditions($categories, $filters, array(

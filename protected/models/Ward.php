@@ -38,7 +38,7 @@ class Ward extends MisActiveRecord {
             $this->getSearchConditions($wards, $filters, array(
 
             ), array(
-                'mw' => array('id', 'name'),
+                'mw' => array('id', 'name', 'enterprise_id'),
                 'e' => array('enterprise_name')
             ), array(
                 'enterprise_name' => 'shortname'

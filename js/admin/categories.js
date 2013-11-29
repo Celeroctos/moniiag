@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#categories").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/categories/get',
         datatype: "json",
-        colNames:['Код', 'Название'],
+        colNames:['Код', 'Название', 'Родитель', ''],
         colModel:[
             {
                 name:'id',
@@ -14,6 +14,16 @@ $(document).ready(function() {
                 index:'name',
                 width: 250
             },
+			{
+				name: 'parent',
+				index: 'parent',
+				width: 250
+			},
+			{
+				name: 'parent_id',
+				index: 'parent_id',
+				hidden: true
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -118,7 +128,11 @@ $(document).ready(function() {
                             {
                                 modelField: 'name',
                                 formField: 'name'
-                            }
+                            },
+							{
+								modelField: 'parent_id',
+								formField: 'parentId'
+							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);

@@ -34,6 +34,40 @@ class Doctor extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }
+
+    public function getRows($filters) {
+        $connection = Yii::app()->db;
+        $doctor = $connection->createCommand()
+            ->select('d.*, w.name as ward, m.name as post')
+            ->from('mis.doctors d')
+            ->leftJoin('mis.wards w', 'd.ward_code = w.id')
+            ->leftJoin('mis.medpersonal m', 'd.post_id = m.id');
+
+        if($filters !== false) {
+            $this->getSearchConditions($doctor, $filters, array(
+            ), array(
+                'd' => array('id', 'first_name', 'last_name', 'middle_name', 'post_id', 'ward_code')
+            ), array(
+            ));
+        }
+        $doctors = $doctor->queryAll();
+        foreach($doctors as $key => &$doctor) {
+            $doctor['cabinets'] = array();
+            $cabinets = DoctorCabinet::model()->findAll('doctor_id = :doctor_id', array(':doctor_id' => $doctor['id']));
+            foreach($cabinets as $cabinet) {
+                $cab = Cabinet::model()->findByPk($cabinet->cabinet_id);
+                if($cab == null) {
+                    continue;
+                }
+                $doctor['cabinets'][] = array(
+                    'id' => $cabinet->cabinet_id,
+                    'number' => $cab->cab_number,
+                    'description' => $cab->description
+                );
+            }
+        }
+        return $doctors;
+    }
 }
 
 ?>

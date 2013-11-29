@@ -3,8 +3,17 @@ class CategoriesController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
 
     public function actionView() {
+		$categoriesList = array('-1' => 'Нет');
+		// Получить все категории 
+		$categoriesModel = new MedcardCategorie();
+        $categories = $categoriesModel->getRows(false);
+        foreach($categories as $index => $categorie) {
+            $categoriesList[$categorie['id']] = $categorie['name'];
+        }
+
         $this->render('catView', array(
-            'model' => new FormCategorieAdd()
+            'model' => new FormCategorieAdd(),
+			'categoriesList' => $categoriesList
         ));
     }
 
@@ -29,7 +38,14 @@ class CategoriesController extends Controller {
             $start = $page * $rows - $rows;
 
             $categories = $model->getRows($filters, $sidx, $sord, $start, $rows);
-
+			foreach($categories as &$categorie) {
+				if($categorie['parent_id'] == null || $categorie['parent_id'] == -1) {
+					$categorie['parent'] = 'Нет';
+					if($categorie['parent_id'] == null) {
+						$categorie['parent_id'] = -1;
+					}
+				}
+			}
             echo CJSON::encode(
                 array('rows' => $categories,
                     'total' => $totalPages,
@@ -71,6 +87,7 @@ class CategoriesController extends Controller {
 
     private function addEditModel($categorie, $model, $msg) {
         $categorie->name = $model->name;
+		$categorie->parent_id = $model->parentId;
         if($categorie->save()) {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));

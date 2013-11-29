@@ -91,7 +91,7 @@ class PatientController extends Controller {
         $oms->birthday = $model->birthday;
 
         if(!$oms->save()) {
-            echo CJSON::encode(array('success' => true,
+            echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи нового полиса.'));
             exit();
         }
@@ -466,6 +466,37 @@ class PatientController extends Controller {
             $model->cardId = $cardNumber;
         }
         return $model;
+    }
+
+    // Экшн записи пациента: шаг 1
+    public function actionWritePatientStepOne() {
+        $this->render('writePatient1', array(
+
+        ));
+    }
+
+    // Экшн записи пациента: шаг 1
+    public function actionWritePatientStepTwo() {
+        // Список отделений
+        $ward = new Ward();
+        $wardsResult = $ward->getRows(false);
+        $wardsList = array('-1' => 'Нет');
+        foreach($wardsResult as $key => $value) {
+            $wardsList[$value['id']] = $value['name'];
+        }
+
+        // Список должностей
+        $post = new Post();
+        $postsResult = $post->getRows(false);
+        $postsList = array('-1' => 'Нет');
+        foreach($postsResult as $key => $value) {
+            $postsList[$value['id']] = $value['name'];
+        }
+
+        $this->render('writePatient2', array(
+            'wardsList' => $wardsList,
+            'postsList' => $postsList
+        ));
     }
 }
 

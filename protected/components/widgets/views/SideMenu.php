@@ -7,7 +7,7 @@
             <?php echo CHtml::link('Регистратура', array('/reception/index/index')) ?>
             <ul class="nav">
                 <li>
-                    <li <?php echo $controller == 'patient' && $module == 'reception' ? 'class="active"' : ''; ?>>
+                    <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'viewsearch' || $action == 'viewadd' || $action == 'addpregnant' || $action == 'index') ? 'class="active"' : ''; ?>>
                         <?php echo CHtml::link('Работа с пациентами', array('/reception/patient/index')) ?>
                     </li>
                     <ul class="nav">
@@ -33,7 +33,7 @@
                         </li>
                     </ul>
                 </li>
-                <li <?php echo $controller == 'index' && $module == 'reception' && $action == 'writepatientstepone' ? 'class="active"' : ''; ?>>
+                <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Запись пациента', array('/reception/patient/writepatientstepone')) ?>
                 </li>
             </ul>
@@ -69,14 +69,22 @@
                 <li <?php echo (($controller == 'users' || $controller == 'roles') && $module == 'admin') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Пользователи', array('/admin/users/view')) ?>
                 </li>
+                <li <?php echo ($controller == 'modules') && $module == 'admin' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Настройки модулей', array('/admin/modules/infoview')) ?>
+                    <ul class="nav">
+                        <li <?php echo $controller == 'modules' && $module == 'admin' && $action == 'shedulesettings' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Расписание врачей', array('/admin/modules/shedulesettings'));  ?>
+                        </li>
+                    </ul>
+                </li>
                 <li <?php echo ($controller == 'templates' || $controller == 'categories' || $controller == 'guides' || $controller == 'elements') && $module == 'admin' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Рабочее место врача', array('/admin/templates/view')) ?>
+                    <ul class="nav">
+                        <li <?php echo $controller == 'guides' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Врачебные справочники', array('/admin/guides/allview')) ?>
+                        </li>
+                    </ul>
                 </li>
-                <ul class="nav">
-                    <li <?php echo $controller == 'guides' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('Врачебные справочники', array('/admin/guides/allview')) ?>
-                    </li>
-                </ul>
             </ul>
         </li>
         <li>

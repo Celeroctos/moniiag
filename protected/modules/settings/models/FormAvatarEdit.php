@@ -10,7 +10,7 @@ class FormAvatarEdit extends FormMisDefault
             array(
                 'avatar', 'file', 'maxSize' => 1024 * 50, // В килобайтах
                                   'types' => 'gif, jpg, jpeg, png',
-                                  'mimeTypes' => 'image/gif, image/jpeg, image/png',
+                                 // 'mimeTypes' => 'image/gif, image/jpeg, image/png',
 
             )
         );
@@ -19,7 +19,8 @@ class FormAvatarEdit extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'avatar' => 'Аватар'
+            'avatar' => 'Аватар',
+			'avatarImg' => ''
         );
     }
 }

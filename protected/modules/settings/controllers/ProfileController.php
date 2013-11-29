@@ -8,7 +8,8 @@ class ProfileController extends Controller {
         $this->setProfileValues();
         $this->render('view', array(
             'model' => $this->formModel,
-            'avatarModel' => new FormAvatarEdit()
+            'avatarModel' => new FormAvatarEdit(),
+			'avatarPath' => $this->getAvatarPath(),
         ));
     }
 
@@ -102,12 +103,44 @@ class ProfileController extends Controller {
         }
         $model = new FormAvatarEdit();
         if(isset($_POST['FormAvatarEdit'])) {
-
+			$model->avatar = CUploadedFile::getInstance($model, 'avatar');
+			if($model->validate()) {
+				// Попробуем найти аватар в базе. Если он есть, значит нужно заменить имя файла и ссылку на файл. Если нет - создать новый.
+				$fileModel = FileModel::model()->find('owner_id = :owner_id AND type = 0', array(':owner_id' => Yii::app()->user->id));
+				if($fileModel == null) {
+					$fileModel = new FileModel();
+					$fileModel->owner_id = Yii::app()->user->id;
+					$fileModel->type = 0;
+				}
+				$filenameGenered = md5(date('Y-m-d h:m:s').$model->avatar->name);
+				$fileModel->filename = $filenameGenered;
+				$fileModel->path = '/uploads/avatars/'.Yii::app()->user->id.'/'.$filenameGenered.'.'.$model->avatar->extensionName;
+				if($fileModel->save()) {
+					// Надо скопировать файл..
+					// Создадим директории, если не существуют
+					if(!file_exists(getcwd().'/uploads')) {
+						mkdir(getcwd().'/uploads');
+					}
+					if(!file_exists(getcwd().'/uploads/avatars')) {
+						mkdir(getcwd().'/uploads/avatars');
+					}
+					if(!file_exists(getcwd().'/uploads/avatars/'.Yii::app()->user->id)) {
+						mkdir(getcwd().'/uploads/avatars/'.Yii::app()->user->id);
+					}
+					$model->avatar->saveAs(getcwd().$fileModel->path);
+				}
+			}
         }
-        echo CJSON::encode(array('success' => 'true',
-                'msg' => 'Профиль успешно отредактирован.'
-            )
-        );
+		$req = new CHttpRequest();
+		$req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/profile/view'));
     }
+	
+	public function getAvatarPath() {
+		$fileModel = FileModel::model()->find('owner_id = :owner_id AND type = 0', array(':owner_id' => Yii::app()->user->id));
+		if($fileModel == null) {
+			
+		}
+		return $fileModel->path;
+	}
 }
 ?>

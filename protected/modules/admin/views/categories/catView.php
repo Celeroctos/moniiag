@@ -47,6 +47,19 @@
                                 <?php echo $form->error($model,'name'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'parentId', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model,'parentId', $categoriesList, array(
+                                    'id' => 'parentId',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Категория-родитель'
+                                )); ?>
+                                <?php echo $form->error($model,'parentId'); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -107,6 +120,19 @@
                                     'placeholder' => 'Название категории'
                                 )); ?>
                                 <?php echo $form->error($model,'name'); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'parentId', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model,'parentId', $categoriesList, array(
+                                    'id' => 'parentId',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Категория-родитель'
+                                )); ?>
+                                <?php echo $form->error($model,'parentId'); ?>
                             </div>
                         </div>
                     </div>

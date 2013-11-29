@@ -28,16 +28,21 @@ echo $form->hiddenField($model,'medcardId', array(
             </div>
         </div>
     </div>
-<?php foreach($categories  as $index => $template) {
-    foreach($template  as $key => $categorie) {
-        ?>
-        <div id="accordion<?php echo $index; ?>" class="accordion">
+<?php function drawCategorie($categorie, $form, $model) { ?>
+	        <div id="accordion<?php echo $categorie['id']; ?>" class="accordion">
             <div class="accordion-group">
                 <div class="accordion-heading">
-                    <a href="#collapse<?php echo $categorie['id']; ?>" data-parent="#accordion<?php echo $index; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?></a>
+                    <a href="#collapse<?php echo $categorie['id']; ?>" data-parent="#accordion<?php echo $categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?></a>
                 </div>
                 <div class="accordion-body collapse" id="collapse<?php echo $categorie['id']; ?>">
                     <div class="accordion-inner">
+						<?php // Подкатегории 
+							if(isset($categorie['children'])) {
+								foreach($categorie['children'] as $key => $childCategorie) {
+									drawCategorie($childCategorie, $form, $model);
+								} 
+							}
+						?>
                         <?php foreach($categorie['elements'] as $element) { ?>
                             <div class="form-group">
                                 <div class="col-xs-3">
@@ -82,7 +87,11 @@ echo $form->hiddenField($model,'medcardId', array(
                 </div>
             </div>
         </div>
-    <?php } ?>
+<?php }?>
+<?php foreach($categories  as $index => $template) {
+    foreach($template  as $key => $categorie) {
+			drawCategorie($categorie, $form, $model);
+		} ?>
 <?php } ?>
     <div class="form-group submitEditPatient">
         <?php echo CHtml::ajaxSubmitButton(

@@ -32,10 +32,9 @@ class MedcardTemplate extends MisActiveRecord {
             $templates = $connection->createCommand()
                 ->select('mt.*')
                 ->from('mis.medcard_templates mt')
-                ->where('mt.page_id = :page_id', array(':page_id' => $id))
-                ->queryAll();
+                ->where('mt.page_id = :page_id', array(':page_id' => $id));
 
-            return $templates;
+            return $templates->queryAll();
 
         } catch(Exception $e) {
             echo $e->getMessage();

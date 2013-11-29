@@ -7,14 +7,23 @@
         'id' => 'edit-profile-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/profile/avatarupload'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
-            'role' => 'form'
+            'role' => 'form',
+			'enctype' => 'multipart/form-data'
         )
     ));
     ?>
     <div class="row">
+		<div class="form-group">
+            <?php echo $form->labelEx($avatarModel,'avatarImg', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="col-xs-4">
+               <img src="<?php echo $avatarPath; ?>" />
+            </div>
+        </div>
         <div class="form-group">
             <?php echo $form->labelEx($avatarModel,'avatar', array(
                 'class' => 'col-xs-2 control-label'
@@ -29,14 +38,9 @@
         </div>
         <div class="form-group">
             <div class="edit-profile-submit">
-                <?php echo CHtml::ajaxSubmitButton(
+                <?php echo CHtml::submitButton(
                     'Загрузить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/profile/avatarupload'),
-                    array(
-                        'success' => 'function(data, textStatus, jqXHR) {
-                                        $("#edit-profile-form").trigger("success", [data, textStatus, jqXHR])
-                                    }'
-                    ),
+                    
                     array(
                         'class' => 'btn btn-success'
                     )
