@@ -246,7 +246,9 @@ class PatientController extends Controller {
         $code = substr($year, mb_strlen($year) - 2);
 
         $medcard = new Medcard();
+
         $last = $medcard->getLastMedcardPerYear($code);
+
         if(count($last) == 0) {
             $idPerYear = 1;
         } else {
