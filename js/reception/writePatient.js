@@ -25,9 +25,39 @@ $(document).ready(function() {
                     'data' : $('#lastName').val()
                 },
                 {
+                    'field' : 'address_reg',
+                    'op' : 'cn',
+                    'data' : $('#addressReg').val()
+                },
+                {
+                    'field' : 'address',
+                    'op': 'cn',
+                    'data' : $('#address').val()
+                },
+                {
                     'field' : 'card_number',
                     'op' : 'cn',
                     'data' : $('#cardNumber').val()
+                },
+                {
+                    'field' : 'serie',
+                    'op' : 'cn',
+                    'data' : $('#serie').val()
+                },
+                {
+                    'field' : 'docnumber',
+                    'op' : 'cn',
+                    'data' : $('#docnumber').val()
+                },
+                {
+                    'field' : 'snils',
+                    'op' : 'cn',
+                    'data' : $('#snils').val()
+                },
+                {
+                    'field' : 'birthday',
+                    'op' : 'eq',
+                    'data' : $('#birthday').val()
                 }
             ]
         };

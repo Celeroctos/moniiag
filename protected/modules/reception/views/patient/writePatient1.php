@@ -28,6 +28,12 @@
         </div>
     </div>
     <div class="form-group">
+        <label for="cardNumber" class="col-xs-2 control-label">Номер карты</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" id="cardNumber" placeholder="Номер карты">
+        </div>
+    </div>
+    <div class="form-group">
         <label for="lastName" class="col-xs-2 control-label">Фамилия</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="lastName" placeholder="Фамилия">
@@ -46,10 +52,43 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="cardNumber" class="col-xs-2 control-label">Номер карты</label>
+        <label for="serie" class="col-xs-2 control-label">Серия документа</label>
         <div class="col-xs-4">
-            <input type="text" class="form-control" id="cardNumber" placeholder="Номер карты">
+            <input type="text" class="form-control" id="serie" placeholder="Серия документа">
         </div>
+    </div>
+      <div class="form-group">
+        <label for="docnumber" class="col-xs-2 control-label">Номер документа</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" id="docnumber" placeholder="Номер документа">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="addressReg" class="col-xs-2 control-label">Адрес регистрации</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" id="addressReg" placeholder="Адрес регистрации">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="address" class="col-xs-2 control-label">Адрес прописки</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" id="address" placeholder="Адрес прописки">
+        </div>
+    </div>
+     <div class="form-group">
+        <label for="snils" class="col-xs-2 control-label">СНИЛС</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" id="snils" placeholder="СНИЛС">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>                    
+    	<div id="birthday-cont" class="col-xs-4 input-group date">
+            <input type="text" name="birthday" placeholder="Дата рождения" class="form-control col-xs-4" id="birthday">                       
+            <span class="input-group-addon">
+                <span class="glyphicon-calendar glyphicon"></span>
+            </span>
+    	</div>
     </div>
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">

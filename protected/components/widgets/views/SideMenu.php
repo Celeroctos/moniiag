@@ -17,9 +17,6 @@
                         <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewadd' ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('Добавление пациента', array('/reception/patient/viewadd')) ?>
                         </li>
-                        <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'addpregnant' ? 'class="active"' : ''; ?>>
-                            <?php echo CHtml::link('Постановка на учёт беременных', array('/reception/patient/addpregnant')) ?>
-                        </li>
                     </ul>
                 </li>
                 <li>

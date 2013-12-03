@@ -26,10 +26,10 @@ class FormPatientAdd extends FormMisDefault
     {
         return array(
             array(
-                'policy, lastName, firstName, middleName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
+                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, middleName', 'safe'
             )
         );
     }
@@ -37,7 +37,7 @@ class FormPatientAdd extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'policy' => 'Номер полиса',
+            'policy' => 'ОМС',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',

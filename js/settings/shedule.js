@@ -192,4 +192,18 @@ $(document).ready(function() {
             })
         }
     });
+
+    // Инициализация timePicker-ов
+    $('#timeBegin-cont, #timeEnd-cont').datetimepicker({
+        language:  'fr',
+        format: 'h:i',
+        weekStart: 1,
+        todayBtn:  1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 1,
+        minView: 0,
+        maxView: 1,
+        forceParse: 0
+    })
 });

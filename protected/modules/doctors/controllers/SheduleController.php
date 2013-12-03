@@ -10,19 +10,31 @@ class SheduleController extends Controller {
             $medcardFinded = Medcard::model()->findByPk($_GET['cardid']);
             if($medcardFinded != null) {
                 $this->currentPatient = trim($_GET['cardid']);
+                $medcardModel = new Medcard();
+                $medcard = $medcardModel->getOne($this->currentPatient);
+                // Вычисляем количество лет
+                $parts = explode('-', $medcard['birthday']);
+                $medcard['full_years'] = date('Y') - $parts[0];
             }
         }
 
         $this->filterModel = new FormSheduleFilter();
         $patients = $this->getCurrentPatients();
-       /*echo "<pre>";
-        var_dump($patients);
-        exit(); */
+        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
+
         $this->render('index', array(
             'patients' => $patients,
+            'patientsInCalendar' => $patientsInCalendar,
             'currentPatient' => $this->currentPatient,
-            'filterModel' => $this->filterModel
+            'filterModel' => $this->filterModel,
+            'medcard' => isset($medcard) ? $medcard : null
         ));
+    }
+
+    // Получить даты, в которых у врача есть пациенты
+    private function getDaysWithPatients() {
+        $shedule = new SheduleByDay();
+        return $shedule->getDaysWithPatients(Yii::app()->user->id);
     }
 
     // Редактирование данных пациента

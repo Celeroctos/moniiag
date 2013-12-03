@@ -45,6 +45,16 @@ class SheduleByDay extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+
+    public function getDaysWithPatients($userId) {
+        $connection = Yii::app()->db;
+        $dates = $connection->createCommand()
+            ->selectDistinct('dsbd.patient_time')
+            ->from('mis.doctor_shedule_by_day dsbd')
+            ->leftJoin('mis.users u', 'dsbd.doctor_id = u.id')
+            ->where('u.id = :id', array(':id' => $userId));
+        return $dates->queryAll();
+    }
 }
 
 ?>

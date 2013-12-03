@@ -1,4 +1,3 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-edit-form',
@@ -16,18 +15,6 @@ echo $form->hiddenField($model,'medcardId', array(
     'value' => $currentPatient
 ));
 ?>
-    <div id="accordionX" class="accordion">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a href="#collapseX" data-parent="#accordionX" data-toggle="collapse" class="accordion-toggle">Реквизитная информация</a>
-            </div>
-            <div class="accordion-body collapse" id="collapseX">
-                <div class="accordion-inner">
-                    <p>HTML stands for HyperText Markup Language. HTML is the main markup language for describing the structure of Web pages. <a href="http://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
 <?php function drawCategorie($categorie, $form, $model) { ?>
 	        <div id="accordion<?php echo $categorie['id']; ?>" class="accordion">
             <div class="accordion-group">

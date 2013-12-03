@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
-<h4>Первичная регистрация пациента и добавление первой ЭМК</h4>
+<h4>Первичная регистрация пациента и добавление первой ЭМК (<?php echo $regPoint; ?> год)</h4>
 <p class="text-left">
     Не нашли в списке пациентов нужного? Добавьте запись о нём, заполнив поля формы.
 </p>
@@ -27,7 +27,7 @@
                         <?php echo $form->textField($model,'policy', array(
                             'id' => 'policy',
                             'class' => 'form-control',
-                            'placeholder' => 'Номер полиса'
+                            'placeholder' => 'ОМС'
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
                     </div>

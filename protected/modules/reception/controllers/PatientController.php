@@ -12,30 +12,41 @@ class PatientController extends Controller {
         $this->render('searchPatient', array());
     }
 
-    // Просмотр страницы добавления пациента
+    // Просмотр страницы добавления карты к пациенту
     public function actionViewAdd() {
         if(isset($_GET['patientid'])) {
             $model = new Oms();
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
             if($patient != null) {
-                $model = new FormPatientWithCardAdd();
+                // Нужно найти последнюю медкарту, чтобы по ней заполнить данными
+                $medcardModel = new Medcard();
+                $medcard = $medcardModel->getLastByPatient($patient->id);
+                $formModel = new FormPatientWithCardAdd();
+                // Ищем модель, если карта есть
+                if($medcard != null) {
+                    $medcard = Medcard::model()->findByPk($medcard['card_number']);
+                    $this->fillFormMedcardModel($formModel, $medcard);
+                }
                 $this->render('addPatientWithCard', array(
-                    'model' => $model,
+                    'model' => $formModel,
                     'policy_number' => $patient->oms_number,
                     'policy_id' => $patient->id,
-                    'fio' => $patient->first_name.' '.$patient->last_name.' '.$patient->middle_name
+                    'fio' => $patient->first_name.' '.$patient->last_name.' '.$patient->middle_name,
+                    'regPoint' => date('Y')
                 ));
             } else {
                 $model = new FormPatientAdd();
                 $this->render('addPatientWithoutCard', array(
-                    'model' => $model
+                    'model' => $model,
+                    'regPoint' => date('Y')
                 ));
             }
         } else {
             $model = new FormPatientAdd();
             $this->render('addPatientWithoutCard', array(
-                'model' => $model
+                'model' => $model,
+                'regPoint' => date('Y')
             ));
         }
     }
@@ -46,6 +57,8 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
             if($model->validate()) {
+                $this->checkUniqueOms($model);
+                $this->checkUniqueMedcard($model);
                 $oms = new Oms();
                 $medcard = new Medcard();
 
@@ -61,6 +74,46 @@ class PatientController extends Controller {
         }
     }
 
+    // Проверка на уникальность данных в медкарте
+    private function checkUniqueMedcard($model) {
+        // На момент создания пациента не должно быть идентичного с номером СНИЛС и паспортом (серии + номер)
+        if(trim($model->snils) != '') {
+            $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie)', array(
+                ':snils' => $model->snils,
+                ':docnumber' => $model->docnumber,
+                ':serie' => $model->serie)
+            );
+        } else {
+            $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
+                ':docnumber' => $model->docnumber,
+                ':serie' => $model->serie)
+            );
+        }
+        if($medcardSearched != null) {
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array(
+                    'docnumber' => array(
+                        'Такое сочетание серия-номер паспорта или номер СНИЛС уже есть в базе!'
+                    )
+                )));
+            exit();
+        }
+    }
+
+    private function checkUniqueOms($model) {
+        // Проверим, не существует ли уже такого ОМС
+        $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
+        if($omsSearched != null) {
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array(
+                    'policy' => array(
+                        'Такой номер ОМС уже существует в базе!'
+                    )
+                )));
+            exit();
+        }
+    }
+
     // Добавление карты к существующему пациенту
     public function actionAddCard() {
         $model = new FormPatientWithCardAdd();
@@ -68,7 +121,20 @@ class PatientController extends Controller {
             $model->attributes = $_POST['FormPatientWithCardAdd'];
             if($model->validate()) {
                 $oms = Oms::model()->findByPk($model->policy);
+                // Проверим, нет ли карты с таким годом и с таким пациентом
+                $year = date('Y');
+                $code = substr($year, mb_strlen($year) - 2);
                 $medcard = new Medcard();
+                $medcardSearched = $medcard->getLastMedcardPerYear($code, $oms->id);
+                if($medcardSearched != null) {
+                    echo CJSON::encode(array('success' => 'false',
+                        'errors' => array(
+                            'id' => array(
+                                'Карта для данного пациента в этом году уже создана!'
+                            )
+                        )));
+                    exit();
+                }
 
                 $this->addEditModelMedcard($medcard, $model, $oms);
 
@@ -113,23 +179,7 @@ class PatientController extends Controller {
 
             if($oms != null) {
                 $formModel = new FormPatientWithCardAdd();
-
-                // Заполняем модель
-                $formModel->serie = $medcard->serie;
-                $formModel->snils = $medcard->snils;
-                $formModel->address = $medcard->address;
-                $formModel->addressReg = $medcard->address_reg;
-                $formModel->doctype = $medcard->doctype;
-                $formModel->docnumber = $medcard->docnumber;
-                $formModel->whoGived = $medcard->who_gived;
-                $formModel->documentGivedate = $medcard->gived_date;
-                $formModel->invalidGroup = $medcard->invalid_group;
-                $formModel->workPlace = $medcard->work_place;
-                $formModel->workAddress = $medcard->work_address;
-                $formModel->post = $medcard->post;
-                $formModel->contact = $medcard->contact;
-                $formModel->cardNumber = $medcard->card_number;
-
+                $this->fillFormMedcardModel($formModel, $medcard);
                 $this->render('editMedcard', array(
                     'model' => $formModel,
                     'policy_number' => $oms->oms_number,
@@ -139,6 +189,25 @@ class PatientController extends Controller {
                 ));
             }
         }
+    }
+
+    // Заполнение модели формы значениями
+    private function fillFormMedcardModel($formModel, $medcard) {
+        // Заполняем модель
+        $formModel->serie = $medcard->serie;
+        $formModel->snils = $medcard->snils;
+        $formModel->address = $medcard->address;
+        $formModel->addressReg = $medcard->address_reg;
+        $formModel->doctype = $medcard->doctype;
+        $formModel->docnumber = $medcard->docnumber;
+        $formModel->whoGived = $medcard->who_gived;
+        $formModel->documentGivedate = $medcard->gived_date;
+        $formModel->invalidGroup = $medcard->invalid_group;
+        $formModel->workPlace = $medcard->work_place;
+        $formModel->workAddress = $medcard->work_address;
+        $formModel->post = $medcard->post;
+        $formModel->contact = $medcard->contact;
+        $formModel->cardNumber = $medcard->card_number;
     }
 
     // Редактирование полиса (ОМС), вьюха
@@ -246,7 +315,9 @@ class PatientController extends Controller {
         $code = substr($year, mb_strlen($year) - 2);
 
         $medcard = new Medcard();
+
         $last = $medcard->getLastMedcardPerYear($code);
+
         if(count($last) == 0) {
             $idPerYear = 1;
         } else {
@@ -257,7 +328,7 @@ class PatientController extends Controller {
         return $idPerYear.'/'.$code;
     }
 
-    // Поиск пациента и его запись
+    // Поиск пациента и его запсь
     public function actionSearch() {
         $oms = $this->searchPatients();
         $omsWith = array();
@@ -289,6 +360,7 @@ class PatientController extends Controller {
 
         $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
         $allEmpty = true;
+
         foreach($filters['rules'] as $key => $filter) {
             if(trim($filter['data']) != '') {
                 $allEmpty = false;

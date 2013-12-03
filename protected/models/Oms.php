@@ -20,11 +20,12 @@ class Oms extends MisActiveRecord {
         if($filters !== false) {
             $this->getSearchConditions($oms, $filters, array(
             ), array(
-                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name'),
-                'm' => array('card_number')
+                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday'),
+                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie')
             ), array(
             ));
         }
+
         return $oms->queryAll();
     }
 }

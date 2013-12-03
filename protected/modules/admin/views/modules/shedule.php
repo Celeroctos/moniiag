@@ -154,12 +154,15 @@
                             <?php echo $form->labelEx($shiftModel,'timeBegin', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
-                            <div class="col-xs-9">
+                            <div class="col-xs-9 input-group date" id="timeBegin-cont">
                                 <?php echo $form->textField($shiftModel,'timeBegin', array(
                                     'id' => 'timeBegin',
                                     'class' => 'form-control',
                                     'placeholder' => 'Время начала приёма (hh:mm)'
                                 )); ?>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                                 <?php echo $form->error($shiftModel,'timeBegin'); ?>
                             </div>
                         </div>
@@ -167,12 +170,15 @@
                             <?php echo $form->labelEx($shiftModel,'timeEnd', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
-                            <div class="col-xs-9">
+                            <div class="col-xs-9 input-group date" id="timeEnd-cont">
                                 <?php echo $form->textField($shiftModel,'timeEnd', array(
                                     'id' => 'timeEnd',
                                     'class' => 'form-control',
                                     'placeholder' => 'Время конца приёма (hh:mm)'
                                 )); ?>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                                 <?php echo $form->error($shiftModel,'timeEnd'); ?>
                             </div>
                         </div>
@@ -228,12 +234,15 @@
                             <?php echo $form->labelEx($shiftModel,'timeBegin', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
-                            <div class="col-xs-9">
+                            <div class="col-xs-9 input-group date" id="timeBegin-cont">
                                 <?php echo $form->textField($shiftModel,'timeBegin', array(
                                     'id' => 'timeBegin',
                                     'class' => 'form-control',
                                     'placeholder' => 'Время начала приёма (hh:mm)'
                                 )); ?>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                                 <?php echo $form->error($shiftModel,'timeBegin'); ?>
                             </div>
                         </div>
@@ -241,12 +250,15 @@
                             <?php echo $form->labelEx($shiftModel,'timeEnd', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
-                            <div class="col-xs-9">
+                            <div class="col-xs-9 input-group date" id="timeEnd-cont">
                                 <?php echo $form->textField($shiftModel,'timeEnd', array(
                                     'id' => 'timeEnd',
                                     'class' => 'form-control',
                                     'placeholder' => 'Время конца приёма (hh:mm)'
                                 )); ?>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
                                 <?php echo $form->error($shiftModel,'timeEnd'); ?>
                             </div>
                         </div>

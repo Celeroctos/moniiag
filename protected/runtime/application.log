@@ -26033,3 +26033,1011 @@ REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%2
 in F:\Hosts\Celeroctos\moniiag\www\protected\models\Doctor.php (56)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\DoctorsController.php (40)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\DoctorsController.php (8)
+2013/12/02 11:24:00 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:00 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:00 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:00 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:01 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:01 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:02 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:02 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:03 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:03 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:04 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:17 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:17 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:25 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:25 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:50 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:50 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:24:52 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:24:52 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(53): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/02 11:30:12 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 11:30:12 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(73): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientWithCardAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAddCard()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=39
+---
+2013/12/02 11:31:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
+---
+2013/12/02 14:58:19 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 14:58:19 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(73): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientWithCardAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAddCard()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=34
+---
+2013/12/02 15:03:13 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (233)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (73)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 15:03:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcards_pkey"
+DETAIL:  Ключ "(card_number)=(10/13)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcards" ("card_number", "snils", "address", "address_reg", "doctype", "serie", "docnumber", "who_gived", "gived_date", "invalid_group", "reg_date", "work_place", "work_address", "post", "contact", "policy_id") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:358
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(233): CActiveRecord->save()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(73): PatientController->addEditModelMedcard(Object(Medcard), Object(FormPatientWithCardAdd), Object(Oms))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAddCard()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=34
+---
+2013/12/02 16:18:12 [error] [php] Undefined index: data (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:295)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22},{%22field%22:%22card_number%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1385986685200
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (295)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (264)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 16:20:27 [error] [php] Undefined index: data (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:296)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22},{%22field%22:%22card_number%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1385986685201
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (296)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (264)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/02 17:05:41 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(date) не существует
+LINE 4: ... LIKE '%%')) AND (LOWER(m.snils) LIKE '%%')) AND (LOWER(o.bi...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((((((((((LOWER(o.oms_number) LIKE '%%') AND (LOWER(o.first_name) LIKE '%%')) AND (LOWER(o.middle_name) LIKE '%%')) AND (LOWER(o.last_name) LIKE '%%')) AND (LOWER(m.address_reg) LIKE '%%')) AND (LOWER(m.address) LIKE '%%')) AND (LOWER(m.card_number) LIKE '%%')) AND (LOWER(m.serie) LIKE '%%')) AND (LOWER(m.docnumber) LIKE '%%')) AND (LOWER(m.snils) LIKE '%%')) AND (LOWER(o.birthday) LIKE '%2013-12-02%').
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Oms.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (309)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (264)
+2013/12/02 17:05:41 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция lower(date) не существует
+LINE 4: ... LIKE '%%')) AND (LOWER(m.snils) LIKE '%%')) AND (LOWER(o.bi...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((((((((((LOWER(o.oms_number) LIKE '%%') AND (LOWER(o.first_name) LIKE '%%')) AND (LOWER(o.middle_name) LIKE '%%')) AND (LOWER(o.last_name) LIKE '%%')) AND (LOWER(m.address_reg) LIKE '%%')) AND (LOWER(m.address) LIKE '%%')) AND (LOWER(m.card_number) LIKE '%%')) AND (LOWER(m.serie) LIKE '%%')) AND (LOWER(m.docnumber) LIKE '%%')) AND (LOWER(m.snils) LIKE '%%')) AND (LOWER(o.birthday) LIKE '%2013-12-02%')' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Oms.php(29): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(309): Oms->getRows(Array)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(264): PatientController->searchPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionSearch()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('search')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22cn%22,%22data%22:%222013-12-02%22}]}&_=1385989535476
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/12/03 11:47:16 [error] [system.db.CDbCommand] CDbCommand::fetch() failed: SQLSTATE[08P01]: <<Unknown error>>: 7 ОШИБКА:  в сообщении Bind передано неверное число параметров (0, а подготовленный оператор "pdo_stmt_0000000b" требует 3). The SQL statement executed was: SELECT * FROM "mis"."medcards" "t" WHERE snils = :snils OR (docnumber = :docnumber AND serie = :serie) LIMIT 1.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (60)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/12/03 11:47:16 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[08P01]: <<Unknown error>>: 7 ОШИБКА:  в сообщении Bind передано неверное число параметров (0, а подготовленный оператор "pdo_stmt_0000000b" требует 3). The SQL statement executed was: SELECT * FROM "mis"."medcards" "t" WHERE snils = :snils OR (docnumber = :docnumber AND serie = :serie) LIMIT 1' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(415): CDbCommand->queryInternal('fetch', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryRow()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1456): CActiveRecord->query(Object(CDbCriteria))
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(60): CActiveRecord->find('snils = :snils ...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('add')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/add
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---
+2013/12/03 12:29:47 [error] [php] Missing argument 2 for CDbCommand::leftJoin(), called in F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php on line 45 and defined (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:911)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=49
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 12:34:16 [error] [exception.CException] exception 'CException' with message 'CDbCommand and its behaviors do not have a method or closure named "findAll".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:267
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php(50): CComponent->__call('findAll', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php(50): CDbCommand->findAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(24): Medcard->getLastByPatient(49)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=49
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/12/03 12:34:25 [error] [exception.CException] exception 'CException' with message 'CDbCommand and its behaviors do not have a method or closure named "find".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:267
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php(50): CComponent->__call('find', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php(50): CDbCommand->find()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(24): Medcard->getLastByPatient(49)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=49
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
+---
+2013/12/03 12:36:19 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:177)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=49
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (177)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 12:39:29 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:26)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=49
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/12/03 12:52:56 [error] [php] Undefined variable: regPoint (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithoutCard.php:3)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(47): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithoutCard.php (3)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (47)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 12:53:17 [error] [php] Undefined variable: regPoint (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithoutCard.php:3)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PatientController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PatientController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(47): PatientController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\views\patient\addPatientWithoutCard.php (3)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (47)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 12:56:34 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:195)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd/?patientid=50
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (195)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 13:03:19 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "oms" не существует
+LINE 3: JOIN "oms" "o" ON o.id = m.policy_id
+             ^. The SQL statement executed was: SELECT m.*, CAST(SUBSTRING("m"."card_number", 0, (CHAR_LENGTH("m"."card_number") - 2)) as INTEGER) as "fx"
+FROM "mis"."medcards" "m"
+JOIN "oms" "o" ON o.id = m.policy_id
+WHERE "m"."card_number" LIKE '%/13'
+ORDER BY "fx" DESC LIMIT 1.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (128)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 13:03:19 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "oms" не существует
+LINE 3: JOIN "oms" "o" ON o.id = m.policy_id
+             ^. The SQL statement executed was: SELECT m.*, CAST(SUBSTRING("m"."card_number", 0, (CHAR_LENGTH("m"."card_number") - 2)) as INTEGER) as "fx"
+FROM "mis"."medcards" "m"
+JOIN "oms" "o" ON o.id = m.policy_id
+WHERE "m"."card_number" LIKE '%/13'
+ORDER BY "fx" DESC LIMIT 1' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Medcard.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(128): Medcard->getLastMedcardPerYear('13', 50)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAddCard()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addcard')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/addcard
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=50
+---
+2013/12/03 13:25:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/modules/shedulesettings
+---
+2013/12/03 13:25:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/system/view
+---
+2013/12/03 13:47:03 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:89)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(25): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (25)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 13:57:50 [error] [exception.CException] exception 'CException' with message 'Medcard and its behaviors do not have a method or closure named "queryRow".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:267
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('queryRow', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(14): CActiveRecord->__call('queryRow', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(14): Medcard->queryRow('1/13')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/03 13:57:52 [error] [exception.CException] exception 'CException' with message 'Medcard and its behaviors do not have a method or closure named "queryRow".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:267
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('queryRow', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(14): CActiveRecord->__call('queryRow', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(14): Medcard->queryRow('1/13')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/03 13:58:17 [error] [exception.CException] exception 'CException' with message 'Medcard and its behaviors do not have a method or closure named "queryRow".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:267
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(227): CComponent->__call('queryRow', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(14): CActiveRecord->__call('queryRow', Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(14): Medcard->queryRow('1/13')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/03 13:59:05 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:89)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:00:31 [error] [php] Undefined index: last_name (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:89)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:00:32 [error] [php] Undefined index: last_name (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:89)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (89)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:01:27 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:90)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (90)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:01:28 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:90)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (90)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:01:36 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:90)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (90)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:01:37 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:90)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (90)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:01:38 [error] [php] Undefined index:  (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:90)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(28): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (90)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/03 14:58:49 [error] [php] Undefined offset: 3 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:17)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2013-12-03
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/12/03 15:21:12 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/modules/shedulesettings
+---
+2013/12/03 18:37:13 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ".")
+LINE 1: SELECT "DISTINCT" AS "dsbd"."patient_time"
+                                   ^. The SQL statement executed was: SELECT "DISTINCT" AS "dsbd"."patient_time"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."users" "u" ON dsbd.doctor_id = u.id
+WHERE u.id = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (56)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (37)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (23)
+2013/12/03 18:37:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ".")
+LINE 1: SELECT "DISTINCT" AS "dsbd"."patient_time"
+                                   ^. The SQL statement executed was: SELECT "DISTINCT" AS "dsbd"."patient_time"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."users" "u" ON dsbd.doctor_id = u.id
+WHERE u.id = :id' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(56): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(37): SheduleByDay->getDaysWithPatients(1)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(23): SheduleController->getDaysWithPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/03 18:40:28 [error] [php] Missing argument 1 for CJSON::encode(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php on line 24 and defined (F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CJSON.php:95)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

@@ -133,20 +133,6 @@ $(document).ready(function() {
         });
     });
 
-    // Инициализация дейтпикеров
-    $('#dateBegin-cont').datetimepicker({
-        format: 'yyyy-MM-dd hh:mm:ss'
-    });
-    $('#dateEnd-cont').datetimepicker({
-        format: 'yyyy-MM-dd hh:mm:ss'
-    });
-    $('#dateBeginEdit-cont').datetimepicker({
-        format: 'yyyy-MM-dd hh:mm:ss'
-    });
-    $('#dateEndEdit-cont').datetimepicker({
-        format: 'yyyy-MM-dd hh:mm:ss'
-    });
-
     $("#employee-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
