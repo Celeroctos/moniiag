@@ -183,4 +183,11 @@ $(document).ready(function() {
             });
         }
     });
+
+    $("#firstName, #lastName, #middleName").on('keyup', function(e) {
+        var str = $(this).val();
+        if(str != "") {
+            $(this).val(str.charAt(0).toUpperCase() + str.substr(1));
+        }
+    });
 });

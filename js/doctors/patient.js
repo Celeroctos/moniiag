@@ -24,7 +24,6 @@ $(document).ready(function() {
     });
 
     $("#date-cont").on('refresh', function(e, date) {
-        console.log(date);
         if(typeof date == 'undefined') {
             var currentDate = $('#filterDate').val();
             var currentDateParts = currentDate.split('-');

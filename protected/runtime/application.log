@@ -27041,3 +27041,459 @@ REQUEST_URI=/index.php/doctors/shedule/view
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (24)
 in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/12/04 01:44:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+---
+2013/12/04 11:32:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/templates/view
+---
+2013/12/04 11:42:05 [error] [php] Undefined variable: pregnantContent (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:35)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (31)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 11:43:40 [error] [php] Undefined variable: patientsInCalendar (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:3)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (3)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (31)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 11:44:22 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "prechild.index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('prechild.index', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('prechild.index', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 11:45:10 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 11:45:11 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 11:45:20 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 11:45:21 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 11:45:23 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:11 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "application.modules.doctors.shedule.pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('application.mod...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('application.mod...', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:12 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "application.modules.doctors.shedule.pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('application.mod...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(31): CController->render('application.mod...', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:34 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "application.modules.doctors.shedule.pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('application.mod...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(27): CController->render('application.mod...', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:42 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(27): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:43 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(27): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:44 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(27): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:46:47 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "pregnant".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('pregnant', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(27): CController->render('pregnant', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+---
+2013/12/04 11:49:50 [error] [php] Undefined variable: currentPatient (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php:1)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php(35): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(36): SheduleController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php (1)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (36)
+2013/12/04 11:49:51 [error] [php] Undefined variable: currentPatient (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php:1)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php(35): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(36): SheduleController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php (1)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (36)
+2013/12/04 12:11:23 [error] [php] Undefined variable: patientsInCalendar (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php:3)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php(35): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(36): SheduleController->render()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#10 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#17 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#18 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (3)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (36)
+2013/12/04 12:11:29 [error] [php] Undefined variable: currentPatient (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php:1)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php(35): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(36): SheduleController->render()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#10 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#17 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#18 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php (1)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (36)
+2013/12/04 12:11:31 [error] [php] Undefined variable: currentPatient (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php:1)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php(35): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(36): SheduleController->render()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#10 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#17 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#18 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=2/13&date=2013-12-04
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\pregnant.php (1)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\shedule\index.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (36)
+2013/12/04 13:28:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 13:28:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/guides/allview
+---

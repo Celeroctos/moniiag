@@ -41,9 +41,6 @@
                 <li <?php echo $controller == 'shedule' && $module == 'doctors' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Приём больных', array('/doctors/shedule/view')) ?>
                 </li>
-                <li <?php echo $controller == 'prechild' && $module == 'doctors' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('Ведение беременных', array('/doctors/prechild/view')) ?>
-                </li>
             </ul>
         </li>
         <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
@@ -81,6 +78,9 @@
                             <?php echo CHtml::link('Врачебные справочники', array('/admin/guides/allview')) ?>
                         </li>
                     </ul>
+                </li>
+                <li <?php echo ($controller == 'shedule' && $module == 'admin') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Настройка расписания', array('/admin/shedule/view')) ?>
                 </li>
             </ul>
         </li>

@@ -26,6 +26,7 @@ class SheduleController extends Controller {
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
             'currentPatient' => $this->currentPatient,
+            'pregnantContent' => '',
             'filterModel' => $this->filterModel,
             'medcard' => isset($medcard) ? $medcard : null
         ));

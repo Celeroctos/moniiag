@@ -30,6 +30,13 @@
             'currentPatient' => $currentPatient,
             'templateType' => 0
         )); ?>
+            <?php if($medcard['gender'] == 0) { ?>
+                <h5><strong>Ведение беременности</strong></h5>
+                <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
+                    'currentPatient' => $currentPatient,
+                    'templateType' => 1
+                )); ?>
+            <?php }?>
         <?php } ?>
     </div>
     <div class="col-xs-5">

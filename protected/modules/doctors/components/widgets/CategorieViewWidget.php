@@ -118,5 +118,13 @@ class CategorieViewWidget extends CWidget {
 
         return $element;
     }
+
+    public function drawCategorie($categorie, $form, $model) {
+        $this->render('CategorieElement', array(
+            'categorie' => $categorie,
+            'form' => $form,
+            'model' => $model
+        ));
+    }
 }
 ?>
