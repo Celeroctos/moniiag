@@ -28,10 +28,10 @@ class Medcard extends MisActiveRecord  {
     public function getLastMedcardPerYear($code) {
         $connection = Yii::app()->db;
         $medcard = $connection->createCommand()
-            ->select('m.*')
+            ->select('m.*, CAST(SUBSTRING("m"."card_number", 0, (CHAR_LENGTH("m"."card_number") - 2)) as INTEGER) as "fx"') // Выделение части ключа: нужно отсутствие суррогатного ключа
             ->from('mis.medcards m')
             ->where(array('like', 'm.card_number', '%/'.$code))
-            ->order('card_number desc')
+            ->order('fx desc')
             ->limit(1, 0);
 
         return $medcard->queryAll();

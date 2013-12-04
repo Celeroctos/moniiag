@@ -1,5 +1,4 @@
 <?php
-
 class FormPatientAdd extends FormMisDefault
 {
     public $policy;
@@ -24,20 +23,42 @@ class FormPatientAdd extends FormMisDefault
 
     public function rules()
     {
+		Yii::import('ext.validators.SNILSValidator');
+		//Yii::import('ext.validators.SerialNumberValidator');
+		//Yii::import('ext.validators.NameValidator');
+		Yii::import('ext.validators.FamilyValidator');
+		//Yii::import('ext.validators.FathersNameValidator');
         return array(
             array(
-                'policy, lastName, firstName, middleName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
+                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, middleName', 'safe'
             )
+			,
+			array(
+				'snils', 'SNILSValidator'
+				),
+			//array(
+			//	'serie,docnumber', 'SerialNumberValidator'
+			//),
+			array(
+				'lastName', 'FamilyValidator'
+			)
+			//,
+			//array(
+			///	'firstName', 'NameValidator'
+			//),
+			//array(
+			//	'middleName', 'FathersNameValidator'
+			//)
         );
     }
 
     public function attributeLabels()
     {
         return array(
-            'policy' => 'Номер полиса',
+            'policy' => 'ОМС',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',

@@ -8,6 +8,8 @@
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'МИС Notum',
+	'language'=>'ru',
+	'sourceLanguage'=>'ru',
     'defaultController' => 'index',
     'layout' => 'index',
 
@@ -92,9 +94,9 @@ return array(
 
 		'db'=>array(
 			//'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		    'connectionString' => 'pgsql:host=localhost;port=5432;dbname=postgres;',
-            'username' => 'moniiag',
-            'password' => '12345'
+		    'connectionString' => 'pgsql:host=localhost;port=5432;dbname=mis;',
+            'username' => 'postgres',
+            'password' => '1'
         ),
 		// uncomment the following to use a MySQL database
 		/*

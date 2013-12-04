@@ -42,9 +42,11 @@ class PatientController extends Controller {
 
     // Добавление пациента
     public function actionAdd() {
+		//var_dump($_POST);
         $model = new FormPatientAdd();
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
+			
             if($model->validate()) {
                 $oms = new Oms();
                 $medcard = new Medcard();
@@ -246,7 +248,9 @@ class PatientController extends Controller {
         $code = substr($year, mb_strlen($year) - 2);
 
         $medcard = new Medcard();
+
         $last = $medcard->getLastMedcardPerYear($code);
+
         if(count($last) == 0) {
             $idPerYear = 1;
         } else {
@@ -257,7 +261,7 @@ class PatientController extends Controller {
         return $idPerYear.'/'.$code;
     }
 
-    // Поиск пациента и его запись
+    // Поиск пациента и его запсь
     public function actionSearch() {
         $oms = $this->searchPatients();
         $omsWith = array();
@@ -289,6 +293,7 @@ class PatientController extends Controller {
 
         $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
         $allEmpty = true;
+
         foreach($filters['rules'] as $key => $filter) {
             if(trim($filter['data']) != '') {
                 $allEmpty = false;
