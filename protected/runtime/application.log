@@ -26350,6 +26350,7 @@ Stack trace:
 REQUEST_URI=/index.php/settings/system/view
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/settings/profile/view
 ---
+<<<<<<< HEAD
 2013/12/02 19:28:58 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: could not find driver' in Z:\home\mis.my\yii\db\CDbConnection.php:382
 Stack trace:
 #0 Z:\home\mis.my\yii\db\CDbConnection.php(330): CDbConnection->open()
@@ -26907,3 +26908,5 @@ REQUEST_URI=/index.php/reception/patient/add
 in Z:\home\mis.my\www\protected\extensions\validators\SNILSValidator.php (31)
 in Z:\home\mis.my\www\protected\extensions\validators\SNILSValidator.php (20)
 in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (48)
+=======
+>>>>>>> 0b2c87d32a00949d0814e2fb768774aafa8a688a
