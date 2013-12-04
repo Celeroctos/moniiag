@@ -28104,3 +28104,93 @@ Stack trace:
 #17 {main}
 REQUEST_URI=/
 ---
+2013/12/04 15:03:33 [error] [php] preg_match(): Compilation failed: unmatched parentheses at offset 16 (F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php:28)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(213): FamilyValidator->validateAttribute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(159): FamilyValidator->validate()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(60): FormPatientAdd->validate()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php (28)
+in F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (60)
+2013/12/04 15:17:25 [error] [php] iconv(): Detected an illegal character in input string (F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(213): FamilyValidator->validateAttribute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(159): FamilyValidator->validate()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(60): FormPatientAdd->validate()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (60)
+2013/12/04 15:17:52 [error] [php] iconv(): Wrong charset, conversion from `UTF8' to `cp1251' is not allowed (F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\validators\CValidator.php(213): FamilyValidator->validateAttribute()
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(159): FamilyValidator->validate()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(60): FormPatientAdd->validate()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/add
+in F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\extensions\validators\FamilyValidator.php (18)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (60)
+2013/12/04 15:26:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view
+---
+2013/12/04 15:27:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/guides/allview
+---
+2013/12/04 15:30:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
+---

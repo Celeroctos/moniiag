@@ -1,11 +1,10 @@
 <?php
 class FamilyValidator extends CValidator
 {
-		public $pattern='/^([A-Я]([a-я])+)(\-[A-Я]([a-я])+)*$/';
+		public $pattern='/^([A-Я])([a-я])+(\-[A-Я]([a-я])+)*$/u';
 		// Фамилия может  состоять минимум из двух буков, первая - заглавная 
 	
-		protected function validateAttribute($object,$attribute)
-	{
+		protected function validateAttribute($object,$attribute) {
 		// Проверяем - если значение пустое, то не валидируем
 		//       если значение пустое, но нельзя чтобы так было, то на это должен среагировать 
 		//  только валидатор пустого ввода
@@ -26,8 +25,6 @@ class FamilyValidator extends CValidator
 	
 	public function validateValue($value)
 	{
-		//var_dump($value);
-		//exit();
 		return preg_match($this->pattern,$value);
 	}
 }

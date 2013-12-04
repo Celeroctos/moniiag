@@ -53,7 +53,6 @@ class PatientController extends Controller {
 
     // Добавление пациента
     public function actionAdd() {
-		//var_dump($_POST);
         $model = new FormPatientAdd();
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
