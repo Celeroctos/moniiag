@@ -316,7 +316,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?></p>
+                    <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?> или <?php echo CHtml::link('записать', array('#')) ?> добавленного пациента на приём</p>
                 </div>
             </div>
             <div class="modal-footer">
