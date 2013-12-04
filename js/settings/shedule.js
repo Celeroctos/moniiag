@@ -195,7 +195,7 @@ $(document).ready(function() {
 
     // Инициализация timePicker-ов
     $('#timeBegin-cont, #timeEnd-cont').datetimepicker({
-        language:  'fr',
+        language:  'ru',
         format: 'h:i',
         weekStart: 1,
         todayBtn:  1,
