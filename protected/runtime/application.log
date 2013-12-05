@@ -28194,3 +28194,758 @@ Stack trace:
 REQUEST_URI=/index.php/admin/shedule/view
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewadd
 ---
+2013/12/04 16:31:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/modules/shedulesettings
+---
+2013/12/04 16:36:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/modules/shedulesettings
+---
+2013/12/04 16:36:35 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/shedule/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+---
+2013/12/04 16:40:07 [error] [php] Undefined variable: wardsList (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php:9)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(6): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php (9)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (6)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 17:56:00 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "index".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(24): CController->render('index', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/modules/shedulesettings
+---
+2013/12/04 18:03:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "employee15".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('employee15')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('employee15')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/e...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/employee15
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/04 19:03:36 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 19:03:36 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(26): Mkb10->getRowsByLevel('1', 'name', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('1')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1386169410971&rows=10000&page=1&sidx=name&sord=asc&nodeid=1&parentid=0&n_level=1
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/12/04 19:03:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 19:03:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(26): Mkb10->getRowsByLevel('931', 'name', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('931')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1386169418531&rows=10000&page=1&sidx=name&sord=asc&nodeid=931&parentid=0&n_level=1
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/12/04 19:03:57 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 19:03:57 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(26): Mkb10->getRowsByLevel('1829', 'name', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('1829')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1386169432335&rows=10000&page=1&sidx=name&sord=asc&nodeid=1829&parentid=1804&n_level=2
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/12/04 19:04:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" DESC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" DESC LIMIT 10000.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 19:04:22 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" DESC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" DESC LIMIT 10000' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(26): Mkb10->getRowsByLevel('3', 'name', 'desc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('3')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1386169457847&rows=10000&page=1&sidx=name&sord=desc&nodeid=3&parentid=2&n_level=3
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/12/04 19:04:40 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/04 19:04:40 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "name" не существует
+LINE 4: ORDER BY "name" ASC LIMIT 10000
+                 ^. The SQL statement executed was: SELECT "m".*
+FROM "mis"."mkb10" "m"
+WHERE m.parent_id = :parent_id
+ORDER BY "name" ASC LIMIT 10000' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\Mkb10.php(30): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\Mkb10Controller.php(26): Mkb10->getRowsByLevel('3', 'name', 'asc', 0, '10000')
+#3 [internal function]: Mkb10Controller->actionGet('3')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('get')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?nodeid=0&_search=false&nd=1386169474995&rows=10000&page=1&sidx=name&sord=asc&nodeid=3&parentid=2&n_level=3
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/mkb10/view
+---
+2013/12/05 15:11:41 [error] [exception.CException] exception 'CException' with message 'SheduleController contains improperly nested widget tags in its view "F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php". A CActiveForm widget does not have an endWidget() call.' in F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php:101
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(27): CController->render('index', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+---
+2013/12/05 15:15:02 [error] [php] Undefined index: name (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:29)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 15:15:16 [error] [php] Undefined index: name (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:30)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (30)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 15:21:41 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleAdd.cabinet0" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('cabinet0')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1802): CHtml::resolveValue(Object(FormSheduleAdd), 'cabinet0')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(847): CHtml::activeDropDownList(Object(FormSheduleAdd), 'cabinet0', Array, Array)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php(167): CActiveForm->dropDownList(Object(FormSheduleAdd), 'cabinet0', Array, Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(37): CController->render('index', Array)
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#19 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+---
+2013/12/05 16:22:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "addedit".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('addedit')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addedit')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/addedit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 16:42:48 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 16:52:26 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 16:52:27 [error] [php] Undefined variable: cabinet0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:65)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (65)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 16:53:45 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 16:53:45 [error] [php] Use of undefined constant i - assumed 'i' (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:67)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (67)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 16:54:01 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 16:54:01 [error] [php] Undefined variable: timeBegin0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:71)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (71)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 16:59:59 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 17:00:10 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 17:01:13 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 17:01:53 [warning] [application] Failed to set unsafe attribute "doctorId" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (43)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 17:02:34 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:66)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (66)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 17:03:11 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:67)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (67)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 17:04:03 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:66)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (66)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 17:04:44 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:66)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (66)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (45)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 17:39:51 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleAdd.timeBegin" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('timeBegin')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormSheduleAdd), 'timeBegin')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormSheduleAdd), 'timeBegin', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormSheduleAdd), '[0]timeBegin', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php(459): CActiveForm->textField(Object(FormSheduleAdd), '[0]timeBegin', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(40): CController->render('index', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+---
+2013/12/05 17:40:19 [error] [php] Array to string conversion (F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php:2181)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1432): resolveNameID()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): activeTextField()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php(459): CActiveForm->textField()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(40): SheduleController->render()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php (459)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 17:46:26 [error] [php] Undefined variable: i (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php:455)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): SheduleController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(40): SheduleController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\shedule\index.php (455)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 17:56:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "addeditexps".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('addeditexps')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addeditexps')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 18:17:07 [warning] [application] Failed to set unsafe attribute "day" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (110)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 18:17:07 [warning] [application] Failed to set unsafe attribute "timeBegin" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (110)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 18:17:07 [warning] [application] Failed to set unsafe attribute "timeEnd" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (110)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 18:17:07 [warning] [application] Failed to set unsafe attribute "cabinet" of "FormSheduleAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (110)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/05 18:22:23 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleExpAdd.cabinet0" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(85): CComponent->__get('cabinet0')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(116): SheduleController->addEditModelShedule(Object(FormSheduleExpAdd), 1)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionAddEditExps()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addeditexps')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 18:22:56 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleExpAdd.cabinet0" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(85): CComponent->__get('cabinet0')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(116): SheduleController->addEditModelShedule(Object(FormSheduleExpAdd), 1)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionAddEditExps()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addeditexps')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 18:25:17 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleExpAdd.cabinet0" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(85): CComponent->__get('cabinet0')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(116): SheduleController->addEditModelShedule(Object(FormSheduleExpAdd), 1)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionAddEditExps()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addeditexps')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 18:25:58 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleExpAdd.cabinet0" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(85): CComponent->__get('cabinet0')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(117): SheduleController->addEditModelShedule(Object(FormSheduleExpAdd), 1)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionAddEditExps()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addeditexps')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 18:26:16 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleExpAdd.cabinet0" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(85): CComponent->__get('cabinet0')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php(116): SheduleController->addEditModelShedule(Object(FormSheduleExpAdd), 1)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionAddEditExps()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addeditexps')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/a...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---
+2013/12/05 18:29:51 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:85)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (85)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (122)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 18:41:44 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:112)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (112)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (135)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/05 18:42:11 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php:113)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/addeditexps
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (113)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\SheduleController.php (136)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)

@@ -65,7 +65,7 @@ class FormPatientAdd extends FormMisDefault
             'doctype' => 'Тип документа',
             'serie' => 'Серия',
             'docnumber' => 'Номер',
-            'whoGived' => 'Кто выдал',
+            'whoGived' => 'Кем выдан',
             'documentGivedate' => 'Дата выдачи',
             'addressReg' => 'Адрес регистрации',
             'address' => 'Адрес проживания',

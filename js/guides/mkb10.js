@@ -13,7 +13,7 @@ $(document).ready(function() {
             },
             {
                 name: 'description',
-                index: 'name',
+                index: 'description',
                 width: 1000
             },
             {

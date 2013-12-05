@@ -70,7 +70,7 @@
                         <?php echo $form->textField($model,'whoGived', array(
                             'id' => 'whoGived',
                             'class' => 'form-control',
-                            'placeholder' => 'Кем выдан'
+                            'placeholder' => 'Кто выдал'
                         )); ?>
                         <?php echo $form->error($model,'whoGived'); ?>
                     </div>

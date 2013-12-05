@@ -21,11 +21,12 @@ class DoctorsController extends Controller {
         $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
         $allEmpty = true;
         foreach($filters['rules'] as $key => &$filter) {
-            if(trim($filter['data']) != '') {
-                $allEmpty = false;
-            }
             if(($filter['field'] == 'ward_code' || $filter['field'] == 'post_id') && $filter['data'] == -1) {
                 unset($filters['rules'][$key]);
+                continue;
+            }
+            if(trim($filter['data']) != '') {
+                $allEmpty = false;
             }
         }
 
