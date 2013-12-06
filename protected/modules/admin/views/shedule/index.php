@@ -72,7 +72,7 @@
         </table>
     </div>
 </div>
-<div id="sheduleEditCont">
+<div id="sheduleEditCont" class="no-display">
     <div class="row">
         <h5><strong>Параметры расписания</strong></h5>
         <?php
@@ -395,7 +395,7 @@
                         CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addedit'),
                         array(
                             'success' => 'function(data, textStatus, jqXHR) {
-                                $("#categorie-add-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#shedule-by-day-form").trigger("success", [data, textStatus, jqXHR])
                             }'
                         ),
                         array(
@@ -421,9 +421,9 @@
     ?>
     <div class="row">
         <h5><strong>Дни-исключения</strong></h5>
-        <p>Если у врача есть дни с особым раписанием, занесите их сюда.</p>
+        <p>Если у врача есть дни с особым раписанием, занесите их сюда. Для удаления дня оставьте <strong>все текстовые поля</strong> строки пустыми.</p>
         <div class="borderedBox">
-            <table class="col-xs-12 table table-condensed table-hover">
+            <table class="col-xs-12 table table-condensed table-hover" id="shedule-exp-table">
                 <thead>
                     <tr class="header">
                         <td>
@@ -442,19 +442,19 @@
                 </thead>
                 <tbody>
                     <?php foreach($daysExp as $i => $item) { ?>
-                        <?php
-                            echo $form->hiddenField($item, "[$i]id", array(
-                                'id' => 'id'.$i,
-                                'class' => 'form-control'
-                            ));
-                            echo $form->hiddenField($item, "[$i]doctorId", array(
-                                'id' => 'doctorId'.$i,
-                                'class' => 'form-control'
-                            ));
-                        ?>
                     <tr>
+                        <?php
+                        echo $form->hiddenField($item, "[$i]id", array(
+                            'id' => 'id'.$i,
+                            'class' => 'form-control'
+                        ));
+                        echo $form->hiddenField($item, "[$i]doctorId", array(
+                            'id' => 'doctorId'.$i,
+                            'class' => 'form-control'
+                        ));
+                        ?>
                         <td>
-                            <div id="day0" class="input-group date">
+                            <div id="day<?php echo $i; ?>-cont" class="input-group date">
                                 <?php echo $form->textField($item,"[$i]day", array(
                                     'id' => 'day'.$i,
                                     'class' => 'form-control'
@@ -465,7 +465,7 @@
                             </div>
                         </td>
                         <td>
-                            <div id="timeBegin-cont0" class="input-group date">
+                            <div id="timeBegin-cont<?php echo $i; ?>" class="input-group date">
                                 <?php echo $form->textField($item,"[$i]timeBegin", array(
                                     'id' => 'timeBegin'.$i,
                                     'class' => 'form-control'
@@ -476,7 +476,7 @@
                             </div>
                         </td>
                         <td>
-                            <div id="timeEnd-cont0" class="input-group date">
+                            <div id="timeEnd-cont<?php echo $i; ?>" class="input-group date">
                                 <?php echo $form->textField($item,"[$i]timeEnd", array(
                                     'id' => 'timeEnd'.$i,
                                     'class' => 'form-control'
@@ -505,7 +505,7 @@
                 CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addeditexps'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
-                                $("#categorie-add-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#shedule-exp-form").trigger("success", [data, textStatus, jqXHR])
                             }'
                 ),
                 array(
@@ -513,12 +513,12 @@
                     'id' => 'doctor-exp-submit'
                 )
             ); ?>
-            <input type="submit" value="Добавить ещё день-исключение" id="doctor-exp-add" class="btn btn-success">
+            <input type="button" value="Добавить ещё день-исключение" id="doctor-exp-add" class="btn btn-success">
         </div>
     </div>
     <?php $this->endWidget(); ?>
 </div>
-<div class="modal fade error-popup" id="errorSearchPopup">
+<div class="modal fade error-popup" id="errorPopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -528,6 +528,24 @@
             <div class="modal-body">
                 <div class="row">
 
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Вы успешно отредактировали расписание.</p>
                 </div>
             </div>
             <div class="modal-footer">

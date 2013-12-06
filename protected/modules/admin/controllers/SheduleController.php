@@ -80,6 +80,20 @@ class SheduleController extends Controller {
                                      'errors' => 'Не cмогу добавить элемент расписания в базу!'));
             exit();
         }
+        // Создаём основную запись для расписания, если её нет
+        // Если есть расписание, значит можно вынуть ключ
+        if($days[0]->date_id != null) {
+            $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $days[0]->date_id));
+        } else {
+            $sheduleSettedBeModel = new SheduleSettedBe();
+        }
+        $sheduleSettedBeModel->date_begin = $model->dateBegin;
+        $sheduleSettedBeModel->date_end = $model->dateEnd;
+        if(!$sheduleSettedBeModel->save()) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'errors' => 'Не cмогу добавить элемент расписания в базу!'));
+            exit();
+        }
         for($i = 0; $i < 7; $i++) {
             $cabinet = 'cabinet'.$i;
             $days[$i]->cabinet_id = $model->$cabinet;
@@ -92,6 +106,7 @@ class SheduleController extends Controller {
             $timeEnd = 'timeEnd'.$i;
             $days[$i]->time_end = $model->$timeEnd;
             $days[$i]->type = 0; // Обычное расписание
+            $days[$i]->date_id = $sheduleSettedBeModel->id;
             if(!$days[$i]->save()) {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => 'Не могу добавить элемент расписания в базу!'));
@@ -131,9 +146,14 @@ class SheduleController extends Controller {
                 $model = new FormSheduleExpAdd();
                 $model->attributes = $item;
                 if(!$model->validate()) {
-                    echo CJSON::encode(array('success' => 'false',
-                                             'errors' => $model->errors));
-                    exit();
+                    // Типа, "я пропускаю это или удаляю"
+                    if(trim($model->day) == '' && trim($model->timeBegin) == '' && trim($model->timeEnd) == '') {
+                        continue;
+                    } else { // Хотя бы одно поле не удалено из строки - ошибка!
+                        echo CJSON::encode(array('success' => 'false',
+                                                 'errors' => $model->errors));
+                        exit();
+                    }
                 } else {
                     $this->addEditModelSheduleExp($model);
                 }
@@ -141,5 +161,32 @@ class SheduleController extends Controller {
         }
         echo CJSON::encode(array('success' => 'true',
                                  'msg' => 'Операция успешно проведена, расписание сохранено'));
+    }
+
+    // Получение раписания для конкретного врача
+    public function actionGet($id) {
+        $rows = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $id));
+        $resultArr = array(
+            'data' => array()
+        );
+        if(count($rows) > 0) {
+            $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $rows[0]->date_id));
+            $resultArr['dateBegin'] = $sheduleSettedBeModel->date_begin;
+            $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
+        }
+        foreach($rows as $row) {
+            $resultArr['data'][] = array(
+                'timeBegin' => $row->time_begin,
+                'timeEnd' => $row->time_end,
+                'cabinetId' => $row->cabinet_id,
+                'employeeId' => $row->employee_id,
+                'weekday' => $row->weekday,
+                'day' => $row->day,
+                'type' => $row->type,
+                'id' => $row->id
+            );
+        }
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => $resultArr));
     }
 }
