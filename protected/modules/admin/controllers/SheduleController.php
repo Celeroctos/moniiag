@@ -55,23 +55,33 @@ class SheduleController extends Controller {
         $model = new FormSheduleAdd();
         if(isset($_POST['FormSheduleAdd'])) {
             $model->attributes = $_POST['FormSheduleAdd'];
-            if($model->validate()) {
-                $this->addEditModelShedule($model);
-                echo CJSON::encode(array('success' => 'true',
-                                         'msg' => 'Операция успешно проведена, расписание сохранено'));
-            } else {
-                echo CJSON::encode(array('success' => 'false',
-                                         'errors' => $model->errors));
-            }
+            $this->addEditModelShedule($model);
+            echo CJSON::encode(array('success' => 'true',
+                                     'msg' => 'Операция успешно проведена, расписание сохранено'));
         }
     }
 
     public function addEditModelShedule($model) {
+        if(!$model->validate(array('dateBegin', 'dateEnd', 'doctorId'))) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'errors' => $model->errors));
+            exit();
+        }
+        $allClean = true; // Флаг, который говорит о том, новое ли совсем расписание или нет. Если хотя бы одно строка в расписании есть, этот флаг примет $i первой найденной непустой строки
         if($model->doctorId != null) {
-            $days = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $model->doctorId));
-            if(count($days) != 7) {
-                $days = array();
-                for($i = 0; $i < 7; $i++) {
+            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $model->doctorId));
+            $num = count($dayModels);
+            $days = array();
+            for($i = 0; $i < 7; $i++) {
+                // Ищем среди выбранных записей строку с таким днём в расписании
+                for($j = 0; $j < $num; $j++) {
+                    if($dayModels[$j]->weekday == $i) {
+                        $days[$i] = $dayModels[$j];
+                        $allClean = $j;
+                        break;
+                    }
+                }
+                if(empty($days[$i])) {
                     $days[$i] = new SheduleSetted();
                 }
             }
@@ -80,13 +90,15 @@ class SheduleController extends Controller {
                                      'errors' => 'Не cмогу добавить элемент расписания в базу!'));
             exit();
         }
+
         // Создаём основную запись для расписания, если её нет
         // Если есть расписание, значит можно вынуть ключ
-        if($days[0]->date_id != null) {
-            $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $days[0]->date_id));
+        if($allClean !== true && $days[$allClean]->date_id != null) {
+            $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $days[$allClean]->date_id));
         } else {
             $sheduleSettedBeModel = new SheduleSettedBe();
         }
+
         $sheduleSettedBeModel->date_begin = $model->dateBegin;
         $sheduleSettedBeModel->date_end = $model->dateEnd;
         if(!$sheduleSettedBeModel->save()) {
@@ -94,7 +106,30 @@ class SheduleController extends Controller {
                                      'errors' => 'Не cмогу добавить элемент расписания в базу!'));
             exit();
         }
+
         for($i = 0; $i < 7; $i++) {
+            // Валидируем по отдельности. Если один из атрибутов валидный, а другой - нет, это ошибка. Если оба атрибуты времени пустые, то это значит, что время просто не задано на данный день, и он выходной. Если такой день уже есть, то его надо удалить из базы.
+            if(!$model->validate(array('timeBegin'.$i, 'timeEnd'.$i, 'cabinet'.$i))) {
+                if(($model->validate(array('timeBegin'.$i)) && !$model->validate(array('timeEnd'.$i))) ||
+                   (!$model->validate(array('timeBegin'.$i)) && $model->validate(array('timeEnd'.$i)))) {
+                    echo CJSON::encode(array('success' => 'false',
+                                             'errors' => $model->errors));
+                    exit();
+                } else {
+                    // Удаляем из базы
+                    $m = SheduleSetted::model()->findAll('employee_id = :employee_id AND weekday = :weekday', array(
+                        ':employee_id' => $model->doctorId,
+                        ':weekday' => $i
+                    ));
+                    if(count($m) > 0) {
+                        foreach($m as $element) {
+                            $element->delete();
+                        }
+                    }
+                    continue;
+                }
+            }
+
             $cabinet = 'cabinet'.$i;
             $days[$i]->cabinet_id = $model->$cabinet;
             if($days[$i]->employee_id == null) {
@@ -148,6 +183,13 @@ class SheduleController extends Controller {
                 if(!$model->validate()) {
                     // Типа, "я пропускаю это или удаляю"
                     if(trim($model->day) == '' && trim($model->timeBegin) == '' && trim($model->timeEnd) == '') {
+                        // т.е. это удаление строки
+                        if(trim($model->id) != '' && trim($model->id) != null) {
+                            $m =  SheduleSetted::model()->find('id = :id', array(':id' => $model->id));
+                            if($m != null) {
+                                $m->delete();
+                            }
+                        }
                         continue;
                     } else { // Хотя бы одно поле не удалено из строки - ошибка!
                         echo CJSON::encode(array('success' => 'false',

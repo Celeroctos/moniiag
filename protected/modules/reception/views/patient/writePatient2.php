@@ -1,5 +1,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/writePatient.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/calendar.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+
 <h4>Запись пациента</h4>
 <p class="text-left">
     Шаг 1. Найдите пациента с помощью формы ниже. Шаг 2. Выберите, к какому врачу записать пациента и на какое время, нажав на иконку часов в строке таблицы рядом с пациентом.
@@ -86,7 +88,7 @@
         </tbody>
     </table>
 </div>
-<div class="row">
+<!--<div class="row">
     <ul class="pagination content-pagination">
         <li><a href="#">&laquo;</a></li>
         <li class="active"><a href="#">1</a></li>
@@ -96,59 +98,72 @@
         <li><a href="#">5</a></li>
         <li><a href="#">&raquo;</a></li>
     </ul>
-</div>
+</div>-->
 <h4>Занятость врача <span class="text-danger">Иванов А. К.</span> на месяц <span class="text-danger">Сентябрь 2013 г.</span></h4>
 <p class="text-left">
     Кликните на дату левой кнопкой мыши, чтобы посмотреть почасовую занятость врача на этот день
 </p>
 <div class="row">
     <div class="col-xs-8 ">
-        <table class="table-bordered table" id="sheduleByDays">
-            <tr>
-                <td class="text-muted">30</td>
-                <td class="text-muted">1</td>
-                <td class="text-muted">2</td>
-                <td class="text-muted">3</td>
-                <td class="text-muted">4</td>
-                <td class="text-muted">5</td>
-                <td class="text-muted">6</td>
-            </tr>
-            <tr>
-                <td class="text-muted">7</td>
-                <td class="text-muted">8</td>
-                <td class="text-muted">9</td>
-                <td class="text-muted">10</td>
-                <td class="text-muted">11</td>
-                <td class="text-muted">12</td>
-                <td class="text-muted">13</td>
-            </tr>
-            <tr>
-                <td class="text-muted">14</td>
-                <td class="text-muted">15</td>
-                <td class="text-muted">16</td>
-                <td class="text-muted">17</td>
-                <td class="text-muted">18</td>
-                <td class="text-muted">19</td>
-                <td class="text-muted">20</td>
-            </tr>
-            <tr>
-                <td class="yellow-block">21</td>
-                <td class="yellow-block">22</td>
-                <td class="red-block">23</td>
-                <td class="red-block">24</td>
-                <td class="red-block">25</td>
-                <td class="lightgreen-block">26</td>
-                <td>27</td>
-            </tr>
-            <tr>
-                <td class="lightgreen-block">28</td>
-                <td class="lightgreen-block">29</td>
-                <td class="lightgreen-block">30</td>
-                <td class="lightgreen-block">31</td>
-                <td class="text-muted">1</td>
-                <td class="text-muted">2</td>
-                <td class="text-muted">3</td>
-            </tr>
+        <table class="table-bordered table calendar" id="writeShedule">
+            <thead>
+                <tr class="header">
+                    <td>Пн</td>
+                    <td>Вт</td>
+                    <td>Ср</td>
+                    <td>Чт</td>
+                    <td>Пт</td>
+                    <td>Сб</td>
+                    <td>Вс</td>
+                </tr>
+            </thead>
+            <tbody>
+                <!--<tr>
+                    <td class="text-muted">30</td>
+                    <td class="text-muted">1</td>
+                    <td class="text-muted">2</td>
+                    <td class="text-muted">3</td>
+                    <td class="text-muted">4</td>
+                    <td class="text-muted">5</td>
+                    <td class="text-muted">6</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">7</td>
+                    <td class="text-muted">8</td>
+                    <td class="text-muted">9</td>
+                    <td class="text-muted">10</td>
+                    <td class="text-muted">11</td>
+                    <td class="text-muted">12</td>
+                    <td class="text-muted">13</td>
+                </tr>
+                <tr>
+                    <td class="text-muted">14</td>
+                    <td class="text-muted">15</td>
+                    <td class="text-muted">16</td>
+                    <td class="text-muted">17</td>
+                    <td class="text-muted">18</td>
+                    <td class="text-muted">19</td>
+                    <td class="text-muted">20</td>
+                </tr>
+                <tr>
+                    <td class="yellow-block">21</td>
+                    <td class="yellow-block">22</td>
+                    <td class="red-block">23</td>
+                    <td class="red-block">24</td>
+                    <td class="red-block">25</td>
+                    <td class="lightgreen-block">26</td>
+                    <td>27</td>
+                </tr>
+                <tr>
+                    <td class="lightgreen-block">28</td>
+                    <td class="lightgreen-block">29</td>
+                    <td class="lightgreen-block">30</td>
+                    <td class="lightgreen-block">31</td>
+                    <td class="text-muted">1</td>
+                    <td class="text-muted">2</td>
+                    <td class="text-muted">3</td>
+                </tr>-->
+            </tbody>
         </table>
     </div>
     <div class="col-xs-4">
@@ -323,5 +338,59 @@
             </tr>
             </tbody>
         </table>
+    </div>
+</div>
+<div class="modal fade error-popup" id="errorPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Вы успешно отредактировали расписание.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="notFoundPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Сообщение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>По введённым поисковым критериям не найдено ни одного врача.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
     </div>
 </div>

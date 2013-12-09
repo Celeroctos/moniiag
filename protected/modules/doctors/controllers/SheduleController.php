@@ -3,6 +3,10 @@ class SheduleController extends Controller {
     public $layout = 'index';
     public $filterModel = null;
     public $currentPatient = false;
+    /* Календарь */
+    public $currentDay = null;
+    public $currentYear = null;
+    public $currentMonth = null;
 
     public function actionView() {
         if(isset($_GET['cardid']) && trim($_GET['cardid']) != '') {
@@ -131,6 +135,114 @@ class SheduleController extends Controller {
         }
 
         $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/view'));
+    }
+
+    // Выдать календарь для записи врача
+    // С уклоном на виджет
+    public function actionGetCalendar() {
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => array(
+                                     'calendar' => $this->getCalendar(),
+                                     'day' => $this->currentDay,
+                                     'month' => $this->currentMonth,
+                                     'year' => $this->currentYear
+                                 )
+                        )
+        );
+    }
+
+    private function getSettings() {
+        $settings = Setting::model()->findAll('module_id = 1
+                                                    AND name IN(\'timePerPatinet\',
+                                                                \'firstVisit\',
+                                                                \'quote\',
+                                                                \'shiftType\')');
+        $result = array();
+        foreach($settings as $setting) {
+            $result[$setting['name']] = $setting['value'];
+        }
+        return $result;
+    }
+
+    // Логика выдачи календаря:
+    /* Выдаются даты + характеристика дат. Например, количество пациентов на день. */
+    private function getCalendar() {
+        // Выбираем расписание врача
+        if(isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) {
+            $doctorId = (int)$_GET['doctorid'];
+            // Выбираем настройки расписания
+            $settings = $this->getSettings();
+            $shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+            // Здесь проверяем день, месяц, год..
+            if(isset($_GET['year'])) {
+                $this->currentYear = $_GET['year'];
+            }
+            if(isset($_GET['month'])) {
+                $this->currentYear = $_GET['month'];
+            }
+            if(isset($_GET['day'])) {
+                $this->currentYear = $_GET['day'];
+            }
+            // Расписание не установлено
+            if(count($shedule) == 0) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
+                exit();
+            }
+            // Количество дней в месяце
+            $dayBegin = 1;
+            if($this->currentYear != null && $this->currentMonth != null) {
+                $dayEnd = date('t', $this->currentYear.'-'.$this->currentMonth);
+            } else {
+                $dayEnd = date('t');
+                $this->currentYear = date('Y');
+                $this->currentMonth = date('n');
+                $this->currentDay = date('j');
+            }
+            // Здесь составляем карту расписания на каждый день: разбираем на общее расписание и исключения
+            $usual = array();
+            $exps = array();
+            foreach($shedule as $key => $element) {
+                // Обычное расписание
+                if($element['type'] == 0) {
+                    array_push($usual, $element['weekday']);
+                }
+                // Исключения
+                if($element['type'] == 1) {
+                    array_push($exps, $element['day']);
+                }
+            }
+            // Теперь смотрим по дням и составляем календарь
+            $resultArr = array();
+            for($i = $dayBegin; $i <= $dayEnd; $i++) {
+                $resultArr[$i - 1] = array();
+
+                // Ведущие нули
+                $month = $this->currentMonth < 10 ? '0'.$this->currentMonth : $this->currentMonth;
+                $day = $i < 10 ? '0'.$i : $i;
+
+                $formatDate =  $this->currentYear.'-'.$month.'-'.$day;
+                $weekday = date('w', strtotime($formatDate));
+                // 0 -> 0.. 1 -> 1..
+                $resultArr[$i - 1]['weekday'] = $weekday;
+                if(array_search($weekday, $usual) !== false || array_search($formatDate, $exps) !== false) {
+                    // День существует, врач работает
+                    $resultArr[$i - 1]['worked'] = true;
+                    // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
+                    // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
+                    $numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_time = :patient_time', array(':doctor_id' => $doctorId, ':patient_time' => $formatDate));
+                    $resultArr[$i - 1]['numPatients'] = count($numPatients);
+                    $resultArr[$i - 1]['quote'] = $settings['quote'];
+                } else {
+                    $resultArr[$i - 1]['worked'] = false;
+                    $resultArr[$i - 1]['numPatients'] = 0;
+                    $resultArr[$i - 1]['quote'] = 0;
+                }
+                $resultArr[$i - 1]['day'] = $i;
+            }
+
+            return $resultArr;
+        }
     }
 }
 

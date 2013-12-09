@@ -93,7 +93,10 @@ class ModulesController extends Controller {
             $start = $page * $rows - $rows;
 
             $shifts = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            // Теперь получим настройку модуля для организации смен
+            $shiftType = Setting::model()->find('module_id = 1 AND name = \'shiftType\'');
             foreach($shifts as &$shift) {
+                $shift['shiftType'] = $shiftType->value;
                 $parts = explode(':', $shift['time_begin']);
                 if(count($parts) == 3) { // Это значит, что есть часы, минуты и секунды
                     $shift['time_begin'] = $parts[0].':'.$parts[1];

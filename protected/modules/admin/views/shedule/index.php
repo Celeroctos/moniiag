@@ -135,6 +135,8 @@
                     </span>
                 </div>
             </div>
+            <h5><strong>Стабильное расписание</strong></h5>
+            <p>Для занесения дня в нерабочие оставьте <strong>поля времени</strong> пустыми.</p>
             <div class="borderedBox default-margin-top">
                 <table class="col-xs-12 table table-condensed table-hover">
                     <thead>
