@@ -25,6 +25,10 @@ class SheduleController extends Controller {
         $this->filterModel = new FormSheduleFilter();
         $patients = $this->getCurrentPatients();
         $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
+        $curDate = $this->getCurrentDate();
+
+        $parts = explode('-', $curDate);
+        $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
 
         $this->render('index', array(
             'patients' => $patients,
@@ -32,7 +36,8 @@ class SheduleController extends Controller {
             'currentPatient' => $this->currentPatient,
             'pregnantContent' => '',
             'filterModel' => $this->filterModel,
-            'medcard' => isset($medcard) ? $medcard : null
+            'medcard' => isset($medcard) ? $medcard : null,
+            'currentDate' => $curDate
         ));
     }
 
@@ -40,6 +45,26 @@ class SheduleController extends Controller {
     private function getDaysWithPatients() {
         $shedule = new SheduleByDay();
         return $shedule->getDaysWithPatients(Yii::app()->user->id);
+    }
+
+    // Получить текущую дату
+    private function getCurrentDate() {
+        if(!isset($_POST['FormSheduleFilter']['date']) && !isset($_GET['date'])) {
+            $date = date('Y-m-d');
+        } else {
+            if(isset($_POST['FormSheduleFilter'])) {
+                $this->filterModel->attributes = $_POST['FormSheduleFilter'];
+            } else {
+                $this->filterModel->date = $_GET['date'];
+            }
+
+            if($this->filterModel->validate()) {
+                $date = $this->filterModel->date;
+            } else {
+                $date = date('Y-m-d');
+            }
+        }
+        return $date;
     }
 
     // Редактирование данных пациента
@@ -96,21 +121,7 @@ class SheduleController extends Controller {
 
     // Получить пациентов для текущего дня расписания
     public function getCurrentPatients() {
-        if(!isset($_POST['FormSheduleFilter']['date']) && !isset($_GET['date'])) {
-            $date = date('Y-m-d');
-        } else {
-            if(isset($_POST['FormSheduleFilter'])) {
-                $this->filterModel->attributes = $_POST['FormSheduleFilter'];
-            } else {
-                $this->filterModel->date = $_GET['date'];
-            }
-
-            if($this->filterModel->validate()) {
-                $date = $this->filterModel->date;
-            } else {
-                $date = date('Y-m-d');
-            }
-        }
+        $date = $this->getCurrentDate();
         $this->filterModel->date = $date;
         $doctorId = Yii::app()->user->id;
         // Выбираем пациентов на обозначенный день
@@ -145,7 +156,8 @@ class SheduleController extends Controller {
                                      'calendar' => $this->getCalendar(),
                                      'day' => $this->currentDay,
                                      'month' => $this->currentMonth,
-                                     'year' => $this->currentYear
+                                     'year' => $this->currentYear,
+                                     'doctorId' => (isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) ? (int)$_GET['doctorid'] : false
                                  )
                         )
         );
@@ -153,7 +165,7 @@ class SheduleController extends Controller {
 
     private function getSettings() {
         $settings = Setting::model()->findAll('module_id = 1
-                                                    AND name IN(\'timePerPatinet\',
+                                                    AND name IN(\'timePerPatient\',
                                                                 \'firstVisit\',
                                                                 \'quote\',
                                                                 \'shiftType\')');
@@ -178,10 +190,10 @@ class SheduleController extends Controller {
                 $this->currentYear = $_GET['year'];
             }
             if(isset($_GET['month'])) {
-                $this->currentYear = $_GET['month'];
+                $this->currentMonth = $_GET['month'];
             }
             if(isset($_GET['day'])) {
-                $this->currentYear = $_GET['day'];
+                $this->currentDay = $_GET['day'];
             }
             // Расписание не установлено
             if(count($shedule) == 0) {
@@ -230,7 +242,7 @@ class SheduleController extends Controller {
                     $resultArr[$i - 1]['worked'] = true;
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
-                    $numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_time = :patient_time', array(':doctor_id' => $doctorId, ':patient_time' => $formatDate));
+                    $numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day = :patient_day', array(':doctor_id' => $doctorId, ':patient_day' => $formatDate));
                     $resultArr[$i - 1]['numPatients'] = count($numPatients);
                     $resultArr[$i - 1]['quote'] = $settings['quote'];
                 } else {
@@ -243,6 +255,132 @@ class SheduleController extends Controller {
 
             return $resultArr;
         }
+    }
+
+    public function actionGetPatientsListByDate() {
+        if(Yii::app()->user->isGuest) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Error!'));
+            exit();
+        }
+        if(!isset($_GET['month'], $_GET['day'], $_GET['year'])) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Нехватка данных для выборки!'));
+            exit();
+        }
+        $this->currentYear = $_GET['year'];
+        $this->currentMonth = $_GET['month'];
+        $this->currentDay = $_GET['day'];
+
+        $patientsList = array();
+        $sheduleByDay = new SheduleByDay();
+        $formatDate = $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay;
+        $weekday = date('w', strtotime($formatDate)); // День недели (число)
+        $patients = $sheduleByDay->getRows($formatDate, Yii::app()->user->id);
+
+        // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
+        $user = User::model()->findByPk(Yii::app()->user->id);
+        if($user == null) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Ошибка! Неавторизованный пользователь.'));
+        }
+        if($user['employee_id'] == null) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Ошибка! К пользователю не прикреплён сотрудник.'));
+        }
+        $sheduleElements = SheduleSetted::model()->findAll('employee_id = :employee_id
+                                                       AND (weekday = :weekday OR day = :day)',
+                                                      array(
+                                                          ':employee_id' => $user['employee_id'],
+                                                          ':weekday' => $weekday,
+                                                          ':day' => $formatDate
+                                                      ));
+
+        $settings = $this->getSettings();
+        // Выясняем время работы. Частные дни имеют приоритет по сравнению с обычными
+        $choosedType = 0;
+        foreach($sheduleElements as $sheduleElement) {
+            if($choosedType == 0 && $sheduleElement['type'] >= $choosedType) {
+                $timestampBegin = strtotime($sheduleElement['time_begin']);
+                $timestampEnd = strtotime($sheduleElement['time_end']);
+                $choosedType = $sheduleElement['type']; // Далее можно выбрать только частный день
+            }
+        }
+        $increment = $settings['timePerPatient'] * 60;
+        $result = array();
+
+        for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
+            // Ищем пациента для такого времени. Если он найден, значит время занято
+            $isFound = false;
+            foreach($patients as $key => $patient) {
+                $timestamp = strtotime($patient['patient_time']);
+                if($timestamp == $i) {
+                    $result[] = array(
+                        'timeBegin' => date('G:i', $i),
+                        'timeEnd' => date('G:i', $i + $increment),
+                        'fio' => $patient['fio'],
+                        'isAllow' => 0, // Доступно ли время для записи или нет,
+                        'id' => $patient['id'],
+                        'cardNumber' => $patient['card_number']
+                    );
+                    $isFound = true;
+                }
+            }
+            if(!$isFound) {
+                $result[] = array(
+                    'timeBegin' => date('G:i', $i),
+                    'timeEnd' => date('G:i', $i + $increment),
+                    'isAllow' => 1,
+                    'fio' => '',
+                    'id' => null,
+                    'cardNumber' => null
+                );
+            }
+        }
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => $result));
+    }
+
+    // Записать пациента на приём
+    public function actionWritePatient() {
+        if(!Yii::app()->request->isAjaxRequest) {
+            echo "Error!";
+            exit();
+        }
+        if(!isset($_GET['day'], $_GET['month'], $_GET['year'], $_GET['doctor_id'], $_GET['time'])) {
+            echo "Error! Not enough data for request.";
+            exit();
+        }
+        $formatDate = $_GET['year'].'-'.$_GET['month'].'-'.$_GET['day'];
+        $formatTime = $_GET['time'];
+        $sheduleElement = new SheduleByDay();
+        $sheduleElement->doctor_id = $_GET['doctor_id'];
+        $sheduleElement->medcard_id = $_GET['card_number'];
+        $sheduleElement->patient_day = $formatDate;
+        $sheduleElement->is_accepted = 0;
+        $sheduleElement->patient_time = $formatTime;
+        if(!$sheduleElement->save()) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Не могу записать пациента!'));
+            exit();
+        }
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => 'Пациент успешно записан!'));
+    }
+    // Отписать пациента от приёма
+    public function actionUnwritePatient() {
+        if(!isset($_GET['id'])) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Не могу отписать пациента от приёма!'));
+            exit();
+        }
+        $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
+        if($sheduleElement != null) {
+            $sheduleElement->delete();
+        }
+
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => 'Пациент успешно отписан!'));
     }
 }
 

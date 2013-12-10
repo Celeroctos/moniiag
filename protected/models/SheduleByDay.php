@@ -30,11 +30,13 @@ class SheduleByDay extends MisActiveRecord {
     public function getRows($date, $doctorId) {
         $connection = Yii::app()->db;
         $patients = $connection->createCommand()
-            ->select('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio')
+            ->select('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number')
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
-            ->where('dsbd.doctor_id = :doctor_id AND dsbd.patient_time = :patient_time', array(':patient_time' => $date, ':doctor_id' => $doctorId));
+            ->leftJoin('mis.users u', 'u.employee_id = dsbd.doctor_id')
+            ->where('u.id = :userid AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':userid' => $doctorId));
+
         return $patients->queryAll();
     }
 
@@ -49,9 +51,9 @@ class SheduleByDay extends MisActiveRecord {
     public function getDaysWithPatients($userId) {
         $connection = Yii::app()->db;
         $dates = $connection->createCommand()
-            ->selectDistinct('dsbd.patient_time')
+            ->selectDistinct('dsbd.patient_day')
             ->from('mis.doctor_shedule_by_day dsbd')
-            ->leftJoin('mis.users u', 'dsbd.doctor_id = u.id')
+            ->leftJoin('mis.users u', 'dsbd.doctor_id = u.employee_id')
             ->where('u.id = :id', array(':id' => $userId));
         return $dates->queryAll();
     }

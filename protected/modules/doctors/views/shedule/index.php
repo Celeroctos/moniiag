@@ -40,7 +40,7 @@
         <?php } ?>
     </div>
     <div class="col-xs-5">
-        <h5><strong>Список пациентов на <span class="text-danger">23.05.2013</span></strong></h5>
+        <h5><strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
         <?php
         $filterForm = $this->beginWidget('CActiveForm', array(
             'id' => 'change-date-form',
@@ -103,7 +103,7 @@
                                 <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'].'&date='.$filterModel->date)); ?>
                             </td>
                             <td>
-                                <?php echo $patient['patient_time']; ?>
+                                <?php echo $patient['patient_day']; ?>
                             </td>
                             <td>
                                 <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id'])); ?>
