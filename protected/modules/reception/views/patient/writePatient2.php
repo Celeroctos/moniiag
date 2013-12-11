@@ -65,34 +65,34 @@
     В таблице отображаются результаты поискового запроса.
 </p>
 <div class="row">
-<div class="col-xs-12 borderedBox">
-    <table class="table table-condensed table-hover" id="searchDoctorsResult">
-        <thead>
-        <tr class="header">
-            <td>
-                ФИО врача
-            </td>
-            <td>
-                Должность
-            </td>
-            <td>
-                Отделение
-            </td>
-            <td>
-                Кабинет
-            </td>
-            <td>
-                Ближайшая свободная дата
-            </td>
-            <td>
-                Записать
-            </td>
-        </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+    <div class="col-xs-12 borderedBox">
+        <table class="table table-condensed table-hover" id="searchDoctorsResult">
+            <thead>
+            <tr class="header">
+                <td>
+                    ФИО врача
+                </td>
+                <td>
+                    Должность
+                </td>
+                <td>
+                    Отделение
+                </td>
+                <td>
+                    Кабинет
+                </td>
+                <td>
+                    Ближайшая свободная дата
+                </td>
+                <td>
+                    Записать
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 <!--<div class="row">
     <ul class="pagination content-pagination">
         <li><a href="#">&laquo;</a></li>
@@ -102,13 +102,15 @@
         <li><a href="#">4</a></li>
         <li><a href="#">5</a></li>
         <li><a href="#">&raquo;</a></li>
-    </ul>
-</div>-->
-<h4>Занятость врача <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>
-<p class="text-left">
-    Кликните на дату левой кнопкой мыши, чтобы посмотреть почасовую занятость врача на этот день
-</p>
-<div class="row">
+    </ul>-->
+</div>
+<div class="headerBusyCalendar no-display">
+    <h4>Занятость врача <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>
+    <p class="text-left">
+        Кликните на дату левой кнопкой мыши, чтобы посмотреть почасовую занятость врача на этот день
+    </p>
+</div>
+<div class="row busyCalendar no-display">
     <div class="col-xs-8 ">
         <table class="table-bordered table calendar" id="writeShedule">
             <thead>
@@ -125,6 +127,14 @@
             <tbody>
             </tbody>
         </table>
+        <div class="row default-padding-left">
+            <button type="button" class="btn btn-primary" id="showPrevMonth">
+                <span class="glyphicon glyphicon-arrow-left"></span> Показать предыдущий месяц
+            </button>
+            <button type="button" class="btn btn-primary" id="showNextMonth">
+               Показать следующий месяц <span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </div>
     </div>
     <div class="col-xs-4">
         <h4>Легенда</h4>
@@ -133,18 +143,20 @@
         <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
     </div>
 </div>
-<h4>Занятость врача <span class="text-danger busyFio"></span> на <span class="text-danger busyDay"></span></h4>
-<p class="text-left">
-    Кликните на иконку часов левой кнопкой мыши, чтобы записать пациента на это время
-</p>
-<div class="row">
+<div class="busySheduleHeader no-display">
+    <h4>Занятость врача <span class="text-danger busyFio"></span> на <span class="text-danger busyDay"></span></h4>
+    <p class="text-left">
+        Кликните на иконку часов левой кнопкой мыши, чтобы записать пациента на это время
+    </p>
+</div>
+<div class="row busyShedule no-display">
     <div class="col-xs-8 borderedBox">
         <table class="table table-condensed table-hover" id="sheduleByBusy">
             <thead>
                 <tr class="header">
                     <td>Время</td>
                     <td>Пациент</td>
-                    <td>Записать на приём</td>
+                    <td>Записать на приём / отписать с приёма</td>
                 </tr>
             </thead>
             <tbody>

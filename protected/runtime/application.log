@@ -30288,3 +30288,876 @@ Stack trace:
 REQUEST_URI=/index.php/doctors/shedule/writepatient?_=1386679301472
 HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
 ---
+2013/12/11 11:15:24 [error] [php] A non well formed numeric value encountered (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:213)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/getcalendar/?doctorid=18&_=1386745781953
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (213)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:24:15 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-13-01"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:24:15 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-13-01"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=13&year=2013&doctorid=18&_=1386750235021
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:30:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-13-01"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:30:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-13-01"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=13&year=2013&doctorid=18&_=1386750582650
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:32:20 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "20131-02-29". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:32:20 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "20131-02-29". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=2&year=20131&doctorid=15&_=1386750725806
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:33:15 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "20131-02-29". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:33:15 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "20131-02-29". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=2&year=20131&doctorid=18&_=1386750781243
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:34:10 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "20131-02-29". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:34:10 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "20131-02-29". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=2&year=20131&doctorid=15&_=1386750834089
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:34:56 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-00-02"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:34:56 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2013-00-02"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=0&year=2013&doctorid=18&_=1386750864329
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:36:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22007]: Invalid datetime format: 7 ОШИБКА:  неверный синтаксис для типа date: "2013-0-1-20". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:36:29 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22007]: Invalid datetime format: 7 ОШИБКА:  неверный синтаксис для типа date: "2013-0-1-20". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=-1&year=2013&doctorid=18&_=1386750972524
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 12:43:48 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2014-00-01"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/11 12:43:48 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22008]: Datetime field overflow: 7 ОШИБКА:  значение поля типа date/time вне диапазона: "2014-00-01"
+HINT:  Возможно, вам нужно изменить настройку "datestyle".. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(248): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(156): SheduleController->getCalendar()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?month=0&year=2014&doctorid=18&_=1386751414245
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2013/12/11 13:41:28 [error] [php] Undefined variable: timestampBegin (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:315)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/getpatientslistbydate/?doctorid=18&year=2013&month=12&day=13&_=1386754854618
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (315)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/11 13:52:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция len(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, LEN(dsbd.p...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, LEN(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:52:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция len(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, LEN(dsbd.p...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, LEN(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:52:35 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция strlen(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, STRLEN(dsb...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, STRLEN(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:52:35 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция strlen(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, STRLEN(dsb...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, STRLEN(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:53:42 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция char_length(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGT...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:53:42 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция char_length(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGT...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:53:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция char_length(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGT...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:53:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция char_length(time without time zone) не существует
+LINE 1: ...) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGT...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(dsbd.patient_time) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:54:37 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 1: ...mber, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS strin...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS string) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:54:37 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 1: ...mber, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS strin...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS string) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:55:19 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 1: ...mber, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS strin...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS string)) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:55:19 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 1: ...mber, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS strin...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS string)) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:55:20 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 1: ...mber, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS strin...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS string)) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:55:20 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ")")
+LINE 1: ...mber, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS strin...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time) AS string)) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:55:40 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42704]: Undefined object: 7 ОШИБКА:  тип "string" не существует
+LINE 1: ..., SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS string) ) ...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS string) ) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:55:40 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42704]: Undefined object: 7 ОШИБКА:  тип "string" не существует
+LINE 1: ..., SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS string) ) ...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS string) ) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:56:16 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "FROM")
+LINE 2: FROM "mis"."doctor_shedule_by_day" "dsbd"
+        ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:56:16 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "FROM")
+LINE 2: FROM "mis"."doctor_shedule_by_day" "dsbd"
+        ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:56:17 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "FROM")
+LINE 2: FROM "mis"."doctor_shedule_by_day" "dsbd"
+        ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:56:17 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "FROM")
+LINE 2: FROM "mis"."doctor_shedule_by_day" "dsbd"
+        ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2)
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:56:37 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "AS")
+LINE 1: ... CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2) AS patient...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:56:37 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "AS")
+LINE 1: ... CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2) AS patient...
+                                                             ^. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:57:15 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(0, ...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:57:15 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(0, ...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:57:52 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(0, ...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:57:52 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(0, ...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:57:53 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(0, ...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:57:53 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(0, ...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/11 13:57:57 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(time without time zone, integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(dsb...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(dsbd.patient_time, 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (40)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (133)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+2013/12/11 13:57:57 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция substr(time without time zone, integer, integer) не существует
+LINE 1: ...ddle_name ) as fio, m.card_number AS card_number, SUBSTR(dsb...
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT dsbd.*, CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(dsbd.patient_time, 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."users" "u" ON u.employee_id = dsbd.doctor_id
+WHERE dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php(40): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(133): SheduleByDay->getRows('2013-12-12', 15)
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(26): SheduleController->getCurrentPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---

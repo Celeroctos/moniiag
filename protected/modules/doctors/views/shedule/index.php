@@ -103,7 +103,7 @@
                                 <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'].'&date='.$filterModel->date)); ?>
                             </td>
                             <td>
-                                <?php echo $patient['patient_day']; ?>
+                                <?php echo $patient['patient_time']; ?>
                             </td>
                             <td>
                                 <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id'])); ?>

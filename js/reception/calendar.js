@@ -11,6 +11,11 @@ $(document).ready(function() {
         var day = data.data.day; // вычисляем текущее число
         var prevMonth = data.data.month - 2; // предыдущий месяц
 
+        // Сохраняем для междускриптья
+        globalVariables.day = day;
+        globalVariables.month = month;
+        globalVariables.year = year;
+
         var firstDay = new Date(year, month, 1); // устанавливаем дату первого числа текущего месяца
         var firstWday = firstDay.getDay(); // из нее вычисляем день недели первого числа текущего месяца
 
@@ -79,7 +84,7 @@ $(document).ready(function() {
         $(tr).appendTo($(tbody));
 
         // Получение списка пациентов по дате
-        $('.calendar tbody td:not(.text-muted)').on('click', function(e) {
+        $('.calendar tbody').find('td.yellow-block, td.lightgreen-block, td.lightred-block').on('click', function(e) {
             var day = $(this).text();
             globalVariables.clickedTd = $(this);
             $.ajax({
@@ -97,5 +102,22 @@ $(document).ready(function() {
                 }
             });
         });
+    });
+
+    $('#showPrevMonth').click(function(e) {
+        console.log(globalVariables.month);
+        if(globalVariables.month - 1 < 0) {
+            globalVariables.clickedLink.trigger('click', [11, parseInt(globalVariables.year) - 1]);
+        } else {
+            globalVariables.clickedLink.trigger('click', [globalVariables.month - 1, globalVariables.year]);
+        }
+    });
+
+    $('#showNextMonth').click(function(e) {
+        if(globalVariables.month + 1 > 11) {
+            globalVariables.clickedLink.trigger('click', [0, parseInt(globalVariables.year) + 1]);
+        } else {
+            globalVariables.clickedLink.trigger('click', [globalVariables.month + 1, globalVariables.year]);
+        }
     });
 });

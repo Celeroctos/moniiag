@@ -123,10 +123,14 @@ class SheduleController extends Controller {
     public function getCurrentPatients() {
         $date = $this->getCurrentDate();
         $this->filterModel->date = $date;
-        $doctorId = Yii::app()->user->id;
+        $userId = Yii::app()->user->id;
+        $doctor = User::model()->findByPk($userId);
+        if($doctor == null) {
+            exit('Error!');
+        }
         // Выбираем пациентов на обозначенный день
         $sheduleByDay = new SheduleByDay();
-        $patients = $sheduleByDay->getRows($date, $doctorId);
+        $patients = $sheduleByDay->getRows($date, $doctor['employee_id']);
         return $patients;
     }
 
@@ -188,12 +192,18 @@ class SheduleController extends Controller {
             // Здесь проверяем день, месяц, год..
             if(isset($_GET['year'])) {
                 $this->currentYear = $_GET['year'];
+            } else {
+                $this->currentYear = date('Y');
             }
             if(isset($_GET['month'])) {
                 $this->currentMonth = $_GET['month'];
+            } else {
+                $this->currentMonth = date('n');
             }
             if(isset($_GET['day'])) {
                 $this->currentDay = $_GET['day'];
+            } else {
+                $this->currentDay = date('j');
             }
             // Расписание не установлено
             if(count($shedule) == 0) {
@@ -204,12 +214,9 @@ class SheduleController extends Controller {
             // Количество дней в месяце
             $dayBegin = 1;
             if($this->currentYear != null && $this->currentMonth != null) {
-                $dayEnd = date('t', $this->currentYear.'-'.$this->currentMonth);
+                $dayEnd = date('t', strtotime($this->currentYear.'-'.$this->currentMonth));
             } else {
                 $dayEnd = date('t');
-                $this->currentYear = date('Y');
-                $this->currentMonth = date('n');
-                $this->currentDay = date('j');
             }
             // Здесь составляем карту расписания на каждый день: разбираем на общее расписание и исключения
             $usual = array();
@@ -263,7 +270,7 @@ class SheduleController extends Controller {
                                      'data' => 'Error!'));
             exit();
         }
-        if(!isset($_GET['month'], $_GET['day'], $_GET['year'])) {
+        if(!isset($_GET['month'], $_GET['day'], $_GET['year'], $_GET['doctorid'])) {
             echo CJSON::encode(array('success' => 'false',
                                      'data' => 'Нехватка данных для выборки!'));
             exit();
@@ -276,7 +283,7 @@ class SheduleController extends Controller {
         $sheduleByDay = new SheduleByDay();
         $formatDate = $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay;
         $weekday = date('w', strtotime($formatDate)); // День недели (число)
-        $patients = $sheduleByDay->getRows($formatDate, Yii::app()->user->id);
+        $patients = $sheduleByDay->getRows($formatDate, $_GET['doctorid']);
 
         // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
         $user = User::model()->findByPk(Yii::app()->user->id);

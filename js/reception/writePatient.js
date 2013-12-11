@@ -234,39 +234,63 @@ $(document).ready(function() {
         table.parents('div.no-display').removeClass('no-display');
     }
 
-    $(document).on('click', '.write-patient-link', function(e) {
-        var doctorId = $(this).attr('href').substr(2);
-        globalVariables.fio = $(this).parents('tr').find('td:first a').text();
-        globalVariables.clickedLink = $(this);
+    $(document).on('click', '.write-patient-link', function(e, month, year) {
+        if(globalVariables.hasOwnProperty('clickedLink')) {
+            $(globalVariables.clickedLink).parents('tr').removeClass('success');
+        }
+        $(this).parents('tr').addClass('success');
+        loadCalendar(this, month, year);
+    });
+
+    function loadCalendar(link, month, year) {
+        $('.busyShedule, .busySheduleHeader').hide();
+        var doctorId = $(link).attr('href').substr(2);
+        globalVariables.fio = $(link).parents('tr').find('td:first a').text();
+        globalVariables.clickedLink = $(link);
+        var params = {};
         $('.busyFio').text(globalVariables.fio);
-        $('.busyDate').text(globalVariables.months[(new Date()).getUTCMonth()]);
+        if(typeof month == 'undefined' || typeof year == 'undefined') {
+            $('.busyDate').text(globalVariables.months[(new Date()).getUTCMonth()] + ' ' + (new Date()).getFullYear() + ' г.');
+        } else {
+            // Ведущий ноль
+            if((month + 1) < 10) {
+                month = '0' + (month + 1);
+            } else {
+                month += 1;
+            }
+            var current = (new Date(year + '-' + month )).getUTCMonth();
+            $('.busyDate').text(globalVariables.months[current] + ' ' + year + ' г.');
+            params.month = parseInt(month);
+            params.year = year;
+        }
         // Делаем запрос на информацию и обновляем шаблон календаря
         // Делаем поиск
+        params.doctorid = doctorId;
         $.ajax({
-            'url' : '/index.php/doctors/shedule/getcalendar/?doctorid=' + doctorId,
+            'url' : '/index.php/doctors/shedule/getcalendar',
+            'data' : params,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == 'true') {
                     $("#writeShedule").trigger("showShedule", [data, textStatus, jqXHR])
+                    $('.headerBusyCalendar, .busyCalendar').show();
                 } else {
 
                 }
                 return;
             }
         });
-    });
+    }
 
     $('#sheduleByBusy').on('showBusy', function(e, data, textStatus, jqXHR, doctorId, year, month, day) {
         $('.busyDay').text(day + '.' + (month + 1) + '.' + year + ' г.');
         var table = $(this).find('tbody');
         var data = data.data;
         table.find('tr').remove();
-        globalVariables.day = day;
-        globalVariables.month = month;
-        globalVariables.year = year;
         globalVariables.doctorId = doctorId;
+        globalVariables.day = day;
 
         for(var i = 0; i < data.length; i++) {
             if(data[i].isAllow) {
@@ -299,14 +323,16 @@ $(document).ready(function() {
 
             table.append(str);
         }
+
+        $('.busyShedule, .busySheduleHeader').show();
     });
 
     $(document).on('click', '.write-link', function(e) {
         var params = {
             card_number : globalVariables.cardNumber,
-            day : globalVariables.day,
             month : globalVariables.month + 1,
             year : globalVariables.year,
+            day : globalVariables.day,
             doctor_id : globalVariables.doctorId
         };
         params.time = $(this).attr('href').substr(1);
@@ -345,7 +371,7 @@ $(document).ready(function() {
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == 'true') {
-                    $('#successPopup p').text('Вы успешно записали пациента на приём!');
+                    $('#successPopup p').text(data.data);
                     $('#successPopup').modal({
 
                     });

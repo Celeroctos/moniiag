@@ -30,12 +30,12 @@ class SheduleByDay extends MisActiveRecord {
     public function getRows($date, $doctorId) {
         $connection = Yii::app()->db;
         $patients = $connection->createCommand()
-            ->select('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number')
+            ->select('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(CAST(dsbd.patient_time AS text), 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time')
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
             ->leftJoin('mis.users u', 'u.employee_id = dsbd.doctor_id')
-            ->where('u.id = :userid AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':userid' => $doctorId));
+            ->where('dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':doctor_id' => $doctorId));
 
         return $patients->queryAll();
     }
