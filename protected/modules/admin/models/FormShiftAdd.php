@@ -24,8 +24,8 @@ class FormShiftAdd extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'timeBegin' => 'Время начала приёма (hh:mm)',
-			'timeEnd' => 'Время конца приёма (hh:mm)'
+            'timeBegin' => 'Время начала приёма (чч:мм)',
+			'timeEnd' => 'Время конца приёма (чч:мм)'
         );
     }
 }

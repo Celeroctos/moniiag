@@ -87,15 +87,33 @@ class CategorieViewWidget extends CWidget {
 
 
     // Заполнить форму значениями
-    public function getFormValue($element) {
+    public function getFormValue($element, $historyId = false) {
         $medcardId = $this->currentPatient;
         if($this->formModel->medcardId == null) {
             $this->formModel->medcardId = $medcardId;
         }
+        if($historyId == false) {
+            $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId($element, $medcardId);
+            if($historyIdResult['history_id_max'] == null) {
+                // Если нет значений для данного элемента, можно уже вернуть сам элемент, потому что его нечем заполнить
+                if($element['type'] == 3 || $element['type'] == 2) {
+                    $element['selected'] = array();
+                }
+                return $element;
+            } else {
+                $historyId = $historyIdResult['history_id_max'];
+            }
+        }
 
         // Делаем выборку из базы значения
-        $elementFinded = MedcardElementForPatient::model()->find('element_id = :element_id AND medcard_id = :medcard_id', array(':medcard_id' => $medcardId,
-                                                                                                                                ':element_id' => $element['id'])
+        $elementFinded = MedcardElementForPatient::model()->find(
+            'element_id = :element_id
+             AND medcard_id = :medcard_id
+             AND history_id = :history_id',
+            array(':medcard_id' => $medcardId,
+                  ':element_id' => $element['id'],
+                  ':history_id' => $historyId
+                 )
         );
         if($elementFinded != null) {
             $fieldName = 'f'.$element['id'];

@@ -19,13 +19,14 @@
     this.initFields = function() {
         $(function () {
             // Поля дат
+            var format = 'yyyy-mm-dd';
             for(var i = 0; i < global.dateFields.length; i++) {
                 if($(global.dateFields[i]).length == 0) {
                     continue;
                 }
                 $(global.dateFields[i]).datetimepicker({
                     language: 'ru',
-                    format: 'yyyy-mm-dd',
+                    format: format,
                     weekStart: 1,
                     todayBtn:  1,
                     autoclose: 1,
@@ -34,6 +35,28 @@
                     minView: 2,
                     forceParse: 0
                 });
+                $(global.dateFields[i]).find('input').on('keyup', function(e) {
+                    var value = $(this).val();
+                    // Дата по регулярке
+                    if((value.length == 4 || value.length == 7) && e.keyCode != 8) { // Введён год или месяц..
+                        $(this).val(value + '-');
+                    }
+                    if((value.length == 5 || value.length == 8) && e.keyCode == 8) { // Убрать автоматически прочерк
+                        $(this).val(value.substr(0, value.length - 1));
+                    }
+                });
+                $(global.dateFields[i]).find('input').on('keydown', function(e) {
+                    // Бэкспейс разрешить, цифры разрешить
+                    var isAllow = true;
+                    if($(this).val().length == 10 && e.keyCode != 8) {
+                        isAllow = false;
+                    } else {
+                        if(!(e.keyCode > 47 && e.keyCode < 58) && !(e.keyCode > 95 && e.keyCode < 106) && e.keyCode != 8) {
+                            isAllow = false;
+                        }
+                    }
+                    return isAllow;
+                })
             }
             // Маркировка анкет
             for(var i = 0; i < global.colorPickerFields.length; i++) {

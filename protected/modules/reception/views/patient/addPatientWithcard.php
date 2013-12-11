@@ -83,7 +83,7 @@
                         <?php echo $form->textField($model,'documentGivedate', array(
                             'id' => 'documentGivedate',
                             'class' => 'form-control',
-                            'placeholder' => 'Дата выдачи'
+                            'placeholder' => 'Формат гггг-мм-дд'
                         )); ?>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>

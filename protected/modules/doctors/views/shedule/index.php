@@ -9,18 +9,41 @@
             <div id="accordionX" class="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a href="#collapseX" data-parent="#accordionX" data-toggle="collapse" class="accordion-toggle">Реквизитная информация</a>
+                        <a href="#collapseX" data-parent="#accordionX" data-toggle="collapse" class="accordion-toggle"><strong>Реквизитная информация</strong></a>
                     </div>
                     <div class="accordion-body collapse in" id="collapseX">
                         <div class="accordion-inner">
                             <p>
-                                <strong>ФИО:</strong> <?php echo $medcard['last_name']; ?> <?php echo $medcard['first_name']; ?> <?php echo $medcard['middle_name']; ?><br />
-                                <strong>Возраст:</strong> <?php echo $medcard['full_years']; ?><br/>
-                                <strong>Адрес:</strong> <?php echo $medcard['address']; ?><br/>
-                                <strong>Место работы:</strong> <?php echo $medcard['work_place']; ?>, <?php echo $medcard['work_address']; ?><br/>
-                                <strong>Телефон:</strong> <?php echo $medcard['contact']; ?><br/>
-                                <strong>№ амбулаторной карты:</strong> <?php echo $medcard['card_number']; ?>
+                                ФИО:<strong> <?php echo $medcard['last_name']; ?> <?php echo $medcard['first_name']; ?> <?php echo $medcard['middle_name']; ?></strong><br />
+                                Возраст:<strong> <?php echo $medcard['full_years']; ?></strong><br/>
+                                Адрес:<strong> <?php echo $medcard['address']; ?></strong><br/>
+                                Место работы:<strong> <?php echo $medcard['work_place']; ?>, <?php echo $medcard['work_address']; ?></strong><br/>
+                                Телефон:<strong> <?php echo $medcard['contact']; ?></strong><br/>
+                                № амбулаторной карты:<strong> <?php echo $medcard['card_number']; ?></strong>
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div id="accordionH" class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a href="#collapseH" data-parent="#accordionH" data-toggle="collapse" class="accordion-toggle"><strong>История медкарты</strong></a>
+                        <span class="help-block">
+                            Здесь Вы можете посмотреть историю изменений медицинской карты. Раскройте список и выберите запись для просмотра изменений медкарты.
+                        </span>
+                    </div>
+                    <div class="accordion-body collapse in" id="collapseH">
+                        <div class="accordion-inner">
+                            <?php foreach ($historyPoints as $key => $point) { ?>
+                           <div>
+                               <a href="#">
+                                    <?php echo $point['change_date']; ?>
+                               </a>
+                           </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -61,7 +84,7 @@
                 <?php echo $filterForm->textField($filterModel,'date', array(
                     'id' => 'filterDate',
                     'class' => 'form-control',
-                    'placeholder' => 'Выберите дату',
+                    'placeholder' => 'Формат гггг-мм-дд'
                 )); ?>
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>

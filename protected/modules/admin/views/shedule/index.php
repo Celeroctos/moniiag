@@ -114,7 +114,8 @@
                 <div id="dateBegin-cont" class="col-xs-4 input-group date">
                     <?php echo $form->textField($model,'dateBegin', array(
                         'id' => 'dateBegin',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
+                        'placeholder' => 'Формат гггг-мм-дд'
                     )); ?>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -128,7 +129,8 @@
                 <div id="dateEnd-cont" class="col-xs-4 input-group date">
                     <?php echo $form->textField($model,'dateEnd', array(
                         'id' => 'dateEnd',
-                        'class' => 'form-control'
+                        'class' => 'form-control',
+                        'placeholder' => 'Формат гггг-мм-дд'
                     )); ?>
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -459,7 +461,8 @@
                             <div id="day<?php echo $i; ?>-cont" class="input-group date">
                                 <?php echo $form->textField($item,"[$i]day", array(
                                     'id' => 'day'.$i,
-                                    'class' => 'form-control'
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Формат гггг-мм-дд'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>

@@ -77,7 +77,7 @@
     <div class="form-group">
         <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>                    
     	<div id="birthday-cont" class="col-xs-4 input-group date">
-            <input type="text" name="birthday" placeholder="Дата рождения" class="form-control col-xs-4" id="birthday">                       
+            <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
             <span class="input-group-addon">
                 <span class="glyphicon-calendar glyphicon"></span>
             </span>

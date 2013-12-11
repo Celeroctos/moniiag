@@ -37,8 +37,18 @@ class SheduleController extends Controller {
             'pregnantContent' => '',
             'filterModel' => $this->filterModel,
             'medcard' => isset($medcard) ? $medcard : null,
-            'currentDate' => $curDate
+            'currentDate' => $curDate,
+            'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null)
         ));
+    }
+
+    // Получить точки истории для медкарты
+    private function getHistoryPoints($medcard) {
+        if($medcard == null) {
+            return array();
+        }
+        $historyPoints = MedcardElementForPatient::model()->getHistoryPoints($medcard);
+        return $historyPoints;
     }
 
     // Получить даты, в которых у врача есть пациенты
@@ -88,27 +98,35 @@ class SheduleController extends Controller {
                 if($element == null) {
                     continue;
                 }
-                // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать.
-                $element = MedcardElementForPatient::model()->find('element_id = :element_id AND medcard_id = :medcard_id', array(':medcard_id' => $_POST['FormTemplateDefault']['medcardId'],
-                                                                                                                                  ':element_id' => $element->id)
-                                                                  );
-                if($element == null) {
-                    $elementModel = new MedcardElementForPatient();
-                    $elementModel->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
-                    $elementModel->element_id = $resArr[1];
-                    $elementModel->value = $value;
-                    if(!$elementModel->save()) {
-                        echo CJSON::encode(array('success' => true,
-                                                 'text' => 'Ошибка сохранения новой записи.'));
-                        exit();
-                    }
+
+                $elementModel = new MedcardElementForPatient();
+                $elementModel->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
+                $elementModel->element_id = $resArr[1];
+                $elementModel->value = $value;
+                $elementModel->change_date = date('Y-m-d h:i');
+                $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId(array('id' => $elementModel->element_id), $elementModel->medcard_id);
+                if($historyIdResult['history_id_max'] == null) {
+                    $elementModel->history_id = 1;
                 } else {
-                    $element->value = $value;
-                    if(!$element->save()) {
-                        echo CJSON::encode(array('success' => true,
-                                                 'text' => 'Ошибка сохранения записи.'));
-                        exit();
+                    // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать. Это позволит не сохранять неизменённые поля
+                    $element = MedcardElementForPatient::model()->find('element_id = :element_id
+                                                                        AND medcard_id = :medcard_id
+                                                                        AND history_id = :history_id',
+                                                                array(':medcard_id' => $_POST['FormTemplateDefault']['medcardId'],
+                                                                      ':element_id' => $element->id,
+                                                                      ':history_id' => $historyIdResult['history_id_max'])
+                    );
+                    if($element != null) {
+                        if(trim($element['value']) == trim($value)) {
+                            continue;
+                        }
                     }
+                    $elementModel->history_id = $historyIdResult['history_id_max'] + 1;
+                }
+                if(!$elementModel->save()) {
+                    echo CJSON::encode(array('success' => true,
+                        'text' => 'Ошибка сохранения записи.'));
+                    exit();
                 }
             }
             echo CJSON::encode(array('success' => true,

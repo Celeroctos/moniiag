@@ -182,7 +182,7 @@
                                 <?php echo $form->textField($model,'dateBegin', array(
                                     'id' => 'dateBegin',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Дата начала действия'
+                                    'placeholder' => 'Формат гггг-мм-дд'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -197,7 +197,7 @@
                                 <?php echo $form->textField($model,'dateEnd', array(
                                     'id' => 'dateEnd',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Дата окончания действия'
+                                    'placeholder' => 'Формат гггг-мм-дд'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -362,7 +362,7 @@
                                 <?php echo $form->textField($model,'dateBegin', array(
                                     'id' => 'dateBegin',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Дата начала действия'
+                                    'placeholder' => 'Формат гггг-мм-дд'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -377,7 +377,7 @@
                                 <?php echo $form->textField($model,'dateEnd', array(
                                     'id' => 'dateEnd',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Дата окончания действия'
+                                    'placeholder' => 'Формат гггг-мм-дд'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
