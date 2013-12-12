@@ -75,14 +75,53 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>                    
+		<div class="col-xs-2">
+		</div>
+		<!--Выводим верхние кнопочки для увеличения значений даты-->
+		<div class="btn-group col-xs-4">
+    		<button type="button" class="btn btn-default btn-xs year-button" >
+				<span class="glyphicon-arrow-up glyphicon">
+				</span>
+			</button>
+     		<button type="button" class="btn btn-default btn-xs month-button">
+				<span class="glyphicon-arrow-up glyphicon">
+				</span>
+			</button>
+    		<button type="button" class="btn btn-default btn-xs">
+				<span class="glyphicon-arrow-up glyphicon">
+				</span>
+			</button>
+		</div>
+	</div>
+	<div class="form-group">
+        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
     	<div id="birthday-cont" class="col-xs-4 input-group date">
             <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
-            <span class="input-group-addon">
-                <span class="glyphicon-calendar glyphicon"></span>
+			<span class="input-group-addon">
+            	<span class="glyphicon-calendar glyphicon">
+				</span>
             </span>
     	</div>
     </div>
+	<div  class="form-group">
+		<div class="col-xs-2">
+		</div>		
+		<div class="btn-group col-xs-4">	
+		<!--Выводим нижние кнопочки для увеличения значений даты-->
+    		<button type="button" class="btn btn-default btn-xs year-button">
+				<span class="glyphicon-arrow-down glyphicon">
+				</span>
+			</button>
+     		<button type="button" class="btn btn-default btn-xs month-button">
+				<span class="glyphicon-arrow-down glyphicon">
+				</span>
+			</button>
+    		<button type="button" class="btn btn-default btn-xs">
+				<span class="glyphicon-arrow-down glyphicon">
+				</span>
+			</button>
+		</div>
+	</div>
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
     </div>

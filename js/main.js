@@ -69,6 +69,55 @@
                     format: 'hex'
                 });
             }
+
+			// Стрелки вверх-вниз для листания
+			// Сначала стрелки вверх
+			(function ()
+				{
+					// Выбираем все контролы дат
+					var Controls = $('div.date input');
+					
+					// Перебираем выбранные контролы
+					for (i=0;i<Controls.length;i++)
+					{
+						// Замыкаем ссылку на каждый контрол
+						(function (Control)
+						{
+							
+							// Подвязываем обработчик события нажатия на верхние кнопки для контрола
+							$(Control).parents('div.form-group').prev().find('button').on('click',function (e)
+							{
+								alert(Control.value);
+								});
+							
+							// Подвязываем обработчик события нажатия на нижние кнопки для контрола
+							$(Control).parents('div.form-group').next().find('button').on('click',function (e)
+							{
+								alert(Control.value);
+								});
+							
+							
+						})(Controls[i]);
+						
+						
+					}
+					
+				}
+			
+			)();
+			
+			/*
+			$('.up-calendar-button').parents('.form-group').next().find('.date').find('input').on('click', function(e) {
+				//alert(this.value);
+					var Control = селектор на текстовое поле
+					function = {
+						this 	
+						
+					}()
+				});
+
+*/
+
         });
     };
 
