@@ -33,7 +33,7 @@
                     )); ?>
                 </div>
                 <div class="form-group">
-                    <?php echo $form->textField($loginFormModel,'password', array(
+                    <?php echo $form->passwordField($loginFormModel,'password', array(
                         'id' => 'password',
                         'class' => 'form-control',
                         'placeholder' => 'Пароль'

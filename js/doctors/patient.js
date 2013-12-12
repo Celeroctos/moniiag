@@ -33,7 +33,7 @@ $(document).ready(function() {
         }
         var daysWithPatients = globalVariables.patientsInCalendar;
         for(var i in daysWithPatients) {
-            var parts = daysWithPatients[i].patient_time.split('-'); // Год-месяц-день
+            var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
             if(currentDateParts[0] == parts[0] && currentDateParts[1] == parts[1]) {
                 $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
             }

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
@@ -92,9 +92,10 @@ return array(
 
 		'db'=>array(
 			//'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		    'connectionString' => 'pgsql:host=localhost;port=5432;dbname=mis;',
-            'username' => 'postgres',
-            'password' => '1'
+
+		    'connectionString' => 'pgsql:host=toonftp.ru;port=5432;dbname=postgres;',
+            'username' => 'moniiag',
+            'password' => '12345'
         ),
 		// uncomment the following to use a MySQL database
 		/*

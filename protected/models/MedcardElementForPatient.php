@@ -81,6 +81,34 @@ class MedcardElementForPatient extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+
+    public function getMaxHistoryPointId($element, $medcardId) {
+        try {
+            $connection = Yii::app()->db;
+            $elements = $connection->createCommand()
+                ->select('MAX(mep.history_id) as history_id_max')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('mep.element_id = :element_id AND mep.medcard_id = :medcard_id', array(':element_id' => $element['id'], ':medcard_id' => $medcardId));
+            return $elements->queryRow();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function getHistoryPoints($medcard) {
+        try {
+            $connection = Yii::app()->db;
+            $points = $connection->createCommand()
+                ->selectDistinct('mep.change_date')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('mep.medcard_id = :medcard_id', array(':medcard_id' => $medcard['card_number']));
+            return $points->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

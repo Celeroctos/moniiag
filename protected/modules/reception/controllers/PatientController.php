@@ -550,26 +550,37 @@ class PatientController extends Controller {
 
     // Экшн записи пациента: шаг 1
     public function actionWritePatientStepTwo() {
-        // Список отделений
-        $ward = new Ward();
-        $wardsResult = $ward->getRows(false);
-        $wardsList = array('-1' => 'Нет');
-        foreach($wardsResult as $key => $value) {
-            $wardsList[$value['id']] = $value['name'];
+        if(isset($_GET['cardid'])) {
+            // Проверим, что такая карта реально есть
+            $medcard = Medcard::model()->findByPk($_GET['cardid']);
+            if($medcard != null) {
+                // Список отделений
+                $ward = new Ward();
+                $wardsResult = $ward->getRows(false);
+                $wardsList = array('-1' => 'Нет');
+                foreach($wardsResult as $key => $value) {
+                    $wardsList[$value['id']] = $value['name'];
+                }
+
+                // Список должностей
+                $post = new Post();
+                $postsResult = $post->getRows(false);
+                $postsList = array('-1' => 'Нет');
+                foreach($postsResult as $key => $value) {
+                    $postsList[$value['id']] = $value['name'];
+                }
+
+                $this->render('writePatient2', array(
+                    'wardsList' => $wardsList,
+                    'postsList' => $postsList,
+                    'medcard' => $medcard
+                ));
+                exit();
+            }
         }
 
-        // Список должностей
-        $post = new Post();
-        $postsResult = $post->getRows(false);
-        $postsList = array('-1' => 'Нет');
-        foreach($postsResult as $key => $value) {
-            $postsList[$value['id']] = $value['name'];
-        }
-
-        $this->render('writePatient2', array(
-            'wardsList' => $wardsList,
-            'postsList' => $postsList
-        ));
+        $req = new CHttpRequest();
+        $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/writepatientstepone'));
     }
 }
 

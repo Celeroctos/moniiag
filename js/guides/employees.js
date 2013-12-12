@@ -327,4 +327,9 @@ $(document).ready(function() {
         }
     });
 
+    // Установка смены
+    function installShift(rowId, status, e) {
+
+    }
+
 });

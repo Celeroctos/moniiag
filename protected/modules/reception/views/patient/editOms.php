@@ -95,7 +95,7 @@
                         <?php echo $form->textField($model,'birthday', array(
                             'id' => 'birthday',
                             'class' => 'form-control',
-                            'placeholder' => 'Дата рождения'
+                            'placeholder' => 'Формат гггг-мм-дд'
                         )); ?>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>

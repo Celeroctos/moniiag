@@ -1,5 +1,5 @@
-<script type="text/javascript" src="/js/settings/shedule.js"></script>
-<script type="text/javascript" src="/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/settings/shedule.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <h4>Настройки расписания</h4>
 <div class="row">
     <?php
@@ -158,7 +158,7 @@
                                 <?php echo $form->textField($shiftModel,'timeBegin', array(
                                     'id' => 'timeBegin',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Время начала приёма (hh:mm)'
+                                    'placeholder' => 'Формат (чч:мм)'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -174,7 +174,7 @@
                                 <?php echo $form->textField($shiftModel,'timeEnd', array(
                                     'id' => 'timeEnd',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Время конца приёма (hh:mm)'
+                                    'placeholder' => 'Формат (чч:мм)'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -238,7 +238,7 @@
                                 <?php echo $form->textField($shiftModel,'timeBegin', array(
                                     'id' => 'timeBegin',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Время начала приёма (hh:mm)'
+                                    'placeholder' => 'Формат (чч:мм)'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
@@ -254,7 +254,7 @@
                                 <?php echo $form->textField($shiftModel,'timeEnd', array(
                                     'id' => 'timeEnd',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Время конца приёма (hh:mm)'
+                                    'placeholder' => 'Формат (чч:мм)'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
