@@ -70,6 +70,75 @@
                 });
             }
 
+            // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
+            function ArrowCalendarClickHandler(Target,Control)
+            {
+                // Парсим дату
+                // Разделяем её на три группы символов
+                 var DateArray = Control.value.split("-");
+                 // Если групп получилось меньше, чем 3, то ничего не делаем - значит дата не до конца введена
+                 if (DateArray.length<3)
+                 {
+                    return;
+                 }
+                 // Если всё-таки все группы цифр есть - создаём об'ект даты
+                 var StructDate = new Date(Number(DateArray[0]), Number(DateArray[1]) - 1, Number(DateArray[2]));
+                 
+                 // В переменной Date распарсенная дата
+                 
+                 // В зависимости от нажатой кнопки - вычисляем дату
+                 
+                 if ($(Target.currentTarget).hasClass('up-year-button'))
+                 {
+                    StructDate.setFullYear(StructDate.getFullYear()+1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('up-month-button'))
+                 {
+                    StructDate.setMonth(StructDate.getMonth()+1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('up-day-button'))
+                 {
+                    StructDate.setDate(StructDate.getDate()+1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('down-year-button'))
+                 {
+                    StructDate.setFullYear(StructDate.getFullYear()-1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('down-month-button'))
+                 {
+                     StructDate.setMonth(StructDate.getMonth()-1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('down-day-button'))
+                 {
+                     StructDate.setDate(StructDate.getDate()-1);
+                 }
+                 
+                 // Преобразовываем изменённую дату обратно и записываем в контрол
+                 
+                 // Преобразуем компоненты в строковое представление с ведущими нулями
+                 var dd = StructDate.getDate();
+                 if (dd<10) 
+                 {
+                    dd= '0'+dd;
+                 }
+                 var mm = StructDate.getMonth() + 1;
+                 if (mm<10)
+                 {
+                    mm= '0'+mm;
+                 } 
+                 var yyyy = StructDate.getFullYear();
+                 
+                 // Записываем измененённое значение даты в контрол
+                 Control.value = yyyy+'-'+mm+'-'+dd;
+                 
+
+            }
+
 			// Стрелки вверх-вниз для листания
 			// Сначала стрелки вверх
 			(function ()
@@ -87,13 +156,13 @@
 							// Подвязываем обработчик события нажатия на верхние кнопки для контрола
 							$(Control).parents('div.form-group').prev().find('button').on('click',function (e)
 							{
-								alert(Control.value);
+								ArrowCalendarClickHandler(e,Control);
 								});
 							
 							// Подвязываем обработчик события нажатия на нижние кнопки для контрола
 							$(Control).parents('div.form-group').next().find('button').on('click',function (e)
 							{
-								alert(Control.value);
+								ArrowCalendarClickHandler(e,Control);
 								});
 							
 							
