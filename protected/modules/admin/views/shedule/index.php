@@ -139,7 +139,7 @@
             </div>
             <h5><strong>Стабильное расписание</strong></h5>
             <p>Для занесения дня в нерабочие оставьте <strong>поля времени</strong> пустыми.</p>
-            <div class="borderedBox default-margin-top">
+            <div class="borderedBox default-margin-top col-xs-12 shedule">
                 <table class="col-xs-12 table table-condensed table-hover">
                     <thead>
                         <tr class="header">
@@ -423,10 +423,10 @@
         )
     ));
     ?>
-    <div class="row">
+    <div class="row col-xs-12">
         <h5><strong>Дни-исключения</strong></h5>
         <p>Если у врача есть дни с особым раписанием, занесите их сюда. Для удаления дня оставьте <strong>все текстовые поля</strong> строки пустыми.</p>
-        <div class="borderedBox">
+        <div class="borderedBox shedule">
             <table class="col-xs-12 table table-condensed table-hover" id="shedule-exp-table">
                 <thead>
                     <tr class="header">

@@ -31527,3 +31527,770 @@ REQUEST_URI=/index.php/doctors/shedule/view
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (41)
 in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/12 11:53:38 [error] [exception.CException] exception 'CException' with message 'Property "FormTemplateDefault.f__2" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('f__2')
+#1 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(1802): CHtml::resolveValue(Object(FormTemplateDefault), 'f__2')
+#2 Z:\home\moniiag.my\yii\web\widgets\CActiveForm.php(847): CHtml::activeDropDownList(Object(FormTemplateDefault), 'f__2', Array, Array)
+#3 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList(Object(FormTemplateDefault), 'f__2', Array, Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#6 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#7 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(147): CWidget->render('CategorieElemen...', Array)
+#8 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie(Array, Object(CActiveForm), Object(FormTemplateDefault))
+#9 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#11 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#12 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(18): CWidget->render('application.mod...', Array)
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#14 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(55): CBaseController->widget('application.mod...', Array)
+#15 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#16 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#17 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#18 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#19 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): CController->render('index', Array)
+#20 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#21 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#23 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#25 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#26 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#27 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#28 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#29 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#30 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#31 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#32 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 11:54:21 [error] [exception.CException] exception 'CException' with message 'Property "FormTemplateDefault.f_2" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('f_2')
+#1 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(1802): CHtml::resolveValue(Object(FormTemplateDefault), 'f_2')
+#2 Z:\home\moniiag.my\yii\web\widgets\CActiveForm.php(847): CHtml::activeDropDownList(Object(FormTemplateDefault), 'f_2', Array, Array)
+#3 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList(Object(FormTemplateDefault), 'f_2', Array, Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#6 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#7 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(147): CWidget->render('CategorieElemen...', Array)
+#8 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie(Array, Object(CActiveForm), Object(FormTemplateDefault))
+#9 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#11 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#12 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(18): CWidget->render('application.mod...', Array)
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#14 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(55): CBaseController->widget('application.mod...', Array)
+#15 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#16 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#17 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#18 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#19 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): CController->render('index', Array)
+#20 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#21 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#23 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#25 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#26 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#27 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#28 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#29 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#30 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#31 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#32 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 11:54:45 [error] [exception.CException] exception 'CException' with message 'Property "FormTemplateDefault.f_2" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('f_2')
+#1 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(1802): CHtml::resolveValue(Object(FormTemplateDefault), 'f_2')
+#2 Z:\home\moniiag.my\yii\web\widgets\CActiveForm.php(847): CHtml::activeDropDownList(Object(FormTemplateDefault), 'f_2', Array, Array)
+#3 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList(Object(FormTemplateDefault), 'f_2', Array, Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#6 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#7 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(147): CWidget->render('CategorieElemen...', Array)
+#8 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie(Array, Object(CActiveForm), Object(FormTemplateDefault))
+#9 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#11 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#12 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(18): CWidget->render('application.mod...', Array)
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#14 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(55): CBaseController->widget('application.mod...', Array)
+#15 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#16 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#17 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#18 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#19 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): CController->render('index', Array)
+#20 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#21 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#23 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#25 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#26 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#27 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#28 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#29 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#30 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#31 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#32 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:05:31 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "gethistorymedcard".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('gethistorymedca...')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=%0A++++++++++++++++++++++++++++++++++++2013-12-12+11%3A55+++++++++++++++++++++++++++++++&_=1386839126094
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:10:48 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "gethistorymedcard".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('gethistorymedca...')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=%0A++++++++++++++++++++++++++++++++++++2013-12-12+11%3A55+++++++++++++++++++++++++++++++&_=1386839444768
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:13:53 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "gethistorymedcard".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('gethistorymedca...')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=2013-12-12+11%3A55&_=1386839619870
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:23:13 [error] [exception.CException] exception 'CException' with message 'Alias "modules.doctors.components.widgets.CategorieViewWidget" is invalid. Make sure it points to an existing directory or file.' in Z:\home\moniiag.my\yii\YiiBase.php:347
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(146): YiiBase::import('modules.doctors...', true)
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(PatientController), 'modules.doctors...', Array)
+#2 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php(5): CBaseController->createWidget('modules.doctors...')
+#3 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#4 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#13 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=2013-12-12+11%3A55&_=1386839619874
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:25:04 [error] [exception.CException] exception 'CException' with message 'CategorieViewWidget and its behaviors do not have a method or closure named "getCategories".' in Z:\home\moniiag.my\yii\base\CComponent.php:267
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php(6): CComponent->__call('getCategories', Array)
+#1 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php(6): CategorieViewWidget->getCategories(0)
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=2013-12-11+15%3A36&_=1386840302197
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:39:21 [error] [exception.CException] exception 'CException' with message 'Property "PatientController.request" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php(4): CComponent->__get('request')
+#1 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#2 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#3 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#4 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#5 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#9 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#11 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#13 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=2013-12-12+11%3A55&_=1386840302200
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:40:33 [error] [exception.CException] exception 'CException' with message 'CHttpRequest and its behaviors do not have a method or closure named "isAjaxRequest".' in Z:\home\moniiag.my\yii\base\CComponent.php:267
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php(4): CComponent->__call('isAjaxRequest', Array)
+#1 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php(4): CHttpRequest->isAjaxRequest()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymedca...')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=2013-12-12+11%3A55&_=1386840302201
+HTTP_REFERER=http://moniiag.my/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 12:40:42 [error] [php] Missing argument 2 for CategorieViewWidget::getFieldsHistoryByDate(), called in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php on line 13 and defined (Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:151)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#2 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): PatientController->run()
+#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=1%2F14&date=2013-12-12+11%3A55&_=1386840302202
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (151)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/12 12:45:56 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mep.date не существует
+LINE 3: WHERE mep.medcard_id = $1 AND mep.date <= $2
+                                      ^. The SQL statement executed was: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id AND mep.date <= :date.
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (121)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (152)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+2013/12/12 12:48:51 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42803]: Grouping error: 7 ОШИБКА:  колонка "mep.medcard_id" должна фигурировать в предложении GROUP BY или использоваться в агрегатной функции
+LINE 1: SELECT "mep".*
+               ^. The SQL statement executed was: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id AND mep.change_date <= :date
+GROUP BY "mep"."history_id".
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (122)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (152)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+2013/12/12 12:49:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42803]: Grouping error: 7 ОШИБКА:  колонка "mep.element_id" должна фигурировать в предложении GROUP BY или использоваться в агрегатной функции
+LINE 1: SELECT "mep".*
+               ^. The SQL statement executed was: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id AND mep.change_date <= :date
+GROUP BY "mep"."history_id", "mep"."medcard_id".
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (122)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (152)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+2013/12/12 12:53:14 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42803]: Grouping error: 7 ОШИБКА:  агрегатные функции нельзя применять в конструкции WHERE
+LINE 3: ... AND mep.change_date <= $2) AND (mep.history_id = MAX(mep.hi...
+                                                             ^. The SQL statement executed was: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE (mep.medcard_id = :medcard_id AND mep.change_date <= :date) AND (mep.history_id = MAX(mep.history_id))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id".
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (123)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (152)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+2013/12/12 12:57:34 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.medcards_elements_patient" не существует
+LINE 4: ...                                             FROM mis.medcar...
+                                                             ^. The SQL statement executed was: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE (mep.medcard_id = :medcard_id AND mep.change_date <= :date) AND (mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcards_elements_patient mep2
+                                                  WHERE mep2.medcard_id = :medcard_id AND mep2.change_date <= :date))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id".
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (126)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (152)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+2013/12/12 13:26:23 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php:40)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#1 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#3 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php (40)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (42)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/12 13:26:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P10]: Invalid column reference: 7 ОШИБКА:  в конструкции SELECT DISTINCT выражения ORDER BY должны быть в списке выборки
+LINE 4: ORDER BY "mep"."change_date" DESC
+                 ^. The SQL statement executed was: SELECT DISTINCT SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.medcard_id
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id
+ORDER BY "mep"."change_date" DESC.
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (107)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (50)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (41)
+2013/12/12 13:26:29 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php:40)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#1 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#3 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php (40)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (42)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/12 13:51:15 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42803]: Grouping error: 7 ОШИБКА:  колонка "me.type" должна фигурировать в предложении GROUP BY или использоваться в агрегатной функции
+LINE 1: SELECT "mep".*, "me"."type"
+                        ^. The SQL statement executed was: SELECT "mep".*, "me"."type"
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements" "me" ON me.id = mep.element_id
+WHERE (mep.medcard_id = :medcard_id AND mep.change_date <= :date) AND (mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.medcard_id = :medcard_id
+                                                    AND mep2.change_date <= :date))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id".
+in Z:\home\moniiag.my\www\protected\models\MedcardElementForPatient.php (130)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (154)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PatientController.php (13)
+2013/12/12 15:04:05 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (88)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:04:05 [error] [exception.CException] exception 'CException' with message 'Property "FormElementAdd.allow_add" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(108): CComponent->__get('allow_add')
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(91): ElementsController->addEditModel(Object(MedcardElement), Object(FormElementAdd), '?????????????? ...')
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): ElementsController->actionAdd()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('add')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/elements/...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/elements/add
+HTTP_REFERER=http://moniiag.my/index.php/admin/elements/view
+---
+2013/12/12 15:08:10 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (88)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:08:10 [error] [exception.CException] exception 'CException' with message 'Property "FormElementAdd.allow_add" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(108): CComponent->__get('allow_add')
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(91): ElementsController->addEditModel(Object(MedcardElement), Object(FormElementAdd), '?????????????? ...')
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): ElementsController->actionAdd()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('add')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/elements/...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/elements/add
+HTTP_REFERER=http://moniiag.my/index.php/admin/elements/view
+---
+2013/12/12 15:08:30 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (88)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:08:30 [error] [exception.CException] exception 'CException' with message 'Property "FormElementAdd.allow_add" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(108): CComponent->__get('allow_add')
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(91): ElementsController->addEditModel(Object(MedcardElement), Object(FormElementAdd), '?????????????? ...')
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): ElementsController->actionAdd()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('add')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/elements/...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/elements/add
+HTTP_REFERER=http://moniiag.my/index.php/admin/elements/view
+---
+2013/12/12 15:08:56 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (88)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:09:18 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (74)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:10:16 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (74)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:10:25 [warning] [application] Failed to set unsafe attribute "allowAdd" of "FormElementAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (74)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 15:13:29 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(150): CategorieViewWidget->render()
+#5 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie()
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#8 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(17): CategorieViewWidget->render()
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(57): SheduleController->widget()
+#12 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#14 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#15 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#16 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#17 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#18 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#20 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#23 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#25 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#26 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#27 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#28 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php (42)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (150)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php (20)
+2013/12/12 15:13:55 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(150): CategorieViewWidget->render()
+#5 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie()
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#8 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(17): CategorieViewWidget->render()
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(57): SheduleController->widget()
+#12 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#14 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#15 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#16 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#17 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#18 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#20 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#23 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#25 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#26 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#27 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#28 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php (42)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (150)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php (20)
+2013/12/12 15:14:15 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(150): CategorieViewWidget->render()
+#5 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie()
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#8 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(17): CategorieViewWidget->render()
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(57): SheduleController->widget()
+#12 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#14 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#15 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#16 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#17 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#18 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#20 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#23 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#25 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#26 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#27 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#28 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php (42)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (150)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php (20)
+2013/12/12 15:18:42 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(153): CategorieViewWidget->render()
+#5 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie()
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#8 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(20): CategorieViewWidget->render()
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(57): SheduleController->widget()
+#12 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#14 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#15 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#16 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#17 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#18 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#20 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#23 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#25 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#26 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#27 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#28 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php (42)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (153)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php (20)
+2013/12/12 15:19:09 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(41): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(153): CategorieViewWidget->render()
+#5 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie()
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#8 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(20): CategorieViewWidget->render()
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(57): SheduleController->widget()
+#12 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#14 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#15 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#16 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#17 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#18 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#20 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#23 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#25 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#26 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#27 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#28 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php (41)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (153)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php (20)
+2013/12/12 15:20:18 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php(42): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(153): CategorieViewWidget->render()
+#5 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php(20): CategorieViewWidget->drawCategorie()
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#8 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(20): CategorieViewWidget->render()
+#10 Z:\home\moniiag.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(57): SheduleController->widget()
+#12 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#13 Z:\home\moniiag.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#14 Z:\home\moniiag.my\yii\web\CController.php(869): SheduleController->renderFile()
+#15 Z:\home\moniiag.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#16 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(42): SheduleController->render()
+#17 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#18 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#20 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#22 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#23 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#24 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#25 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#26 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#27 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#28 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieElement.php (42)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (153)
+in Z:\home\moniiag.my\www\protected\modules\doctors\components\widgets\views\CategorieViewWidget.php (20)
+2013/12/12 17:58:03 [error] [exception.CException] exception 'CException' with message 'Property "FormValueAdd.guideId" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('guideId')
+#1 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormValueAdd), 'guideId')
+#2 Z:\home\moniiag.my\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormValueAdd), 'guideId', Array)
+#3 Z:\home\moniiag.my\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormValueAdd), 'guideId', Array)
+#4 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(207): CActiveForm->hiddenField(Object(FormValueAdd), 'guideId', Array)
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#8 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(43): CController->render('index', Array)
+#10 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#11 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#14 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#17 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#19 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#20 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 Z:\home\moniiag.my\www\index.php(12): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/14&date=2013-12-12
+---
+2013/12/12 18:09:57 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\GuidesController.php (170)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 18:11:00 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\GuidesController.php (170)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/12 19:15:56 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/12 19:16:22 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:00:24 [error] [php] Undefined variable: doctor (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:163)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (163)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (26)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+2013/12/13 10:11:44 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:13:32 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:20:08 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:22:33 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:22:44 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:23:50 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:24:53 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:25:17 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:25:30 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:25:51 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:27:04 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 10:27:14 [warning] [application] Failed to set unsafe attribute "guideId" of "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (170)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (12)
+2013/12/13 11:12:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
+---

@@ -46,6 +46,8 @@ class MedcardGuideValue extends MisActiveRecord {
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
             $guideValues->order($sidx.' '.$sord);
             $guideValues->limit($limit, $start);
+        } else {
+            $guideValues->order('mgv.id DESC');
         }
 
         return $guideValues->queryAll();

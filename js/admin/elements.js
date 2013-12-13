@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#elements").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/elements/get',
         datatype: "json",
-        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка', '', '', ''],
+        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка', '', '', '',''],
         colModel:[
             {
                 name:'id',
@@ -42,6 +42,11 @@ $(document).ready(function() {
             {
                 name: 'type_id',
                 index: 'type_id',
+                hidden: true
+            },
+            {
+                name: 'allow_add',
+                index: 'allow_add',
                 hidden: true
             }
         ],
@@ -160,6 +165,10 @@ $(document).ready(function() {
                             {
                                 modelField: 'guide_id',
                                 formField: 'guideId'
+                            },
+                            {
+                                modelField: 'allow_add',
+                                formField: 'allowAdd'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
@@ -210,10 +219,15 @@ $(document).ready(function() {
         var form = $(this).parents('form');
         if($(this).val() == 2 || $(this).val() == 3) {
             form.find("select#guideId").prop('disabled', false);
+            form.find("select#allowAdd").prop('disabled', false);
         } else {
             // Поставить на дефолт
             form.find("select#guideId")
                 .val(-1)
+                .prop('disabled', true);
+
+            form.find("select#allowAdd")
+                .val(0)
                 .prop('disabled', true);
         }
     });

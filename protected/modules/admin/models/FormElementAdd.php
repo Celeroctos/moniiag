@@ -7,6 +7,7 @@ class FormElementAdd extends CFormModel
     public $label;
     public $guideId;
     public $id;
+    public $allowAdd;
 
     public function rules()
     {
@@ -15,7 +16,7 @@ class FormElementAdd extends CFormModel
                 'type, categorieId, label', 'required'
             ),
             array(
-                'id, guideId', 'safe'
+                'id, guideId, allowAdd', 'safe'
             )
         );
     }
@@ -26,7 +27,8 @@ class FormElementAdd extends CFormModel
             'type' => 'Тип элемента',
             'categorieId' => 'Категория',
             'label' => 'Метка рядом с элементом',
-            'guideId' => 'Справочник'
+            'guideId' => 'Справочник',
+            'allowAdd' => 'Можно добавлять новые значения врачу?'
         );
     }
 }
