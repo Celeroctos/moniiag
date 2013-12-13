@@ -35,13 +35,15 @@
                     minView: 2,
                     forceParse: 0
                 });
-                $(global.dateFields[i]).find('input').on('keyup', function(e) {
+                $(global.dateFields[i]).find('input').on('keydown', function(e) {
                     var value = $(this).val();
                     // Дата по регулярке
-                    if((value.length == 4 || value.length == 7) && e.keyCode != 8) { // Введён год или месяц..
-                        $(this).val(value + '-');
+					if((value.length == 4 || value.length == 7)&&(e.keyCode != 8)) {
+						// Введён год или месяц..
+                        		$(this).val(value + '-');			
                     }
-                    if((value.length == 5 || value.length == 8) && e.keyCode == 8) { // Убрать автоматически прочерк
+                 // Убрать автоматически прочерк
+				    if((value.length == 6 || value.length == 9) && e.keyCode == 8) {
                         $(this).val(value.substr(0, value.length - 1));
                     }
                 });
