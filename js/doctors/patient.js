@@ -6,6 +6,12 @@ $(document).ready(function() {
             $('#successEditPopup').modal({
 
             });
+            // Вставляем новую запись в список истории
+            if(ajaxData.hasOwnProperty('historyDate')) {
+                var newDiv = $('<div>');
+                $(newDiv).append($('<a>').prop('href', '#' + globalVariables.medcardNumber).attr('class', 'medcard-history-showlink').text(ajaxData.historyDate));
+                $('#accordionH .accordion-inner div:first').before(newDiv);
+            }
         } else {
 
         }
@@ -38,5 +44,42 @@ $(document).ready(function() {
                 $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
             }
         }
+    });
+
+    $(document).on('click', '.medcard-history-showlink', function(e) {
+        var medcardId = $(this).attr('href').substr(1);
+        var date = $(this).text();
+        $('#historyPopup .medcardNumber').text('№ ' + medcardId);
+        $('#historyPopup .historyDate').text(date);
+        $.ajax({
+            'url' : '/index.php/doctors/patient/gethistorymedcard',
+            'data' : {
+                medcardid : medcardId,
+                date : date
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == 'true') {
+                    // Заполняем медкарту-историю значениями
+                    var data = data.data;
+                    var form = $('#historyPopup #patient-edit-form');
+                    // Сброс формы
+                    $(form)[0].reset();
+                    $(form).find('input').val('');
+                    for(var i = 0; i < data.length; i++) {
+                        var element = $(form).find('#f_history_' + data[i].element_id);
+                        if(data[i].type == 3) { // Выпадающий список с множественным выбором
+                            data[i].value = $.parseJSON(data[i].value);
+                        }
+                        element.val(data[i].value);
+                    }
+                    $('#historyPopup').modal({
+
+                    });
+                }
+            }
+        });
     });
 });

@@ -104,10 +104,15 @@ class ElementsController extends Controller {
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
         }
+        if($model->type == 2 || $model->type == 3) {
+            $element->allow_add = $model->allowAdd;
+        } else {
+            $element->allow_add = 0;
+        }
 
         if($element->save()) {
             echo CJSON::encode(array('success' => true,
-                                    'text' => $msg));
+                                     'text' => $msg));
         }
     }
 

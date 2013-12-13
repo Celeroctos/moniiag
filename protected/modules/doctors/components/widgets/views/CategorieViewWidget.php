@@ -20,6 +20,7 @@ echo $form->hiddenField($model,'medcardId', array(
 			$this->drawCategorie($categorie, $form, $model);
 		} ?>
 <?php } ?>
+    <?php if(!$withoutSave) { ?>
     <div class="form-group submitEditPatient">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить',
@@ -34,6 +35,7 @@ echo $form->hiddenField($model,'medcardId', array(
             )
         ); ?>
     </div>
+    <?php } ?>
 <?php $this->endWidget(); ?>
 <div class="modal fade error-popup" id="successEditPopup">
     <div class="modal-dialog">

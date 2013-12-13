@@ -277,7 +277,11 @@ $(document).ready(function() {
                     $("#writeShedule").trigger("showShedule", [data, textStatus, jqXHR])
                     $('.headerBusyCalendar, .busyCalendar').show();
                 } else {
+                    $('#errorPopup .modal-body .row p').remove();
+                    $('#errorPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorPopup').modal({
 
+                    });
                 }
                 return;
             }

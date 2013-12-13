@@ -152,6 +152,15 @@ class GuidesController extends Controller {
     public function actionAddInGuide($id = false) {
         // Если вынимаем у непонятно чего - давать поворот-отворот
         if($id == false) {
+            if(isset($_POST['FormValueAdd']['guideId'])) {
+                $guide = MedcardGuide::model()->findByPk($_POST['FormValueAdd']['guideId']);
+                if($guide != null) {
+                    $id = $_POST['FormValueAdd']['guideId'];
+                }
+            }
+        }
+
+        if($id == false) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Без указания справочника.'));
             exit();
@@ -189,7 +198,9 @@ class GuidesController extends Controller {
         $guideValue->value = $model->value;
         if($guideValue->save()) {
             echo CJSON::encode(array('success' => 'true',
-                                     'text' => $msg));
+                                     'text' => $msg,
+                                     'id' => $guideValue->id,
+                                     'display' => $guideValue->value));
         }
     }
 

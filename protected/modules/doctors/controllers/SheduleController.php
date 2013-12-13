@@ -38,6 +38,7 @@ class SheduleController extends Controller {
             'filterModel' => $this->filterModel,
             'medcard' => isset($medcard) ? $medcard : null,
             'currentDate' => $curDate,
+            'addModel' => new FormValueAdd(),
             'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null)
         ));
     }
@@ -81,6 +82,8 @@ class SheduleController extends Controller {
     public function actionPatientEdit() {
         if(isset($_POST['FormTemplateDefault'])) {
             // Перебираем весь входной массив, чтобы записать изменения в базу
+            $currentDate = date('Y-m-d H:i');
+            $answerCurrentDate = false;
             foreach($_POST['FormTemplateDefault'] as $field => $value) {
                 if($field == 'medcardId') {
                     continue;
@@ -103,7 +106,7 @@ class SheduleController extends Controller {
                 $elementModel->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
                 $elementModel->element_id = $resArr[1];
                 $elementModel->value = $value;
-                $elementModel->change_date = date('Y-m-d h:i');
+                $elementModel->change_date = $currentDate;
                 $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId(array('id' => $elementModel->element_id), $elementModel->medcard_id);
                 if($historyIdResult['history_id_max'] == null) {
                     $elementModel->history_id = 1;
@@ -122,6 +125,7 @@ class SheduleController extends Controller {
                         }
                     }
                     $elementModel->history_id = $historyIdResult['history_id_max'] + 1;
+                    $answerCurrentDate = true;
                 }
                 if(!$elementModel->save()) {
                     echo CJSON::encode(array('success' => true,
@@ -129,8 +133,13 @@ class SheduleController extends Controller {
                     exit();
                 }
             }
-            echo CJSON::encode(array('success' => true,
-                                     'text' => 'Данные успешно сохранены.'));
+            $response = array('success' => true,
+                             'text' => 'Данные успешно сохранены.'
+                             );
+            if($answerCurrentDate) {
+                $response['historyDate'] = $currentDate;
+            }
+            echo CJSON::encode($response);
         } else {
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
@@ -144,7 +153,7 @@ class SheduleController extends Controller {
         $userId = Yii::app()->user->id;
         $doctor = User::model()->findByPk($userId);
         if($doctor == null) {
-            exit('Error!');
+            //exit('Error!');
         }
         // Выбираем пациентов на обозначенный день
         $sheduleByDay = new SheduleByDay();

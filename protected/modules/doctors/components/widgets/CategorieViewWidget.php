@@ -3,22 +3,29 @@ class CategorieViewWidget extends CWidget {
     public $formModel = null;
     public $currentPatient = false;
     public $templateType = null;
+    public $withoutSave = 0; // Флаг, нужно ли делать кнопку сохранения
+    public $prefix = ''; // Если есть два одинаковых шаблона на странице, их айдишники надо как-то отличать. Отличаем по префиксу
 
     public function run() {
-        $this->formModel = new FormTemplateDefault();
+        $this->createFormModel();
         $categories = $this->getCategories($this->templateType); // Шаблон страницы приёма
-		/*echo "<pre>";
-		var_dump($categories);
-		exit();*/
+        /*echo "<pre>";
+        var_dump($categories);
+        exit();*/
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
-            'currentPatient' => $this->currentPatient
+            'currentPatient' => $this->currentPatient,
+            'withoutSave' => $this->withoutSave
         ));
     }
 
+    public function createFormModel() {
+        $this->formModel = new FormTemplateDefault();
+    }
+
     // Получить иерархию категорий на странице
-    protected function getCategories($pageId) {
+    public function getCategories($pageId) {
         $templateModel = new MedcardTemplate();
         $templates = $templateModel->getTemplatesByPageId($pageId);
         // Получаем типы элементов
@@ -61,8 +68,10 @@ class CategorieViewWidget extends CWidget {
 							$guideValues[$value['id']] = $value['value'];
 						}
 						$element['guide'] = $guideValues;
-						$element['label'] = $element['label'];
-					}
+					} else {
+                        $element['guide'] = array();
+                    }
+                    $element['label'] = $element['label'];
 				}
 				// Добавляем в форму
 				$this->formModel->setSafeRule('f'.$element['id']);
@@ -141,8 +150,13 @@ class CategorieViewWidget extends CWidget {
         $this->render('CategorieElement', array(
             'categorie' => $categorie,
             'form' => $form,
-            'model' => $model
+            'model' => $model,
+            'prefix' => $this->prefix,
         ));
+    }
+
+    public function getFieldsHistoryByDate($date, $medcardId) {
+        return MedcardElementForPatient::model()->getValuesByDate($date, $medcardId);
     }
 }
 ?>

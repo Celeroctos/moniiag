@@ -217,6 +217,8 @@ class SheduleController extends Controller {
             $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
         }
         foreach($rows as $row) {
+            $row->time_begin = substr($row->time_begin, 0, strrpos($row->time_begin, ':'));
+            $row->time_end = substr($row->time_end, 0, strrpos($row->time_end, ':'));
             $resultArr['data'][] = array(
                 'timeBegin' => $row->time_begin,
                 'timeEnd' => $row->time_end,

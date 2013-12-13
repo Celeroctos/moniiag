@@ -100,10 +100,34 @@ class MedcardElementForPatient extends MisActiveRecord {
         try {
             $connection = Yii::app()->db;
             $points = $connection->createCommand()
-                ->selectDistinct('mep.change_date')
+                ->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.medcard_id')
                 ->from('mis.medcard_elements_patient mep')
-                ->where('mep.medcard_id = :medcard_id', array(':medcard_id' => $medcard['card_number']));
+                ->where('mep.medcard_id = :medcard_id', array(':medcard_id' => $medcard['card_number']))
+                ->order('change_date DESC');
             return $points->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function getValuesByDate($date, $medcardId) {
+        try {
+            $connection = Yii::app()->db;
+            $values = $connection->createCommand()
+                ->select('mep.*, me.type')
+                ->from('mis.medcard_elements_patient mep')
+                ->join('mis.medcard_elements me', 'me.id = mep.element_id')
+                ->where('mep.medcard_id = :medcard_id AND mep.change_date <= :date', array(':medcard_id' => $medcardId,
+                                                                                           ':date' => $date))
+                ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.medcard_id = :medcard_id
+                                                    AND mep2.change_date <= :date)',                                                                                          array(':medcard_id' => $medcardId,
+                                                           ':date' => $date))
+                ->group('mep.element_id, mep.history_id, mep.medcard_id, me.type');
+            return $values->queryAll();
 
         } catch(Exception $e) {
             echo $e->getMessage();

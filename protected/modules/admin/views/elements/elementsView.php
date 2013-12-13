@@ -85,6 +85,19 @@
                                 <?php echo $form->error($model,'guideId'); ?>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'allowAdd', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'allowAdd', array('Да', 'Нет'), array(
+                                    'id' => 'allowAdd',
+                                    'class' => 'form-control',
+                                    'disabled' => true,
+                                )); ?>
+                                <?php echo $form->error($model,'allowAdd'); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -182,6 +195,19 @@
                                     'disabled' => true
                                 )); ?>
                                 <?php echo $form->error($model,'guideId'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'allowAdd', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'allowAdd', array('Нет', 'Да'), array(
+                                    'id' => 'allowAdd',
+                                    'class' => 'form-control',
+                                    'disabled' => true,
+                                )); ?>
+                                <?php echo $form->error($model,'allowAdd'); ?>
                             </div>
                         </div>
                     </div>
