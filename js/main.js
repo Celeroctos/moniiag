@@ -35,30 +35,32 @@
                     minView: 2,
                     forceParse: 0
                 });
-                $(global.dateFields[i]).find('input').on('keydown', function(e) {
+                $(global.dateFields[i]).find('input').on('keyup', function(e) {
                     var value = $(this).val();
                     // Дата по регулярке
-					if((value.length == 4 || value.length == 7)&&(e.keyCode != 8)) {
-						// Введён год или месяц..
-                        		$(this).val(value + '-');			
+                    if((value.length == 4 || value.length == 7) && e.keyCode != 8) { // Введён год или месяц..
+                        $(this).val(value + '-');
                     }
-                 // Убрать автоматически прочерк
-				    if((value.length == 6 || value.length == 9) && e.keyCode == 8) {
+                    if((value.length == 5 || value.length == 8) && e.keyCode == 8) { // Убрать автоматически прочерк
                         $(this).val(value.substr(0, value.length - 1));
                     }
                 });
                 $(global.dateFields[i]).find('input').on('keydown', function(e) {
                     // Бэкспейс разрешить, цифры разрешить
                     var isAllow = true;
-                    if($(this).val().length == 10 && e.keyCode != 8) {
+                    var value = $(this).val();
+                    if(value.length == 10 && e.keyCode != 8) {
                         isAllow = false;
                     } else {
                         if(!(e.keyCode > 47 && e.keyCode < 58) && !(e.keyCode > 95 && e.keyCode < 106) && e.keyCode != 8) {
                             isAllow = false;
                         }
                     }
+                    if((value.length == 4 || value.length == 7) && e.keyCode != 8) { // Введён год или месяц..
+                        $(this).val(value + '-');
+                    }
                     return isAllow;
-                })
+                });
             }
             // Маркировка анкет
             for(var i = 0; i < global.colorPickerFields.length; i++) {
@@ -71,6 +73,37 @@
             }
         });
     };
+
+    $('#omsNumber, #policy').keyfilter(/^[\s\d]*$/);
+    $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁё\-]*$/);
+
+    $('#snils').on('keyup', function(e) {
+        var value = $(this).val();
+        // СНИЛС по проверке
+        if((value.length == 3 || value.length == 7 || value.length == 11) && e.keyCode != 8) { // Введён год или месяц..
+            $(this).val(value + '-');
+        }
+        if((value.length == 4 || value.length == 8 || value.length == 12) && e.keyCode == 8) { // Убрать автоматически прочерк
+            $(this).val(value.substr(0, value.length - 1));
+        }
+    });
+
+    $('#snils').on('keydown', function(e) {
+        // Бэкспейс разрешить, цифры разрешить
+        var isAllow = true;
+        var value = $(this).val();
+        if(value.length == 14 && e.keyCode != 8) {
+            isAllow = false;
+        } else {
+            if(!(e.keyCode > 47 && e.keyCode < 58) && !(e.keyCode > 95 && e.keyCode < 106) && e.keyCode != 8) {
+                isAllow = false;
+            }
+        }
+        if((value.length == 3 || value.length == 7 || value.length == 11) && e.keyCode != 8) { // Введён год или месяц..
+            $(this).val(value + '-');
+        }
+        return isAllow;
+    });
 
 
     this.initFields();

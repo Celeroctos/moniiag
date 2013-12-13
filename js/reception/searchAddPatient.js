@@ -110,12 +110,12 @@ $(document).ready(function() {
                     '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-edit"></span>' +
                         '</a>' +
                     '</td>' +
@@ -138,18 +138,23 @@ $(document).ready(function() {
                     '<td>' + data[i].reg_date + '</td>' +
                     '<td>' + data[i].card_number + '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
                             '<span class="glyphicon glyphicon-edit"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-edit"></span>' +
+                        '</a>' +
+                    '</td>' +
+                    '<td>' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
+                            '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
                     '</td>' +
                 '</tr>'

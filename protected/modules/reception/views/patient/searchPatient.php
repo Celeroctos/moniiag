@@ -71,7 +71,7 @@
      <div class="form-group">
         <label for="snils" class="col-xs-2 control-label">СНИЛС</label>
         <div class="col-xs-4">
-            <input type="text" class="form-control" id="snils" placeholder="СНИЛС">
+            <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
         </div>
     </div>
     <div class="form-group">
@@ -139,6 +139,9 @@
                 </td>
                 <td>
                     Редактировать ОМС
+                </td>
+                <td>
+                    Записать на приём
                 </td>
             </tr>
             </thead>

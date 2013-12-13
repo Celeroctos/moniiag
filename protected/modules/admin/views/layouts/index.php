@@ -21,6 +21,8 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/bootstrap-datetimepicker.ru.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/js/i18n/grid.locale-ru.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/js/jquery.jqGrid.src.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-browser.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery.keyfilter-1.7.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
 </head>
 <body>

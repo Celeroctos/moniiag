@@ -252,7 +252,7 @@
                         <?php echo $form->textField($model,'snils', array(
                             'id' => 'snils',
                             'class' => 'form-control',
-                            'placeholder' => 'СНИЛС'
+                            'placeholder' => 'Формат XXX-XXX-XXX-XX'
                         )); ?>
                         <?php echo $form->error($model,'snils'); ?>
                     </div>
