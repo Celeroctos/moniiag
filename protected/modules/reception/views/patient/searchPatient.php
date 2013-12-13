@@ -79,15 +79,15 @@
 		</div>
 		<!--Выводим верхние кнопочки для увеличения значений даты-->
 		<div class="btn-group col-xs-4">
-    		<button type="button" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
 				<!--<span class="glyphicon-arrow-up glyphicon">-->
 			<!--	</span>-->
 			</button>
-     		<button type="button" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+     		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
 				<!--<span class="glyphicon-arrow-up glyphicon">-->
 			<!--	</span>-->
 			</button>
-    		<button type="button" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
 				<!--<span class="glyphicon-arrow-up glyphicon">-->
 			<!--	</span>-->
 			</button>
@@ -108,15 +108,15 @@
 		</div>		
 		<div class="btn-group col-xs-4">	
 		<!--Выводим нижние кнопочки для уменьшения значений даты-->
-    		<button type="button" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
 				<!--<span class="glyphicon-arrow-down glyphicon">-->
 				<!--</span>-->
 			</button>
-     		<button type="button" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+     		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
 			<!--	<span class="glyphicon-arrow-down glyphicon">-->
 				<!--</span>-->
 			</button>
-    		<button type="button" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+    		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
 			<!--	<span class="glyphicon-arrow-down glyphicon">-->
 				<!--</span>-->
 			</button>

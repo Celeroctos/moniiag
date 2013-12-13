@@ -81,6 +81,22 @@
             <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
         </div>
     </div>
+         <div class="form-group">
+        <div class="col-xs-2">
+        </div>
+        <!--Выводим верхние кнопочки для увеличения значений даты-->
+        <div class="btn-group col-xs-4">
+            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+
+            </button>
+             <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+
+            </button>
+            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+
+            </button>
+        </div>
+    </div>
     <div class="form-group">
         <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>                    
     	<div id="birthday-cont" class="col-xs-4 input-group date">
@@ -89,6 +105,22 @@
                 <span class="glyphicon-calendar glyphicon"></span>
             </span>
     	</div>
+    </div>
+        <div  class="form-group">
+        <div class="col-xs-2">
+        </div>        
+        <div class="btn-group col-xs-4">    
+        <!--Выводим нижние кнопочки для уменьшения значений даты-->
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+
+            </button>
+             <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+
+            </button>
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+
+            </button>
+        </div>
     </div>
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">

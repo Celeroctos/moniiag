@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+$(document).ready(function() {
     var global = {
         dateFields: [
             '#birthday-cont',
@@ -46,8 +46,11 @@
                     }
                 });
                 $(global.dateFields[i]).find('input').on('keydown', function(e) {
-                    // Бэкспейс разрешить, цифры разрешить
-                    var isAllow = true;
+                    // Разрешить бекспейс, цифры, табуляция, Enter
+                    var isAllow = true;       
+                    // Если символ Enter или Tab - сразу возвращаем true
+                    if ((e.keyCode == 13)||(e.keyCode == 9)) 
+                        return true;
                     var value = $(this).val();
                     if(value.length == 10 && e.keyCode != 8) {
                         isAllow = false;
@@ -209,6 +212,11 @@
     $('#snils').on('keydown', function(e) {
         // Бэкспейс разрешить, цифры разрешить
         var isAllow = true;
+        // Проверяем табуляцию и  Enter
+        // Если символ Enter или Tab - сразу возвращаем true
+        if ((e.keyCode == 13)||(e.keyCode == 9)) 
+            return true;
+        
         var value = $(this).val();
         if(value.length == 14 && e.keyCode != 8) {
             isAllow = false;
