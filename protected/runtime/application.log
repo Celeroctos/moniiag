@@ -1,9 +1,1 @@
-2013/12/13 11:16:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
-Stack trace:
-#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
-#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#2 F:\Hosts\Celeroctos\moniiag\www\index.php(12): CApplication->run()
-#3 {main}
-REQUEST_URI=/index.php/settings/system/view
-HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/shedule/view
----
+﻿

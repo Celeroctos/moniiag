@@ -27,7 +27,9 @@
                         <?php echo $form->textField($model,'policy', array(
                             'id' => 'policy',
                             'class' => 'form-control',
-                            'placeholder' => 'ОМС'
+                            'placeholder' => 'ОМС',
+                            'autofocus'=>'1'
+                            
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
                     </div>
@@ -83,6 +85,21 @@
                         <?php echo $form->error($model,'gender'); ?>
                     </div>
                 </div>
+                    <div class="form-group">
+        <span class="col-xs-3">
+        </span>           
+        <div class="btn-group col-xs-5">
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+
+            </button>
+             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+
+            </button>
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+
+            </button>
+        </div>
+    </div>               
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'birthday', array(
                         'class' => 'col-xs-3 control-label'
@@ -97,7 +114,22 @@
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
-                </div>
+                </div>     
+                  <div  class="form-group">
+        <span class="col-xs-3">
+        </span>            
+        <div class="btn-group col-xs-5">              
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+
+            </button>
+             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+
+            </button>
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+
+            </button>
+        </div>
+    </div>               
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'doctype', array(
                         'class' => 'col-xs-3 control-label'
@@ -149,6 +181,21 @@
                         <?php echo $form->error($model,'whoGived'); ?>
                     </div>
                 </div>
+                                    <div class="form-group">
+        <span class="col-xs-3">
+        </span>           
+        <div class="btn-group col-xs-5">
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+
+            </button>
+             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+
+            </button>
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+
+            </button>
+        </div>
+    </div>    
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'documentGivedate', array(
                         'class' => 'col-xs-3 control-label'
@@ -164,6 +211,22 @@
                         </span>
                     </div>
                 </div>
+                
+                                  <div  class="form-group">
+        <span class="col-xs-3">
+        </span>            
+        <div class="btn-group col-xs-5">              
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+
+            </button>
+             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+
+            </button>
+            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+
+            </button>
+        </div>
+    </div>   
             </div>
             <div class="col-xs-6">
                 <div class="form-group">

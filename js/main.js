@@ -1,4 +1,4 @@
-﻿$(document).ready(function() {
+$(document).ready(function() {
     var global = {
         dateFields: [
             '#birthday-cont',
@@ -46,8 +46,11 @@
                     }
                 });
                 $(global.dateFields[i]).find('input').on('keydown', function(e) {
-                    // Бэкспейс разрешить, цифры разрешить
-                    var isAllow = true;
+                    // Разрешить бекспейс, цифры, табуляция, Enter
+                    var isAllow = true;       
+                    // Если символ Enter или Tab - сразу возвращаем true
+                    if ((e.keyCode == 13)||(e.keyCode == 9)) 
+                        return true;
                     var value = $(this).val();
                     if(value.length == 10 && e.keyCode != 8) {
                         isAllow = false;
@@ -71,6 +74,124 @@
                     format: 'hex'
                 });
             }
+
+            // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
+            function ArrowCalendarClickHandler(Target,Control)
+            {
+                // Парсим дату
+                // Разделяем её на три группы символов
+                 var DateArray = Control.value.split("-");
+                 // Если групп получилось меньше, чем 3, то ничего не делаем - значит дата не до конца введена
+                 if (DateArray.length<3)
+                 {
+                    return;
+                 }
+                 // Если всё-таки все группы цифр есть - создаём об'ект даты
+                 var StructDate = new Date(Number(DateArray[0]), Number(DateArray[1]) - 1, Number(DateArray[2]));
+                 
+                 // В переменной Date распарсенная дата
+                 
+                 // В зависимости от нажатой кнопки - вычисляем дату
+                 
+                 if ($(Target.currentTarget).hasClass('up-year-button'))
+                 {
+                    StructDate.setFullYear(StructDate.getFullYear()+1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('up-month-button'))
+                 {
+                    StructDate.setMonth(StructDate.getMonth()+1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('up-day-button'))
+                 {
+                    StructDate.setDate(StructDate.getDate()+1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('down-year-button'))
+                 {
+                    StructDate.setFullYear(StructDate.getFullYear()-1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('down-month-button'))
+                 {
+                     StructDate.setMonth(StructDate.getMonth()-1);
+                 }
+                 
+                 if ($(Target.currentTarget).hasClass('down-day-button'))
+                 {
+                     StructDate.setDate(StructDate.getDate()-1);
+                 }
+                 
+                 // Преобразовываем изменённую дату обратно и записываем в контрол
+                 
+                 // Преобразуем компоненты в строковое представление с ведущими нулями
+                 var dd = StructDate.getDate();
+                 if (dd<10) 
+                 {
+                    dd= '0'+dd;
+                 }
+                 var mm = StructDate.getMonth() + 1;
+                 if (mm<10)
+                 {
+                    mm= '0'+mm;
+                 } 
+                 var yyyy = StructDate.getFullYear();
+                 
+                 // Записываем измененённое значение даты в контрол
+                 Control.value = yyyy+'-'+mm+'-'+dd;
+                 
+
+            }
+
+			// Стрелки вверх-вниз для листания
+			// Сначала стрелки вверх
+			(function ()
+				{
+					// Выбираем все контролы дат
+					var Controls = $('div.date input');
+					
+					// Перебираем выбранные контролы
+					for (i=0;i<Controls.length;i++)
+					{
+						// Замыкаем ссылку на каждый контрол
+						(function (Control)
+						{
+							
+							// Подвязываем обработчик события нажатия на верхние кнопки для контрола
+							$(Control).parents('div.form-group').prev().find('button').on('click',function (e)
+							{
+								ArrowCalendarClickHandler(e,Control);
+								});
+							
+							// Подвязываем обработчик события нажатия на нижние кнопки для контрола
+							$(Control).parents('div.form-group').next().find('button').on('click',function (e)
+							{
+								ArrowCalendarClickHandler(e,Control);
+								});
+							
+							
+						})(Controls[i]);
+						
+						
+					}
+					
+				}
+			
+			)();
+			
+			/*
+			$('.up-calendar-button').parents('.form-group').next().find('.date').find('input').on('click', function(e) {
+				//alert(this.value);
+					var Control = селектор на текстовое поле
+					function = {
+						this 	
+						
+					}()
+				});
+
+*/
+
         });
     };
 
@@ -91,6 +212,11 @@
     $('#snils').on('keydown', function(e) {
         // Бэкспейс разрешить, цифры разрешить
         var isAllow = true;
+        // Проверяем табуляцию и  Enter
+        // Если символ Enter или Tab - сразу возвращаем true
+        if ((e.keyCode == 13)||(e.keyCode == 9)) 
+            return true;
+        
         var value = $(this).val();
         if(value.length == 14 && e.keyCode != 8) {
             isAllow = false;

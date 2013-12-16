@@ -17,7 +17,7 @@
     <div class="form-group">
         <label for="omsNumber" class="col-xs-2 control-label">Номер ОМС</label>
         <div class="col-xs-4">
-            <input type="text" class="form-control" id="omsNumber" placeholder="ОМС">
+            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС">
         </div>
     </div>
     <div class="form-group">
@@ -75,14 +75,107 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>                    
+		<div class="col-xs-2">
+		</div>
+		<!--Выводим верхние кнопочки для увеличения значений даты-->
+		<div class="btn-group col-xs-4">
+    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+				<!--<span class="glyphicon-arrow-up glyphicon">-->
+			<!--	</span>-->
+			</button>
+     		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+				<!--<span class="glyphicon-arrow-up glyphicon">-->
+			<!--	</span>-->
+			</button>
+    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+				<!--<span class="glyphicon-arrow-up glyphicon">-->
+			<!--	</span>-->
+			</button>
+		</div>
+	</div>
+	<div class="form-group">
+        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
     	<div id="birthday-cont" class="col-xs-4 input-group date">
             <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
-            <span class="input-group-addon">
-                <span class="glyphicon-calendar glyphicon"></span>
+			<span class="input-group-addon">
+            	<span class="glyphicon-calendar glyphicon">
+				</span>
             </span>
     	</div>
     </div>
+	<div  class="form-group">
+		<div class="col-xs-2">
+		</div>		
+		<div class="btn-group col-xs-4">	
+		<!--Выводим нижние кнопочки для уменьшения значений даты-->
+    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+				<!--<span class="glyphicon-arrow-down glyphicon">-->
+				<!--</span>-->
+			</button>
+     		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+			<!--	<span class="glyphicon-arrow-down glyphicon">-->
+				<!--</span>-->
+			</button>
+    		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+			<!--	<span class="glyphicon-arrow-down glyphicon">-->
+				<!--</span>-->
+			</button>
+		</div>
+	</div>
+    
+    
+    <!--
+       <div class="form-group">
+		<div class="col-xs-2">
+		</div>
+
+		<div class="btn-group col-xs-4">
+    		<button type="button" class="btn btn-default btn-xs year-button up-year-button" >
+				<span class="glyphicon-arrow-up glyphicon">
+				</span>
+			</button>
+     		<button type="button" class="btn btn-default btn-xs month-button up-year-button">
+				<span class="glyphicon-arrow-up glyphicon">
+				</span>
+			</button>
+    		<button type="button" class="btn btn-default btn-xs up-year-button">
+				<span class="glyphicon-arrow-up glyphicon">
+				</span>
+			</button>
+		</div>
+	</div>
+	<div class="form-group">
+        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
+    	<div id="birthday-cont1" class="col-xs-4 input-group date">
+            <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
+			<span class="input-group-addon">
+            	<span class="glyphicon-calendar glyphicon">
+				</span>
+            </span>
+    	</div>
+    </div>
+	<div  class="form-group">
+		<div class="col-xs-2">
+		</div>		
+		<div class="btn-group col-xs-4">	
+
+    		<button type="button" class="btn btn-default btn-xs year-button down-year-button">
+				<span class="glyphicon-arrow-down glyphicon">
+				</span>
+			</button>
+     		<button type="button" class="btn btn-default btn-xs month-button down-month-button">
+				<span class="glyphicon-arrow-down glyphicon">
+				</span>
+			</button>
+    		<button type="button" class="btn btn-default btn-xs down-day-button">
+				<span class="glyphicon-arrow-down glyphicon">
+				</span>
+			</button>
+		</div>
+	</div>
+    
+    -->
+
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
     </div>
