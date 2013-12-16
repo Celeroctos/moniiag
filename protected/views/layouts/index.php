@@ -10,6 +10,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/bootstrap-datetimepicker.ru.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-browser.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-keyboard-layout.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery.keyfilter-1.7.js"></script>
     <script type="text/javascript">
         var globalVariables = {
