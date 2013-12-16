@@ -17,7 +17,7 @@
     <div class="form-group">
         <label for="omsNumber" class="col-xs-2 control-label">Номер ОМС</label>
         <div class="col-xs-4">
-            <input type="text" class="form-control" id="omsNumber" placeholder="ОМС">
+            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС">
         </div>
     </div>
     <div class="form-group">

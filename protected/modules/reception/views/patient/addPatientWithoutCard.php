@@ -27,7 +27,9 @@
                         <?php echo $form->textField($model,'policy', array(
                             'id' => 'policy',
                             'class' => 'form-control',
-                            'placeholder' => 'ОМС'
+                            'placeholder' => 'ОМС',
+                            'autofocus'=>'1'
+                            
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
                     </div>
