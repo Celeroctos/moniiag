@@ -81,11 +81,59 @@ $(document).ready(function() {
                 // Парсим дату
                 // Разделяем её на три группы символов
                  var DateArray = Control.value.split("-");
-                 // Если групп получилось меньше, чем 3, то ничего не делаем - значит дата не до конца введена
-                 if (DateArray.length<3)
+                 
+                 
+                 // Если не введён год
+                 if (DateArray.length==0)
                  {
-                    return;
+                    // Добавляем текущй год   
+                    DateArray.push(new Date().getFullYear()); 
                  }
+                 else
+                 {
+                     // Проверяем, является ли первый элемент валидной цифрой для года
+                     if (!(Number(DateArray[0])>=new Date().getFullYear()-100)&&(Number(DateArray[0])<=new Date().getFullYear()+50))
+                     {  
+                        // Добавляем текущй год   
+                        DateArray[0] =  new Date().getFullYear();
+                     }
+                 }
+                 
+                 // Если не введён месяц
+                 if (DateArray.length==1)
+                 {
+                     // Добавляем текущий месяц
+                     DateArray.push((new Date().getMonth())+1);
+                     
+                 }
+                 else
+                 {
+                     // Проверяем - валиден ли месяц. Если нет - добавляем текущий
+                     if (!(Number(DateArray[1])>=1)&&(Number(DateArray[1])<12))
+                     {  
+                        // Добавляем текущй месяц   
+                        DateArray[1]=new Date().getMonth()+1;
+                     }
+                 }
+                 
+                 // Введён ли день
+                 if (DateArray.length==2)
+                 {
+                     // Добавляем текущий день
+                     DateArray.push(new Date().getDate());
+                 }
+                 else
+                 {
+                     // Проверяем - валиден ли день, иначе добавляем текущий
+                     if (!(Number(DateArray[2])>=1)&&(Number(DateArray[2])<31))
+                     {  
+                        // Добавляем текущй месяц   
+                        DateArray[0] = new Date().getDate()+1;
+                     }
+                 }
+                                                         
+                 
+                 
                  // Если всё-таки все группы цифр есть - создаём об'ект даты
                  var StructDate = new Date(Number(DateArray[0]), Number(DateArray[1]) - 1, Number(DateArray[2]));
                  
