@@ -81,10 +81,9 @@
             <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
         </div>
     </div>
-         <div class="form-group">
+        <div class="form-group">
         <div class="col-xs-2">
-        </div>
-        <!--Выводим верхние кнопочки для увеличения значений даты-->
+        </div>                            
         <div class="btn-group col-xs-4">
             <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
 
@@ -106,11 +105,11 @@
             </span>
     	</div>
     </div>
+        
         <div  class="form-group">
         <div class="col-xs-2">
         </div>        
-        <div class="btn-group col-xs-4">    
-        <!--Выводим нижние кнопочки для уменьшения значений даты-->
+        <div class="btn-group col-xs-4">              
             <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
 
             </button>
@@ -121,7 +120,8 @@
 
             </button>
         </div>
-    </div>
+    </div> 
+    
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
     </div>

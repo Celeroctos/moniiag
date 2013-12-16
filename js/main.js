@@ -75,6 +75,45 @@ $(document).ready(function() {
                 });
             }
 
+            // Обрабатывает нажатие таб на контроле. Сделано для того, чтобы после нажатия таба
+            //    на последнем контроле в форме был переход фокуса 
+            //   на первый контрол той же формы
+            function PressTabControlHandler(Target)
+            {
+                if (Target.keyCode==9)
+                {
+                        // Выбираем div.form-group самого контрола, а также первый и последний
+                        //    div.form-group формы
+                        //                                      
+                        var TargetDiv =  $(Target.currentTarget).parents('div.form-group');
+                        var LastElementOfForm = $(Target.currentTarget).parents('form').find('div.form-group:last');
+                        var FirstElementOfForm = $(Target.currentTarget).parents('form').find('div.form-group:first');
+                
+                       // Проверяем, лежит ли данный контрол в последнем элементе div с классом formgroup
+                       //   Если да - выбираем первый див с классом form-group в форме и ставим ему фокус
+                       if ($(TargetDiv)[0]==$(LastElementOfForm)[0])
+                       {
+                           // Ищем input внутри первого div.form-group
+                           var NewFocusControl = $(FirstElementOfForm).find('input');
+                           // Проверяем - если ничего не нашли, то значит в первом див.форм-гроуп не input, а селект
+                           if (NewFocusControl.length==0)
+                           {
+                               NewFocusControl = $(FirstElementOfForm).find('select'); 
+                           }                          
+                           
+                           // Контрольная проверка - есть ли контрол (теоретически такой ситуации не должно быть,
+                           //   но на всякий случай)
+                           if (NewFocusControl.length!=0)
+                           {
+                               NewFocusControl.focus();
+                               Target.preventDefault();       
+                           }
+                           
+                           
+                       }
+                }
+            }
+            
             // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
             function ArrowCalendarClickHandler(Target,Control)
             {
@@ -228,6 +267,40 @@ $(document).ready(function() {
 			
 			)();
 			
+            // ========>
+            
+            // Подвешиваем на все инпуты и селекты в форме следующий обработчик:
+            //      По нажатию на таб проверяем - является ли текущий инпут последним в форме
+            //         если является, то необходимо перебросить фокус на 
+            //           первый инпут в этой же форме. Таким образом табуляция будет "закольцована"
+            //           по полям формы
+            (function ()
+            {
+                // Выбираем инпуты и селекты
+                 var ControlsInput = $('input');
+                 var ControlsSelect = $('select');
+                 
+                 // Перебираем все контролы с input-ами
+                 for (i=0;i<ControlsInput.length;i++)
+                 {
+                            $(ControlsInput[i]).on('keydown',function (e)
+                            {
+                                PressTabControlHandler(e);
+                            });
+                 }
+                 
+                 // Перебираем все контролы с селектами
+                 for (i=0;i<ControlsSelect.length;i++)
+                 {
+                            $(ControlsSelect[i]).on('keydown',function (e)
+                            {
+                                PressTabControlHandler(e);
+                            });
+                 }
+                
+            })();
+            // <=======
+            
 			/*
 			$('.up-calendar-button').parents('.form-group').next().find('.date').find('input').on('click', function(e) {
 				//alert(this.value);
