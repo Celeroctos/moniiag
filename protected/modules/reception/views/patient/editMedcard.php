@@ -173,7 +173,7 @@
                     <?php echo $form->labelEx($model,'snils', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <?php echo $form->textField($model,'snils', array(
                             'id' => 'snils',
                             'class' => 'form-control',

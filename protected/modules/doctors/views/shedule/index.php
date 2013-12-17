@@ -40,7 +40,7 @@
                             Здесь Вы можете посмотреть историю изменений медицинской карты. Раскройте список и выберите запись для просмотра изменений медкарты.
                         </span>
                     </div>
-                    <div class="accordion-body collapse" id="collapseH">
+                    <div class="accordion-body collapse in" id="collapseH">
                         <div class="accordion-inner">
                             <?php foreach ($historyPoints as $key => $point) { ?>
                            <div>
@@ -177,20 +177,20 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Добавить значение в справочник</h4>
             </div>
-            <?php
-            $addForm = $this->beginWidget('CActiveForm', array(
-                'id' => 'add-value-form',
-                'enableAjaxValidation' => true,
-                'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/addinguide'),
-                'htmlOptions' => array(
-                    'class' => 'form-horizontal col-xs-12',
-                    'role' => 'form'
-                )
-            ));
-            ?>
             <div class="modal-body">
                 <div class="row">
+                    <?php
+                    $addForm = $this->beginWidget('CActiveForm', array(
+                        'id' => 'add-value-form',
+                        'enableAjaxValidation' => true,
+                        'enableClientValidation' => true,
+                        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/addinguide'),
+                        'htmlOptions' => array(
+                            'class' => 'form-horizontal col-xs-12',
+                            'role' => 'form'
+                        )
+                    ));
+                    ?>
                     <div class="form-group col-xs-3">
                         <?php
                             echo $addForm->labelEx($addModel,'value', array(

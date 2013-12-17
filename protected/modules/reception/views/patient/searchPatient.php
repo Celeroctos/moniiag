@@ -18,30 +18,35 @@
         <label for="omsNumber" class="col-xs-2 control-label">Номер ОМС</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС">
+            <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
         </div>
     </div>
     <div class="form-group">
         <label for="cardNumber" class="col-xs-2 control-label">Номер карты</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="cardNumber" placeholder="Номер карты">
+            <span class="help-block">Номер карты вводится в формате номер / год</span>
         </div>
     </div>
     <div class="form-group">
         <label for="lastName" class="col-xs-2 control-label">Фамилия</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="lastName" placeholder="Фамилия">
+            <span class="help-block">Фамилия может состоять из кириллицы и дефисов (двойные фамилии)</span>
         </div>
     </div>
     <div class="form-group">
         <label for="firstName" class="col-xs-2 control-label">Имя</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="firstName" placeholder="Имя">
+            <span class="help-block">Имя может состоять из кириллицы и дефисов</span>
         </div>
     </div>
     <div class="form-group">
         <label for="middleName" class="col-xs-2 control-label">Отчество</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="middleName" placeholder="Отчество">
+            <span class="help-block">Отчество может состоять из кириллицы и дефисов. Это необязательное поле.</span>
         </div>
     </div>
     <div class="form-group">
@@ -54,6 +59,7 @@
         <label for="docnumber" class="col-xs-2 control-label">Номер документа</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="docnumber" placeholder="Номер документа">
+            <span class="help-block">Номер документа может состоять из цифр</span>
         </div>
     </div>
     <div class="form-group">
@@ -72,110 +78,56 @@
         <label for="snils" class="col-xs-2 control-label">СНИЛС</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
+            <span class="help-block">Страховой номер индивидуального лицевого счета гражданина в формате XXX-XXX-XXX-XX, где X - цифра.</span>
         </div>
     </div>
-    <div class="form-group">
-		<div class="col-xs-2">
-		</div>
+    <div class="form-group date-ctrl-buttons">
+		<span class="col-xs-2">
+        </span>
 		<!--Выводим верхние кнопочки для увеличения значений даты-->
 		<div class="btn-group col-xs-4">
-    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
-				<!--<span class="glyphicon-arrow-up glyphicon">-->
-			<!--	</span>-->
-			</button>
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+            </button>
      		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
-				<!--<span class="glyphicon-arrow-up glyphicon">-->
-			<!--	</span>-->
 			</button>
-    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
-				<!--<span class="glyphicon-arrow-up glyphicon">-->
-			<!--	</span>-->
-			</button>
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+            </button>
 		</div>
 	</div>
 	<div class="form-group">
         <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
-    	<div id="birthday-cont" class="col-xs-4 input-group date">
-            <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
+    	<div id="birthday-cont" class="col-xs-3 input-group date">
+            <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
 			<span class="input-group-addon">
             	<span class="glyphicon-calendar glyphicon">
 				</span>
             </span>
     	</div>
+        <div class="clear"></div>
+        <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
+            <div class="col-xs-3">
+                <input type="text" name="day" placeholder="ДД" class="form-control day">
+            </div>
+            <div class="col-xs-3">
+                <input type="text" name="month" placeholder="ММ" class="form-control month">
+            </div>
+            <div class="col-xs-4">
+                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+            </div>
+        </div>
     </div>
-	<div  class="form-group">
-		<div class="col-xs-2">
-		</div>		
-		<div class="btn-group col-xs-4">	
-		<!--Выводим нижние кнопочки для уменьшения значений даты-->
-    		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
-				<!--<span class="glyphicon-arrow-down glyphicon">-->
-				<!--</span>-->
-			</button>
-     		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
-			<!--	<span class="glyphicon-arrow-down glyphicon">-->
-				<!--</span>-->
-			</button>
-    		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
-			<!--	<span class="glyphicon-arrow-down glyphicon">-->
-				<!--</span>-->
-			</button>
-		</div>
-	</div>
-    
-    
-    <!--
-       <div class="form-group">
-		<div class="col-xs-2">
-		</div>
-
+	<div class="form-group date-ctrl-buttons">
+		<span class="col-xs-2">
+        </span>
 		<div class="btn-group col-xs-4">
-    		<button type="button" class="btn btn-default btn-xs year-button up-year-button" >
-				<span class="glyphicon-arrow-up glyphicon">
-				</span>
+            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+            </button>
+     		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
 			</button>
-     		<button type="button" class="btn btn-default btn-xs month-button up-year-button">
-				<span class="glyphicon-arrow-up glyphicon">
-				</span>
-			</button>
-    		<button type="button" class="btn btn-default btn-xs up-year-button">
-				<span class="glyphicon-arrow-up glyphicon">
-				</span>
-			</button>
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+            </button>
 		</div>
 	</div>
-	<div class="form-group">
-        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
-    	<div id="birthday-cont1" class="col-xs-4 input-group date">
-            <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
-			<span class="input-group-addon">
-            	<span class="glyphicon-calendar glyphicon">
-				</span>
-            </span>
-    	</div>
-    </div>
-	<div  class="form-group">
-		<div class="col-xs-2">
-		</div>		
-		<div class="btn-group col-xs-4">	
-
-    		<button type="button" class="btn btn-default btn-xs year-button down-year-button">
-				<span class="glyphicon-arrow-down glyphicon">
-				</span>
-			</button>
-     		<button type="button" class="btn btn-default btn-xs month-button down-month-button">
-				<span class="glyphicon-arrow-down glyphicon">
-				</span>
-			</button>
-    		<button type="button" class="btn btn-default btn-xs down-day-button">
-				<span class="glyphicon-arrow-down glyphicon">
-				</span>
-			</button>
-		</div>
-	</div>
-    
-    -->
-
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
     </div>

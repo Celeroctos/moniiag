@@ -259,6 +259,20 @@ select {
 .no-display {
   display: none;
 }
+#patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form, #patient-search-form {
+  div.date {
+    span {
+      display: block;
+      margin-left: 170px;
+      position: relative;
+      top: -1px;
+      z-index: 99;
+      span.glyphicon-calendar {
+        margin: 0 0 0 -5px;
+      }
+    }
+  }
+}
 /* jqGrid */
 .ui-jqgrid .ui-pg-selbox {
   height: 20px !important;
@@ -314,6 +328,62 @@ div.date {
 }
 .clear {
   clear: both;
+}
+#regEqHab {
+  margin-top: 10px;
+}
+button[class*=year-button], button[class*=month-button], button[class*=day-button] {
+  padding-bottom: 3px;
+}
+.help-block {
+  display: none;
+}
+/* Контрол дат, фиктивная дата */
+div.date-ctrl-buttons {
+  div {
+    min-width: 218px;
+  }
+}
+.subcontrol {
+  margin-top: -@input-height;
+  margin-left: 16%;
+  width: 218px;
+  min-width: 218px;
+  div {
+    padding: 0;
+    .day {
+      min-width: 21px;
+    }
+    .month {
+      margin-left: 5px;
+      min-width: 21px;
+    }
+    .year {
+      margin-left: 10px;
+      min-width: 37px;
+    }
+  }
+}
+.date .input-group-addon {
+    padding-right: 15px;
+}
+/* Кнопка для листания дня в полях типа "дата" */
+button[class*=day-button] {
+  margin-left: 8px !important;
+}
+/* Кнопка для листания года в полях типа "дата" */
+button[class*=year-button] {
+  margin-left: 37px !important;
+}
+/* Кнопка для листания месяца и дней в полях типа "дата" */
+button[class*=month-button],   {
+  margin-left: 27px !important;
+}
+/* Подстройка конкретных форм с датами */
+#patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form {
+  .subcontrol {
+      margin: -43px 0 0 108px;
+  }
 }
 /* Модальные окна */
 
@@ -381,14 +451,3 @@ tr.header {
   }
 }
 
-/*Кнопка для листания года в полях типа "дата"*/
-html .year-button
-{
-	margin-left: 17px !important;
-}
-
-/*Кнопка для листания месяца в полях типа "дата"*/
-html .month-button
-{
-	margin-left: 5px !important;
-}

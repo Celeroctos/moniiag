@@ -14,10 +14,13 @@ class FormOmsEdit extends FormMisDefault
     {
         return array(
             array(
-                'policy, lastName, firstName, middleName, gender, birthday', 'required'
+                'policy, lastName, firstName, gender, birthday', 'required'
             ),
             array(
                 'id', 'numerical'
+            ),
+            array(
+                'middleName', 'safe'
             )
         );
     }
@@ -25,7 +28,7 @@ class FormOmsEdit extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'policy' => 'Номер полиса',
+            'policy' => 'Номер ОМС',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',

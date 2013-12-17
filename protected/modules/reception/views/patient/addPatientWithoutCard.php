@@ -32,6 +32,7 @@
                             
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
+                        <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -44,6 +45,7 @@
                             'class' => 'form-control',
                             'placeholder' => 'Фамилия'
                         )); ?>
+                        <span class="help-block">Фамилия может состоять из кириллицы и дефисов (двойные фамилии)</span>
                         <?php echo $form->error($model,'lastName'); ?>
                     </div>
                 </div>
@@ -57,6 +59,7 @@
                             'class' => 'form-control',
                             'placeholder' => 'Имя'
                         )); ?>
+                        <span class="help-block">Имя может состоять из кириллицы и дефисов</span>
                         <?php echo $form->error($model,'firstName'); ?>
                     </div>
                 </div>
@@ -70,6 +73,7 @@
                             'class' => 'form-control',
                             'placeholder' => 'Отчество'
                         )); ?>
+                        <span class="help-block">Отчество может состоять из кириллицы и дефисов. Это необязательное поле.</span>
                         <?php echo $form->error($model,'middleName'); ?>
                     </div>
                 </div>
@@ -85,27 +89,27 @@
                         <?php echo $form->error($model,'gender'); ?>
                     </div>
                 </div>
-                    <div class="form-group">
-        <span class="col-xs-3">
-        </span>           
-        <div class="btn-group col-xs-5">
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
 
-            </button>
-             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+                        </button>
+                         <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
 
-            </button>
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+                        </button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
 
-            </button>
-        </div>
-    </div>               
+                        </button>
+                    </div>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'birthday', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
                     <div class="col-xs-6 input-group date" id="birthday-cont">
-                        <?php echo $form->textField($model,'birthday', array(
+                        <?php echo $form->hiddenField($model,'birthday', array(
                             'id' => 'birthday',
                             'class' => 'form-control',
                             'placeholder' => 'Формат гггг-мм-дд'
@@ -114,22 +118,28 @@
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
+                    <div class="clear"></div>
+                    <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
+                        <div class="col-xs-3">
+                            <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                        </div>
+                    </div>
                 </div>     
-                  <div  class="form-group">
-        <span class="col-xs-3">
-        </span>            
-        <div class="btn-group col-xs-5">              
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
-
-            </button>
-             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
-
-            </button>
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
-
-            </button>
-        </div>
-    </div>               
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button"></button>
+                         <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button"></button>
+                    </div>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'doctype', array(
                         'class' => 'col-xs-3 control-label'
@@ -165,6 +175,7 @@
                             'class' => 'form-control',
                             'placeholder' => 'Номер'
                         )); ?>
+                        <span class="help-block">Номер документа может состоять из цифр</span>
                         <?php echo $form->error($model,'docnumber'); ?>
                     </div>
                 </div>
@@ -181,27 +192,21 @@
                         <?php echo $form->error($model,'whoGived'); ?>
                     </div>
                 </div>
-                                    <div class="form-group">
-        <span class="col-xs-3">
-        </span>           
-        <div class="btn-group col-xs-5">
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
-
-            </button>
-             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
-
-            </button>
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
-
-            </button>
-        </div>
-    </div>    
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" ></button>
+                    </div>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'documentGivedate', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
                     <div class="col-xs-6 input-group date" id="document-givedate-cont">
-                        <?php echo $form->textField($model,'documentGivedate', array(
+                        <?php echo $form->hiddenField($model,'documentGivedate', array(
                             'id' => 'documentGivedate',
                             'class' => 'form-control',
                             'placeholder' => 'Формат гггг-мм-дд'
@@ -210,23 +215,30 @@
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
+                    <div class="clear"></div>
+                    <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
+                        <div class="col-xs-3">
+                            <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                        </div>
+                    </div>
                 </div>
-                
-                                  <div  class="form-group">
-        <span class="col-xs-3">
-        </span>            
-        <div class="btn-group col-xs-5">              
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
-
-            </button>
-             <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
-
-            </button>
-            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
-
-            </button>
-        </div>
-    </div>   
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+                        </button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="col-xs-6">
                 <div class="form-group">
@@ -241,6 +253,12 @@
                         )); ?>
                         <?php echo $form->error($model,'addressReg'); ?>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-11 control-label" for="regEqHab">
+                        Адрес регистрации совпадает с адресом проживания
+                    </label>
+                    <input type="checkbox" id="regEqHab" />
                 </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'address', array(
@@ -304,6 +322,7 @@
                             'class' => 'form-control',
                             'placeholder' => 'Контактные данные'
                         )); ?>
+                        <span class="help-block">Здесь могут быть любые данные, позволяющие связаться с пациентом (например, телефон, адрес эл. почты)</span>
                         <?php echo $form->error($model,'contact'); ?>
                     </div>
                 </div>
@@ -311,12 +330,13 @@
                     <?php echo $form->labelEx($model,'snils', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <?php echo $form->textField($model,'snils', array(
                             'id' => 'snils',
                             'class' => 'form-control',
                             'placeholder' => 'Формат XXX-XXX-XXX-XX'
                         )); ?>
+                        <span class="help-block">Страховой номер индивидуального лицевого счета гражданина в формате XXX-XXX-XXX-XX, где X - цифра</span>
                         <?php echo $form->error($model,'snils'); ?>
                     </div>
                 </div>
@@ -379,7 +399,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?> или <?php echo CHtml::link('записать', array('#')) ?> добавленного пациента на приём</p>
+                    <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?> или <?php echo CHtml::link('записать', array('#'), array('class' => 'writePatient')) ?> добавленного пациента на приём</p>
                 </div>
             </div>
             <div class="modal-footer">

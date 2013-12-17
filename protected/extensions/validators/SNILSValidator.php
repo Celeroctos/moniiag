@@ -1,7 +1,7 @@
 <?php
 class SNILSValidator extends CValidator
 {
-	public $pattern='/^([0-9]{3}\-){2}[0-9]{3}\x20[0-9]{2}$/';
+	public $pattern='/^([0-9]{3}\-){2}[0-9]{3}(\x20|-)[0-9]{2}$/';
 	// Формат ddd-ddd-ddd dd
 	
 	protected function validateAttribute($object,$attribute)

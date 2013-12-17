@@ -31,9 +31,10 @@
                         <?php echo $form->textField($model,'policy', array(
                             'id' => 'policy',
                             'class' => 'form-control',
-                            'placeholder' => 'Номер полиса'
+                            'placeholder' => 'Номер ОМС'
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
+                        <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -47,6 +48,7 @@
                             'placeholder' => 'Фамилия'
                         )); ?>
                         <?php echo $form->error($model,'lastName'); ?>
+                        <span class="help-block">Фамилия может состоять из кириллицы и дефисов (двойные фамилии)</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -60,6 +62,7 @@
                             'placeholder' => 'Имя'
                         )); ?>
                         <?php echo $form->error($model,'firstName'); ?>
+                        <span class="help-block">Имя может состоять из кириллицы и дефисов</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -73,6 +76,7 @@
                             'placeholder' => 'Отчество'
                         )); ?>
                         <?php echo $form->error($model,'middleName'); ?>
+                        <span class="help-block">Отчество может состоять из кириллицы и дефисов. Это необязательное поле.</span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -87,12 +91,27 @@
                         <?php echo $form->error($model,'gender'); ?>
                     </div>
                 </div>
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
+
+                        </button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
+
+                        </button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
+
+                        </button>
+                    </div>
+                </div>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'birthday', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
                     <div class="col-xs-6 input-group date" id="birthday-cont">
-                        <?php echo $form->textField($model,'birthday', array(
+                        <?php echo $form->hiddenField($model,'birthday', array(
                             'id' => 'birthday',
                             'class' => 'form-control',
                             'placeholder' => 'Формат гггг-мм-дд'
@@ -100,6 +119,27 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
+                        <div class="col-xs-3">
+                            <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button"></button>
                     </div>
                 </div>
             </div>

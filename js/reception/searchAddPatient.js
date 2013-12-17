@@ -170,6 +170,8 @@ $(document).ready(function() {
             if($(this).attr('id') == '#patient-withcard-form' || $(this).attr('id') == '#patient-withoutcard-form') {
                 $(this)[0].reset();
             }
+            $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
+
             $('#successAddPopup').modal({
 
             });
@@ -193,6 +195,17 @@ $(document).ready(function() {
         var str = $(this).val();
         if(str != "") {
             $(this).val(str.charAt(0).toUpperCase() + str.substr(1));
+        }
+    });
+
+    // Адрес регистрации совпадает с адресом проживания (флажок)
+    $('#regEqHab').on('click', function() {
+        var addressReg = $('#addressReg').val();
+        $('#address').val(addressReg);
+    });
+    $('#addressReg').on('keyup', function(e) {
+        if($('#regEqHab').prop('checked')) {
+            $('#address').val($('#addressReg').val());
         }
     });
 });

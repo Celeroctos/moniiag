@@ -67,7 +67,8 @@ class PatientController extends Controller {
                 $this->addEditModelMedcard($medcard, $model, $oms);
 
                 echo CJSON::encode(array('success' => 'true',
-                                         'msg' => 'Новая запись успешно добавлена!'));
+                                         'msg' => 'Новая запись успешно добавлена!',
+                                         'cardNumber' => $medcard->card_number));
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));

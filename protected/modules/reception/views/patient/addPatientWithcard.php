@@ -59,6 +59,7 @@
                             'class' => 'form-control',
                             'placeholder' => 'Номер'
                         )); ?>
+                        <span class="help-block">Номер документа может состоять из цифр</span>
                         <?php echo $form->error($model,'docnumber'); ?>
                     </div>
                 </div>
@@ -70,9 +71,18 @@
                         <?php echo $form->textField($model,'whoGived', array(
                             'id' => 'whoGived',
                             'class' => 'form-control',
-                            'placeholder' => 'Кто выдал'
+                            'placeholder' => 'Кем выдан'
                         )); ?>
                         <?php echo $form->error($model,'whoGived'); ?>
+                    </div>
+                </div>
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" ></button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -80,7 +90,7 @@
                         'class' => 'col-xs-3 control-label'
                     )); ?>
                     <div class="col-xs-6 input-group date" id="document-givedate-cont">
-                        <?php echo $form->textField($model,'documentGivedate', array(
+                        <?php echo $form->hiddenField($model,'documentGivedate', array(
                             'id' => 'documentGivedate',
                             'class' => 'form-control',
                             'placeholder' => 'Формат гггг-мм-дд'
@@ -88,6 +98,29 @@
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
+                        <div class="col-xs-3">
+                            <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        </div>
+                        <div class="col-xs-4">
+                            <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group date-ctrl-buttons">
+                    <span class="col-xs-3">
+                    </span>
+                    <div class="btn-group col-xs-5">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+                        </button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+                        </button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -174,7 +207,7 @@
                     <?php echo $form->labelEx($model,'snils', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
-                    <div class="col-xs-5">
+                    <div class="col-xs-6">
                         <?php echo $form->textField($model,'snils', array(
                             'id' => 'snils',
                             'class' => 'form-control',

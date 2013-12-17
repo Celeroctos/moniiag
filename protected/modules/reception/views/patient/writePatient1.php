@@ -81,44 +81,51 @@
             <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
         </div>
     </div>
-         <div class="form-group">
-        <div class="col-xs-2">
-        </div>
+    <div class="form-group date-ctrl-buttons">
+        <span class="col-xs-2">
+        </span>
         <!--Выводим верхние кнопочки для увеличения значений даты-->
         <div class="btn-group col-xs-4">
-            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
-
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
             </button>
-             <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
-
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
             </button>
-            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
-
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
             </button>
         </div>
     </div>
     <div class="form-group">
-        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>                    
-    	<div id="birthday-cont" class="col-xs-4 input-group date">
-            <input type="text" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
-            <span class="input-group-addon">
-                <span class="glyphicon-calendar glyphicon"></span>
+        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>
+        <div id="birthday-cont" class="col-xs-3 input-group date">
+            <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
+			<span class="input-group-addon">
+            	<span class="glyphicon-calendar glyphicon">
+				</span>
             </span>
-    	</div>
+        </div>
+        <div class="clear"></div>
+        <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
+            <div class="col-xs-3">
+                <input type="text" name="day" placeholder="ДД" class="form-control day">
+            </div>
+            <div class="col-xs-3">
+                <input type="text" name="month" placeholder="ММ" class="form-control month">
+            </div>
+            <div class="col-xs-4">
+                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+            </div>
+        </div>
     </div>
-        <div  class="form-group">
-        <div class="col-xs-2">
-        </div>        
-        <div class="btn-group col-xs-4">    
-        <!--Выводим нижние кнопочки для уменьшения значений даты-->
+    <div class="form-group date-ctrl-buttons">
+        <span class="col-xs-2">
+        </span>
+        <div class="btn-group col-xs-4">
+            <!--Выводим нижние кнопочки для уменьшения значений даты-->
+            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+            </button>
+            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
+            </button>
             <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
-
-            </button>
-             <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
-
-            </button>
-            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
-
             </button>
         </div>
     </div>
