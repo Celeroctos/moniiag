@@ -18,6 +18,7 @@
         };
     </script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/navigation.js"></script>
 </head>
 <body>
 <?php $this->widget('application.components.widgets.MainNavBar') ?>

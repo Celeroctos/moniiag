@@ -81,10 +81,16 @@
             <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
         </div>
     </div>
+<<<<<<< HEAD
     <div class="form-group date-ctrl-buttons">
         <span class="col-xs-2">
         </span>
         <!--Выводим верхние кнопочки для увеличения значений даты-->
+=======
+        <div class="form-group">
+        <div class="col-xs-2">
+        </div>                            
+>>>>>>> f90ca31af1134fb7f77bcb44601e80d48b6e057c
         <div class="btn-group col-xs-4">
             <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
             </button>
@@ -116,19 +122,30 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
     <div class="form-group date-ctrl-buttons">
         <span class="col-xs-2">
         </span>
         <div class="btn-group col-xs-4">
             <!--Выводим нижние кнопочки для уменьшения значений даты-->
             <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
+=======
+        
+        <div  class="form-group">
+        <div class="col-xs-2">
+        </div>        
+        <div class="btn-group col-xs-4">              
+            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
+
+>>>>>>> f90ca31af1134fb7f77bcb44601e80d48b6e057c
             </button>
             <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
             </button>
             <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
             </button>
         </div>
-    </div>
+    </div> 
+    
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
     </div>

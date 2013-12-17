@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿2013/12/16 17:53:10 [error] [exception.CException] exception 'CException' with message 'FormOmsEdit has an invalid validation rule. The rule must specify attributes to be validated and the validator name.' in Z:\home\moniiag.my\yii\base\CModel.php:289
 Stack trace:
 #0 Z:\home\moniiag.my\yii\base\CModel.php(260): CModel->createValidators()
@@ -35,3 +36,43 @@ Stack trace:
 REQUEST_URI=/index.php/settings/system/view
 HTTP_REFERER=http://moniiag.my/index.php/settings/profile/view
 ---
+=======
+﻿2013/12/16 16:49:47 [error] [php] Cannot modify header information - headers already sent by (output started at Z:\home\mis.my\www\protected\config\main.php:1) (Z:\home\mis.my\yii\web\CHttpRequest.php:803)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php(8): ProfileController->setProfileValues()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): ProfileController->actionView()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): ProfileController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): ProfileController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): ProfileController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): ProfileController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/settings/profile/view
+in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (20)
+in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (8)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2013/12/16 20:13:29 [error] [php] Cannot modify header information - headers already sent by (output started at Z:\home\mis.my\www\protected\config\main.php:1) (Z:\home\mis.my\yii\web\CHttpRequest.php:803)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php(8): ProfileController->setProfileValues()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): ProfileController->actionView()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): ProfileController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): ProfileController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): ProfileController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): ProfileController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/settings/profile/view
+in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (20)
+in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (8)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+>>>>>>> f90ca31af1134fb7f77bcb44601e80d48b6e057c
