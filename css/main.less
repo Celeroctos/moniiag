@@ -141,9 +141,13 @@
   background: #DFB5B4;
 }
 .yellow-block {
-  background: #FEFBED;
+  background: #FFFF00;
 }
-
+.not-aviable-block {
+  color: #999999;
+  background: #D8D8D8;
+  font-weight: bold;
+}
 .red-color {
   color: #B94A48;
 }
@@ -282,7 +286,12 @@ form span.required {
   font-weight: bold;
   color: #ff0000;
 }
-
+.form-control:focus {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(26, 58, 243, 0.6);
+}
+.form-control-error {
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(253, 4, 83, 0.6);
+}
 #firstName::first-letter {
     text-transform: uppercase;
 }
@@ -329,7 +338,9 @@ div.date {
 .clear {
   clear: both;
 }
-#regEqHab {
+#regEqHab,
+#notDateEnd,
+#notDateEndEdit{
   margin-top: 10px;
 }
 button[class*=year-button], button[class*=month-button], button[class*=day-button] {
@@ -453,4 +464,15 @@ tr.header {
 .current-sidebar-menu
 {
     background: #FFBF00;
+}
+body #editPopup {
+  .modal-dialog {
+    width: 1050px;
+  }
+  .row {
+    div.second {
+      margin-top: 10px;
+    }
+  }
+
 }

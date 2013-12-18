@@ -70,6 +70,9 @@
             <thead>
             <tr class="header">
                 <td>
+                    Записать
+                </td>
+                <td>
                     ФИО врача
                 </td>
                 <td>
@@ -83,9 +86,6 @@
                 </td>
                 <td>
                     Ближайшая свободная дата
-                </td>
-                <td>
-                    Записать
                 </td>
             </tr>
             </thead>
@@ -141,6 +141,7 @@
         <p><div class="legend-icon lightgreen-block"></div>Полностью свободные дни</p>
         <p><div class="legend-icon red-block"></div>Полностью занятые дни</p>
         <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
+        <p><div class="legend-icon not-aviable-block"></div>Прошедшие дни (недоступные для записи)</p>
     </div>
 </div>
 <div class="busySheduleHeader no-display">

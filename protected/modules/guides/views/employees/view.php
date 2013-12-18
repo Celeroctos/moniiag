@@ -4,7 +4,6 @@
         'id' => 'employee-filter-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/filter'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -190,6 +189,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="notDateEnd" class="col-xs-11 control-label">
+                                Не ограничивать сотрудника по времени
+                            </label>
+                            <input type="checkbox" id="notDateEnd" name="notDateEnd">
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'dateEnd', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -370,6 +375,12 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="notDateEndEdit" class="col-xs-11 control-label">
+                                Не ограничивать сотрудника по времени
+                            </label>
+                            <input type="checkbox" id="notDateEndEdit" name="notDateEnd">
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'dateEnd', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -419,4 +430,21 @@
     </div>
 </div>
 <div class="modal fade error-popup" id="errorAddEmployeePopup">
-    <div cla
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>При заполнении формы возникли следующие ошибки:</h4>
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

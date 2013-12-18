@@ -153,7 +153,7 @@ $(document).ready(function() {
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == 'true') {
-                    // Формирование раписания из уже имющихся данных
+                    // Формирование раписания из уже имеющихся данных
                     var shedule = data.data.data;
                     if(data.data.dateBegin != null) {
                         $('#dateBegin').val(data.data.dateBegin);

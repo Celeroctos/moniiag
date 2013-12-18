@@ -208,6 +208,11 @@ $(document).ready(function() {
             table.append(
                 '<tr>' +
                     '<td>' +
+                        '<a title="Записать пациента" class="write-patient-link" href="#d' + data[i].id + '">' +
+                            '<span class="glyphicon glyphicon-dashboard"></span>' +
+                        '</a>' +
+                    '</td>' +
+                    '<td>' +
                         '<a title="Посмотреть информацию по врачу" href="#">' +
                             data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name +
                         '</a>' +
@@ -222,11 +227,6 @@ $(document).ready(function() {
                         cabinetsStr +
                     '</td>' +
                     '<td>' +
-                    '</td>' +
-                    '<td>' +
-                        '<a title="Записать пациента" class="write-patient-link" href="#d' + data[i].id + '">' +
-                            '<span class="glyphicon glyphicon-dashboard"></span>' +
-                        '</a>' +
                     '</td>' +
                 '</tr>'
             );

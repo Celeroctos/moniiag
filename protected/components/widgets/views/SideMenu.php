@@ -77,6 +77,9 @@
                         <li <?php echo $controller == 'guides' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('Врачебные справочники', array('/admin/guides/allview')) ?>
                         </li>
+                        <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Любимые диагнозы', array('/admin/diagnosis/allview')) ?>
+                        </li>
                     </ul>
                 </li>
                 <li <?php echo ($controller == 'shedule' && $module == 'admin') ? 'class="active"' : ''; ?>>

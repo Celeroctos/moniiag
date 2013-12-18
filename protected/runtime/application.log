@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ﻿2013/12/16 17:53:10 [error] [exception.CException] exception 'CException' with message 'FormOmsEdit has an invalid validation rule. The rule must specify attributes to be validated and the validator name.' in Z:\home\moniiag.my\yii\base\CModel.php:289
 Stack trace:
 #0 Z:\home\moniiag.my\yii\base\CModel.php(260): CModel->createValidators()
@@ -36,43 +35,620 @@ Stack trace:
 REQUEST_URI=/index.php/settings/system/view
 HTTP_REFERER=http://moniiag.my/index.php/settings/profile/view
 ---
-=======
-﻿2013/12/16 16:49:47 [error] [php] Cannot modify header information - headers already sent by (output started at Z:\home\mis.my\www\protected\config\main.php:1) (Z:\home\mis.my\yii\web\CHttpRequest.php:803)
+2013/12/17 11:54:26 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
 Stack trace:
-#0 Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php(8): ProfileController->setProfileValues()
-#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): ProfileController->actionView()
-#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
-#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): ProfileController->runAction()
-#4 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
-#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): ProfileController->filterGetAccessHierarchy()
-#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#8 Z:\home\mis.my\yii\web\CController.php(265): ProfileController->runActionWithFilters()
-#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): ProfileController->run()
-#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#12 Z:\home\mis.my\www\index.php(12): CWebApplication->run()
-REQUEST_URI=/index.php/settings/profile/view
-in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (20)
-in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (8)
-in Z:\home\mis.my\www\protected\components\Controller.php (17)
-2013/12/16 20:13:29 [error] [php] Cannot modify header information - headers already sent by (output started at Z:\home\mis.my\www\protected\config\main.php:1) (Z:\home\mis.my\yii\web\CHttpRequest.php:803)
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 11:56:15 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
 Stack trace:
-#0 Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php(8): ProfileController->setProfileValues()
-#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): ProfileController->actionView()
-#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
-#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): ProfileController->runAction()
-#4 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
-#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): ProfileController->filterGetAccessHierarchy()
-#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#8 Z:\home\mis.my\yii\web\CController.php(265): ProfileController->runActionWithFilters()
-#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): ProfileController->run()
-#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#12 Z:\home\mis.my\www\index.php(12): CWebApplication->run()
-REQUEST_URI=/index.php/settings/profile/view
-in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (20)
-in Z:\home\mis.my\www\protected\modules\settings\controllers\ProfileController.php (8)
-in Z:\home\mis.my\www\protected\components\Controller.php (17)
->>>>>>> f90ca31af1134fb7f77bcb44601e80d48b6e057c
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 11:56:58 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 11:58:10 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 11:59:16 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:00:11 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(12): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (12)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:00:54 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:01:17 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:01:44 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:02:17 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:02:55 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:03:15 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:03:23 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:06:45 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:08:10 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\www\protected\controllers\UsersController.php:4)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#2 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (4)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:09:01 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:09:37 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\www\protected\controllers\UsersController.php:4)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#2 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#3 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (4)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:11:00 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CWebApplication.php:276)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#1 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:11:36 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:12:18 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:12:56 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\base\CApplication.php:180)
+Stack trace:
+#0 unknown(0): CWebApplication->handleError()
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): session_regenerate_id()
+#2 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:13:04 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\base\CApplication.php:177)
+Stack trace:
+#0 unknown(0): CWebApplication->handleError()
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(177): session_regenerate_id()
+#2 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:14:48 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\base\CApplication.php:177)
+Stack trace:
+#0 unknown(0): CWebApplication->handleError()
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(177): session_regenerate_id()
+#2 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/17 12:20:14 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Cannot regenerate session id - headers already sent (Z:\home\moniiag.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\moniiag.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(12): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (12)
+2013/12/18 12:04:08 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (13)
+2013/12/18 12:07:34 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (13)
+2013/12/18 12:08:25 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (13)
+2013/12/18 12:08:32 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (13)
+2013/12/18 12:46:02 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/diagnosis/allview".' in Z:\home\moniiag.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/diagnosis...')
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/diagnosis/allview
+HTTP_REFERER=http://moniiag.my/index.php/admin/guides/allview
+---
+2013/12/18 12:48:41 [error] [exception.CException] exception 'CException' with message 'DiagnosisController cannot find the requested view "index".' in Z:\home\moniiag.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php(7): CController->render('index', Array)
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): DiagnosisController->actionAllView()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('allview')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/diagnosis...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/diagnosis/allview
+HTTP_REFERER=http://moniiag.my/index.php/admin/guides/allview
+---
+2013/12/18 12:57:07 [warning] [application] Failed to set unsafe attribute "id" of "FormMedworkerAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (35)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (13)
+2013/12/18 13:10:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/diagnosiss/get".' in Z:\home\moniiag.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/diagnosi...')
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/diagnosiss/get?_search=false&nd=1387361430019&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---
+2013/12/18 13:11:23 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/diagnosiss/getone".' in Z:\home\moniiag.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/diagnosi...')
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/diagnosiss/getone?id=11&_=1387361481454
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---
+2013/12/18 13:12:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/diagnosiss/getone".' in Z:\home\moniiag.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/diagnosi...')
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/diagnosiss/getone?id=11&_=1387361545556
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---
+2013/12/18 13:16:25 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "guides/diagnosis/getone".' in Z:\home\moniiag.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/diagnosi...')
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/guides/diagnosis/getone?id=7&_=1387361562341
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---
+2013/12/18 14:09:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "mkb10" отсутствует в предложении FROM
+LINE 3: JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10.id
+                                         ^. The SQL statement executed was: SELECT "m".*, "o".*
+FROM "mis"."like_diagnosis" "ld"
+JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10.id
+WHERE m.medworker_id = :medworker_id.
+in Z:\home\moniiag.my\www\protected\models\LikeDiagnosis.php (30)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php (14)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/18 14:09:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "mkb10" отсутствует в предложении FROM
+LINE 3: JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10.id
+                                         ^. The SQL statement executed was: SELECT "m".*, "o".*
+FROM "mis"."like_diagnosis" "ld"
+JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10.id
+WHERE m.medworker_id = :medworker_id' in Z:\home\moniiag.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\moniiag.my\www\protected\models\LikeDiagnosis.php(30): CDbCommand->queryAll()
+#2 Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php(14): LikeDiagnosis->getOne('7')
+#3 [internal function]: DiagnosisController->actionGetone('7')
+#4 Z:\home\moniiag.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(DiagnosisController), Array)
+#5 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(DiagnosisController), Object(ReflectionMethod), Array)
+#6 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('getone')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/diagnosis...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/diagnosis/getone?id=7&_=1387361805447
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---
+2013/12/18 14:09:51 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка ld.mkb10_id не существует
+LINE 3: JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10_id
+                                         ^. The SQL statement executed was: SELECT "m".*, "o".*
+FROM "mis"."like_diagnosis" "ld"
+JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10_id
+WHERE m.medworker_id = :medworker_id.
+in Z:\home\moniiag.my\www\protected\models\LikeDiagnosis.php (30)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php (14)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/18 14:09:51 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка ld.mkb10_id не существует
+LINE 3: JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10_id
+                                         ^. The SQL statement executed was: SELECT "m".*, "o".*
+FROM "mis"."like_diagnosis" "ld"
+JOIN "mis"."mkb10" "m" ON m.id = ld.mkb10_id
+WHERE m.medworker_id = :medworker_id' in Z:\home\moniiag.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\moniiag.my\www\protected\models\LikeDiagnosis.php(30): CDbCommand->queryAll()
+#2 Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php(14): LikeDiagnosis->getOne('7')
+#3 [internal function]: DiagnosisController->actionGetone('7')
+#4 Z:\home\moniiag.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(DiagnosisController), Array)
+#5 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(DiagnosisController), Object(ReflectionMethod), Array)
+#6 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('getone')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/diagnosis...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/diagnosis/getone?id=7&_=1387361805448
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---
+2013/12/18 14:10:21 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка m.medworker_id не существует
+LINE 4: WHERE m.medworker_id = $1
+              ^. The SQL statement executed was: SELECT "ld".*, "m".*
+FROM "mis"."like_diagnosis" "ld"
+JOIN "mis"."mkb10" "m" ON m.id = ld.mkb_id
+WHERE m.medworker_id = :medworker_id.
+in Z:\home\moniiag.my\www\protected\models\LikeDiagnosis.php (30)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php (14)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/18 14:10:21 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка m.medworker_id не существует
+LINE 4: WHERE m.medworker_id = $1
+              ^. The SQL statement executed was: SELECT "ld".*, "m".*
+FROM "mis"."like_diagnosis" "ld"
+JOIN "mis"."mkb10" "m" ON m.id = ld.mkb_id
+WHERE m.medworker_id = :medworker_id' in Z:\home\moniiag.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\moniiag.my\www\protected\models\LikeDiagnosis.php(30): CDbCommand->queryAll()
+#2 Z:\home\moniiag.my\www\protected\modules\admin\controllers\DiagnosisController.php(14): LikeDiagnosis->getOne('7')
+#3 [internal function]: DiagnosisController->actionGetone('7')
+#4 Z:\home\moniiag.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(DiagnosisController), Array)
+#5 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(DiagnosisController), Object(ReflectionMethod), Array)
+#6 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('getone')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/diagnosis...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/diagnosis/getone?id=7&_=1387361805449
+HTTP_REFERER=http://moniiag.my/index.php/admin/diagnosis/allview
+---

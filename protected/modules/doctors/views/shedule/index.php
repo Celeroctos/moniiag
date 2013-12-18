@@ -119,21 +119,27 @@
                             Посмотреть карту
                         </td>
                         <td>
+                            Начать приём
+                        </td>
+                        <td>
                             Закончить приём
                         </td>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($patients as $key => $patient) { ?>
-                        <tr <?php echo $patient['medcard_id'] == $currentPatient ? "class='success'" : ''; ?>>
+                        <tr <?php echo $patient['id'] == $currentSheduleId ? "class='success'" : ''; ?>>
                             <td>
-                                <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'].'&date='.$filterModel->date)); ?>
+                                <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'].'&date='.$filterModel->date.'&rowid='.$patient['id'])); ?>
                             </td>
                             <td>
                                 <?php echo $patient['patient_time']; ?>
                             </td>
                             <td>
                                 <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id'])); ?>
+                            </td>
+                            <td>
+                                <?php echo $patient['is_beginned'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id'])); ?>
                             </td>
                             <td>
                                 <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', array('/doctors/shedule/acceptcomplete/?id='.$patient['id'])); ?>
