@@ -1,275 +1,334 @@
 $(document).ready(function() {
     $('.subcontrol input').val('');
-    $('.subcontrol input').on('change', function(e) {
-        var container = $(this).parents('.subcontrol');
-        var day = $(container).find('input.day');
-        var allowChange = true;
-        if($(day).val() == '') {
-            allowChange = false;
-        }
-        var month = $(container).find('input.month');
-        if($(month).val() == '') {
-            allowChange = false;
-        }
-        var year = $(container).find('input.year');
-        if($(year).val() == '') {
-            allowChange = false;
-        }
-
-        if(allowChange) {
-            $(this).parents('.form-group').find('.date input').trigger('change', [1]);
-        }
-    });
-
-    $('.subcontrol input.day').on('keyup', function(e) {
-        // С табуляции не переводить на следующее поле
-        if(e.keyCode == 38 || e.keyCode == 40) {
-            return false;
-        }
-
-        if($(this).val().length == 2 && e.keyCode != 9) {
-            var field = $(this).parent().next().find('input.month');
-            $(field).focus();
-            $(field).val('');
-        } else {
-            $(this).val(String.fromCharCode(e.keyCode));
-        }
-    }).on('keydown', function(e) {
-        if($(this).val().length == 2) {
-            $(this).select();
-            if(e.keyCode == 38 || e.keyCode == 40) {
-                return false;
-            }
-            // Если есть выделение, то тогда можно вводить символы
-            if(e.keyCode != 9) {
-                $(this).val(String.fromCharCode(e.keyCode));
-            }
-        }
-        if(e.keyCode != 9 && !/^([1-9]|([1][0-9])|([2][0-9])|([3][0-1]))$/.test($(this).val() + '' + String.fromCharCode(e.keyCode))) {
-            return false;
-        }
-    });
-
-    $('.subcontrol input.month').on('keyup', function(e) {
-        // С табуляции не переводить на следующее поле
-        if(e.keyCode == 38 || e.keyCode == 40) {
-            return false;
-        }
-        if($(this).val().length == 2 && e.keyCode != 9) {
-            var field = $(this).parent().next().find('input.year');
-            $(field).val('');
-            $(field).focus();
-        } else {
-            $(this).val(String.fromCharCode(e.keyCode));
-        }
-    }).on('keydown', function(e) {
-        if($(this).val().length == 2) {
-            $(this).select();
-            if(e.keyCode == 38 || e.keyCode == 40) {
-                return false;
-            }
-            // Если есть выделение, то тогда можно вводить символы
-            if(e.keyCode != 9) {
-                $(this).val(String.fromCharCode(e.keyCode));
-            }
-        }
-        if(e.keyCode != 9 && !/^([1-9]|([1][0-2]))$/.test($(this).val() + '' + String.fromCharCode(e.keyCode))) {
-            return false;
-        }
-    });
-
-    // Фокус на next.next, поскольку следующий контрол есть плюсики и минусики
-    $('.subcontrol input.year').on('keyup', function(e) {
-        if($(this).val().length == 4 || e.keyCode == 38 || e.keyCode == 40) {
-            return false;
-        }
-    }).on('keydown', function(e) {
-        if(e.keyCode == 8) {
-            $(this).val('');
-            return false;
-        }
-        if($(this).val().length == 4) {
-            console.log("!");
-            return false;
-        }
-        if(e.keyCode != 9 && e.keyCode != 8 && !/^(([12])*([0-9]{0,3})*)$/.test($(this).val() + '' + String.fromCharCode(e.keyCode))) {
-            return false;
-        }
-    });
-
-
-
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
-    function ArrowCalendarClickHandler(Target,Control)
-    {
+    function ArrowCalendarClickHandler(Target, Control)  {
         // Парсим дату
         // Разделяем её на три группы символов
-        var DateArray = Control.value.split("-");
+        var DateArray = $(Control).find('input.form-control').val().split("-");
         // Если не введён год
-        if (DateArray.length==0)  {
+        if (DateArray.length == 0)  {
             // Добавляем текущй год
             DateArray.push(new Date().getFullYear());
-        }
-        else
-        {
+        } else {
             // Проверяем, является ли первый элемент валидной цифрой для года
-            if (!(Number(DateArray[0])>=new Date().getFullYear()-100)&&(Number(DateArray[0])<=new Date().getFullYear()+50))
+            if (!(parseInt(DateArray[0]) >= new Date().getFullYear() - 100) && (Number(DateArray[0]) <= new Date().getFullYear() + 50))
             {
                 // Добавляем текущй год
-                DateArray[0] =  new Date().getFullYear();
+                DateArray[0] =  (new Date()).getFullYear();
             }
         }
 
         // Если не введён месяц
-        if (DateArray.length==1)
-        {
+        if (DateArray.length == 1) {
             // Добавляем текущий месяц
-            DateArray.push((new Date().getMonth())+1);
-
-        }
-        else
-        {
+            DateArray.push((new Date().getMonth()) + 1);
+        } else {
             // Проверяем - валиден ли месяц. Если нет - добавляем текущий
-            if (!(Number(DateArray[1])>=1)&&(Number(DateArray[1])<12))
-            {
+            if (!(parseInt(DateArray[1]) >= 1) && (parseInt(DateArray[1]) < 12)) {
                 // Добавляем текущй месяц
-                DateArray[1]=new Date().getMonth()+1;
+                DateArray[1] = (new Date()).getMonth() + 1;
             }
         }
 
         // Введён ли день
-        if (DateArray.length==2)
-        {
+        if (DateArray.length==2) {
             // Добавляем текущий день
             DateArray.push(new Date().getDate());
-        }
-        else
-        {
+        } else  {
             // Проверяем - валиден ли день, иначе добавляем текущий
-            if (!(Number(DateArray[2])>=1)&&(Number(DateArray[2])<31))
-            {
-                // Добавляем текущй месяц
-                DateArray[0] = new Date().getDate()+1;
+            if (!(parseInt(DateArray[2]) >= 1) && (parseInt(DateArray[2]) < 31)) {
+                // Добавляем текущй день
+                DateArray[0] = new Date().getDate() + 1;
             }
         }
 
-
-
-        // Если всё-таки все группы цифр есть - создаём об'ект даты
-        var StructDate = new Date(Number(DateArray[0]), Number(DateArray[1]) - 1, Number(DateArray[2]));
+        // Если всё-таки все группы цифр есть - создаём объект даты
+        var StructDate = new Date(parseInt(DateArray[0]), parseInt(DateArray[1]) - 1, parseInt(DateArray[2]));
 
         // В переменной Date распарсенная дата
-
         // В зависимости от нажатой кнопки - вычисляем дату
 
-        if ($(Target.currentTarget).hasClass('up-year-button'))
-        {
-            StructDate.setFullYear(StructDate.getFullYear()+1);
+        if ($(Target.currentTarget).hasClass('up-year-button')) {
+            StructDate.setFullYear(StructDate.getFullYear() + 1);
         }
 
-        if ($(Target.currentTarget).hasClass('up-month-button'))
-        {
-            StructDate.setMonth(StructDate.getMonth()+1);
+        if ($(Target.currentTarget).hasClass('up-month-button')) {
+            StructDate.setMonth(StructDate.getMonth() + 1);
         }
 
-        if ($(Target.currentTarget).hasClass('up-day-button'))
-        {
-            StructDate.setDate(StructDate.getDate()+1);
+        if ($(Target.currentTarget).hasClass('up-day-button')) {
+            StructDate.setDate(StructDate.getDate() + 1);
         }
 
-        if ($(Target.currentTarget).hasClass('down-year-button'))
-        {
-            StructDate.setFullYear(StructDate.getFullYear()-1);
+        if ($(Target.currentTarget).hasClass('down-year-button')) {
+            StructDate.setFullYear(StructDate.getFullYear() - 1);
         }
 
-        if ($(Target.currentTarget).hasClass('down-month-button'))
-        {
-            StructDate.setMonth(StructDate.getMonth()-1);
+        if ($(Target.currentTarget).hasClass('down-month-button')) {
+            StructDate.setMonth(StructDate.getMonth() - 1);
         }
 
-        if ($(Target.currentTarget).hasClass('down-day-button'))
-        {
-            StructDate.setDate(StructDate.getDate()-1);
+        if ($(Target.currentTarget).hasClass('down-day-button')){
+            StructDate.setDate(StructDate.getDate() - 1);
         }
 
         // Преобразовываем изменённую дату обратно и записываем в контрол
-
         // Преобразуем компоненты в строковое представление с ведущими нулями
         var dd = StructDate.getDate();
-        if (dd<10)
-        {
-            dd= '0'+dd;
+        if (dd < 10) {
+            ddWithNull = '0' + dd;
+        } else {
+            ddWithNull = dd;
         }
         var mm = StructDate.getMonth() + 1;
-        if (mm<10)
-        {
-            mm= '0'+mm;
+        if (mm < 10) {
+            mmWithNull = '0' + mm;
+        } else {
+            mmWithNull = mm;
         }
         var yyyy = StructDate.getFullYear();
 
         // Записываем измененённое значение даты в контрол
-        Control.value = yyyy+'-'+mm+'-'+dd;
-        $(Control).trigger('change');
+        //console.log(Control);
+        $(Control).find('input.form-control:first').val(yyyy + '-' + mmWithNull + '-' + ddWithNull);
+        $(Control).find('input.form-control:first').trigger('change');
     }
 
     // Стрелки вверх-вниз для листания
     // Сначала стрелки вверх
     (function () {
         // Выбираем все контролы дат
-        var Controls = $('div.date input');
+        var Controls = $('div.date');
         // Перебираем выбранные контролы
         for (i = 0; i < Controls.length; i++) {
             // Замыкаем ссылку на каждый контрол
             (function (Control) {
                 // Подвязываем обработчик события нажатия на верхние кнопки для контрола
-                var btnPrev = $(Control).parents('div.form-group').prev().find('button');
-                var btnNext = $(Control).parents('div.form-group').next().find('button');
-                $(btnPrev).on('click',function (e) {
-                    ArrowCalendarClickHandler(e,Control);
-                });
-                // Подвязываем обработчик события нажатия на нижние кнопки для контрола
-                $(btnNext).on('click',function (e) {
-                    ArrowCalendarClickHandler(e,Control);
+                var btnPrevNext = $(Control).find('.date-ctrl-up-buttons .btn-group button, .date-ctrl-down-buttons .btn-group button');
+                $(btnPrevNext).on('click',function (e) {
+                    ArrowCalendarClickHandler(e, Control);
                 });
                 // Обработчик на субконтролы, если оные есть
-                var subcontrol = $(Control).parents('.form-group').find('.subcontrol');
-                if(typeof subcontrol != 'undefined') {
-                    $(subcontrol).find('input.day').on('keydown', function(e) {
-                        // Вниз
-                        if(e.keyCode == 40) {
-                            $(btnNext[0]).trigger('click');
+                var subcontrol = $(Control).find('.subcontrol');
+                $(subcontrol).find('input').on('change', function(e) {
+                    var container = $(this).parents('.subfields');
+                     var day = $(container).find('input.day');
+
+                     var allowChange = true;
+                     if($.trim($(day).val()) == '') {
+                        allowChange = false;
+                     }
+
+                     var month = $(container).find('input.month');
+                     if($.trim($(month).val()) == '') {
+                        allowChange = false;
+                     }
+
+                     var year = $(container).find('input.year');
+                     if($.trim($(year).val()) == '') {
+                        allowChange = false;
+                     }
+
+                     // Только если все три контрола установлены, дату в нормальном контроле можно менять
+                     if(allowChange) {
+                         $(this).parents('.form-group').find('input.form-control:first').trigger('change', [1]);
+                     }
+                });
+
+                $(subcontrol).find('input.day').on('keyup', function(e) {
+                    // Если есть выделение, не переводить контрол автоматом
+                    var selected = getSelected();
+                    if($.trim(selected) != '') {
+                        return false;
+                    }
+
+                    if($(this).val().length == 2 && e.keyCode != 9 && e.keyCode < 37 && e.keyCode > 40) {
+                        $(this).next().focus();
+                        $(this).next().select();
+                    }
+
+                    if(e.keyCode == 9 && $.trim($(this).val()) != '') {
+                        // См. выше не сработает.
+                        $(this).select();
+                    }
+                }).on('keydown', function(e) {
+                    // Вниз
+                    if(e.keyCode == 40) {
+                        $(this).parents('.subcontrol').find('.date-ctrl-down-buttons .down-day-button').trigger('click');
+                        e.stopPropagation();
+                        return false;
+                    }
+                    // Вверх
+                    if(e.keyCode == 38) {
+                        $(this).parents('.subcontrol').find('.date-ctrl-up-buttons .up-day-button').trigger('click');
+                        e.stopPropagation();
+                        return false;
+                    }
+
+                    var selected = getSelected();
+                    // Проверка на корректность введённого дня вообще
+                    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
+                        // Очищаем поле, если там есть выделенное
+                        if($.trim(selected) != '') {
+                            $(this).val('');
                         }
-                        // Вверх
-                        if(e.keyCode == 38) {
-                            $(btnPrev[0]).trigger('click');
+                        // Это день..
+                        // При форме "01, 02" и пр. parseInt даст один символ. А это два. Не давать вводить, если есть ведущий ноль.
+                        var day = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
+                        // День не может быть больше 32 и меньше 1 в общем случае. Нужно получить число дней в месяце, если точная дата задана
+                        var month = $(this).parents('.subfields').find('input.month').val();
+                        var year = $(this).parents('.subfields').find('input.year').val();
+
+                        if($.trim(month) != '' && $.trim(year) != '') {
+                            var numDays = 32 - new Date(year, month - 1, 32).getDate();
+                        } else {
+                            var numDays = 31;
                         }
-                    });
-                    $(subcontrol).find('input.month').on('keydown', function(e) {
-                        // Вниз
-                        if(e.keyCode == 40) {
-                            $(btnNext[1]).trigger('click');
+
+                        if(!(day > 0 && day <= numDays)) {
+                            return false;
                         }
-                        // Вверх
-                        if(e.keyCode == 38) {
-                            $(btnPrev[1]).trigger('click');
+                    } else {
+                        // Стрелки вправо-влево, tab и backspace разрешать
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                            return false;
                         }
-                    });
-                    $(subcontrol).find('input.year').on('keydown', function(e) {
-                        // Вниз
-                        if(e.keyCode == 40) {
-                            $(btnNext[2]).trigger('click');
+                    }
+                });
+
+                $(subcontrol).find('input.month').on('keyup', function(e) {
+                    // Если есть выделение, не переводить контрол автоматом
+                    var selected = getSelected();
+                    if($.trim(selected) != '') {
+                        return false;
+                    }
+
+                    if($(this).val().length == 2 && e.keyCode != 9 && e.keyCode < 37 && e.keyCode > 40) {
+                        $(this).next().focus();
+                        $(this).next().select();
+                    }
+
+                    // Если есть выделение, не переводить контрол автоматом
+                    var selected = getSelected();
+                    if($.trim(selected) != '') {
+                        return false;
+                    }
+
+                    if(e.keyCode == 9 && $.trim($(this).val()) != '') {
+                        $(this).select();
+                    }
+                }).on('keydown', function(e) {
+                    // Вниз
+                    if(e.keyCode == 40) {
+                        $(this).parents('.subcontrol').find('.date-ctrl-down-buttons .down-month-button').trigger('click');
+                        e.stopPropagation();
+                        return false;
+                    }
+                    // Вверх
+                    if(e.keyCode == 38) {
+                        $(this).parents('.subcontrol').find('.date-ctrl-up-buttons .up-month-button').trigger('click');
+                        e.stopPropagation();
+                        return false;
+                    }
+
+                    var selected = getSelected();
+                    // Проверка на корректность введённого месяца вообще
+                    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
+                        // Очищаем поле, если там есть выделенное
+                        if($.trim(selected) != '') {
+                            $(this).val('');
                         }
-                        // Вверх
-                        if(e.keyCode == 38) {
-                            $(btnPrev[2]).trigger('click');
+                        // Это месяц..
+                        var month = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
+                        // Месяц не может быть меньше 1 и больше 12
+                        if(!(month > 0 && month < 13)) {
+                            return false;
                         }
-                    });
-                }
+                    } else {
+                        // Стрелки вправо-влево, tab и backspace разрешать
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                            return false;
+                        }
+                    }
+                });
+
+                // Фокус на next.next, поскольку следующий контрол есть плюсики и минусики
+                $(subcontrol).find('input.year').on('keyup', function(e) {
+                    // Если есть выделение, не переводить контрол автоматом
+                    var selected = getSelected();
+                    if($.trim(selected) != '') {
+                        return false;
+                    }
+
+                    if(e.keyCode == 9 && $.trim($(this).val()) != '' && e.keyCode < 37 && e.keyCode > 40) {
+                        $(this).select();
+                    }
+                }).on('keydown', function(e) {
+                    // Вниз
+                    if(e.keyCode == 40) {
+                        $(this).parents('.subcontrol').find('.date-ctrl-down-buttons .down-year-button').trigger('click');
+                        e.stopPropagation();
+                        return false;
+                    }
+                    // Вверх
+                    if(e.keyCode == 38) {
+                        $(this).parents('.subcontrol').find('.date-ctrl-up-buttons .up-year-button').trigger('click');
+                        e.stopPropagation();
+                        return false;
+                    }
+
+                    var selected = getSelected();
+                    // Если год введён и нет выделения, то не давать больше вводить символы, кроме табуляции и бекспейса
+                    if($(this).val().length >= 4 && e.keyCode != 9 && e.keyCode != 8 && $.trim(selected) == '') {
+                        return false;
+                    }
+
+                    // Проверка на корректность введённого года вообще
+                    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
+                        // Очищаем поле, если там есть выделенное
+                        if($.trim(selected) != '') {
+                            $(this).val('');
+                        }
+                        // Это месяц..
+                        var year = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
+                        var length = $(this).val().length + 1; // +1 - добавок от текущей клавиши
+                        // Всё зависит от длины ввода
+                        var currentYear = (new Date()).getFullYear();
+                        var yearParts = currentYear.toString();
+                        if(length == 1 && !(year == 1 || year == 2)) {
+                            return false;
+                        }
+                        if(length == 2 && !(year >= 19 && year <= parseInt(2 + '' + yearParts[1]))) {
+                            return false;
+                        }
+                        if(length == 3 && !(year >= 190 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2]))) {
+                            return false;
+                        }
+                        if(length == 4 && !(year >= 1900 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2] + yearParts[3]))) {
+                            return false;
+                        }
+                    } else {
+                        // Стрелки вправо-влево, tab и backspace разрешать
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                            return false;
+                        }
+                    }
+                });
             })(Controls[i]);
         }
     }
     )();
+
+    function getSelected() {
+        var selected = '';
+        if (selected = window.getSelection) { // Не IE, используем метод getSelection
+            selected = window.getSelection().toString();
+        } else { // IE, используем объект selection
+            selected = document.selection.createRange().text;
+        } // Остаётся вопрос с фф, в котором это всё выдаёт пустую строку даже при выделении
+        return selected;
+    }
 
     // Поля дат
     (function initDateFields(dateFields) {
@@ -289,54 +348,29 @@ $(document).ready(function() {
                 minView: 2,
                 forceParse: 0
             });
-            $(dateFields[i]).find('input').on('keyup', function(e) {
-                var value = $(this).val();
-                // Дата по регулярке
-                if((value.length == 4 || value.length == 7) && e.keyCode != 8) { // Введён год или месяц..
-                    $(this).val(value + '-');
-                }
-                if((value.length == 5 || value.length == 8) && e.keyCode == 8) { // Убрать автоматически прочерк
-                    $(this).val(value.substr(0, value.length - 1));
-                }
-            }).on('change', function(e, type){
-                    var subcontrols = $(this).parents('.form-group').find('.subcontrol');
-                    if(typeof subcontrols != 'undefined') {
-                        var day = $(subcontrols).find('input.day');
-                        var month = $(subcontrols).find('input.month');
-                        var year = $(subcontrols).find('input.year');
-                        // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
-                        // Из суб в настоящий
-                        if(typeof type == 'undefined') {
-                            var currentDate = $(this).val();
-                            var parts = currentDate.split('-');
-                            $(day).val(parts[2]);
-                            $(month).val(parts[1]);
-                            $(year).val(parts[0]);
-                        } else { // Из настоящего в суб
-                            console.log(year.val() + '-' + month.val() + '-' + day.val());
-                            $(this).val(year.val() + '-' + month.val() + '-' + day.val());
-                        }
-                    }
-                });
-            $(dateFields[i]).find('input').on('keydown', function(e) {
-                // Разрешить бекспейс, цифры, табуляция, Enter
-                var isAllow = true;
-                // Если символ Enter или Tab - сразу возвращаем true
-                if ((e.keyCode == 13)||(e.keyCode == 9))
-                    return true;
-                var value = $(this).val();
-                if(value.length == 10 && e.keyCode != 8) {
-                    isAllow = false;
-                } else {
-                    if(!(e.keyCode > 47 && e.keyCode < 58) && !(e.keyCode > 95 && e.keyCode < 106) && e.keyCode != 8) {
-                        isAllow = false;
+            var ctrl = $(dateFields[i]).find('input.form-control:first');
+            $(ctrl).on('change', function(e, type){
+                var subcontrols = $(this).parents('.form-group').find('.subcontrol');
+                if(typeof subcontrols != 'undefined') {
+                    var day = $(subcontrols).find('input.day');
+                    var month = $(subcontrols).find('input.month');
+                    var year = $(subcontrols).find('input.year');
+                    // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
+                    // Из суб в настоящий
+                    if(typeof type == 'undefined') {
+                        var currentDate = $(this).val();
+                        var parts = currentDate.split('-');
+                        $(day).val(parseInt(parts[2]));
+                        $(month).val(parseInt(parts[1]));
+                        $(year).val(parts[0]);
+                    } else { // Из настоящего в суб
+                        $(this).val(year.val() + '-' + month.val() + '-' + day.val());
                     }
                 }
-                if((value.length == 4 || value.length == 7) && e.keyCode != 8) { // Введён год или месяц..
-                    $(this).val(value + '-');
-                }
-                return isAllow;
             });
+            if($.trim($(ctrl).val()) != '') {
+                $(ctrl).trigger('change');
+            }
         }
     })([
         '#birthday-cont',
