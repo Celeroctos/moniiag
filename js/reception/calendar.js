@@ -56,15 +56,19 @@ $(document).ready(function() {
             if(!dayData.worked) {
                 //$(td).addClass('')
             } else {
-                // Рабочие дни
-                if(dayData.numPatients == 0) {
-                    $(td).addClass('lightgreen-block')
-                }
-                if(dayData.numPatients > 0 && dayData.numPatients < dayData.quote) {
-                    $(td).addClass('yellow-block')
-                }
-                if(dayData.numPatients == dayData.quote) {
-                    $(td).addClass('red-block')
+                if(dayData.allowForWrite) {
+                    // Рабочие дни
+                    if(dayData.numPatients == 0) {
+                        $(td).addClass('lightgreen-block')
+                    }
+                    if(dayData.numPatients > 0 && dayData.numPatients < dayData.quote) {
+                        $(td).addClass('yellow-block')
+                    }
+                    if(dayData.numPatients == dayData.quote) {
+                        $(td).addClass('red-block')
+                    }
+                } else {
+                    $(td).addClass('not-aviable-block');
                 }
             }
 

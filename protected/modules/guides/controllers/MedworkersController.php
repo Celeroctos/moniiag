@@ -124,6 +124,9 @@ class MedworkersController extends Controller {
     public function actionGetone($id) {
         $model = new Medworker();
         $medworker = $model->getOne($id);
+        if($medworker['is_for_pregnants'] == null) {
+            $medworker['is_for_pregnants'] = 0;
+        }
         echo CJSON::encode(array('success' => true,
                                  'data' => $medworker)
         );

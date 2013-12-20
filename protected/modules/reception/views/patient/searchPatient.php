@@ -81,19 +81,6 @@
             <span class="help-block">Страховой номер индивидуального лицевого счета гражданина в формате XXX-XXX-XXX-XX, где X - цифра.</span>
         </div>
     </div>
-    <div class="form-group date-ctrl-buttons">
-		<span class="col-xs-2">
-        </span>
-		<!--Выводим верхние кнопочки для увеличения значений даты-->
-		<div class="btn-group col-xs-4">
-            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon up-day-button">
-            </button>
-     		<button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon month-button up-month-button">
-			</button>
-            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-plus glyphicon year-button up-year-button" >
-            </button>
-		</div>
-	</div>
 	<div class="form-group">
         <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
     	<div id="birthday-cont" class="col-xs-3 input-group date">
@@ -102,32 +89,29 @@
             	<span class="glyphicon-calendar glyphicon">
 				</span>
             </span>
+            <div class="subcontrol">
+                <div class="date-ctrl-up-buttons">
+                    <div class="btn-group">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                    </div>
+                </div>
+                <div class="form-inline subfields">
+                    <input type="text" name="day" placeholder="ДД" class="form-control day">
+                    <input type="text" name="month" placeholder="ММ" class="form-control month">
+                    <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                </div>
+                <div class="date-ctrl-down-buttons">
+                    <div class="btn-group">
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                    </div>
+                </div>
+            </div>
     	</div>
-        <div class="clear"></div>
-        <div class="row subcontrol form-inline col-xs-3 col-lg-offset-2">
-            <div class="col-xs-3">
-                <input type="text" name="day" placeholder="ДД" class="form-control day">
-            </div>
-            <div class="col-xs-3">
-                <input type="text" name="month" placeholder="ММ" class="form-control month">
-            </div>
-            <div class="col-xs-4">
-                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
-            </div>
-        </div>
     </div>
-	<div class="form-group date-ctrl-buttons">
-		<span class="col-xs-2">
-        </span>
-		<div class="btn-group col-xs-4">
-            <button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon down-day-button">
-            </button>
-     		<button type="button" tabindex = "-1"  class="btn btn-default btn-xs glyphicon-minus glyphicon month-button down-month-button">
-			</button>
-            <button type="button" tabindex = "-1" class="btn btn-default btn-xs glyphicon-minus glyphicon year-button down-year-button">
-            </button>
-		</div>
-	</div>
     <div class="form-group">
         <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
     </div>

@@ -126,7 +126,11 @@ class EmployeesController extends Controller {
         $employee->degree_id = $model->degreeId;
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
-        $employee->date_end = $model->dateEnd;
+        if(!isset($_POST['notDateEnd'])) {
+            $employee->date_end = $model->dateEnd;
+        } else {
+            $employee->date_end = null;
+        }
         $employee->ward_code = $model->wardCode;
 
         if($employee->save()) {

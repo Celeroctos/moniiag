@@ -272,6 +272,12 @@ $(document).ready(function() {
                             },
                         ];
                         for(var i = 0; i < fields.length; i++) {
+                            if(fields[i].modelField == 'date_end') {
+                                if(data.data[fields[i].modelField] == null) {
+                                    $('#notDateEndEdit').prop('checked', true);
+                                    $('#editEmployeePopup #dateEnd').prop('disabled', true);
+                                }
+                            }
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
                         $("#editEmployeePopup").modal({
@@ -332,4 +338,22 @@ $(document).ready(function() {
 
     }
 
+
+    // Флажок для отсутствия даты конца действия
+    $('#notDateEnd').click(function(e) {
+        switchDateEnd($(this), $('#addEmployeePopup #dateEnd'));
+    });
+
+    $('#notDateEndEdit').click(function(e) {
+        switchDateEnd($(this), $('#editEmployeePopup #dateEnd'));
+    });
+
+    function switchDateEnd(checkbox, element) {
+        if($(checkbox).prop('checked')) {
+            $(element).val('');
+            $(element).prop('disabled', true);
+        } else {
+            $(element).prop('disabled', false);
+        }
+    }
 });

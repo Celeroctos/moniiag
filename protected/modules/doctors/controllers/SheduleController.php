@@ -3,6 +3,7 @@ class SheduleController extends Controller {
     public $layout = 'index';
     public $filterModel = null;
     public $currentPatient = false;
+    public $currentSheduleId = false;
     /* Календарь */
     public $currentDay = null;
     public $currentYear = null;
@@ -20,6 +21,9 @@ class SheduleController extends Controller {
                 $parts = explode('-', $medcard['birthday']);
                 $medcard['full_years'] = date('Y') - $parts[0];
             }
+            if(isset($_GET['rowid']) && trim($_GET['rowid']) != '') {
+                $this->currentSheduleId = trim($_GET['rowid']);
+            }
         }
 
         $this->filterModel = new FormSheduleFilter();
@@ -34,6 +38,7 @@ class SheduleController extends Controller {
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
             'currentPatient' => $this->currentPatient,
+            'currentSheduleId' => $this->currentSheduleId,
             'pregnantContent' => '',
             'filterModel' => $this->filterModel,
             'medcard' => isset($medcard) ? $medcard : null,
@@ -161,6 +166,25 @@ class SheduleController extends Controller {
         return $patients;
     }
 
+    // Начать приём пациента
+    public function actionAcceptBegin() {
+        $req = new CHttpRequest();
+        if(isset($_GET['id']) && trim($_GET['id']) != '') {
+            // Записать, что пациент принят
+            $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
+            if($sheduleElement != null) {
+                $sheduleElement->is_beginned = 1;
+                $sheduleElement->time_begin = date('h:j');
+                if(!$sheduleElement->save()) {
+                    echo CJSON::encode(array('success' => true,
+                                             'text' => 'Ошибка сохранения записи.'));
+                }
+            }
+        }
+
+        $req->redirect($_SERVER['HTTP_REFERER']);
+    }
+
     // Закончить приём пациента
     public function actionAcceptComplete() {
         $req = new CHttpRequest();
@@ -169,6 +193,7 @@ class SheduleController extends Controller {
             $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
             if($sheduleElement != null) {
                 $sheduleElement->is_accepted = 1;
+                $sheduleElement->time_end = date('h:j');
                 if(!$sheduleElement->save()) {
                     echo CJSON::encode(array('success' => true,
                                              'text' => 'Ошибка сохранения записи.'));
@@ -176,7 +201,7 @@ class SheduleController extends Controller {
             }
         }
 
-        $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/view'));
+        $req->redirect($_SERVER['HTTP_REFERER']);
     }
 
     // Выдать календарь для записи врача
@@ -279,6 +304,15 @@ class SheduleController extends Controller {
                     $numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day = :patient_day', array(':doctor_id' => $doctorId, ':patient_day' => $formatDate));
                     $resultArr[$i - 1]['numPatients'] = count($numPatients);
                     $resultArr[$i - 1]['quote'] = $settings['quote'];
+                    // Если врач работает в этот день, надо посмотреть, не прошедшая ли дата. На прошедшие даты записывать не надо.
+                    $timeStampCurrent = time();
+                    $timeStampPerIteration = mktime(0, 0, 0, $month, $day, $this->currentYear);
+                    // Если время итерируемое больше, то на такие числа записывать можно
+                    if($timeStampCurrent < $timeStampPerIteration) {
+                        $resultArr[$i - 1]['allowForWrite'] = 1;
+                    } else {
+                        $resultArr[$i - 1]['allowForWrite'] = 0;
+                    }
                 } else {
                     $resultArr[$i - 1]['worked'] = false;
                     $resultArr[$i - 1]['numPatients'] = 0;

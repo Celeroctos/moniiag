@@ -7,7 +7,6 @@ $(document).ready(function() {
             {
                 name:'id',
                 index:'id',
-                width: 50,
                 key: true,
                 hidden: true
             },
@@ -29,12 +28,27 @@ $(document).ready(function() {
         viewrecords: true,
         sortorder: "asc",
         caption:"Справочник диагнозов",
-        height: 'auto',
+        height: 200,
         treeGrid: true,
         treeGridModel: 'adjacency',
         ExpandColumn: 'description',
-        ExpandColClick: true
+        ExpandColClick: true,
+        ondblClickRow: moveToLikeDiagnoses
     });
+
+    function moveToLikeDiagnoses(rowid, iRow, iCol, e) {
+        var diagnosisList = $('#diagnosisList')
+        if(typeof $(diagnosisList).attr('id') != 'undefined') {
+            var rowData = $('#mkb10').jqGrid('getRowData', rowid);
+            if(rowData.isLeaf == 'true') {
+                // Если строка с таким диагнозом уже существует, добавлять не надо
+                var checkedRow = $(diagnosisList).jqGrid('getRowData', rowid);
+                if(!checkedRow.hasOwnProperty('id')) {
+                    $(diagnosisList).jqGrid('addRowData', rowid, rowData);
+                }
+            }
+        }
+    }
 
     $("#mkb10").jqGrid('navGrid','#mkb10Pager',{
         edit: false,
