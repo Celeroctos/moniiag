@@ -12,8 +12,7 @@ $(document).ready(function() {
             DateArray.push(new Date().getFullYear());
         } else {
             // Проверяем, является ли первый элемент валидной цифрой для года
-            if (!(parseInt(DateArray[0]) >= new Date().getFullYear() - 100) && (Number(DateArray[0]) <= new Date().getFullYear() + 50))
-            {
+            if (!(parseInt(DateArray[0]) >= new Date().getFullYear() - 100) && (Number(DateArray[0]) <= new Date().getFullYear() + 50)) {
                 // Добавляем текущй год
                 DateArray[0] =  (new Date()).getFullYear();
             }
@@ -112,7 +111,7 @@ $(document).ready(function() {
                 // Обработчик на субконтролы, если оные есть
                 var subcontrol = $(Control).find('.subcontrol');
                 $(subcontrol).find('input').on('change', function(e) {
-                    var container = $(this).parents('.subfields');
+                     var container = $(this).parents('.subfields');
                      var day = $(container).find('input.day');
 
                      var allowChange = true;
@@ -138,12 +137,17 @@ $(document).ready(function() {
 
                 $(subcontrol).find('input.day').on('keyup', function(e) {
                     // Если есть выделение, не переводить контрол автоматом
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     if($.trim(selected) != '') {
                         return false;
                     }
 
-                    if($(this).val().length == 2 && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
+                    if(($(this).val().length == 2 || $(this).val().length == 1) && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
+                        if($(this).val().length == 1) {
+                            if(parseInt($(this).val()) < 4) {
+                                return false;
+                            }
+                        }
                         $(this).next().focus();
                         $(this).next().select();
                     }
@@ -167,7 +171,7 @@ $(document).ready(function() {
                         return false;
                     }
 
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     // Проверка на корректность введённого дня вообще
                     if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
                         // Очищаем поле, если там есть выделенное
@@ -188,6 +192,9 @@ $(document).ready(function() {
                         }
 
                         if(!(day > 0 && day <= numDays)) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                     } else {
@@ -203,18 +210,23 @@ $(document).ready(function() {
 
                 $(subcontrol).find('input.month').on('keyup', function(e) {
                     // Если есть выделение, не переводить контрол автоматом
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     if($.trim(selected) != '') {
                         return false;
                     }
 
-                    if($(this).val().length == 2 && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
+                    if(($(this).val().length == 2 || $(this).val().length == 1) && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
+                        if($(this).val().length == 1) {
+                            if(parseInt($(this).val()) < 2) {
+                                return false;
+                            }
+                        }
                         $(this).next().focus();
                         $(this).next().select();
                     }
 
                     // Если есть выделение, не переводить контрол автоматом
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     if($.trim(selected) != '') {
                         return false;
                     }
@@ -237,7 +249,7 @@ $(document).ready(function() {
                         return false;
                     }
 
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     // Проверка на корректность введённого месяца вообще
                     if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
                         // Очищаем поле, если там есть выделенное
@@ -278,7 +290,7 @@ $(document).ready(function() {
                 // Фокус на next.next, поскольку следующий контрол есть плюсики и минусики
                 $(subcontrol).find('input.year').on('keyup', function(e) {
                     // Если есть выделение, не переводить контрол автоматом
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     if($.trim(selected) != '') {
                         return false;
                     }
@@ -301,7 +313,7 @@ $(document).ready(function() {
                         return false;
                     }
 
-                    var selected = getSelected();
+                    var selected = getSelected(this);
                     // Если год введён и нет выделения, то не давать больше вводить символы, кроме табуляции и бекспейса
                     if($(this).val().length >= 4 && e.keyCode != 9 && e.keyCode != 8 && $.trim(selected) == '') {
                         return false;
@@ -358,14 +370,15 @@ $(document).ready(function() {
     }
     )();
 
-    function getSelected() {
-        var selected = '';
+    function getSelected(element) {
+       /*  var selected = '';
         if (selected = window.getSelection) { // Не IE, используем метод getSelection
             selected = window.getSelection().toString();
         } else { // IE, используем объект selection
             selected = document.selection.createRange().text;
         } // Остаётся вопрос с фф, в котором это всё выдаёт пустую строку даже при выделении
-        return selected;
+        return selected; */
+        return $(element).selection();
     }
 
     // Поля дат
