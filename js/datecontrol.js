@@ -142,7 +142,7 @@ $(document).ready(function() {
                     if($.trim(selected) != '') {
                         return false;
                     }
-                    console.log(e.keyCode);
+
                     if($(this).val().length == 2 && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
                         $(this).next().focus();
                         $(this).next().select();
@@ -248,7 +248,21 @@ $(document).ready(function() {
                         var month = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
                         // Месяц не может быть меньше 1 и больше 12
                         if(!(month > 0 && month < 13)) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
+                        }
+                        // Теперь смотрим на день. Если день, который поставлен, больше, чем в месяце, то меняем на максимальный день месяца
+                        // Для этого смотрим, поставили ли год. Если нет, берём текущий
+                        var year = $(this).parents('.subfields').find('input.year').val();
+                        if($.trim(year) == '') {
+                            year = (new Date()).getFullYear();
+                        }
+                        var numDays = 32 - new Date(year, month - 1, 32).getDate();
+                        var dayField = $(this).parents('.subfields').find('input.day');
+                        if(parseInt($(dayField).val()) > numDays) {
+                            $(dayField).val(numDays);
                         }
                     } else {
                         // Стрелки вправо-влево, tab и backspace разрешать
