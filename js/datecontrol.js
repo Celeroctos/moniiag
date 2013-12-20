@@ -142,8 +142,8 @@ $(document).ready(function() {
                     if($.trim(selected) != '') {
                         return false;
                     }
-
-                    if($(this).val().length == 2 && e.keyCode != 9 && e.keyCode < 37 && e.keyCode > 40) {
+                    console.log(e.keyCode);
+                    if($(this).val().length == 2 && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
                         $(this).next().focus();
                         $(this).next().select();
                     }
@@ -153,6 +153,7 @@ $(document).ready(function() {
                         $(this).select();
                     }
                 }).on('keydown', function(e) {
+                    $(this).css('background-color', '#ffffff');
                     // Вниз
                     if(e.keyCode == 40) {
                         $(this).parents('.subcontrol').find('.date-ctrl-down-buttons .down-day-button').trigger('click');
@@ -192,6 +193,9 @@ $(document).ready(function() {
                     } else {
                         // Стрелки вправо-влево, tab и backspace разрешать
                         if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                     }
@@ -204,7 +208,7 @@ $(document).ready(function() {
                         return false;
                     }
 
-                    if($(this).val().length == 2 && e.keyCode != 9 && e.keyCode < 37 && e.keyCode > 40) {
+                    if($(this).val().length == 2 && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
                         $(this).next().focus();
                         $(this).next().select();
                     }
@@ -219,6 +223,7 @@ $(document).ready(function() {
                         $(this).select();
                     }
                 }).on('keydown', function(e) {
+                    $(this).css('background-color', '#ffffff');
                     // Вниз
                     if(e.keyCode == 40) {
                         $(this).parents('.subcontrol').find('.date-ctrl-down-buttons .down-month-button').trigger('click');
@@ -248,6 +253,9 @@ $(document).ready(function() {
                     } else {
                         // Стрелки вправо-влево, tab и backspace разрешать
                         if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                     }
@@ -261,10 +269,11 @@ $(document).ready(function() {
                         return false;
                     }
 
-                    if(e.keyCode == 9 && $.trim($(this).val()) != '' && e.keyCode < 37 && e.keyCode > 40) {
+                    if(e.keyCode == 9 && $.trim($(this).val()) != '' && (e.keyCode < 37 || e.keyCode > 40)) {
                         $(this).select();
                     }
                 }).on('keydown', function(e) {
+                    $(this).css('background-color', '#ffffff');
                     // Вниз
                     if(e.keyCode == 40) {
                         $(this).parents('.subcontrol').find('.date-ctrl-down-buttons .down-year-button').trigger('click');
@@ -297,20 +306,35 @@ $(document).ready(function() {
                         var currentYear = (new Date()).getFullYear();
                         var yearParts = currentYear.toString();
                         if(length == 1 && !(year == 1 || year == 2)) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                         if(length == 2 && !(year >= 19 && year <= parseInt(2 + '' + yearParts[1]))) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                         if(length == 3 && !(year >= 190 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2]))) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                         if(length == 4 && !(year >= 1900 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2] + yearParts[3]))) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                     } else {
                         // Стрелки вправо-влево, tab и backspace разрешать
                         if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                            $(this).animate({
+                                backgroundColor: "rgb(255, 196, 196)"
+                            });
                             return false;
                         }
                     }
