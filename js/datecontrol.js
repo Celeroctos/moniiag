@@ -105,7 +105,8 @@ $(document).ready(function() {
             (function (Control) {
                 // Подвязываем обработчик события нажатия на верхние кнопки для контрола
                 var btnPrevNext = $(Control).find('.date-ctrl-up-buttons .btn-group button, .date-ctrl-down-buttons .btn-group button');
-                $(btnPrevNext).on('click',function (e) {
+                var lastNullEntered = false; // Чтобы считывать 01, 02...
+				$(btnPrevNext).on('click',function (e) {
                     ArrowCalendarClickHandler(e, Control);
                 });
                 // Обработчик на субконтролы, если оные есть
@@ -141,6 +142,12 @@ $(document).ready(function() {
                     if($.trim(selected) != '') {
                         return false;
                     }
+					
+					if($(this).val().length == 1 && lastNullEntered) { // Значит, реальная длина == 2, нуль был введён...
+						lastNullEntered = false;
+						$(this).next().focus();
+                        $(this).next().select();
+					}
 
                     if(($(this).val().length == 2 || $(this).val().length == 1) && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
                         if($(this).val().length == 1) {
@@ -173,11 +180,15 @@ $(document).ready(function() {
 
                     var selected = getSelected(this);
                     // Проверка на корректность введённого дня вообще
-                    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
+                    if((e.keyCode > 48 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 106)) { // Это вообще введены цифры, типа
                         // Очищаем поле, если там есть выделенное
                         if($.trim(selected) != '') {
                             $(this).val('');
                         }
+						// Вместо 0-9 - буквы
+						if(e.keyCode > 95 && e.keyCode < 106) {
+							e.keyCode -= 48;
+						}
                         // Это день..
                         // При форме "01, 02" и пр. parseInt даст один символ. А это два. Не давать вводить, если есть ведущий ноль.
                         var day = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
@@ -198,11 +209,17 @@ $(document).ready(function() {
                             return false;
                         }
                     } else {
-                        // Стрелки вправо-влево, tab и backspace разрешать
-                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
-                            $(this).animate({
-                                backgroundColor: "rgb(255, 196, 196)"
-                            });
+						// Введённый вначале нуль запоминать
+						if(e.keyCode == 48 || e.keyCode == 96) {
+							lastNullEntered = true;
+							return false;
+						}
+                        // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
+							$(this).animate({
+								backgroundColor: "rgb(255, 196, 196)"
+							});
+							// Нули просто пропускать
                             return false;
                         }
                     }
@@ -215,9 +232,15 @@ $(document).ready(function() {
                         return false;
                     }
 
+					if($(this).val().length == 1 && lastNullEntered) { // Значит, реальная длина == 2, нуль был введён...
+						lastNullEntered = false;
+						$(this).next().focus();
+                        $(this).next().select();
+					}
+					
                     if(($(this).val().length == 2 || $(this).val().length == 1) && e.keyCode != 9 && (e.keyCode < 37 || e.keyCode > 40)) {
                         if($(this).val().length == 1) {
-                            if(parseInt($(this).val()) < 2) {
+							if(parseInt($(this).val()) < 2) {
                                 return false;
                             }
                         }
@@ -251,11 +274,15 @@ $(document).ready(function() {
 
                     var selected = getSelected(this);
                     // Проверка на корректность введённого месяца вообще
-                    if((e.keyCode > 47 && e.keyCode < 58) || (e.keyCode > 95 && e.keyCode < 106)) { // Это вообще введены цифры, типа
-                        // Очищаем поле, если там есть выделенное
+                    if((e.keyCode > 48 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 106)) { // Это вообще введены цифры, типа
+						// Очищаем поле, если там есть выделенное
                         if($.trim(selected) != '') {
                             $(this).val('');
                         }
+						// Вместо 0-9 - буквы
+						if(e.keyCode > 95 && e.keyCode < 106) {
+							e.keyCode -= 48;
+						}
                         // Это месяц..
                         var month = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
                         // Месяц не может быть меньше 1 и больше 12
@@ -277,8 +304,13 @@ $(document).ready(function() {
                             $(dayField).val(numDays);
                         }
                     } else {
+						// Введённый вначале нуль запоминать
+						if(e.keyCode == 48 || e.keyCode == 96) {
+							lastNullEntered = true;
+							return false;
+						}
                         // Стрелки вправо-влево, tab и backspace разрешать
-                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
@@ -325,6 +357,11 @@ $(document).ready(function() {
                         if($.trim(selected) != '') {
                             $(this).val('');
                         }
+						// Вместо 0-9 - буквы
+						if(e.keyCode > 95 && e.keyCode < 106) {
+							e.keyCode -= 48;
+						}
+
                         // Это месяц..
                         var year = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
                         var length = $(this).val().length + 1; // +1 - добавок от текущей клавиши
@@ -356,8 +393,8 @@ $(document).ready(function() {
                             return false;
                         }
                     } else {
-                        // Стрелки вправо-влево, tab и backspace разрешать
-                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39) {
+                        // Стрелки вправо-влево, tab и backspace разрешать. И шифт
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
@@ -371,13 +408,6 @@ $(document).ready(function() {
     )();
 
     function getSelected(element) {
-       /*  var selected = '';
-        if (selected = window.getSelection) { // Не IE, используем метод getSelection
-            selected = window.getSelection().toString();
-        } else { // IE, используем объект selection
-            selected = document.selection.createRange().text;
-        } // Остаётся вопрос с фф, в котором это всё выдаёт пустую строку даже при выделении
-        return selected; */
         return $(element).selection();
     }
 
