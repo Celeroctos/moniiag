@@ -456,6 +456,9 @@ $(document).ready(function() {
     })([
         '#birthday-cont',
         '#document-givedate-cont',
+        '#priv-document-givedate-cont',
+        '#policy-givedate-cont',
+        '#policy-enddate-cont',
         '#search-date-cont',
         '#current-date-cont',
         '#date-cont',
