@@ -10,8 +10,7 @@ $(document).ready(function(e) {
            
         ]
     };
-    
-    // ToDo:
+
     //   1.Надо определить по URL странице какую конфигурацию прочитать
     //   2.Надо совместить стандартную конфигурацию корневого элемента с конфигурацией корневого элемента
     //     (Записать в nodes корневого элемента индивидуальную конфигурацию для страницы)
@@ -111,13 +110,21 @@ $(document).ready(function(e) {
                             currentNode = node;
                         }
 
-                        // Открепляем обработчики
-                        $(document).off('keydown');
+                        
                         //$(link).popover('hide');
                         if(currentNode.hasOwnProperty('children')) {
-                            createTipContent(currentNode.children);
+                            // Если детей нет, то не снимаем обработчик.
+                            if (currentNode.children.length!=0) {
+                                //createTipContent(config);
+                                
+                                // Открепляем обработчики
+                                $(document).off('keydown');
+                                createTipContent(currentNode.children);
+                            }
                         } else {
                             console.log(currentNode);
+                            // Открепляем обработчики
+                            $(document).off('keydown');
                             createTipContent(currentNode); // Корневой узел
                         }
                         $(link).popover('show');
