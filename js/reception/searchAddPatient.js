@@ -208,4 +208,25 @@ $(document).ready(function() {
             $('#address').val($('#addressReg').val());
         }
     });
+
+    // Льготы: раскрытие списка дополнительного редактирования документа льготы, если выбран какой-то тип льготы
+    $('#privilege').on('change', function(e) {
+        var privFields = $('#privDocname, #privDocnumber, #privDocserie, #privDocGivedate').parents('.form-group');
+
+        if($(this).val() != -1) {
+            $(privFields).show();
+        } else {
+            $(privFields).find('input').val('');
+            $(privFields).hide();
+        }
+    });
+
+    // Дата окончания действия полиса: только для временных полисов
+    $('#omsType').on('change', function(e) {
+        if($(this).val() == 1) {
+            $('.policy-enddate').show();
+        } else {
+            $('.policy-enddate').hide();
+        }
+    });
 });

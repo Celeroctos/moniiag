@@ -109,7 +109,6 @@ $(document).ready(function() {
     });
 
     $('#showPrevMonth').click(function(e) {
-        console.log(globalVariables.month);
         if(globalVariables.month - 1 < 0) {
             globalVariables.clickedLink.trigger('click', [11, parseInt(globalVariables.year) - 1]);
         } else {

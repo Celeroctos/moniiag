@@ -1,6 +1,7 @@
 <?php
 class FormPatientAdd extends FormMisDefault
 {
+    public $omsType;
     public $policy;
     public $lastName;
     public $firstName;
@@ -20,6 +21,14 @@ class FormPatientAdd extends FormMisDefault
     public $contact;
     public $snils;
     public $invalidGroup;
+    public $privilege;
+    public $privDocname;
+    public $privDocnumber;
+    public $privDocserie;
+    public $privDocGivedate;
+    public $profession;
+    public $policyGivedate;
+    public $policyEnddate;
 
     public function rules()
     {
@@ -30,10 +39,10 @@ class FormPatientAdd extends FormMisDefault
 		Yii::import('ext.validators.FathersNameValidator');
         return array(
             array(
-                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
+                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, omsType, policyGivedate', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, middleName', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, middleName, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate', 'safe'
             ),
 			array(
 				'snils', 'SNILSValidator'
@@ -56,6 +65,7 @@ class FormPatientAdd extends FormMisDefault
     public function attributeLabels()
     {
         return array(
+            'omsType' => 'Тип ОМС',
             'policy' => 'ОМС',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
@@ -74,7 +84,15 @@ class FormPatientAdd extends FormMisDefault
             'post' => 'Должность',
             'contact' => 'Контактные данные',
             'snils' => 'СНИЛС',
-            'invalidGroup' => 'Группа инвалидности'
+            'invalidGroup' => 'Группа инвалидности',
+            'privilege' => 'Льгота',
+            'privDocname' => 'Название документа',
+            'privDocnumber' => 'Номер',
+            'privDocserie' => 'Серия',
+            'privDocGivedate' => 'Дата выдачи',
+            'profession' => 'Профессия',
+            'policyGivedate' => 'Дата выдачи',
+            'policyEnddate' => 'Дата окончания действия'
         );
     }
 }

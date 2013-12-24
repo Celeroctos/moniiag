@@ -17,15 +17,29 @@ class FormPatientWithCardAdd extends FormMisDefault
     public $invalidGroup;
     public $policy;
     public $cardNumber;
+    public $privilege;
+    public $privDocname;
+    public $privDocnumber;
+    public $privDocserie;
+    public $privDocGivedate;
+    public $profession;
 
     public function rules()
     {
+        Yii::import('ext.validators.SNILSValidator');
+        Yii::import('ext.validators.SerialNumberValidator');
         return array(
             array(
                 'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession', 'safe'
+            ),
+            array(
+                'snils', 'SNILSValidator'
+            ),
+            array(
+                'serie, docnumber', 'SerialNumberValidator'
             )
         );
     }
@@ -45,7 +59,13 @@ class FormPatientWithCardAdd extends FormMisDefault
             'post' => 'Должность',
             'contact' => 'Контактные данные',
             'snils' => 'СНИЛС',
-            'invalidGroup' => 'Группа инвалидности'
+            'invalidGroup' => 'Группа инвалидности',
+            'privilege' => 'Льгота',
+            'privDocname' => 'Название документа',
+            'privDocnumber' => 'Номер',
+            'privDocserie' => 'Серия',
+            'privDocGivedate' => 'Дата выдачи',
+            'profession' => 'Профессия'
         );
     }
 }

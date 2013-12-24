@@ -29,10 +29,93 @@
                             'class' => 'form-control',
                             'placeholder' => 'ОМС',
                             'autofocus'=>'1'
-                            
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
                         <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model,'omsType', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-5">
+                        <?php echo $form->dropDownList($model, 'omsType', array('Постоянный', 'Временный'), array(
+                            'id' => 'omsType',
+                            'class' => 'form-control'
+                        )); ?>
+                        <?php echo $form->error($model,'omsType'); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model,'policyGivedate', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-6 input-group date" id="policy-givedate-cont">
+                        <?php echo $form->hiddenField($model,'policyGivedate', array(
+                            'id' => 'policyGivedate',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат гггг-мм-дд'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="date-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                            </div>
+                            <div class="date-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group no-display policy-enddate">
+                    <?php echo $form->labelEx($model,'policyEnddate', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-6 input-group date" id="policy-enddate-cont">
+                        <?php echo $form->hiddenField($model,'policyEnddate', array(
+                            'id' => 'policyEnddate',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат гггг-мм-дд'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="date-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                            </div>
+                            <div class="date-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -287,6 +370,19 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <?php echo $form->labelEx($model,'profession', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model,'profession', array(
+                            'id' => 'profession',
+                            'class' => 'form-control',
+                            'placeholder' => 'Профессия'
+                        )); ?>
+                        <?php echo $form->error($model,'post'); ?>
+                    </div>
+                </div>
+                <div class="form-group">
                     <?php echo $form->labelEx($model,'contact', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
@@ -324,6 +420,91 @@
                             'class' => 'form-control'
                         )); ?>
                         <?php echo $form->error($model,'invalidGroup'); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model,'privilege', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->dropDownList($model, 'privilege', $privilegesList, array(
+                            'id' => 'privilege',
+                            'class' => 'form-control'
+                        )); ?>
+                        <?php echo $form->error($model,'privilege'); ?>
+                    </div>
+                </div>
+                <div class="form-group no-display">
+                    <?php echo $form->labelEx($model,'privDocname', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-6">
+                        <?php echo $form->textField($model,'privDocname', array(
+                            'id' => 'privDocname',
+                            'class' => 'form-control',
+                            'placeholder' => 'Название документа'
+                        )); ?>
+                    </div>
+                </div>
+                <div class="form-group no-display">
+                    <?php echo $form->labelEx($model,'privDocserie', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-6">
+                        <?php echo $form->textField($model,'privDocserie', array(
+                            'id' => 'privDocserie',
+                            'class' => 'form-control',
+                            'placeholder' => 'Серия'
+                        )); ?>
+                        <span class="help-block">Номер документа может состоять из цифр</span>
+                    </div>
+                </div>
+                <div class="form-group no-display">
+                    <?php echo $form->labelEx($model,'privDocnumber', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-8">
+                        <?php echo $form->textField($model,'privDocnumber', array(
+                            'id' => 'privDocnumber',
+                            'class' => 'form-control',
+                            'placeholder' => 'Номер документа'
+                        )); ?>
+                    </div>
+                </div>
+                <div class="form-group no-display">
+                    <?php echo $form->labelEx($model,'privDocGivedate', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-6 input-group date" id="priv-document-givedate-cont">
+                        <?php echo $form->hiddenField($model,'privDocGivedate', array(
+                            'id' => 'privDocGivedate',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат гггг-мм-дд'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="date-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                            </div>
+                            <div class="date-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
