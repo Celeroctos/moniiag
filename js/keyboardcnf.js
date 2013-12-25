@@ -3,6 +3,65 @@ keyboard_cnf =
     'page_configs':[
      {
             'page_key':'\.php/test',
+            'nodes':
+            [
+                
+            ]
+     },
+     {
+        'page_key':'\.php/admin/modules/shedulesettings',
+        'nodes':
+        [
+            {
+                'node' : '#shedule-settings-block', // Здесь селектор для ноды
+                'id': '1',
+                'handler' : function() { // Хандлер, исполняющийся при переходе на элемент
+                            //alert(1);
+                },
+                'ways':
+                [
+                    {
+                        'target':'2',
+                        'key': 40, 
+                    },
+                                        {
+                        
+                        'key': 18,
+                        'handler' : function() { // Хандлер, исполняющийся при переходе на элемент
+                            alert("Хендлер дуги сработал");
+                        },
+                    }
+                ]
+                
+            },
+            {
+                'node' : '#gbox_shifts', // Здесь селектор для ноды
+                'id': '2',
+                'handler' : function() { // Хандлер, исполняющийся при переходе на элемент
+                            //alert(1);
+                },                
+                'ways':
+                [
+                    {
+                        'target':'1',
+                        'key': 38,
+                    }
+                ]
+            }            
+        ]
+        
+    },
+
+     
+    ]
+}
+
+/*
+keyboard_cnf =
+{
+    'page_configs':[
+     {
+            'page_key':'\.php/test',
             'page_config':[
             ]
      },
@@ -53,3 +112,5 @@ keyboard_cnf =
      
     ]
 }
+
+*/
