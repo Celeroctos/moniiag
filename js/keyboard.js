@@ -14,7 +14,6 @@ $(document).ready(function(e) {
         
         
     };
-
     //   1.Надо определить по URL странице какую конфигурацию прочитать
     //   2.Прииготовить эту конфигурацию (создать индекс узлов, чтобы к ним можно было обращаться по id),
     //         подвязать переход в меню и из него
@@ -47,12 +46,7 @@ $(document).ready(function(e) {
         PrepareConfiguration(UserConfiguration);
         // Вызываем привязку
         InitKeybordNavigation(UserConfiguration);
-
     }
-    
-
-    
-    //alert("");
     
     // Функция готовит проитанную конфигурацию для использования
     function PrepareConfiguration(Config) {
@@ -64,6 +58,7 @@ $(document).ready(function(e) {
         WaysToFirstElement = {};
         WaysToFirstElement.target=Config.nodes[0].id;
         WaysToFirstElement.key=39;
+        WaysToFirstElement.keyDesc = 'Стрелка вправо - выйти из меню';
         WaysToFirst.push(WaysToFirstElement);
         
         // Заполняем ссылку на дуги у элемента для меню
@@ -73,8 +68,7 @@ $(document).ready(function(e) {
         WayToMenu = {};
         WayToMenu.target = MenuNode.id;
         WayToMenu.key = 37;
-        
-
+        WayToMenu.keyDesc = 'Стрелка влево - перейти в меню';
         
         // Дописываем в каждый узел, из которого нет дуги по ссылке влево - путь в узел, соответствующей узлу меню,
         //  чтобы из любого узла, который справа от меню можно было попасть в меню
@@ -92,18 +86,15 @@ $(document).ready(function(e) {
                     break;
                 }
             
-            }
-            
+            }        
             // Есдли нет дуги по стрелке влево
             if (!IsArrowLeft) {
                 Config.nodes[i].ways.push (WayToMenu);
                 
             }
         }
-        
         // Добавляем в список узлов элемент, соответствующий главному меню
         Config.nodes.push(MenuNode);
-        
         // Создаём объект индекса для доступа к узлам по их id
         CreateIndex(Config) 
     }
@@ -118,12 +109,17 @@ $(document).ready(function(e) {
     }
     
     function InitKeybordNavigation(config) {
-        var currentNode = null;
-        var PreviousNode = null;
-        var MasterKeyWasPressed = false;
-        //var link = '.keyboard-help-link';
-
-        /*
+        var MasterKeyCode = 27; // Код мастер-клавиши
+        var NodeKeysElements = $('<div>'); // Накопитель для сообщений в поп-апе помощи по клавиатуре
+        var currentNode = null;// Текущий активный узел графа
+        var PreviousNode = null;// Предыдущий активный узел графа
+        var MasterKeyWasPressed = false;// Флаг о том, что нажата мастер-клавиша
+        var WasPopupRefreshed = false;// Флаг о том, что был ли обновлён поп-ап. Если поменялось состояние системы,
+        //    то нужно поп-ап обновить. Этот флаг говорит о том, что для этого состояния поп-ап был обновлён
+        var WasPopupOpened = false;// Флаг о том, был ли открыт поп-ап
+        
+        // Ссылка "Помощь по клавиатуре"
+        var link = '.keyboard-help-link';
         $(link).popover({
             placement: 'bottom',
             html: true,
@@ -131,81 +127,98 @@ $(document).ready(function(e) {
                 return $(".pop-keyboard-help").html();
             }
         });
-        */
-        
-        // Ставим обработчик, цель которого - проверить, если была отпущена клавиша ESC,
-        //  то надо сбросить соответствующий флаг
+        // Ставим обработчик, цель которого - проверить, если была отпущена мастер-клавиша,
+        //  то надо сбросить соответствующий флаг и удалить сообщения с подсказками из
+        //    поп-апа обновить этот поп-ап
         $(document).on('keyup', function(e) {
-            if (e.keyCode==27) {
+            if (e.keyCode==MasterKeyCode) {
+                // Мастер-клавиша отпущена
                 MasterKeyWasPressed = false;
+                // Поп-ап не нужно обновлять
+                WasPopupRefreshed = false;
+                // Очищаем сообщение о клавишах
+                            // Удаляем сообщения из поп-апа
+                            $(".pop-keyboard-help .nodekey").remove();
+                            // Если поп-ап был открыт, то обновляем его
+                            if (WasPopupOpened) {
+                                $(link).popover('show'); 
+                            }
             }
         });
-
         // Нет текущего узла - значит, его надо проинициализировать.
         if(currentNode == null) {
             currentNode = config.nodes[0];
-            
         $(currentNode.node).addClass('background-keyboard-plugin');
             // Ставим упоминание о мастер-клавише
-           /* var rootKeyElement = $('<div>').addClass('masterkey');
-            $(rootKeyElement).text(config.masterkeyDesc);
+            var rootKeyElement = $('<div>').addClass('masterkey');
+            $(rootKeyElement).text('Нажмите и держите клавишу ESC для перемещения');
             $(".pop-keyboard-help").append(rootKeyElement);
-            // Ставим упоминание о up-level-клавише
-            var upLevelKeyElement = $('<div>').addClass('uplevelkey');
-            $(upLevelKeyElement).text(config.upLevelKeyDesc);
-            $(".pop-keyboard-help").append(upLevelKeyElement);*/
+        }
+        // Обновить поп-ап "Помощь по клавиатуре". Вызывается, тогда, когда есть вероятность, что
+        //   поменялся узел или нажата мастер-клавиша
+        function RefreshPopup()
+        {
+            // Очистить попап от старых сообщений
+                            $(".pop-keyboard-help .nodekey").remove();
+                            if (WasPopupOpened && (!WasPopupRefreshed)) {
+                                $(link).popover('show'); 
+                            }
+                            // Берём новые сообщения и записываем их в поп-ап
+                            $(".pop-keyboard-help").append($(NodeKeysElements).html());
+                            // Если поп-ап был открыт и не был обновлён - выводим его
+                            if (WasPopupOpened && (!WasPopupRefreshed)) {
+                                WasPopupRefreshed = true;
+                                $(link).popover('show'); 
+                            }
         }
         // Стираем всё перед тем, как переназначить клавиши
         (function createTipContent(ways) {
-            //$(".pop-keyboard-help .nodekey").remove();
+            $(".pop-keyboard-help .nodekey").remove();
+            NodeKeysElements =  $('<div>');
             // Для текущего узла перебираем все дуги, выходящие из него
             for(var i = 0; i < ways.length; i++) {
                 (function(way) {
-                    //var nodeElement = $('<div>').addClass('nodekey');
-                    //$(nodeElement).text(node.keyDesc);
-                    //$(".pop-keyboard-help").append(nodeElement);
+                    // Выводим описание пути в подсказку
+                    // Создаём новое сообщение
+                    var nodeElement = $('<div>').addClass('nodekey');
+                    // Записываем в него текст
+                    $(nodeElement).text(way.keyDesc);
+                    // Добавляем сообщение в список сообщений
+                    $(NodeKeysElements).append(nodeElement);
                     // Подвязываем обработчики к формам
                     $(document).on('keydown', function(e) {
-                        
-                        // Если нажата Esc - ставим флажок
-                         if(e.keyCode == 27 ) {
+                        // Если нажата мастер-клавиша - ставим флажок и обновляем поп-ап
+                         if(e.keyCode == MasterKeyCode ) {
                             MasterKeyWasPressed = true;
+                            RefreshPopup()
                             return;
                         }
-                        
                         // Если не нажат Esc, то дальше вообще не стоит ходить
                         if (!MasterKeyWasPressed) {
                             return;
                         }
-                        
-                        
                         // Если клавиша не совпадает с путём - ничего не делаем
                         if(e.keyCode != way.key) {
                             return false;
                         }
-                        $(currentNode.node).trigger('blur');
-                        // Для некорневого узла убираем подсветку при переходе
-                           $(currentNode.node).removeClass('background-keyboard-plugin');
-                        
                         // Отрабатываем handler дуги
                         if (way.hasOwnProperty('handler')) {
                             way.handler();
                         }
-                        
-                        
                         // Берём узел, на который ссылается указатель в ребёнке, в котором произошло событие
                         // Проверяем - есть ли у дуги target, переходим по нему
                         if (way.hasOwnProperty('target')) {
                             
+                           $(currentNode.node).trigger('blur');
+                            // Для некорневого узла убираем подсветку при переходе
+                           $(currentNode.node).removeClass('background-keyboard-plugin');
                             // Определяем узел для перехода
                             NextNode = config.nodes[config.index[way.target]];
-                            
                             // Если текущих узел - это меню и клавиша - стрелка вправо, то следующий узел надо взять
                             //   не по target, а Previous
                             if ((currentNode.id==MenuNode.id) &&(e.keyCode==39)){
                                 NextNode = PreviousNode;
                             }
-
                             // Выполняем переход по этому узлу
                           $(NextNode.node)
                                 .focus()
@@ -216,12 +229,11 @@ $(document).ready(function(e) {
                             // Записываем последний выделенный узел
                             PreviousNode = currentNode;
                             currentNode = NextNode;
-                        
+                            // Если у текущего узла есть хендлер - вызываем его
                             if (currentNode.hasOwnProperty('handler')) {
                                 currentNode.handler();
                             }
                         }
-
                             // Если из нового узла можно куда-то перейти, то берём его дуги
                             //   и рекурсивно вызываем функцию инициализации событий нажатия клавиши для дуг
                             if (currentNode.hasOwnProperty('ways')) {
@@ -230,31 +242,34 @@ $(document).ready(function(e) {
                                     // Выключаем старые события
                                     $(document).off('keydown');
                                     
-                                    createTipContent(currentNode.ways);    
+                                    createTipContent(currentNode.ways);
+                                    WasPopupRefreshed = false;
                                 }
                             }
-
-                        //$(link).popover('show');
+                        if (WasPopupOpened) {
+                            RefreshPopup();
+                        }
                     });
                 })(ways[i]);
             }
         })(config.nodes[0].ways);
-
-       /* $(link).on('click', function(e) {
+        $(link).on('click', function(e) {
+            WasPopupOpened = true;
             $(this).popover('show');
         }).on('blur', function() {
-            //$(this).popover('hide');
-        });*/
+            WasPopupOpened = false;
+            $(this).popover('hide');
+        });
     }
 });
 
 //======================================================================================
 //======================================================================================
-//  Ниже старое и скорее всего ненужное
+//  Всё что ниже старое и скорее всего ненужное
 //======================================================================================
 //======================================================================================
-
 /*
+
 $(document).ready(function(e) {
     
     // Стандартная конфигурация для всех страниц
