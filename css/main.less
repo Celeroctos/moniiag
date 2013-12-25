@@ -498,3 +498,53 @@ body #editPopup {
 .background-keyboard-plugin {
   background: #E6E6E6;
 }
+/* Элемент управления "выбиратель" */
+.chooser {
+  .variants {
+    width: 100%;
+    max-height: 180px;
+    border: 2px solid #E6E6E6;
+    position: absolute;
+    padding: 0;
+    background: #ffffff;
+    li {
+      list-style: none;
+      font-size: 12px;
+      padding: 0 5px;
+    }
+    li:hover {
+      background: #ecf5fc;
+      cursor: pointer;
+    }
+    li.active {
+      background: #E0F8F1;
+    }
+  }
+  .choosed {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #E6E6E6;
+    border-radius: 3px;
+    margin: 5px 0 0 0;
+    padding: 5px;
+    span.item {
+      background: #F5F6CE;
+      padding: 2px 8px 2px 3px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 3px;
+      span {
+        color: #FF0000;
+        position: relative;
+        top: 2px;
+        left: 5px;
+      }
+      span:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+.no-display {
+  display: none;
+}

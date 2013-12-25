@@ -55,12 +55,14 @@
         <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
             'currentPatient' => $currentPatient,
             'templateType' => 0,
-            'withoutSave' => 0
+            'withoutSave' => 0,
+            'greetingId' => $currentSheduleId
         )); ?>
             <?php if($medcard['gender'] == 0) { ?>
                 <h5><strong>Ведение беременности</strong></h5>
                 <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
                     'currentPatient' => $currentPatient,
+                    'greetingId' => $currentSheduleId,
                     'templateType' => 1
                 )); ?>
             <?php }?>
@@ -124,11 +126,14 @@
                         <td>
                             Закончить приём
                         </td>
+                        <td>
+                            Печать листа приёма
+                        </td>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($patients as $key => $patient) { ?>
-                        <tr <?php echo $patient['id'] == $currentSheduleId ? "class='success'" : ''; ?>>
+                        <tr <?php echo $patient['id'] == $currentSheduleId ? "class='success activeGreeting'" : ''; ?>>
                             <td>
                                 <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'].'&date='.$filterModel->date.'&rowid='.$patient['id'])); ?>
                             </td>
@@ -142,7 +147,12 @@
                                 <?php echo $patient['is_beginned'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id'])); ?>
                             </td>
                             <td>
-                                <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', array('/doctors/shedule/acceptcomplete/?id='.$patient['id'])); ?>
+                                <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '/doctors/shedule/acceptcomplete/?id='.$patient['id'], array('Закончить приём')); ?>
+                            </td>
+                            <td>
+                                <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#'.$patient['id'],
+                                                                                                                array('title' => 'Печать листа приёма',
+                                                                                                                      'class' => 'print-greeting-link')) : ''; ?>
                             </td>
                         </tr>
                     <?php } ?>
@@ -257,3 +267,40 @@
     </div>
 </div>
 <?php } ?>
+<div class="modal fade error-popup" id="noticePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Уведомление</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Все изменения в медкарте будут сохранены автоматически перед печатью листа приёма.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="printPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Печать листа приёма</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Вы хотите распечатать лист текущего приёма?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -110,13 +110,13 @@ $(document).ready(function() {
                     '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
+                        '<a title="Регистрировать ЭМК" href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
-                            '<span class="glyphicon glyphicon-edit"></span>' +
+                        '<a title="Редактировать ОМС" href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                            '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
                 '</tr>'
@@ -138,23 +138,28 @@ $(document).ready(function() {
                     '<td>' + data[i].reg_date + '</td>' +
                     '<td>' + data[i].card_number + '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
-                            '<span class="glyphicon glyphicon-edit"></span>' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '" title="Редактировать ЭМК">' +
+                            '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
-                            '<span class="glyphicon glyphicon-edit"></span>' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '" title="Редактировать ОМС">' +
+                            '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '" title="Записать пациента на приём">' +
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
+                        '</a>' +
+                    '</td>' +
+                    '<td>' +
+                        '<a class="printlink" title="Печать титульной страницы медкарты" href="#' + data[i].card_number + '">' +
+                            '<span class="glyphicon glyphicon-print"></span>' +
                         '</a>' +
                     '</td>' +
                 '</tr>'
@@ -228,5 +233,13 @@ $(document).ready(function() {
         } else {
             $('.policy-enddate').hide();
         }
+    });
+
+    // Печать карты, окно
+    $(document).on('click', '.printlink', function(e) {
+        var id = $(this).attr('href').substr(1);
+        var printWin = window.open('/index.php/doctors/print/printmainpage/?medcardid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        printWin.focus();
+        return false;
     });
 });

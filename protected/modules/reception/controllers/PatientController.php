@@ -393,6 +393,7 @@ class PatientController extends Controller {
         $medcard->post = $model->post;
         $medcard->contact = $model->contact;
         $medcard->profession = $model->profession;
+        $medcard->enterprise_id = 1; // TODO: сделать выборку из учреждений, сейчас ставим мониаг жёстко
 
         if($oms) {
             $medcard->policy_id = $oms->id;

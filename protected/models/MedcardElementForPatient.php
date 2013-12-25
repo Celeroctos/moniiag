@@ -124,9 +124,29 @@ class MedcardElementForPatient extends MisActiveRecord {
                                               FROM mis.medcard_elements_patient mep2
                                               WHERE mep2.element_id = mep.element_id
                                                     AND mep2.medcard_id = :medcard_id
-                                                    AND mep2.change_date <= :date)',                                                                                          array(':medcard_id' => $medcardId,
+                                                    AND mep2.change_date <= :date)', array(':medcard_id' => $medcardId,
                                                            ':date' => $date))
                 ->group('mep.element_id, mep.history_id, mep.medcard_id, me.type');
+            return $values->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    // Найти все конечные состояния полей, изменённых во время приёма
+    public function findAllPerGreeting($greetingId) {
+        try {
+            $connection = Yii::app()->db;
+            $values = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
+                ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.greeting_id = :greetingId)', array(':greetingId' => $greetingId))
+                ->group('mep.element_id, mep.history_id, mep.medcard_id');
             return $values->queryAll();
 
         } catch(Exception $e) {

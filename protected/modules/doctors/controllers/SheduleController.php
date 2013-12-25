@@ -112,6 +112,7 @@ class SheduleController extends Controller {
                 $elementModel->element_id = $resArr[1];
                 $elementModel->value = $value;
                 $elementModel->change_date = $currentDate;
+                $elementModel->greeting_id = $_POST['FormTemplateDefault']['greetingId'];
                 $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId(array('id' => $elementModel->element_id), $elementModel->medcard_id);
                 if($historyIdResult['history_id_max'] == null) {
                     $elementModel->history_id = 1;

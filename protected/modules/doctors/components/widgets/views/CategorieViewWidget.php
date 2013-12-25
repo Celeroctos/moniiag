@@ -14,6 +14,11 @@ echo $form->hiddenField($model,'medcardId', array(
     'class' => 'form-control',
     'value' => $currentPatient
 ));
+echo $form->hiddenField($model,'greetingId', array(
+    'id' => 'greetingId',
+    'class' => 'form-control',
+    'value' => $greetingId
+));
 ?>
 <?php foreach($categories  as $index => $template) {
     foreach($template  as $key => $categorie) {

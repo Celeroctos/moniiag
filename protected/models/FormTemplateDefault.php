@@ -5,9 +5,10 @@ class FormTemplateDefault extends FormMisDefault
     public $name;
     public $id;
     public $medcardId;
+    public $greetingId;
 
     public $attributeLabels = array();
-    public $safeFields = array('medcardId, ', 'safe');
+    public $safeFields = array('medcardId, greetingId', 'safe');
 
     // Грязный хак для динамической модели
     public function __set($name,$value) {

@@ -3,6 +3,7 @@ class CategorieViewWidget extends CWidget {
     public $formModel = null;
     public $currentPatient = false;
     public $templateType = null;
+    public $greetingId = null; // ID приёма
     public $withoutSave = 0; // Флаг, нужно ли делать кнопку сохранения
     public $prefix = ''; // Если есть два одинаковых шаблона на странице, их айдишники надо как-то отличать. Отличаем по префиксу
 
@@ -16,6 +17,7 @@ class CategorieViewWidget extends CWidget {
             'categories' => $categories,
             'model' => $this->formModel,
             'currentPatient' => $this->currentPatient,
+            'greetingId' => $this->greetingId,
             'withoutSave' => $this->withoutSave
         ));
     }
