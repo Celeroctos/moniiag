@@ -131,7 +131,9 @@ $(document).ready(function(e) {
         //  то надо сбросить соответствующий флаг и удалить сообщения с подсказками из
         //    поп-апа обновить этот поп-ап
         $(document).on('keyup', function(e) {
+            console.log("?");
             if (e.keyCode==MasterKeyCode) {
+                console.log("!");
                 // Мастер-клавиша отпущена
                 MasterKeyWasPressed = false;
                 // Поп-ап не нужно обновлять
