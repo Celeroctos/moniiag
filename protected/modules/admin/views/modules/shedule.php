@@ -1,7 +1,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/settings/shedule.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <h4>Настройки расписания</h4>
-<div class="row">
+<div class="row" id="shedule-settings-block">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
         'focus' => array($model,'timePerPatient'),
