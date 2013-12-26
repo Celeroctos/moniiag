@@ -21,9 +21,10 @@ class MedcardElement extends MisActiveRecord {
         try {
             $connection = Yii::app()->db;
             $element = $connection->createCommand()
-                ->select('mc.*')
-                ->from('mis.medcard_elements mc')
-                ->where('mc.id = :id', array(':id' => $id))
+                ->select('me.*, mc.name as categorie_name')
+                ->from('mis.medcard_elements me')
+                ->leftJoin('mis.medcard_categories mc', 'me.categorie_id = mc.id')
+                ->where('me.id = :id', array(':id' => $id))
                 ->queryRow();
 
             return $element;

@@ -193,7 +193,8 @@ class EmployeesController extends Controller {
             }
 
             echo CJSON::encode(
-                array('rows' => $employees,
+                array('success' => 'true',
+                      'rows' => $employees,
                       'total' => $totalPages,
                       'records' => count($num))
             );

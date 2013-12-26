@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
     $("#patient-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
@@ -6,6 +7,16 @@ $(document).ready(function() {
             $('#successEditPopup').modal({
 
             });
+            if(isThisPrint) {
+                if($(".submitEditPatient").length - 1 == numCalls) {
+                    // Сбрасываем режим на дефолт
+                    isThisPrint = false;
+                    numCalls = 0;
+                    $('.activeGreeting .print-greeting-link').trigger('print');
+                } else {
+                    ++numCalls;
+                }
+            }
             // Вставляем новую запись в список истории
             if(ajaxData.hasOwnProperty('historyDate')) {
                 var newDiv = $('<div>');
@@ -81,5 +92,42 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    $('.print-greeting-link').on('click', function(e) {
+        $('#noticePopup').modal({});
+    });
+
+    var isThisPrint = false;
+    // После закрытия окна начинать сохранение медкарты и печать листа приёма
+    $('#noticePopup').on('hidden.bs.modal', function(e) {
+        isThisPrint = true;
+        $('.submitEditPatient input').trigger('click');
+    });
+
+    $('#successEditPopup').on('show.bs.modal', function(e) {
+        // Если это режим печати, то показывать окно успешности редактирования не надо
+        if(isThisPrint) {
+            return false;
+        }
+    });
+
+    $('#successEditPopup').on('hidden.bs.modal', function(e) {
+        if(!isThisPrint) {
+            $('#printPopup').modal({});
+        }
+    });
+
+    $('#printPopup .btn-success').on('click', function(e) {
+        $('.activeGreeting .print-greeting-link').trigger('print');
+        isThisPrint = false;
+    });
+
+    // Печать листа приёма, само действие
+    $('.print-greeting-link').on('print', function(e) {
+        var id = $(this).attr('href').substr(1);
+        var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        printWin.focus();
+        return false;
     });
 });

@@ -41,6 +41,9 @@
                 <li <?php echo $controller == 'shedule' && $module == 'doctors' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Приём больных', array('/doctors/shedule/view')) ?>
                 </li>
+                <li <?php echo $controller == 'print' && $module == 'doctors' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Печать приёмов', array('/doctors/print/massprintview')) ?>
+                </li>
             </ul>
         </li>
         <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
