@@ -3949,3 +3949,142 @@ REQUEST_URI=/index.php/guides/employees/get?page=1&rows=10sidx=id&sord=desc&filt
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (161)
 in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2013/12/26 14:57:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "receptions/patient/search".' in Z:\home\moniiag.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('receptions/pati...')
+#1 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/receptions/patient/search?page=1&rows=10&sidx=id&sord=desc&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22name%22,%22op%22:%22bw%22,%22data%22:%22%D0%9A%22}]}&_=1388059031880
+HTTP_REFERER=http://moniiag.my/index.php/doctors/print/massprintview
+---
+2013/12/26 14:59:41 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка o.array не существует
+LINE 4: WHERE LOWER(o.Array) LIKE 'ко%'
+                    ^. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE LOWER(o.Array) LIKE 'ко%'.
+in Z:\home\moniiag.my\www\protected\models\Oms.php (30)
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (478)
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (433)
+2013/12/26 14:59:41 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка o.array не существует
+LINE 4: WHERE LOWER(o.Array) LIKE 'ко%'
+                    ^. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE LOWER(o.Array) LIKE 'ко%'' in Z:\home\moniiag.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\moniiag.my\www\protected\models\Oms.php(30): CDbCommand->queryAll()
+#2 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(478): Oms->getRows(Array)
+#3 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(433): PatientController->searchPatients()
+#4 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionSearch()
+#5 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('search')
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#14 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/reception/patient/search?page=1&rows=10&sidx=id&sord=desc&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22fio%22,%22op%22:%22bw%22,%22data%22:%22%D0%9A%D0%BE%22}]}&_=1388059079779
+HTTP_REFERER=http://moniiag.my/index.php/doctors/print/massprintview
+---
+2013/12/26 16:16:49 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_id" не существует
+LINE 1: ...CT * FROM "mis"."doctor_shedule_by_day" "t" WHERE patient_id...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE patient_id = :patient_id AND doctor_id = :doctor_id AND patient_day = :patient_day.
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (147)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+in Z:\home\moniiag.my\www\index.php (13)
+2013/12/26 16:16:49 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_id" не существует
+LINE 1: ...CT * FROM "mis"."doctor_shedule_by_day" "t" WHERE patient_id...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE patient_id = :patient_id AND doctor_id = :doctor_id AND patient_day = :patient_day' in Z:\home\moniiag.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php(147): CActiveRecord->findAll('patient_id = :p...', Array)
+#4 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PrintController->actionMakePrintListView()
+#5 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\moniiag.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('makeprintlistvi...')
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/print/m...')
+#14 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/print/makeprintlistview?doctors=%5B15%5D&patients=%5B50%2C59%5D&date=2013-12-25&_=1388063782647
+HTTP_REFERER=http://moniiag.my/index.php/doctors/print/massprintview
+---
+2013/12/26 16:33:52 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка dsbd.patient_id не существует
+LINE 3: JOIN "mis"."medcards" "m" ON dsbd.patient_id = m.card_number
+                                     ^. The SQL statement executed was: SELECT "dsbd".*
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.patient_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+WHERE (o.id = :id AND dsbd.doctor_id = :doctor_id) AND (dsdb.patient_day = :patient_day).
+in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (74)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (143)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/26 16:33:52 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка dsbd.patient_id не существует
+LINE 3: JOIN "mis"."medcards" "m" ON dsbd.patient_id = m.card_number
+                                     ^. The SQL statement executed was: SELECT "dsbd".*
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.patient_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+WHERE (o.id = :id AND dsbd.doctor_id = :doctor_id) AND (dsdb.patient_day = :patient_day).
+in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (74)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (143)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/26 17:02:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.employees" не существует
+LINE 5: JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+             ^. The SQL statement executed was: SELECT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "e"."first_name" AS "d_first_name", "e"."middle_name" AS "d_middle_name", "e"."last_name" AS "d_last_name"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+WHERE o.id = :id AND dsbd.doctor_id = :doctor_id.
+in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (80)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (145)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/26 17:02:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.employees" не существует
+LINE 5: JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+             ^. The SQL statement executed was: SELECT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "e"."first_name" AS "d_first_name", "e"."middle_name" AS "d_middle_name", "e"."last_name" AS "d_last_name"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+WHERE o.id = :id AND dsbd.doctor_id = :doctor_id.
+in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (80)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (145)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/26 17:02:45 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.employees" не существует
+LINE 5: JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+             ^. The SQL statement executed was: SELECT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "e"."first_name" AS "d_first_name", "e"."middle_name" AS "d_middle_name", "e"."last_name" AS "d_last_name"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+WHERE o.id = :id AND dsbd.doctor_id = :doctor_id.
+in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (80)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (145)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)
+2013/12/26 17:02:45 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  отношение "mis.employees" не существует
+LINE 5: JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+             ^. The SQL statement executed was: SELECT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "e"."first_name" AS "d_first_name", "e"."middle_name" AS "d_middle_name", "e"."last_name" AS "d_last_name"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."employees" "e" ON e.id = dsbd.doctor_id
+WHERE o.id = :id AND dsbd.doctor_id = :doctor_id.
+in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (80)
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\PrintController.php (145)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (17)

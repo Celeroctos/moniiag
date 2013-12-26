@@ -387,7 +387,8 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
     }
   }
 }
-#patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form, #patient-search-form, #patient-medcard-edit-form {
+#patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form, #patient-search-form, #patient-medcard-edit-form,
+#print-search-form {
   div.date {
     span {
       display: block;
@@ -482,6 +483,11 @@ body #editPopup {
     }
   }
 }
+#print-search-form .print-submit {
+  button {
+    margin: 10px 0 0 18%;
+  }
+}
 /* Клавиатурная подсказка */
 .pop-keyboard-help {
   position: absolute;
@@ -507,6 +513,7 @@ body #editPopup {
     position: absolute;
     padding: 0;
     background: #ffffff;
+    z-index: 99;
     li {
       list-style: none;
       font-size: 12px;
@@ -527,12 +534,15 @@ body #editPopup {
     border-radius: 3px;
     margin: 5px 0 0 0;
     padding: 5px;
+    padding-left: 0;
     span.item {
       background: #F5F6CE;
       padding: 2px 8px 2px 3px;
       border-radius: 2px;
       display: inline-block;
       margin-bottom: 3px;
+      margin-left: 3px;
+      z-index: 98;
       span {
         color: #FF0000;
         position: relative;

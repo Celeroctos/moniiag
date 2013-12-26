@@ -5,6 +5,13 @@ $(document).ready(function() {
             var current = null;
             var mode = 0; // 0 - стрелки, 1 - ввод в поле руками (нужда запроса)
             var prevVal = null;
+            var currentElements = []; // Список строк с элементами. Требуется для того, чтобы связать определённый span  с конкретной строкой
+            var choosedElements = []; // Список выбранных элементов для текущего контрола (строки)
+            $.fn[$(chooser).attr('id')] = {
+                getChoosed: function() {
+                    return choosedElements;
+                }
+            };
             $(chooser).find('input').val('');
             $(chooser).find('input').on('keydown', function(e) {
                 // Стрелка "Вверх"
@@ -46,10 +53,7 @@ $(document).ready(function() {
                     // Нажатие Enter переносит в список выбранных
                     if(e.keyCode == 13) {
                         if(current != null) {
-                            var span = $('<span>').addClass('item');
-                            var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
-                            $(span).append($(chooser).find('.variants li.active').text()).append(innerSpan);
-                            $(chooser).find('.choosed').append(span);
+                            addVariantToChoosed($(chooser).find('.variants li.active'));
                         }
                         return false;
                     }
@@ -74,7 +78,7 @@ $(document).ready(function() {
                         mode = 1;
                         return false;
                     }
-                    console.log(prevVal);
+
                     if(prevVal != $.trim($(field).val())) {
                         if($(field).val().length > 0) {
                             prevVal = $.trim($(field).val());
@@ -97,8 +101,12 @@ $(document).ready(function() {
                                     if(rows.length == 0) {
                                         $(ul).hide();
                                     } else {
+                                        currentElements = [];
                                         for(var i = 0; i < rows.length; i++) {
-                                            $(ul).append($('<li>').text(rows[i].last_name + ' ' + rows[i].first_name + ' ' + rows[i].middle_name));
+                                            choosersConfig[$(chooser).prop('id')].rowAddHandler(ul, rows[i]);
+                                            var field = choosersConfig[$(chooser).prop('id')].primary;
+                                            $(ul).find('li:eq(' + i + ')').prop('id', 'r' + rows[i][field]);
+                                            currentElements.push(rows[i]);
                                         }
                                         $(ul).show();
                                     }
@@ -111,24 +119,82 @@ $(document).ready(function() {
                 }
             }
 
-            $(document).on('click', '.chooser .variants li', function(e) {
-                var span = $('<span>').addClass('item');
-                var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
-                $(span).append($(this).text()).append(innerSpan);
-                $(chooser).find('.choosed').append(span);
-                $(this).parents('ul').hide();
+            $(document).on('click', '.choosed span.item span', function(e) {
+                // Удаляем из массива предыдущих элементов
+                for(var i = 0; i < choosedElements.length; i++) {
+                    if('r' + $(choosedElements[i]).prop('id') == $(this).parent().prop('id')) {
+                        choosedElements = choosedElements.slice(0, i).concat(choosedElements.slice(i + 1));
+                        break;
+                    }
+                }
+                $(this).parent().remove();
             });
 
-            $(document).on('click', '.choosed span.item', function(e) {
-                $(this).remove();
+
+            $(chooser).on('click', '.variants li', function(e) {
+                addVariantToChoosed(this);
             });
+
+            function addVariantToChoosed(li) {
+                $(li).parents('ul').hide();
+                var id = $(li).prop('id').substr(1);
+                var primaryField = choosersConfig[$(chooser).prop('id')].primary;
+                for(var i = 0; i < currentElements.length; i++) {
+                    if(currentElements[i][primaryField] == id) {
+                        // Смотрим, нет ли уже такого элемента в списке. Если есть - добавлять не надо в список выбранных
+                        var isFound = false;
+                        var foundElement = null;
+                        for(var j = 0; j < choosedElements.length; j++) {
+                            if(currentElements[i][primaryField] == choosedElements[j][primaryField]) {
+                                isFound = true;
+                                break;
+                            }
+                        }
+                        // А если найден - повторно добавлять не надо
+                        if(!isFound) {
+                            var span = $('<span>').addClass('item');
+                            var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
+                            $(span).append($(li).text()).append(innerSpan);
+                            $(span).prop('id', 'r' + currentElements[i][primaryField]);
+                            $(chooser).find('.choosed').append(span);
+                            $(chooser).find('input').val('');
+                            prevVal = null;
+                            choosedElements.push(currentElements[i]);
+                        } else {
+                            // TODO: сделать анимацию на вариант, который уже есть в списке, чтобы показать, что он есть
+                        }
+                        break;
+                    }
+                }
+            }
         })(this);
     });
 
     // Конфиг выборщиков
     var choosersConfig = {
         'doctorChooser' : {
+            'primary' : 'id', // Первичный ключ у строки
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
+            },
             'url' : '/index.php/guides/employees/get?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'patientChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
+            },
+            'url' : '/index.php/reception/patient/search?page=1&withandwithout=0&rows=10&sidx=id&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [

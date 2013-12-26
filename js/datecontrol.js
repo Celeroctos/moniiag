@@ -465,6 +465,7 @@ $(document).ready(function() {
         '#dateBegin-cont',
         '#dateEnd-cont',
         '#dateBeginEdit-cont',
-        '#dateEndEdit-cont'
+        '#dateEndEdit-cont',
+        '#greetingDate-cont'
     ]);
 });

@@ -129,6 +129,30 @@ class PrintController extends Controller {
 
     }
 
+    // Получить данные для вьюхи
+    public function actionMakePrintListView() {
+        $patients = CJSON::decode($_GET['patients']);
+        $doctors = CJSON::decode($_GET['doctors']);
+        $numPatients = count($patients);
+        $numDoctors = count($doctors);
+        $resultArr = array();
+        for($i = 0; $i < $numPatients; $i++) {
+            for($j = 0; $j < $numDoctors; $j++) {
+                // Теперь получаем все приёмы по врачу, пациенту и дате
+                if(isset($_GET['date']) && trim($_GET['date']) != '') {
+                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$i], $_GET['date']);
+                } else {
+                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$i]);
+                }
+                if(count($greetings) > 0) {
+                    $resultArr = $resultArr + $greetings;
+                }
+            }
+        }
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => $resultArr));
+    }
+
     // Получить страницу массовой печати
     public function actionMassPrintView() {
         $this->layout = 'index';
