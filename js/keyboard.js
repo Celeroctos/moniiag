@@ -138,6 +138,101 @@ $(document).ready(function(e) {
         //    то нужно поп-ап обновить. Этот флаг говорит о том, что для этого состояния поп-ап был обновлён
         var WasPopupOpened = false;// Флаг о том, был ли открыт поп-ап
                
+        //=================================
+        //====== Ставим перехват события click на document
+        //  внутри которого смотрим элемент, на который мы кликнули и выделяем тот узел графа, в котором
+        //    находится элемент, на который мы кликнули
+        
+         $(document).on('click', function(e) {
+            // e.target - объект, на который кликнули и который нам надо проверить
+            
+            // Для элемента e.target берём его непосредсвенных родителей и
+            //  1. Поднимаемся по иерархии родителей, пока родитель не станет равным <html>
+            //  2. Для каждого родительского уровня перебираем узлы конфигурации и
+            //          Если родитель на очередном уровне равен узлу графа, то мы
+            //       1. Выделяем данный узел цветом
+            //       2. Помечаем его текущим
+            
+            var Ancestor = $(e.target).parent(); // (Предок)
+            var Patriarch = $('html'); // (Патриарх) - самый первый элемент на странице :)
+            var FoundNode = false;
+            var NewNode;
+            
+            while ((Ancestor[0])!=(Patriarch[0])) // Пока предок не равен патриарху :)
+            //    (Пока не исчерпали всех родителей)
+            {
+                FoundNode = false;
+                
+                // Перебираем узлы
+                for (i=0;i<config.nodes.length;i++)
+                {
+                    if (Ancestor[0]==$(config.nodes[i].node)[0]) {
+                        // Ура!!! Мы нашли узел
+                        //  Поднимаем флаг и вызываем break
+                        NewNode = config.nodes[i];
+                        FoundNode = true;
+                        break;
+                    }
+                }
+                
+                if (FoundNode ) {
+                    break;
+                }
+                
+                Ancestor = Ancestor.parent();
+                
+            }
+            
+            
+            // Здесь проверяем, если флаг найденного узла взведён - выделяем узел
+
+            if (FoundNode) {
+                // Проверяем - если данный узел равный текущему, то выходим - делать больше нечего :)
+                if (NewNode == currentNode) {
+                    return;
+                }
+                
+                // Ну а коль скоро узел поменялся - выделяем его
+                $(currentNode.node).trigger('blur');
+                // Для некорневого узла убираем подсветку при переходе
+                $(currentNode.node).removeClass('background-keyboard-plugin');
+                
+                $(NewNode.node)
+                    .focus()
+                    .addClass('background-keyboard-plugin');
+                if (NewNode.hasOwnProperty('handler')) {
+                        NewNode.handler();
+                }
+                
+                PreviousNode = currentNode;
+                currentNode = NewNode;
+                
+                //  Пытаемся поставить фокус на элемент, на который произошёл клик.
+                //     Если не удаётся-ставим на первый элемент блока, на который это можно сделать
+                if(!TrySetFocus(e.target))
+                {
+                    // Выберем все элементы для блока
+                    var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
+        
+                    // Пробегаемся по элементам массива TabElements снизу, находим первый
+                    //     элемент, у которого табиндекс ненулёвый ставим фокус на него, затем вызываем break
+                    // Ставим фокус на первый
+                    for (i=0;i<TabElements.length;i++)
+                    {
+                        if (TrySetFocus(TabElements[i]))
+                        {
+                            break;
+                        }
+                    }
+                }
+                
+                
+            }
+            
+         });
+        
+        
+        //=================================
         
         // Ссылка "Помощь по клавиатуре"
         var link = '.keyboard-help-link';
