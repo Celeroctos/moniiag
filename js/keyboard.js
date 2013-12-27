@@ -101,7 +101,51 @@ $(document).ready(function(e) {
         // Добавляем в список узлов элемент, соответствующий главному меню
         Config.nodes.push(MenuNode);
         // Создаём объект индекса для доступа к узлам по их id
-        CreateIndex(Config) 
+        CreateIndex(Config)
+        
+
+        
+    }
+    
+    function CreateTabArrays (Config)
+    {
+                // Перебираем узлы и для каждого берём массив элементов, у которых табиндекс больше нуля или неопределён и записываем
+        //   в объекты узлов
+         for (i=0;i<Config.nodes.length;i++) {
+            var Controls = ChooseTabElementsInContainer($(Config.nodes[i].node));
+            var ControlsTabbed = new Array();
+            for (j=0;j<Controls.length;j++)
+            {
+                //if ($(Controls[j]).tabIndex==undefined || $(Controls[j]).tabIndex>=0) {
+                //    ControlsTabbed.push(Controls[j]);
+                //}
+                
+                if (TrySetFocus($(Controls[j]))) {
+                    ControlsTabbed.push(Controls[j]);
+                }
+                
+            }
+            Config.nodes[i].TabbedElements = ControlsTabbed;
+         }
+        
+        // Тоже смое делаем для поп-апов
+                 for (i=0;i<Config.popups_ids.length;i++) {
+            var Controls = ChooseTabElementsInContainer($('#'+Config.popups_ids[i].id));
+            var ControlsTabbed = new Array();
+            for (j=0;j<Controls.length;j++)
+            {
+                //if ($(Controls[j]).tabIndex==undefined || $(Controls[j]).tabIndex>=0) {
+                //    ControlsTabbed.push(Controls[j]);
+                //}
+                
+                if (TrySetFocus($(Controls[j]))) {
+                    ControlsTabbed.push(Controls[j]);
+                }
+                
+            }
+            Config.popups_ids[i].TabbedElements = ControlsTabbed;
+         }
+        
     }
     
     function CreateIndex(Config)
@@ -117,6 +161,16 @@ $(document).ready(function(e) {
     //   иначе возвращает false
     function TrySetFocus(ElementToFocus)
     {
+        // Если у элемента класс "close" - не фокусируемся
+        if ($(ElementToFocus).hasClass('close')) {
+            return false;
+        }
+        
+        // Не разрешаем ставить фокус на спрятанные
+        if ($(ElementToFocus).is('hidden')) {
+            return false;
+        }
+        
         // Ставим на элемент фокус
         $(ElementToFocus).focus();
         
@@ -127,6 +181,36 @@ $(document).ready(function(e) {
         return true;
     }
     
+    // Ставит на элемент фокус и, если он установился, возвращает true
+    //   иначе возвращает false
+    function TrySetFocus(ElementToFocus)
+    {
+        // Если у элемента класс "close" - не фокусируемся
+        if ($(ElementToFocus).hasClass('close')) {
+            return false;
+        }
+        
+        // Не разрешаем ставить фокус на спрятанные
+        if ($(ElementToFocus).is('hidden')) {
+            return false;
+        }
+        
+        // Ставим на элемент фокус
+        $(ElementToFocus).focus();
+        
+        // Проверяем, установился ли он
+        if (!$(ElementToFocus).is(':focus')) {
+            return false;
+        }
+        return true;
+    }
+    function ChooseTabElementsInContainer(Container)
+        {
+            var Result = 
+            //$(Container).find("a, input, select, button, textarea");
+            $(Container).find("a, input[type!=hidden], select, button:not(.close), textarea");
+            return Result;
+        }
     
     function InitKeybordNavigation(config) {
         var MasterKeyCode = 27; // Код мастер-клавиши
@@ -137,7 +221,113 @@ $(document).ready(function(e) {
         var WasPopupRefreshed = false;// Флаг о том, что был ли обновлён поп-ап. Если поменялось состояние системы,
         //    то нужно поп-ап обновить. Этот флаг говорит о том, что для этого состояния поп-ап был обновлён
         var WasPopupOpened = false;// Флаг о том, был ли открыт поп-ап
+        var PopupOpened = null;// Открытый поп-ап (если он открыт)
+        var LastFocusedElement = null;// Элемент, на котором последний раз был фокус перед открытием поп-апа
+        //  Сделано для того, чтобы после закрытия поп-апа восстановить фокус
+        var ShiftWasPressed = false;// Флаг о том, что был нажат shift.
+        // Сделано для того, чтобы запретить обратный shift
+        var FocusedObject;// Ссылка на текущий объект, который находитс в фокусе
+        var WasCountingTabElements = false;
+        
+        // Ставим обработчик, который будет сохранять ссылку на текущий объект в фокусе
+        $('html').on('focus', 'a, input, select, button, textarea',function(){
+            FocusedObject = this;
+            })
+        
+        function ProhibitTabulation()
+        {
+            /*
+            // Если разрешённые таб-элементы не просчитаны - просчитываем
+            if (!WasCountingTabElements) {
+                // Сохраняем фокус
+                var OldFocus = FocusedObject;
+                
+                CreateTabArrays(config);
+                
+                // Восстанавливаем фокус
+                $(OldFocus).focus();
+                
+                WasCountingTabElements = true;
+            }
+            */
+            
+            //$('a, input, select, button, textarea').attr('tabindex','-1');
+            ChooseTabElementsInContainer($('html')).attr('tabindex','-1');
+            //$('*').attr('tabindex','-1');
+            //$('body').attr('tabindex','-1');
+            if (PopupOpened) {
+                ChooseTabElementsInContainer(PopupOpened).attr('tabindex','0');
+            }
+            else
+            {
+                ChooseTabElementsInContainer($(currentNode.node)[0]).attr('tabindex','0');
+                
+            }
+            
+            
+        }
+        
+           
+              
                
+        // ===========================
+        // ===========================
+        // Прочитываем из конфигурации id-шики поп-апов и привязываемся на их события показа и скрытия,
+        //   Чтобы работать с фокусом и активными блоками
+        for (i=0;i<config.popups_ids.length;i++)
+        {
+            (function (PopupId)
+            {
+                 $(PopupId).on('shown.bs.modal', function (e)
+                    {
+                            /*   
+                            $(PopupId).on('focus', 'a, input, select, button, textarea',function (e)  {
+                                console.log('keydown fires');
+                                PressTabControlHandler(e);
+                            });
+                        */
+                            // Надо сохранить элемент, на котором был поставлен фокус
+                            LastFocusedElement = $(':focus');
+                       
+                            // Сохраняем ссылку на открывшийся поп-ап
+                            PopupOpened = $(PopupId)
+                            
+                            // Ставим фокус на первый элемент открывшегося поп-апа
+                            // Выберем все элементы для блока
+                             TabElements = ChooseTabElementsInContainer($(PopupOpened)[0]);
+        
+                            // Ставим фокус на первый элемент поп-апа
+                            for (i=0;i<TabElements.length;i++)
+                            {
+                                if (TrySetFocus(TabElements[i]))
+                                {
+                                    break;
+                                }
+                            }
+                            
+                            //alert('Стыдно когда видно ' +PopupId);
+                    }
+                );
+            
+            
+                $(PopupId).on('hidden.bs.modal', function (e)
+                    {
+                        
+                        // Восстанавливаем фокус на странице
+                        $(LastFocusedElement)[0].focus();
+                        
+                        // Пересчитаем tab-индекс
+                        ProhibitTabulation();
+                        
+                        // Обнуляем ссылку на по-ап
+                        PopupOpened = null;
+
+                    }
+                );
+                
+            }('#'+config.popups_ids[i].id));    
+            
+        }   
         //=================================
         //====== Ставим перехват события click на document
         //  внутри которого смотрим элемент, на который мы кликнули и выделяем тот узел графа, в котором
@@ -238,7 +428,9 @@ $(document).ready(function(e) {
         var link = '.keyboard-help-link';
         $(link).popover({
             placement: 'bottom',
+          //  placement: 'right',
             html: true,
+          //  top: '0px',
             content: function() {
                 return $(".pop-keyboard-help").html();
             }
@@ -248,6 +440,12 @@ $(document).ready(function(e) {
         //    поп-апа обновить этот поп-ап
         $(document).on('keyup', function(e) {
             console.log("?");
+            
+            // Если был отпущен shift - это надо обработать
+            if (e.keyCode==16) {
+                ShiftWasPressed = false;
+            }
+            
             if (e.keyCode==MasterKeyCode) {
                 console.log("!");
                 // Мастер-клавиша отпущена
@@ -281,69 +479,148 @@ $(document).ready(function(e) {
                 break;
             }
         }
-        
-        
-        //(TabElements[0]).focus();
+        //ProhibitTabulation();
             
-            
-            
-       // Подвешиваем на все инпуты и селекты в форме следующий обработчик:
-    //      По нажатию на таб проверяем - является ли текущий инпут последним в форме
-    //         если является, то необходимо перебросить фокус на
-    //           первый инпут в этой же форме. Таким образом табуляция будет "закольцована"
-    //           по полям формы
+       // Подвешиваем на все инпуты и селекты в форме обработчик keydown,
+       //   который делает следующие вещи:
+       //   Считывает все элементы текущего блока
+       //    Пробегается по ним, выясняет, какой из них в фокусе (
+       //        с помощью глобальной ссылки на элемент, находящийся в фокусе на странице)
+       //      если индекс такого элемента равен длине массива элементов блока или не найден элемент в фокусе -
+       //      то ставим фокус на первый элемент блока
+       //    
     
 
-        // Выбираем всё что можно выделить табом на странице
-        //var Controls = ChooseTabElementsInContainer($('html'));
-        
-        // Перебираем всё, что выделили
-        //for (i=0;i<Controls.length;i++) {
-            // Подвязываем обработчик
-            $('html').on('keydown', 'a, input, select, button, textarea',function (e)  {
+            
+
+                   $('html').on('keydown', 'a, input, select, button, textarea',function (e)  {
                 console.log('keydown fires');
                 PressTabControlHandler(e);
             });
-        //}
+
+        
 
     // Обрабатывает нажатие таб на контроле. Сделано для того, чтобы после нажатия таба
     //    на последнем контроле в форме был переход фокуса
     //   на первый контрол той же формы
-    function PressTabControlHandler(Target) {
-        if (Target.keyCode==9) {
+    function PressTabControlHandler(Target)
+    {
+              
+        // Если нажат таб
+        if (Target.keyCode==9)
+        {
+            ProhibitTabulation();
             
-            // Получаем для текущего активного узла элементы, по которым можно переходить по табу
-            var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
-            
-            // Находим первый элемент с конца, у которого табиндекс больший
-            var LastTabIndex = TabElements.length-1;
-            while (LastTabIndex>=0)
+             // Получаем для текущего активного узла элементы, по которым можно переходить по табу
+            var TabElements = null;
+            // Если открыт поп-ап, то читаем все элементы по которвм можно ходить табом в поп-апе
+            if (PopupOpened) {
+                TabElements = ChooseTabElementsInContainer(PopupOpened);
+            }
+            else
             {
-                if (TabElements[LastTabIndex].tabIndex>=0 || !TabElements[LastTabIndex].hasOwnProperty('tabIndex') ) {
+                // Иначе читаем все элементы  по которвм можно ходить табом в текущем блоке
+                TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
+            }   
+            
+            // Вычисляем индекс элемента, находящегося в фокусе в текущем блоке
+            var LastTabIndex = 0;
+            
+            // Пробегаем по элементам, по которым можно ходить табом в данном блоке или поп-апе
+            while (LastTabIndex<TabElements.length)
+            {
+                // Если текущий элемент равен элементу, который находится в фокусе на странице, то выходим
+                if ($(TabElements[LastTabIndex])[0]==FocusedObject) {
                     break;
                 }
-                LastTabIndex--;
+                
+                LastTabIndex++;
             }
             
-            // Проверим - является ли элемент, на котором случилось событие последним для текущего контейнера
-            if (TabElements[LastTabIndex]==Target.currentTarget) {
-                // Ставим фокус первом у элементу из TabElements
-                //(TabElements[0]).focus();
-                for (i=0;i<TabElements.length;i++)
-                {
+            // Проверяем - если LastTabIndex нулевой и был зажат Shift, то надо сбросить нажатие клавиши
+            // Иначе - если LastTabIndex последний и шифт не зажат - надо тоже погасить событие и поставить в фокус
+            //   первый элемент
+            
+            if (LastTabIndex==0 && ShiftWasPressed) {
+                for (i=TabElements.length-1;i>=0;i--) {
                     if (TrySetFocus(TabElements[i])) {
                         break;
                     }
                 }
-            
                 Target.preventDefault();
+                return false;
+                
             }
-
+            else
+            {
+                if (LastTabIndex==TabElements.length-1 && !ShiftWasPressed) {
+                    for (i=0;i<TabElements.length;i++) {
+                        if (TrySetFocus(TabElements[i])) {
+                            break;
+                        }
+                    }
+                    Target.preventDefault();
+                    return false;
+                    
+                }
+            }
+            
+            // 
+            
+            /*
+            // Наглым образом запрещаем обратную табуляцию
+            if (ShiftWasPressed) {
+                Target.preventDefault();
+                return false;
+            }
+            
+            // Получаем для текущего активного узла элементы, по которым можно переходить по табу
+            
+            var TabElements = null;
+            // Если открыт поп-ап, то читаем все элементы по которвм можно ходить табом в поп-апе
+            if (PopupOpened) {
+                TabElements = ChooseTabElementsInContainer(PopupOpened);
+            }
+            else
+            {
+                // Иначе читаем все элементы  по которвм можно ходить табом в текущем блоке
+                TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
+            }            
+            
+            // Вычисляем индекс элемента, находящегося в фокусе в текущем блоке
+            var LastTabIndex = 0;
+            
+            // Пробегаем по элементам, по которым можно ходить табом в данном блоке или поп-апе
+            while (LastTabIndex<TabElements.length)
+            {
+                // Если текущий элемент равен элементу, который находится в фокусе на странице, то выходим
+                if ($(TabElements[LastTabIndex])[0]==FocusedObject) {
+                    break;
+                }
+                
+                LastTabIndex++;
+            }
+            
+            // Если фокусированный элемент не последний и он есть, то вызываем фокус на следующий элемент
+            if (LastTabIndex<TabElements.length-1) {
+                TabElements[LastTabIndex+1].focus();
+            }
+            else
+            {
+                // Иначе пытаемся поставить фокус в элемент начиная с первого
+                for (i=0;i<TabElements.length;i++) {
+                    if (TrySetFocus(TabElements[i])) {
+                        break;
+                    }
+                }
+            }
+            
+            Target.preventDefault();
+        */
         }
+        
+        
     }  
-            
-            
-            
             
         $(currentNode.node).addClass('background-keyboard-plugin');
             // Ставим упоминание о мастер-клавише
@@ -351,7 +628,7 @@ $(document).ready(function(e) {
             $(rootKeyElement).text('Нажмите и держите клавишу ESC для перемещения');
             $(".pop-keyboard-help").append(rootKeyElement);
 
-        
+        /*
         // Выбирает все элементы в контейнере, на которые можно перейти табулятором
         function ChooseTabElementsInContainer(Container)
         {
@@ -360,7 +637,7 @@ $(document).ready(function(e) {
             $(Container).find("a, input, select, button, textarea");
             return Result;
         }
-        
+        */
         // Обновить поп-ап "Помощь по клавиатуре". Вызывается, тогда, когда есть вероятность, что
         //   поменялся узел или нажата мастер-клавиша
         function RefreshPopup()
@@ -394,6 +671,17 @@ $(document).ready(function(e) {
                     $(NodeKeysElements).append(nodeElement);
                     // Подвязываем обработчики к формам
                     $(document).on('keydown', function(e) {
+                        
+                        // Если был зажат шифт - это надо запомнить
+                        if (e.keyCode==16) {
+                            ShiftWasPressed = true;
+                        }
+                        
+                        // Если был открыт поп-ап, то выходим
+                        if (PopupOpened) {
+                            return;
+                        }
+                        
                         // Если нажата мастер-клавиша - ставим флажок и обновляем поп-ап
                          if(e.keyCode == MasterKeyCode ) {
                             MasterKeyWasPressed = true;
@@ -454,6 +742,7 @@ $(document).ready(function(e) {
                                 currentNode.handler();
                             }
                         }
+                            ProhibitTabulation();
                             // Если из нового узла можно куда-то перейти, то берём его дуги
                             //   и рекурсивно вызываем функцию инициализации событий нажатия клавиши для дуг
                             if (currentNode.hasOwnProperty('ways')) {

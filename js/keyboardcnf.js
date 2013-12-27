@@ -20,7 +20,12 @@ keyboard_cnf =
  
                 ] 
                 }
+            ],
+            'popups_ids':
+            [
+                
             ]
+     
      },
      {
         'page_key':'\.php/admin/modules/shedulesettings',
@@ -67,7 +72,13 @@ keyboard_cnf =
                     }
                 ]
             }            
-        ]
+        ],
+            'popups_ids':
+            [
+                    {'id':'addShiftPopup'},
+                    {'id':'editShiftPopup'},
+                    {'id':'errorAddShiftPopup'}
+            ]
         
     },
 
