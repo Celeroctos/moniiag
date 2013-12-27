@@ -2,6 +2,9 @@
 
 $(document).ready(function(e) {
     
+    //var test = $('#timePerPatient1').focus();
+    //alert(test);
+    
     // Конфигурация только для левого меню
     MenuNode =
     {
@@ -46,6 +49,8 @@ $(document).ready(function(e) {
         PrepareConfiguration(UserConfiguration);
         // Вызываем привязку
         InitKeybordNavigation(UserConfiguration);
+        //var Test = $('#ui-pg-input');
+        //Test.focus();
     }
     
     // Функция готовит проитанную конфигурацию для использования
@@ -108,6 +113,21 @@ $(document).ready(function(e) {
         Config.index = index;
     }
     
+    // Ставит на элемент фокус и, если он установился, возвращает true
+    //   иначе возвращает false
+    function TrySetFocus(ElementToFocus)
+    {
+        // Ставим на элемент фокус
+        $(ElementToFocus).focus();
+        
+        // Проверяем, установился ли он
+        if (!$(ElementToFocus).is(':focus')) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     function InitKeybordNavigation(config) {
         var MasterKeyCode = 27; // Код мастер-клавиши
         var NodeKeysElements = $('<div>'); // Накопитель для сообщений в поп-апе помощи по клавиатуре
@@ -117,6 +137,7 @@ $(document).ready(function(e) {
         var WasPopupRefreshed = false;// Флаг о том, что был ли обновлён поп-ап. Если поменялось состояние системы,
         //    то нужно поп-ап обновить. Этот флаг говорит о том, что для этого состояния поп-ап был обновлён
         var WasPopupOpened = false;// Флаг о том, был ли открыт поп-ап
+               
         
         // Ссылка "Помощь по клавиатуре"
         var link = '.keyboard-help-link';
@@ -148,14 +169,103 @@ $(document).ready(function(e) {
             }
         });
         // Нет текущего узла - значит, его надо проинициализировать.
-        if(currentNode == null) {
+       // if(currentNode == null) {
             currentNode = config.nodes[0];
+            
+        // Ставим фокус на первый элемент первого блока
+        // Выберем все элементы для блока
+        var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
+        
+        // Пробегаемся по элементам массива TabElements снизу, находим первый
+        //     элемент, у которого табиндекс ненулёвый ставим фокус на него, затем вызываем break
+        // Ставим фокус на первый
+        for (i=0;i<TabElements.length;i++)
+        {
+            if (TrySetFocus(TabElements[i]))
+            {
+                break;
+            }
+        }
+        
+        
+        //(TabElements[0]).focus();
+            
+            
+            
+       // Подвешиваем на все инпуты и селекты в форме следующий обработчик:
+    //      По нажатию на таб проверяем - является ли текущий инпут последним в форме
+    //         если является, то необходимо перебросить фокус на
+    //           первый инпут в этой же форме. Таким образом табуляция будет "закольцована"
+    //           по полям формы
+    
+
+        // Выбираем всё что можно выделить табом на странице
+        //var Controls = ChooseTabElementsInContainer($('html'));
+        
+        // Перебираем всё, что выделили
+        //for (i=0;i<Controls.length;i++) {
+            // Подвязываем обработчик
+            $('html').on('keydown', 'a, input, select, button, textarea',function (e)  {
+                console.log('keydown fires');
+                PressTabControlHandler(e);
+            });
+        //}
+
+    // Обрабатывает нажатие таб на контроле. Сделано для того, чтобы после нажатия таба
+    //    на последнем контроле в форме был переход фокуса
+    //   на первый контрол той же формы
+    function PressTabControlHandler(Target) {
+        if (Target.keyCode==9) {
+            
+            // Получаем для текущего активного узла элементы, по которым можно переходить по табу
+            var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
+            
+            // Находим первый элемент с конца, у которого табиндекс больший
+            var LastTabIndex = TabElements.length-1;
+            while (LastTabIndex>=0)
+            {
+                if (TabElements[LastTabIndex].tabIndex>=0 || !TabElements[LastTabIndex].hasOwnProperty('tabIndex') ) {
+                    break;
+                }
+                LastTabIndex--;
+            }
+            
+            // Проверим - является ли элемент, на котором случилось событие последним для текущего контейнера
+            if (TabElements[LastTabIndex]==Target.currentTarget) {
+                // Ставим фокус первом у элементу из TabElements
+                //(TabElements[0]).focus();
+                for (i=0;i<TabElements.length;i++)
+                {
+                    if (TrySetFocus(TabElements[i])) {
+                        break;
+                    }
+                }
+            
+                Target.preventDefault();
+            }
+
+        }
+    }  
+            
+            
+            
+            
         $(currentNode.node).addClass('background-keyboard-plugin');
             // Ставим упоминание о мастер-клавише
             var rootKeyElement = $('<div>').addClass('masterkey');
             $(rootKeyElement).text('Нажмите и держите клавишу ESC для перемещения');
             $(".pop-keyboard-help").append(rootKeyElement);
+
+        
+        // Выбирает все элементы в контейнере, на которые можно перейти табулятором
+        function ChooseTabElementsInContainer(Container)
+        {
+            var Result = 
+            //$(Container).find("a, input, select, button, textarea");
+            $(Container).find("a, input, select, button, textarea");
+            return Result;
         }
+        
         // Обновить поп-ап "Помощь по клавиатуре". Вызывается, тогда, когда есть вероятность, что
         //   поменялся узел или нажата мастер-клавиша
         function RefreshPopup()
@@ -231,6 +341,19 @@ $(document).ready(function(e) {
                             // Записываем последний выделенный узел
                             PreviousNode = currentNode;
                             currentNode = NextNode;
+                            
+                            $(':focus').blur();
+                            
+                            // Ставим фокус на первый элемент блока
+                            var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
+                            for (i=0;i<TabElements.length;i++)
+                            {
+                                if (TrySetFocus(TabElements[i])) {
+                                    break;
+                                }
+                            }
+                            
+                            
                             // Если у текущего узла есть хендлер - вызываем его
                             if (currentNode.hasOwnProperty('handler')) {
                                 currentNode.handler();
@@ -264,154 +387,3 @@ $(document).ready(function(e) {
         });
     }
 });
-
-//======================================================================================
-//======================================================================================
-//  Всё что ниже старое и скорее всего ненужное
-//======================================================================================
-//======================================================================================
-/*
-
-$(document).ready(function(e) {
-    
-    // Стандартная конфигурация для всех страниц
-        StandartConfig = {
-        'masterkeyDesc' : 'ESC - выход в главное меню', // Описание мастер-клавиши
-        'masterkey' : 27, // Код мастер-клавиши
-        'upLevelKeyDesc' : 'Стрелка вверх - вернуться на уровень выше', // Описание клавиши "уровень выше"
-        'upLevelKey' : 38, // Код клавиши для уровня выше
-        'nodes' : [
-           
-        ]
-    };
-
-    //   1.Надо определить по URL странице какую конфигурацию прочитать
-    //   2.Надо совместить стандартную конфигурацию корневого элемента с конфигурацией корневого элемента
-    //     (Записать в nodes корневого элемента индивидуальную конфигурацию для страницы)
-    //   3.Для собранной конфигурации подвязываем обработчики
-    
-    //alert('http://mis.my/index.php/reception/patient/viewsearch'.match('\.php/reception/patient/viewsearch'))
-    
-    // Берём href
-    var pageAddr = window.location.href;
-    var UserConfiguration=null;
-    
-    // Перебираем конфигурации различный страниц
-    for (i=0;i<keyboard_cnf.page_configs.length;i++) {
-        // Если href текущей страницы матчится на конфигурацию 
-        //   по номеру i - мы нашли конфигурацию для данной страницы
-        if (pageAddr.match(keyboard_cnf.page_configs[i].page_key)!=null) {
-                // Сохраняем найденную конфигурацию для страницы
-               UserConfiguration = keyboard_cnf.page_configs[i].page_config
-               // Больше не хочу выполнять этот цикл (конфигурация же найдена)
-               break;
-        }
-        
-    }
-    
-    if (UserConfiguration!=null) {
-        // Если нашли конфигурацию, то прихреначиваем её к стандартной
-        StandartConfig.nodes = UserConfiguration;
-    }
-    // Вызываем привязку 
-    InitKeybordNavigation(StandartConfig)
-    
-    //alert("");
-    
-    function InitKeybordNavigation(config) {
-        var currentNode = null;
-        var parentNode = null;
-        var link = '.keyboard-help-link';
-
-        $(link).popover({
-            placement: 'bottom',
-            html: true,
-            content: function() {
-                return $(".pop-keyboard-help").html();
-            }
-        });
-
-        // Нет текущего узла - значит, это корневой.
-        if(currentNode == null) {
-            currentNode = config.nodes;
-            // Ставим упоминание о мастер-клавише
-            var rootKeyElement = $('<div>').addClass('masterkey');
-            $(rootKeyElement).text(config.masterkeyDesc);
-            $(".pop-keyboard-help").append(rootKeyElement);
-            // Ставим упоминание о up-level-клавише
-            var upLevelKeyElement = $('<div>').addClass('uplevelkey');
-            $(upLevelKeyElement).text(config.upLevelKeyDesc);
-            $(".pop-keyboard-help").append(upLevelKeyElement);
-        }
-        // Стираем всё перед тем, как переназначить клавиши
-        (function createTipContent(nodes) {
-            $(".pop-keyboard-help .nodekey").remove();
-            for(var i = 0; i < nodes.length; i++) {
-                (function(node) {
-                    var nodeElement = $('<div>').addClass('nodekey');
-                    $(nodeElement).text(node.keyDesc);
-                    $(".pop-keyboard-help").append(nodeElement);
-                    // Подвязываем обработчики к формам
-                    $(document).on('keydown', function(e) {
-                        if(e.keyCode != node.key && e.keyCode != config.masterkey && e.keyCode != config.upLevelKey) {
-                            return false;
-                        }
-                        $(currentNode.node).trigger('blur');
-                        // Для некорневого узла убираем подсветку при переходе
-                        if(currentNode.hasOwnProperty('node')) {
-                            $(currentNode.node).removeClass('background-keyboard-plugin');
-                        }
-
-                        if(e.keyCode == config.masterkey) { // Мастер-клавиша
-                            currentNode = config.nodes;
-                            parentNode = null;
-                        }
-                        if(e.keyCode == config.upLevelKey) { // Клавиша уровня выше
-                            if(parentNode != null) {
-                                currentNode = parentNode; // Возвращаемся на родительский узел
-                            }
-                        }
-                        
-                        console.log("node.key="+node.key,"e.key="+e.key);
-                        
-                        // Это для некорневого узла
-                        if(e.keyCode == node.key) {
-                            $(node.node)
-                                .focus()
-                                .addClass('background-keyboard-plugin');
-                            node.handler();
-                            parentNode = currentNode; // Сохраняем родительский узел
-                            currentNode = node;
-                        }
-
-                        
-                        //$(link).popover('hide');
-                        if(currentNode.hasOwnProperty('children')) {
-                            // Если детей нет, то не снимаем обработчик.
-                            if (currentNode.children.length!=0) {
-                                //createTipContent(config);
-                                
-                                // Открепляем обработчики
-                                $(document).off('keydown');
-                                createTipContent(currentNode.children);
-                            }
-                        } else {
-                            console.log(currentNode);
-                            // Открепляем обработчики
-                            $(document).off('keydown');
-                            createTipContent(currentNode); // Корневой узел
-                        }
-                        $(link).popover('show');
-                    });
-                })(nodes[i]);
-            }
-        })(config.nodes);
-
-        $(link).on('click', function(e) {
-            $(this).popover('show');
-        }).on('blur', function() {
-            //$(this).popover('hide');
-        });
-    }
-});
-*/
