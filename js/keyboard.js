@@ -313,9 +313,14 @@ $(document).ready(function(e) {
         return TrySetFocusInternal(ElementToFocus,false);
     }
         
+        // Запрещает табуляцию на всех элементах кроме тех, которые находятся внутри активного
+        //     блока (ставит tabIndex=-1)
         function ProhibitTabulation(NeedRecountProbibites)
         {
             
+            // Если не открыт поп-ап.
+            //    (при для поп-апов дейсвтия, аналогичные этой функции производятся
+            //          в обработчике события открытия)
             if (!PopupOpened) {
                 var ForFocusSaving;
              // Если разрешённые таб-элементы не просчитаны - просчитываем
