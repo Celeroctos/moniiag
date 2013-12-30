@@ -103,8 +103,39 @@ $(document).ready(function(e) {
         // Создаём объект индекса для доступа к узлам по их id
         CreateIndex(Config)
         
-
+        // Выбираем все элементы,у которых tabIndex отрицательный или undefinded
+        Config.wasInitedNotTabbedElements = false;
         
+        // Читаем элементы, у которых отрицательный таб-индекс
+        var AllElements = ChooseTabElementsInContainer($('html'));
+        var NegativeTabIndex = new Array();
+        
+        for (i=0;i<AllElements.length;i++ )
+        {
+            //if ($(AllElements[i]).tabIndex==undefined || $(AllElements[i]).tabIndex<0) {
+            if ($(AllElements[i]).tabIndex<0) {
+            
+                NegativeTabIndex.push(AllElements[i]);
+            }
+        }
+        
+        Config.negativeTabIndex = NegativeTabIndex;
+        
+        /*
+        var AllElements = ChooseTabElementsInContainer($('html'));
+        var ElementsNotTabbedBeginner = new Array();
+        
+        for (i=0;i<AllElements.length;i++ )
+        {
+            //if ($(AllElements[i]).tabIndex==undefined || $(AllElements[i]).tabIndex<0) {
+            if ($(AllElements[i]).tabIndex<0) {
+            
+                ElementsNotTabbedBeginner.push(AllElements[i]);
+            }
+        }
+        
+        Config.NotTabbed = ElementsNotTabbedBeginner;
+        */
     }
     
     function CreateTabArrays (Config)
@@ -157,6 +188,8 @@ $(document).ready(function(e) {
         Config.index = index;
     }
     
+   
+   /* 
     // Ставит на элемент фокус и, если он установился, возвращает true
     //   иначе возвращает false
     function TrySetFocus(ElementToFocus)
@@ -180,30 +213,7 @@ $(document).ready(function(e) {
         }
         return true;
     }
-    
-    // Ставит на элемент фокус и, если он установился, возвращает true
-    //   иначе возвращает false
-    function TrySetFocus(ElementToFocus)
-    {
-        // Если у элемента класс "close" - не фокусируемся
-        if ($(ElementToFocus).hasClass('close')) {
-            return false;
-        }
-        
-        // Не разрешаем ставить фокус на спрятанные
-        if ($(ElementToFocus).is('hidden')) {
-            return false;
-        }
-        
-        // Ставим на элемент фокус
-        $(ElementToFocus).focus();
-        
-        // Проверяем, установился ли он
-        if (!$(ElementToFocus).is(':focus')) {
-            return false;
-        }
-        return true;
-    }
+    */
     function ChooseTabElementsInContainer(Container)
         {
             var Result = 
@@ -223,6 +233,7 @@ $(document).ready(function(e) {
         var WasPopupOpened = false;// Флаг о том, был ли открыт поп-ап
         var PopupOpened = null;// Открытый поп-ап (если он открыт)
         var LastFocusedElement = null;// Элемент, на котором последний раз был фокус перед открытием поп-апа
+        var LastFocusedBlock = null;// Блок, который был последним активен перед открытием поп-апа
         //  Сделано для того, чтобы после закрытия поп-апа восстановить фокус
         var ShiftWasPressed = false;// Флаг о том, что был нажат shift.
         // Сделано для того, чтобы запретить обратный shift
@@ -234,36 +245,157 @@ $(document).ready(function(e) {
             FocusedObject = this;
             })
         
-        function ProhibitTabulation()
+         
+                 // Ставим фокус на первый элемент первого блока
+        // Выберем все элементы для блока
+        function InitFirstActiveBlock(NodeToActive)
         {
-            /*
-            // Если разрешённые таб-элементы не просчитаны - просчитываем
-            if (!WasCountingTabElements) {
-                // Сохраняем фокус
-                var OldFocus = FocusedObject;
-                
-                CreateTabArrays(config);
-                
-                // Восстанавливаем фокус
-                $(OldFocus).focus();
-                
-                WasCountingTabElements = true;
+            var TabElements = ChooseTabElementsInContainer(NodeToActive);
+            
+            // Пробегаемся по элементам массива TabElements снизу, находим первый
+            //     элемент, у которого табиндекс ненулёвый ставим фокус на него, затем вызываем break
+            // Ставим фокус на первый
+            for (i=0;i<TabElements.length;i++)
+            {
+                if (TrySetFocus(TabElements[i]))
+                {
+                    break;
+                }
             }
-            */
+        }
+         
+    function TrySetFocusInternal(ElementToFocus, HiddensTry)
+    {
+        // Если у элемента класс "close" - не фокусируемся
+        if ($(ElementToFocus).hasClass('close')) {
+            return false;
+        }
+        
+        // Не разрешаем ставить фокус на спрятанные
+        /*if ($(ElementToFocus).is('hidden')) {
+            return false;
+        }
+        */
+        
+        if (!HiddensTry) {
+            if ($(ElementToFocus).attr('type')=='hidden') {
+                return false;
+            }
+        }
+
+        
+        if ($(ElementToFocus)[0].tabIndex<0) {
+            return false;
+        }
+        
+        // Ставим на элемент фокус
+        $(ElementToFocus).focus();
+        
+        // Проверяем, установился ли он
+        //if (!$(ElementToFocus).is(':focus')) {
+        if ($(ElementToFocus)[0]!=FocusedObject) { 
+            return false;
+        }
+        return true;
+    }
+         
+         // Ставит на элемент фокус и, если он установился, возвращает true
+    //   иначе возвращает false
+    function TrySetFocusHiddens(ElementToFocus)
+    {
+        return TrySetFocusInternal(ElementToFocus,true);
+    }   
+        
+         // Ставит на элемент фокус и, если он установился, возвращает true
+    //   иначе возвращает false
+    function TrySetFocus(ElementToFocus)
+    {
+        return TrySetFocusInternal(ElementToFocus,false);
+    }
+        
+        function ProhibitTabulation(NeedRecountProbibites)
+        {
+            
+            if (!PopupOpened) {
+                var ForFocusSaving;
+             // Если разрешённые таб-элементы не просчитаны - просчитываем
+                if ((!config.wasInitedNotTabbedElements)||(NeedRecountProbibites))
+                {
+                    // Сохраняем элемент на котором был фокус
+                    ForFocusSaving = FocusedObject;
+                    // Берём все элементы на странице, которые вообще могут быть в фокусе
+                    var AllElements = ChooseTabElementsInContainer($('html'));
+                 var ElementsNotTabbedBeginner = new Array();
+                
+                 // Перебираем все элементы на странице, которые вообще могут быть в фокусе
+                  for (i=0;i<AllElements.length;i++ )
+                  {
+                     if (!TrySetFocusHiddens($(AllElements[i]))) {
+                    // if (AllElements[i].tabIndex<0){ 
+                        ElementsNotTabbedBeginner.push(AllElements[i]);
+                    }
+
+                }
+           
+                config.NotTabbed = ElementsNotTabbedBeginner;
+                config.wasInitedNotTabbedElements = true;
+                
+                ForFocusSaving.focus();
+            }
+ 
             
             //$('a, input, select, button, textarea').attr('tabindex','-1');
             ChooseTabElementsInContainer($('html')).attr('tabindex','-1');
             //$('*').attr('tabindex','-1');
             //$('body').attr('tabindex','-1');
+            var ElementsOfActiveBlock = null;
             if (PopupOpened) {
-                ChooseTabElementsInContainer(PopupOpened).attr('tabindex','0');
+                ElementsOfActiveBlock = ChooseTabElementsInContainer(PopupOpened);
+                //ChooseTabElementsInContainer(PopupOpened).attr('tabindex','0');
             }
             else
             {
-                ChooseTabElementsInContainer($(currentNode.node)[0]).attr('tabindex','0');
-                
+                ElementsOfActiveBlock = ChooseTabElementsInContainer($(currentNode.node)[0]);
+                //ChooseTabElementsInContainer($(currentNode.node)[0]).attr('tabindex','0');
             }
             
+            
+            // Перебираем элементы текущего активного блока, проверяем,
+            //   не запрещена ли ни них была табуляция изначально
+            // Если нет - то ставим TabIndex = 0 каждому элементу
+            if (ElementsOfActiveBlock) {
+                // Перебираем элементы активного блока
+                for (i=0;i<ElementsOfActiveBlock.length;i++)
+                {
+                    var IndexWasSet = false;//  Флаг о том, что на элементе в цикле был
+                    //   поставлен отрицательный табиндекс
+                    
+                    
+                    // Перебираем элементы, на которых изначально была запрещена табуляция
+                    for (j=0;j<config.NotTabbed.length;j++)
+                       {
+                        // Если табуляция на элементе была изначально запрещена - ставим tabIndex=-1
+                        if (ElementsOfActiveBlock[i]==config.NotTabbed[j]) {
+                              $(ElementsOfActiveBlock[i]).attr('tabindex','-1');
+                              
+                              // Выходим из цикла
+                              IndexWasSet = true;
+                              break;
+                            
+                        }
+                        
+                        
+                     }
+                    
+                     // Если не был поставлен отрицатенльный табиндекс 
+                      if (!IndexWasSet) {
+                          $(ElementsOfActiveBlock[i]).attr('tabindex','0');
+                     }
+                    
+                  }
+                }
+            }
+           
             
         }
         
@@ -278,6 +410,11 @@ $(document).ready(function(e) {
         {
             (function (PopupId)
             {
+                $(PopupId).on('show.bs.modal', function (e)
+                    {
+                        ProhibitTabulation();
+                    }
+                );
                  $(PopupId).on('shown.bs.modal', function (e)
                     {
                             /*   
@@ -292,7 +429,17 @@ $(document).ready(function(e) {
                             // Сохраняем ссылку на открывшийся поп-ап
                             PopupOpened = $(PopupId)
                             
+                            // Пересчитаем закрытые элементы заново
+                            // ProhibitTabulation(true);
+                            
                             // Ставим фокус на первый элемент открывшегося поп-апа
+                            
+                            //
+                            ChooseTabElementsInContainer($('html')).attr('tabindex','-1');
+                            
+                            // Снимаем tabIndex
+                            ChooseTabElementsInContainer($(PopupOpened)[0]).attr('tabindex','0');
+                            
                             // Выберем все элементы для блока
                              TabElements = ChooseTabElementsInContainer($(PopupOpened)[0]);
         
@@ -301,11 +448,49 @@ $(document).ready(function(e) {
                             {
                                 if (TrySetFocus(TabElements[i]))
                                 {
-                                    break;
+                                    //Проверим, не входит ли элемент на котором сфокусировались в список тех,
+                                    //  изначально был отрицательный tab-index
+                                    var Negative = false;
+                                    for (j=0;j<config.negativeTabIndex.length;j++)
+                                    {
+                                        if (TabElements[i]==config.negativeTabIndex[j]) {
+                                            Negative = true;
+                                            break;
+                                        }
+                                    }
+                                    
+                                    /*
+                                        // Проверим, не входит ли данный элемент в список запрещённых для tabIndex-а
+                                        var ProhibitedToTabIndex = false;
+                                            
+                                        // Перебираем элементы, на которых изначально была запрещена табуляция
+                                        for (j=0;j<config.NotTabbed.length;j++)
+                                        {
+                                            // Если табуляция на элементе была изначально запрещена - ставим tabIndex=-1
+                                            if (TabElements[i]==config.NotTabbed[j]) {
+                                                ProhibitedToTabIndex = true;
+                                                break;
+                            
+                                            }
+                        
+                        
+                                        }  
+                                        
+                                        // Еслм на элемент можно сфокусироваться и он не был закрыт изначально -
+                                        //     - выходим из цикла, мы нашли элемент, на который можно сфокусироваться
+                                        if (!ProhibitedToTabIndex)
+                                        {
+                                            break; 
+                                        }
+                                        */
+                                    if (!Negative) {
+                                        break;
+                                    }
                                 }
                             }
-                            
+                           // ProhibitTabulation(true);
                             //alert('Стыдно когда видно ' +PopupId);
+                            
                     }
                 );
             
@@ -313,14 +498,24 @@ $(document).ready(function(e) {
                 $(PopupId).on('hidden.bs.modal', function (e)
                     {
                         
+                        // Обнуляем ссылку на по-ап
+                        PopupOpened = null;                        
+                        
+                        // Снимаем tabIndex
+                        //ChooseTabElementsInContainer($('html')).attr('tabindex','0');
+                        ProhibitTabulation();
+                        /*
                         // Восстанавливаем фокус на странице
                         $(LastFocusedElement)[0].focus();
                         
                         // Пересчитаем tab-индекс
-                        ProhibitTabulation();
                         
-                        // Обнуляем ссылку на по-ап
-                        PopupOpened = null;
+                        */
+                        
+                        // Ставим фокус на первый элемент
+                        InitFirstActiveBlock(currentNode.node);
+                        
+                        
 
                     }
                 );
@@ -426,6 +621,7 @@ $(document).ready(function(e) {
         
         // Ссылка "Помощь по клавиатуре"
         var link = '.keyboard-help-link';
+        
         $(link).popover({
             placement: 'bottom',
           //  placement: 'right',
@@ -435,6 +631,8 @@ $(document).ready(function(e) {
                 return $(".pop-keyboard-help").html();
             }
         });
+        
+        
         // Ставим обработчик, цель которого - проверить, если была отпущена мастер-клавиша,
         //  то надо сбросить соответствующий флаг и удалить сообщения с подсказками из
         //    поп-апа обновить этот поп-ап
@@ -464,22 +662,27 @@ $(document).ready(function(e) {
         // Нет текущего узла - значит, его надо проинициализировать.
        // if(currentNode == null) {
             currentNode = config.nodes[0];
-            
+        /*    
         // Ставим фокус на первый элемент первого блока
         // Выберем все элементы для блока
-        var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
-        
-        // Пробегаемся по элементам массива TabElements снизу, находим первый
-        //     элемент, у которого табиндекс ненулёвый ставим фокус на него, затем вызываем break
-        // Ставим фокус на первый
-        for (i=0;i<TabElements.length;i++)
+        function InitFirstActiveBlock(NodeToActive)
         {
-            if (TrySetFocus(TabElements[i]))
+            var TabElements = ChooseTabElementsInContainer(NodeToActive);
+            
+            // Пробегаемся по элементам массива TabElements снизу, находим первый
+            //     элемент, у которого табиндекс ненулёвый ставим фокус на него, затем вызываем break
+            // Ставим фокус на первый
+            for (i=0;i<TabElements.length;i++)
             {
-                break;
+                if (TrySetFocus(TabElements[i]))
+                {
+                    break;
+                }
             }
         }
-        //ProhibitTabulation();
+        */
+        InitFirstActiveBlock($(currentNode.node)[0]);
+        LastFocusedBlock = currentNode;
             
        // Подвешиваем на все инпуты и селекты в форме обработчик keydown,
        //   который делает следующие вещи:
@@ -500,6 +703,11 @@ $(document).ready(function(e) {
 
         
 
+    function ChangeFocus()
+    {
+        
+    }
+        
     // Обрабатывает нажатие таб на контроле. Сделано для того, чтобы после нажатия таба
     //    на последнем контроле в форме был переход фокуса
     //   на первый контрол той же формы
@@ -509,8 +717,12 @@ $(document).ready(function(e) {
         // Если нажат таб
         if (Target.keyCode==9)
         {
-            ProhibitTabulation();
-            
+
+
+                ProhibitTabulation();
+
+
+
              // Получаем для текущего активного узла элементы, по которым можно переходить по табу
             var TabElements = null;
             // Если открыт поп-ап, то читаем все элементы по которвм можно ходить табом в поп-апе
@@ -537,10 +749,59 @@ $(document).ready(function(e) {
                 LastTabIndex++;
             }
             
+            // Если был зажат Shift
+            if (ShiftWasPressed) {
+                var Success = false;
+                // Перебираем элементы те, которые стоят перед активным и пытаемся ставить на них фокус
+                for (i=LastTabIndex-1;i>=0;i--) {
+                    if (TrySetFocus(TabElements[i])) {
+                        Success = true;
+                        break;
+                    }
+                }
+                
+                // Если фокус так и не поставился - перебираем с самого последнего индекса
+                if (!Success) {
+                    for (i=TabElements.length-1;i>=0;i--) {
+                        if (TrySetFocus(TabElements[i])) {
+                            break;
+                        }
+                    }
+                }
+                
+                Target.preventDefault();
+                return false;
+                
+            }
+            // Иначе ведём перебор элементов в другую сторону
+            else
+            {
+                var Success = false;
+                // Перебираем элементы те, которые стоят после активного и пытаемся ставить на них фокус
+                for (i=LastTabIndex+1;i<TabElements.length;i++) {
+                    if (TrySetFocus(TabElements[i])) {
+                        Success = true;
+                        break;
+                    }
+                }
+                
+                // Если фокус так и не был поставилен - начинаем с первого
+                if (!Success) {
+                    for (i=0;i<TabElements.length;i++) {
+                        if (TrySetFocus(TabElements[i])) {
+                            break;
+                        }
+                    }
+                }
+                Target.preventDefault();
+                return false;
+            }
+            
+            
             // Проверяем - если LastTabIndex нулевой и был зажат Shift, то надо сбросить нажатие клавиши
             // Иначе - если LastTabIndex последний и шифт не зажат - надо тоже погасить событие и поставить в фокус
             //   первый элемент
-            
+            /*
             if (LastTabIndex==0 && ShiftWasPressed) {
                 for (i=TabElements.length-1;i>=0;i--) {
                     if (TrySetFocus(TabElements[i])) {
@@ -564,7 +825,7 @@ $(document).ready(function(e) {
                     
                 }
             }
-            
+            */
             // 
             
             /*
@@ -685,7 +946,9 @@ $(document).ready(function(e) {
                         // Если нажата мастер-клавиша - ставим флажок и обновляем поп-ап
                          if(e.keyCode == MasterKeyCode ) {
                             MasterKeyWasPressed = true;
+                            ProhibitTabulation();
                             RefreshPopup()
+                            
                             return;
                         }
                         // Если не нажат Esc, то дальше вообще не стоит ходить
@@ -724,15 +987,40 @@ $(document).ready(function(e) {
                             // Записываем последний выделенный узел
                             PreviousNode = currentNode;
                             currentNode = NextNode;
+                            LastFocusedBlock = currentNode;
                             
                             $(':focus').blur();
-                            
+                            ProhibitTabulation();
                             // Ставим фокус на первый элемент блока
                             var TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
                             for (i=0;i<TabElements.length;i++)
                             {
                                 if (TrySetFocus(TabElements[i])) {
-                                    break;
+                                    {
+                                        // Проверим, не входит ли данный элемент в список запрещённых для tabIndex-а
+                                        var ProhibitedToTabIndex = false;
+                                            
+                                        // Перебираем элементы, на которых изначально была запрещена табуляция
+                                        for (j=0;j<config.NotTabbed.length;j++)
+                                        {
+                                            // Если табуляция на элементе была изначально запрещена - ставим tabIndex=-1
+                                            if (TabElements[i]==config.NotTabbed[j]) {
+                                                ProhibitedToTabIndex = true;
+                                                break;
+                            
+                                            }
+                        
+                        
+                                        }  
+                                        
+                                        // Еслм на элемент можно сфокусироваться и он не был закрыт изначально -
+                                        //     - выходим из цикла, мы нашли элемент, на который можно сфокусироваться
+                                        if (!ProhibitedToTabIndex)
+                                        {
+                                            break; 
+                                        }
+   
+                                    }
                                 }
                             }
                             
@@ -742,7 +1030,7 @@ $(document).ready(function(e) {
                                 currentNode.handler();
                             }
                         }
-                            ProhibitTabulation();
+                            
                             // Если из нового узла можно куда-то перейти, то берём его дуги
                             //   и рекурсивно вызываем функцию инициализации событий нажатия клавиши для дуг
                             if (currentNode.hasOwnProperty('ways')) {
@@ -762,12 +1050,25 @@ $(document).ready(function(e) {
                 })(ways[i]);
             }
         })(config.nodes[0].ways);
-        $(link).on('click', function(e) {
+        
+        // Поп-ап с помощью. может пригодиться
+        /*$(link).on('click', function(e) {
             WasPopupOpened = true;
             $(this).popover('show');
         }).on('blur', function() {
             WasPopupOpened = false;
             $(this).popover('hide');
         });
+        
+        */
+        
+        $(link).on('click', function(e) {
+            WasPopupOpened = true;
+            $(this).popover('show');
+        });        
+        
+        
+        
+
     }
 });
