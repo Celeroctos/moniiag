@@ -239,14 +239,18 @@ $(document).ready(function() {
             $(globalVariables.clickedLink).parents('tr').removeClass('success');
         }
         $(this).parents('tr').addClass('success');
-        loadCalendar(this, month, year);
+        globalVariables.doctorId = $(this).attr('href').substr(2);
+        globalVariables.clickedLink = $(this);
+        globalVariables.fio = $(this).parents('tr').find('td:first a').text();
+        loadCalendar(month, year);
     });
 
-    function loadCalendar(link, month, year) {
+    function loadCalendar(month, year) {
         $('.busyShedule, .busySheduleHeader').hide();
-        var doctorId = $(link).attr('href').substr(2);
-        globalVariables.fio = $(link).parents('tr').find('td:first a').text();
-        globalVariables.clickedLink = $(link);
+       // var doctorId = $(link).attr('href').substr(2);
+        var doctorId = globalVariables.doctorId;
+       // globalVariables.fio = $(link).parents('tr').find('td:first a').text();
+       // globalVariables.clickedLink = $(link);
         var params = {};
         $('.busyFio').text(globalVariables.fio);
         if(typeof month == 'undefined' || typeof year == 'undefined') {
@@ -354,6 +358,10 @@ $(document).ready(function() {
 
                     });
                     globalVariables.clickedTd.trigger('click');
+                    
+                    // Перезагружаем календарь
+                    loadCalendar(globalVariables.month, globalVariables.year);
+                    
                 } else {
 
                 }
@@ -380,6 +388,9 @@ $(document).ready(function() {
 
                     });
                     globalVariables.clickedTd.trigger('click');
+                    
+                    // Перезагружаем календарь
+                    loadCalendar(globalVariables.month, globalVariables.year);
                 } else {
 
                 }
