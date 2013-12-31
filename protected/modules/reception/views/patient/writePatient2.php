@@ -109,6 +109,7 @@
     <p class="text-left">
         Кликните на дату левой кнопкой мыши, чтобы посмотреть почасовую занятость врача на этот день
     </p>
+    
 </div>
 <div class="row busyCalendar no-display">
     <div class="col-xs-8 ">

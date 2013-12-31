@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {    
     $('.calendar').on('showShedule', function(e, data) {
         var tbody = $(".calendar tbody");
         // Удаляем всё ненужное
@@ -87,6 +87,34 @@ $(document).ready(function() {
 
         $(tr).appendTo($(tbody));
 
+        
+        // Добавляем подсказку для нерабочих дней "Этот день недоступен для записи"
+        var HintBody = $('<div>');
+        HintBody.addClass('busy-shedule-hint');
+        HintBody.addClass('no-display');
+        HintBody.text("На этот день запись на приём к данному врачу недоступна");
+        HintBody.appendTo($('body'));
+        
+        // При событии mousemove для ячейки недоступрно дня - показываем подсказку, что день недоступен
+        $('.calendar tbody').find('td.not-aviable-block').on('mousemove',function(pos)
+       
+             {
+                // Меняем координату сообщения
+                $(".busy-shedule-hint").css('left',(pos.pageX+5)+'px')
+                    .css('top',(pos.pageY+5)+'px');
+                    
+                // Делаем сообщение видимым
+                $(".busy-shedule-hint").removeClass('no-display');
+                           
+             });
+        
+        
+            // На выходе из ячейки недоступного дня - прячем подсказку
+             $('.calendar tbody').find('td.not-aviable-block').on('mouseout',function(pos)
+             {
+                $(".busy-shedule-hint").addClass('no-display');
+             });
+        
         // Получение списка пациентов по дате
         $('.calendar tbody').find('td.yellow-block, td.lightgreen-block, td.lightred-block').on('click', function(e) {
             var day = $(this).text();
