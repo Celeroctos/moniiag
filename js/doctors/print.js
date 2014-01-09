@@ -56,7 +56,7 @@ $(document).ready(function(e) {
                                 '<td>' + data[i].p_last_name + ' ' + data[i].p_first_name + ' ' + data[i].p_middle_name + '</td>' +
                                 '<td>' + data[i].d_last_name + ' ' + data[i].d_first_name + ' ' + data[i].d_middle_name + '</td>' +
                                 '<td>' +
-                                    '<a href="#' + data[i].id + '" title="Напечатать результат приёма">' +
+                                    '<a href="#' + data[i].id + '" title="Напечатать результат приёма" class="print-greeting-link">' +
                                         '<span class="glyphicon glyphicon-print"></span>' +
                                     '</a>' +
                                 '</td>' +
@@ -71,5 +71,24 @@ $(document).ready(function(e) {
         });
 
         return false;
+    });
+
+    $('#massPrintDocs').on('click', '.print-greeting-link', function(e) {
+        var id = $(this).attr('href').substr(1);
+        var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        printWin.focus();
+        return false;
+    });
+
+    // Печать всего на одном листе
+    $('#massPrintAllPerList').on('click', function(e) {
+        var ids = [];
+        // Собираем айдишники со всех ссылок
+        $('#massPrintDocs .print-greeting-link').each(function(index, element) {
+            var id = $(element).attr('href').substr(1);
+            ids.push(id);
+        });
+        var printWin = window.open('/index.php/doctors/print/massprintgreetings/?greetingids=' + $.toJSON(ids),'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        printWin.focus();
     });
 });

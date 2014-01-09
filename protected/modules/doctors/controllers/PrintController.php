@@ -57,14 +57,21 @@ class PrintController extends Controller {
     }
 
     // Печать результа приёма
-    public function actionPrintGreeting() {
-        if(!isset($_GET['greetingid'])) {
+    public function actionPrintGreeting($greetingIn = false) {
+        if($greetingIn === false && !isset($_GET['greetingid'])) {
             exit('Ошибка: не выбран приём.');
+        } else {
+            $greetingId = $greetingIn !== false ? $greetingIn : $_GET['greetingid'];
         }
         // В противном случае, выбираем все элементы, изменённые во время приёма
-        $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($_GET['greetingid']);
+        $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
         if(count($changedElements) == 0) {
-            exit('Во время этого приёма не было произведено никаких изменений!');
+            // Единичная печать
+            if($greetingIn === false) {
+                exit('Во время этого приёма не было произведено никаких изменений!');
+            } else {
+                return array();
+            }
         }
         $sortedArr = array();
         // Сортируем по категориям
@@ -74,12 +81,17 @@ class PrintController extends Controller {
             $elementInfo = MedcardElement::model()->getOne($element['element_id']);
             // Не существует общей информации по приёму
             if(count($greetingInfo) == 0) {
-                $greeting = SheduleByDay::model()->findByPk($_GET['greetingid']);
+                $greeting = SheduleByDay::model()->findByPk($greetingId);
                 if($greeting == null) {
                     exit('Ошибка: такого приёма не существует!');
                 } else {
                     $doctor = Doctor::model()->findByPk($greeting['doctor_id']);
                     $greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+                    // Найдём медкарту, а по ней и пациента
+                    $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
+                    $patient = Oms::model()->findByPk($medcard['policy_id']);
+                    $greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
+                    $greetingInfo['card_number'] = $greeting['medcard_id'];
                     $dateParts = explode('-', $greeting['patient_day']);
                     $greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
                 }
@@ -118,15 +130,43 @@ class PrintController extends Controller {
                 }
             }
         }
-        $this->render('greeting', array(
-            'categories' => $resultArr,
-            'greeting' => $greetingInfo
-        ));
+        // Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
+        if($greetingIn === false) {
+            $this->render('greeting', array(
+                'categories' => $resultArr,
+                'greeting' => $greetingInfo
+            ));
+        } else {
+            return array(
+                'categories' => $resultArr,
+                'greeting' => $greetingInfo
+            );
+        }
     }
 
     // Массовая печать результатов приёма
     public function actionMassPrintGreetings() {
-
+        if(!isset($_GET['greetingids'])) {
+            exit('Ошибка: на обнаружено документов для печати.');
+        }
+        $greetings = CJSON::decode($_GET['greetingids']);
+        if(count($greetings) == 0) {
+            exit('Не выбраны документы для печати!');
+        } else {
+            $response = array();
+            foreach($greetings as $greeting) {
+                $result = $this->actionPrintGreeting($greeting);
+                if(count($result) > 0) {
+                    $response[] = $result;
+                }
+            }
+        }
+        //echo "<pre>";
+       // var_dump($response);
+       // exit();
+        $this->render('massprintonelist', array(
+            'greetings' => $response
+        ));
     }
 
     // Получить данные для вьюхи
@@ -140,15 +180,20 @@ class PrintController extends Controller {
             for($j = 0; $j < $numDoctors; $j++) {
                 // Теперь получаем все приёмы по врачу, пациенту и дате
                 if(isset($_GET['date']) && trim($_GET['date']) != '') {
-                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$i], $_GET['date']);
+                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
                 } else {
-                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$i]);
+                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j]);
                 }
                 if(count($greetings) > 0) {
-                    $resultArr = $resultArr + $greetings;
+                    foreach($greetings as &$greeting) {
+                        $parts = explode('-', $greeting['patient_day']);
+                        $greeting['patient_day'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+                        array_push($resultArr, $greeting);
+                    }
                 }
             }
         }
+
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $resultArr));
     }

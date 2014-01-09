@@ -18,7 +18,7 @@
     <div class="form-group chooser" id="patientChooser">
         <label for="categorie" class="col-xs-2 control-label">Пациент (Enter - добавить)</label>
         <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="patient" placeholder="Название категории">
+            <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
             <ul class="variants no-display">
             </ul>
             <div class="choosed">
@@ -63,7 +63,7 @@
     </div>
 </form>
 <div class="row no-display" id="massPrintDocs">
-    <h5><strong>Найденные приёмы для печати:</strong></h5>
+    <h5><strong>Найденные приёмы для печати:</strong> (нажмите <a href="#" id="massPrintAllPerList">сюда</a>, чтобы распечатать все найденные результаты на одном листе с разделителями)</h5>
     <div class="col-xs-12 borderedBox">
         <table class="table table-condensed table-hover">
             <thead>
