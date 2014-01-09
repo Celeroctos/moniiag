@@ -57,6 +57,31 @@ class SheduleByDay extends MisActiveRecord {
             ->where('u.id = :id', array(':id' => $userId));
         return $dates->queryAll();
     }
+
+    // Получить список приёмов по критериям
+    public function getGreetingsPerQrit($patientId, $doctorId, $date = false) {
+        try {
+            $connection = Yii::app()->db;
+            $greetings = $connection->createCommand()
+                ->select('dsbd.*, o.first_name as p_first_name,
+                                  o.middle_name as p_middle_name,
+                                  o.last_name as p_last_name,
+                                  d.first_name as d_first_name,
+                                  d.middle_name as d_middle_name,
+                                  d.last_name as d_last_name')
+                ->from('mis.doctor_shedule_by_day dsbd')
+                ->join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+                ->join('mis.oms o', 'm.policy_id = o.id')
+                ->join('mis.doctors d', 'd.id = dsbd.doctor_id')
+                ->where('o.id = :id AND dsbd.doctor_id = :doctor_id', array(':id' => $patientId, ':doctor_id' => $doctorId));
+            if($date) {
+                $greetings->andWhere('dsbd.patient_day = :patient_day', array(':patient_day' => $date));
+            }
+            return $greetings->queryAll();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

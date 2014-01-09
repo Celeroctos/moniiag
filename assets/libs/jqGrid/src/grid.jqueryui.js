@@ -487,31 +487,4 @@ $.jgrid.extend({
 			if(!$t.grid || !$.fn.resizable) { return; }
 			opts = $.extend({}, opts || {});
 			if(opts.alsoResize ) {
-				opts._alsoResize_ = opts.alsoResize;
-				delete opts.alsoResize;
-			} else {
-				opts._alsoResize_ = false;
-			}
-			if(opts.stop && $.isFunction(opts.stop)) {
-				opts._stop_ = opts.stop;
-				delete opts.stop;
-			} else {
-				opts._stop_ = false;
-			}
-			opts.stop = function (ev, ui) {
-				$($t).jqGrid('setGridParam',{height:$("#gview_"+gID+" .ui-jqgrid-bdiv").height()});
-				$($t).jqGrid('setGridWidth',ui.size.width,opts.shrinkToFit);
-				if(opts._stop_) { opts._stop_.call($t,ev,ui); }
-			};
-			if(opts._alsoResize_) {
-				var optstest = "{\'#gview_"+gID+" .ui-jqgrid-bdiv\':true,'" +opts._alsoResize_+"':true}";
-				opts.alsoResize = eval('('+optstest+')'); // the only way that I found to do this
-			} else {
-				opts.alsoResize = $(".ui-jqgrid-bdiv","#gview_"+gID);
-			}
-			delete opts._alsoResize_;
-			$("#gbox_"+gID).resizable(opts);
-		});
-	}
-});
-})(jQuery);
+				opts._alsoResize_ = o

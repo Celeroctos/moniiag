@@ -49,7 +49,8 @@ class CategoriesController extends Controller {
             echo CJSON::encode(
                 array('rows' => $categories,
                     'total' => $totalPages,
-                    'records' => count($num))
+                    'records' => count($num),
+                    'success' => 'true')
             );
         } catch(Exception $e) {
             echo $e->getMessage();

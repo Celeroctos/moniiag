@@ -429,25 +429,35 @@ class PatientController extends Controller {
     }
 
     // Поиск пациента и его запсь
-    public function actionSearch() {
+    public function actionSearch($withAndWithout = true) {
         $oms = $this->searchPatients();
-        $omsWith = array();
-        $omsWithout = array();
-
-        foreach($oms as $index => $item) {
-            $parts = explode('-', $item['reg_date']);
-            $item['reg_date'] = $parts[0];
-            if($item['card_number'] == null) {
-                $omsWithout[] = $item;
-            } else {
-                $omsWith[] = $item;
+        if(isset($_GET['withandwithout']) && $_GET['withandwithout'] == 0) {
+            foreach($oms as $index => $item) {
+                $parts = explode('-', $item['reg_date']);
+                $item['reg_date'] = $parts[0];
             }
-        }
+            echo CJSON::encode(array('success' => 'true',
+                                     'rows' => $oms)
+            );
+        } else {
+            $omsWith = array();
+            $omsWithout = array();
 
-        echo CJSON::encode(array('success' => true,
-                                 'data' => array('without' => $omsWithout,
-                                                 'with' => $omsWith)
-        ));
+            foreach($oms as $index => $item) {
+                $parts = explode('-', $item['reg_date']);
+                $item['reg_date'] = $parts[0];
+                if($item['card_number'] == null) {
+                    $omsWithout[] = $item;
+                } else {
+                    $omsWith[] = $item;
+                }
+            }
+
+            echo CJSON::encode(array('success' => true,
+                                     'data' => array('without' => $omsWithout,
+                                     'with' => $omsWith)
+            ));
+        }
     }
 
     private function searchPatients($filters = false) {
