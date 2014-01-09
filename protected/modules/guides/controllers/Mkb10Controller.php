@@ -18,12 +18,27 @@ class Mkb10Controller extends Controller {
         $sord = $_GET['sord'];
 
         $model = new Mkb10();
-        $num = $model->getRowsByLevel();
+        if(isset($_GET['listview']) && $_GET['listview'] == 1) {
+            $num = $model->getNumRows();
+        } else { // В виде дерева
+            $num = count($model->getRowsByLevel());
+        }
 
-        $totalPages = ceil(count($num) / $rows);
+        $totalPages = ceil($num / $rows);
         $start = $page * $rows - $rows;
         //var_dump($start);
-        $mkb10 = $model->getRowsByLevel($nodeid, $sidx, $sord, $start, $rows);
+        if(isset($_GET['listview']) && $_GET['listview'] == 1) {
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+            $limit = $_GET['limit'];
+            $mkb10 = $model->getRows($filters, $sidx, $sord, $start, $limit);
+        } else {
+            $mkb10 = $model->getRowsByLevel($nodeid, $sidx, $sord, $start, $rows);
+        }
 
         foreach($mkb10 as $key => &$node) {
            if(count($model->getRowsByLevel($node['id'])) > 0) {
@@ -35,11 +50,11 @@ class Mkb10Controller extends Controller {
             $node['expanded'] = false;
             $node['parent'] = $node['parent_id']; // Суррогат для схлопывания таблицы
         }
-       // var_dump($mkb10);
+        //var_dump($mkb10);
         echo CJSON::encode(
            array('rows' => $mkb10,
                  'total' => $totalPages,
-                 'records' => count($num))
+                 'records' => $num)
         );
     }
 }

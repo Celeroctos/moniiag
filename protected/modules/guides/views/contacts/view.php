@@ -67,12 +67,21 @@
     <?php $this->endWidget(); ?>
 </div>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/contacts.js"></script>
+<script type="text/javascript">
+    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditContact'); ?>';
+</script>
 <table id="contacts"></table>
 <div id="contactsPager"></div>
 <div class="btn-group default-margin-top">
+    <?php if(Yii::app()->user->checkAccess('guideAddContact')) { ?>
     <button type="button" class="btn btn-default" id="addContact" disabled>Добавить запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideEditContact')) { ?>
     <button type="button" class="btn btn-default" id="editContact">Редактировать выбранную запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideDeleteContact')) { ?>
     <button type="button" class="btn btn-default" id="deleteContact">Удалить выбранные</button>
+    <?php } ?>
 </div>
 <div class="modal fade" id="addContactPopup">
     <div class="modal-dialog">

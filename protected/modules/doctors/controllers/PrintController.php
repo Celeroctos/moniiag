@@ -188,6 +188,9 @@ class PrintController extends Controller {
                     foreach($greetings as &$greeting) {
                         $parts = explode('-', $greeting['patient_day']);
                         $greeting['patient_day'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+                        // Посмотрим, есть ли хоть какие-то изменения в медкарте за приём
+                        $medcardChanges = MedcardElementForPatient::model()->findAll('greeting_id = :greeting_id', array('greeting_id' => $greeting['id']));
+                        $greeting['num_changes'] = count($medcardChanges);
                         array_push($resultArr, $greeting);
                     }
                 }

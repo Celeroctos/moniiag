@@ -205,6 +205,23 @@ $(document).ready(function() {
                     }
                 ]
             }
+        },
+        'diagnosisChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
+            },
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
         }
     };
 });

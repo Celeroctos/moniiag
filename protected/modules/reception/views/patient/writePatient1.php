@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/writePatient.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<?php if(Yii::app()->user->checkAccess('writePatient')) { ?>
 <h4>Запись пациента</h4>
 <p class="text-left">
     Шаг 1. Найдите пациента с помощью формы ниже. Шаг 2. Выберите, к какому врачу записать пациента и на какое время, нажав на иконку часов в строке таблицы рядом с пациентом.
@@ -145,6 +146,7 @@
         </table>
     </div>
 </div>
+<?php } ?>
 <div class="modal fade error-popup" id="errorSearchPopup">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -212,6 +212,9 @@ $(document).ready(function() {
     });
 
     function editEmployee() {
+        if(Boolean(globalVariables.guideEdit) == false) {
+            return false;
+        }
         var currentRow = $('#employees').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования

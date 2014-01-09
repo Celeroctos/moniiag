@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<?php if(Yii::app()->user->checkAccess('addPatient')) { ?>
 <h4>Регистрация / перерегистрация карты к существующему пациенту (<?php echo $regPoint; ?> год)</h4>
 <p class="text-left">
     Заполните поля формы, чтобы зарегистрировать / перерегистрировать карту пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>)</span>
@@ -335,6 +336,7 @@
         </div>
     <?php $this->endWidget(); ?>
 </div>
+<?php } ?>
 <div class="modal fade error-popup" id="errorAddPopup">
     <div class="modal-dialog">
         <div class="modal-content">

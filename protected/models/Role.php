@@ -34,6 +34,13 @@ class Role extends MisActiveRecord  {
             ));
         }
 
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+            $roles->order($sidx.' '.$sord);
+            $roles->limit($limit, $start);
+        } else {
+            $roles->order('r.id desc');
+        }
+
         return $roles->queryAll();
     }
 

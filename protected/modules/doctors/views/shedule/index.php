@@ -3,6 +3,7 @@
 <script type="text/javascript">
     globalVariables.patientsInCalendar = <?php echo $patientsInCalendar; ?>;
 </script>
+<?php if(Yii::app()->user->checkAccess('canViewPatientList')) { ?>
 <div class="row">
     <div class="col-xs-7">
         <?php if($currentPatient !== false) { ?>
@@ -118,17 +119,15 @@
                             Время приёма
                         </td>
                         <td>
-                            Посмотреть карту
                         </td>
                         <td>
-                            Начать приём
                         </td>
                         <td>
-                            Закончить приём
                         </td>
+                        <?php if($currentPatient !== false && Yii::app()->user->checkAccess('canPrintMovement')) { ?>
                         <td>
-                            Печать листа приёма
                         </td>
+                        <?php } ?>
                     </tr>
                     </thead>
                     <tbody>
@@ -141,19 +140,21 @@
                                 <?php echo $patient['patient_time']; ?>
                             </td>
                             <td>
-                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id'])); ?>
+                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id']), array('title' => 'Посмотреть медкарту')); ?>
                             </td>
                             <td>
-                                <?php echo $patient['is_beginned'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id'])); ?>
+                                <?php echo $patient['is_beginned'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id']), array('title' => 'Начать приём')); ?>
                             </td>
                             <td>
-                                <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '/doctors/shedule/acceptcomplete/?id='.$patient['id'], array('Закончить приём')); ?>
+                                <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '/doctors/shedule/acceptcomplete/?id='.$patient['id'], array('title' => 'Закончить приём')); ?>
                             </td>
+                            <?php if(Yii::app()->user->checkAccess('canPrintMovement')) { ?>
                             <td>
                                 <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#'.$patient['id'],
                                                                                                                 array('title' => 'Печать листа приёма',
                                                                                                                       'class' => 'print-greeting-link')) : ''; ?>
                             </td>
+                            <?php } ?>
                         </tr>
                     <?php } ?>
                     </tbody>
@@ -162,6 +163,8 @@
         </div>
     </div>
 </div>
+<?php } ?>
+<?php if(Yii::app()->user->checkAccess('canViewMedcardHistory')) { ?>
 <?php if($currentPatient !== false) { ?>
 <div class="modal fade error-popup" id="historyPopup">
     <div class="modal-dialog">
@@ -186,6 +189,8 @@
         </div>
     </div>
 </div>
+<?php } ?>
+<?php if(Yii::app()->user->checkAccess('canAddNewGuideValue')) { ?>
 <div class="modal fade error-popup" id="addValuePopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -249,6 +254,7 @@
         </div>
     </div>
 </div>
+<?php } ?>
 <div class="modal fade error-popup" id="errorPopup">
     <div class="modal-dialog">
         <div class="modal-content">

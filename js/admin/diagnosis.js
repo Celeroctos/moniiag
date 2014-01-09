@@ -59,52 +59,6 @@ $(document).ready(function() {
         }
     );
 
-    $("#diagnosisList").jqGrid({
-        datatype: "json",
-        colNames:['', 'Диагноз'],
-        colModel:[
-            {
-                name:'id',
-                index:'id',
-                hidden: true
-            },
-            {
-                name: 'description',
-                index: 'description',
-                width: 560
-            }
-        ],
-        rowNum: 10,
-        rowList:[10, 20, 30],
-        pager: '#diagnosisListPager',
-        sortname: 'id',
-        viewrecords: true,
-        sortorder: "desc",
-        caption: "Диагнозы в списке",
-        height: 150,
-        ondblClickRow: deleteFromLikeDiagnosis
-    });
-
-    function deleteFromLikeDiagnosis(rowid, iRow, iCol, e) {
-        $('#diagnosisList').jqGrid('delRowData', rowid);
-        --numRows;
-    }
-
-    $("#diagnosisList").jqGrid('navGrid','#diagnosisListPager',{
-            edit: false,
-            add: false,
-            del: false
-        },
-        {},
-        {},
-        {},
-        {
-            closeOnEscape:true,
-            multipleSearch :true,
-            closeAfterSearch: true
-        }
-    );
-
     $("#diagnosis-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid

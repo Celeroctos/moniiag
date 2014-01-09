@@ -28,7 +28,7 @@ $(document).ready(function() {
         viewrecords: true,
         sortorder: "asc",
         caption:"Справочник диагнозов",
-        height: 200,
+        height: 350,
         treeGrid: true,
         treeGridModel: 'adjacency',
         ExpandColumn: 'description',

@@ -110,6 +110,9 @@ $(document).ready(function() {
     });
 
     function editMedworker() {
+        if(Boolean(globalVariables.guideEdit) == false) {
+            return false;
+        }
         var currentRow = $('#medworkers').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования

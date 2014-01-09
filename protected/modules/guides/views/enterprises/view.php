@@ -1,10 +1,19 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/enterprises.js"></script>
+<script type="text/javascript">
+    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditEnterprise'); ?>';
+</script>
 <table id="enterprises"></table>
 <div id="enterprisesPager"></div>
 <div class="btn-group default-margin-top">
+    <?php if(Yii::app()->user->checkAccess('guideAddEnterprise')) { ?>
     <button type="button" class="btn btn-default" id="addEnterprise">Добавить запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideEditEnterprise')) { ?>
     <button type="button" class="btn btn-default" id="editEnterprise">Редактировать выбранную запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideDeleteEnterprise')) { ?>
     <button type="button" class="btn btn-default" id="deleteEnterprise">Удалить выбранные</button>
+    <?php } ?>
 </div>
 <div class="modal fade" id="addEnterprisePopup">
     <div class="modal-dialog">

@@ -1,9 +1,16 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<?php if(Yii::app()->user->checkAccess('editMedcard')) { ?>
 <h4>Редактирование карты пациента</h4>
 <p class="text-left">
     Заполните поля формы, чтобы отредактировать карту существующего пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>, карта №<?php echo $card_number; ?>)</span>
 </p>
+<?php } else { ?>
+<h4>Информация о карте пациента</h4>
+<p class="text-left">
+    Информация о карте пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>, карта №<?php echo $card_number; ?>)</span>:
+</p>
+<?php } ?>
 <div class="row default-padding">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -315,6 +322,7 @@
                 </div>
             </div>
         </div>
+        <?php if(Yii::app()->user->checkAccess('editMedcard')) { ?>
         <div class="form-group">
             <div class="add-patient-submit">
                 <?php echo CHtml::ajaxSubmitButton(
@@ -331,6 +339,7 @@
                 ); ?>
             </div>
         </div>
+        <?php } ?>
     <?php $this->endWidget(); ?>
 </div>
 <div class="modal fade error-popup" id="errorAddPopup">

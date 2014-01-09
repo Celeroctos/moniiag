@@ -1,5 +1,9 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/print.js"></script>
+<script type="text/javascript">
+    globalVariables.canPrintMovement = '<?php echo Yii::app()->user->checkAccess('canPrintMovement'); ?>';
+</script>
+<?php if(Yii::app()->user->checkAccess('canMakeMassPrint')) { ?>
 <h3>Массовая печать приёмов для медицинских карт</h3>
 <p class="text-left">
     С помощью элементов управления, расположенных ниже, Вы можете выбрать врачей, для которых необходимо напечатать определённые записи медицинской карты, а также сами записи.
@@ -62,8 +66,9 @@
         </div>
     </div>
 </form>
+<?php } ?>
 <div class="row no-display" id="massPrintDocs">
-    <h5><strong>Найденные приёмы для печати:</strong> (нажмите <a href="#" id="massPrintAllPerList">сюда</a>, чтобы распечатать все найденные результаты на одном листе с разделителями)</h5>
+    <h5><strong>Найденные приёмы для печати:</strong> (нажмите <a href="#" id="massPrintAllPerList">сюда</a>, чтобы распечатать все найденные результаты на одном листе с разделителями. Строки, выделенные красным, обозначают приёмы, в процессе которых медкарта не была изменена)</h5>
     <div class="col-xs-12 borderedBox">
         <table class="table table-condensed table-hover">
             <thead>
@@ -76,6 +81,9 @@
                 </td>
                 <td>
                     Врач
+                </td>
+                <td>
+                    Изменений
                 </td>
                 <td>
                 </td>

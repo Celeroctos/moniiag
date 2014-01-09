@@ -76,6 +76,9 @@ $(document).ready(function() {
     });
 
     $("#ward-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        if(Boolean(globalVariables.guideEdit) == false) {
+            return false;
+        }
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#editWardPopup').modal('hide');

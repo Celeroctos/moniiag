@@ -1,9 +1,16 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<?php if(Yii::app()->user->checkAccess('editOms')) { ?>
 <h4>Редактирование ОМС пациента</h4>
 <p class="text-left">
     Заполните поля формы, чтобы отредактировать ОМС существующего пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>)</span>
 </p>
+<?php } else { ?>
+<h4>Просмотр ОМС пациента</h4>
+<p class="text-left">
+   Информация об ОМС существующего пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>)</span>:
+</p>
+<?php } ?>
 <div class="row default-padding">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -213,9 +220,9 @@
                 </div>
             </div>
             <div class="col-xs-6">
-
             </div>
         </div>
+        <?php if(Yii::app()->user->checkAccess('editOms')) { ?>
         <div class="form-group">
             <div class="add-patient-submit">
                 <?php echo CHtml::ajaxSubmitButton(
@@ -232,6 +239,7 @@
                 ); ?>
             </div>
         </div>
+        <?php } ?>
     <?php $this->endWidget(); ?>
 </div>
 <div class="modal fade error-popup" id="errorAddPopup">
