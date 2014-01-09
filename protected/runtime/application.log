@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿2013/12/26 18:29:14 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] �����:  ������������ "postgres" �� ������ �������� ����������� (�� ������)' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbConnection.php:382
 Stack trace:
 #0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbConnection.php(330): CDbConnection->open()
@@ -656,3 +657,97 @@ REQUEST_URI=/index.php/doctors/print/massprintgreetings/?greetingids=[%2271%22,%
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\print\massprintonelist.php (6)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PrintController.php (168)
 in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (17)
+=======
+﻿2013/12/30 19:39:43 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_day" не существует
+LINE 1: ...ctor_shedule_by_day" "t" WHERE doctor_id = $1 AND patient_da...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (305)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (213)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2013/12/30 19:39:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_day" не существует
+LINE 1: ...ctor_shedule_by_day" "t" WHERE doctor_id = $1 AND patient_da...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(305): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(213): SheduleController->getCalendar()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?doctorid=15&_=1388417924769
+HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientsteptwo/?cardid=1/13
+---
+2013/12/30 19:39:47 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_day" не существует
+LINE 1: ...ctor_shedule_by_day" "t" WHERE doctor_id = $1 AND patient_da...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (305)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (213)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2013/12/30 19:39:47 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_day" не существует
+LINE 1: ...ctor_shedule_by_day" "t" WHERE doctor_id = $1 AND patient_da...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(305): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(213): SheduleController->getCalendar()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?doctorid=15&_=1388417924770
+HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientsteptwo/?cardid=1/13
+---
+2013/12/30 19:39:59 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_day" не существует
+LINE 1: ...ctor_shedule_by_day" "t" WHERE doctor_id = $1 AND patient_da...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day.
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (305)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (213)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2013/12/30 19:39:59 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "patient_day" не существует
+LINE 1: ...ctor_shedule_by_day" "t" WHERE doctor_id = $1 AND patient_da...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id = :doctor_id AND patient_day = :patient_day' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(305): CActiveRecord->findAll('doctor_id = :do...', Array)
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(213): SheduleController->getCalendar()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetCalendar()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('getcalendar')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/shedule/getcalendar?doctorid=15&_=1388417924769
+---
+>>>>>>> e68df5bd8fa029af2264387d099bdb6f04cc0168
