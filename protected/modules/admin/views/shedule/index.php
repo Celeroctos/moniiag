@@ -71,6 +71,10 @@
             </tbody>
         </table>
     </div>
+    <div class="row no-display">
+	<ul class="pagination content-pagination">
+	</ul>
+    </div>
 </div>
 <div id="sheduleEditCont" class="no-display">
     <div class="row">

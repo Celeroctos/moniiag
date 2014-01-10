@@ -139,6 +139,10 @@
             </tbody>
         </table>
     </div>
+    <div class="row no-display">
+	<ul class="pagination content-pagination">
+	</ul>
+    </div>
 </div>
 <div class="row no-display" id="withCardCont">
     <h5>Найденные пациенты с картами:</h5>
@@ -173,6 +177,10 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+    <div class="row no-display">
+	<ul class="pagination content-pagination">
+	</ul>
     </div>
 </div>
 <div class="modal fade error-popup" id="errorSearchPopup">

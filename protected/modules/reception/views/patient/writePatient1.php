@@ -144,6 +144,10 @@
             </tbody>
         </table>
     </div>
+    <div class="row no-display">
+	<ul class="pagination content-pagination">
+	</ul>
+    </div>
 </div>
 <div class="modal fade error-popup" id="errorSearchPopup">
     <div class="modal-dialog">

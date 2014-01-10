@@ -1,4 +1,9 @@
 $(document).ready(function() {
+    InitPaginationList('searchDoctorsResult',
+                       'd.middle_name',
+                       'desc',updateDoctorList);
+    
+    
     $("#shifts").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/modules/getshifts',
         datatype: "json",
@@ -46,8 +51,8 @@ $(document).ready(function() {
         }
     );
 
-    $('#doctor-search-submit').click(function(e) {
-        var filters = {
+    function getDoctorsFilter() {
+        var Result={
             'groupOp' : 'AND',
             'rules' : [
                 {
@@ -78,9 +83,18 @@ $(document).ready(function() {
             ]
         };
 
+        return Result;
+    }
+    
+    function updateDoctorList() {
+         var filters = getDoctorsFilter();
+        var PaginationData=getPaginationParameters('searchDoctorsResult');
+        if (PaginationData!='') {
+            PaginationData = '&'+PaginationData;
+        }
         // Делаем поиск
         $.ajax({
-            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters),
+            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -95,6 +109,7 @@ $(document).ready(function() {
                         });
                     } else {
                         displayAllDoctors(data.data);
+                        printPagination('searchDoctorsResult',data.total);
                     }
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
@@ -106,6 +121,10 @@ $(document).ready(function() {
                 return;
             }
         });
+    }
+    
+    $('#doctor-search-submit').click(function(e) {
+        updateDoctorList()
         return false;
     });
 

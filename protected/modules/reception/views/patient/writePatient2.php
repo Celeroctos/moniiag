@@ -93,17 +93,10 @@
             </tbody>
         </table>
     </div>
-<!--<div class="row">
-    <ul class="pagination content-pagination">
-        <li><a href="#">&laquo;</a></li>
-        <li class="active"><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-        <li><a href="#">&raquo;</a></li>
-    </ul>-->
-</div>
+    <div class="row">
+        <ul class="pagination content-pagination">
+        </ul>
+    </div>
 <div class="headerBusyCalendar no-display">
     <h4>Занятость врача <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>
     <p class="text-left">

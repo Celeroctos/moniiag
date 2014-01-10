@@ -90,3 +90,439 @@ Stack trace:
 #17 {main}
 REQUEST_URI=/index.php/doctors/shedule/getcalendar?doctorid=15&_=1388417924769
 ---
+2014/01/09 18:28:25 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция coleasce(character varying, unknown) не существует
+LINE 4: WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card...
+                                                     ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card_number,'')=='')) AND (COLEASCE(m.card_number,'')!='').
+in Z:\home\mis.my\www\protected\models\Oms.php (48)
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (457)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2014/01/09 18:28:25 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция coleasce(character varying, unknown) не существует
+LINE 4: WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card...
+                                                     ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card_number,'')=='')) AND (COLEASCE(m.card_number,'')!='')' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\models\Oms.php(48): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(457): Oms->getRows(Array, false, false, false, false, true, false)
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionSearch()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/search/?withoutonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689505
+HTTP_REFERER=http://mis.my/index.php/reception/patient/viewsearch
+---
+2014/01/09 18:28:26 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция coleasce(character varying, unknown) не существует
+LINE 4: WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card...
+                                                     ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card_number,'')=='')) AND (COLEASCE(m.card_number,'')!='').
+in Z:\home\mis.my\www\protected\models\Oms.php (48)
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (457)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2014/01/09 18:28:26 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция coleasce(character varying, unknown) не существует
+LINE 4: WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card...
+                                                     ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (COLEASCE(m.card_number,'')=='')) AND (COLEASCE(m.card_number,'')!='')' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\models\Oms.php(48): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(457): Oms->getRows(Array, false, false, false, false, false, true)
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionSearch()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689504
+HTTP_REFERER=http://mis.my/index.php/reception/patient/viewsearch
+---
+2014/01/09 18:31:18 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  оператор не существует: character varying == unknown
+LINE 4: ...umber) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND...
+                                                             ^
+HINT:  Оператор с данными именем и типами аргументов не найден. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND (coalesce(m.card_number,'')!='').
+in Z:\home\mis.my\www\protected\models\Oms.php (48)
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (457)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2014/01/09 18:31:18 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  оператор не существует: character varying == unknown
+LINE 4: ...umber) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND...
+                                                             ^
+HINT:  Оператор с данными именем и типами аргументов не найден. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND (coalesce(m.card_number,'')!='')' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\models\Oms.php(48): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(457): Oms->getRows(Array, false, false, false, false, true, false)
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionSearch()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/search/?withoutonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689507
+HTTP_REFERER=http://mis.my/index.php/reception/patient/viewsearch
+---
+2014/01/09 18:31:18 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  оператор не существует: character varying == unknown
+LINE 4: ...umber) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND...
+                                                             ^
+HINT:  Оператор с данными именем и типами аргументов не найден. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND (coalesce(m.card_number,'')!='').
+in Z:\home\mis.my\www\protected\models\Oms.php (48)
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (457)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2014/01/09 18:31:18 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  оператор не существует: character varying == unknown
+LINE 4: ...umber) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND...
+                                                             ^
+HINT:  Оператор с данными именем и типами аргументов не найден. Возможно, вам следует добавить явные преобразования типов.. The SQL statement executed was: SELECT "o".*, "m"."card_number", "m"."reg_date"
+FROM "mis"."oms" "o"
+LEFT JOIN "mis"."medcards" "m" ON o.id = m.policy_id
+WHERE ((LOWER(o.oms_number) LIKE '%1%') AND (coalesce(m.card_number,'')=='')) AND (coalesce(m.card_number,'')!='')' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\models\Oms.php(48): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(457): Oms->getRows(Array, false, false, false, false, false, true)
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionSearch()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689506
+HTTP_REFERER=http://mis.my/index.php/reception/patient/viewsearch
+---
+2014/01/09 18:31:54 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689508
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/09 18:31:55 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withoutonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689509
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/09 18:33:06 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:460)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689510
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (460)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/09 18:33:06 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:460)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withoutonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389277689511
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (460)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:06:51 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389352002315
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:06:56 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389352002316
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:07:15 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389352002317
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:27:33 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389353249483
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:28:10 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389353280418
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:29:44 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389353374368
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 15:30:00 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:459)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%221%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1389353395724
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (459)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 17:07:49 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "oms_number" не существует
+LINE 6: ORDER BY "oms_number" DESC LIMIT 5
+                 ^. The SQL statement executed was: SELECT "d".*, "w"."name" AS "ward", "m"."name" AS "post"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+WHERE LOWER(d.last_name) LIKE '%белова%'
+ORDER BY "oms_number" DESC LIMIT 5.
+in Z:\home\mis.my\www\protected\models\Doctor.php (62)
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (35)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+2014/01/10 17:07:49 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "oms_number" не существует
+LINE 6: ORDER BY "oms_number" DESC LIMIT 5
+                 ^. The SQL statement executed was: SELECT "d".*, "w"."name" AS "ward", "m"."name" AS "post"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+WHERE LOWER(d.last_name) LIKE '%белова%'
+ORDER BY "oms_number" DESC LIMIT 5' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\models\Doctor.php(62): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php(35): Doctor->getRows(Array, 'oms_number', 'desc', 0, '5')
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/docto...')
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22}]}&rows=5&page=1&sidx=oms_number&sord=desc&_=1389359212199
+HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientsteptwo/?cardid=7/13
+---
+2014/01/10 17:19:08 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php:31)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): DoctorsController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22}]}&_=1389359939046
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (31)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 17:20:13 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php:31)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): DoctorsController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22}]}&_=1389359939047
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (31)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 17:38:37 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php:31)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): DoctorsController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22}]}&_=1389361105775
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (31)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 17:38:44 [error] [php] Division by zero (Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php:31)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): DoctorsController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22}]}&_=1389361105776
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (31)
+in Z:\home\mis.my\www\protected\components\Controller.php (17)
+in Z:\home\mis.my\www\index.php (13)
+2014/01/10 18:03:54 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://mis.my/index.php/settings/profile/view
+---

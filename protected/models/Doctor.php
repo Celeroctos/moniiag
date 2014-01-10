@@ -35,7 +35,8 @@ class Doctor extends MisActiveRecord  {
         }
     }
 
-    public function getRows($filters) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false,
+                            $limit = false) {
         $connection = Yii::app()->db;
         $doctor = $connection->createCommand()
             ->select('d.*, w.name as ward, m.name as post')
@@ -50,6 +51,14 @@ class Doctor extends MisActiveRecord  {
             ), array(
             ));
         }
+        
+        if ($sidx && $sord && $limit)
+        {
+
+            $doctor->order($sidx.' '.$sord);
+            $doctor->limit($limit, $start);    
+        }
+        
         $doctors = $doctor->queryAll();
         foreach($doctors as $key => &$doctor) {
             $doctor['cabinets'] = array();

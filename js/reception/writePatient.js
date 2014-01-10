@@ -1,7 +1,16 @@
 $(document).ready(function() {
+    // Инициализируем пагинацию для списков
+    InitPaginationList('searchWithCardResult','oms_number','desc',updatePatientsList);
+    InitPaginationList('searchDoctorsResult','d.middle_name','desc',updateDoctorsList);
     // Поиск пациента
     $('#patient-search-submit').click(function(e) {
-        var filters = {
+        updatePatientsList();
+        return false;
+
+    });
+
+    function getPatientsFilter() {
+        var Result = {
             'groupOp' : 'AND',
             'rules' : [
                 {
@@ -61,42 +70,12 @@ $(document).ready(function() {
                 }
             ]
         };
-
-        // Делаем поиск
-        $.ajax({
-            'url' : '/index.php/reception/patient/search/?filters=' + $.toJSON(filters),
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == true) {
-                    // Изначально таблицы скрыты
-                    $('#withoutCardCont').addClass('no-display');
-
-                    if(data.data.with.length == 0) {
-                        $('#notFoundPopup').modal({
-                        });
-                    } else {
-                        displayAllPatients(data.data.with);
-                    }
-                } else {
-                    $('#errorSearchPopup .modal-body .row p').remove();
-                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
-                    $('#errorSearchPopup').modal({
-
-                    });
-                }
-                return;
-            }
-        });
-
-        return false;
-
-    });
-
-
-    $('#doctor-search-submit').click(function(e) {
-        var filters = {
+        
+        return Result;
+    }
+    
+    function getDoctorsFilter() {
+        var Result ={
             'groupOp' : 'AND',
             'rules' : [
                 {
@@ -126,10 +105,56 @@ $(document).ready(function() {
                 }
             ]
         };
-
+        return Result;
+    }
+    
+    function updatePatientsList() {
+        
+        var filters = getPatientsFilter();
+        var PaginationData=getPaginationParameters('searchWithCardResult');
+        if (PaginationData!='') {
+            PaginationData = '&'+PaginationData;
+        }
         // Делаем поиск
         $.ajax({
-            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters),
+            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    // Изначально таблицы скрыты
+                    $('#withoutCardCont').addClass('no-display');
+
+                    if(data.rows.length == 0) {
+                        $('#notFoundPopup').modal({
+                        });
+                    } else {
+                        displayAllPatients(data.rows);
+                        printPagination('searchWithCardResult',data.total);
+                    }
+                } else {
+                    $('#errorSearchPopup .modal-body .row p').remove();
+                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup').modal({
+
+                    });
+                }
+                return;
+            }
+        });
+        
+    }
+
+    function updateDoctorsList() {
+        var filters = getDoctorsFilter();
+        var PaginationData=getPaginationParameters('searchDoctorsResult');
+        if (PaginationData!='') {
+            PaginationData = '&'+PaginationData;
+        }
+        // Делаем поиск
+        $.ajax({
+            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -143,6 +168,7 @@ $(document).ready(function() {
                         });
                     } else {
                         displayAllDoctors(data.data);
+                        printPagination('searchDoctorsResult',data.total);
                     }
                 } else {
                     $('#errorPopup .modal-body .row p').remove();
@@ -154,6 +180,10 @@ $(document).ready(function() {
                 return;
             }
         });
+    }
+    
+    $('#doctor-search-submit').click(function(e) {
+        updateDoctorsList();
 
         return false;
 
