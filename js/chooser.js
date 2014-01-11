@@ -10,6 +10,15 @@ $(document).ready(function() {
             $.fn[$(chooser).attr('id')] = {
                 getChoosed: function() {
                     return choosedElements;
+                },
+                addChoosed: function(li, rowData, withOutInsert) {
+                    currentElements = [];
+                    currentElements.push(rowData);
+                    addVariantToChoosed(li, withOutInsert);
+                },
+                clearAll: function() {
+                    choosedElements = [];
+                    $(chooser).find('.choosed span').remove();
                 }
             };
             $(chooser).find('input').val('');
@@ -57,6 +66,13 @@ $(document).ready(function() {
                         }
                         return false;
                     }
+
+                    // Нажатие бекспейса на последнем символе закроет список
+                    if(e.keyCode == 8) {
+                        if($(chooser).find('input').val().length == 1) {
+                            $(chooser).find('.variants').hide();
+                        }
+                    }
                 }
             });
 
@@ -87,10 +103,22 @@ $(document).ready(function() {
                         var url = choosersConfig[$(chooser).prop('id')].url;
                         choosersConfig[$(chooser).prop('id')].filters.rules[0].data = $.trim($(field).val());
                         url += $.toJSON(choosersConfig[$(chooser).prop('id')].filters);
+                        if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams')) {
+                            var extra = $.extend({}, choosersConfig[$(chooser).prop('id')].extraparams);
+                            for(var i in extra) {
+                                if(typeof extra[i] == 'function') {
+                                    extra[i] = extra[i]();
+                                }
+                            }
+                        } else {
+                            var extra = {};
+                        }
+
                         $.ajax({
                             'url' : url,
                             'cache' : false,
                             'dataType' : 'json',
+                            'data' : extra,
                             'type' : 'GET',
                             'success' : function(data, textStatus, jqXHR) {
                                 if(data.success == 'true') {
@@ -135,7 +163,7 @@ $(document).ready(function() {
                 addVariantToChoosed(this);
             });
 
-            function addVariantToChoosed(li) {
+            function addVariantToChoosed(li, withOutInsert) {
                 $(li).parents('ul').hide();
                 var id = $(li).prop('id').substr(1);
                 var primaryField = choosersConfig[$(chooser).prop('id')].primary;
@@ -152,11 +180,13 @@ $(document).ready(function() {
                         }
                         // А если найден - повторно добавлять не надо
                         if(!isFound) {
-                            var span = $('<span>').addClass('item');
-                            var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
-                            $(span).append($(li).text()).append(innerSpan);
-                            $(span).prop('id', 'r' + currentElements[i][primaryField]);
-                            $(chooser).find('.choosed').append(span);
+                            if(withOutInsert != 1) {
+                                var span = $('<span>').addClass('item');
+                                var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
+                                $(span).append($(li).text()).append(innerSpan);
+                                $(span).prop('id', 'r' + currentElements[i][primaryField]);
+                                $(chooser).find('.choosed').append(span);
+                            }
                             $(chooser).find('input').val('');
                             prevVal = null;
                             choosedElements.push(currentElements[i]);
@@ -209,7 +239,7 @@ $(document).ready(function() {
         'diagnosisChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
+                $(ul).append($('<li>').text(row.description));
             },
             'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
             'filters' : {
@@ -217,7 +247,47 @@ $(document).ready(function() {
                 'rules': [
                     {
                         'field' : 'description',
-                        'op' : 'bw',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'primaryDiagnosisChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
+            'extraparams' : {
+                'onlylikes' : typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'secondaryDiagnosisChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
+            'extraparams' : {
+                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
                         'data' : ''
                     }
                 ]

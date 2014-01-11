@@ -9,11 +9,44 @@ class DiagnosisController extends Controller {
         ));
     }
 
-    public function actionGetone($id) {
+    public function actionGetLikes($id) {
         $model = new LikeDiagnosis();
-        $diagnosisRow = $model->getOne($id);
+        $diagnosisRows = $model->getRows(false, $id); // Получить предпочтения по врачу
         echo CJSON::encode(array('success' => true,
-                                 'data' => $diagnosisRow)
+                                 'data' => $diagnosisRows)
         );
+    }
+
+    public function actionSetLikes() {
+        if(!isset($_GET['medworker_id'], $_GET['diagnosis_ids'])) {
+            echo CJSON::encode(array('success' => false,
+                                     'data' => array())
+            );
+            exit();
+        }
+        // В противном случае, устанавливаем все, которые могут быть установлены
+        // Удаляем все, уже установленные
+        LikeDiagnosis::model()->deleteAll('medworker_id = :medworker_id', array(':medworker_id' => $_GET['medworker_id']));
+        $diagnosis = CJSON::decode($_GET['diagnosis_ids']);
+      //  var_dump($diagnosis);
+     //  exit();
+        foreach($diagnosis as $dia) {
+            $like = new LikeDiagnosis();
+            $like->medworker_id = $_GET['medworker_id'];
+            $like->mkb10_id = $dia['id'];
+            if(!$like->save()) {
+                echo CJSON::encode(array('success' => false,
+                                         'error' => 'Не могу сохранить любимый диагноз!')
+                );
+                exit();
+            }
+        }
+        echo CJSON::encode(array('success' => true,
+                                 'data' => array())
+        );
+    }
+
+    public function actionGetone($id) {
+
     }
 }

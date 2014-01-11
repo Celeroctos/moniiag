@@ -19,7 +19,7 @@ $(document).ready(function(e) {
             return false;
         }
         if(choosedPatients.length == 0) {
-            $('#errorPopup .modal-body .row p').remove()
+            $('#errorPopup .modal-body .row p').remove();
             $('#errorPopup .modal-body .row').append($('<p>').text('Вы не выбрали ни одного пациента!'));
             $('#errorPopup').modal({});
             return false;

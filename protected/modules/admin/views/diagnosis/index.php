@@ -19,8 +19,14 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Для добавления диагноза щёлкните два раза на записи с иконкой круга в нижней таблице, либо вводите название диагноза в текстовое поле ниже. Для удаления диагноза из списка щёлкните два раза по строке верхней таблицы. После всех изменений нажмите кнопку "Сохранить изменения".</p>
-                    <div>
+                    <p>Для добавления диагноза щёлкните два раза на записи с иконкой круга в нижней таблице, либо вводите название диагноза в текстовое поле ниже. Для удаления диагноза из списка щёлкните по красному кресту рядом с диагнозом. После всех изменений нажмите кнопку "Сохранить изменения".</p>
+                    <div class="second">
+                        <div class="wrap">
+                            <table id="mkb10"></table>
+                            <div id="mkb10Pager"></div>
+                        </div>
+                    </div>
+                    <div class="first">
                         <div class="form-group chooser first" id="diagnosisChooser">
                             <div class="col-xs-4">
                                 <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
@@ -30,10 +36,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="second">
-                        <table id="mkb10"></table>
-                        <div id="mkb10Pager"></div>
                     </div>
                 </div>
             </div>

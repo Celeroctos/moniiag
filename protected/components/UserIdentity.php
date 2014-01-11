@@ -13,12 +13,14 @@ class UserIdentity extends CUserIdentity
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         } else {
             $this->_id = $record->id;
+            $employee = Doctor::model()->findByPk($record->employee_id);
 
             // Данные юзера
             $this->setState('login', $record->login);
             $this->setState('id', $record->id);
             $this->setState('username', $record->username);
             $this->setState('roleId', $record->role_id);
+            $this->setState('medworkerId', $employee->post_id);
 
             $this->errorCode = self::ERROR_NONE;
         }
