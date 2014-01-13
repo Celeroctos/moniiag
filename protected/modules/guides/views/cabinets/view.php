@@ -1,10 +1,19 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/cabinets.js"></script>
+<script type="text/javascript">
+    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditCabinet'); ?>';
+</script>
 <table id="cabinets"></table>
 <div id="cabinetsPager"></div>
 <div class="btn-group default-margin-top">
+    <?php if(Yii::app()->user->checkAccess('guideAddCabinet')) { ?>
     <button type="button" class="btn btn-default" id="addCabinet">Добавить запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideEditCabinet')) { ?>
     <button type="button" class="btn btn-default" id="editCabinet">Редактировать выбранную запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideDeleteCabinet')) { ?>
     <button type="button" class="btn btn-default" id="deleteCabinet">Удалить выбранные</button>
+    <?php } ?>
 </div>
 <div class="modal fade" id="addCabinetPopup">
     <div class="modal-dialog">

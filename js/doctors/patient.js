@@ -130,4 +130,69 @@ $(document).ready(function() {
         printWin.focus();
         return false;
     });
+
+    // Сохранение диагнозов
+    $('#submitDiagnosis').on('click', function(e) {
+        var choosedPrimary = $.fn['primaryDiagnosisChooser'].getChoosed();
+        var choosedSecondary = $.fn['secondaryDiagnosisChooser'].getChoosed();
+
+        var primaryIds = [];
+        var secondaryIds = [];
+        for(var i = 0; i < choosedPrimary.length; i++) {
+            primaryIds.push(choosedPrimary[i].id);
+        }
+        for(var i = 0; i < choosedSecondary.length; i++) {
+            secondaryIds.push(choosedSecondary[i].id);
+        }
+
+        $.ajax({
+            'url' : '/index.php/doctors/patient/savediagnosis',
+            'data' : {
+                'primary' : $.toJSON(primaryIds),
+                'secondary' : $.toJSON(secondaryIds),
+                'note' : $('#diagnosisNote').val(),
+                'greeting_id' : $('#greetingId').val()
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    $('#successDiagnosisPopup').modal({});
+                }
+            }
+        });
+    });
+
+    globalVariables.onlyLikes = 0;
+    // Флаг любимых и общих диагнозов
+    $('#onlyLikeDiagnosis').click(function(e) {
+        if(!$(this).prop('checked')) {
+            globalVariables.onlyLikes = 0;
+        } else {
+            globalVariables.onlyLikes = 1;
+        }
+    });
+
+
+    // Это для того, чтобы занести в диагнозы всё то, что было при загрузке страницы: первичные
+    (function(choosers) {
+        for(var j = 0; j < choosers.length; j++) {
+            var chooser = $('#' + choosers[j]);
+            if($(chooser).length > 0) {
+                var preChoosed = $(chooser).find('.choosed span.item');
+                for(var i = 0; i < preChoosed.length; i++) {
+                    var id = $(preChoosed[i]).prop('id').substr(1);
+                    $.fn[choosers[j]].addChoosed($('<li>').prop('id', 'r' + id).text($(preChoosed[i]).find('span').html()), {
+                        'id' : id,
+                        'description' : $(preChoosed[i]).find('span').html()
+                    }, 1);
+                }
+            }
+        }
+    })(['primaryDiagnosisChooser', 'secondaryDiagnosisChooser']);
 });
+
+function getOnlyLikes() {
+    return globalVariables.onlyLikes;
+}

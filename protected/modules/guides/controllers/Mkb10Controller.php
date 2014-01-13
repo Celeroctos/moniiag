@@ -16,30 +16,51 @@ class Mkb10Controller extends Controller {
         $page = $_GET['page'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
+        // Выборка только "любимых" диагнозов
+        if(isset($_GET['onlylikes'])) {
+            $onlylikes = $_GET['onlylikes'];
+        } else {
+            $onlylikes = false;
+        }
 
         $model = new Mkb10();
-        $num = $model->getRowsByLevel();
+        if(isset($_GET['listview']) && $_GET['listview'] == 1) {
+            $num = $model->getNumRows($onlylikes);
+        } else { // В виде дерева
+            $num = count($model->getRowsByLevel($onlylikes));
+        }
 
-        $totalPages = ceil(count($num) / $rows);
+        $totalPages = ceil($num / $rows);
         $start = $page * $rows - $rows;
         //var_dump($start);
-        $mkb10 = $model->getRowsByLevel($nodeid, $sidx, $sord, $start, $rows);
-
+        if(isset($_GET['listview']) && $_GET['listview'] == 1) {
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+            $limit = $_GET['limit'];
+            $mkb10 = $model->getRows($onlylikes, $filters, $sidx, $sord, $start, $limit);
+        } else {
+            $mkb10 = $model->getRowsByLevel($onlylikes, $nodeid, $sidx, $sord, $start, $rows);
+        }
         foreach($mkb10 as $key => &$node) {
-           if(count($model->getRowsByLevel($node['id'])) > 0) {
+            if(count($model->getRowsByLevel($onlylikes, $node['id'])) > 0) {
                $node['isLeaf'] = false;
-           } else {
+            } else {
                $node['isLeaf'] = true;
-           }
+            }
             $node['loaded'] = false;
             $node['expanded'] = false;
             $node['parent'] = $node['parent_id']; // Суррогат для схлопывания таблицы
         }
-       // var_dump($mkb10);
+        //var_dump($mkb10);
         echo CJSON::encode(
            array('rows' => $mkb10,
                  'total' => $totalPages,
-                 'records' => count($num))
+                 'records' => $num,
+                 'success' => 'true')
         );
     }
 }

@@ -59,52 +59,6 @@ $(document).ready(function() {
         }
     );
 
-    $("#diagnosisList").jqGrid({
-        datatype: "json",
-        colNames:['', 'Диагноз'],
-        colModel:[
-            {
-                name:'id',
-                index:'id',
-                hidden: true
-            },
-            {
-                name: 'description',
-                index: 'description',
-                width: 560
-            }
-        ],
-        rowNum: 10,
-        rowList:[10, 20, 30],
-        pager: '#diagnosisListPager',
-        sortname: 'id',
-        viewrecords: true,
-        sortorder: "desc",
-        caption: "Диагнозы в списке",
-        height: 150,
-        ondblClickRow: deleteFromLikeDiagnosis
-    });
-
-    function deleteFromLikeDiagnosis(rowid, iRow, iCol, e) {
-        $('#diagnosisList').jqGrid('delRowData', rowid);
-        --numRows;
-    }
-
-    $("#diagnosisList").jqGrid('navGrid','#diagnosisListPager',{
-            edit: false,
-            add: false,
-            del: false
-        },
-        {},
-        {},
-        {},
-        {
-            closeOnEscape:true,
-            multipleSearch :true,
-            closeAfterSearch: true
-        }
-    );
-
     $("#diagnosis-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
@@ -129,23 +83,22 @@ $(document).ready(function() {
 
     function editDiagnosis() {
         var currentRow = $('#diagnosiss').jqGrid('getGridParam','selrow');
+        var rowData = $('#diagnosiss').jqGrid('getRowData',currentRow);
         if(currentRow != null) {
-            // Надо вынуть данные для редактирования
+            // Надо вынуть данные для редактирования: предпочтения конкретной специальности
             $.ajax({
-                'url' : '/index.php/admin/diagnosis/getone?id=' + currentRow,
+                'url' : '/index.php/admin/diagnosis/getlikes?id=' + rowData.id,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == true) {
-                        var form = $('#editDiagnosisPopup form');
-                        var rowData = $('#diagnosiss').jqGrid('getRowData',currentRow);
-                        numRows = data.data.length;
+                        var numRows = data.data.length;
+                        $.fn['diagnosisChooser'].clearAll();
 
-                        for(var i = 0; i < data.data.length; i++) {
-                            $('#diagnosisList').jqGrid('addRowData', i, {'id' : data.data[i].id, 'description' : data.data[i].description});
+                        for(var i = 0; i < numRows; i++) {
+                            $.fn['diagnosisChooser'].addChoosed($('<li>').prop('id', 'r' + data.data[i].id).text(data.data[i].description), data.data[i]);
                         }
-
                         $('#editPopup .spec').text(rowData.name);
                         $("#editPopup").modal({
 
@@ -159,6 +112,28 @@ $(document).ready(function() {
     $("#editDiagnosis").click(editDiagnosis);
 
     $('#likeDiagnosisSubmit').click(function(e) {
+        var choosed = $.fn['diagnosisChooser'].getChoosed();
+        var currentRow = $('#diagnosiss').jqGrid('getGridParam','selrow');
+        var rowData = $('#diagnosiss').jqGrid('getRowData',currentRow);
 
+        if(currentRow != null) {
+            // Надо передать данные, которые были установлены в качестве любимых диагнозов..
+            $.ajax({
+                'url' : '/index.php/admin/diagnosis/setlikes',
+                'data' : {
+                   'medworker_id' : rowData.id,
+                   'diagnosis_ids' : $.toJSON(choosed)
+                },
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        $("#editPopup").modal('hide');
+                    }
+                }
+            })
+        }
     });
+
 });

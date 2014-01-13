@@ -12,6 +12,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#">Справка</a></li>
                 <li><a href="#">Об авторах</a></li>
+                <li><a href="#" class="keyboard-help-link" data-toggle="keyboard-help">Помощь по клавиатуре</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="loggedUserNavbar">
                 <li class="dropdown">
@@ -52,6 +53,14 @@
                     )
                 ); ?>
             <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
+<div class="pop-keyboard-help">
+    <div class="pop-inner">
+        <h5><strong>Управление с клавиатуры для текущего положения:</strong></h5>
+        <div class="keyslist">
+
         </div>
     </div>
 </div>

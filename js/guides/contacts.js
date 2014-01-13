@@ -113,6 +113,9 @@ $(document).ready(function() {
     });
 
     function editContact() {
+        if(Boolean(globalVariables.guideEdit) == false) {
+            return false;
+        }
         var currentRow = $('#contacts').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования

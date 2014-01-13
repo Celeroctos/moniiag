@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
 <h4>Поиск пациента по ОМС</h4>
 <div class="row">
     <?php
@@ -183,6 +184,7 @@
 	</ul>
     </div>
 </div>
+<?php } ?>
 <div class="modal fade error-popup" id="errorSearchPopup">
     <div class="modal-dialog">
         <div class="modal-content">

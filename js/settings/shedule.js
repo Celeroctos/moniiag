@@ -207,5 +207,6 @@ $(document).ready(function() {
         minView: 0,
         maxView: 1,
         forceParse: 0
-    })
+    });
+
 });

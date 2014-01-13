@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<?php if(Yii::app()->user->checkAccess('addPatient')) { ?>
 <h4>Первичная регистрация пациента и добавление первой ЭМК (<?php echo $regPoint; ?> год)</h4>
 <p class="text-left">
     Не нашли в списке пациентов нужного? Добавьте запись о нём, заполнив поля формы.
@@ -527,6 +528,7 @@
         </div>
     <?php $this->endWidget(); ?>
 </div>
+<?php } ?>
 <div class="modal fade error-popup" id="errorAddPopup">
     <div class="modal-dialog">
         <div class="modal-content">

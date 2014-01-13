@@ -23,7 +23,22 @@ class SheduleController extends Controller {
             }
             if(isset($_GET['rowid']) && trim($_GET['rowid']) != '') {
                 $this->currentSheduleId = trim($_GET['rowid']);
+
+                // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
+                $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
+                $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
+                // Если приём был, то можно вынуть примечание к диагнозам
+                $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
+                if($greeting != null) {
+                    $note = $greeting->note;
+                }
             }
+        }
+
+        // Если они не создались, это значит, что диагнозы пустые
+        if(!isset($primaryDiagnosis, $secondaryDiagnosis)) {
+            $primaryDiagnosis = array();
+            $secondaryDiagnosis = array();
         }
 
         $this->filterModel = new FormSheduleFilter();
@@ -44,7 +59,10 @@ class SheduleController extends Controller {
             'medcard' => isset($medcard) ? $medcard : null,
             'currentDate' => $curDate,
             'addModel' => new FormValueAdd(),
-            'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null)
+            'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null),
+            'primaryDiagnosis' => $primaryDiagnosis,
+            'secondaryDiagnosis' => $secondaryDiagnosis,
+            'note' => isset($note) ? $note : ''
         ));
     }
 

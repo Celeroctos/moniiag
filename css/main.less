@@ -336,6 +336,9 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
 .help-block {
   display: none;
 }
+#onlyLikeDiagnosis {
+  margin-top: 25px;
+}
 // Кастомный контрол даты
 .date {
   height: 50px;
@@ -402,6 +405,10 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
       }
     }
   }
+}
+
+#submitDiagnosis {
+  margin-left: 27%;
 }
 
 /* Модальные окна */
@@ -476,10 +483,19 @@ tr.header {
 body #editPopup {
   .modal-dialog {
     width: 1050px;
+    .row {
+
+    }
   }
   .row {
     div.second {
-      margin-top: 10px;
+      overflow: hidden;
+	}
+    div.first {
+      margin-top: 20px;
+    }
+    .choosed {
+      width: 990px;
     }
   }
 }
@@ -516,7 +532,7 @@ body #editPopup {
 .chooser {
   .variants {
     width: 100%;
-    max-height: 180px;
+    height: auto;
     border: 2px solid #E6E6E6;
     position: absolute;
     padding: 0;

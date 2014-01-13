@@ -1,10 +1,19 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/privileges.js"></script>
+<script type="text/javascript">
+    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditPrivelege'); ?>';
+</script>
 <table id="privileges"></table>
 <div id="privilegesPager"></div>
 <div class="btn-group default-margin-top">
+    <?php if(Yii::app()->user->checkAccess('guideAddPrivelege')) { ?>
     <button type="button" class="btn btn-default" id="addPrivilege">Добавить запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideEditPrivelege')) { ?>
     <button type="button" class="btn btn-default" id="editPrivilege">Редактировать выбранную запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideDeletePrivelege')) { ?>
     <button type="button" class="btn btn-default" id="deletePrivilege">Удалить выбранные</button>
+    <?php } ?>
 </div>
 <div class="modal fade" id="addPrivilegePopup">
     <div class="modal-dialog">

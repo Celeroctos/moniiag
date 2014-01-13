@@ -1,8 +1,10 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/categories.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript">
     globalVariables.patientsInCalendar = <?php echo $patientsInCalendar; ?>;
 </script>
+<?php if(Yii::app()->user->checkAccess('canViewPatientList')) { ?>
 <div class="row">
     <div class="col-xs-7">
         <?php if($currentPatient !== false) { ?>
@@ -47,6 +49,78 @@
                                <a href="#<?php echo $point['medcard_id']; ?>" class="medcard-history-showlink"><?php echo $point['change_date']; ?></a>
                            </div>
                             <?php } ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div id="accordionD" class="accordion">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a href="#collapseD" data-parent="#accordionD" data-toggle="collapse" class="accordion-toggle red-color"><strong>Диагноз приёма (основной и сопутствующие)</strong></a>
+                    <span class="help-block">
+                        Здесь Вы можете посмотреть историю изменений медицинской карты. Раскройте список и выберите запись для просмотра изменений медкарты.
+                    </span>
+                    </div>
+                    <div class="accordion-body collapse in" id="collapseD">
+                        <div class="accordion-inner">
+                            <?php
+                            $diagnosisForm = $this->beginWidget('CActiveForm', array(
+                                'id' => 'diagnosis-form',
+                                'enableAjaxValidation' => true,
+                                'enableClientValidation' => true,
+                                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/view'),
+                                'htmlOptions' => array(
+                                    'class' => 'form-horizontal col-xs-12',
+                                    'role' => 'form'
+                                )
+                            ));
+                            ?>
+                            <div class="form-group">
+                                <label for="onlyLikeDiagnosis" class="col-xs-3 control-label">
+                                    Выбирать только из списка "любимых" диагнозов
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="checkbox" id="onlyLikeDiagnosis">
+                                </div>
+                            </div>
+                            <div class="form-group chooser" id="primaryDiagnosisChooser">
+                                <label for="doctor" class="col-xs-3 control-label">Основной диагноз:</label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" autofocus id="doctor" placeholder="Начинайте вводить...">
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php foreach($primaryDiagnosis as $dia) { ?>
+                                            <span class="item" id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?><span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group chooser" id="secondaryDiagnosisChooser">
+                                <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" autofocus id="doctor" placeholder="Начинайте вводить...">
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php foreach($secondaryDiagnosis as $dia) { ?>
+                                            <span class="item" id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?><span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor" class="col-xs-3 control-label">Примечание:</label>
+                                <div class="col-xs-9">
+                                    <textarea placeholder="" class="form-control" id="diagnosisNote"><?php echo $note; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input type="button" id="submitDiagnosis" value="Сохранить выбранные диагнозы" class="btn btn-primary">
+                            </div>
+                            <?php $this->endWidget(); ?>
                         </div>
                     </div>
                 </div>
@@ -118,17 +192,15 @@
                             Время приёма
                         </td>
                         <td>
-                            Посмотреть карту
                         </td>
                         <td>
-                            Начать приём
                         </td>
                         <td>
-                            Закончить приём
                         </td>
+                        <?php if($currentPatient !== false && Yii::app()->user->checkAccess('canPrintMovement')) { ?>
                         <td>
-                            Печать листа приёма
                         </td>
+                        <?php } ?>
                     </tr>
                     </thead>
                     <tbody>
@@ -141,19 +213,21 @@
                                 <?php echo $patient['patient_time']; ?>
                             </td>
                             <td>
-                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id'])); ?>
+                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id']), array('title' => 'Посмотреть медкарту')); ?>
                             </td>
                             <td>
-                                <?php echo $patient['is_beginned'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id'])); ?>
+                                <?php echo $patient['is_beginned'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id']), array('title' => 'Начать приём')); ?>
                             </td>
                             <td>
-                                <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '/doctors/shedule/acceptcomplete/?id='.$patient['id'], array('Закончить приём')); ?>
+                                <?php echo $patient['is_accepted'] == 1 ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '/doctors/shedule/acceptcomplete/?id='.$patient['id'], array('title' => 'Закончить приём')); ?>
                             </td>
+                            <?php if(Yii::app()->user->checkAccess('canPrintMovement')) { ?>
                             <td>
                                 <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#'.$patient['id'],
                                                                                                                 array('title' => 'Печать листа приёма',
                                                                                                                       'class' => 'print-greeting-link')) : ''; ?>
                             </td>
+                            <?php } ?>
                         </tr>
                     <?php } ?>
                     </tbody>
@@ -162,6 +236,8 @@
         </div>
     </div>
 </div>
+<?php } ?>
+<?php if(Yii::app()->user->checkAccess('canViewMedcardHistory')) { ?>
 <?php if($currentPatient !== false) { ?>
 <div class="modal fade error-popup" id="historyPopup">
     <div class="modal-dialog">
@@ -186,6 +262,8 @@
         </div>
     </div>
 </div>
+<?php } ?>
+<?php if(Yii::app()->user->checkAccess('canAddNewGuideValue')) { ?>
 <div class="modal fade error-popup" id="addValuePopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -249,6 +327,7 @@
         </div>
     </div>
 </div>
+<?php } ?>
 <div class="modal fade error-popup" id="errorPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -300,6 +379,24 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">Да</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successDiagnosisPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешное сохранение диагнозов</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Диагнозы для текущего приёма успешно сохранены.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>

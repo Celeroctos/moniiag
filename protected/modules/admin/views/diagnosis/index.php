@@ -3,6 +3,8 @@
 </p>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/diagnosis.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/mkb10.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <table id="diagnosiss"></table>
 <div id="diagnosissPager"></div>
 <div class="btn-group default-margin-top">
@@ -17,14 +19,23 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Для добавления диагноза щёлкните два раза на записи в нижней таблице. Для удаления диагноза из списка щёлкните два раза по строке верхней таблицы. После всех изменений нажмите кнопку "Сохранить изменения".</p>
-                    <div>
-                        <table id="diagnosisList"></table>
-                        <div id="diagnosisListPager"></div>
-                    </div>
+                    <p>Для добавления диагноза щёлкните два раза на записи с иконкой круга в нижней таблице, либо вводите название диагноза в текстовое поле ниже. Для удаления диагноза из списка щёлкните по красному кресту рядом с диагнозом. После всех изменений нажмите кнопку "Сохранить изменения".</p>
                     <div class="second">
-                        <table id="mkb10"></table>
-                        <div id="mkb10Pager"></div>
+                        <div class="wrap">
+                            <table id="mkb10"></table>
+                            <div id="mkb10Pager"></div>
+                        </div>
+                    </div>
+                    <div class="first">
+                        <div class="form-group chooser first" id="diagnosisChooser">
+                            <div class="col-xs-4">
+                                <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
+                                <ul class="variants no-display">
+                                </ul>
+                                <div class="choosed">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

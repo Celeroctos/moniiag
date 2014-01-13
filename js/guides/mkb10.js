@@ -28,7 +28,7 @@ $(document).ready(function() {
         viewrecords: true,
         sortorder: "asc",
         caption:"Справочник диагнозов",
-        height: 200,
+        height: 350,
         treeGrid: true,
         treeGridModel: 'adjacency',
         ExpandColumn: 'description',
@@ -37,15 +37,11 @@ $(document).ready(function() {
     });
 
     function moveToLikeDiagnoses(rowid, iRow, iCol, e) {
-        var diagnosisList = $('#diagnosisList')
-        if(typeof $(diagnosisList).attr('id') != 'undefined') {
-            var rowData = $('#mkb10').jqGrid('getRowData', rowid);
-            if(rowData.isLeaf == 'true') {
-                // Если строка с таким диагнозом уже существует, добавлять не надо
-                var checkedRow = $(diagnosisList).jqGrid('getRowData', rowid);
-                if(!checkedRow.hasOwnProperty('id')) {
-                    $(diagnosisList).jqGrid('addRowData', rowid, rowData);
-                }
+        var rowData = $('#mkb10').jqGrid('getRowData', rowid);
+        if(rowData.isLeaf == 'true') {
+            var chooser = $('#diagnosisChooser');
+            if($(chooser).length > 0) {
+                $.fn['diagnosisChooser'].addChoosed($('<li>').prop('id', 'r' + rowData.id).text(rowData.description), rowData);
             }
         }
     }

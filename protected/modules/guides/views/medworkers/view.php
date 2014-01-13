@@ -1,10 +1,19 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/medworkers.js"></script>
+<script type="text/javascript">
+    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditMedworker'); ?>';
+</script>
 <table id="medworkers"></table>
 <div id="medworkersPager"></div>
 <div class="btn-group default-margin-top">
+    <?php if(Yii::app()->user->checkAccess('guideAddMedworker')) { ?>
     <button type="button" class="btn btn-default" id="addMedworker">Добавить запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideEditMedworker')) { ?>
     <button type="button" class="btn btn-default" id="editMedworker">Редактировать выбранную запись</button>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideDeleteMedworker')) { ?>
     <button type="button" class="btn btn-default" id="deleteMedworker">Удалить выбранные</button>
+    <?php } ?>
 </div>
 <div class="modal fade" id="addMedworkerPopup">
     <div class="modal-dialog">

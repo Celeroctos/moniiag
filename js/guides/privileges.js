@@ -81,6 +81,9 @@ $(document).ready(function() {
 
     // Редактирование строки
     $("#privilege-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        if(Boolean(globalVariables.guideEdit) == false) {
+            return false;
+        }
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
             $('#editPrivilegePopup').modal('hide');

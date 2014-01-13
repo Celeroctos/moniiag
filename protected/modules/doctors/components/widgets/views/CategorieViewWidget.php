@@ -25,7 +25,7 @@ echo $form->hiddenField($model,'greetingId', array(
 			$this->drawCategorie($categorie, $form, $model);
 		} ?>
 <?php } ?>
-    <?php if(!$withoutSave) { ?>
+    <?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement')) { ?>
     <div class="form-group submitEditPatient">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить',

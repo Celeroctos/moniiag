@@ -51,14 +51,21 @@
     <?php $this->endWidget(); ?>
 </div>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/employees.js"></script>
+<script type="text/javascript">
+    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditEmployee'); ?>';
+</script>
 <table id="employees"></table>
 <div id="employeesPager"></div>
 <div class="btn-group default-margin-top">
+    <?php if(Yii::app()->user->checkAccess('guideAddEmployee')) { ?>
     <button type="button" class="btn btn-default" id="addEmployee">Добавить запись</button>
-    <?php if($canEdit) { ?>
+    <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideEditEmployee')) { ?>
     <button type="button" class="btn btn-default" id="editEmployee">Редактировать выбранную запись</button>
     <?php } ?>
+    <?php if(Yii::app()->user->checkAccess('guideDeleteEmployee')) { ?>
     <button type="button" class="btn btn-default" id="deleteEmployee">Удалить выбранные</button>
+    <?php } ?>
 </div>
 <div class="modal fade" id="addEmployeePopup">
     <div class="modal-dialog">

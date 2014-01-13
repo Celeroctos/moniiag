@@ -74,9 +74,10 @@ class SheduleByDay extends MisActiveRecord {
                 ->join('mis.oms o', 'm.policy_id = o.id')
                 ->join('mis.doctors d', 'd.id = dsbd.doctor_id')
                 ->where('o.id = :id AND dsbd.doctor_id = :doctor_id', array(':id' => $patientId, ':doctor_id' => $doctorId));
-            if($date) {
+            if($date !== false) {
                 $greetings->andWhere('dsbd.patient_day = :patient_day', array(':patient_day' => $date));
             }
+
             return $greetings->queryAll();
         } catch(Exception $e) {
             echo $e->getMessage();
