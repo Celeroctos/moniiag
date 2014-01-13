@@ -1,7 +1,18 @@
 $(document).ready(function() {
+    // Инициализируем пагинацию для списков
+    InitPaginationList('omsSearchWithCardResult','oms_number','desc',updatePatientWithCardsList);
+    InitPaginationList('omsSearchWithoutCardResult','oms_number','desc',updatePatientWithoutCardsList);
+    
     // Поиск по ОМС
     $('#patient-search-submit').click(function(e) {
-        var filters = {
+        updatePatientWithCardsList();
+        updatePatientWithoutCardsList();     
+        return false;
+    });
+
+    function getFilters() {
+        var Result =
+        {
             'groupOp' : 'AND',
             'rules' : [
                 {
@@ -61,28 +72,32 @@ $(document).ready(function() {
                 }
             ]
         };
-
-        // Делаем поиск по ОМС
-        $.ajax({
-            'url' : '/index.php/reception/patient/search/?filters=' + $.toJSON(filters),
+        return Result;
+    }
+    
+    function updatePatientWithCardsList() {
+        var filters = getFilters();
+        var PaginationData=getPaginationParameters('omsSearchWithCardResult');
+        if (PaginationData!='') {
+            PaginationData = '&'+PaginationData;
+        }
+                $.ajax({
+            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
                     // Изначально таблицы скрыты
-                    $('#withoutCardCont').addClass('no-display');
                     $('#withCardCont').addClass('no-display');
 
-                    if(data.data.with.length == 0 && data.data.without.length == 0) {
+                    if(data.rows.length == 0 && data.rows.length == 0) {
                         $('#notFoundPopup').modal({
                         });
                     } else {
-                        if(data.data.without.length > 0) {
-                            displayAllWithoutCard(data.data.without);
-                        }
-                        if(data.data.with.length > 0) {
-                            displayAllWithCard(data.data.with);
+                        if(data.rows.length > 0) {
+                            displayAllWithCard(data.rows);
+                            printPagination('omsSearchWithCardResult',data.total);
                         }
                     }
                 } else {
@@ -95,10 +110,46 @@ $(document).ready(function() {
                 return;
             }
         });
-        
-        return false;
-    });
+    }
+    
+    function updatePatientWithoutCardsList() {
+        var filters = getFilters();
+        var PaginationData=getPaginationParameters('omsSearchWithoutCardResult');
+        if (PaginationData!='') {
+            PaginationData = '&'+PaginationData;
+        }
+                $.ajax({
+            'url' : '/index.php/reception/patient/search/?withoutonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    // Изначально таблицы скрыты
+                    $('#withoutCardCont').addClass('no-display');
 
+                    if(data.rows.length == 0 && data.rows.length == 0) {
+                        $('#notFoundPopup').modal({
+                        });
+                    } else {
+                        if(data.rows.length > 0) {
+                            displayAllWithoutCard(data.rows);
+                            printPagination('omsSearchWithoutCardResult',data.total);
+                        }
+                    }
+                } else {
+                    $('#errorSearchPopup .modal-body .row p').remove();
+                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup').modal({
+
+                    });
+                }
+                return;
+            }
+        });
+    }
+    
+    
     // Отобазить таблицу тех, кто без карт
     function displayAllWithoutCard(data) {
         // Заполняем пришедшими данными таблицу тех, кто без карт

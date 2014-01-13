@@ -10,7 +10,8 @@ class Oms extends MisActiveRecord {
         return 'mis.oms';
     }
 
-    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false,
+                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false) {
         $connection = Yii::app()->db;
         $oms = $connection->createCommand()
             ->select('o.*, m.card_number, m.reg_date')
@@ -32,6 +33,24 @@ class Oms extends MisActiveRecord {
             ));
         }
 
+        // Если только без карт - ставим условие WHERE card_number==null
+        if ($onlyWithoutCards)
+        {
+            $oms->andWhere("coalesce(m.card_number,'')=''");
+        }
+        // Если только без карт - ставим условие WHERE card_number!=null
+        if ($onlyWithCards)
+        {
+            $oms->andWhere("coalesce(m.card_number,'')!=''");
+        }
+        
+        if ($sidx && $sord && $limit)
+        {
+
+            $oms->order($sidx.' '.$sord);
+            $oms->limit($limit, $start);    
+        }
+        
         return $oms->queryAll();
     }
 

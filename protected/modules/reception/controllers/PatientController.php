@@ -429,35 +429,83 @@ class PatientController extends Controller {
     }
 
     // Поиск пациента и его запсь
-    public function actionSearch($withAndWithout = true) {
-        if(isset($_GET['withandwithout']) && $_GET['withandwithout'] == 0) {
-            $oms = $this->searchPatients(false, true);
-            foreach($oms as $index => $item) {
-                if(isset($item['reg_date'])) {
-                    $parts = explode('-', $item['reg_date']);
-                    $item['reg_date'] = $parts[0];
+    public function actionSearch() {
+	// Проверим наличие фильтров
+	$filters = $this->checkFilters();
+	
+	$rows = $_GET['rows'];
+	$page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+	
+	$WithOnly = false;
+	$WithoutOnly = false;
+	
+	$oms = array();
+	if ((isset($_GET['withonly']))&&($_GET['withonly']==0))
+	{
+	    $WithOnly = true;
+	}
+	
+	if ((isset($_GET['withoutonly']))&&($_GET['withoutonly']==0))
+	{
+	    $WithoutOnly = true;		
+	}
+	
+	$model = new Oms();
+	// Вычислим общее количество записей
+	$num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
 
-                    $parts = explode('-', $item['birthday']);
-                    $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
-                }
+	$totalPages = ceil(count($num) / $rows);
+        $start = $page * $rows - $rows;
+	
+
+	
+	$omsItems = $model->getRows($filters, $sidx, $sord, $start, $rows,$WithOnly,$WithoutOnly);
+
+	// Обрабатываем результат
+	foreach($omsItems as $index => $item) {
+                $parts = explode('-', $item['reg_date']);
+                $item['reg_date'] = $parts[0];
+        }
+	echo CJSON::encode(
+			   array(
+				    'success' => true,
+				    'rows' => $omsItems,
+				    'total' => $totalPages,
+				    'records' => count($num)
+				 )
+			   );
+	
+	//==================
+	/*$oms = $this->searchPatients();
+        if(isset($_GET['withandwithout']) && $_GET['withandwithout'] == 0) {
+            foreach($oms as $index => $item) {
+                $parts = explode('-', $item['reg_date']);
+                $item['reg_date'] = $parts[0];
             }
             echo CJSON::encode(array('success' => 'true',
                                      'rows' => $oms)
             );
         } else {
-            $oms = $this->searchPatients();
             $omsWith = array();
             $omsWithout = array();
 
             foreach($oms as $index => $item) {
-                if(isset($item['reg_date'])) {
-                    $parts = explode('-', $item['reg_date']);
-                    $item['reg_date'] = $parts[0];
-                    if($item['card_number'] == null) {
-                        $omsWithout[] = $item;
-                    } else {
-                        $omsWith[] = $item;
-                    }
+                $parts = explode('-', $item['reg_date']);
+                $item['reg_date'] = $parts[0];
+	    
+                if($item['card_number'] == null) {
+                    if ((!isset($_GET['withonly']))||($_GET['withonly']!=0))
+		    {
+			$omsWithout[] = $item;
+		    }
+		    
+                } else {
+                    if ((!isset($_GET['withoutonly']))||($_GET['withoutonly']!=0))
+		    {
+			$omsWith[] = $item;
+		    }		    
                 }
             }
 
@@ -465,9 +513,37 @@ class PatientController extends Controller {
                                      'data' => array('without' => $omsWithout,
                                      'with' => $omsWith)
             ));
-        }
+        }*/
     }
+    
+    private function checkFilters($filters = false)
+    {
+	 if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
+            echo CJSON::encode(array('success' => false,
+                                     'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
 
+        $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
+        $allEmpty = true;
+
+        foreach($filters['rules'] as $key => $filter) {
+            if(trim($filter['data']) != '') {
+                $allEmpty = false;
+            }
+        }
+
+        if($allEmpty) {
+            echo CJSON::encode(array('success' => false,
+                    'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
+	
+	return $filters;
+    }
+    
     private function searchPatients($filters = false, $distinct = false) {
         if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,
