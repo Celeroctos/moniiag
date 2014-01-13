@@ -131,7 +131,7 @@ $(document).ready(function() {
                             'data' : extra,
                             'type' : 'GET',
                             'success' : function(data, textStatus, jqXHR) {
-                                if(data.success == 'true') {
+                                if(data.success == 'true' || data.success == true) {
                                     $(chooser).find('li').remove();
                                     current = null;
                                     var ul = $(chooser).find('.variants')
@@ -237,7 +237,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/search?page=1&withandwithout=0&rows=10&sidx=id&sord=desc&filters=',
+            'url' : '/index.php/reception/patient/search?page=1&withandwithout=0&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
