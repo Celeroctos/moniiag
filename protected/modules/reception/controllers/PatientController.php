@@ -430,26 +430,34 @@ class PatientController extends Controller {
 
     // Поиск пациента и его запсь
     public function actionSearch($withAndWithout = true) {
-        $oms = $this->searchPatients();
         if(isset($_GET['withandwithout']) && $_GET['withandwithout'] == 0) {
+            $oms = $this->searchPatients(false, true);
             foreach($oms as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
+                if(isset($item['reg_date'])) {
+                    $parts = explode('-', $item['reg_date']);
+                    $item['reg_date'] = $parts[0];
+
+                    $parts = explode('-', $item['birthday']);
+                    $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+                }
             }
             echo CJSON::encode(array('success' => 'true',
                                      'rows' => $oms)
             );
         } else {
+            $oms = $this->searchPatients();
             $omsWith = array();
             $omsWithout = array();
 
             foreach($oms as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
-                if($item['card_number'] == null) {
-                    $omsWithout[] = $item;
-                } else {
-                    $omsWith[] = $item;
+                if(isset($item['reg_date'])) {
+                    $parts = explode('-', $item['reg_date']);
+                    $item['reg_date'] = $parts[0];
+                    if($item['card_number'] == null) {
+                        $omsWithout[] = $item;
+                    } else {
+                        $omsWith[] = $item;
+                    }
                 }
             }
 
@@ -460,7 +468,7 @@ class PatientController extends Controller {
         }
     }
 
-    private function searchPatients($filters = false) {
+    private function searchPatients($filters = false, $distinct = false) {
         if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,
                                      'data' => 'Задан пустой поисковой запрос.')
@@ -479,13 +487,17 @@ class PatientController extends Controller {
 
         if($allEmpty) {
             echo CJSON::encode(array('success' => false,
-                    'data' => 'Задан пустой поисковой запрос.')
+                                     'data' => 'Задан пустой поисковой запрос.')
             );
             exit();
         }
 
         $model = new Oms();
-        $oms = $model->getRows($filters);
+        if(!$distinct) {
+            $oms = $model->getRows($filters);
+        } else {
+            $oms = $model->getDistinctRows($filters);
+        }
         return $oms;
     }
 
