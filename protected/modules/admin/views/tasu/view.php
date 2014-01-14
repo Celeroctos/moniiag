@@ -36,9 +36,6 @@
             <div>
                 <input type="button" value="Загрузить" class="btn btn-success submit" >
             </div>
-            <div class="no-display">
-                <input type="button" value="OK" class="btn btn-success successUpload">
-            </div>
         </div>
     </form>
 </div>
@@ -60,7 +57,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    globalVariables.uploadInfoFieldName = '<?php echo ini_get("session.upload_progress.name"); ?>';
-</script>
-<iframe id="fileIframe" name='fileIframe'  class="no-display" src="http://moniiag.toonftp.ru/index.php/admin/tasu/view?iframe"></iframe>

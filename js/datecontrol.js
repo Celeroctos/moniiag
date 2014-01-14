@@ -210,12 +210,12 @@ $(document).ready(function() {
                         }
                     } else {
 						// Введённый вначале нуль запоминать
-						if((e.keyCode == 48 || e.keyCode == 96) && $(this).val().length == 0) {
+						if(e.keyCode == 48 || e.keyCode == 96) {
 							lastNullEntered = true;
 							return false;
 						}
                         // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
-                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
 							$(this).animate({
 								backgroundColor: "rgb(255, 196, 196)"
 							});
@@ -305,12 +305,12 @@ $(document).ready(function() {
                         }
                     } else {
 						// Введённый вначале нуль запоминать
-						if((e.keyCode == 48 || e.keyCode == 96) && $(this).val().length == 0) {
+						if(e.keyCode == 48 || e.keyCode == 96) {
 							lastNullEntered = true;
 							return false;
 						}
                         // Стрелки вправо-влево, tab и backspace разрешать
-                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
