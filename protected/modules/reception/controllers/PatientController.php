@@ -429,96 +429,64 @@ class PatientController extends Controller {
     }
 
     // Поиск пациента и его запсь
-    public function actionSearch() {
-	// Проверим наличие фильтров
-	$filters = $this->checkFilters();
-	
-	$rows = $_GET['rows'];
-	$page = $_GET['page'];
-        $sidx = $_GET['sidx'];
-        $sord = $_GET['sord'];
-	
-	$WithOnly = false;
-	$WithoutOnly = false;
-	
-	$oms = array();
-	if ((isset($_GET['withonly']))&&($_GET['withonly']==0))
-	{
-	    $WithOnly = true;
-	}
-	
-	if ((isset($_GET['withoutonly']))&&($_GET['withoutonly']==0))
-	{
-	    $WithoutOnly = true;		
-	}
-	
-	$model = new Oms();
-	// Вычислим общее количество записей
-	$num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
+    public function actionSearch($filters = false, $distinct = false) {
+		// Проверим наличие фильтров
+		$filters = $this->checkFilters($filters);
+		
+		$rows = $_GET['rows'];
+		$page = $_GET['page'];
+		$sidx = $_GET['sidx'];
+		$sord = $_GET['sord'];
+		
+		$WithOnly = false;
+		$WithoutOnly = false;
+		
+		$oms = array();
+		if ((isset($_GET['withonly']))&&($_GET['withonly']==0))
+		{
+			$WithOnly = true;
+		}
+		
+		if ((isset($_GET['withoutonly']))&&($_GET['withoutonly']==0))
+		{
+			$WithoutOnly = true;		
+		}
+		
+		$model = new Oms();
+		// Вычислим общее количество записей
+		$num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
 
-	$totalPages = ceil(count($num) / $rows);
-        $start = $page * $rows - $rows;
-	
+		$totalPages = ceil(count($num) / $rows);
+		$start = $page * $rows - $rows;
+		
 
-	
-	$omsItems = $model->getRows($filters, $sidx, $sord, $start, $rows,$WithOnly,$WithoutOnly);
-
-	// Обрабатываем результат
-	foreach($omsItems as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
-        }
-	echo CJSON::encode(
-			   array(
-				    'success' => true,
-				    'rows' => $omsItems,
-				    'total' => $totalPages,
-				    'records' => count($num)
-				 )
-			   );
-	
-	//==================
-	/*$oms = $this->searchPatients();
-        if(isset($_GET['withandwithout']) && $_GET['withandwithout'] == 0) {
-            foreach($oms as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
-            }
-            echo CJSON::encode(array('success' => 'true',
-                                     'rows' => $oms)
-            );
+		
+        $model = new Oms();
+        if(!$distinct) {
+            $oms = $model->getRows($filters, $sidx, $sord, $start, $rows,$WithOnly, $WithoutOnly);
         } else {
-            $omsWith = array();
-            $omsWithout = array();
+            $oms = $model->getDistinctRows($filters);
+        }
 
-            foreach($oms as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
-	    
-                if($item['card_number'] == null) {
-                    if ((!isset($_GET['withonly']))||($_GET['withonly']!=0))
-		    {
-			$omsWithout[] = $item;
-		    }
-		    
-                } else {
-                    if ((!isset($_GET['withoutonly']))||($_GET['withoutonly']!=0))
-		    {
-			$omsWith[] = $item;
-		    }		    
-                }
-            }
-
-            echo CJSON::encode(array('success' => true,
-                                     'data' => array('without' => $omsWithout,
-                                     'with' => $omsWith)
-            ));
-        }*/
+		// Обрабатываем результат
+		foreach($oms as $index => $item) {
+			if(isset($item['reg_date'])) {
+				$parts = explode('-', $item['reg_date']);
+				$item['reg_date'] = $parts[0];
+			}
+		}
+		echo CJSON::encode(
+		   array(
+				'success' => true,
+				'rows' => $oms,
+				'total' => $totalPages,
+				'records' => count($num)
+			 )
+		   );
     }
     
-    private function checkFilters($filters = false)
-    {
-	 if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
+    private function checkFilters($filters = false) {
+		if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,
                                      'data' => 'Задан пустой поисковой запрос.')
             );
@@ -541,10 +509,10 @@ class PatientController extends Controller {
             exit();
         }
 	
-	return $filters;
+		return $filters;
     }
     
-    private function searchPatients($filters = false, $distinct = false) {
+    /*private function searchPatients($filters = false, $distinct = false) {
         if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,
                                      'data' => 'Задан пустой поисковой запрос.')
@@ -575,7 +543,7 @@ class PatientController extends Controller {
             $oms = $model->getDistinctRows($filters);
         }
         return $oms;
-    }
+    } */
 
 
     // Постановка на учёт беременных, вьюха

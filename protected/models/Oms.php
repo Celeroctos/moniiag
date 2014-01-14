@@ -33,12 +33,12 @@ class Oms extends MisActiveRecord {
             ));
         }
 
-        // Если только без карт - ставим условие WHERE card_number==null
+        // WHERE card_number==null
         if ($onlyWithoutCards)
         {
             $oms->andWhere("coalesce(m.card_number,'')=''");
         }
-        // Если только без карт - ставим условие WHERE card_number!=null
+        //WHERE card_number!=null
         if ($onlyWithCards)
         {
             $oms->andWhere("coalesce(m.card_number,'')!=''");
