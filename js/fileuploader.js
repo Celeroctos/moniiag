@@ -3,11 +3,17 @@ $(document).ready(function() {
     var cleanExample = null;
     for(var i = 0; i < fileUploadersGroups.length; i++) {
         (function(fileUploadersGroup) {
+            var cleanGroupExample = null; // Каждая группа - под своим ID, поэтому она этим различается как минимум
             var uploaders = $(fileUploadersGroup).find('.fileinput');
             if(cleanExample == null && uploaders.length > 0) {
                 // Сохраняем проклонированный узел, чтобы генерировать новые узлы для массовой загрузки
                 cleanExample = $(uploaders[0]).clone();
             }
+            if(cleanGroupExample == null) {
+                // Сохраняем проклонированный узел, чтобы генерировать новые узлы для массовой загрузки
+                cleanGroupExample = $(fileUploadersGroup).clone();
+            }
+
             // Подвязка генерации новых элементов управления
             $(document).on('click', '.fileinput button.plus', function() {
                 // Если среди группы аплоадеров есть элемент, у которого закрыта кнопка добавления контрола, то это означает, что не надо создавать новый контрол: есть, куда пихать файлы
@@ -25,31 +31,51 @@ $(document).ready(function() {
                 }
                 uploaders = $(fileUploadersGroup).find('.fileinput');
             });
+
+            $(fileUploadersGroup).on('click', '.successUpload', function() {
+                var parentCont = $('.fileinput-group').parent();
+                $('.fileinput-group').remove();
+                $(parentCont).append(cleanGroupExample);
+                // TODO: исчезает кнопка "Загрузить"
+            });
             var contId = $(fileUploadersGroup).prop('id');
             $(fileUploadersGroup).find('.submit').on('click', function() {
                 // Теперь грузим файлы
+                // 
                 var currentIndex = 0;
                 var uploadProcess = false; // Флаг, который говорит нам о том, что процесс загрузки не идёт
                 var currentProcent = 0; // Процент загрузки текущего файла
 
-                var hiddenIframe = $('<iframe>').appendTo($('body'));
+                var hiddenIframe = $('#fileIframe');
                 $(hiddenIframe).css({
                     'class' : 'no-display'
                 });
                 var iframeForm = $('<form>').prop({
                     'enctype' : 'multipart/form-data',
-                    'action' : fileUploadersConfig[contId].url
+                    'action' : fileUploadersConfig[contId].url,
+                    'method' : 'POST'
                 });
-                var iframeDocumentElement = $(hiddenIframe).contents();
-                $(iframeDocumentElement).ready(function() {
+
+                $(hiddenIframe).ready(function(){
+                    $(fileUploadersGroup).find('.submit').hide();
                     uploadProcessFunc();
                 });
 
                 function uploadProcessFunc() {
                     if(!uploadProcess) {
+                        var iframeDocumentElement = $(hiddenIframe).contents();
+                        $(iframeForm).find('input').remove();
+                        var hiddenField = $('<input>').prop({
+                            'type' : 'hidden',
+                            'name' : globalVariables.uploadInfoFieldName,
+                            'value' : 'upfile'
+                        });
+                        $(hiddenField).appendTo(iframeForm);
                         var fileField = $(uploaders[currentIndex]).find('input[type="file"]');
-                        $(fileField).clone().appendTo(iframeForm);
+                        $(fileField).prop('name', 'uploadedFile');
+                        $(iframeForm).append(fileField);
                         $(iframeForm).appendTo($(iframeDocumentElement).find('body'));
+                        //return;
                         $(iframeForm).submit();
                         // Показывам прогресс-бар, скрываем файл
                         $(uploaders[currentIndex]).find('span:not([class="description"]), a, input').hide();
@@ -62,7 +88,7 @@ $(document).ready(function() {
                     } else {
                         // Делаем запрос на сервер. В том случае, если загружено не полностью, запускать ещё раз на проверку
                         $.ajax({
-                            'url' : fileUploadersConfig[contId].url + '?onlysayuploadedpart=1',
+                            'url' : fileUploadersConfig[contId].progressurl,
                             'cache' : false,
                             'dataType' : 'json',
                             'type' : 'GET',
@@ -72,11 +98,14 @@ $(document).ready(function() {
                                     var progress = $(uploaders[currentIndex]).find('.progress');
                                     var dataForCalc = data.data;
                                     currentProcent = (dataForCalc.uploaded / dataForCalc.filesize) * 100;
+                                    if(currentProcent > 100) {
+                                        currentProcent = 100;
+                                    }
                                     $(progress).find('.progress-bar').css({'width' : currentProcent + '%'});
                                     // Устанавливаем описание, сколько процентов загружено
-                                    $(progress).find('.progress-bar .sr-only').text(currentProcent + '% завершено');
-                                    $(progress).find('.description').text(currentProcent + '% завершено');
-                                    if(currentProcent == 100) {
+                                    $(progress).find('.progress-bar .sr-only').text(parseFloat(currentProcent).toFixed(2) + '% завершено');
+                                    $(progress).find('.description').text(parseFloat(currentProcent).toFixed(2) + '% завершено');
+                                    if(currentProcent == 100 && data.data.done != false) {
                                         // Нужно завершить загрузку файла, скрыть прогресс-бар и начать загрузку следующего, если ещё не все загружены
                                         currentProcent = 0;
                                         uploadProcess = false;
@@ -88,6 +117,8 @@ $(document).ready(function() {
                                         // Ещё есть файлы
                                         if(currentIndex != null) {
                                             uploadProcessFunc();
+                                        } else {
+                                            $(fileUploadersGroup).find('.successUpload').parents('.no-display').show();
                                         }
                                     } else {
                                         setTimeout(function() {
@@ -108,6 +139,7 @@ $(document).ready(function() {
 
 var fileUploadersConfig = {
     'tasuIn' : {
-        'url' : '/index.php/admin/tasu/uploadoms'
+        'url' : '/index.php/admin/tasu/uploadoms',
+        'progressurl' : '/index.php/admin/tasu/getuploadprogressinfo'
     }
 }
