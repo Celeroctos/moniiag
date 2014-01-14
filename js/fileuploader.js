@@ -41,7 +41,7 @@ $(document).ready(function() {
             var contId = $(fileUploadersGroup).prop('id');
             $(fileUploadersGroup).find('.submit').on('click', function() {
                 // Теперь грузим файлы
-                // 
+                //
                 var currentIndex = 0;
                 var uploadProcess = false; // Флаг, который говорит нам о том, что процесс загрузки не идёт
                 var currentProcent = 0; // Процент загрузки текущего файла
