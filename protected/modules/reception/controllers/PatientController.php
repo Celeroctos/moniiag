@@ -544,10 +544,36 @@ class PatientController extends Controller {
 	return $filters;
     }
     
-    private function searchPatients($filters = false) {
+    private function searchPatients($filters = false, $distinct = false) {
+        if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
+            echo CJSON::encode(array('success' => false,
+                                     'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
+
+        $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
+        $allEmpty = true;
+
+        foreach($filters['rules'] as $key => $filter) {
+            if(trim($filter['data']) != '') {
+                $allEmpty = false;
+            }
+        }
+
+        if($allEmpty) {
+            echo CJSON::encode(array('success' => false,
+                                     'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
 
         $model = new Oms();
-        $oms = $model->getRows($filters);
+        if(!$distinct) {
+            $oms = $model->getRows($filters);
+        } else {
+            $oms = $model->getDistinctRows($filters);
+        }
         return $oms;
     }
 

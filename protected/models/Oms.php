@@ -53,6 +53,29 @@ class Oms extends MisActiveRecord {
         
         return $oms->queryAll();
     }
+
+    public function getDistinctRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+        $connection = Yii::app()->db;
+        $oms = $connection->createCommand()
+            ->select('o.*')
+            ->from('mis.oms o');
+
+        if($filters !== false) {
+            $this->getSearchConditions($oms, $filters, array(
+                'fio' => array(
+                    'first_name',
+                    'last_name',
+                    'middle_name'
+                )
+            ), array(
+                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio')
+            ), array(
+
+            ));
+        }
+
+        return $oms->queryAll();
+    }
 }
 
 ?>

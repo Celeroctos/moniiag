@@ -39,7 +39,12 @@ $(document).ready(function() {
                         }
                         mode = 0;
                         $(chooser).find('.variants li:eq(' + current + ')').addClass('active');
-                        $(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                        if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('displayFunc')) {
+                            var toDisplay = choosersConfig[$(chooser).prop('id')].displayFunc(currentElements[current]);
+                            $(chooser).find('input').val(toDisplay);
+                        } else {
+                            $(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                        }
                     }
                     // Стрелка "Вниз"
                     if(e.keyCode == 40) {
@@ -56,7 +61,12 @@ $(document).ready(function() {
                         }
                         mode = 0;
                         $(chooser).find('.variants li:eq(' + current + ')').addClass('active');
-                        $(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                        if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('displayFunc')) {
+                            var toDisplay = choosersConfig[$(chooser).prop('id')].displayFunc(currentElements[current]);
+                            $(chooser).find('input').val(toDisplay);
+                        } else {
+                            $(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                        }
                     }
 
                     // Нажатие Enter переносит в список выбранных
@@ -121,7 +131,7 @@ $(document).ready(function() {
                             'data' : extra,
                             'type' : 'GET',
                             'success' : function(data, textStatus, jqXHR) {
-                                if(data.success == 'true') {
+                                if(data.success == 'true' || data.success == true) {
                                     $(chooser).find('li').remove();
                                     current = null;
                                     var ul = $(chooser).find('.variants')
@@ -222,9 +232,12 @@ $(document).ready(function() {
         'patientChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
+                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number));
             },
-            'url' : '/index.php/reception/patient/search?page=1&withandwithout=0&rows=10&sidx=id&sord=desc&filters=',
+            'displayFunc' : function(row) {
+                return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+            },
+            'url' : '/index.php/reception/patient/search?page=1&withandwithout=0&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [

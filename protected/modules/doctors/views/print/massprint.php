@@ -9,26 +9,6 @@
     С помощью элементов управления, расположенных ниже, Вы можете выбрать врачей, для которых необходимо напечатать определённые записи медицинской карты, а также сами записи.
 </p>
 <form class="form-horizontal col-xs-12" role="form" id="print-search-form" method="post">
-    <div class="form-group chooser" id="doctorChooser">
-        <label for="doctor" class="col-xs-2 control-label">Врач (Enter - добавить)</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="doctor" placeholder="ФИО врача">
-            <ul class="variants no-display">
-            </ul>
-            <div class="choosed">
-            </div>
-        </div>
-    </div>
-    <div class="form-group chooser" id="patientChooser">
-        <label for="categorie" class="col-xs-2 control-label">Пациент (Enter - добавить)</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
-            <ul class="variants no-display">
-            </ul>
-            <div class="choosed">
-            </div>
-        </div>
-    </div>
     <div class="form-group">
         <label for="greetingDate" class="col-xs-2 control-label required">Дата приёма</label>
         <div id="greetingDate-cont" class="col-xs-3 input-group date">
@@ -57,6 +37,26 @@
                         <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group chooser" id="doctorChooser">
+        <label for="doctor" class="col-xs-2 control-label">Врач (Enter - добавить)</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" autofocus id="doctor" placeholder="ФИО врача">
+            <ul class="variants no-display">
+            </ul>
+            <div class="choosed">
+            </div>
+        </div>
+    </div>
+    <div class="form-group chooser" id="patientChooser">
+        <label for="categorie" class="col-xs-2 control-label">Пациент (Enter - добавить)</label>
+        <div class="col-xs-4">
+            <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
+            <ul class="variants no-display">
+            </ul>
+            <div class="choosed">
             </div>
         </div>
     </div>
