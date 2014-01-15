@@ -317,6 +317,9 @@ span.input-group-addon {
 div.date {
 
 }
+div.time-control {
+
+}
 .shedule {
   select {
 
@@ -333,6 +336,9 @@ div.date {
 button[class*=year-button], button[class*=month-button], button[class*=day-button] {
   padding-bottom: 3px;
 }
+/*button[class*=hour-button], button[class*=minute-button] {
+  padding-bottom: 3px;
+}*/
 .help-block {
   display: none;
 }
@@ -363,6 +369,16 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
       top: 5px;
    }
  }
+ .time-ctrl-up-buttons {
+    .btn-group {
+      top: -2px;
+    }
+  }
+ .time-ctrl-down-buttons {
+   .btn-group {
+      top: 5px;
+   }
+ }
 .date-ctrl-up-buttons, .date-ctrl-down-buttons {
     button {
       margin-left: 10px !important;
@@ -373,6 +389,16 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
     }
     button + button + button {
       margin-left: 40px !important;
+    }
+
+  }
+  .time-ctrl-up-buttons, .time-ctrl-down-buttons {
+    button {
+      margin-left: 5px !important;
+      top: -2px;
+    }
+    button + button {
+      margin-left: 20px !important;
     }
 
   }
@@ -388,6 +414,13 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
       width: 60px;
       margin-left: 10px;
     }
+    .hour {
+      width: 35px;
+    }
+    .minute {
+      width: 35px;
+      margin-left: 0px;
+    }
   }
 }
 #patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form, #patient-search-form, #patient-medcard-edit-form,
@@ -400,6 +433,22 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
       left: 180px;
       z-index: 99;
       span.glyphicon-calendar {
+        margin: 0 0 0 -5px;
+        left: 0;
+      }
+    }
+  }
+}
+
+#shift-edit-form {
+  div.date {
+    span {
+      display: block;
+      position: relative;
+      top: 2px;
+      left: 85px;
+      z-index: 99;
+      span.glyphicon-time {
         margin: 0 0 0 -5px;
         left: 0;
       }

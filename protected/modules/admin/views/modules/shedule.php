@@ -41,6 +41,11 @@
                 <?php echo $form->error($model,'firstVisit'); ?>
             </div>
         </div>
+        
+        
+       
+        
+        
         <div class="form-group">
             <?php echo $form->labelEx($model,'quote', array(
                 'class' => 'col-xs-2 control-label'
@@ -81,51 +86,6 @@
             ); ?>
         </div>
     <?php $this->endWidget(); ?>
-</div>
-<div class="modal fade error-popup" id="errorSheduleSettingsEditPopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Ошибка!</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade error-popup" id="successSheduleSettingsEditPopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Успешно!</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <p>Настройки модуля сохранены.</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
-<h4>Список смен</h4>
-<p>Вы можете добавить, удалить или отредактировать смены, по которым работают врачи.</p>
-<table id="shifts"></table>
-<div id="shiftsPager"></div>
-<div class="btn-group default-margin-top">
-    <button type="button" class="btn btn-default" id="addShift">Добавить запись</button>
-    <button type="button" class="btn btn-default" id="editShift">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteShift">Удалить выбранные</button>
 </div>
 <div class="modal fade" id="addShiftPopup">
     <div class="modal-dialog">
@@ -204,6 +164,52 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="errorSheduleSettingsEditPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successSheduleSettingsEditPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Настройки модуля сохранены.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<h4>Список смен</h4>
+<p>Вы можете добавить, удалить или отредактировать смены, по которым работают врачи.</p>
+<table id="shifts"></table>
+<div id="shiftsPager"></div>
+<div class="btn-group default-margin-top">
+    <button type="button" class="btn btn-default" id="addShift">Добавить запись</button>
+    <button type="button" class="btn btn-default" id="editShift">Редактировать выбранную запись</button>
+    <button type="button" class="btn btn-default" id="deleteShift">Удалить выбранные</button>
+</div>
+
 <div class="modal fade" id="editShiftPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -225,43 +231,149 @@
             ));
             ?>
             <div class="modal-body">
+                <?php echo $form->hiddenField($shiftModel,'id', array(
+                    'id' => 'id',
+                ));?>
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="form-group">
-                            <?php echo $form->hiddenField($shiftModel,'id', array(
-                                'id' => 'id',
-                            )); ?>
-                            <?php echo $form->labelEx($shiftModel,'timeBegin', array(
+                        
+                        
+
+                            <!-- Старый контрол времени-->
+                            <!-- ===================== -->
+                            <!-- <div class="form-group"> -->
+                            <?php
+                            /*echo $form->labelEx($shiftModel,'timeBegin', array(
                                 'class' => 'col-xs-3 control-label'
-                            )); ?>
+                            ));*/
+                            ?>
+                            <!--
                             <div class="col-xs-9 input-group date" id="timeBegin-cont">
-                                <?php echo $form->textField($shiftModel,'timeBegin', array(
+                                <?php/* echo $form->textField($shiftModel,'timeBegin', array(
                                     'id' => 'timeBegin',
                                     'class' => 'form-control',
                                     'placeholder' => 'Формат (чч:мм)'
-                                )); ?>
+                                )); */?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                                <?php echo $form->error($shiftModel,'timeBegin'); ?>
+                                <?php /* echo $form->error($shiftModel,'timeBegin'); */?>
+                            </div>
+                            -->
+                            <!-- </div> -->
+                            <!-- ===================== -->
+                            
+            <!-- Новый контрол времени -->
+                <div class="form-group">
+                    <?php
+                        echo $form->labelEx($shiftModel,'timeBegin', array(
+                                'class' => 'col-xs-3 control-label'
+                            ));
+                    ?>
+                    <div class="col-xs-9 input-group date time-control" id="edit-timeBegin-cont">
+                        <?php echo $form->hiddenField($shiftModel,'timeBegin', array(
+                            'id' => 'timeBegin',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат (чч:мм)'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="time-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                             <!--   <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                            -->
+                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                :
+                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                            </div>
+                            <div class="time-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($shiftModel,'timeEnd', array(
+                    </div>
+                </div>
+            
+            <!-- -->
+            
+            
+            
+                            
+                        <!-- <div class="form-group"> -->
+                            <?php /*echo $form->labelEx($shiftModel,'timeEnd', array(
                                 'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9 input-group date" id="timeEnd-cont">
-                                <?php echo $form->textField($shiftModel,'timeEnd', array(
+                            )); */?>
+                           <!-- <div class="col-xs-9 input-group date" id="timeEnd-cont"> -->
+                                <?php /*echo $form->textField($shiftModel,'timeEnd', array(
                                     'id' => 'timeEnd',
                                     'class' => 'form-control',
                                     'placeholder' => 'Формат (чч:мм)'
-                                )); ?>
-                                <span class="input-group-addon">
+                                )); */ ?>
+                               <!-- <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
-                                <?php echo $form->error($shiftModel,'timeEnd'); ?>
+                                </span> -->
+                                <?php /* echo $form->error($shiftModel,'timeEnd'); */ ?>
+                           <!-- </div>
+                        </div> -->
+                        
+                        
+                                    <!-- Новый контрол времени -->
+                <div class="form-group">
+                    <?php
+                        echo $form->labelEx($shiftModel,'timeEnd', array(
+                                'class' => 'col-xs-3 control-label'
+                            ));
+                    ?>
+                    <div class="col-xs-9 input-group date time-control" id="edit-timeEnd-cont">
+                        <?php echo $form->hiddenField($shiftModel,'timeEnd', array(
+                            'id' => 'timeEnd',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат (чч:мм)'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="time-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                             <!--   <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                            -->
+                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                :
+                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                            </div>
+                            <div class="time-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            
+            <!-- -->
+
+                        
+                        
                     </div>
                 </div>
             </div>

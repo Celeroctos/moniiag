@@ -185,7 +185,7 @@ class ModulesController extends Controller {
     public function addEditModelShift($shift, $model) {
         $shift->time_begin = $model->timeBegin;
         $shift->time_end = $model->timeEnd;
-
+        
         if(!$shift->save()) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи новой смены.'));

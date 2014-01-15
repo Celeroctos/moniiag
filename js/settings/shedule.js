@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    
     $("#shifts").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/modules/getshifts',
         datatype: "json",
@@ -155,6 +156,7 @@ $(document).ready(function() {
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+                            form.find('#' + fields[i].formField).trigger('change');
                         }
                         $("#editShiftPopup").modal(
                                                    {
@@ -196,7 +198,7 @@ $(document).ready(function() {
     });
 
     // Инициализация timePicker-ов
-    $('#timeBegin-cont, #timeEnd-cont').datetimepicker({
+    $(/*'#timeBegin-cont,*/ '#timeEnd-cont').datetimepicker({
         language:  'ru',
         format: 'h:i',
         weekStart: 1,

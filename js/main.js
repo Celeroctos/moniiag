@@ -147,12 +147,22 @@
     $("#logout-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         window.location.reload();
     });
+    
     // Показ подсказки по фокусу на поле
     $('input').on('focus', function(e) {
-        $('.help-block').hide();
+        
+        // Из-за этого рубится событие клик
+        //$('.help-block').hide();
+        
+        
         var helpBlock = $(this).parents('.form-group').find('.help-block');
         if(typeof helpBlock != 'undefined') {
-            $(helpBlock).show();
+            if ($(helpBlock).length>0) {
+                    $(helpBlock).show();
+            }
+            
         }
     });
+    
+   
 });

@@ -1,8 +1,27 @@
 $(document).ready(function() {
-    $('.subcontrol input').val('');
+    
+         // Перечень контейнеров с контролами дат
+    var DateControlContainers =
+    [
+        '#birthday-cont',
+        '#document-givedate-cont',
+        '#priv-document-givedate-cont',
+        '#policy-givedate-cont',
+        '#policy-enddate-cont',
+        '#search-date-cont',
+        '#current-date-cont',
+        '#date-cont',
+        '#dateBegin-cont',
+        '#dateEnd-cont',
+        '#dateBeginEdit-cont',
+        '#dateEndEdit-cont',
+        '#greetingDate-cont'
+    ];
+    
+  //   $('.subcontrol input').val('');
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
-    function ArrowCalendarClickHandler(Target, Control)  {
+   function ArrowCalendarClickHandler(Target, Control)  {
         // Парсим дату
         // Разделяем её на три группы символов
         var DateArray = $(Control).find('input.form-control').val().split("-");
@@ -97,8 +116,15 @@ $(document).ready(function() {
     // Стрелки вверх-вниз для листания
     // Сначала стрелки вверх
     (function () {
+
+            var Controls = [];
+            for (OneControlContainer=0;OneControlContainer<DateControlContainers.length;OneControlContainer++)
+            {
+                var ControlSelector = DateControlContainers[OneControlContainer];
+                Controls.push($(ControlSelector)[0]);
+            }
         // Выбираем все контролы дат
-        var Controls = $('div.date');
+        //var Controls = $('div.date');
         // Перебираем выбранные контролы
         for (i = 0; i < Controls.length; i++) {
             // Замыкаем ссылку на каждый контрол
@@ -431,19 +457,25 @@ $(document).ready(function() {
             });
             var ctrl = $(dateFields[i]).find('input.form-control:first');
             $(ctrl).on('change', function(e, type){
+		console.log('DateControl Changed');
                 var subcontrols = $(this).parents('.form-group').find('.subcontrol');
                 if(typeof subcontrols != 'undefined') {
+		    
                     var day = $(subcontrols).find('input.day');
                     var month = $(subcontrols).find('input.month');
                     var year = $(subcontrols).find('input.year');
                     // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
                     // Из суб в настоящий
                     if(typeof type == 'undefined') {
+			//$(subcontrols).find('input').val('');
                         var currentDate = $(this).val();
                         var parts = currentDate.split('-');
                         $(day).val(parseInt(parts[2]));
                         $(month).val(parseInt(parts[1]));
                         $(year).val(parts[0]);
+			//$(day).val(parts[2]);
+                        //$(month).val(parts[1]);
+                        //$(year).val(parts[0]);
                     } else { // Из настоящего в суб
                         $(this).val(year.val() + '-' + month.val() + '-' + day.val());
                     }
@@ -453,19 +485,5 @@ $(document).ready(function() {
                 $(ctrl).trigger('change');
             }
         }
-    })([
-        '#birthday-cont',
-        '#document-givedate-cont',
-        '#priv-document-givedate-cont',
-        '#policy-givedate-cont',
-        '#policy-enddate-cont',
-        '#search-date-cont',
-        '#current-date-cont',
-        '#date-cont',
-        '#dateBegin-cont',
-        '#dateEnd-cont',
-        '#dateBeginEdit-cont',
-        '#dateEndEdit-cont',
-        '#greetingDate-cont'
-    ]);
+    })(DateControlContainers);
 });
