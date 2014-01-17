@@ -159,3 +159,77 @@ Stack trace:
 REQUEST_URI=/index.php/reception/patient/add
 HTTP_REFERER=http://mis.my/index.php/reception/patient/viewadd
 ---
+2014/01/16 12:22:29 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://mis.my/index.php/settings/profile/view
+---
+2014/01/16 12:39:49 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "settings/system/view".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('settings/system...')
+#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/settings/system/view
+HTTP_REFERER=http://mis.my/index.php/settings/profile/view
+---
+2014/01/16 13:35:03 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleAdd.endBegin" is not defined.' in Z:\home\mis.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\mis.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('endBegin')
+#1 Z:\home\mis.my\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormSheduleAdd), 'endBegin')
+#2 Z:\home\mis.my\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormSheduleAdd), 'endBegin', Array)
+#3 Z:\home\mis.my\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormSheduleAdd), 'endBegin', Array)
+#4 Z:\home\mis.my\www\protected\modules\admin\views\shedule\index.php(175): CActiveForm->hiddenField(Object(FormSheduleAdd), 'endBegin', Array)
+#5 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
+#6 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
+#7 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
+#8 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(40): CController->render('index', Array)
+#10 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#11 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#14 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#17 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#19 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#20 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://mis.my/index.php/admin/modules/shedulesettings
+---
+2014/01/16 13:54:15 [error] [exception.CException] exception 'CException' with message 'Property "FormSheduleAdd.timeBegin" is not defined.' in Z:\home\mis.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\mis.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('timeBegin')
+#1 Z:\home\mis.my\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormSheduleAdd), 'timeBegin')
+#2 Z:\home\mis.my\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormSheduleAdd), 'timeBegin', Array)
+#3 Z:\home\mis.my\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormSheduleAdd), 'timeBegin', Array)
+#4 Z:\home\mis.my\www\protected\modules\admin\views\shedule\index.php(251): CActiveForm->hiddenField(Object(FormSheduleAdd), 'timeBegin', Array)
+#5 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
+#6 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
+#7 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
+#8 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#9 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(40): CController->render('index', Array)
+#10 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#11 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 Z:\home\mis.my\www\protected\components\Controller.php(17): CFilterChain->run()
+#14 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#17 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#19 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#20 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://mis.my/index.php/admin/modules/shedulesettings
+---

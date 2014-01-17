@@ -164,5 +164,9 @@
         }
     });
     
+    // Ставим классы для различения контролов времени и даты
+    $('div.date').addClass('date-control');
+    $('div.time-control').removeClass('date-control');
+    
    
 });

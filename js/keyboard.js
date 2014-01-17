@@ -113,7 +113,7 @@ $(document).ready(function(e) {
         for (i=0;i<AllElements.length;i++ )
         {
             //if ($(AllElements[i]).tabIndex==undefined || $(AllElements[i]).tabIndex<0) {
-            if ($(AllElements[i]).tabIndex<0) {
+            if (($(AllElements[i])[0]).tabIndex<0) {
             
                 NegativeTabIndex.push(AllElements[i]);
             }
@@ -296,6 +296,17 @@ $(document).ready(function(e) {
         if ($(ElementToFocus)[0]!=FocusedObject) { 
             return false;
         }
+        
+        // Если у элемента до инициализации системы стоял отрицательный таб-индекс - возвращаем false
+        
+        
+        for (j=0;j<config.negativeTabIndex.length;j++)
+        {
+            if ($(ElementToFocus)[0]==config.negativeTabIndex[j]) {
+                return false;
+            }
+        }
+        
         return true;
     }
          

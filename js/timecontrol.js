@@ -1,11 +1,26 @@
-$(document).ready(function() {
-    
-       
+
      // Перечень контейнеров с контролами дат
     var TimeControlContainers =
         [
         "#edit-timeBegin-cont",
-        "#edit-timeEnd-cont"
+        "#edit-timeEnd-cont",
+        "#add-timeBegin-cont",
+        "#add-timeEnd-cont",
+        "#timeBegin0-cont",
+        "#timeBegin1-cont",
+        "#timeBegin2-cont",
+        "#timeBegin3-cont",
+        "#timeBegin4-cont",
+        "#timeBegin5-cont",
+        "#timeBegin6-cont",
+        "#timeEnd0-cont",
+        "#timeEnd1-cont",
+        "#timeEnd2-cont",
+        "#timeEnd3-cont",
+        "#timeEnd4-cont",
+        "#timeEnd5-cont",
+        "#timeEnd6-cont",
+        
         ];
         
     //$('.subcontrol input').val('');
@@ -71,25 +86,9 @@ $(document).ready(function() {
         $(Control).find('input.form-control:first').trigger('change');
     }
 
-
-    // Стрелки вверх-вниз для листания
-    // Сначала стрелки вверх
-    (function () {
-        // Выбираем все контролы дат
-
-            var Controls = [];
-            for (OneControlContainer=0;OneControlContainer<TimeControlContainers.length;OneControlContainer++)
-            {
-                var ControlSelector = TimeControlContainers[OneControlContainer];
-                Controls.push($(ControlSelector)[0]);
-            }
-            
-            //$(TimeControlContainers[OneControlContainer]).find('div.time-control');
-            // Перебираем выбранные контролы
-            for (i = 0; i < Controls.length; i++) {
-            // Замыкаем ссылку на каждый контрол
-            (function (Control) {
-                // Подвязываем обработчик события нажатия на верхние кнопки для контрола
+    function InitOneControlTimeHandlers(Control)
+    {
+         // Подвязываем обработчик события нажатия на верхние кнопки для контрола
                 var btnPrevNext = $(Control).find('.time-ctrl-up-buttons .btn-group button, .time-ctrl-down-buttons .btn-group button');
                 var lastNullEntered = false; // Чтобы считывать 01, 02...
 				$(btnPrevNext).on('click',function (e) {
@@ -114,14 +113,9 @@ $(document).ready(function() {
 
                      // Только если все три контрола установлены, дату в нормальном контроле можно менять
                      if(allowChange) {
-                         $(this).parents('.form-group').find('input.form-control:first').trigger('change', [1]);
+                         $($(this).parents('div.input-group')[0]).find('input.form-control:first').trigger('change', [1]);
                      }
                 });
-
-               
-                
-                
-                
                 $(subcontrol).find('input.hour').on('keyup', function(e) {
                     // Если есть выделение, не переводить контрол автоматом
                     var selected = getSelected(this);
@@ -186,13 +180,12 @@ $(document).ready(function() {
                             return false;
                         }
                     } else {
-						// Введённый вначале нуль запоминать
-						if(e.keyCode == 48 || e.keyCode == 96) {
-							lastNullEntered = true;
-							return false;
-						}
+                            if($(this).val().length == 0 && (e.keyCode == 48 || e.keyCode == 96)) {
+                                lastNullEntered = true;
+                                return false;
+                            }
                         // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
-                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16  && e.keyCode != 48 && e.keyCode != 96 ) {
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
 							$(this).animate({
 								backgroundColor: "rgb(255, 196, 196)"
 							});
@@ -271,12 +264,12 @@ $(document).ready(function() {
                             return false;
                         }
                     } else {
-						// Введённый вначале нуль запоминать
-						if(e.keyCode == 48 || e.keyCode == 96) {
-							lastNullEntered = true;
-							return false;
-						}
-                        // Стрелки вправо-влево, tab и backspace разрешать
+			// Введённый вначале нуль запоминать
+                        if($(this).val().length == 0 && (e.keyCode == 48 || e.keyCode == 96)) {
+                           lastNullEntered = true;
+                           return false;
+                        }
+                        // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
                         if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
@@ -286,27 +279,39 @@ $(document).ready(function() {
                     }
                 });
                 
-            })(Controls[i]);
+        
+    }
+    // Стрелки вверх-вниз для листания
+    // Сначала стрелки вверх
+    function initTimeEventHandlers() {
+        // Выбираем все контролы дат
+
+            var Controls = [];
+            for (OneControlContainer=0;OneControlContainer<TimeControlContainers.length;OneControlContainer++)
+            {
+                var ControlSelector = TimeControlContainers[OneControlContainer];
+                Controls.push($(ControlSelector)[0]);
+            }
+            
+            //$(TimeControlContainers[OneControlContainer]).find('div.time-control');
+            // Перебираем выбранные контролы
+            for (i = 0; i < Controls.length; i++) {
+                InitOneControlTimeHandlers(Controls[i])
     
         }
     
     }
-    )();
 
     function getSelected(element) {
         return $(element).selection();
     }
     
-
-        
-    // Поля дат
-    (function initTimeFields(timeFields) {
-        var format = 'h:i';
-        for(var i = 0; i < timeFields.length; i++) {
-            if($(timeFields[i]).length == 0) {
-                continue;
+    function InitOneTimeControlInternal(timeField) {
+            var format = 'h:i';
+            if($(timeField).length == 0) {
+                return;
             }
-            $(timeFields[i]).datetimepicker({
+            $(timeField).datetimepicker({
                 language:  'ru',
                 format: format,
                 weekStart: 1,
@@ -321,10 +326,10 @@ $(document).ready(function() {
             
             //continue;
             
-            var ctrl = $(timeFields[i]).find('input.form-control:first');
+            var ctrl = $(timeField).find('input.form-control:first');
             $(ctrl).on('change', function(e, type){
                 console.log('TimeControl Changed');
-                var subcontrols = $(this).parents('.form-group').find('.subcontrol');
+                var subcontrols = $(this).parent().find('.subcontrol');
                 if(typeof subcontrols != 'undefined') {
                     var hour = $(subcontrols).find('input.hour');
                     var minute = $(subcontrols).find('input.minute');
@@ -334,8 +339,17 @@ $(document).ready(function() {
                        // $(subcontrols).find('input').val('');
                         var currentTime = $(this).val();
                         var parts = currentTime.split(':');
-                        $(hour).val(parseInt(parts[0]));
-                        $(minute).val(parseInt(parts[1]));
+                        
+                        var HourInt  = parseInt(parts[0]);
+                        var MinuteInt = parseInt(parts[1]);
+                        
+                        // Проверяем - выводим, если ни одна из компонент не равно NaN
+			//  Если число равно NaN, то проверка Число == Число выдаст false
+                        if ( HourInt==HourInt&& MinuteInt ==MinuteInt ) {
+                            $(hour).val(HourInt);
+                            $(minute).val(MinuteInt);                          
+                           
+                        }
                     } else { // Из настоящего в суб
                         $(this).val(hour.val()+':'+minute.val());
                     }
@@ -344,7 +358,30 @@ $(document).ready(function() {
             if($.trim($(ctrl).val()) != '') {
                 $(ctrl).trigger('change');
             }
-        }
-    })(TimeControlContainers);
-});
+        
+    }
+    
+    // Поля дат
+    function initTimeFields(timeFields) {
 
+        for(var i = 0; i < timeFields.length; i++) {
+            
+            InitOneTimeControlInternal(timeFields[i]);
+        }
+    }
+
+    // Инитим все контролы на странице
+    function InitTimeControls() {
+	initTimeEventHandlers();
+	initTimeFields(TimeControlContainers);
+    }
+
+// Инитим один контрол, чтобы можно было инитить контрол динимаически по результатам аякс-запроса
+function InitOneTimeControl(timeField) {
+    InitOneTimeControlInternal(timeField);
+    InitOneControlTimeHandlers(timeField);
+}
+
+$(document).ready(function() {
+    InitTimeControls()
+});
