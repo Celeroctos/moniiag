@@ -4386,3 +4386,14 @@ Stack trace:
 REQUEST_URI=/index.php/admin/users/edit
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
 ---
+2014/01/21 15:58:26 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getalloforassociate".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getalloforassoc...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getalloforassoc...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/get...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/users/getalloforassociate?_=1390305483466
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---

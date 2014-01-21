@@ -68,8 +68,30 @@ $(document).ready(function() {
 
 
     $("#addUser").click(function() {
-        $('#addUserPopup').modal({
+        $.ajax({
+            'url' : '/index.php/admin/users/getallforassociate',
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var allowForAssociate = data.data;
+                    var select = $('select#employeeId');
+                    $(select).find('option').remove();
 
+                    for(var i = 0; i < allowForAssociate.length; i++) {
+                        $(select).append($('<option>').prop({
+                            'value' : allowForAssociate[i].employee_id
+                        }).text(allowForAssociate[i].employee_fio));
+                    }
+
+                    $('#addUserPopup').modal({
+
+                    });
+                } else{
+
+                }
+            }
         });
     });
 

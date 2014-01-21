@@ -71,6 +71,25 @@ class UsersController extends Controller {
                 $user['employee_fio'] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.$employee['ward'].' отделение, '.$employee['enterprise'].')';
             }
         }
+
+        // Выбираем ещё всех тех сотрудников, которые могут быть ассоциированы
+        echo CJSON::encode(array('success' => true,
+                                 'data' => array(
+                                    'user' => $user,
+                                    'associatedEmployees' => $this->getAllForAssociate()
+                                 )
+                            )
+                        );
+    }
+
+    public function actionGetAllForAssociate() {
+        echo CJSON::encode(array('success' => true,
+                'data' => $this->getAllForAssociate()
+            )
+        );
+    }
+
+    private function getAllForAssociate() {
         $associatedEmployees = array();
         $associatedEmployeesDb = Employee::model()->getAllWithoutUsers();
         foreach($associatedEmployeesDb as $associatedEmployee) {
@@ -79,14 +98,7 @@ class UsersController extends Controller {
                 'employee_id' => $associatedEmployee['id']
             );
         }
-        // Выбираем ещё всех тех сотрудников, которые могут быть ассоциированы
-        echo CJSON::encode(array('success' => true,
-                                 'data' => array(
-                                    'user' => $user,
-                                    'associatedEmployees' => $associatedEmployees
-                                 )
-                            )
-                        );
+        return $associatedEmployees;
     }
 
     public function actionEdit() {
