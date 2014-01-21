@@ -392,7 +392,7 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
   }
 }
 #patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form, #patient-search-form, #patient-medcard-edit-form,
-#print-search-form, #change-date-form {
+#print-search-form, #change-date-form, #doctors-search-form {
   div.date {
     span {
       display: block;
@@ -412,10 +412,18 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
   margin-left: 27%;
 }
 
+.submitImport {
+  margin-top: @default-margin / 2;
+  margin-left: 0px;
+}
+
 .fileinput .progress {
   width: 150%;
   margin-top: 10px;
   margin-bottom: 0;
+}
+.saveAsTemplate, .saveAsKey, .successImport, .pauseImport, .continueImport {
+  margin: 10px 0 0 15px;
 }
 /* Модальные окна */
 
@@ -601,3 +609,9 @@ position:absolute;
  background: #ffffff;
  z-index: 300;
  }
+// Fieldset
+#chooseTable .borderedBox {
+  margin-left: 0;
+  margin-bottom: 10px;
+  padding: 0 10px;
+}

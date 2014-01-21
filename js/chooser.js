@@ -16,6 +16,11 @@ $(document).ready(function() {
                     currentElements.push(rowData);
                     addVariantToChoosed(li, withOutInsert);
                 },
+                addExtraParam: function(key, value) {
+                    if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams')) {
+                        choosersConfig[$(chooser).prop('id')].extraparams[key] = value;
+                    }
+                },
                 clearAll: function() {
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
@@ -157,7 +162,7 @@ $(document).ready(function() {
                 }
             }
 
-            $(document).on('click', '.choosed span.item span', function(e) {
+            $(document).on('click', '.choosed span.item span.glyphicon-remove', function(e) {
                 // Удаляем из массива предыдущих элементов
                 for(var i = 0; i < choosedElements.length; i++) {
                     if('r' + $(choosedElements[i]).prop('id') == $(this).parent().prop('id')) {
@@ -166,6 +171,21 @@ $(document).ready(function() {
                     }
                 }
                 $(this).parent().remove();
+            });
+
+            $(document).on('click', '.choosed span.item span.glyphicon-arrow-down', function(e) {
+                for(var i = 0; i < choosedElements.length; i++) {
+                    if('r' + $(choosedElements[i]).prop('id') == $(this).parent().prop('id')) {
+                        // Размножаем это на все контролы, которые описаны в moving
+                        var moving = choosersConfig[$(chooser).prop('id')].moving;
+                        if(typeof moving != 'undefined') {
+                            for(var j = 0; j < moving.length; j++) {
+                                $.fn[moving[j]].addChoosed(choosersConfig[$(chooser).prop('id')].movingFunc(choosedElements[i]), choosedElements[i]);
+                            }
+                            break;
+                        }
+                    }
+                }
             });
 
 
@@ -192,7 +212,25 @@ $(document).ready(function() {
                         if(!isFound) {
                             if(withOutInsert != 1) {
                                 var span = $('<span>').addClass('item');
-                                var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
+                                // Возможность копирования в соседние chooser-ы
+                                if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('moving') && choosersConfig[$(chooser).prop('id')]['moving'].length > 0) {
+                                    // Посмотрим, все ли элементы есть в наличии
+                                    var moving = choosersConfig[$(chooser).prop('id')]['moving'];
+                                    var isAllowForMoving = true;
+                                    for(var j = 0; j < moving.length; j++) {
+                                        if($('#' + moving[j]).length == 0) {
+                                            isAllowForMoving = false;
+                                            break;
+                                        }
+                                    }
+                                    if(isAllowForMoving) {
+                                        var innerSpan = $('<span>').addClass('glyphicon glyphicon-arrow-down');
+                                    } else {
+                                        var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
+                                    }
+                                } else {
+                                    var innerSpan = $('<span>').addClass('glyphicon glyphicon-remove');
+                                }
                                 $(span).append($(li).text()).append(innerSpan);
                                 $(span).prop('id', 'r' + currentElements[i][primaryField]);
                                 $(chooser).find('.choosed').append(span);
@@ -254,6 +292,12 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
+            'moving': [ // При задании этой опции и при наличии перечисленных элементов иконка удаления заменяется иконкой копирования id-шников в соответствующие элементы
+                'diagnosisDistribChooser'
+            ],
+            'movingFunc' : function(data) {
+                return $('<li>').prop('id', 'r' + data.id).text(data.description);
+            },
             'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
@@ -294,6 +338,27 @@ $(document).ready(function() {
             'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
             'extraparams' : {
                 'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'diagnosisDistribChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
+            'extraparams' : {
+                // Здесь - специальность, но она даётся извне
+                'medworkerid' : null
             },
             'filters' : {
                 'groupOp' : 'AND',

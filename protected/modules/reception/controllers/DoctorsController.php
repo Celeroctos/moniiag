@@ -1,49 +1,35 @@
 <?php
 class DoctorsController extends Controller {
     public $layout = 'application.views.layouts.index';
+    private $choosedDiagnosis = array();
+    private $greetingDate = null;
 
     // Экшн поиска врача
     public function actionSearch() {
         $filters = $this->checkFilters();
         $rows = $_GET['rows'];
-	$page = $_GET['page'];
+	    $page = $_GET['page'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
-        
-        /*
-         // Вычислим общее количество записей
-	$num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
 
-	$totalPages = ceil(count($num) / $rows);
-        $start = $page * $rows - $rows;
-	
-
-	
-	$omsItems = $model->getRows($filters, $sidx, $sord, $start, $rows,$WithOnly,$WithoutOnly);
-        */
-        
-        
-        
         $model = new Doctor();
-        
+
         // Вычислим общее количество записей
-	$num = $model->getRows($filters);
+	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
         $totalPages = ceil(count($num) / $rows);
         $start = $page * $rows - $rows;
-        
-        
-        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows);
+
+        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
         
         echo CJSON::encode(array('success' => true,
                                  'data' => $doctors,
                                  'total' => $totalPages,
-				 'records' => count($num)));
+				                 'records' => count($num)));
         
     }
     
-    private function checkFilters($filters = false)
-    {
-                if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
+    private function checkFilters($filters = false) {
+        if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,
                                      'data' => 'Задан пустой поисковой запрос.')
             );
@@ -57,7 +43,19 @@ class DoctorsController extends Controller {
                 unset($filters['rules'][$key]);
                 continue;
             }
-            if(trim($filter['data']) != '') {
+            if($filter['field'] == 'diagnosis') {
+                if(count($filter['data']) > 0) {
+                    $this->choosedDiagnosis = $filter['data'];
+                    $allEmpty = false;
+                }
+                unset($filters['rules'][$key]);
+            }
+            if($filter['field'] == 'greeting_date' && trim($filter['data']) != '') {
+                $this->greetingDate = $filter['data'];
+                $allEmpty = false;
+                unset($filters['rules'][$key]);
+            }
+            if(!is_array($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;
             }
         }

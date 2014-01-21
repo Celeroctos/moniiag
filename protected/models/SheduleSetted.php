@@ -32,6 +32,22 @@ class SheduleSetted extends MisActiveRecord {
         }
     }
 
+    // Получить всех id врачей, которые могут принмать по этой дате
+    public function getAllPerDate($date) {
+        $weekday = date('w', strtotime($date));
+        $connection = Yii::app()->db;
+        try {
+            $doctors = $connection->createCommand()
+                    ->selectDistinct('ss.employee_id')
+                    ->from(SheduleSetted::tableName().' ss')
+                    ->where('weekday = :weekday AND NOT EXISTS(SELECT ss2.* FROM '.SheduleSetted::tableName().' ss2 WHERE weekday IS NULL AND day = :date)', array(':weekday' => $weekday, ':date' => $date));
+
+            return $doctors->queryAll();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
 }
 
 ?>

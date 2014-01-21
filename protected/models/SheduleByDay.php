@@ -29,13 +29,15 @@ class SheduleByDay extends MisActiveRecord {
 
     public function getRows($date, $doctorId) {
         $connection = Yii::app()->db;
+        // Здесь есть анальный баг с повтором строк..
         $patients = $connection->createCommand()
-            ->select('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(CAST(dsbd.patient_time AS text), 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time')
+            ->selectDistinct('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(CAST(dsbd.patient_time AS text), 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time')
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
-            ->leftJoin('mis.users u', 'u.employee_id = dsbd.doctor_id')
-            ->where('dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':doctor_id' => $doctorId));
+            ->join('mis.users u', 'u.employee_id = dsbd.doctor_id')
+            ->where('dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':doctor_id' => $doctorId))
+            ->order('dsbd.patient_time');
 
         return $patients->queryAll();
     }

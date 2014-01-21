@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $.fn['diagnosisDistribChooser'].addExtraParam('medworkerid', -1); // Типа, флаг "все диагнозы"
     // Инициализируем пагинацию для списков
     InitPaginationList('searchWithCardResult','oms_number','desc',updatePatientsList);
     InitPaginationList('searchDoctorsResult','d.middle_name','desc',updateDoctorsList);
@@ -75,6 +76,21 @@ $(document).ready(function() {
     }
     
     function getDoctorsFilter() {
+        var choosed = $.fn['diagnosisDistribChooser'].getChoosed();
+        var choosedDiagnosis = [];
+        for(var i = 0; i < choosed.length; i++) {
+            choosedDiagnosis.push(choosed[i].id);
+        }
+        // Смотрим на ФИО
+        var fio = $('#fio').val();
+        var parts = fio.split(' '); // По пробелу. ФИО = Ф_И_О
+        var fioFields = [];
+        for(var i = 0; i < parts.length; i++) {
+            if($.trim(parts[i]) != '') {
+                fioFields.push(parts[i]);
+            }
+        }
+        // Отсеиваем из массива
         var Result ={
             'groupOp' : 'AND',
             'rules' : [
@@ -91,17 +107,27 @@ $(document).ready(function() {
                 {
                     'field' : 'middle_name',
                     'op' : 'cn',
-                    'data' : $('#middleName').val()
+                    'data' : fioFields.length > 2 ? fioFields[2] : '' //$('#middleName').val()
                 },
                 {
                     'field' : 'last_name',
                     'op' : 'cn',
-                    'data' : $('#lastName').val()
+                    'data' : fioFields.length > 0 ? fioFields[0] : '' //$('#lastName').val()
                 },
                 {
                     'field' : 'first_name',
                     'op' : 'cn',
-                    'data' : $('#firstName').val()
+                    'data' : fioFields.length > 1 ? fioFields[1] : '' //$('#firstName').val()
+                },
+                {
+                    'field' : 'greeting_date',
+                    'op' : 'eq',
+                    'data' : $('#greetingDate').val()
+                },
+                {
+                    'field' : 'diagnosis',
+                    'op' : 'in',
+                    'data' : choosedDiagnosis
                 }
             ]
         };

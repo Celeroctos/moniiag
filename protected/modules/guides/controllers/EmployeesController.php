@@ -151,7 +151,6 @@ class EmployeesController extends Controller {
                                          'errors' => $model->errors));
             }
         }
-
     }
 
     public function actionGet() {
