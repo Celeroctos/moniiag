@@ -69,7 +69,7 @@ class SheduleController extends Controller {
         }
         $allClean = true; // Флаг, который говорит о том, новое ли совсем расписание или нет. Если хотя бы одно строка в расписании есть, этот флаг примет $i первой найденной непустой строки
         if($model->doctorId != null) {
-            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $model->doctorId));
+            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id AND date_id != NULL', array(':employee_id' => $model->doctorId));
             $num = count($dayModels);
             $days = array();
             for($i = 0; $i < 7; $i++) {
@@ -95,6 +95,7 @@ class SheduleController extends Controller {
         // Если есть расписание, значит можно вынуть ключ
         if($allClean !== true && $days[$allClean]->date_id != null) {
             $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $days[$allClean]->date_id));
+
         } else {
             $sheduleSettedBeModel = new SheduleSettedBe();
         }
@@ -212,11 +213,14 @@ class SheduleController extends Controller {
             'data' => array()
         );
         if(count($rows) > 0) {
-            
-            
             $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $rows[0]->date_id));
-            $resultArr['dateBegin'] = $sheduleSettedBeModel->date_begin;
-            $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
+            if($sheduleSettedBeModel != null) {
+                $resultArr['dateBegin'] = $sheduleSettedBeModel->date_begin;
+                $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
+            } else {
+                $resultArr['dateBegin'] = '';
+                $resultArr['dateEnd'] = '';
+            }
         }
         foreach($rows as $row) {
             $row->time_begin = substr($row->time_begin, 0, strrpos($row->time_begin, ':'));
