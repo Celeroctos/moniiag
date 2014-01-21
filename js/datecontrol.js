@@ -1,8 +1,29 @@
-$(document).ready(function() {
-    $('.subcontrol input').val('');
+
+
+         // Перечень контейнеров с контролами дат
+    var DateControlContainers =
+    [
+        '#birthday-cont',
+        '#document-givedate-cont',
+        '#priv-document-givedate-cont',
+        '#policy-givedate-cont',
+        '#policy-enddate-cont',
+        '#search-date-cont',
+        '#current-date-cont',
+        '#date-cont',
+        '#dateBegin-cont',
+        '#dateEnd-cont',
+        '#dateBeginEdit-cont',
+        '#dateEndEdit-cont',
+        '#greetingDate-cont',
+	'#shift-date-begin-cont',
+	'#shift-date-end-cont',
+    ];
+    
+  //   $('.subcontrol input').val('');
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
-    function ArrowCalendarClickHandler(Target, Control)  {
+   function ArrowCalendarClickHandler(Target, Control)  {
         // Парсим дату
         // Разделяем её на три группы символов
         var DateArray = $(Control).find('input.form-control').val().split("-");
@@ -94,19 +115,84 @@ $(document).ready(function() {
         $(Control).find('input.form-control:first').trigger('change');
     }
 
-    // Стрелки вверх-вниз для листания
-    // Сначала стрелки вверх
-    (function () {
-        // Выбираем все контролы дат
-        var Controls = $('div.date');
-        // Перебираем выбранные контролы
-        for (i = 0; i < Controls.length; i++) {
-            // Замыкаем ссылку на каждый контрол
-            (function (Control) {
-                // Подвязываем обработчик события нажатия на верхние кнопки для контрола
+    
+
+    function getSelected(element) {
+        return $(element).selection();
+    }
+
+
+    
+    
+    function initDateField(DateField)
+    {
+	    var format = 'yyyy-mm-dd';
+	    if(DateField.length == 0) {
+                return;
+            }
+            DateField.datetimepicker({
+                language: 'ru',
+                format: format,
+                weekStart: 1,
+                todayBtn:  1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+            });
+            var ctrl = DateField.find('input.form-control:first');
+            $(ctrl).on('change', function(e, type){
+		console.log('DateControl Changed');
+                var subcontrols = $($(this).parents('div')[0]).find('.subcontrol');
+                if(typeof subcontrols != 'undefined') {
+		    
+                    var day = $(subcontrols).find('input.day');
+                    var month = $(subcontrols).find('input.month');
+                    var year = $(subcontrols).find('input.year');
+                    // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
+                    // Из суб в настоящий
+                    if(typeof type == 'undefined') {
+			//$(subcontrols).find('input').val('');
+                        var currentDate = $(this).val();
+                        var parts = currentDate.split('-');
+                        
+			var DayInt = parseInt(parts[2]);
+			var MonthInt = parseInt(parts[1]);
+			var YearInt =  parseInt(parts[0]);
+			
+			// Проверяем - выводим, если ни одна из компонент не равно NaN
+			//  Если число равно NaN, то проверка Число == Число выдаст false
+			if (DayInt==DayInt && MonthInt==MonthInt && YearInt==YearInt) {
+			    
+			    $(day).val(DayInt);
+			    $(month).val(MonthInt);
+			    $(year).val(YearInt);
+			
+			}
+			
+			
+			
+			//$(day).val(parts[2]);
+                        //$(month).val(parts[1]);
+                        //$(year).val(parts[0]);
+                    } else { // Из настоящего в суб
+                        $(this).val(year.val() + '-' + month.val() + '-' + day.val());
+                    }
+                }
+            });
+            if($.trim($(ctrl).val()) != '') {
+                $(ctrl).trigger('change');
+            }
+    }
+    
+    function initDateControlEventHandlers(Control)
+    {
+	                // Подвязываем обработчик события нажатия на верхние кнопки для контрола
                 var btnPrevNext = $(Control).find('.date-ctrl-up-buttons .btn-group button, .date-ctrl-down-buttons .btn-group button');
                 var lastNullEntered = false; // Чтобы считывать 01, 02...
-				$(btnPrevNext).on('click',function (e) {
+				
+		$(btnPrevNext).on('click',function (e) {
                     ArrowCalendarClickHandler(e, Control);
                 });
                 // Обработчик на субконтролы, если оные есть
@@ -132,7 +218,7 @@ $(document).ready(function() {
 
                      // Только если все три контрола установлены, дату в нормальном контроле можно менять
                      if(allowChange) {
-                         $(this).parents('.form-group').find('input.form-control:first').trigger('change', [1]);
+                         $($(this).parents('div.input-group')[0]).find('input.form-control:first').trigger('change', [1]);
                      }
                 });
 
@@ -402,70 +488,61 @@ $(document).ready(function() {
                         }
                     }
                 });
-            })(Controls[i]);
+    }
+    
+    // Стрелки вверх-вниз для листания
+    // Сначала стрелки вверх
+    function initDateEventHandlers () {
+
+            var Controls = [];
+            for (OneControlContainer=0;OneControlContainer<DateControlContainers.length;OneControlContainer++)
+            {
+                var ControlSelector = DateControlContainers[OneControlContainer];
+		var ControlsToPush = $(ControlSelector);
+		
+		for (j=0;j<ControlsToPush.length;j++) {
+		    Controls.push(ControlsToPush[j]);
+		}
+		
+                //Controls.push($(ControlSelector)[0]);
+            }
+        // Выбираем все контролы дат
+        //var Controls = $('div.date');
+        // Перебираем выбранные контролы
+        for (i = 0; i < Controls.length; i++) {
+            // Замыкаем ссылку на каждый контрол
+	    initDateControlEventHandlers(Controls[i]);
+            	    
         }
     }
-    )();
+    
+    
+        // Поля дат
+    function initDateFields(dateFields) {
+	console.log('initDateFields');
 
-    function getSelected(element) {
-        return $(element).selection();
-    }
-
-    // Поля дат
-    (function initDateFields(dateFields) {
-        var format = 'yyyy-mm-dd';
         for(var i = 0; i < dateFields.length; i++) {
-            if($(dateFields[i]).length == 0) {
-                continue;
-            }
-            $(dateFields[i]).datetimepicker({
-                language: 'ru',
-                format: format,
-                weekStart: 1,
-                todayBtn:  1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                minView: 2,
-                forceParse: 0
-            });
-            var ctrl = $(dateFields[i]).find('input.form-control:first');
-            $(ctrl).on('change', function(e, type){
-                var subcontrols = $(this).parents('.form-group').find('.subcontrol');
-                if(typeof subcontrols != 'undefined') {
-                    var day = $(subcontrols).find('input.day');
-                    var month = $(subcontrols).find('input.month');
-                    var year = $(subcontrols).find('input.year');
-                    // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
-                    // Из суб в настоящий
-                    if(typeof type == 'undefined') {
-                        var currentDate = $(this).val();
-                        var parts = currentDate.split('-');
-                        $(day).val(parseInt(parts[2]));
-                        $(month).val(parseInt(parts[1]));
-                        $(year).val(parts[0]);
-                    } else { // Из настоящего в суб
-                        $(this).val(year.val() + '-' + month.val() + '-' + day.val());
-                    }
-                }
-            });
-            if($.trim($(ctrl).val()) != '') {
-                $(ctrl).trigger('change');
-            }
+	    initDateField($(dateFields[i]));
         }
-    })([
-        '#birthday-cont',
-        '#document-givedate-cont',
-        '#priv-document-givedate-cont',
-        '#policy-givedate-cont',
-        '#policy-enddate-cont',
-        '#search-date-cont',
-        '#current-date-cont',
-        '#date-cont',
-        '#dateBegin-cont',
-        '#dateEnd-cont',
-        '#dateBeginEdit-cont',
-        '#dateEndEdit-cont',
-        '#greetingDate-cont'
-    ]);
+    }
+    
+    // Инитим все контролы даты
+    function InitDateControls() {
+	// Проинициализируем обработчики событий
+	initDateEventHandlers();
+	// Инитим перекачку данных из контрола в подконтролы
+	initDateFields(DateControlContainers);
+    }
+
+    // Инициализация одного контрола, чтобы можно было
+    //    инициализировать контролы динамически после загрузки страницы
+    //    по результатам аякс-запроса
+    function InitOneDateControl(DateField) {
+	initDateControlEventHandlers(DateField);
+	initDateField(DateField);
+	
+    }
+    
+$(document).ready(function() {
+    InitDateControls();
 });

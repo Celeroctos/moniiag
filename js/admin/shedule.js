@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    
+    // Инитим контролы в первой строке в таблице дней-исключений
+    InitOneDateControl($('#shedule-exp-table tr:eq(1) input[id^=day]').parents('div.input-group'));
+    InitOneTimeControl($('#shedule-exp-table tr:eq(1) input[id^=timeBegin]').parents('div.input-group'));
+    InitOneTimeControl($('#shedule-exp-table tr:eq(1) input[id^=timeEnd]').parents('div.input-group'));
+    
     InitPaginationList('searchDoctorsResult',
                        'd.middle_name',
                        'desc',updateDoctorList);
@@ -176,9 +182,11 @@ $(document).ready(function() {
                     var shedule = data.data.data;
                     if(data.data.dateBegin != null) {
                         $('#dateBegin').val(data.data.dateBegin);
+                        $('#dateBegin').trigger('change');
                     }
                     if(data.data.dateEnd != null) {
                         $('#dateEnd').val(data.data.dateEnd);
+                        $('#dateEnd').trigger('change');
                     }
                     // Здесь удаляем все строки кроме первой
                     $('#shedule-exp-form tbody').find('tr:not(:first)').remove();
@@ -189,7 +197,9 @@ $(document).ready(function() {
                         if(shedule[i].type == 0) {
                             var form = $('#shedule-by-day-form');
                             $(form).find('#timeBegin' + shedule[i].weekday).val(shedule[i].timeBegin);
+                            $(form).find('#timeBegin' + shedule[i].weekday).trigger('change');
                             $(form).find('#timeEnd' + shedule[i].weekday).val(shedule[i].timeEnd);
+                            $(form).find('#timeEnd' + shedule[i].weekday).trigger('change');
                             $(form).find('#cabinet' + shedule[i].weekday).val(shedule[i].cabinetId);
                         }
                         if(shedule[i].type == 1) {
@@ -197,14 +207,21 @@ $(document).ready(function() {
                             $(form).find('#id' + numExps).val(shedule[i].id);
                             $(form).find('#doctorId' + numExps).val(shedule[i].employeeId);
                             $(form).find('#day' + numExps).val(shedule[i].day);
+                            $(form).find('#day' + numExps).trigger('change');
                             $(form).find('#timeBegin' + numExps).val(shedule[i].timeBegin);
+                            $(form).find('#timeBegin' + numExps).trigger('change');
                             $(form).find('#timeEnd' +  numExps).val(shedule[i].timeEnd);
+                            $(form).find('#timeEnd' +  numExps).trigger('change');
                             $(form).find('#cabinet' +  numExps).val(shedule[i].cabinetId);
                             $('#doctor-exp-add').trigger('click');
                             ++numExps;
                         }
                     }
                     $('#sheduleEditCont').slideDown(500);
+                    
+                    // Переиничиваем контролы дат и времени
+                    //ReInitDateControls();
+                    //ReInitTimeControls();
                 }
                 return;
             }
@@ -300,6 +317,11 @@ $(document).ready(function() {
             'name' : 'FormSheduleExpAdd[' + (collLength - 1) + '][timeEnd]',
             'id' : 'timeEnd' + (collLength - 1)
         }).val('');
+        $(node).find('input.year').val('');
+        $(node).find('input.month').val('');
+        $(node).find('input.day').val('');
+        $(node).find('input.hour').val('');
+        $(node).find('input.minute').val('');
         $(node).find('input[id^=doctorId]').prop({
             'name' : 'FormSheduleExpAdd[' + (collLength - 1) + '][doctorId]',
             'id' : 'doctorId' + (collLength - 1)
@@ -309,6 +331,11 @@ $(document).ready(function() {
             'id' : 'cabinet' + (collLength - 1)
         });
 
+        // Инитим контролы в строке таблицы
+        InitOneDateControl(($(node).find('input[id^=day]')).parents('div.input-group'));
+        InitOneTimeControl(($(node).find('input[id^=timeBegin]')).parents('div.input-group'));
+        InitOneTimeControl(($(node).find('input[id^=timeEnd]')).parents('div.input-group'));
+        
         $(node).insertAfter('#shedule-exp-table tr:last');
         initExpCalendar();
     });

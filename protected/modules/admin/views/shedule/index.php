@@ -113,10 +113,10 @@
             </div>
             <div class="form-group default-margin-top">
                 <?php echo $form->labelEx($model,'dateBegin', array(
-                    'class' => 'col-xs-3 control-label required'
+                    'class' => 'col-xs-3 control-label requared'
                 )); ?>
-                <div id="dateBegin-cont" class="col-xs-4 input-group date">
-                    <?php echo $form->textField($model,'dateBegin', array(
+                <div class="col-xs-4 input-group date" id="shift-date-begin-cont">
+                    <?php echo $form->hiddenField($model,'dateBegin', array(
                         'id' => 'dateBegin',
                         'class' => 'form-control',
                         'placeholder' => 'Формат гггг-мм-дд'
@@ -124,14 +124,35 @@
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
+                    <div class="subcontrol">
+                        <div class="date-ctrl-up-buttons">
+                            <div class="btn-group">
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                            </div>
+                        </div>
+                        <div class="form-inline subfields">
+                            <input type="text" name="day" placeholder="ДД" class="form-control day">
+                            <input type="text" name="month" placeholder="ММ" class="form-control month">
+                            <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                        </div>
+                        <div class="date-ctrl-down-buttons">
+                            <div class="btn-group">
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
                 <?php echo $form->labelEx($model,'dateEnd', array(
-                    'class' => 'col-xs-3 control-label required'
+                    'class' => 'col-xs-3 control-label requared'
                 )); ?>
-                <div id="dateEnd-cont" class="col-xs-4 input-group date">
-                    <?php echo $form->textField($model,'dateEnd', array(
+                <div class="col-xs-4 input-group date" id="shift-date-end-cont">
+                    <?php echo $form->hiddenField($model,'dateEnd', array(
                         'id' => 'dateEnd',
                         'class' => 'form-control',
                         'placeholder' => 'Формат гггг-мм-дд'
@@ -139,6 +160,27 @@
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
+                    <div class="subcontrol">
+                        <div class="date-ctrl-up-buttons">
+                            <div class="btn-group">
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                            </div>
+                        </div>
+                        <div class="form-inline subfields">
+                            <input type="text" name="day" placeholder="ДД" class="form-control day">
+                            <input type="text" name="month" placeholder="ММ" class="form-control month">
+                            <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                        </div>
+                        <div class="date-ctrl-down-buttons">
+                            <div class="btn-group">
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <h5><strong>Стабильное расписание</strong></h5>
@@ -147,48 +189,88 @@
                 <table class="col-xs-12 table table-condensed table-hover">
                     <thead>
                         <tr class="header">
-                            <td>
+                            <td class="col-xs-1">
                                 День
                             </td>
-                            <td>
+                            <td class="col-xs-3">
                                 С
                             </td>
-                            <td>
+                            <td class="col-xs-3">
                                 По
                             </td>
-                            <td>
+                            <td class="col-xs-5">
                                 Кабинет
                             </td>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Пн</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont0" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin0', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeBegin0-cont">
+                                    <?php echo $form->hiddenField($model,'timeBegin0', array(
                                         'id' => 'timeBegin0',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-xs-3">
+                            <div class="col-xs-9 input-group date time-control" id="timeEnd0-cont">
+                                <?php echo $form->hiddenField($model,'timeEnd0', array(
+                                    'id' => 'timeEnd0',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Формат (чч:мм)'
+                                )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
-                                <div id="timeEnd-cont0" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd0', array(
-                                        'id' => 'timeEnd0',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
-                                </div>
-                            </td>
-                            <td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet0', $cabinetList, array(
                                     'id' => 'cabinet0',
                                     'class' => 'form-control'
@@ -196,32 +278,72 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Вт</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont1" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin1', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeBegin1-cont">
+                                    <?php echo $form->hiddenField($model,'timeBegin1', array(
                                         'id' => 'timeBegin1',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
-                                <div id="timeEnd-cont1" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd1', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeEnd1-cont">
+                                    <?php echo $form->hiddenField($model,'timeEnd1', array(
                                         'id' => 'timeEnd1',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet1', $cabinetList, array(
                                     'id' => 'cabinet1',
                                     'class' => 'form-control'
@@ -229,32 +351,72 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Ср</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont2" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin2', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeBegin2-cont">
+                                    <?php echo $form->hiddenField($model,'timeBegin2', array(
                                         'id' => 'timeBegin2',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
-                                <div id="timeEnd-cont2" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd2', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeEnd2-cont">
+                                    <?php echo $form->hiddenField($model,'timeEnd2', array(
                                         'id' => 'timeEnd2',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet2', $cabinetList, array(
                                     'id' => 'cabinet2',
                                     'class' => 'form-control'
@@ -262,32 +424,72 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Чт</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont3" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin3', array(
+                            <td class="col-xs-3">
+                                 <div class="col-xs-9 input-group date time-control" id="timeBegin3-cont">
+                                    <?php echo $form->hiddenField($model,'timeBegin3', array(
                                         'id' => 'timeBegin3',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
-                                <div id="timeEnd-cont3" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd3', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeEnd3-cont">
+                                    <?php echo $form->hiddenField($model,'timeEnd3', array(
                                         'id' => 'timeEnd3',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet3', $cabinetList, array(
                                     'id' => 'cabinet3',
                                     'class' => 'form-control'
@@ -295,32 +497,72 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Пт</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont4" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin4', array(
-                                        'id' => 'timeBegin4',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeBegin4-cont">
+                                        <?php echo $form->hiddenField($model,'timeBegin4', array(
+                                            'id' => 'timeBegin4',
+                                            'class' => 'form-control',
+                                            'placeholder' => 'Формат (чч:мм)'
+                                        )); ?>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                        <div class="subcontrol">
+                                            <div class="time-ctrl-up-buttons">
+                                                <div class="btn-group">
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                                </div>
+                                            </div>
+                                            <div class="form-inline subfields">
+                                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                                :
+                                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                            </div>
+                                            <div class="time-ctrl-down-buttons">
+                                                <div class="btn-group">
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
                             </td>
-                            <td>
-                                <div id="timeEnd-cont4" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd4', array(
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeEnd4-cont">
+                                    <?php echo $form->hiddenField($model,'timeEnd4', array(
                                         'id' => 'timeEnd4',
-                                        'class' => 'form-control'
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Формат (чч:мм)'
                                     )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                    <div class="subcontrol">
+                                        <div class="time-ctrl-up-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                            </div>
+                                        </div>
+                                        <div class="form-inline subfields">
+                                            <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                            :
+                                            <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                        </div>
+                                        <div class="time-ctrl-down-buttons">
+                                            <div class="btn-group">
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                                <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet4', $cabinetList, array(
                                     'id' => 'cabinet4',
                                     'class' => 'form-control'
@@ -328,32 +570,75 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Сб</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont5" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin5', array(
-                                        'id' => 'timeBegin5',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                            <td class="col-xs-3">
+                        <div class="col-xs-9 input-group date time-control" id="timeBegin5-cont">
+                        <?php echo $form->hiddenField($model,'timeBegin5', array(
+                            'id' => 'timeBegin5',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат (чч:мм)'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="time-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
                                 </div>
-                            </td>
-                            <td>
-                                <div id="timeEnd-cont5" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd5', array(
-                                        'id' => 'timeEnd5',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                :
+                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                            </div>
+                            <div class="time-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                                
                             </td>
-                            <td>
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeEnd5-cont">
+                        <?php echo $form->hiddenField($model,'timeEnd5', array(
+                            'id' => 'timeEnd5',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат (чч:мм)'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="time-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                :
+                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                            </div>
+                            <div class="time-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                
+                                
+                            </td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet5', $cabinetList, array(
                                     'id' => 'cabinet5',
                                     'class' => 'form-control'
@@ -361,32 +646,77 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td class="col-xs-1">
                                 <strong>Вс</strong>
                             </td>
-                            <td>
-                                <div id="timeBegin-cont6" class="input-group date">
-                                    <?php echo $form->textField($model,'timeBegin6', array(
-                                        'id' => 'timeBegin6',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                            <td class="col-xs-3">
+                        <div class="col-xs-9 input-group date time-control" id="timeBegin6-cont">
+                        <?php echo $form->hiddenField($model,'timeBegin6', array(
+                            'id' => 'timeBegin6',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат (чч:мм)'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="time-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
                                 </div>
-                            </td>
-                            <td>
-                                <div id="timeEnd-cont6" class="input-group date">
-                                    <?php echo $form->textField($model,'timeEnd6', array(
-                                        'id' => 'timeEnd6',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                :
+                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                            </div>
+                            <div class="time-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                                
+                                
+                                
                             </td>
-                            <td>
+                            <td class="col-xs-3">
+                                <div class="col-xs-9 input-group date time-control" id="timeEnd6-cont">
+                        <?php echo $form->hiddenField($model,'timeEnd6', array(
+                            'id' => 'timeEnd6',
+                            'class' => 'form-control',
+                            'placeholder' => 'Формат (чч:мм)'
+                        )); ?>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-time"></span>
+                        </span>
+                        <div class="subcontrol">
+                            <div class="time-ctrl-up-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                </div>
+                            </div>
+                            <div class="form-inline subfields">
+                                <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                :
+                                <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                            </div>
+                            <div class="time-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                
+                                
+                            </td>
+                            <td class="col-xs-5">
                                 <?php echo $form->dropDownList($model,'cabinet6', $cabinetList, array(
                                     'id' => 'cabinet6',
                                     'class' => 'form-control'
@@ -461,41 +791,100 @@
                             'class' => 'form-control'
                         ));
                         ?>
-                        <td>
-                            <div id="day<?php echo $i; ?>-cont" class="input-group date">
-                                <?php echo $form->textField($item,"[$i]day", array(
-                                    'id' => 'day'.$i,
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Формат гггг-мм-дд'
+                        <td class="col-xs-4">
+                            <div class="col-xs-4 input-group date" id="day0-cont">
+                            <?php echo $form->hiddenField($item,"[$i]day", array(
+                                            'id' => 'day'.$i,
+                                            'class' => 'form-control',
+                                            'placeholder' => 'Формат гггг-мм-дд'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
+                                <div class="subcontrol">
+                                    <div class="date-ctrl-up-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                        <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                        <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                                    </div>
+                                    <div class="date-ctrl-down-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
-                        <td>
-                            <div id="timeBegin-cont<?php echo $i; ?>" class="input-group date">
-                                <?php echo $form->textField($item,"[$i]timeBegin", array(
-                                    'id' => 'timeBegin'.$i,
-                                    'class' => 'form-control'
-                                )); ?>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-time"></span>
-                                </span>
+                        <td class="col-xs-2">
+                            <div class="input-group date time-control" id="timeBegin-cont0">
+                                    <?php echo $form->hiddenField($item,"[$i]timeBegin", array(
+                                        'id' => 'timeBegin'.$i,
+                                        'class' => 'form-control'
+                                    )); ?>
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                                <div class="subcontrol">
+                                    <div class="time-ctrl-up-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                        :
+                                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                    </div>
+                                    <div class="time-ctrl-down-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
-                        <td>
-                            <div id="timeEnd-cont<?php echo $i; ?>" class="input-group date">
-                                <?php echo $form->textField($item,"[$i]timeEnd", array(
+                        <td class="col-xs-2">
+                            <div class="input-group date time-control" id="timeEnd-cont0">
+                                <?php echo $form->hiddenField($item,"[$i]timeEnd", array(
                                     'id' => 'timeEnd'.$i,
                                     'class' => 'form-control'
                                 )); ?>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
+                                <div class="subcontrol">
+                                    <div class="time-ctrl-up-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                                        </div>
+                                    </div>
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                        :
+                                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                    </div>
+                                    <div class="time-ctrl-down-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </td>
-                        <td>
+                        <td class="col-xs-4">
                             <?php echo $form->dropDownList($item,"[$i]cabinet", $cabinetList, array(
                                 'id' => 'cabinet'.$i,
                                 'class' => 'form-control'

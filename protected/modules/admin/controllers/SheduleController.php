@@ -212,6 +212,8 @@ class SheduleController extends Controller {
             'data' => array()
         );
         if(count($rows) > 0) {
+            
+            
             $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $rows[0]->date_id));
             $resultArr['dateBegin'] = $sheduleSettedBeModel->date_begin;
             $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
