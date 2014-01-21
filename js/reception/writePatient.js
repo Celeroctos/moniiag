@@ -1,5 +1,7 @@
 $(document).ready(function() {
-    $.fn['diagnosisDistribChooser'].addExtraParam('medworkerid', -1); // Типа, флаг "все диагнозы"
+    if($('#diagnosisDistribChooser').length > 0) {
+        $.fn['diagnosisDistribChooser'].addExtraParam('medworkerid', -1); // Типа, флаг "все диагнозы"
+    }
     // Инициализируем пагинацию для списков
     InitPaginationList('searchWithCardResult','oms_number','desc',updatePatientsList);
     InitPaginationList('searchDoctorsResult','d.middle_name','desc',updateDoctorsList);

@@ -25,11 +25,29 @@ class DiagnosisController extends Controller {
         echo CJSON::encode(array('success' => true,
                                  'data' => array(
                                      'likes' => $diagnosisRows,
-                                     'distrib' => $diagnosisDistribRows
+                                    // 'distrib' => $diagnosisDistribRows
+                                     'employees' => $this->getEmployeesPerSpec($id)
                                  )
                             )
         );
     }
+
+
+    private function getEmployeesPerSpec($medworkerId) {
+        $specEmployees = Employee::model()->getEmployeesPerSpec($medworkerId);
+        return $specEmployees;
+    }
+
+    public function actionGetDistrib($employeeid) {
+        $modelDistrib = new DistribDiagnosis();
+        $diagnosisDistribRows = $modelDistrib->getRows(false, $employeeid); // Получить предпочтения по врачу
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => $diagnosisDistribRows
+            )
+        );
+    }
+
 
     public function actionSetLikes() {
         if(!isset($_GET['medworker_id'], $_GET['diagnosis_ids'])) {
@@ -61,7 +79,7 @@ class DiagnosisController extends Controller {
     }
 
     public function actionSetDistrib() {
-        if(!isset($_GET['medworker_id'], $_GET['diagnosis_ids'])) {
+        if(!isset($_GET['employee_id'], $_GET['diagnosis_ids'])) {
             echo CJSON::encode(array('success' => false,
                                      'data' => array())
             );
@@ -69,13 +87,13 @@ class DiagnosisController extends Controller {
         }
         // В противном случае, устанавливаем все, которые могут быть установлены
         // Удаляем все, уже установленные
-        DistribDiagnosis::model()->deleteAll('medworker_id = :medworker_id', array(':medworker_id' => $_GET['medworker_id']));
+        DistribDiagnosis::model()->deleteAll('employee_id = :employee_id', array(':employee_id' => $_GET['employee_id']));
         $diagnosis = CJSON::decode($_GET['diagnosis_ids']);
 
         foreach($diagnosis as $dia) {
             $distrib = new DistribDiagnosis();
-            $distrib->medworker_id = $_GET['medworker_id'];
-            $distrib->mkb10_id = $dia['id'];
+            $distrib->employee_id = $_GET['employee_id'];
+            $distrib->mkb10_id = $dia;
             if(!$distrib->save()) {
                 echo CJSON::encode(array('success' => false,
                                          'error' => 'Не могу сохранить диагноз!')

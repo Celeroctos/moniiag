@@ -327,7 +327,7 @@ class SheduleController extends Controller {
                     $timeStampCurrent = time();
                     $timeStampPerIteration = mktime(0, 0, 0, $month, $day, $this->currentYear);
                     // Если время итерируемое больше, то на такие числа записывать можно
-                    if($timeStampCurrent < $timeStampPerIteration) {
+                    if($timeStampCurrent <= $timeStampPerIteration) {
                         $resultArr[$i - 1]['allowForWrite'] = 1;
                     } else {
                         $resultArr[$i - 1]['allowForWrite'] = 0;

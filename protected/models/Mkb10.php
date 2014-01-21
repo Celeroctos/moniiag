@@ -39,7 +39,7 @@ class Mkb10 extends MisActiveRecord {
 	public function getRows($onlylikes, $filters, $medworkerId, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
 		$mkb10 = $connection->createCommand()
-            ->select('m.*')
+            ->selectDistinct('m.*')
             ->from('mis.mkb10 m');
 
         if($onlylikes) {

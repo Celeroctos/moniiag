@@ -45,7 +45,7 @@ class Doctor extends MisActiveRecord  {
             ->leftJoin('mis.medpersonal m', 'd.post_id = m.id');
 
         if(count($choosedDiagnosis) > 0) {
-            $doctor->leftJoin('mis.mkb10_likes ml', 'ml.medworker_id = m.id');
+            $doctor->leftJoin('mis.mkb10_distrib md', 'md.employee_id = d.id');
         }
 
         if($filters !== false) {
@@ -57,7 +57,7 @@ class Doctor extends MisActiveRecord  {
         }
 
         if(count($choosedDiagnosis) > 0) {
-            $doctor->andWhere(array('in', 'ml.mkb10_id', $choosedDiagnosis));
+            $doctor->andWhere(array('in', 'md.mkb10_id', $choosedDiagnosis));
         }
 
 

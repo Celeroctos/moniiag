@@ -103,9 +103,14 @@ $(document).ready(function() {
                             $.fn['diagnosisChooser'].addChoosed($('<li>').prop('id', 'r' + data.likes[i].id).text(data.likes[i].description), data.likes[i]);
                         }
 
-                        numRows = data.distrib.length;
+                        var select = $('select#employeeId');
+                        $(select).find('option:not([value="-1"])').remove();
+
+                        numRows = data.employees.length;
                         for(var i = 0; i < numRows; i++) {
-                            $.fn['diagnosisDistribChooser'].addChoosed($('<li>').prop('id', 'r' + data.distrib[i].id).text(data.distrib[i].description), data.distrib[i]);
+                            $(select).append($('<option>').prop({
+                                'value' : data.employees[i].id
+                            }).text(data.employees[i].last_name + ' ' + data.employees[i].first_name + ' ' + data.employees[i].middle_name + ' (' + data.employees[i].ward + ' отделение, ' + data.employees[i].enterprise + ')'));
                         }
 
                         $('#editPopup .spec').text(rowData.name);
@@ -118,10 +123,44 @@ $(document).ready(function() {
         }
     }
 
+    $('#employeeId').on('change', function(e) {
+        if($(this).val() == '-1') {
+            $('.first').addClass('no-display');
+            return;
+        }
+        $.ajax({
+            'url' : '/index.php/admin/diagnosis/getdistrib?employeeid=' + $(this).val(),
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var numRows = data.data.length;
+                    $('.first').removeClass('no-display');
+                    $.fn['diagnosisDistribChooser'].clearAll();
+                    for(var i = 0; i < numRows; i++) {
+                       $.fn['diagnosisDistribChooser'].addChoosed($('<li>').prop('id', 'r' + data.data[i].id).text(data.data[i].description), data.data[i]);
+                    }
+
+                } else {
+
+                }
+            }
+        });
+    });
+
+    $("#editPopup").on('hidden.bs.modal', function(e) {
+        $('.first').addClass('no-display');
+    });
+
     $("#editDiagnosis").click(editDiagnosis);
 
     $('#distribDiagnosisSubmit').click(function(e) {
         var choosed = $.fn['diagnosisDistribChooser'].getChoosed();
+        var choosedIds = [];
+        for(var i = 0; i < choosed.length; i++) {
+            choosedIds.push(choosed[i].id)
+        }
         var currentRow = $('#diagnosiss').jqGrid('getGridParam','selrow');
         var rowData = $('#diagnosiss').jqGrid('getRowData',currentRow);
 
@@ -130,8 +169,8 @@ $(document).ready(function() {
             $.ajax({
                 'url' : '/index.php/admin/diagnosis/setdistrib',
                 'data' : {
-                    'medworker_id' : rowData.id,
-                    'diagnosis_ids' : $.toJSON(choosed)
+                    'employee_id' :  $('#employeeId').val(),
+                    'diagnosis_ids' : $.toJSON(choosedIds)
                 },
                 'cache' : false,
                 'dataType' : 'json',

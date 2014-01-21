@@ -122,6 +122,24 @@ class Employee extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }
+
+    public function getEmployeesPerSpec($id) {
+        try {
+            $connection = Yii::app()->db;
+            $employees = $connection->createCommand()
+                ->select('d.*, LOWER(w.name) as ward, ep.shortname as enterprise')
+                ->from('mis.doctors d')
+                ->join('mis.wards w', 'd.ward_code = w.id')
+                ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
+                ->where('d.post_id = :id', array(':id' => $id))
+                ->queryAll();
+
+            return $employees;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

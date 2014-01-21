@@ -20,7 +20,7 @@
                 <div class="row">
                     <p>Для добавления диагноза щёлкните два раза на записи с иконкой круга в нижней таблице, либо вводите название диагноза в текстовое поле ниже. Для удаления диагноза из списка щёлкните по красному кресту рядом с диагнозом. После всех изменений нажмите кнопку "Сохранить изменения".</p>
                     <div class="second">
-                        <div class="form-group chooser first" id="diagnosisChooser">
+                        <div class="form-group chooser second" id="diagnosisChooser">
                             <div class="col-xs-4">
                                 <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
                                 <ul class="variants no-display">
@@ -30,7 +30,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="first">
+                    <div class="third">
+                        <div class="form-group">
+                            <label for="employeeId" class="col-xs-2 control-label">Сотрудник</label>
+                            <div class="col-xs-4">
+                                <select class="form-control" id="employeeId">
+                                    <option value='-1'>Нет</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="first no-display">
                         <div class="form-group chooser first" id="diagnosisDistribChooser">
                             <div class="col-xs-4">
                                 <input type="text" class="form-control" autofocus id="diagnosisDistrib" placeholder="Название диагноза">
