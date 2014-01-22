@@ -36,15 +36,19 @@ class Mkb10 extends MisActiveRecord {
         return $result;
     }
 
-	public function getRows($onlylikes, $filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+	public function getRows($onlylikes, $filters, $medworkerId, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
 		$mkb10 = $connection->createCommand()
-            ->select('m.*')
+            ->selectDistinct('m.*')
             ->from('mis.mkb10 m');
 
         if($onlylikes) {
-            $mkb10->join('mis.mkb10_likes ml', 'm.id = ml.mkb10_id');
-            $mkb10->where('ml.medworker_id = :medworker_id', array(':medworker_id' => Yii::app()->user->medworkerId));
+            if($medworkerId !== false) {
+                $mkb10->join('mis.mkb10_likes ml', 'm.id = ml.mkb10_id');
+                $mkb10->where('ml.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
+            } else {
+                $mkb10->join('mis.mkb10_distrib md', 'm.id = md.mkb10_id');
+            }
         }
 
         if($filters !== false) {
@@ -65,7 +69,7 @@ class Mkb10 extends MisActiveRecord {
         return $mkb10->queryAll();
     }
 	
-    public function getNumRows($onlylikes = false) {
+    public function getNumRows($onlylikes = false, $medworkerId) {
         $connection = Yii::app()->db;
 
         $mkb10 = $connection->createCommand()
@@ -73,8 +77,12 @@ class Mkb10 extends MisActiveRecord {
             ->from('mis.mkb10 m');
 
         if($onlylikes) {
-            $mkb10->join('mis.mkb10_likes ml', 'm.id = ml.mkb10_id');
-            $mkb10->where('ml.medworker_id = :medworker_id', array(':medworker_id' => Yii::app()->user->medworkerId));
+            if($medworkerId !== false) {
+                $mkb10->join('mis.mkb10_likes ml', 'm.id = ml.mkb10_id');
+                $mkb10->where('ml.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
+            } else {
+                $mkb10->join('mis.mkb10_distrib md', 'm.id = md.mkb10_id');
+            }
         }
 
         $result = $mkb10->queryRow();

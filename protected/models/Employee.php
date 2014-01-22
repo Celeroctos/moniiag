@@ -14,19 +14,38 @@ class Employee extends MisActiveRecord  {
         try {
             $connection = Yii::app()->db;
             $employee = $connection->createCommand()
-                ->select('m.*')
-                ->from('mis.doctors m')
-                ->where('m.id = :id', array(':id' => $id))
+                ->select('d.*, LOWER(w.name) as ward, ep.shortname as enterprise')
+                ->from('mis.doctors d')
+                ->join('mis.wards w', 'd.ward_code = w.id')
+                ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
+                ->where('d.id = :id', array(':id' => $id))
                 ->queryRow();
 
             return $employee;
-
         } catch(Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    public function getRows($enterpriseId, $wardId, $filters = false, $sidx = false, $sord = false, $start = false, $limit = false) {
+    // Получить всех тех, кого можно использовать для привязки к пользователю
+    public function getAllWithoutUsers() {
+        try {
+            $connection = Yii::app()->db;
+            $employees = $connection->createCommand()
+                 ->select('d.*, LOWER(w.name) as ward, ep.shortname as enterprise')
+                 ->from('mis.doctors d')
+                 ->join('mis.wards w', 'd.ward_code = w.id')
+                 ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
+                 ->where('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)');
+
+            return $employees->queryAll();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    // $onlyFree - сотрудники, которые не заняты каким-либо пользователем
+    public function getRows($enterpriseId, $wardId, $filters = false, $sidx = false, $sord = false, $start = false, $limit = false, $onlyFree = false) {
         $connection = Yii::app()->db;
         $employees = $connection->createCommand()
             ->select('d.*,
@@ -50,6 +69,9 @@ class Employee extends MisActiveRecord  {
         }
         if(isset($_GET['enterpriseid']) && $_GET['enterpriseid'] != -1) {
             $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $enterpriseId));
+        }
+        if($onlyFree) {
+            $employees->andWhere('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)');
         }
 
         if($filters !== false) {
@@ -92,6 +114,24 @@ class Employee extends MisActiveRecord  {
                 ->select('d.*')
                 ->from('mis.doctors d')
                 ->where('d.ward_code = :id', array(':id' => $id))
+                ->queryAll();
+
+            return $employees;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function getEmployeesPerSpec($id) {
+        try {
+            $connection = Yii::app()->db;
+            $employees = $connection->createCommand()
+                ->select('d.*, LOWER(w.name) as ward, ep.shortname as enterprise')
+                ->from('mis.doctors d')
+                ->join('mis.wards w', 'd.ward_code = w.id')
+                ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
+                ->where('d.post_id = :id', array(':id' => $id))
                 ->queryAll();
 
             return $employees;

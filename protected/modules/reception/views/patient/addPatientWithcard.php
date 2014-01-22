@@ -304,4 +304,72 @@
                             <div class="form-inline subfields">
                                 <input type="text" name="day" placeholder="ДД" class="form-control day">
                                 <input type="text" name="month" placeholder="ММ" class="form-control month">
-                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year
+                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                            </div>
+                            <div class="date-ctrl-down-buttons">
+                                <div class="btn-group">
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="form-group">
+        <div class="add-patient-submit">
+            <?php echo CHtml::ajaxSubmitButton(
+                'Добавить',
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+                array(
+                    'success' => 'function(data, textStatus, jqXHR) {
+                                    $("#patient-withoutcard-form").trigger("success", [data, textStatus, jqXHR])
+                                }'
+                ),
+                array(
+                    'class' => 'btn btn-success'
+                )
+            ); ?>
+        </div>
+    </div>
+    <?php $this->endWidget(); ?>
+</div>
+<?php } ?>
+<div class="modal fade error-popup" id="errorAddPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successAddPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?> или <?php echo CHtml::link('записать', array('#'), array('class' => 'writePatient')) ?> добавленного пациента на приём</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

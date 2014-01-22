@@ -68,8 +68,30 @@ $(document).ready(function() {
 
 
     $("#addUser").click(function() {
-        $('#addUserPopup').modal({
+        $.ajax({
+            'url' : '/index.php/admin/users/getallforassociate',
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var allowForAssociate = data.data;
+                    var select = $('select#employeeId');
+                    $(select).find('option').remove();
 
+                    for(var i = 0; i < allowForAssociate.length; i++) {
+                        $(select).append($('<option>').prop({
+                            'value' : allowForAssociate[i].employee_id
+                        }).text(allowForAssociate[i].employee_fio));
+                    }
+
+                    $('#addUserPopup').modal({
+
+                    });
+                } else{
+
+                }
+            }
         });
     });
 
@@ -177,8 +199,21 @@ $(document).ready(function() {
                                 formField: 'employeeId'
                             },
                         ];
+                        var user = data.data.user;
+                        var allowForAssociate = data.data.associatedEmployees;
+                        var select = $('select#employeeId');
+                        $(select).find('option').remove();
+
+                        for(var i = 0; i < allowForAssociate.length; i++) {
+                            $(select).append($('<option>').prop({
+                                'value' : allowForAssociate[i].employee_id
+                            }).text(allowForAssociate[i].employee_fio));
+                        }
+
+                        $('select#employeeId').append($('<option value="' + user.employee_id + '">' + user.employee_fio + '</option>')).val(user.employee_id);
+
                         for(var i = 0; i < fields.length; i++) {
-                            form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+                            form.find('#' + fields[i].formField).val(user[fields[i].modelField]);
                         }
                         $("#editUserPopup").modal({
 

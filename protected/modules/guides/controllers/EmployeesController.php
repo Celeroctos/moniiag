@@ -89,11 +89,18 @@ class EmployeesController extends Controller {
         if(isset($_POST['FormEmployeeAdd'])) {
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
+                if(!isset($_POST['FormEmployeeAdd']['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
+                    echo CJSON::encode(array('success' => 'false',
+                                             'errors' => array(
+                                                 'dateEnd' => array('Дата конца действия не может быть пустой!')
+                                             )));
+                    exit();
+                }
                 $employee = Employee::model()->find('id=:id', array(':id' => $_POST['FormEmployeeAdd']['id']));
                 $this->addEditModel($employee, $model, 'Медицинский персонал успешно отредактирован.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
-                    'errors' => $model->errors));
+                                         'errors' => $model->errors));
             }
         }
     }
@@ -126,6 +133,7 @@ class EmployeesController extends Controller {
         $employee->degree_id = $model->degreeId;
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
+
         if(!isset($_POST['notDateEnd'])) {
             $employee->date_end = $model->dateEnd;
         } else {
@@ -144,6 +152,13 @@ class EmployeesController extends Controller {
         if(isset($_POST['FormEmployeeAdd'])) {
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
+                if(!isset($_POST['FormEmployeeAdd']['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
+                    echo CJSON::encode(array('success' => 'false',
+                        'errors' => array(
+                            'dateEnd' => array('Дата конца действия не может быть пустой!')
+                        )));
+                    exit();
+                }
                 $employee = new Employee();
                 $this->addEditModel($employee, $model, 'Медицинский персонал успешно добавлен.');
             } else {
@@ -151,7 +166,6 @@ class EmployeesController extends Controller {
                                          'errors' => $model->errors));
             }
         }
-
     }
 
     public function actionGet() {

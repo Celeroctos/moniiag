@@ -23,9 +23,20 @@ class Mkb10Controller extends Controller {
             $onlylikes = false;
         }
 
+        // ID медработника
+        if(isset($_GET['medworkerid'])) {
+            if($_GET['medworkerid'] != -1) {
+                $medworkerId = $_GET['medworkerid'];
+            } else {
+                $medworkerId = false;
+            }
+        } else {
+            $medworkerId = Yii::app()->user->medworkerId;
+        }
+
         $model = new Mkb10();
         if(isset($_GET['listview']) && $_GET['listview'] == 1) {
-            $num = $model->getNumRows($onlylikes);
+            $num = $model->getNumRows($onlylikes, $medworkerId);
         } else { // В виде дерева
             $num = count($model->getRowsByLevel($onlylikes));
         }
@@ -41,7 +52,7 @@ class Mkb10Controller extends Controller {
                 $filters = false;
             }
             $limit = $_GET['limit'];
-            $mkb10 = $model->getRows($onlylikes, $filters, $sidx, $sord, $start, $limit);
+            $mkb10 = $model->getRows($onlylikes, $filters, $medworkerId, $sidx, $sord, $start, $limit);
         } else {
             $mkb10 = $model->getRowsByLevel($onlylikes, $nodeid, $sidx, $sord, $start, $rows);
         }

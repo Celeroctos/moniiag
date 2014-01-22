@@ -36,13 +36,17 @@ class Doctor extends MisActiveRecord  {
     }
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false) {
+                            $limit = false, $choosedDiagnosis = array(), $greetingDate = false) {
         $connection = Yii::app()->db;
         $doctor = $connection->createCommand()
-            ->select('d.*, w.name as ward, m.name as post')
+            ->selectDistinct('d.*, w.name as ward, m.name as post')
             ->from('mis.doctors d')
             ->leftJoin('mis.wards w', 'd.ward_code = w.id')
             ->leftJoin('mis.medpersonal m', 'd.post_id = m.id');
+
+        if(count($choosedDiagnosis) > 0) {
+            $doctor->leftJoin('mis.mkb10_distrib md', 'md.employee_id = d.id');
+        }
 
         if($filters !== false) {
             $this->getSearchConditions($doctor, $filters, array(
@@ -51,14 +55,29 @@ class Doctor extends MisActiveRecord  {
             ), array(
             ));
         }
-        
-        if ($sidx && $sord && $limit)
-        {
 
+        if(count($choosedDiagnosis) > 0) {
+            $doctor->andWhere(array('in', 'md.mkb10_id', $choosedDiagnosis));
+        }
+
+
+        // Теперь нужно выяснить сотрудников, которые могут принимать в этот день
+        if($greetingDate !== false && $greetingDate !== null) {
+            // Теперь мы знаем, каких врачей выбирать, с каким днём
+            $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
+            $doctorIds = array();
+            $num = count($doctorsPerDay);
+            for($i = 0; $i < $num; $i++) {
+                $doctorIds[] = $doctorsPerDay[$i]['employee_id'];
+            }
+            $doctor->andWhere(array('in', 'd.id', $doctorIds));
+        }
+
+        if ($sidx && $sord && $limit) {
             $doctor->order($sidx.' '.$sord);
             $doctor->limit($limit, $start);    
         }
-        
+
         $doctors = $doctor->queryAll();
         foreach($doctors as $key => &$doctor) {
             $doctor['cabinets'] = array();

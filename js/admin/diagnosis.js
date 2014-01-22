@@ -111,8 +111,9 @@ $(document).ready(function() {
 
     $("#editDiagnosis").click(editDiagnosis);
 
-    $('#likeDiagnosisSubmit').click(function(e) {
+    $('#distribDiagnosisSubmit').click(function(e) {
         var choosed = $.fn['diagnosisChooser'].getChoosed();
+        var choosed = $.fn['diagnosisDistribChooser'].getChoosed();
         var currentRow = $('#diagnosiss').jqGrid('getGridParam','selrow');
         var rowData = $('#diagnosiss').jqGrid('getRowData',currentRow);
 

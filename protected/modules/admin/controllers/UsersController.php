@@ -8,7 +8,7 @@ class UsersController extends Controller {
 
         // Список сотрудников
         $employeeModel = new Employee();
-        $employees = $employeeModel->getRows(-1, -1, false);
+        $employees = $employeeModel->getRows(-1, -1, false, false, false, false, false, true);
         $employeesList = array();
         foreach($employees as $key => $employee) {
             $employeesList[$employee['id']] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.mb_strtolower($employee['ward'], 'UTF-8').' отделение, '.$employee['enterprise'].')';
@@ -64,9 +64,41 @@ class UsersController extends Controller {
     public function actionGetone($id) {
         $model = new User();
         $user = $model->getOne($id);
+        if($user['employee_id'] != null) {
+            // Выбираем ещё и сотрудника вдовесок к юзеру
+            $employee = Employee::model()->getOne($user['employee_id']);
+            if($employee != null) {
+                $user['employee_fio'] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.$employee['ward'].' отделение, '.$employee['enterprise'].')';
+            }
+        }
+
+        // Выбираем ещё всех тех сотрудников, которые могут быть ассоциированы
         echo CJSON::encode(array('success' => true,
-                                 'data' => $user)
+                                 'data' => array(
+                                    'user' => $user,
+                                    'associatedEmployees' => $this->getAllForAssociate()
+                                 )
+                            )
+                        );
+    }
+
+    public function actionGetAllForAssociate() {
+        echo CJSON::encode(array('success' => true,
+                'data' => $this->getAllForAssociate()
+            )
         );
+    }
+
+    private function getAllForAssociate() {
+        $associatedEmployees = array();
+        $associatedEmployeesDb = Employee::model()->getAllWithoutUsers();
+        foreach($associatedEmployeesDb as $associatedEmployee) {
+            $associatedEmployees[] = array(
+                'employee_fio' => $associatedEmployee['last_name'].' '.$associatedEmployee['first_name'].' '.$associatedEmployee['middle_name'].' ('.$associatedEmployee['ward'].' отделение, '.$associatedEmployee['enterprise'].')',
+                'employee_id' => $associatedEmployee['id']
+            );
+        }
+        return $associatedEmployees;
     }
 
     public function actionEdit() {

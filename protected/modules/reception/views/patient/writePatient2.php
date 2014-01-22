@@ -1,5 +1,7 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/writePatient.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/calendar.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <script type="text/javascript">
     globalVariables.cardNumber = '<?php echo $medcard['card_number']; ?>';
@@ -39,6 +41,12 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="lastName" class="col-xs-2 control-label">ФИО врача</label>
+            <div class="col-xs-4">
+                <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
+            </div>
+        </div>
+        <!--<div class="form-group">
             <label for="lastName" class="col-xs-2 control-label">Фамилия</label>
             <div class="col-xs-4">
                 <input type="text" class="form-control" id="lastName" placeholder="Фамилия">
@@ -54,6 +62,47 @@
             <label for="middleName" class="col-xs-2 control-label">Отчество</label>
             <div class="col-xs-4">
                 <input type="text" class="form-control" id="middleName" placeholder="Отчество">
+            </div>
+        </div>-->
+        <div class="form-group">
+            <label for="greetingDate" class="col-xs-2 control-label required">Дата приёма</label>
+            <div id="greetingDate-cont" class="col-xs-3 input-group date">
+                <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="greetingDate">
+                <span class="input-group-addon">
+                    <span class="glyphicon-calendar glyphicon">
+                    </span>
+                </span>
+                <div class="subcontrol">
+                    <div class="date-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                        </div>
+                    </div>
+                    <div class="form-inline subfields">
+                        <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                    </div>
+                    <div class="date-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group chooser first" id="diagnosisDistribChooser">
+            <label for="diagnosis" class="col-xs-2 control-label">Диагноз (enter - добавить)</label>
+            <div class="col-xs-4">
+                <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
+                <ul class="variants no-display">
+                </ul>
+                <div class="choosed">
+                </div>
             </div>
         </div>
         <div class="form-group">

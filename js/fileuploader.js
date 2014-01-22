@@ -120,6 +120,7 @@ $(document).ready(function() {
                                                 uploadProcessFunc();
                                             } else {
                                                 $(fileUploadersGroup).find('.successUpload').parents('.no-display').show();
+                                                $(fileUploadersGroup).trigger('afterUpload'); // Событие "после загрузки": то, что должно быть после загрузки файла
                                             }
                                         } else {
                                             setTimeout(function() {

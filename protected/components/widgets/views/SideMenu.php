@@ -112,6 +112,9 @@
                         <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('Любимые диагнозы', array('/admin/diagnosis/allview')) ?>
                         </li>
+                        <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'distribview' ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('Диагнозы для распределения больных', array('/admin/diagnosis/distribview')) ?>
+                        </li>
                     </ul>
                 </li>
                 <li <?php echo ($controller == 'shedule' && $module == 'admin') ? 'class="active"' : ''; ?>>
