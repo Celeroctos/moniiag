@@ -433,12 +433,7 @@ $(document).ready(function(e) {
                 );
                  $(PopupId).on('shown.bs.modal', function (e)
                     {
-                            /*   
-                            $(PopupId).on('focus', 'a, input, select, button, textarea',function (e)  {
-                                console.log('keydown fires');
-                                PressTabControlHandler(e);
-                            });
-                        */
+                            
                             // Надо сохранить элемент, на котором был поставлен фокус
                             LastFocusedElement = $(':focus');
                        
@@ -678,25 +673,7 @@ $(document).ready(function(e) {
         // Нет текущего узла - значит, его надо проинициализировать.
        // if(currentNode == null) {
             currentNode = config.nodes[0];
-        /*    
-        // Ставим фокус на первый элемент первого блока
-        // Выберем все элементы для блока
-        function InitFirstActiveBlock(NodeToActive)
-        {
-            var TabElements = ChooseTabElementsInContainer(NodeToActive);
-            
-            // Пробегаемся по элементам массива TabElements снизу, находим первый
-            //     элемент, у которого табиндекс ненулёвый ставим фокус на него, затем вызываем break
-            // Ставим фокус на первый
-            for (i=0;i<TabElements.length;i++)
-            {
-                if (TrySetFocus(TabElements[i]))
-                {
-                    break;
-                }
-            }
-        }
-        */
+
         InitFirstActiveBlock($(currentNode.node)[0]);
         LastFocusedBlock = currentNode;
             
@@ -814,86 +791,9 @@ $(document).ready(function(e) {
             }
             
             
-            // Проверяем - если LastTabIndex нулевой и был зажат Shift, то надо сбросить нажатие клавиши
-            // Иначе - если LastTabIndex последний и шифт не зажат - надо тоже погасить событие и поставить в фокус
-            //   первый элемент
-            /*
-            if (LastTabIndex==0 && ShiftWasPressed) {
-                for (i=TabElements.length-1;i>=0;i--) {
-                    if (TrySetFocus(TabElements[i])) {
-                        break;
-                    }
-                }
-                Target.preventDefault();
-                return false;
-                
-            }
-            else
-            {
-                if (LastTabIndex==TabElements.length-1 && !ShiftWasPressed) {
-                    for (i=0;i<TabElements.length;i++) {
-                        if (TrySetFocus(TabElements[i])) {
-                            break;
-                        }
-                    }
-                    Target.preventDefault();
-                    return false;
-                    
-                }
-            }
-            */
-            // 
+
             
-            /*
-            // Наглым образом запрещаем обратную табуляцию
-            if (ShiftWasPressed) {
-                Target.preventDefault();
-                return false;
-            }
-            
-            // Получаем для текущего активного узла элементы, по которым можно переходить по табу
-            
-            var TabElements = null;
-            // Если открыт поп-ап, то читаем все элементы по которвм можно ходить табом в поп-апе
-            if (PopupOpened) {
-                TabElements = ChooseTabElementsInContainer(PopupOpened);
-            }
-            else
-            {
-                // Иначе читаем все элементы  по которвм можно ходить табом в текущем блоке
-                TabElements = ChooseTabElementsInContainer($(currentNode.node)[0]);
-            }            
-            
-            // Вычисляем индекс элемента, находящегося в фокусе в текущем блоке
-            var LastTabIndex = 0;
-            
-            // Пробегаем по элементам, по которым можно ходить табом в данном блоке или поп-апе
-            while (LastTabIndex<TabElements.length)
-            {
-                // Если текущий элемент равен элементу, который находится в фокусе на странице, то выходим
-                if ($(TabElements[LastTabIndex])[0]==FocusedObject) {
-                    break;
-                }
-                
-                LastTabIndex++;
-            }
-            
-            // Если фокусированный элемент не последний и он есть, то вызываем фокус на следующий элемент
-            if (LastTabIndex<TabElements.length-1) {
-                TabElements[LastTabIndex+1].focus();
-            }
-            else
-            {
-                // Иначе пытаемся поставить фокус в элемент начиная с первого
-                for (i=0;i<TabElements.length;i++) {
-                    if (TrySetFocus(TabElements[i])) {
-                        break;
-                    }
-                }
-            }
-            
-            Target.preventDefault();
-        */
+         
         }
         
         
