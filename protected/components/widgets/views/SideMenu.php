@@ -117,8 +117,11 @@
                         </li>
                     </ul>
                 </li>
-                <li <?php echo ($controller == 'shedule' && $module == 'admin') ? 'class="active"' : ''; ?>>
+                <li <?php echo ($controller == 'shedule' && $module == 'admin' && $action == 'view') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Настройка расписания', array('/admin/shedule/view')) ?>
+                </li>
+                <li <?php echo ($controller == 'shedule' && $module == 'admin' && $action == 'viewrest') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Календарь выходных дней', array('/admin/shedule/viewrest')) ?>
                 </li>
                 <li <?php echo ($controller == 'tasu' && $module == 'admin') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('ТАСУ', array('/admin/tasu/view')) ?>

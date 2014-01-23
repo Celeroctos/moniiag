@@ -239,4 +239,100 @@ class SheduleController extends Controller {
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $resultArr));
     }
+
+    // Просмотр календаря выходных дней
+    public function actionViewRest() {
+        $restModel = new FormRestDaysEdit();
+        $restDays = SheduleRest::model()->findAll();
+        $restDaysResponse = array();
+        if(!isset($_GET['date'])) {
+            $dateBegin = date('Y-n-j');
+        } else {
+            $dateBegin = $_GET['date'];
+        }
+        foreach($restDays as $day) {
+            $restDaysResponse[$day['day']] = array('selected' => 'selected');
+        }
+        $parts = explode('-', $dateBegin);
+        $this->render('rest', array(
+            'model' => $restModel,
+            'selectedDaysJson' => CJSON::encode($restDaysResponse),
+            'selectedDays' => $restDaysResponse,
+            'restCalendars' => CJSON::encode($this->getRestDays($dateBegin)),
+            'firstDay' => date('w', strtotime($dateBegin)),
+            'year' => $parts[0],
+            'displayPrev' => date('Y') < $parts[0],
+            'restDays' => array(1 => 'Понедельник',
+                2 => 'Вторник',
+                3 => 'Среда',
+                4 => 'Четверг',
+                5 => 'Пятница',
+                6 => 'Суббота',
+                0 => 'Воскресенье')
+        ));
+    }
+
+    // Редактирование календаря выходных дней
+    public function actionRestEdit() {
+        $model = new FormRestDaysEdit();
+        if(isset($_POST['FormRestDaysEdit'])) {
+            $model->attributes = $_POST['FormRestDaysEdit'];
+            SheduleRest::model()->deleteAll();
+            foreach($model->restDays as $day) {
+                $sheduleRest = new SheduleRest();
+                $sheduleRest->day = $day;
+                if(!$sheduleRest->save()) {
+                    echo CJSON::encode(array('success' => false,
+                                             'msg' => 'Не могу сохранить выходной день!'));
+                }
+            }
+            echo CJSON::encode(array('success' => true,
+                                     'msg' => 'Выходные дни успешно сохранены.'));
+        }
+    }
+
+    private function getRestDays($dateBegin) {
+        $parts = explode('-', $dateBegin);
+        $dateEnd = ($parts[0] + 1).'-'.$parts[1].'-'.$parts[2];
+        $responseDb = SheduleRestDay::model()->findAll('t.date >= :dateBegin AND t.date < :dateEnd', array(':dateBegin' => $dateBegin, ':dateEnd' => $dateEnd));
+        $response = array();
+        // Делим всю выборку на 12 месяцев
+        foreach($responseDb as $day) {
+            $month = date('n', strtotime($day['date']));
+            if(!isset($response[$month - 1])) {
+                $response[$month - 1] = array();
+            }
+            // Теперь смотрим, какие даты подгоняются под этот месяц
+            $response[$month - 1][] = $day;
+        }
+        return $response;
+    }
+
+    public function actionSetHolidays() {
+        if(!isset($_GET['dates'])) {
+            echo CJSON::encode(array('success' => false,
+                                     'msg' => 'Не могу сохранить выходной день!'));
+            exit();
+        }
+        $dates = CJSON::decode($_GET['dates']);
+        // Ничего устанавливать не надо
+        if(count($_GET['dates']) == 0) {
+            echo CJSON::encode(array('success' => true,
+                                     'data' => array()));
+        }
+        // Вычленяем год
+        $parts = explode('-', $_GET['dates'][0]);
+        SheduleRestDay::model()->deleteAll('substr(cast(date AS text), 0, 5) = :year', array(':year' => $parts[0]));
+        foreach($dates as $date) {
+            $rest = new SheduleRestDay();
+            $rest->date = $date;
+            if(!$rest->save()) {
+                echo CJSON::encode(array('success' => false,
+                                         'msg' => 'Не могу сохранить день в расписании!'));
+                exit();
+            }
+        }
+        echo CJSON::encode(array('success' => true,
+                                 'data' => array()));
+    }
 }

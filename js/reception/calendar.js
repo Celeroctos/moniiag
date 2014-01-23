@@ -54,7 +54,9 @@ $(document).ready(function() {
             var dayData = calendar[i - firstWday];
             // Выходные
             if(!dayData.worked) {
-                //$(td).addClass('')
+                if(dayData.restDay != false) {
+                    $(td).addClass('orange-block');
+                }
             } else {
                 if(dayData.allowForWrite) {
                     // Рабочие дни

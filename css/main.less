@@ -143,6 +143,9 @@
 .yellow-block {
   background: #FFFF00;
 }
+.orange-block {
+  background: #ff9642;
+}
 .not-aviable-block {
   color: #999999;
   background: #D8D8D8;
@@ -663,4 +666,62 @@ position:absolute;
   margin-left: 0;
   margin-bottom: 10px;
   padding: 0 10px;
+}
+/* Маленькие календари */
+.calendarTable {
+  thead {
+    td {
+      font-weight: bold;
+      color: #2E2E2E;
+    }
+  }
+  tr {
+    td {
+      width: 20%;
+    }
+    td.calendarTd {
+      padding: 5px 10px;
+      vertical-align: top;
+      h6 {
+        font-weight: bold;
+      }
+      td {
+        font-weight: 13px;
+        padding: 3px 5px;
+        border: 1px solid #A4A4A4;
+        border-collapse: collapse;
+        cursor: pointer;
+      }
+      td.clicked {
+        background: #D0F5A9;
+        font-weight: bold;
+      }
+      td.not-clicked {
+        background: #E6E6E6;
+        font-weight: bold;
+        color: #D8D8D8;
+      }
+      td.rest {
+        background: #FA5858;
+        font-weight: bold;
+      }
+    }
+  }
+}
+select#restDays {
+  min-height: 130px;
+}
+#submitRestDays {
+  margin-left: 53%;
+}
+#submitHolidays {
+  margin-left: 10px;
+}
+#showNextYear {
+  margin-left: 45%;
+  position: absolute;
+}
+.yearBtnCont {
+  position: relative;
+  height: 35px;
 }
