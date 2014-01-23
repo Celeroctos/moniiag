@@ -303,7 +303,7 @@ $(document).ready(function() {
         loadCalendar(month, year);
     });
 
-    function loadCalendar(month, year) {
+    function loadCalendar(month, year, clicked) {
         $('.busyShedule, .busySheduleHeader').hide();
        // var doctorId = $(link).attr('href').substr(2);
         var doctorId = globalVariables.doctorId;
@@ -336,7 +336,7 @@ $(document).ready(function() {
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == 'true') {
-                    $("#writeShedule").trigger("showShedule", [data, textStatus, jqXHR])
+                    $("#writeShedule").trigger("showShedule", [data, textStatus, jqXHR, clicked])
                     $('.headerBusyCalendar, .busyCalendar').show();
                 } else {
                     $('#errorPopup .modal-body .row p').remove();
@@ -415,11 +415,8 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
-                    globalVariables.clickedTd.trigger('click');
-                    
                     // Перезагружаем календарь
-                    loadCalendar(globalVariables.month, globalVariables.year);
-                    
+                    loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
                 } else {
 
                 }
@@ -445,10 +442,8 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
-                    globalVariables.clickedTd.trigger('click');
-                    
                     // Перезагружаем календарь
-                    loadCalendar(globalVariables.month, globalVariables.year);
+                    loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
                 } else {
 
                 }

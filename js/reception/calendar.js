@@ -1,5 +1,5 @@
 $(document).ready(function() {    
-    $('.calendar').on('showShedule', function(e, data) {
+    $('.calendar').on('showShedule', function(e, data, status, response, clicked) {
         var tbody = $(".calendar tbody");
         // Удаляем всё ненужное
         $(tbody).find("tr").remove();
@@ -47,7 +47,7 @@ $(document).ready(function() {
         var calendar = data.data.calendar;
         for(; i < firstWday + calendar.length; i++) {
             if(!isFilled) {
-                var td = $('<td>').text((i - firstWday) + 1);
+                var td = $('<td id="c' + i + '">').text((i - firstWday) + 1);
                 $(tr).append($(td));
             }
             // Красим ячейки
@@ -89,36 +89,35 @@ $(document).ready(function() {
 
         $(tr).appendTo($(tbody));
 
-        
+        if(typeof clicked != 'undefined') {
+            $('#' + clicked).trigger('click');
+        }
+
         // Добавляем подсказку для нерабочих дней "Этот день недоступен для записи"
         var HintBody = $('<div>');
         HintBody.addClass('busy-shedule-hint');
         HintBody.addClass('no-display');
         HintBody.text("На этот день запись на приём к данному врачу недоступна");
         HintBody.appendTo($('body'));
-        
+
         // При событии mousemove для ячейки недоступрно дня - показываем подсказку, что день недоступен
-        $('.calendar tbody').find('td.not-aviable-block').on('mousemove',function(pos)
-       
-             {
-                // Меняем координату сообщения
-                $(".busy-shedule-hint").css('left',(pos.pageX+5)+'px')
-                    .css('top',(pos.pageY+5)+'px');
-                    
-                // Делаем сообщение видимым
-                $(".busy-shedule-hint").removeClass('no-display');
-                           
-             });
-        
-        
-            // На выходе из ячейки недоступного дня - прячем подсказку
-             $('.calendar tbody').find('td.not-aviable-block').on('mouseout',function(pos)
-             {
-                $(".busy-shedule-hint").addClass('no-display');
-             });
-        
+        $('.calendar tbody').find('td.not-aviable-block').on('mousemove',function(pos) {
+            // Меняем координату сообщения
+            $(".busy-shedule-hint").css('left',(pos.pageX+5)+'px')
+                .css('top',(pos.pageY+5)+'px');
+            // Делаем сообщение видимым
+            $(".busy-shedule-hint").removeClass('no-display');
+         });
+
+
+        // На выходе из ячейки недоступного дня - прячем подсказку
+         $('.calendar tbody').find('td.not-aviable-block').on('mouseout',function(pos) {
+            $(".busy-shedule-hint").addClass('no-display');
+         });
+
+        $('.calendar tbody').off('click', 'td.yellow-block, td.lightgreen-block, td.lightred-block, td.red-block'); // Косая скотина =< Ссылки накапливаются
         // Получение списка пациентов по дате
-        $('.calendar tbody').find('td.yellow-block, td.lightgreen-block, td.lightred-block').on('click', function(e) {
+        $('.calendar tbody').on('click', 'td.yellow-block, td.lightgreen-block, td.lightred-block, td.red-block', function(e) {
             var day = $(this).text();
             globalVariables.clickedTd = $(this);
             $.ajax({
