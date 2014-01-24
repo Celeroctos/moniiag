@@ -11,7 +11,6 @@
 */
 
 $(document).ready(function() {
-    
     var NavigationModeOn = false;
     
     // Выбираем Всё ссылки из меню

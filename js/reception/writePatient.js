@@ -345,9 +345,11 @@ $(document).ready(function() {
 
                     });
                 }
+                
                 return;
             }
         });
+        
     }
 
     $('#sheduleByBusy').on('showBusy', function(e, data, textStatus, jqXHR, doctorId, year, month, day) {
@@ -357,19 +359,35 @@ $(document).ready(function() {
         table.find('tr').remove();
         globalVariables.doctorId = doctorId;
         globalVariables.day = day;
-
+        var dayFull = false;
+        if ($(globalVariables.clickedTd).hasClass('red-block')) {
+            dayFull=true;
+        }
+        
         for(var i = 0; i < data.length; i++) {
             if(data[i].isAllow) {
-                var str =
-                '<tr>' +
-                    '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
-                    '<td></td>' +
-                    '<td>' +
-                        '<a class="write-link" href="#' + data[i].timeBegin + '" title="Записать пациента">' +
-                            '<span class="glyphicon glyphicon-dashboard"></span>' +
-                        '</a>' +
-                    '</td>' +
-                '</tr>';
+                if (dayFull) {
+                    var str =
+                        '<tr>' +
+                        '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
+                        '<td></td>' +
+                        '<td>' +
+                        '</td>' +
+                    '</tr>';
+                }
+                else
+                {
+                    var str =
+                    '<tr>' +
+                        '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
+                        '<td></td>' +
+                        '<td>' +
+                            '<a class="write-link" href="#' + data[i].timeBegin + '" title="Записать пациента">' +
+                                '<span class="glyphicon glyphicon-dashboard"></span>' +
+                            '</a>' +
+                        '</td>' +
+                    '</tr>';    
+                }
             } else {
                 var str =
                 '<tr>' +
@@ -415,11 +433,8 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
-                    globalVariables.clickedTd.trigger('click');
-                    
-                    // Перезагружаем календарь
                     loadCalendar(globalVariables.month, globalVariables.year);
-                    
+                    //globalVariables.clickedTd.trigger('click');                   
                 } else {
 
                 }
@@ -445,16 +460,16 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
-                    globalVariables.clickedTd.trigger('click');
-                    
                     // Перезагружаем календарь
                     loadCalendar(globalVariables.month, globalVariables.year);
+                    //globalVariables.clickedTd.trigger('click');
                 } else {
 
                 }
                 return;
             }
         });
+
         return false;
     });
 

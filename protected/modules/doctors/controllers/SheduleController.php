@@ -317,6 +317,7 @@ class SheduleController extends Controller {
                 $resultArr[$i - 1]['weekday'] = $weekday;
                 if(array_search($weekday, $usual) !== false || array_search($formatDate, $exps) !== false) {
                     // День существует, врач работает
+                    //   Солдат спит - служба идёт! :)
                     $resultArr[$i - 1]['worked'] = true;
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
@@ -327,7 +328,7 @@ class SheduleController extends Controller {
                     $timeStampCurrent = time();
                     $timeStampPerIteration = mktime(0, 0, 0, $month, $day, $this->currentYear);
                     // Если время итерируемое больше, то на такие числа записывать можно
-                    if($timeStampCurrent <= $timeStampPerIteration) {
+                    if($timeStampCurrent <= ($timeStampPerIteration+3600*24)) {
                         $resultArr[$i - 1]['allowForWrite'] = 1;
                     } else {
                         $resultArr[$i - 1]['allowForWrite'] = 0;
@@ -395,8 +396,27 @@ class SheduleController extends Controller {
         }
         $increment = $settings['timePerPatient'] * 60;
         $result = array();
-
+        $todayBusy = false; // Флаг о том, что выводим расписание сегодняшнего (текущего дня)
+        
+        //$timestampBegin = mktime(8 , 0,0,date('n'),date('j'),date('Y'));
+        //$timestampEnd = mktime(23 , 0,0,date('n'),date('j'),date('Y'));
+        
+        if ((date('j')==$this->currentDay)&&(date('n')==$this->currentMonth)&&(date('Y')==$this->currentYear))
+        {
+            $todayBusy = true;
+        }
+        $currentTime = mktime(date("H") , date("i"),0,date('n'),date('j'),date('Y'));
         for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
+            // Если выбираем занятость для текущего дня, то надо проверить
+            //     - если время начала приёма раньше, чем текущее время, то значит
+            //    приём уже прошёл и его не выводим в результат            
+            if ($todayBusy)
+            {
+                if ($i <  $currentTime  )
+                {
+                    continue;                    
+                }
+            }              
             // Ищем пациента для такого времени. Если он найден, значит время занято
             $isFound = false;
             foreach($patients as $key => $patient) {

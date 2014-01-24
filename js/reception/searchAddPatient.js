@@ -4,12 +4,13 @@ $(document).ready(function() {
     InitPaginationList('omsSearchWithoutCardResult','oms_number','desc',updatePatientWithoutCardsList);
     
     // Поиск по ОМС
-    $('#patient-search-submit').click(function(e) {
+    $('#patient-search-submit').on('click',(function(e) {
+      //  console.log('#patient-search-submit click');
         updatePatientWithCardsList();
         updatePatientWithoutCardsList();     
         return false;
-    });
-
+    }));
+    
     function getFilters() {
         var Result =
         {

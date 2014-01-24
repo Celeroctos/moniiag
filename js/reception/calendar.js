@@ -64,7 +64,7 @@ $(document).ready(function() {
                     if(dayData.numPatients > 0 && dayData.numPatients < dayData.quote) {
                         $(td).addClass('yellow-block')
                     }
-                    if(dayData.numPatients == dayData.quote) {
+                    if(dayData.numPatients >= dayData.quote) {
                         $(td).addClass('red-block')
                     }
                 } else {
@@ -116,7 +116,7 @@ $(document).ready(function() {
              });
         
         // Получение списка пациентов по дате
-        $('.calendar tbody').find('td.yellow-block, td.lightgreen-block, td.lightred-block').on('click', function(e) {
+        $('.calendar tbody').find('td.yellow-block, td.lightgreen-block, td.red-block').on('click', function(e) {
             var day = $(this).text();
             globalVariables.clickedTd = $(this);
             $.ajax({
