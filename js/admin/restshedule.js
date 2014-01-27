@@ -1,4 +1,4 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
     $('.calendarTable').on('showCalendar', function(e, restDays, row, col, year, holidays) {
         var holidaysArr = [];
         for(var i in holidays) {
@@ -52,7 +52,11 @@ $(document).ready(function() {
             $(tr).appendTo($(tbody));
             tr = $('<tr>');
         }
-
+        if(month < 10) {
+            month = '0' + (month + 1);
+        } else {
+            month = month + 1;
+        }
         // Строим основной месяц
         for(; i < firstWday + numDays; i++) {
             var currentDay = (i - firstWday) + 1;
@@ -60,12 +64,14 @@ $(document).ready(function() {
             if(currentDay < 10) {
                 currentDay = '0' + currentDay;
             }
+            var id = year + '-' + month + '-' + currentDay;
+
             $(td).prop({
-                'id' : 'd' + year + '-' + month + '-' + currentDay
+                'id' : 'd' + id
             });
             for(var j = 0; j < restDaysCurrent.length; j++) {
                 var restDayParts = restDaysCurrent[j].date.split(' ');
-                if(year + '-' + ((month < 10) ? ('0' + month) : month) + '-' + currentDay == restDayParts[0]) {
+                if(id == restDayParts[0]) {
                     $(td).addClass('clicked');
                 }
             }
@@ -89,7 +95,10 @@ $(document).ready(function() {
         var trs = $(tbody).find('tr');
         for(var j = 0; j < trs.length; j++) {
             for(var i = 0; i < holidaysArr.length; i++) {
-                $(trs[j]).find('td:eq(' + holidaysArr[i] + ')').addClass('rest not-clicked');
+                if(holidaysArr[i] == 0) {
+                    holidaysArr[i] = 7;
+                }
+                $(trs[j]).find('td:eq(' + (holidaysArr[i] - 1) + ')').addClass('rest not-clicked');
             }
         }
 
@@ -131,5 +140,13 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+    $('#showNextYear').click(function() {
+        var year = parseInt($('.currentYear').text());
+        location.href = globalVariables.baseUrl + '/index.php/admin/shedule/viewrest?date=' + (year + 1) + '-01-01';
+    });
+    $('#showPrevYear').click(function() {
+        var year = parseInt($('.currentYear').text());
+        location.href = globalVariables.baseUrl + '/index.php/admin/shedule/viewrest?date=' + (year - 1) + '-01-01';
     });
 });

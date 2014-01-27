@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class SheduleController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
 
@@ -253,20 +253,22 @@ class SheduleController extends Controller {
         foreach($restDays as $day) {
             $restDaysResponse[$day['day']] = array('selected' => 'selected');
         }
+        $parts = explode('-', $dateBegin);
         $this->render('rest', array(
             'model' => $restModel,
             'selectedDaysJson' => CJSON::encode($restDaysResponse),
             'selectedDays' => $restDaysResponse,
             'restCalendars' => CJSON::encode($this->getRestDays($dateBegin)),
             'firstDay' => date('w', strtotime($dateBegin)),
-            'year' => date('Y'),
-            'restDays' => array('Понедельник',
-                'Вторник',
-                'Среда',
-                'Четверг',
-                'Пятница',
-                'Суббота',
-                'Воскресенье')
+            'year' => $parts[0],
+            'displayPrev' => date('Y') < $parts[0],
+            'restDays' => array(1 => 'Понедельник',
+                2 => 'Вторник',
+                3 => 'Среда',
+                4 => 'Четверг',
+                5 => 'Пятница',
+                6 => 'Суббота',
+                0 => 'Воскресенье')
         ));
     }
 
@@ -297,11 +299,11 @@ class SheduleController extends Controller {
         // Делим всю выборку на 12 месяцев
         foreach($responseDb as $day) {
             $month = date('n', strtotime($day['date']));
-            if(!isset($response[$month])) {
-                $response[$month] = array();
+            if(!isset($response[$month - 1])) {
+                $response[$month - 1] = array();
             }
             // Теперь смотрим, какие даты подгоняются под этот месяц
-            $response[$month][] = $day;
+            $response[$month - 1][] = $day;
         }
         return $response;
     }
@@ -313,7 +315,14 @@ class SheduleController extends Controller {
             exit();
         }
         $dates = CJSON::decode($_GET['dates']);
-        SheduleRestDay::model()->deleteAll();
+        // Ничего устанавливать не надо
+        if(count($_GET['dates']) == 0) {
+            echo CJSON::encode(array('success' => true,
+                                     'data' => array()));
+        }
+        // Вычленяем год
+        $parts = explode('-', $_GET['dates'][0]);
+        SheduleRestDay::model()->deleteAll('substr(cast(date AS text), 0, 5) = :year', array(':year' => $parts[0]));
         foreach($dates as $date) {
             $rest = new SheduleRestDay();
             $rest->date = $date;

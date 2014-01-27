@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/restshedule.js" ></script>
+﻿<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/restshedule.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <h4>Календарь выходных дней</h4>
 <p>Раздел предлагает задать выходные дни в расписании врачей.</p>
@@ -45,7 +45,15 @@
         </div>
     <?php $this->endWidget(); ?>
 </div>
-<p>Задайте помимо этого отдельные праздничные дни:</p>
+<p>Задайте помимо этого отдельные праздничные дни: (текущий год - <strong class="currentYear"><?php echo $year; ?></strong>)</p>
+<div class="row default-padding-left yearBtnCont">
+    <button id="showPrevYear" class="btn btn-primary <?php echo $displayPrev ? '' : 'no-display'; ?>" type="button">
+        <span class="glyphicon glyphicon-arrow-left"></span> Показать предыдущий год
+    </button>
+    <button id="showNextYear" class="btn btn-primary" type="button" >
+        Показать следующий год <span class="glyphicon glyphicon-arrow-right"></span>
+    </button>
+</div>
 <div class="row">
     <table class="calendarTable">
         <?php for($i = 0; $i < 3; $i++) { ?>
