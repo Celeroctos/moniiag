@@ -300,16 +300,8 @@
 							lastNullEntered = true;
 							return false;
 						}
-                        // Стрелки вправо-влево, tab, Enter и backspace разрешать,
-			//      разрешать ведущие нули
-                        if(e.keyCode != 9 &&
-			   e.keyCode != 8 &&
-			   e.keyCode != 37 &&
-			   e.keyCode != 39 &&
-			   e.keyCode != 16 &&
-			   e.keyCode != 13 &&
-			   e.keyCode != 48 &&
-			   e.keyCode != 96) {
+                        // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
 							$(this).animate({
 								backgroundColor: "rgb(255, 196, 196)"
 							});
@@ -403,15 +395,8 @@
 							lastNullEntered = true;
 							return false;
 						}
-                        // Стрелки вправо-влево, tab, Enter и backspace разрешать
-                        if(e.keyCode != 9 &&
-			   e.keyCode != 8 &&
-			   e.keyCode != 37 &&
-			   e.keyCode != 39 &&
-			   e.keyCode != 16 &&
-			   e.keyCode != 13 &&
-			   e.keyCode != 48 &&
-			   e.keyCode != 96) {
+                        // Стрелки вправо-влево, tab и backspace разрешать
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
@@ -494,13 +479,8 @@
                             return false;
                         }
                     } else {
-                        // Стрелки вправо-влево, tab, Enter и backspace разрешать. И шифт
-                        if(e.keyCode != 9 &&
-			   e.keyCode != 8 &&
-			   e.keyCode != 37 &&
-			   e.keyCode != 13 &&
-			   e.keyCode != 39 &&
-			   e.keyCode != 16) {
+                        // Стрелки вправо-влево, tab и backspace разрешать. И шифт
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });

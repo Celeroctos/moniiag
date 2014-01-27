@@ -69,7 +69,7 @@ class SheduleController extends Controller {
         }
         $allClean = true; // Флаг, который говорит о том, новое ли совсем расписание или нет. Если хотя бы одно строка в расписании есть, этот флаг примет $i первой найденной непустой строки
         if($model->doctorId != null) {
-            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $model->doctorId));
+            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id AND date_id != NULL', array(':employee_id' => $model->doctorId));
             $num = count($dayModels);
             $days = array();
             for($i = 0; $i < 7; $i++) {
@@ -95,6 +95,7 @@ class SheduleController extends Controller {
         // Если есть расписание, значит можно вынуть ключ
         if($allClean !== true && $days[$allClean]->date_id != null) {
             $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $days[$allClean]->date_id));
+
         } else {
             $sheduleSettedBeModel = new SheduleSettedBe();
         }
@@ -212,11 +213,14 @@ class SheduleController extends Controller {
             'data' => array()
         );
         if(count($rows) > 0) {
-            
-            
             $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $rows[0]->date_id));
-            $resultArr['dateBegin'] = $sheduleSettedBeModel->date_begin;
-            $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
+            if($sheduleSettedBeModel != null) {
+                $resultArr['dateBegin'] = $sheduleSettedBeModel->date_begin;
+                $resultArr['dateEnd'] = $sheduleSettedBeModel->date_end;
+            } else {
+                $resultArr['dateBegin'] = '';
+                $resultArr['dateEnd'] = '';
+            }
         }
         foreach($rows as $row) {
             $row->time_begin = substr($row->time_begin, 0, strrpos($row->time_begin, ':'));
@@ -234,5 +238,92 @@ class SheduleController extends Controller {
         }
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $resultArr));
+    }
+
+    // Просмотр календаря выходных дней
+    public function actionViewRest() {
+        $restModel = new FormRestDaysEdit();
+        $restDays = SheduleRest::model()->findAll();
+        $restDaysResponse = array();
+        if(!isset($_GET['date'])) {
+            $dateBegin = date('Y-n-j');
+        } else {
+            $dateBegin = $_GET['date'];
+        }
+        foreach($restDays as $day) {
+            $restDaysResponse[$day['day']] = array('selected' => 'selected');
+        }
+        $this->render('rest', array(
+            'model' => $restModel,
+            'selectedDaysJson' => CJSON::encode($restDaysResponse),
+            'selectedDays' => $restDaysResponse,
+            'restCalendars' => CJSON::encode($this->getRestDays($dateBegin)),
+            'firstDay' => date('w', strtotime($dateBegin)),
+            'year' => date('Y'),
+            'restDays' => array('Понедельник',
+                'Вторник',
+                'Среда',
+                'Четверг',
+                'Пятница',
+                'Суббота',
+                'Воскресенье')
+        ));
+    }
+
+    // Редактирование календаря выходных дней
+    public function actionRestEdit() {
+        $model = new FormRestDaysEdit();
+        if(isset($_POST['FormRestDaysEdit'])) {
+            $model->attributes = $_POST['FormRestDaysEdit'];
+            SheduleRest::model()->deleteAll();
+            foreach($model->restDays as $day) {
+                $sheduleRest = new SheduleRest();
+                $sheduleRest->day = $day;
+                if(!$sheduleRest->save()) {
+                    echo CJSON::encode(array('success' => false,
+                                             'msg' => 'Не могу сохранить выходной день!'));
+                }
+            }
+            echo CJSON::encode(array('success' => true,
+                                     'msg' => 'Выходные дни успешно сохранены.'));
+        }
+    }
+
+    private function getRestDays($dateBegin) {
+        $parts = explode('-', $dateBegin);
+        $dateEnd = ($parts[0] + 1).'-'.$parts[1].'-'.$parts[2];
+        $responseDb = SheduleRestDay::model()->findAll('t.date >= :dateBegin AND t.date < :dateEnd', array(':dateBegin' => $dateBegin, ':dateEnd' => $dateEnd));
+        $response = array();
+        // Делим всю выборку на 12 месяцев
+        foreach($responseDb as $day) {
+            $month = date('n', strtotime($day['date']));
+            if(!isset($response[$month])) {
+                $response[$month] = array();
+            }
+            // Теперь смотрим, какие даты подгоняются под этот месяц
+            $response[$month][] = $day;
+        }
+        return $response;
+    }
+
+    public function actionSetHolidays() {
+        if(!isset($_GET['dates'])) {
+            echo CJSON::encode(array('success' => false,
+                                     'msg' => 'Не могу сохранить выходной день!'));
+            exit();
+        }
+        $dates = CJSON::decode($_GET['dates']);
+        SheduleRestDay::model()->deleteAll();
+        foreach($dates as $date) {
+            $rest = new SheduleRestDay();
+            $rest->date = $date;
+            if(!$rest->save()) {
+                echo CJSON::encode(array('success' => false,
+                                         'msg' => 'Не могу сохранить день в расписании!'));
+                exit();
+            }
+        }
+        echo CJSON::encode(array('success' => true,
+                                 'data' => array()));
     }
 }

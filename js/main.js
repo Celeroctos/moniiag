@@ -147,18 +147,20 @@
     $("#logout-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         window.location.reload();
     });
-
+    
     // Показ подсказки по фокусу на поле
     $('input').on('focus', function(e) {
-        //console.log('.help-block focus');
+        
         // Из-за этого рубится событие клик
         //$('.help-block').hide();
+        
         
         var helpBlock = $(this).parents('.form-group').find('.help-block');
         if(typeof helpBlock != 'undefined') {
             if ($(helpBlock).length>0) {
                     $(helpBlock).show();
             }
+            
         }
     });
     
@@ -166,53 +168,5 @@
     $('div.date').addClass('date-control');
     $('div.time-control').removeClass('date-control');
     
-    // Ставим обработчик keydown на document, чтобы отловить Enter
-    $(document).on('keydown', function(e) {
-        // Клавиша Enter
-        if (e.keyCode==13) {
-            // Если target - потенциально принадлежит форме
-            if($(e.target).is('input[type!=submit][type!=button], select, textarea'))
-            {
-                var ContainerOfElement = null;
-                // Определяем контейнер, в которой лежит элемент
-                    // Смотрим - если открыт хотя бы один поп-ап
-                    //     (установлено ли свойство display у css, равное 'block')- смотрим, есть ли в нём форма
-                    var OpenedPopup = $('.modal:visible');
-                    // Если открыт поп-ап и в нём нет формы
-                    if (OpenedPopup.length>0 && ($($(OpenedPopup)[0]).find('form').length<=0)) {
-                        ContainerOfElement = OpenedPopup;
-                    }
-                    else
-                    // Если не открыт поп-ап или в нём есть форма
-                    {
-                        // Берём у родителя target-а форму
-                        ContainerOfElement =
-                        $(e.target).parents('form');    
-                    }
-                    // Если у элемента есть родительская форма
-                    if (ContainerOfElement.length>0) {
-                        // Находим элемент с классом .button-success.
-                        var ButtonToSubmit = $($(ContainerOfElement)[0]).find('.btn-success');
-                        // Если кнопки btn-success нет, то ищём кнопку btn-primary
-                        if (ButtonToSubmit.length<=0) {
-                            ButtonToSubmit = $($(ContainerOfElement)[0]).find('.btn-primary');
-                        }
-                        // Если кнопки btn-primary нет, то ищём кнопку btn-default
-                        if (ButtonToSubmit.length<=0) {
-                            ButtonToSubmit = $($(ContainerOfElement)[0]).find('.btn-default');
-                        }
-                        // Если ничего не нашли - выбираем input type=submit и input type=button
-                        if (ButtonToSubmit.length<=0) {
-                            ButtonToSubmit = $($(ContainerOfElement)[0]).find('[type=submit], [type=button]');
-                        }
-                        // Ну а теперь, если всё-таки что-то наконец нашли - выбираем первую из списка
-                        //    кнопку - и делаем ей приятно (вызываем click)
-                        if (ButtonToSubmit.length>0) {
-                            $($(ButtonToSubmit)[0]).trigger('click');
-                        }
-                    }
-            }
-        }
-    });
    
 });

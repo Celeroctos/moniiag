@@ -14,12 +14,13 @@ class UserIdentity extends CUserIdentity
         } else {
             $this->_id = $record->id;
             $employee = Doctor::model()->findByPk($record->employee_id);
+            $roles = RoleToUser::model()->findAllRolesByUser($record->id);
 
             // Данные юзера
             $this->setState('login', $record->login);
             $this->setState('id', $record->id);
             $this->setState('username', $record->username);
-            $this->setState('roleId', $record->role_id);
+            $this->setState('roleId', $roles);
             $this->setState('medworkerId', $employee->post_id);
 
             $this->errorCode = self::ERROR_NONE;

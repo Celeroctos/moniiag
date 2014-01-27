@@ -302,6 +302,22 @@ class SheduleController extends Controller {
                     array_push($exps, $element['day']);
                 }
             }
+            // Теперь вынем стабильное расписание выходных
+            $restDays = SheduleRest::model()->findAll();
+            $restDaysArr = array();
+            foreach($restDays as $restDay) {
+                $restDaysArr[] = $restDay->day;
+            }
+
+            // Теперь вынем все дни, которые являются праздничными: на них тоже нельзя записывать человеков
+            $paramDate =  $this->currentYear.'-'.($this->currentMonth > 9 ? $this->currentMonth : '0'.$this->currentMonth);
+            $restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 8) = :date', array(':date' => $paramDate));
+            $restDaysArrLonely = array();
+            foreach($restDaysLonely as $dayLonely) {
+                $parts = explode('-', $dayLonely->date);
+                $restDaysArrLonely[] = (int)$parts[2];
+            }
+
             // Теперь смотрим по дням и составляем календарь
             $resultArr = array();
             for($i = $dayBegin; $i <= $dayEnd; $i++) {
@@ -315,28 +331,46 @@ class SheduleController extends Controller {
                 $weekday = date('w', strtotime($formatDate));
                 // 0 -> 0.. 1 -> 1..
                 $resultArr[$i - 1]['weekday'] = $weekday;
-                if(array_search($weekday, $usual) !== false || array_search($formatDate, $exps) !== false) {
+                if((array_search($weekday, $usual) !== false && array_search($weekday, $restDaysArr) === false && array_search($i, $restDaysArrLonely) === false) || array_search($formatDate, $exps) !== false) {
                     // День существует, врач работает
-                    //   Солдат спит - служба идёт! :)
                     $resultArr[$i - 1]['worked'] = true;
+                    $resultArr[$i - 1]['restDay'] = false;
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
-                    $numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day = :patient_day', array(':doctor_id' => $doctorId, ':patient_day' => $formatDate));
-                    $resultArr[$i - 1]['numPatients'] = count($numPatients);
+                    //$numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day = :patient_day', array(':doctor_id' => $doctorId, ':patient_day' => $formatDate));
+                    // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
+                    //$resultArr[$i - 1]['numPatients'] = count($numPatients);
+                    $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day);
+                    $resultArr[$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
+                        return $element['id'] != null;
+                    }));
                     $resultArr[$i - 1]['quote'] = $settings['quote'];
+                    // Квота изменяется вручную: возможно, врач просто не успеет за смену принять квоту человек
+                    if($numPatients['allReserved'] && $resultArr[$i - 1]['numPatients'] < $settings['quote']) {
+                        $resultArr[$i - 1]['quote'] = $resultArr[$i - 1]['numPatients'];
+                    }
                     // Если врач работает в этот день, надо посмотреть, не прошедшая ли дата. На прошедшие даты записывать не надо.
-                    $timeStampCurrent = time();
+                    $timeStampCurrent = mktime(0, 0, 0);
+                    //var_dump($timeStampCurrent);
+                    //exit();
                     $timeStampPerIteration = mktime(0, 0, 0, $month, $day, $this->currentYear);
                     // Если время итерируемое больше, то на такие числа записывать можно
-                    if($timeStampCurrent <= ($timeStampPerIteration+3600*24)) {
+                    if($timeStampCurrent <= $timeStampPerIteration) {
                         $resultArr[$i - 1]['allowForWrite'] = 1;
                     } else {
                         $resultArr[$i - 1]['allowForWrite'] = 0;
                     }
                 } else {
+                    // Если это выходной, его тоже нужно помечать
+                    if(array_search($weekday, $restDaysArr) !== false || array_search($i, $restDaysArrLonely) !== false) {
+                        $resultArr[$i - 1]['restDay'] = true;
+                    } else {
+                        $resultArr[$i - 1]['restDay'] = false;
+                    }
                     $resultArr[$i - 1]['worked'] = false;
                     $resultArr[$i - 1]['numPatients'] = 0;
                     $resultArr[$i - 1]['quote'] = 0;
+                    $resultArr[$i - 1]['allowForWrite'] = 0;
                 }
                 $resultArr[$i - 1]['day'] = $i;
             }
@@ -359,31 +393,31 @@ class SheduleController extends Controller {
         $this->currentYear = $_GET['year'];
         $this->currentMonth = $_GET['month'];
         $this->currentDay = $_GET['day'];
+        $result = $this->getPatientList($_GET['doctorid'], $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay);
 
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => $result['result']));
+    }
+
+    private function getPatientList($doctorId, $formatDate) {
         $patientsList = array();
         $sheduleByDay = new SheduleByDay();
-        $formatDate = $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay;
         $weekday = date('w', strtotime($formatDate)); // День недели (число)
-        $patients = $sheduleByDay->getRows($formatDate, $_GET['doctorid']);
+        $patients = $sheduleByDay->getRows($formatDate, $doctorId);
 
         // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
         $user = User::model()->findByPk(Yii::app()->user->id);
         if($user == null) {
             echo CJSON::encode(array('success' => 'false',
-                                     'data' => 'Ошибка! Неавторизованный пользователь.'));
-        }
-        if($user['employee_id'] == null) {
-            echo CJSON::encode(array('success' => 'false',
-                                     'data' => 'Ошибка! К пользователю не прикреплён сотрудник.'));
+                'data' => 'Ошибка! Неавторизованный пользователь.'));
         }
         $sheduleElements = SheduleSetted::model()->findAll('employee_id = :employee_id
-                                                       AND (weekday = :weekday OR day = :day)',
-                                                      array(
-                                                          ':employee_id' => $user['employee_id'],
-                                                          ':weekday' => $weekday,
-                                                          ':day' => $formatDate
-                                                      ));
-
+AND (weekday = :weekday OR day = :day)',
+            array(
+                ':employee_id' => $doctorId,
+                ':weekday' => $weekday,
+                ':day' => $formatDate
+            ));
         $settings = $this->getSettings();
         // Выясняем время работы. Частные дни имеют приоритет по сравнению с обычными
         $choosedType = 0;
@@ -396,27 +430,9 @@ class SheduleController extends Controller {
         }
         $increment = $settings['timePerPatient'] * 60;
         $result = array();
-        $todayBusy = false; // Флаг о том, что выводим расписание сегодняшнего (текущего дня)
-        
-        //$timestampBegin = mktime(8 , 0,0,date('n'),date('j'),date('Y'));
-        //$timestampEnd = mktime(23 , 0,0,date('n'),date('j'),date('Y'));
-        
-        if ((date('j')==$this->currentDay)&&(date('n')==$this->currentMonth)&&(date('Y')==$this->currentYear))
-        {
-            $todayBusy = true;
-        }
-        $currentTime = mktime(date("H") , date("i"),0,date('n'),date('j'),date('Y'));
+        $numRealPatients = 0; // Это для того, чтобы понять, заполнено ли всё
+
         for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
-            // Если выбираем занятость для текущего дня, то надо проверить
-            //     - если время начала приёма раньше, чем текущее время, то значит
-            //    приём уже прошёл и его не выводим в результат            
-            if ($todayBusy)
-            {
-                if ($i <  $currentTime  )
-                {
-                    continue;                    
-                }
-            }              
             // Ищем пациента для такого времени. Если он найден, значит время занято
             $isFound = false;
             foreach($patients as $key => $patient) {
@@ -431,6 +447,7 @@ class SheduleController extends Controller {
                         'cardNumber' => $patient['card_number']
                     );
                     $isFound = true;
+                    $numRealPatients++;
                 }
             }
             if(!$isFound) {
@@ -444,8 +461,10 @@ class SheduleController extends Controller {
                 );
             }
         }
-        echo CJSON::encode(array('success' => 'true',
-                                 'data' => $result));
+        return array(
+                'result' => $result,
+                'allReserved' => $numRealPatients == count($result)
+        );
     }
 
     // Записать пациента на приём
@@ -468,17 +487,17 @@ class SheduleController extends Controller {
         $sheduleElement->patient_time = $formatTime;
         if(!$sheduleElement->save()) {
             echo CJSON::encode(array('success' => 'false',
-                                     'data' => 'Не могу записать пациента!'));
+                'data' => 'Не могу записать пациента!'));
             exit();
         }
         echo CJSON::encode(array('success' => 'true',
-                                 'data' => 'Пациент успешно записан!'));
+            'data' => 'Пациент успешно записан!'));
     }
     // Отписать пациента от приёма
     public function actionUnwritePatient() {
         if(!isset($_GET['id'])) {
             echo CJSON::encode(array('success' => 'false',
-                                     'data' => 'Не могу отписать пациента от приёма!'));
+                'data' => 'Не могу отписать пациента от приёма!'));
             exit();
         }
         $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
@@ -487,8 +506,6 @@ class SheduleController extends Controller {
         }
 
         echo CJSON::encode(array('success' => 'true',
-                                 'data' => 'Пациент успешно отписан!'));
+            'data' => 'Пациент успешно отписан!'));
     }
 }
-
-?>

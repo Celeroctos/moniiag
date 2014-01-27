@@ -182,6 +182,7 @@
     </div>
     <div class="col-xs-4">
         <h4>Легенда</h4>
+        <p><div class="legend-icon orange-block"></div>Выходные дни</p>
         <p><div class="legend-icon lightgreen-block"></div>Полностью свободные дни</p>
         <p><div class="legend-icon red-block"></div>Полностью занятые дни</p>
         <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
