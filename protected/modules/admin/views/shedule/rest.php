@@ -15,34 +15,34 @@
         )
     ));
     ?>
-        <div class="form-group">
-            <?php echo $form->labelEx($model,'restDays', array(
-                'class' => 'col-xs-6 control-label'
+    <div class="form-group">
+        <?php echo $form->labelEx($model,'restDays', array(
+            'class' => 'col-xs-6 control-label'
+        )); ?>
+        <div class="col-xs-6">
+            <?php echo $form->dropDownList($model, 'restDays', $restDays, array(
+                'id' => 'restDays',
+                'class' => 'form-control',
+                'multiple' => 'multiple',
+                'options' => $selectedDays
             )); ?>
-            <div class="col-xs-6">
-                <?php echo $form->dropDownList($model, 'restDays', $restDays, array(
-                    'id' => 'restDays',
-                    'class' => 'form-control',
-                    'multiple' => 'multiple',
-                    'options' => $selectedDays
-                )); ?>
-            </div>
         </div>
-        <div class="form-group">
-            <?php echo CHtml::ajaxSubmitButton(
-                'Сохранить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/restedit'),
-                array(
-                    'success' => 'function(data, textStatus, jqXHR) {
-                        $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
-                    }'
-                ),
-                array(
-                    'class' => 'btn btn-success',
-                    'id' => 'submitRestDays'
-                )
-            ); ?>
-        </div>
+    </div>
+    <div class="form-group">
+        <?php echo CHtml::ajaxSubmitButton(
+            'Сохранить',
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/restedit'),
+            array(
+                'success' => 'function(data, textStatus, jqXHR) {
+$("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
+}'
+            ),
+            array(
+                'class' => 'btn btn-success',
+                'id' => 'submitRestDays'
+            )
+        ); ?>
+    </div>
     <?php $this->endWidget(); ?>
 </div>
 <p>Задайте помимо этого отдельные праздничные дни: (текущий год - <strong class="currentYear"><?php echo $year; ?></strong>)</p>
@@ -57,18 +57,18 @@
 <div class="row">
     <table class="calendarTable">
         <?php for($i = 0; $i < 3; $i++) { ?>
-        <tr>
-            <?php for($j = 0; $j < 4; $j++) { ?>
-            <td class="calendarTd">
-                <h6></h6>
-                <script type="text/javascript">
-                    $(document).ready(function() {
-                        $('.calendarTable').trigger('showCalendar', [<?php echo $restCalendars; ?>, <?php echo $i; ?>, <?php echo $j; ?>, <?php echo $year; ?>, <?php echo $selectedDaysJson; ?>])
-                    });
-                </script>
-            </td>
-            <?php } ?>
-        </tr>
+            <tr>
+                <?php for($j = 0; $j < 4; $j++) { ?>
+                    <td class="calendarTd">
+                        <h6></h6>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                $('.calendarTable').trigger('showCalendar', [<?php echo $restCalendars; ?>, <?php echo $i; ?>, <?php echo $j; ?>, <?php echo $year; ?>, <?php echo $selectedDaysJson; ?>])
+                            });
+                        </script>
+                    </td>
+                <?php } ?>
+            </tr>
         <?php } ?>
     </table>
     <input type="button" value="Сохранить" id="submitHolidays" class="btn btn-success">

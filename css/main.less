@@ -427,19 +427,17 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
     }
   }
 }
-#patient-withoutcard-form, #patient-withcard-form , #patient-oms-edit-form, #patient-search-form, #patient-medcard-edit-form,
-#print-search-form, #change-date-form, #shedule-exp-form, #shedule-by-day-form, #doctors-search-form {
-  div.date-control {
-    span {
-      display: block;
-      position: relative;
-      top: 2px;
-      left: 180px;
-      z-index: 99;
-      span.glyphicon-calendar {
-        margin: 0 0 0 -5px;
-        left: 0;
-      }
+
+div.date-control {
+  span {
+    display: block;
+    position: relative;
+    top: 2px;
+    left: 180px;
+    z-index: 99;
+    span.glyphicon-calendar {
+      margin: 0 0 0 -5px;
+      left: 0;
     }
   }
 }
@@ -539,7 +537,7 @@ tr.header {
   }
   tbody td:hover {
     background: #b69394;
-    cursor: hand;
+    cursor: pointer;
   }
 }
 .current-sidebar-menu
@@ -569,6 +567,9 @@ body #editPopup {
   button {
     margin: 10px 0 0 18%;
   }
+}
+#sheduleViewSubmit {
+  margin: 10px 0 0 18%;
 }
 /* Клавиатурная подсказка */
 .pop-keyboard-help {
@@ -717,11 +718,17 @@ select#restDays {
 #submitHolidays {
   margin-left: 10px;
 }
-#showNextYear {
-  margin-left: 45%;
-  position: absolute;
+#mediateSubmit-cont {
+  margin: 10px 0 0 0;
 }
-.yearBtnCont {
-  position: relative;
-  height: 35px;
+/* Расписание для ресепшена */
+#sheduleTable {
+  td {
+    border: 1px solid #d4d0c8;
+    padding: 3px 5px;
+  }
+}
+/* Модальное окно у ресепшена в раписании */
+#acceptGreetingPopup .modal-dialog {
+  width: 800px;
 }

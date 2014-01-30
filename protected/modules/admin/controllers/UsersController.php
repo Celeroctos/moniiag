@@ -208,6 +208,19 @@ class UsersController extends Controller {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));
         }
+
+        // Теперь ставим роли
+        RoleToUser::model()->deleteAll('user_id = :user_id', array(':user_id' => $user->id));
+        foreach($model->roleId as $role) {
+            $roleToUser = new RoleToUser();
+            $roleToUser->user_id = $user->id;
+            $roleToUser->role_id = $role;
+            if(!$roleToUser->save()) {
+                echo CJSON::encode(array('success' => false,
+                                         'error' => 'Не могу сохранить роль!'));
+                exit();
+            }
+        }
     }
 }
 

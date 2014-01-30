@@ -29,7 +29,7 @@ class PatientController extends Controller {
     public function actionViewAdd() {
         $privilegesList = $this->getPrivileges();
 
-        if(isset($_GET['patientid'])) {
+        if(isset($_GET['patientid']) && !isset($_GET['mediateid'])) {
             $model = new Oms();
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
@@ -42,14 +42,18 @@ class PatientController extends Controller {
                 if($medcard != null) {
                     $medcard = Medcard::model()->findByPk($medcard['card_number']);
                     $this->fillFormMedcardModel($formModel, $medcard);
+                    // Ищем привилегии
+                    $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
+                } else {
+                    $privileges = array();
                 }
-                // Ищем привилегии
-                $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
 
                 if(count($privileges) > 0) {
                     // TODO: пока говорим о том, что одному пациенту соответствует одна привилегия. В будущем будем писать для целого массива льгот
                     $this->fillPrivilegeFormPart($formModel, $privileges);
                 }
+                $formModel->mediateId = -1;
+                $formModel->policy = $patient->id;
 
                 $this->render('addPatientWithCard', array(
                     'model' => $formModel,
@@ -58,7 +62,8 @@ class PatientController extends Controller {
                     'fio' => $patient->first_name.' '.$patient->last_name.' '.$patient->middle_name,
                     'regPoint' => date('Y'),
                     'privilegesList' => $privilegesList,
-                    'foundPriv' => count($privileges) > 0
+                    'foundPriv' => count($privileges) > 0,
+                    'id' => -1
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -66,10 +71,42 @@ class PatientController extends Controller {
                     'model' => $model,
                     'regPoint' => date('Y'),
                     'privilegesList' => $privilegesList,
-                    'foundPriv' => false
+                    'foundPriv' => false,
+                    'policy_number' => -1,
+                    'policy_id' => -1,
                 ));
             }
         } else {
+            // Регистрация опосредованного пациента: сопоставление с сущестующими ОМС
+            if(isset($_GET['mediateid'], $_GET['patientid'])) {
+                $oms = Oms::model()->findByPk($_GET['patientid']);
+                $mediate = MediatePatient::model()->findByPk($_GET['mediateid']);
+                $model = new FormPatientWithCardAdd();
+
+                if($oms == null) {
+                    $model->policy = -1;
+                } else {
+                    $model->policy = $oms->id;
+                }
+
+                if($mediate == null) {
+                    $model->mediateId = -1;
+                } else {
+                    $model->mediateId = $mediate->id;
+                    $model->contact = $mediate->phone;
+                }
+
+                $this->render('addPatientWithCard', array(
+                    'model' => $model,
+                    'regPoint' => date('Y'),
+                    'privilegesList' => $privilegesList,
+                    'foundPriv' => false,
+                    'fio' => $oms->first_name.' '.$oms->last_name.' '.$oms->middle_name,
+                    'policy_number' => $oms->oms_number
+                ));
+                exit();
+            }
+
             $model = new FormPatientAdd();
             $this->render('addPatientWithoutCard', array(
                 'model' => $model,
@@ -85,7 +122,7 @@ class PatientController extends Controller {
         $model = new FormPatientAdd();
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
-			
+
             if($model->validate()) {
                 $this->checkUniqueOms($model);
                 $this->checkUniqueMedcard($model);
@@ -93,9 +130,8 @@ class PatientController extends Controller {
                 $medcard = new Medcard();
 
                 $this->addEditModelOms($oms, $model);
-                $this->addEditModelMedcard($medcard, $model, $oms);
-
-                if($_POST['privilege'] != -1) {
+                $this->addEditModelMedcard($medcard, $model, $oms);;
+                if($model->privilege != -1) {
                     $patientPrivelege = new PatientPrivilegie();
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
                 }
@@ -172,7 +208,22 @@ class PatientController extends Controller {
                     exit();
                 }
 
-                $this->addEditModelMedcard($medcard, $model, $oms);
+                $medcard = $this->addEditModelMedcard($medcard, $model, $oms);
+
+                // Карта сделана из опосредованного пациента
+                if($model->mediateId != -1) {
+                    // Нужно удалить запись о опосредованном пациенте и переписать всех опосредованных пациентов на данную медкарту
+                    $sheduleList = SheduleByDay::model()->findAll('t.mediate_id = :mediate_id', array(':mediate_id' => $model->mediateId));
+                    foreach($sheduleList as $element) {
+                        $element->medcard_id = $medcard->card_number;
+                        $element->mediate_id = null;
+                        if(!$element->save()) {
+                            echo CJSON::encode(array('success' => 'false',
+                                                     'data' => 'Не могу перенести запись опосредованного пациента!'));
+                            exit();
+                        }
+                    }
+                }
 
                 echo CJSON::encode(array('success' => 'true',
                                          'msg' => 'Новая запись успешно добавлена!'));
@@ -193,6 +244,7 @@ class PatientController extends Controller {
         $oms->gender = $model->gender;
         $oms->birthday = $model->birthday;
         $oms->givedate = $model->policyGivedate;
+        $oms->status = $model->status;
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
@@ -279,6 +331,21 @@ class PatientController extends Controller {
         $formModel->profession = $medcard->profession;
     }
 
+    private function fillFormMedcardMediateModel($formModel, $oms = false, $mediate = false) {
+        if($mediate !== false) {
+            $formModel = $this->fillMediateForm($formModel, $mediate);
+        }
+        if($oms !== false) {
+            $formModel->omsId = $oms->id;
+        }
+        return $formModel;
+    }
+
+    private function fillMediateForm($formModel, $mediate) {
+        $formModel->contact = $mediate->phone;
+        return $formModel;
+    }
+
     // Записать в форму редактирования льготу
     private function fillPrivilegeFormPart($formModel, $privileges) {
         foreach($privileges as $privilege) {
@@ -290,9 +357,24 @@ class PatientController extends Controller {
         }
     }
 
-        // Редактирование полиса (ОМС), вьюха
-        public function actionEditOmsView() {
-            if(isset($_GET['omsid'])) {
+    private function fillOmsModel($formModel, $oms) {
+        $formModel->firstName = $oms->first_name;
+        $formModel->lastName = $oms->last_name;
+        $formModel->middleName = $oms->middle_name;
+        $formModel->policy = $oms->oms_number;
+        $formModel->gender = $oms->gender;
+        $formModel->birthday = $oms->birthday;
+        $formModel->id = $oms->id;
+        $formModel->omsType = $oms->type;
+        $formModel->policyGivedate = $oms->givedate;
+        $formModel->policyEnddate = $oms->enddate;
+        $formModel->status = $oms->status;
+        return $formModel;
+    }
+
+    // Редактирование полиса (ОМС), вьюха
+    public function actionEditOmsView() {
+        if(isset($_GET['omsid'])) {
             $modelOms = new Oms();
             $oms = $modelOms->findByPk($_GET['omsid']);
             if($oms == null) {
@@ -302,17 +384,7 @@ class PatientController extends Controller {
 
             if($oms != null) {
                 $formModel = new FormOmsEdit();
-                $formModel->firstName = $oms->first_name;
-                $formModel->lastName = $oms->last_name;
-                $formModel->middleName = $oms->middle_name;
-                $formModel->policy = $oms->oms_number;
-                $formModel->gender = $oms->gender;
-                $formModel->birthday = $oms->birthday;
-                $formModel->id = $oms->id;
-                $formModel->omsType = $oms->type;
-                $formModel->policyGivedate = $oms->givedate;
-                $formModel->policyEnddate = $oms->enddate;
-
+                $formModel = $this->fillOmsModel($formModel, $oms);
                 $this->render('editOms', array(
                     'model' => $formModel,
                     'policy_number' => $oms->oms_number,
@@ -405,7 +477,7 @@ class PatientController extends Controller {
             exit();
         }
 
-        return true;
+        return $medcard;
     }
 
     // Генерация номера карты
@@ -430,95 +502,84 @@ class PatientController extends Controller {
 
     // Поиск пациента и его запсь
     public function actionSearch() {
-	// Проверим наличие фильтров
-	$filters = $this->checkFilters();
-	
-	$rows = $_GET['rows'];
-	$page = $_GET['page'];
+        // Проверим наличие фильтров
+        $filters = $this->checkFilters();
+
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
-	
-	$WithOnly = false;
-	$WithoutOnly = false;
-	
-	$oms = array();
-	if ((isset($_GET['withonly']))&&($_GET['withonly']==0))
-	{
-	    $WithOnly = true;
-	}
-	
-	if ((isset($_GET['withoutonly']))&&($_GET['withoutonly']==0))
-	{
-	    $WithoutOnly = true;		
-	}
-	
-	$model = new Oms();
-	// Вычислим общее количество записей
-	$num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
 
-	$totalPages = ceil(count($num) / $rows);
-        $start = $page * $rows - $rows;
-	
+        $WithOnly = false;
+        $WithoutOnly = false;
 
-	
-	$omsItems = $model->getRows($filters, $sidx, $sord, $start, $rows,$WithOnly,$WithoutOnly);
-
-	// Обрабатываем результат
-	foreach($omsItems as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
+        $oms = array();
+        if ((isset($_GET['withonly'])) && ($_GET['withonly'] == 0)) {
+            $WithOnly = true;
         }
-	echo CJSON::encode(
-			   array(
-				    'success' => true,
-				    'rows' => $omsItems,
-				    'total' => $totalPages,
-				    'records' => count($num)
-				 )
-			   );
-	
-	//==================
-	/*$oms = $this->searchPatients();
-        if(isset($_GET['withandwithout']) && $_GET['withandwithout'] == 0) {
-            foreach($oms as $index => $item) {
+
+        if ((isset($_GET['withoutonly'])) && ($_GET['withoutonly'] == 0)) {
+            $WithoutOnly = true;
+        }
+
+        if ((isset($_GET['mediateonly'])) && ($_GET['mediateonly'] == 0)) {
+            $mediateOnly = true;
+        } else {
+            $mediateOnly = false;
+        }
+
+        if(!$mediateOnly) {
+            $model = new Oms();
+            // Вычислим общее количество записей
+            $num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly);
+
+            // Обрабатываем результат
+            foreach($items as $index => $item) {
                 $parts = explode('-', $item['reg_date']);
                 $item['reg_date'] = $parts[0];
             }
-            echo CJSON::encode(array('success' => 'true',
-                                     'rows' => $oms)
-            );
         } else {
-            $omsWith = array();
-            $omsWithout = array();
-
-            foreach($oms as $index => $item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
-	    
-                if($item['card_number'] == null) {
-                    if ((!isset($_GET['withonly']))||($_GET['withonly']!=0))
-		    {
-			$omsWithout[] = $item;
-		    }
-		    
-                } else {
-                    if ((!isset($_GET['withoutonly']))||($_GET['withoutonly']!=0))
-		    {
-			$omsWith[] = $item;
-		    }		    
+            // Забираем фильтры только те, которые нужны: ФИО
+            $filters['rules'] = array_filter($filters['rules'], function(&$filter) {
+                return array_search($filter['field'], array('first_name', 'last_name', 'middle_name')) !== false;
+            });
+            // Теерь проверяем фильтры
+            $numEmpty = 0;
+            foreach($filters['rules'] as $filter) {
+                if(array_search($filter['field'], array('first_name', 'last_name', 'middle_name')) !== false && (!isset($filter['data']) || trim($filter['data']) == '')) {
+                    $numEmpty++;
                 }
             }
+            if($numEmpty == 3) {
+                $num = 0;
+                $totalPages = 0;
+                $items = array();
+            } else {
+                $model = new MediatePatient();
+                $num = $model->getRows($filters, false, false, false);
+                $totalPages = ceil(count($num) / $rows);
+                $start = $page * $rows - $rows;
+                $items = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            }
+        }
+        echo CJSON::encode(
+           array(
+                'success' => true,
+                'rows' => $items,
+                'total' => $totalPages,
+                'records' => count($num)
+             )
+        );
 
-            echo CJSON::encode(array('success' => true,
-                                     'data' => array('without' => $omsWithout,
-                                     'with' => $omsWith)
-            ));
-        }*/
     }
     
-    private function checkFilters($filters = false)
-    {
-	 if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
+    private function checkFilters($filters = false) {
+	    if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,
                                      'data' => 'Задан пустой поисковой запрос.')
             );
@@ -528,8 +589,8 @@ class PatientController extends Controller {
         $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
         $allEmpty = true;
 
-        foreach($filters['rules'] as $key => $filter) {
-            if(trim($filter['data']) != '') {
+        foreach($filters['rules'] as &$filter) {
+            if(isset($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;
             }
         }
@@ -541,7 +602,7 @@ class PatientController extends Controller {
             exit();
         }
 	
-	return $filters;
+	    return $filters;
     }
     
     private function searchPatients($filters = false, $distinct = false) {
@@ -753,25 +814,9 @@ class PatientController extends Controller {
             // Проверим, что такая карта реально есть
             $medcard = Medcard::model()->findByPk($_GET['cardid']);
             if($medcard != null) {
-                // Список отделений
-                $ward = new Ward();
-                $wardsResult = $ward->getRows(false);
-                $wardsList = array('-1' => 'Нет');
-                foreach($wardsResult as $key => $value) {
-                    $wardsList[$value['id']] = $value['name'];
-                }
-
-                // Список должностей
-                $post = new Post();
-                $postsResult = $post->getRows(false);
-                $postsList = array('-1' => 'Нет');
-                foreach($postsResult as $key => $value) {
-                    $postsList[$value['id']] = $value['name'];
-                }
-
                 $this->render('writePatient2', array(
-                    'wardsList' => $wardsList,
-                    'postsList' => $postsList,
+                    'wardsList' => $this->getWardsList(),
+                    'postsList' => $this->getPostsList(),
                     'medcard' => $medcard
                 ));
                 exit();
@@ -780,6 +825,65 @@ class PatientController extends Controller {
 
         $req = new CHttpRequest();
         $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/writepatientstepone'));
+    }
+
+    private function getWardsList() {
+        // Список отделений
+        $ward = new Ward();
+        $wardsResult = $ward->getRows(false);
+        $wardsList = array('-1' => 'Нет');
+        foreach($wardsResult as $key => $value) {
+            $wardsList[$value['id']] = $value['name'];
+        }
+        return $wardsList;
+    }
+
+    private function getPostsList() {
+        // Список должностей
+        $post = new Post();
+        $postsResult = $post->getRows(false);
+        $postsList = array('-1' => 'Нет');
+        foreach($postsResult as $key => $value) {
+            $postsList[$value['id']] = $value['name'];
+        }
+        return $postsList;
+    }
+
+    // Запись опосредованного пациента
+    public function actionWritePatientWithoutData() {
+        $this->render('writepatientwithoutdata', array(
+            'wardsList' => $this->getWardsList(),
+            'postsList' => $this->getPostsList(),
+        ));
+    }
+
+    public function actionMediateToMedcard() {
+        if(!isset($_GET['medcardid'], $_GET['mediateid'])) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Нехватка данных!'));
+            exit();
+        }
+        $medcard = Medcard::model()->findByPk($_GET['medcardid']);
+        if($medcard == null) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Нехватка данных!'));
+            exit();
+        }
+
+        $sheduleList = SheduleByDay::model()->findAll('t.mediate_id = :mediate_id', array(':mediate_id' => $_GET['mediateid']));
+        foreach($sheduleList as $element) {
+            $element->medcard_id = $medcard->card_number;
+            $element->mediate_id = null;
+            if(!$element->save()) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'data' => 'Не могу перенести запись опосредованного пациента!'));
+                exit();
+            }
+        }
+        MediatePatient::model()->deleteByPk($_GET['mediateid']);
+        // TODO: дальше нужно переадресовать на экшн записи таким образом, чтобы автоматом раскрыть расписание к этому пациенту
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => 'Пациент успешно сопоставлен и записан на приём!'));
     }
 }
 

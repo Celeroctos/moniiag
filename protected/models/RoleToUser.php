@@ -1,5 +1,5 @@
 <?php
-class Role extends MisActiveRecord  {
+class RoleToUser extends MisActiveRecord  {
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -7,7 +7,7 @@ class Role extends MisActiveRecord  {
 
     public function tableName()
     {
-        return 'mis.roles';
+        return 'mis.role_to_user';
     }
 
 
@@ -21,10 +21,7 @@ class Role extends MisActiveRecord  {
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
-        $roles = $connection->createCommand()
-            ->select('r.*, r2.name as parent')
-            ->from('mis.roles r')
-            ->leftJoin('mis.roles r2', 'r.parent_id = r2.id');
+        $roles = $connection->createCommand();
 
         if($filters !== false) {
             $this->getSearchConditions($roles, $filters, array(
@@ -60,28 +57,20 @@ class Role extends MisActiveRecord  {
         }
     }
 
-    public function getCurrentUserRoles() {
-        if(Yii::app()->user->isGuest) {
-            return array(
-                'id' => -1,
-                'actions' => array() // У гостя можно предустановить опции
-            );
-        } else {
-            $roles = Yii::app()->user->roleId; // Это массив ролей
-            $numRoles = count($roles);
-            $role = array(
-                'id' => $roles[0]['id'], // В качестве id возьмём ID первой роли. Это неважно.
-                'actions' => array()
-            );
-            for($i = 0; $i < $numRoles; $i++) {
-                // Получим все экшены к роли
-                $actionModel = new CheckedAction();
-                $roleActions = $actionModel->getByRole($roles[$i]['id']);
-                foreach($roleActions as $key => $action) {
-                    $role['actions'][$action['action_id']] = $action['accessKey'];
-                }
-            }
-            return $role;
+    public function findAllRolesByUser($userId) {
+        try {
+            $connection = Yii::app()->db;
+            $roles = $connection->createCommand()
+                ->select('r.*')
+                ->from('mis.roles r')
+                ->leftJoin('mis.role_to_user ru', 'ru.role_id = r.id')
+                ->where('ru.user_id = :user_id', array(':user_id' => $userId))
+                ->queryAll();
+
+            return $roles;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

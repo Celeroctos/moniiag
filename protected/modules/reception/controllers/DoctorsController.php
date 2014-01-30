@@ -51,6 +51,18 @@ class DoctorsController extends Controller {
                 unset($filters['rules'][$key]);
             }
             if($filter['field'] == 'greeting_date' && trim($filter['data']) != '') {
+                // Стоит проверить, не выходной ли это день
+                // Получим день недели
+                $parts = explode('-', $filter['data']);
+                $weekday = date('w', mktime(0, 0, 0, $parts[2], $parts[1], $parts[0]));
+                $sheduleRestDay = SheduleRest::model()->findAll('day = :day', array(':day' => $weekday));
+                $sheduleRestDaysAlone = SheduleRestDay::model()->findAll('date = :date', array(':date' => $filter['data']));
+                if(count($sheduleRestDay) > 0 || count($sheduleRestDaysAlone) > 0) {
+                    echo CJSON::encode(array('success' => false,
+                                             'data' => 'День, по которому производится поиск, выходной! Врачи в этот день не работают!')
+                    );
+                    exit();
+                }
                 $this->greetingDate = $filter['data'];
                 $allEmpty = false;
                 unset($filters['rules'][$key]);
@@ -69,18 +81,6 @@ class DoctorsController extends Controller {
         
         return $filters;
     }
-    
-    // Старое - потом убрать
-    /*
-    public function actionSearch() {
-        
-         
-        
-        echo CJSON::encode(array('success' => true,
-                                 'data' => $this->searchDoctors()
-        ));
-    }
-    */
 
     // Поиск врачей
     // НЕ ИСПОЛЬЗУЕТСЯ

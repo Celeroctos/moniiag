@@ -12,12 +12,13 @@ class FormOmsEdit extends FormMisDefault
     public $omsType;
     public $policyGivedate;
     public $policyEnddate;
+    public $status;
 
     public function rules()
     {
         return array(
             array(
-                'policy, lastName, firstName, gender, birthday, omsType, policyGivedate', 'required'
+                'policy, lastName, firstName, gender, birthday, omsType, policyGivedate, status', 'required'
             ),
             array(
                 'id', 'numerical'
@@ -39,7 +40,8 @@ class FormOmsEdit extends FormMisDefault
             'birthday' => 'Дата рождения',
             'omsType' => 'Тип ОМС',
             'policyGivedate' => 'Дата выдачи',
-            'policyEnddate' => 'Дата окончания действия'
+            'policyEnddate' => 'Дата окончания действия',
+            'status' => 'Статус'
         );
     }
 }

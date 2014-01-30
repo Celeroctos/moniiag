@@ -7,8 +7,7 @@ $(document).ready(function() {
         var months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
         var daysOfWeek = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
         var tdNum = 4 * row + (col + 1) - 1;
-        var tdForTable = $(".calendarTable tbody td.calendarTd:eq(" + tdNum  + ")");
-
+        var tdForTable = $(".calendarTable tbody td.calendarTd:eq(" + tdNum + ")");
         $(tdForTable).find('h6').text(months[tdNum]);
         var tableForCalendar = $('<table>');
         var theader = $('<thead>');
@@ -53,7 +52,6 @@ $(document).ready(function() {
             $(tr).appendTo($(tbody));
             tr = $('<tr>');
         }
-
         if(month < 10) {
             month = '0' + (month + 1);
         } else {
@@ -143,7 +141,6 @@ $(document).ready(function() {
             }
         });
     });
-
     $('#showNextYear').click(function() {
         var year = parseInt($('.currentYear').text());
         location.href = globalVariables.baseUrl + '/index.php/admin/shedule/viewrest?date=' + (year + 1) + '-01-01';

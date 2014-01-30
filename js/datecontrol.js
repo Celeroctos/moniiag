@@ -1,6 +1,4 @@
-
-
-         // Перечень контейнеров с контролами дат
+// Перечень контейнеров с контролами дат
     var DateControlContainers =
     [
         '#birthday-cont',
@@ -16,8 +14,8 @@
         '#dateBeginEdit-cont',
         '#dateEndEdit-cont',
         '#greetingDate-cont',
-	'#shift-date-begin-cont',
-	'#shift-date-end-cont',
+	    '#shift-date-begin-cont',
+	    '#shift-date-end-cont',
     ];
     
   //   $('.subcontrol input').val('');
@@ -121,69 +119,62 @@
         return $(element).selection();
     }
 
-
-    
-    
-    function initDateField(DateField)
-    {
+   function initDateField(DateField) {
 	    var format = 'yyyy-mm-dd';
 	    if(DateField.length == 0) {
                 return;
-            }
-            DateField.datetimepicker({
-                language: 'ru',
-                format: format,
-                weekStart: 1,
-                todayBtn:  1,
-                autoclose: 1,
-                todayHighlight: 1,
-                startView: 2,
-                minView: 2,
-                forceParse: 0
-            });
-            var ctrl = DateField.find('input.form-control:first');
-            $(ctrl).on('change', function(e, type){
-		console.log('DateControl Changed');
-                var subcontrols = $($(this).parents('div')[0]).find('.subcontrol');
-                if(typeof subcontrols != 'undefined') {
-		    
-                    var day = $(subcontrols).find('input.day');
-                    var month = $(subcontrols).find('input.month');
-                    var year = $(subcontrols).find('input.year');
-                    // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
-                    // Из суб в настоящий
-                    if(typeof type == 'undefined') {
-			//$(subcontrols).find('input').val('');
-                        var currentDate = $(this).val();
-                        var parts = currentDate.split('-');
-                        
-			var DayInt = parseInt(parts[2]);
-			var MonthInt = parseInt(parts[1]);
-			var YearInt =  parseInt(parts[0]);
-			
-			// Проверяем - выводим, если ни одна из компонент не равно NaN
-			//  Если число равно NaN, то проверка Число == Число выдаст false
-			if (DayInt==DayInt && MonthInt==MonthInt && YearInt==YearInt) {
-			    
-			    $(day).val(DayInt);
-			    $(month).val(MonthInt);
-			    $(year).val(YearInt);
-			
-			}
-			
-			
-			
-			//$(day).val(parts[2]);
-                        //$(month).val(parts[1]);
-                        //$(year).val(parts[0]);
-                    } else { // Из настоящего в суб
-                        $(this).val(year.val() + '-' + month.val() + '-' + day.val());
-                    }
+        }
+        DateField.datetimepicker({
+            language: 'ru',
+            format: format,
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
+        var ctrl = DateField.find('input.form-control:first');
+        $(ctrl).on('change', function(e, type){
+            console.log(e.target);
+            var subcontrols = $($(this).parents('div')[0]).find('.subcontrol');
+            if(typeof subcontrols != 'undefined') {
+
+                var day = $(subcontrols).find('input.day');
+                var month = $(subcontrols).find('input.month');
+                var year = $(subcontrols).find('input.year');
+                // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
+                // Из суб в настоящий
+                if(typeof type == 'undefined') {
+        //$(subcontrols).find('input').val('');
+                    var currentDate = $(this).val();
+                    var parts = currentDate.split('-');
+
+        var DayInt = parseInt(parts[2]);
+        var MonthInt = parseInt(parts[1]);
+        var YearInt =  parseInt(parts[0]);
+
+        // Проверяем - выводим, если ни одна из компонент не равно NaN
+        //  Если число равно NaN, то проверка Число == Число выдаст false
+        if (DayInt==DayInt && MonthInt==MonthInt && YearInt==YearInt) {
+
+            $(day).val(DayInt);
+            $(month).val(MonthInt);
+            $(year).val(YearInt);
+
+        }
+        //$(day).val(parts[2]);
+                    //$(month).val(parts[1]);
+                    //$(year).val(parts[0]);
+                } else { // Из настоящего в суб
+                    $(this).val(year.val() + '-' + month.val() + '-' + day.val());
                 }
-            });
-            if($.trim($(ctrl).val()) != '') {
-                $(ctrl).trigger('change');
             }
+        });
+        if($.trim($(ctrl).val()) != '') {
+            $(ctrl).trigger('change');
+        }
     }
     
     function initDateControlEventHandlers(Control)
@@ -300,16 +291,8 @@
 							lastNullEntered = true;
 							return false;
 						}
-                        // Стрелки вправо-влево, tab, Enter и backspace разрешать,
-			//      разрешать ведущие нули
-                        if(e.keyCode != 9 &&
-			   e.keyCode != 8 &&
-			   e.keyCode != 37 &&
-			   e.keyCode != 39 &&
-			   e.keyCode != 16 &&
-			   e.keyCode != 13 &&
-			   e.keyCode != 48 &&
-			   e.keyCode != 96) {
+                        // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
 							$(this).animate({
 								backgroundColor: "rgb(255, 196, 196)"
 							});
@@ -403,15 +386,8 @@
 							lastNullEntered = true;
 							return false;
 						}
-                        // Стрелки вправо-влево, tab, Enter и backspace разрешать
-                        if(e.keyCode != 9 &&
-			   e.keyCode != 8 &&
-			   e.keyCode != 37 &&
-			   e.keyCode != 39 &&
-			   e.keyCode != 16 &&
-			   e.keyCode != 13 &&
-			   e.keyCode != 48 &&
-			   e.keyCode != 96) {
+                        // Стрелки вправо-влево, tab и backspace разрешать
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
@@ -494,13 +470,8 @@
                             return false;
                         }
                     } else {
-                        // Стрелки вправо-влево, tab, Enter и backspace разрешать. И шифт
-                        if(e.keyCode != 9 &&
-			   e.keyCode != 8 &&
-			   e.keyCode != 37 &&
-			   e.keyCode != 13 &&
-			   e.keyCode != 39 &&
-			   e.keyCode != 16) {
+                        // Стрелки вправо-влево, tab и backspace разрешать. И шифт
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
@@ -512,55 +483,49 @@
     
     // Стрелки вверх-вниз для листания
     // Сначала стрелки вверх
-    function initDateEventHandlers () {
-
-            var Controls = [];
-            for (OneControlContainer=0;OneControlContainer<DateControlContainers.length;OneControlContainer++)
-            {
-                var ControlSelector = DateControlContainers[OneControlContainer];
-		var ControlsToPush = $(ControlSelector);
+   function initDateEventHandlers () {
+        var Controls = [];
+        for(var OneControlContainer = 0; OneControlContainer < DateControlContainers.length; OneControlContainer++) {
+            var ControlSelector = DateControlContainers[OneControlContainer];
+		    var ControlsToPush = $(ControlSelector);
 		
-		for (j=0;j<ControlsToPush.length;j++) {
-		    Controls.push(ControlsToPush[j]);
-		}
-		
-                //Controls.push($(ControlSelector)[0]);
+            for (j=0;j<ControlsToPush.length;j++) {
+                Controls.push(ControlsToPush[j]);
             }
+        }
         // Выбираем все контролы дат
         //var Controls = $('div.date');
         // Перебираем выбранные контролы
         for (i = 0; i < Controls.length; i++) {
             // Замыкаем ссылку на каждый контрол
-	    initDateControlEventHandlers(Controls[i]);
-            	    
+            (function(control) {
+	            initDateControlEventHandlers(control);
+            })(Controls[i]);
         }
     }
     
     
         // Поля дат
-    function initDateFields(dateFields) {
-	console.log('initDateFields');
-
+   function initDateFields(dateFields) {
         for(var i = 0; i < dateFields.length; i++) {
-	    initDateField($(dateFields[i]));
+	        initDateField($(dateFields[i]));
         }
-    }
+   }
     
     // Инитим все контролы даты
     function InitDateControls() {
-	// Проинициализируем обработчики событий
-	initDateEventHandlers();
-	// Инитим перекачку данных из контрола в подконтролы
-	initDateFields(DateControlContainers);
+        // Проинициализируем обработчики событий
+        initDateEventHandlers();
+        // Инитим перекачку данных из контрола в подконтролы
+        initDateFields(DateControlContainers);
     }
 
     // Инициализация одного контрола, чтобы можно было
     //    инициализировать контролы динамически после загрузки страницы
     //    по результатам аякс-запроса
     function InitOneDateControl(DateField) {
-	initDateControlEventHandlers(DateField);
-	initDateField(DateField);
-	
+        initDateControlEventHandlers(DateField);
+        initDateField(DateField);
     }
     
 $(document).ready(function() {

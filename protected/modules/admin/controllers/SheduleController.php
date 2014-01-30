@@ -69,7 +69,7 @@ class SheduleController extends Controller {
         }
         $allClean = true; // Флаг, который говорит о том, новое ли совсем расписание или нет. Если хотя бы одно строка в расписании есть, этот флаг примет $i первой найденной непустой строки
         if($model->doctorId != null) {
-            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id AND date_id != NULL', array(':employee_id' => $model->doctorId));
+            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id AND date_id IS NOT NULL', array(':employee_id' => $model->doctorId));
             $num = count($dayModels);
             $days = array();
             for($i = 0; $i < 7; $i++) {
@@ -118,15 +118,10 @@ class SheduleController extends Controller {
                     exit();
                 } else {
                     // Удаляем из базы
-                    $m = SheduleSetted::model()->findAll('employee_id = :employee_id AND weekday = :weekday', array(
+                    $m = SheduleSetted::model()->deleteAll('employee_id = :employee_id AND weekday = :weekday', array(
                         ':employee_id' => $model->doctorId,
                         ':weekday' => $i
                     ));
-                    if(count($m) > 0) {
-                        foreach($m as $element) {
-                            $element->delete();
-                        }
-                    }
                     continue;
                 }
             }
@@ -283,11 +278,11 @@ class SheduleController extends Controller {
                 $sheduleRest->day = $day;
                 if(!$sheduleRest->save()) {
                     echo CJSON::encode(array('success' => false,
-                                             'msg' => 'Не могу сохранить выходной день!'));
+                        'msg' => 'Не могу сохранить выходной день!'));
                 }
             }
             echo CJSON::encode(array('success' => true,
-                                     'msg' => 'Выходные дни успешно сохранены.'));
+                'msg' => 'Выходные дни успешно сохранены.'));
         }
     }
 
@@ -311,28 +306,28 @@ class SheduleController extends Controller {
     public function actionSetHolidays() {
         if(!isset($_GET['dates'])) {
             echo CJSON::encode(array('success' => false,
-                                     'msg' => 'Не могу сохранить выходной день!'));
+                'msg' => 'Не могу сохранить выходной день!'));
             exit();
         }
         $dates = CJSON::decode($_GET['dates']);
         // Ничего устанавливать не надо
-        if(count($_GET['dates']) == 0) {
+        if(count($dates) == 0) {
             echo CJSON::encode(array('success' => true,
                                      'data' => array()));
         }
         // Вычленяем год
-        $parts = explode('-', $_GET['dates'][0]);
+        $parts = explode('-', $dates[0]);
         SheduleRestDay::model()->deleteAll('substr(cast(date AS text), 0, 5) = :year', array(':year' => $parts[0]));
         foreach($dates as $date) {
             $rest = new SheduleRestDay();
             $rest->date = $date;
             if(!$rest->save()) {
                 echo CJSON::encode(array('success' => false,
-                                         'msg' => 'Не могу сохранить день в расписании!'));
+                    'msg' => 'Не могу сохранить день в расписании!'));
                 exit();
             }
         }
         echo CJSON::encode(array('success' => true,
-                                 'data' => array()));
+            'data' => array()));
     }
 }

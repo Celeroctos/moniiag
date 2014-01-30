@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <?php if(Yii::app()->user->checkAccess('editOms')) { ?>
 <h4>Редактирование ОМС пациента</h4>
 <p class="text-left">
@@ -42,6 +43,17 @@
                         )); ?>
                         <?php echo $form->error($model,'policy'); ?>
                         <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model,'status', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-5">
+                        <?php echo $form->dropDownList($model, 'status', array('Активен', 'Погашен'), array(
+                            'id' => 'status',
+                            'class' => 'form-control'
+                        )); ?>
                     </div>
                 </div>
                 <div class="form-group">

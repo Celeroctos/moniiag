@@ -27,10 +27,10 @@
                     <?php } ?>
                 </li>
                 <?php if(Yii::app()->user->checkAccess('menuSearchPatient')) { ?>
-                <li>
+                <li <?php echo $controller == 'shedule' && $module == 'reception' ? 'class="active"' : ''; ?>>
                     <?php if(Yii::app()->user->checkAccess('menuRaspDoctor')) { ?>
-                    <a href="#" >Расписание врачей</a>
-                    <ul class="nav">
+                    <?php echo CHtml::link('Расписание врачей', array('/reception/shedule/view')) ?>
+                    <!--<ul class="nav">
                         <?php if(Yii::app()->user->checkAccess('menuRaspDoctorSvod')) { ?>
                         <li>
                             <a href="#" >Сводное</a>
@@ -41,7 +41,7 @@
                             <a href="#" >По врачам</a>
                         </li>
                         <?php } ?>
-                    </ul>
+                    </ul>-->
                     <?php } ?>
                 </li>
                 <?php } ?>

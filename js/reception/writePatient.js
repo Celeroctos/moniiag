@@ -92,46 +92,52 @@ $(document).ready(function() {
                 fioFields.push(parts[i]);
             }
         }
+
+        var rules = [
+            {
+                'field' : 'ward_code',
+                'op' : 'eq',
+                'data' :  $('#ward').val()
+            },
+            {
+                'field' : 'post_id',
+                'op' : 'eq',
+                'data' : $('#post').val()
+            },
+            {
+                'field' : 'middle_name',
+                'op' : 'cn',
+                'data' : fioFields.length > 2 ? fioFields[2] : '' //$('#middleName').val()
+            },
+            {
+                'field' : 'last_name',
+                'op' : 'cn',
+                'data' : fioFields.length > 0 ? fioFields[0] : '' //$('#lastName').val()
+            },
+            {
+                'field' : 'first_name',
+                'op' : 'cn',
+                'data' : fioFields.length > 1 ? fioFields[1] : '' //$('#firstName').val()
+            },
+            {
+                'field' : 'diagnosis',
+                'op' : 'in',
+                'data' : choosedDiagnosis
+            }
+        ];
+
+        // Дата не везде есть: на странице записи опосредованных пациентов её нет
+        if($('#greetingDate').length > 0) {
+            rules.push({
+                'field' : 'greeting_date',
+                'op' : 'eq',
+                'data' : $('#greetingDate').val()
+            });
+        }
         // Отсеиваем из массива
         var Result ={
             'groupOp' : 'AND',
-            'rules' : [
-                {
-                    'field' : 'ward_code',
-                    'op' : 'eq',
-                    'data' :  $('#ward').val()
-                },
-                {
-                    'field' : 'post_id',
-                    'op' : 'eq',
-                    'data' : $('#post').val()
-                },
-                {
-                    'field' : 'middle_name',
-                    'op' : 'cn',
-                    'data' : fioFields.length > 2 ? fioFields[2] : '' //$('#middleName').val()
-                },
-                {
-                    'field' : 'last_name',
-                    'op' : 'cn',
-                    'data' : fioFields.length > 0 ? fioFields[0] : '' //$('#lastName').val()
-                },
-                {
-                    'field' : 'first_name',
-                    'op' : 'cn',
-                    'data' : fioFields.length > 1 ? fioFields[1] : '' //$('#firstName').val()
-                },
-                {
-                    'field' : 'greeting_date',
-                    'op' : 'eq',
-                    'data' : $('#greetingDate').val()
-                },
-                {
-                    'field' : 'diagnosis',
-                    'op' : 'in',
-                    'data' : choosedDiagnosis
-                }
-            ]
+            'rules' : rules
         };
         return Result;
     }
@@ -301,6 +307,7 @@ $(document).ready(function() {
         globalVariables.clickedLink = $(this);
         globalVariables.fio = $(this).parents('tr').find('td:first a').text();
         loadCalendar(month, year);
+        return false;
     });
 
     function loadCalendar(month, year, clicked) {
@@ -371,20 +378,35 @@ $(document).ready(function() {
                     '</td>' +
                 '</tr>';
             } else {
-                var str =
-                '<tr>' +
-                    '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
-                    '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].cardNumber + '" title="Посмотреть информацию по пациенту">' +
+                if(data[i].type === 0) {
+                    var str =
+                    '<tr>' +
+                        '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
+                        '<td>' +
+                            '<a href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].cardNumber + '" title="Посмотреть информацию по пациенту">' +
+                                    data[i].fio  +
+                            '</a>' +
+                        '</td>' +
+                        '<td>' +
+                            '<a class="unwrite-link" href="#' + data[i].id + '">' +
+                                '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
+                            '</a>' +
+                        '</td>' +
+                    '</tr>';
+                } else {
+                    var str =
+                        '<tr>' +
+                            '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
+                            '<td>' +
                                 data[i].fio  +
-                        '</a>' +
-                    '</td>' +
-                    '<td>' +
-                        '<a class="unwrite-link" href="#' + data[i].id + '">' +
-                            '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
-                        '</a>' +
-                    '</td>' +
-                '</tr>';
+                            '</td>' +
+                            '<td>' +
+                                '<a class="unwrite-link" href="#' + data[i].id + '">' +
+                                    '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
+                                '</a>' +
+                            '</td>' +
+                        '</tr>';
+                }
             }
 
             table.append(str);
@@ -394,14 +416,23 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.write-link', function(e) {
-        var params = {
-            card_number : globalVariables.cardNumber,
-            month : globalVariables.month + 1,
-            year : globalVariables.year,
-            day : globalVariables.day,
-            doctor_id : globalVariables.doctorId
-        };
-        params.time = $(this).attr('href').substr(1);
+        globalVariables.patientTime = $(this).attr('href').substr(1);
+        // В зависимости от того, есть ли номер карты или нет, можно судить, запись это опосредованного пациента или нет. Это говорит о том, нужно ли вводить данные о пациенте или нет
+        if(typeof globalVariables.cardNumber == 'undefined') {
+            // Нужно показать модалку для ввода данных о пациенте
+            $('#patientDataPopup').modal({});
+            return false;
+        } else {
+            var params = {
+                month : globalVariables.month + 1,
+                year : globalVariables.year,
+                day : globalVariables.day,
+                doctor_id : globalVariables.doctorId,
+                mode: 0, // Обычная запись
+                time: globalVariables.patientTime,
+                card_number: globalVariables.cardNumber
+            };
+        }
 
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
@@ -451,6 +482,44 @@ $(document).ready(function() {
             }
         });
         return false;
+    });
+
+    // Подтвердить данные для опосредованного пациента
+    $('#submitReservData').on('click', function() {
+        var params = {
+            'firstName' : $('#firstName').val(),
+            'lastName' : $('#lastName').val(),
+            'middleName' : $('#middleName').val(),
+            'phone' :  $('#phone').val(),
+            'month' : globalVariables.month + 1,
+            'year' : globalVariables.year,
+            'day' : globalVariables.day,
+            'doctor_id' : globalVariables.doctorId,
+            'mode' : 1, // Опосредованного пациента запись
+            'time' : globalVariables.patientTime
+        };
+
+        $.ajax({
+            'url' : '/index.php/doctors/shedule/writepatient',
+            'data' : params,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == 'true') {
+                    $('#patientDataPopup').modal('hide');
+                    $('#successPopup p').text(data.data);
+                    $('#successPopup').modal({
+
+                    });
+                    // Перезагружаем календарь
+                    loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
+                } else {
+
+                }
+                return;
+            }
+        });
     });
 
 });

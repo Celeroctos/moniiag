@@ -270,7 +270,11 @@ $(document).ready(function() {
         'patientChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number));
+                if(row.card_number != null) {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', номер карты ' + row.card_number));
+                } else {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
+                }
             },
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;

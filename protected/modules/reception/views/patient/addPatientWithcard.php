@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <?php if(Yii::app()->user->checkAccess('addPatient')) { ?>
 <h4>Регистрация / перерегистрация карты к существующему пациенту (<?php echo $regPoint; ?> год)</h4>
@@ -20,10 +21,12 @@
     ?>
         <div class="row">
             <div class="col-xs-6">
+                <?php echo $form->hiddenField($model,'mediateId', array(
+                    'id' => 'mediateId'
+                )); ?>
                 <?php echo $form->hiddenField($model,'policy', array(
                     'id' => 'policy',
-                    'class' => 'form-control',
-                    'value' => $policy_id
+                    'class' => 'form-control'
                 )); ?>
                 <div class="form-group">
                     <?php echo $form->labelEx($model,'doctype', array(
@@ -322,10 +325,10 @@
         <div class="add-patient-submit">
             <?php echo CHtml::ajaxSubmitButton(
                 'Добавить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addcard'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
-                                    $("#patient-withoutcard-form").trigger("success", [data, textStatus, jqXHR])
+                                    $("#patient-withcard-form").trigger("success", [data, textStatus, jqXHR])
                                 }'
                 ),
                 array(

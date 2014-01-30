@@ -185,14 +185,7 @@
                                 return false;
                             }
                         // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
-                        if(e.keyCode != 9 &&
-                           e.keyCode != 8 &&
-                           e.keyCode != 37 &&
-                           e.keyCode != 39 &&
-                           e.keyCode != 13 &&
-                           e.keyCode != 16 &&
-                           e.keyCode != 48 &&
-                           e.keyCode != 96) {
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
 							$(this).animate({
 								backgroundColor: "rgb(255, 196, 196)"
 							});
@@ -277,14 +270,7 @@
                            return false;
                         }
                         // Стрелки вправо-влево, tab и backspace разрешать, разрешать ведущие нули
-                        if(e.keyCode != 9 &&
-                           e.keyCode != 8 &&
-                           e.keyCode != 37 &&
-                           e.keyCode != 39 &&
-                           e.keyCode != 16 &&
-                           e.keyCode != 13 &&
-                           e.keyCode != 48 &&
-                           e.keyCode != 96) {
+                        if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });

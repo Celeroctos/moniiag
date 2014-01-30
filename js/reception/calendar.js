@@ -56,6 +56,10 @@ $(document).ready(function() {
             if(!dayData.worked) {
                 if(dayData.restDay != false) {
                     $(td).addClass('orange-block');
+                } else {
+                    if(!dayData.allowForWrite) {
+                        $(td).addClass('not-aviable-block');
+                    }
                 }
             } else {
                 if(dayData.allowForWrite) {
@@ -66,7 +70,7 @@ $(document).ready(function() {
                     if(dayData.numPatients > 0 && dayData.numPatients < dayData.quote) {
                         $(td).addClass('yellow-block')
                     }
-                    if(dayData.numPatients == dayData.quote) {
+                    if(dayData.numPatients >= dayData.quote) {
                         $(td).addClass('red-block')
                     }
                 } else {

@@ -74,11 +74,21 @@ class SheduleByDay extends MisActiveRecord {
                 ->from('mis.doctor_shedule_by_day dsbd')
                 ->join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
                 ->join('mis.oms o', 'm.policy_id = o.id')
-                ->join('mis.doctors d', 'd.id = dsbd.doctor_id')
-                ->where('o.id = :id AND dsbd.doctor_id = :doctor_id', array(':id' => $patientId, ':doctor_id' => $doctorId));
+                ->join('mis.doctors d', 'd.id = dsbd.doctor_id');
+
+            if(!is_array($patientId) && !is_array($doctorId)) {
+                $greetings->where('o.id = :id AND dsbd.doctor_id = :doctor_id', array(':id' => $patientId, ':doctor_id' => $doctorId));
+            } elseif(is_array($patientId) && count($patientId) > 0) {
+                $greetings->where(array('IN', 'm.policy_id', $patientId));
+            } elseif(is_array($doctorId) && count($doctorId) > 0) {
+                $greetings->where(array('IN', 'dsbd.doctor_id', $doctorId));
+            }
+
             if($date !== false) {
                 $greetings->andWhere('dsbd.patient_day = :patient_day', array(':patient_day' => $date));
             }
+            $greetings->order('dsbd.patient_time');
+            $greetings->group('dsbd.id, dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name');
 
             return $greetings->queryAll();
         } catch(Exception $e) {

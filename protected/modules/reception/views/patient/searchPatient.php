@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
@@ -118,12 +119,37 @@
     </div>
     <?php $this->endWidget(); ?>
 </div>
+<div class="row no-display" id="mediateCont">
+    <h5>Найденные опосредованные пациенты:</h5>
+    <div class="col-xs-6 borderedBox">
+        <table class="table table-condensed table-hover" id="omsSearchMediateResult">
+            <thead>
+            <tr class="header">
+                <td></td>
+                <td>
+                    ФИО
+                </td>
+                <td>
+                    Контактный телефон
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="row no-display">
+        <ul class="pagination content-pagination">
+        </ul>
+    </div>
+</div>
 <div class="row no-display" id="withoutCardCont">
     <h5>Найденные пациенты без карт:</h5>
-    <div class="col-xs-12 borderedBox">
+    <div class="col-xs-8 borderedBox">
         <table class="table table-condensed table-hover" id="omsSearchWithoutCardResult">
             <thead>
                 <tr class="header">
+                    <td></td>
                     <td>
                         ФИО
                     </td>
@@ -141,8 +167,8 @@
         </table>
     </div>
     <div class="row no-display">
-	<ul class="pagination content-pagination">
-	</ul>
+        <ul class="pagination content-pagination">
+        </ul>
     </div>
 </div>
 <div class="row no-display" id="withCardCont">
@@ -151,6 +177,7 @@
         <table class="table table-condensed table-hover" id="omsSearchWithCardResult">
             <thead>
             <tr class="header">
+                <td></td>
                 <td>
                     ФИО
                 </td>
@@ -180,8 +207,13 @@
         </table>
     </div>
     <div class="row no-display">
-	<ul class="pagination content-pagination">
-	</ul>
+        <ul class="pagination content-pagination">
+        </ul>
+    </div>
+</div>
+<div class="row no-display" id="mediateSubmit-cont">
+    <div class="form-group">
+        <input type="button" id="mediate-attach-submit" value="Сопоставить опосредованного пациента с существующими данными" name="mediate-attach-submit" class="btn btn-success disabled">
     </div>
 </div>
 <?php } ?>

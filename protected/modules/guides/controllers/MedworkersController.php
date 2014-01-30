@@ -59,6 +59,7 @@ class MedworkersController extends Controller {
     public function addEditModel($medworker, $model, $msg) {
         $medworker->name = $model->name;
         $medworker->type = $model->type;
+        $medworker->payment_type = $model->paymentType;
         $medworker->is_for_pregnants = $model->isForPregnants;
 
         if($medworker->save()) {
@@ -107,6 +108,14 @@ class MedworkersController extends Controller {
                 if($medworker['is_for_pregnants'] == null) {
                     $medworker['is_for_pregnants'] = 0;
                 }
+                // Тип оплаты
+                if($medworker['payment_type'] == 1) {
+                    $medworker['payment_type_desc'] = 'Бюджет';
+                } elseif($medworker['payment_type'] == 0) {
+                    $medworker['payment_type_desc'] = 'ОМС';
+                } else {
+                    $medworker['payment_type_desc'] = '';
+                }
                 $medworker['pregnants'] = $medworker['is_for_pregnants'] ? 'Да' : 'Нет';
             }
 
@@ -126,6 +135,13 @@ class MedworkersController extends Controller {
         $medworker = $model->getOne($id);
         if($medworker['is_for_pregnants'] == null) {
             $medworker['is_for_pregnants'] = 0;
+        }
+        if($medworker['payment_type'] == 1) {
+            $medworker['payment_type_desc'] = 'Бюджет';
+        } elseif($medworker['payment_type'] == 0) {
+            $medworker['payment_type_desc'] = 'ОМС';
+        } else {
+            $medworker['payment_type_desc'] = '';
         }
         echo CJSON::encode(array('success' => true,
                                  'data' => $medworker)

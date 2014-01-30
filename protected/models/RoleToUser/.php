@@ -60,26 +60,20 @@ class Role extends MisActiveRecord  {
         }
     }
 
-    public function getCurrentUserRoles() {
+    public function getCurrentUserRole() {
         if(Yii::app()->user->isGuest) {
             return array(
                 'id' => -1,
                 'actions' => array() // У гостя можно предустановить опции
             );
         } else {
-            $roles = Yii::app()->user->roleId; // Это массив ролей
-            $numRoles = count($roles);
-            $role = array(
-                'id' => $roles[0]['id'], // В качестве id возьмём ID первой роли. Это неважно.
-                'actions' => array()
-            );
-            for($i = 0; $i < $numRoles; $i++) {
-                // Получим все экшены к роли
-                $actionModel = new CheckedAction();
-                $roleActions = $actionModel->getByRole($roles[$i]['id']);
-                foreach($roleActions as $key => $action) {
-                    $role['actions'][$action['action_id']] = $action['accessKey'];
-                }
+            $role = $this->getOne(Yii::app()->user->roleId);
+            // Получим все экшены к роли
+            $actionModel = new CheckedAction();
+            $roleActions = $actionModel->getByRole(Yii::app()->user->roleId);
+            $role['actions'] = array();
+            foreach($roleActions as $key => $action) {
+                $role['actions'][$action['action_id']] = $action['accessKey'];
             }
             return $role;
         }

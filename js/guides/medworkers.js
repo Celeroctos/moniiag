@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#medworkers").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип персонала', 'Может обслуживать беременных', ''],
+        colNames:['Код', 'Наименование', 'Тип персонала', 'Тип оплаты', 'Может обслуживать беременных', '', ''],
         colModel:[
             {
                 name:'id',
@@ -20,6 +20,11 @@ $(document).ready(function() {
                 width: 150
             },
             {
+                name: 'payment_type_desc',
+                index:'payment_type_desc',
+                width: 140
+            },
+            {
                 name: 'pregnants',
                 index:'pregnants',
                 width: 240
@@ -28,6 +33,11 @@ $(document).ready(function() {
                 name: 'is_for_pregnants',
                 index: 'is_for_pregnants',
                 width: 150,
+                hidden: true
+            },
+            {
+                name: 'payment_type',
+                index:'payment_type',
                 hidden: true
             },
         ],
@@ -143,6 +153,10 @@ $(document).ready(function() {
                                 modelField: 'is_for_pregnants',
                                 formField: 'isForPregnants'
                             },
+                            {
+                                modelField: 'payment_type',
+                                formField: 'paymentType'
+                            }
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);

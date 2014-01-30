@@ -11,7 +11,7 @@ class MisActiveRecord extends CActiveRecord {
 
     protected function getSearchConditions($conn, $filters, $multipleFields, $aliases, $fieldAliases) {
         foreach($filters['rules'] as $index => $filter) {
-	        if(trim($filter['data']) == '') { // При пустых входных данных не нужно делать доп. условие
+	        if(!isset($filter['data']) || trim($filter['data']) == '') { // При пустых входных данных не нужно делать доп. условие
         		continue;
         	}
             if(isset($multipleFields[$filter['field']])) {

@@ -29,6 +29,7 @@ class FormPatientAdd extends FormMisDefault
     public $profession;
     public $policyGivedate;
     public $policyEnddate;
+    public $status;
 
     public function rules()
     {
@@ -39,7 +40,7 @@ class FormPatientAdd extends FormMisDefault
 		Yii::import('ext.validators.FathersNameValidator');
         return array(
             array(
-                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, omsType, policyGivedate', 'required'
+                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, omsType, policyGivedate, status', 'required'
             ),
             array(
                 'workPlace, workAddress, post, snils, invalidGroup, middleName, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate', 'safe'
@@ -92,7 +93,8 @@ class FormPatientAdd extends FormMisDefault
             'privDocGivedate' => 'Дата выдачи',
             'profession' => 'Профессия',
             'policyGivedate' => 'Дата выдачи',
-            'policyEnddate' => 'Дата окончания действия'
+            'policyEnddate' => 'Дата окончания действия',
+            'status' => 'Статус'
         );
     }
 }

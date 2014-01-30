@@ -23,6 +23,7 @@ class FormPatientWithCardAdd extends FormMisDefault
     public $privDocserie;
     public $privDocGivedate;
     public $profession;
+    public $mediateId; // Опосредованный пациент может быть
 
     public function rules()
     {
@@ -33,7 +34,7 @@ class FormPatientWithCardAdd extends FormMisDefault
                 'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId', 'safe'
             ),
             array(
                 'snils', 'SNILSValidator'

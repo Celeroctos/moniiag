@@ -337,22 +337,25 @@ class SheduleController extends Controller {
                     $resultArr[$i - 1]['restDay'] = false;
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
-                    //$numPatients = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day = :patient_day', array(':doctor_id' => $doctorId, ':patient_day' => $formatDate));
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
-                    //$resultArr[$i - 1]['numPatients'] = count($numPatients);
-                    $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day);
-                    $resultArr[$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
-                        return $element['id'] != null;
-                    }));
-                    $resultArr[$i - 1]['quote'] = $settings['quote'];
-                    // Квота изменяется вручную: возможно, врач просто не успеет за смену принять квоту человек
-                    if($numPatients['allReserved'] && $resultArr[$i - 1]['numPatients'] < $settings['quote']) {
-                        $resultArr[$i - 1]['quote'] = $resultArr[$i - 1]['numPatients'];
-                    }
-                    // Если врач работает в этот день, надо посмотреть, не прошедшая ли дата. На прошедшие даты записывать не надо.
                     $timeStampCurrent = mktime(0, 0, 0);
-                    //var_dump($timeStampCurrent);
-                    //exit();
+                        if(strtotime($formatDate) >= $timeStampCurrent) {
+                        $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day);
+                        $resultArr[$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
+                            return $element['id'] != null;
+                        }));
+                        // Если мест реально меньше, чем квота (у врача укороченная смена, либо текущий день и середина смены, скажем)
+                        if($numPatients['numPlaces'] < $settings['quote']) {
+                            $resultArr[$i - 1]['quote'] = $numPatients['numPlaces'];
+                        } else {
+                            $resultArr[$i - 1]['quote'] = $settings['quote'];
+                        }
+                    } else {
+                        $resultArr[$i - 1]['quote'] = $settings['quote'];
+                        $resultArr[$i - 1]['numPatients'] = 0;
+                    }
+                    // Квота изменяется вручную: возможно, врач просто не успеет за смену принять квоту человек
+                    // Если врач работает в этот день, надо посмотреть, не прошедшая ли дата. На прошедшие даты записывать не надо.
                     $timeStampPerIteration = mktime(0, 0, 0, $month, $day, $this->currentYear);
                     // Если время итерируемое больше, то на такие числа записывать можно
                     if($timeStampCurrent <= $timeStampPerIteration) {
@@ -431,25 +434,39 @@ AND (weekday = :weekday OR day = :day)',
         $increment = $settings['timePerPatient'] * 60;
         $result = array();
         $numRealPatients = 0; // Это для того, чтобы понять, заполнено ли всё
-
+        $currentTimestamp = time();
+        $parts = explode('-', $formatDate);
+        $today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
         for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
+            if($currentTimestamp > $i && $today) {
+                continue;
+            }
             // Ищем пациента для такого времени. Если он найден, значит время занято
             $isFound = false;
             foreach($patients as $key => $patient) {
                 $timestamp = strtotime($patient['patient_time']);
                 if($timestamp == $i) {
+                    // Если пациент опосредованный, для него надо выбрать ФИО
+                    if($patient['mediate_id'] != null) {
+                        $mediatePatient = MediatePatient::model()->findByPk($patient['mediate_id']);
+                        if($mediatePatient != null) {
+                            $patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
+                        }
+                    }
                     $result[] = array(
                         'timeBegin' => date('G:i', $i),
                         'timeEnd' => date('G:i', $i + $increment),
                         'fio' => $patient['fio'],
                         'isAllow' => 0, // Доступно ли время для записи или нет,
                         'id' => $patient['id'],
+                        'type' => $patient['mediate_id'] != null ? 1 : 0,
                         'cardNumber' => $patient['card_number']
                     );
                     $isFound = true;
                     $numRealPatients++;
                 }
             }
+
             if(!$isFound) {
                 $result[] = array(
                     'timeBegin' => date('G:i', $i),
@@ -461,9 +478,11 @@ AND (weekday = :weekday OR day = :day)',
                 );
             }
         }
+
         return array(
                 'result' => $result,
-                'allReserved' => $numRealPatients == count($result)
+                'allReserved' => $numRealPatients == count($result),
+                'numPlaces' => count($result)
         );
     }
 
@@ -473,7 +492,7 @@ AND (weekday = :weekday OR day = :day)',
             echo "Error!";
             exit();
         }
-        if(!isset($_GET['day'], $_GET['month'], $_GET['year'], $_GET['doctor_id'], $_GET['time'])) {
+        if(!isset($_GET['day'], $_GET['month'], $_GET['year'], $_GET['doctor_id'], $_GET['time'], $_GET['mode'])) {
             echo "Error! Not enough data for request.";
             exit();
         }
@@ -481,17 +500,44 @@ AND (weekday = :weekday OR day = :day)',
         $formatTime = $_GET['time'];
         $sheduleElement = new SheduleByDay();
         $sheduleElement->doctor_id = $_GET['doctor_id'];
-        $sheduleElement->medcard_id = $_GET['card_number'];
         $sheduleElement->patient_day = $formatDate;
         $sheduleElement->is_accepted = 0;
         $sheduleElement->patient_time = $formatTime;
+        if($_GET['mode'] == 0) { // Обычная запись
+            $sheduleElement->medcard_id = $_GET['card_number'];
+            $sheduleElement->mediate_id = null;
+        } elseif($_GET['mode'] == 1) { // Опосредованная запись
+            $sheduleElement->medcard_id = null;
+            // Создаём запись опосредованного пациента
+            $mediate = new MediatePatient();
+            $mediateForm = new FormMediatePatientAdd();
+            $mediateForm->attributes = $_GET;
+            if(!$mediateForm->validate()) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' =>  $mediateForm->getErrors()));
+                exit();
+            }
+            // Заполняем значениями форму опосредованного пациента
+
+            $mediate->first_name = $mediateForm->firstName;
+            $mediate->last_name = $mediateForm->lastName;
+            $mediate->middle_name = $mediateForm->middleName;
+            $mediate->phone = $mediateForm->phone;
+
+            if(!$mediate->save()) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'error' =>  'Не могу сохранить опосредованного пациента в базе!'));
+                exit();
+            }
+            $sheduleElement->mediate_id = $mediate->id;
+        }
         if(!$sheduleElement->save()) {
             echo CJSON::encode(array('success' => 'false',
                 'data' => 'Не могу записать пациента!'));
             exit();
         }
         echo CJSON::encode(array('success' => 'true',
-            'data' => 'Пациент успешно записан!'));
+                                              'data' => 'Пациент успешно записан!'));
     }
     // Отписать пациента от приёма
     public function actionUnwritePatient() {
