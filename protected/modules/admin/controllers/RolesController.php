@@ -21,10 +21,17 @@ class RolesController extends Controller {
             $actions[$action['groupname']][$action['id']] = $action['name'];
         }
 
+        $pagesListDb = MenuPage::model()->findAll();
+        $pagesList = array();
+        foreach($pagesListDb as $page) {
+            $pagesList[$page->id] = $page->name;
+        }
+
         $this->render('index', array(
             'model' => new FormRoleAdd(),
             'actions' => $actions,
-            'rolesList' => $rolesList
+            'rolesList' => $rolesList,
+            'pagesList' => $pagesList
         ));
     }
 
@@ -116,6 +123,7 @@ class RolesController extends Controller {
     private function addEditModel($role, $model, $msg) {
         $role->name = $model->name;
         $role->parent_id = $model->parentId;
+        $role->startpage_id = $model->pageId;
 
         $success = true;
         if(!$role->save()) {

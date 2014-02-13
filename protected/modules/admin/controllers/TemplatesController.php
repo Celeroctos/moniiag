@@ -63,9 +63,12 @@ class TemplatesController extends Controller {
                 if(count($template['categorie_ids']) == 0) {
                     continue;
                 }
+
                 foreach($categories as $index => $catId) {
                     $categorie = MedcardCategorie::model()->find('id=:id', array(':id' => $catId));
-                    $template['categories'] .= $categorie->name.', ';
+                    if($categorie != null) { // Фикс против нецелостности данных
+                        $template['categories'] .= $categorie->name.', ';
+                    }
                 }
                 if($template['categories'] != '') {
                     $template['categories'] = mb_substr($template['categories'], 0, mb_strlen($template['categories'], 'UTF-8') - 2, 'UTF-8');

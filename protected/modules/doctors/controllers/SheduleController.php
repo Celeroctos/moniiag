@@ -31,6 +31,12 @@ class SheduleController extends Controller {
                 $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
                 if($greeting != null) {
                     $note = $greeting->note;
+                    // Пациента начали принимать, но он не принят: карту можно редактировать. В противном случае редактирование карты должно быть заблокировано
+                    if($greeting->is_beginned && !$greeting->is_accepted) {
+                        $canEditMedcard = 1;
+                    } else {
+                        $canEditMedcard = 0;
+                    }
                 }
             }
         }
@@ -62,7 +68,8 @@ class SheduleController extends Controller {
             'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null),
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
-            'note' => isset($note) ? $note : ''
+            'note' => isset($note) ? $note : '',
+            'canEditMedcard' => isset($canEditMedcard) ? $canEditMedcard : 0
         ));
     }
 
@@ -181,7 +188,7 @@ class SheduleController extends Controller {
         }
         // Выбираем пациентов на обозначенный день
         $sheduleByDay = new SheduleByDay();
-        $patients = $sheduleByDay->getRows($date, $doctor['employee_id']);
+        $patients = $sheduleByDay->getRows($date, $doctor['employee_id'], 0, 1);
         return $patients;
     }
 
@@ -213,8 +220,17 @@ class SheduleController extends Controller {
             if($sheduleElement != null) {
                 $sheduleElement->is_accepted = 1;
                 $sheduleElement->time_end = date('h:j');
+                // Записать статус медкарты: медкарта вернулась обратно в регистратуру
+                $medcard = Medcard::model()->findByPk($sheduleElement->medcard_id);
+                if($medcard != null) {
+                    $medcard->motion = 0; // Сразу в регистратуру: человеческий фактор говорит о том, что связку врач-регистратура можно будет отловить по истории
+                    if(!$medcard->save()) {
+                        echo CJSON::encode(array('success' => false,
+                                                 'text' => 'Ошибка сохранения статуса медкарты.'));
+                    }
+                }
                 if(!$sheduleElement->save()) {
-                    echo CJSON::encode(array('success' => true,
+                    echo CJSON::encode(array('success' => false,
                                              'text' => 'Ошибка сохранения записи.'));
                 }
             }
@@ -431,14 +447,15 @@ AND (weekday = :weekday OR day = :day)',
                 $choosedType = $sheduleElement['type']; // Далее можно выбрать только частный день
             }
         }
-        $increment = $settings['timePerPatient'] * 60;
+
+		$increment = $settings['timePerPatient'] * 60;
         $result = array();
         $numRealPatients = 0; // Это для того, чтобы понять, заполнено ли всё
         $currentTimestamp = time();
         $parts = explode('-', $formatDate);
         $today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
         for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
-            if($currentTimestamp > $i && $today) {
+            if($currentTimestamp >= $i && $today) {
                 continue;
             }
             // Ищем пациента для такого времени. Если он найден, значит время занято
@@ -498,11 +515,18 @@ AND (weekday = :weekday OR day = :day)',
         }
         $formatDate = $_GET['year'].'-'.$_GET['month'].'-'.$_GET['day'];
         $formatTime = $_GET['time'];
+        // Вынимаем элемент расписания для записи кабинета, например
+        // Определим день
+        $weekday = date('w', strtotime($formatDate));
+        $sheduleSetted = SheduleSetted::model()->find('weekday = :weekday AND employee_id = :employee_id AND day IS NULL', array(':weekday' => $weekday, ':employee_id' => $_GET['doctor_id']));
         $sheduleElement = new SheduleByDay();
         $sheduleElement->doctor_id = $_GET['doctor_id'];
         $sheduleElement->patient_day = $formatDate;
         $sheduleElement->is_accepted = 0;
         $sheduleElement->patient_time = $formatTime;
+        if($sheduleSetted != null) {
+            $sheduleElement->shedule_id = $sheduleSetted->id;
+        }
         if($_GET['mode'] == 0) { // Обычная запись
             $sheduleElement->medcard_id = $_GET['card_number'];
             $sheduleElement->mediate_id = null;

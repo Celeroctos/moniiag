@@ -3,6 +3,7 @@
 class FormRoleAdd extends CFormModel
 {
     public $parentId;
+    public $pageId;
     public $name;
     public $id;
 
@@ -11,7 +12,7 @@ class FormRoleAdd extends CFormModel
     {
         return array(
             array(
-                'name, parentId', 'required'
+                'name, parentId, pageId', 'required'
             ),
             array(
                 'id', 'safe'
@@ -23,7 +24,9 @@ class FormRoleAdd extends CFormModel
     {
         return array(
             'name' => 'Название',
-            'parentId' => 'Родитель'
+            'parentId' => 'Родитель',
+            'pageId' => 'Стартовая страница после авторизации',
+            'pageId' => 'Стартовая страница после авторизации'
         );
     }
 }

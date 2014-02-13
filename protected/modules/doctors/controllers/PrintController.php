@@ -206,5 +206,11 @@ class PrintController extends Controller {
         $this->layout = 'index';
         $this->render('massprint', array());
     }
+
+    // Распечтать страницу расписания
+    public function actionShedulePrint() {
+        $this->layout = 'shedule';
+        $this->render('shedule', array());
+    }
 }
 ?>

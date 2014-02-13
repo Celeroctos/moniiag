@@ -500,5 +500,10 @@ class TasuController extends Controller {
                                      'processed' => $processed // Кол-во обработанных байт
                                  )));
     }
+
+
+    public function actionViewIn() {
+        $this->render('viewin', array());
+    }
 }
 ?>

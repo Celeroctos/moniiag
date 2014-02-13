@@ -19,6 +19,42 @@ class Medcard extends MisActiveRecord  {
 
     }
 
+    // Получить историю движения медкарты
+    public function getHistoryOfMotion($omsId, $sidx = false, $sord = false, $start = false, $limit = false)
+    {
+        $connection = Yii::app()->db;
+        /*Соединяем
+        1. ОМСы
+        2. Медкарты
+        3. Таблица распределения пацентов по времени
+        4. Докторов
+        5. Связь докторов и кабинетов
+        6. Кабинеты
+        
+        Затем группируем это всё */
+            $result = $connection->createCommand()
+            ->select(   '(dsd.patient_day || \' \' || dsd.patient_time) as greeting_timestamp,
+                        dsd.medcard_id,
+                        (d.first_name || \' \' ||  d.middle_name  || \' \' || d.last_name) as doctor_name,
+                        c.cab_number') // 
+            ->from('mis.doctor_shedule_by_day dsd')
+            ->join('mis.medcards mc', 'mc.card_number = dsd.medcard_id')
+            ->join('mis.oms policy', 'mc.policy_id = policy.id')
+            ->join('mis.doctors d', 'd.id = dsd.doctor_id')
+            ->join('mis.doctor_cabinet cd', 'cd.doctor_id = d.id')
+            ->join('mis.cabinets c', 'cd.cabinet_id = c.id')
+            ->Where('policy.id = :oms_id', array(':oms_id' => $omsId))
+            ->group(array('dsd.id','greeting_timestamp','dsd.medcard_id','doctor_name', 'c.cab_number'));
+
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false)
+        {
+            $result->order($sidx.' '.$sord);
+            $result->limit($limit, $start);
+        }    
+            
+        return $result->queryAll();
+    }
+    
     public function getOne($cardNumber) {
         $connection = Yii::app()->db;
         $medcard = $connection->createCommand()
@@ -58,6 +94,16 @@ class Medcard extends MisActiveRecord  {
             ->limit(1, 0);
 
         return $medcard->queryRow();
+    }
+
+    public function findByIds($ids) {
+        $connection = Yii::app()->db;
+        $medcard = $connection->createCommand()
+            ->select('m.*')
+            ->from('mis.medcards m')
+            ->where(array('in', 'm.card_number', $ids))
+            ->order('m.card_number');
+        return $medcard->queryAll();
     }
 
 }

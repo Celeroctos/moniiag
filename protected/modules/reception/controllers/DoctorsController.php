@@ -20,7 +20,21 @@ class DoctorsController extends Controller {
         $start = $page * $rows - $rows;
 
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
-        
+        // Теперь обработаем врачей: ближайшую свободную дату можно взять из календаря
+        foreach($doctors as &$doctor) {
+            $nearFree = $this->getNearFreeDay($doctor['id']);
+            $doctor['nearFree'] = $nearFree !== false ? $nearFree : '';
+            $doctor['cabinet'] = '';
+            // На полученную дату выясняем кабинет
+            if($nearFree) {
+                $weekday = date('w', strtotime($nearFree));
+                $cabinetElement = SheduleSetted::model()->getCabinetPerWeekday($weekday, $doctor['id']);
+                if($cabinetElement != null) {
+                    $doctor['cabinet'] = $cabinetElement['cab_number'].' ('.$cabinetElement['description'].')';
+                }
+            }
+        }
+
         echo CJSON::encode(array('success' => true,
                                  'data' => $doctors,
                                  'total' => $totalPages,
@@ -114,6 +128,48 @@ class DoctorsController extends Controller {
         $model = new Doctor();
         $doctors = $model->getRows($filters);
         return $doctors;
+    }
+
+    private function getNearFreeDay($doctorId) {
+        $shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+        $numSheduleElements = count($shedule);
+        if($numSheduleElements > 0) {
+            $currentYear = date('Y');
+            $currentMonth = date('n');
+            $currentDay = date('j');
+            // Логика следующая: если на текущий день нет возможности записать пациента, то делаем дни + 1. Если нет возможности записать на текущий месяц, делаем месяц + 1. С годом аналогично. И проверяем, пока не найдём, куда записать.
+            while(true) {
+                $formatDate =  $currentYear.'-'.$currentMonth.'-'.$currentDay;
+                $weekday = date('w', strtotime($formatDate));
+                for($i = 0; $i < $numSheduleElements; $i++) {
+                    if($weekday == $shedule[$i]->weekday) {
+                        return $currentDay.'.'.$currentMonth.'.'.$currentYear;
+                    }
+                    // Дробим дату на части, чтобы проверить дни-исключения
+                    if($shedule[$i]->day != null) {
+                        $parts = explode('-', $shedule[$i]->day);
+                        if((int)$parts[0] == $currentYear && (int)$parts[1] == $currentMonth && (int)$parts[2] == $currentDay) {
+                            return $currentDay.'.'.$currentMonth.'.'.$currentYear;
+                        }
+                    }
+                }
+
+                // Надбавляем величины, начиная с дня
+                if($currentDay + 1 <  date('t', strtotime($formatDate))) {
+                    $currentDay++;
+                } else {
+                    $currentMonth++;
+                    $currentDay = 1;
+                }
+
+                if($currentMonth > 12) {
+                    $currentMonth = 1;
+                    $currentYear++;
+                }
+            }
+        } else {
+            return false; // Расписание не установлено
+        }
     }
 }
 

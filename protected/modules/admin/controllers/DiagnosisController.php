@@ -115,4 +115,8 @@ class DiagnosisController extends Controller {
 
         ));
     }
+
+    public function actionMkb10View() {
+        $this->render('mkb10', array());
+    }
 }

@@ -1,7 +1,4 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/cabinets.js"></script>
-<script type="text/javascript">
-    globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditCabinet'); ?>';
-</script>
 <table id="cabinets"></table>
 <div id="cabinetsPager"></div>
 <div class="btn-group default-margin-top">

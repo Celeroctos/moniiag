@@ -1,33 +1,70 @@
 $(document).ready(function() {
+    var medcardStatuses = [
+        'В регистратуре',
+        'Ожидание приёма',
+        'На приёме',
+        'Консилиум'
+    ];
+
+    $('#doctorCombo').on('change', function(e) {
+        if($(this).val() == 0) {
+            $('#doctorChooser').addClass('no-display');
+        } else {
+            $('#doctorChooser').removeClass('no-display');
+        }
+    });
+
+    $('#patientCombo').on('change', function(e) {
+        if($(this).val() == 0) {
+            $('#patientChooser').addClass('no-display');
+            $('#status').prop('disabled', false);
+        } else {
+            $('#patientChooser').removeClass('no-display');
+            $('#status').prop('disabled', true);
+        }
+    });
+
     // Формирование документов на массовую печать
     $('#sheduleViewSubmit').on('click', function(e) {
         // Дата приёма
         var greetingDate = $('#greetingDate').val();
-        var choosedDoctors = $.fn['doctorChooser'].getChoosed();
-        var choosedPatients = $.fn['patientChooser'].getChoosed();
+        var forDoctors = $('#doctorCombo').val();
+        var forPatients = $('#patientCombo').val();
+        var doctorsIds = [];
+        var patientIds = [];
 
-        if(choosedDoctors.length == 0 && choosedPatients.length == 0) {
+        if(forDoctors == 1) { // Для конкретных врачей
+            var choosedDoctors = $.fn['doctorChooser'].getChoosed();
+            for(var i = 0; i < choosedDoctors.length; i++) {
+                doctorsIds.push(choosedDoctors[i].id);
+            }
+        }
+
+        if(forPatients == 1) {
+            var choosedPatients = $.fn['patientChooser'].getChoosed();
+            for(var i = 0; i < choosedPatients.length; i++) {
+                patientIds.push(choosedPatients[i].id);
+            }
+        }
+
+        if(forDoctors == 1 && forPatients == 1 && choosedDoctors.length == 0 && choosedPatients.length == 0) {
             $('#errorPopup .modal-body .row p').remove();
             $('#errorPopup .modal-body .row').append($('<p>').text('Один из критериев расписания - врач или пациент - должен быть выбран!'));
             $('#errorPopup').modal({});
             return false;
         }
 
-        var doctorsIds = [];
-        var patientIds = [];
-        for(var i = 0; i < choosedDoctors.length; i++) {
-            doctorsIds.push(choosedDoctors[i].id);
-        }
-        for(var i = 0; i < choosedPatients.length; i++) {
-            patientIds.push(choosedPatients[i].id);
-        }
+        var checked = $('#status').prop('checked');
 
         $.ajax({
             'url' : '/index.php/reception/shedule/getshedule',
             'data' : {
                 'doctors' : $.toJSON(doctorsIds),
                 'patients' : $.toJSON(patientIds),
-                'date' : greetingDate
+                'date' : greetingDate,
+                'status' : checked ? 1 : 0,
+                'forDoctors' : forDoctors,
+                'forPatients' : forPatients
             },
             'cache' : false,
             'dataType' : 'json',
@@ -35,50 +72,89 @@ $(document).ready(function() {
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
                     var data = data.data;
+                    var shedule = data.shedule;
+                    var cabinets = data.cabinets;
                     var table = $('#sheduleTable');
                     $(table).find('tbody tr').remove();
                     var currentDoctorId = null;
                     var numRows = 1; // Для rowspan
                     var firstTd = null;
                     var added = false; // Добавлена или нет первая ячейка
-                    for(var i = 0; i < data.length; i++) {
+                    for(var i = 0; i < shedule.length; i++) {
                         var tr = $('<tr>');
                         var content = '';
-                        if(data[i].doctor_id != currentDoctorId || i + 1 == data.length) {
-                            currentDoctorId = data[i].doctor_id;
-                            if(i + 1 != data.length) {
-                                firstTd = $('<td>').text(data[i].d_last_name + ' ' + data[i].d_first_name + ' ' + data[i].d_middle_name);
+                        if(shedule[i].doctor_id != currentDoctorId || i + 1 >= shedule.length) {
+                            currentDoctorId = shedule[i].doctor_id;
+                            if(i + 1 != shedule.length || shedule.length == 1) {
+                                var text = "<span class=\"bold\">" + shedule[i].d_last_name + ' ' + shedule[i].d_first_name + ' ' + shedule[i].d_middle_name + "</span>";
+                                if(cabinets[shedule[i].doctor_id].cabNumber != null) {
+                                    var cabinet = '<span class="bold text-danger">кабинет ' + cabinets[shedule[i].doctor_id].cabNumber + ' (' + cabinets[shedule[i].doctor_id].description + ')</span>';
+                                } else {
+                                   var cabinet = '<span class="bold text-danger">кабинет неизвестен</span>';
+                                }
+                                firstTd = $('<td>').html(text + ', ' + cabinet);
                                 numRows = 1;
                                 added = false;
                             }
                         }
 
+                        if(shedule[i].medcard_id != null) {
+                            content +=
+                                '<td>' +
+                                    '<input type="checkbox" id="c' + shedule[i].medcard_id + '" />' +
+                                '</td>';
+                        } else {
+                            content += '<td>' +
+                                       '</td>';
+                        }
+
+                        // Движение медкарты
+                        if(typeof shedule[i].motion != 'undefined') {
+                            var motion = medcardStatuses[shedule[i].motion];
+                        } else {
+                            var motion = '';
+                        }
+
                         content +=
                             '<td>' +
-                                ((data[i].medcard_id != null) ?
-                                    '<a href="#">' + data[i].p_last_name + ' ' + data[i].p_first_name + ' ' + data[i].p_middle_name + '</a>'
+                                ((shedule[i].medcard_id != null) ?
+                                    '<a href="#">' + shedule[i].p_last_name + ' ' + shedule[i].p_first_name + ' ' + shedule[i].p_middle_name + '</a>'
                                     :
-                                    data[i].p_last_name + ' ' + data[i].p_first_name + ' ' + data[i].p_middle_name
+                                    shedule[i].p_last_name + ' ' + shedule[i].p_first_name + ' ' + shedule[i].p_middle_name
                                 ) +
                             '</td>' +
                             '<td>' +
-                                data[i].patient_time.substr(0, data[i].patient_time.lastIndexOf(':')) +
+                                (typeof shedule[i].phone != 'undefined' ? shedule[i].phone : '') +
                             '</td>' +
                             '<td>' +
-                                ((data[i].medcard_id != null) ?  '<a href="#">' + data[i].medcard_id + '</a>' : '<button class="btn btn-primary" id="b' + data[i].mediate_id + '">Подтвердить приём</button>') +
+                                shedule[i].patient_time.substr(0, shedule[i].patient_time.lastIndexOf(':')) +
                             '</td>' +
                             '<td>' +
+                                ((shedule[i].medcard_id != null) ?  '<a href="#">' + shedule[i].medcard_id + '</a>' : '<button class="btn btn-primary" id="b' + shedule[i].mediate_id + '">Подтвердить приём</button>') +
+                            '</td>' +
+                            '<td>' +
+                                motion +
                             '</td>';
 
-                        if(data[i].time_begin == null && data.time_end == null) {
+                        if(shedule[i].time_begin == null && shedule[i].time_end == null) {
                             content += '<td>Приём не начат</td>';
-                        } else if(data[i].time_begin != null && data.time_end == null) {
+                        } else if(shedule[i].time_begin != null && shedule[i].time_end == null) {
                             content += '<td>Приём начат</td>';
-                        } else if(data[i].time_begin != null && data.time_end != null) {
+                        } else if(shedule[i].time_begin != null && shedule[i].time_end != null) {
                             content += '<td>Приём окончен</td>';
                         }
 
-                        if(!added) {
+                        if(typeof shedule[i].oms_id != 'undefined' && shedule[i].oms_id != null) {
+                            content += '<td>' +
+                                '<a href="http://' + location.host + '/index.php/reception/patient/viewhistorymotion/?omsid=' + shedule[i].oms_id + '" target="_blank">' +
+                                    '<span class="glyphicon glyphicon-tasks" title="Посмотреть историю"></span>' +
+                                '</a>' +
+                            '</td>';
+                        } else {
+                            content += '<td></td>';
+                        }
+
+                        if(!added || shedule.length == 1) {
                             $(tr).append(firstTd, content);
                             added = true;
                         } else {
@@ -86,7 +162,7 @@ $(document).ready(function() {
                             numRows++;
                         }
 
-                        if(i + 1 == data.length || data[i + 1].doctor_id != currentDoctorId) {
+                        if(i + 1 == shedule.length || shedule[i + 1].doctor_id != currentDoctorId) {
                             $(firstTd).prop({
                                 'rowspan' : numRows
                             });
@@ -116,4 +192,94 @@ $(document).ready(function() {
         globalVariables.currentMediateId = $(this).prop('id').substr(1);
         $('#acceptGreetingPopup').modal({});
     });
+
+    // Отметить все медкарты
+    $('#checkAll').on('click', function(e) {
+        if($(this).prop('checked')) {
+            $(this).prop('title', 'Снять все отмеченные');
+            $('#sheduleTable tbody input[type="checkbox"]').prop('checked', true);
+        } else {
+            $(this).prop('title', 'Отметить все');
+            $('#sheduleTable tbody input[type="checkbox"]').prop('checked', false);
+        }
+    });
+
+    // Разнос отмеченных карт по кабинетам
+    $('#todoctor-submit').on('click', function(e) {
+        var checked = $('#sheduleTable tbody input[type="checkbox"]');
+        if(checked.length == 0 || $(this).prop('disabled')) {
+            return false;
+        }
+
+        $('#todoctor-submit').prop('disabled', true);
+        var ids = [];
+        for(var i = 0; i < checked.length; i++) {
+            if($(checked[i]).prop('checked')) { // TODO: Как проверить кобмо на то, что оно прочекано?
+                ids.push($(checked[i]).prop('id').substr(1));
+            }
+        }
+        $.ajax({
+            'url' : '/index.php/reception/patient/changemedcardstatus',
+            'data' : {
+                'ids' : $.toJSON(ids),
+                'status' : 1 // Передвинем на "Ожидает приёма"
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    $('#todoctor-submit').prop('disabled', false);
+                    $('#sheduleViewSubmit').trigger('click');
+                } else {
+
+                }
+            }
+        });
+    });
+
+
+    $('#print-submit').on('click', function() {
+        var printWin = window.open('','','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        var sheduleTable = $('#sheduleTable');
+        printWin.focus();
+        var document = $(printWin).document;
+        $(document).ready(function() {
+            var tableClone = $(sheduleTable).clone();
+            $(tableClone).find('td').css({
+                'border' : '1px solid #D4D0C8',
+                'border-collapse' : 'collapse',
+                'padding' : '3px 5px'
+            });
+
+            $(tableClone).find('td').css({
+               'border-collapse' : 'collapse'
+            }); // TODO: collapse не работает?
+
+            $(tableClone).find('tr').each(function(index, element) {
+                if($(element).find('td').length == 9) { // Это с колонкой врача
+                    $(element).find('td:eq(1)').remove();
+                    $(element).find('td:eq(8)').remove();
+                } else {
+                    $(element).find('td:eq(0)').remove();
+                    $(element).find('td:eq(7)').remove();
+                }
+            });
+
+            // Дату в шапку
+            var date = $('#greetingDate').val();
+            var parts = date.split('-');
+            var dateDiv = $('<div>').html($('<strong class="bold">').css({
+                'color' : '#FA5858',
+                'font-size' : '16px'
+            }).text('Расписание на ' + parts[2] + '.' + parts[1] + '.' + parts[0] + ' г.'));
+
+            $(tableClone).find('button').remove();
+            var printBtn = $('<button>').text('Распечатать расписание');
+            $(printBtn).on('click', function() {
+                window.print();
+            });
+            $('body', printWin.document).append(dateDiv, tableClone, printBtn);
+        });
+    })
 });

@@ -48,6 +48,20 @@ class SheduleSetted extends MisActiveRecord {
         }
     }
 
+    public function getCabinetPerWeekday($weekday, $doctorId) {
+        $connection = Yii::app()->db;
+        try {
+            $cabinet = $connection->createCommand()
+                ->selectDistinct('c.*')
+                ->from('mis.cabinets c')
+                ->join('mis.doctor_shedule_setted dss', 'dss.cabinet_id = c.id')
+                ->where('dss.weekday = :weekday AND dss.day IS NULL AND dss.employee_id = :doctor_id', array(':doctor_id' => $doctorId, ':weekday' => $weekday));
+            return $cabinet->queryRow();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
 }
 
 ?>

@@ -24,6 +24,9 @@ $(document).ready(function() {
                 clearAll: function() {
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
+                },
+                addConfigParam: function(param, value) {
+                    choosersConfig[$(chooser).prop('id')][param] = value;
                 }
             };
             $(chooser).find('input').val('');

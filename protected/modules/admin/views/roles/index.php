@@ -55,6 +55,17 @@
                                 <?php echo $form->error($model,'roleId'); ?>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'pageId', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'pageId', $pagesList, array(
+                                    'id' => 'pageId',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
                         <h4>Права доступа</h4>
                         <?php foreach($actions as $key => $actionGroup) { ?>
                         <h5><strong><?php echo $key; ?></strong></h5>
@@ -138,6 +149,17 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'roleId'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'pageId', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'pageId', $pagesList, array(
+                                    'id' => 'pageId',
+                                    'class' => 'form-control'
+                                )); ?>
                             </div>
                         </div>
                         <h4>Права доступа:</h4>

@@ -34,6 +34,11 @@ class User extends MisActiveRecord  {
             ));
         }
 
+        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+            $users->order($sidx.' '.$sord);
+            $users->limit($limit, $start);
+        }
+
         $users = $users->queryAll();
         $numUsers = count($users);
         if($numUsers > 0) {

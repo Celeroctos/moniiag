@@ -28,17 +28,17 @@ $(document).ready(function() {
         }
     });
 
-    $("#date-cont").on('changeDate', function() {
+    $("#date-cont").on('changeDate', function(e) {
+        $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
         $('#change-date-form').submit();
     });
 
-    // Отметка дат, в которых есть пациенты
-    $("#date-cont").on('show', function(e) {
-        $("#date-cont").trigger("refresh")
-    });
+    $("#date-cont").trigger("refresh");
+
     $("#date-cont").on('changeMonth', function(e) {
         $("#date-cont").trigger("refresh", [e.date]);
     });
+
 
     $("#date-cont").on('refresh', function(e, date) {
         if(typeof date == 'undefined') {
@@ -48,14 +48,18 @@ $(document).ready(function() {
             var dateObj = new Date(date);
             var currentDateParts = [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDay() + 1];
         }
+        console.log(currentDateParts);
         var daysWithPatients = globalVariables.patientsInCalendar;
         for(var i in daysWithPatients) {
             var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
-            if(currentDateParts[0] == parts[0] && currentDateParts[1] == parts[1]) {
+           // console.log(daysWithPatients[i].patient_day);
+          //  console.log(currentDateParts);
+            if(parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
                 $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
             }
         }
     });
+    $('#date-cont').trigger('refresh');
 
     $(document).on('click', '.medcard-history-showlink', function(e) {
         var medcardId = $(this).attr('href').substr(1);

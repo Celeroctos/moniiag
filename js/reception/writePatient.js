@@ -236,6 +236,9 @@ $(document).ready(function() {
                             data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name +
                         '</a>' +
                     '</td>' +
+                    '<td>'+
+                        data[i].birthday +
+                    '</td>' +
                     '<td>' +
                         '<a title="Посмотреть информацию по карте" href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
                             data[i].card_number +
@@ -262,13 +265,13 @@ $(document).ready(function() {
         var table = $('#searchDoctorsResult tbody');
         table.find('tr').remove();
         for(var i = 0; i < data.length; i++) {
-            var cabinetsStr = '';
+            /*var cabinetsStr = '';
             for(var j = 0; j < data[i].cabinets.length; j++) {
                 if(j > 0) {
                     cabinetsStr += ', ';
                 }
                 cabinetsStr += '' + data[i].cabinets[j].description + '';
-            }
+            }*/
             table.append(
                 '<tr>' +
                     '<td>' +
@@ -288,9 +291,10 @@ $(document).ready(function() {
                         data[i].ward  +
                     '</td>' +
                     '<td>' +
-                        cabinetsStr +
+                        data[i].cabinet +
                     '</td>' +
                     '<td>' +
+                        data[i].nearFree +
                     '</td>' +
                 '</tr>'
             );

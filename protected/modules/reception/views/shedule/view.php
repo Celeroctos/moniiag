@@ -1,9 +1,9 @@
+<?php if(Yii::app()->user->checkAccess('menuRaspDoctor')) { ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/shedule.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
-<?php if(Yii::app()->user->checkAccess('menuRaspDoctor')) { ?>
 <h4>Расписание</h4>
 <p class="text-left">
    Задайте фильтр и посмотрите расписание, нажав на кнопку "Показать".
@@ -40,7 +40,22 @@
             </div>
         </div>
     </div>
-    <div class="form-group chooser" id="doctorChooser">
+    <div class="form-group">
+        <label for="status" class="col-xs-2 control-label required">Только опосредованные пациенты (без ЭМК)</label>
+        <div class="col-xs-4">
+            <input type="checkbox" name="status" id="status">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="doctorCombo" class="col-xs-2 control-label required">Для врачей</label>
+        <div class="col-xs-4">
+            <select name="doctorCombo" class="form-control" id="doctorCombo">
+                <option value="0" selected="selected">Всех</option>
+                <option value="1">Указать конкретных</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group chooser no-display" id="doctorChooser">
         <label for="doctor" class="col-xs-2 control-label">Врач (Enter - добавить)</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" autofocus id="doctor" placeholder="ФИО врача">
@@ -50,7 +65,16 @@
             </div>
         </div>
     </div>
-    <div class="form-group chooser" id="patientChooser">
+    <div class="form-group">
+        <label for="patientCombo" class="col-xs-2 control-label required">Для пациентов</label>
+        <div class="col-xs-4">
+            <select name="patientCombo" class="form-control" id="patientCombo">
+                <option value="0" selected="selected">Всех</option>
+                <option value="1">Указать конкретных</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group chooser no-display" id="patientChooser">
         <label for="categorie" class="col-xs-2 control-label">Пациент (Enter - добавить)</label>
         <div class="col-xs-4">
             <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
@@ -64,21 +88,38 @@
         <button type="button" class="btn btn-success" id="sheduleViewSubmit">Посмотреть расписание</button>
     </div>
 </form>
-<table id="sheduleTable" class="col-xs-8">
-    <thead>
-        <tr class="header">
-            <td>Врач</td>
-            <td>Пациент</td>
-            <td>Время</td>
-            <td>Номер карты</td>
-            <td>Статус карты</td>
-            <td>Статус приёма</td>
-        </tr>
-    </thead>
-    <tbody>
+<div class="row">
+    <table id="sheduleTable" class="col-xs-11">
+        <thead>
+            <tr class="header">
+                <td>Врач</td>
+                <td>
+                    <input type="checkbox" value="-1" title="Отметить все" id="checkAll">
+                </td>
+                <td>Пациент</td>
+                <td>Контактный телефон</td>
+                <td>Время</td>
+                <td>Номер карты</td>
+                <td>Статус карты</td>
+                <td>Статус приёма</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
 
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
+<div id="toDoctorSubmit-cont" class="row">
+    <div class="form-group">
+        <input type="button" class="btn btn-success" name="todoctor-attach-submit" value="Разнести отмеченные карты по кабинетам" id="todoctor-submit">
+    </div>
+</div>
+<div id="printSubmit-cont" class="row">
+    <div class="form-group">
+        <input type="button" class="btn btn-success" name="print-submit" value="Распечатать расписание" id="print-submit">
+    </div>
+</div>
 <div class="modal fade error-popup" id="errorPopup">
     <div class="modal-dialog">
         <div class="modal-content">

@@ -211,6 +211,10 @@
                      if(allowChange) {
                          $($(this).parents('div.input-group')[0]).find('input.form-control:first').trigger('change', [1]);
                      }
+
+                     if($.trim($(day).val()) == '' && $.trim($(month).val()) == '' && $.trim($(year).val()) == '') {
+                         $(Control).find('input[type="hidden"]').val('');
+                     }
                 });
 
                 $(subcontrol).find('input.day').on('keyup', function(e) {

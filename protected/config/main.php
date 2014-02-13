@@ -70,6 +70,14 @@ return array(
                 'application.modules.settings.components.*',
                 'application.modules.settings.controllers.*'
             ),
+        ),
+        'statistic' => array(
+            'class' => 'application.modules.statistic.StatisticModule',
+            'import'=>array(
+                'application.modules.statistic.models.*',
+                'application.modules.statistic.components.*',
+                'application.modules.statistic.controllers.*'
+            ),
         )
 	),
 
@@ -92,10 +100,11 @@ return array(
 
 		'db'=>array(
 		    'connectionString' => 'pgsql:host=moniiag.toonftp.ru;port=5432;dbname=postgres;',
+             //       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=postgres;',
             'username' => 'moniiag',
             'password' => '12345',
             //'username' => 'postgres',
-            //'password' => '1'
+            //'password' => '12345'
         ),
 		// uncomment the following to use a MySQL database
 		/*

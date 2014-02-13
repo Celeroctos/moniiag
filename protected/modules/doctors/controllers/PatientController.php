@@ -9,9 +9,11 @@ class PatientController extends Controller {
                                      'data' => 'Не хватает данных для запроса!'));
         }
         $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
+
         $categorieWidget->createFormModel();
         $historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid']); // Получаем поля для всех полей относительно хистори
         //var_dump($historyArr);
+                       // $medcardContentWidget = $this->createWidget('application.modules.doctors.components.widgets.MedcardContentWidget');
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));
     }
@@ -61,6 +63,10 @@ class PatientController extends Controller {
         }
         echo CJSON::encode(array('success' => true,
                                  'data' => array()));
+    }
+
+    public function actionViewSearch() {
+        $this->render('searchPatient', array());
     }
 }
 ?>

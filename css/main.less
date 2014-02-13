@@ -157,16 +157,15 @@
 
 body {
   font-size: @default-font-size;
+ // background: url('/images/background.png') repeat-x;
 }
 .bold {
   font-weight: bold;
 }
 
 #content {
-	margin-top: 50px;
-    .main-container{
-		padding: @default-padding;
-	}
+	margin-top: 70px;
+
     .default-padding {
         padding: @default-padding;
     }
@@ -181,10 +180,14 @@ body {
         ul {
             margin: 0 0 0 10px;
             font-size: @small-font;
+            display: none;
         }
         li {
           a {
             padding: 3px 15px;
+            img {
+              margin-right: 2px;
+            }
           }
         }
         li.active {
@@ -384,14 +387,16 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
  }
 .date-ctrl-up-buttons, .date-ctrl-down-buttons {
     button {
-      margin-left: 10px !important;
       top: -2px;
+      width: 32px;
     }
     button + button {
-      margin-left: 30px !important;
+      margin-left: 10px !important;
+      width: 32px;
     }
     button + button + button {
-      margin-left: 40px !important;
+      margin-left: 10px !important;
+      width: 39px;
     }
 
   }
@@ -406,17 +411,20 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
 
   }
   .subfields {
-    min-width: 218px;
+    min-width: 133px;
     .day {
-      width: 45px;
+      width: 32px;
+      padding: 0 0 0 4px;
     }
     .month {
-      width: 50px;
+      width: 32px;
       margin-left: 10px;
+      padding: 0 0 0 4px;
     }
     .year {
-      width: 60px;
+      width: 39px;
       margin-left: 10px;
+      padding: 0 0 0 4px;
     }
     .hour {
       width: 35px;
@@ -433,10 +441,10 @@ div.date-control {
     display: block;
     position: relative;
     top: 2px;
-    left: 180px;
+    left: 125px;
     z-index: 99;
     span.glyphicon-calendar {
-      margin: 0 0 0 -5px;
+      margin: -2px 0 0 -6px;
       left: 0;
     }
   }
@@ -455,6 +463,14 @@ div.date-control {
         left: 0;
       }
     }
+  }
+}
+
+.shedule-datepicker {
+  margin-top: 20px;
+  .datetimepicker-inline {
+    margin-top: -25px;
+    margin-left: 130px;
   }
 }
 
@@ -731,4 +747,49 @@ select#restDays {
 /* Модальное окно у ресепшена в раписании */
 #acceptGreetingPopup .modal-dialog {
   width: 800px;
+}
+#toDoctorSubmit-cont {
+  margin-top: @default-margin;
+}
+/* Панель быстрого доступа */
+#quickPanel {
+  background: #81BEF7;
+  height: 70px;
+  text-align: center;
+  position: relative;
+  top: 52px;
+  position: relative;
+  display: none;
+  padding-left: 70px;
+  a {
+    text-decoration: none;
+    margin-left: 10px;
+    display: inline-block;
+    margin-top: 5px;
+  }
+  .recycleBin {
+    position: absolute;
+    left: 0px;
+  }
+}
+#quickPanelArrow {
+  height: 25px;
+  width: 50px;
+  margin: 50px 0 0 100px;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background: #81BEF7;
+  color: #ffffff;
+  span {
+    font-size: 20px;
+    padding: 0 0 0 15px;
+    margin-top: -2px;
+  }
+}
+#recycleBin-cont {
+  position: absolute;
+  top: 53px;
+  z-index: 99;
+  display: none;
+  padding: 4px 0 0 5px;
 }

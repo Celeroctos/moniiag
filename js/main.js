@@ -79,7 +79,7 @@
     
     
     $('#omsNumber, #policy').keyfilter(/^[\s\d]*$/);
-    $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁё\-]*$/);
+    $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁёa-zA-Z\-]*$/);
 
     $('#snils').on('keyup', function(e) {
         var value = $(this).val();
@@ -158,7 +158,7 @@
         var helpBlock = $(this).parents('.form-group').find('.help-block');
         if(typeof helpBlock != 'undefined') {
             if ($(helpBlock).length>0) {
-                    $(helpBlock).show();
+                $(helpBlock).show();
             }
             
         }
@@ -167,6 +167,167 @@
     // Ставим классы для различения контролов времени и даты
     $('div.date').addClass('date-control');
     $('div.time-control').removeClass('date-control');
-    
+
+    /* Панель быстрого доступа */
+    $('#quickPanel').css({
+        //'display' : 'none'
+    });
+    $('#quickPanelArrow').on('click', function() {
+        $('#recycleBin-cont').css('display', 'none');
+        $('#quickPanel').slideToggle(500, function() {
+            var quickPanelArrow = $('#quickPanelArrow');
+            if($(quickPanelArrow).find('span').hasClass('glyphicon-collapse-down')) {
+                $(quickPanelArrow).find('span').removeClass('glyphicon-collapse-down').addClass('glyphicon-collapse-up');
+                $('#recycleBin-cont').css('display', 'block');
+            } else {
+                $(quickPanelArrow).find('span').removeClass('glyphicon-collapse-up').addClass('glyphicon-collapse-down');
+            }
+        });
+    });
+
+    var dragLink = null;
+    var parent = null;
+    var removeMode = false; // Fix против высплывания событий
+    $('#quickPanel img:not(.recycleBin)').each(panelDragInit);
+
+    $('#recycleBin-cont img').droppable().on('drop', function(event, ui) {
+        $.ajax({
+            'url' : '/index.php/quickpanel/removeelement',
+            'cache' : false,
+            'dataType' : 'json',
+            'data' : {
+                'href' : $(ui.draggable).parent().prop('href'),
+                'icon' : $(ui.draggable).attr('src')
+            },
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    $(ui.draggable).parent().remove();
+                    removeMode = true;
+                } else {
+
+                }
+            }
+        });
+    });
+
+    function panelDragInit(index, element) {
+        var dragMode = false;
+        var animateToBig = function() {
+            $(element).animate({
+                width: 60,
+                height: 60
+            }, 200);
+        };
+        var animateToSmall = function() {
+            $(element).animate({
+                width: 40,
+                height: 40
+            }, 200);
+        };
+        $(element).on('mouseover', animateToBig);
+        $(element).on('mouseout', animateToSmall);
+        $(element).draggable();
+        $(element).on('dragstart', function(event, ui) {
+            dragMode = true;
+            parent = $(element).parent();
+            dragLink = $(parent).attr('href');
+            $(parent).css('position', 'absolute');
+            $(element).trigger('mouseover'),
+            $(element).off('mouseover').off('mouseout');
+        });
+        $(element).on('dragstop', function(event, ui) {
+            dragMode = false;
+            $('#quickPanel img:not(.recycleBin)').each(panelDragInit);
+        });
+        $(element).on('drag', function(event, ui) {
+            $(element).css({
+                'z-index': 9999
+            });
+        });
+    }
+
+    $('#quickPanel').droppable({
+        drop: function(event, ui) {
+            var a = $(ui.draggable).parent()
+            var link = $('<a>').attr('href', a.prop('href'));
+            dragLink = null;
+            $(ui.draggable).on('mouseover', function() {
+                $(ui.draggable).animate({
+                    width: 60,
+                    height: 60
+                }, 200);
+            });
+            $(ui.draggable).on('mouseout', function() {
+                $(ui.draggable).animate({
+                    width: 40,
+                    height: 40
+                }, 200);
+            });
+            $(ui.draggable).css('position', '');
+            $(link).append(ui.draggable);
+            $('#quickPanel').append(link);
+            $(ui.draggable).trigger('mouseout');
+
+            if(!removeMode) {
+                $.ajax({
+                    'url' : '/index.php/quickpanel/addelement',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'data' : {
+                        'href' : $(a).prop('href'),
+                        'icon' : $(ui.draggable).attr('src')
+                    },
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+
+                        } else {
+
+                        }
+                    }
+                });
+            } else {
+                removeMode = false;
+            }
+        }
+    });
+
+   // $('#mainSideMenu li img').each(dragInit);
+
+    function dragInit(index, element) {
+        $(element).draggable();
+        var parent = $(element).parent(); // Это Li
+        var elementClone = $(element).clone();
+        var href = $(element).parent().attr('href');
+        $(element).on('drag', onDrag);
+        $(element).on('dragstop', function(event, ui) {
+            if($(parent).find(element).length == 0) { // Если это 0, то нужно сделать вставку элемента назад на то место, где теперь пустота
+                var elementDoubleClone = $(elementClone).clone();
+                var text = $(parent).text();
+                $(parent).html(elementDoubleClone).append(text);
+                // Меняем href
+                $(element).parent().prop('href', href);
+                $('#mainSideMenu li img').each(dragInit);
+                $('#quickPanel img:not(.recycleBin)').each(panelDragInit);
+            }
+        });
+
+        $(element).on('dragstart', function(event, ui) {
+            $(element).css({
+                'position' : 'absolute',
+                'left' : 0,
+                'top' : 0,
+                'right' : 0,
+                'bottom' : 0
+            });
+        })
+
+        function onDrag(event, ui) {
+            $(element).css({
+                'z-index': 9999
+            });
+        }
+    }
    
 });

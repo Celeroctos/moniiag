@@ -3,6 +3,13 @@ class Controller extends CController {
     /* Неправильное использование, но пока непонятно, как переопределить конструктор */
     // Фильтр для выполнения запроса по поводу прав доступа
     public function filterGetAccessHierarchy($filterChain) {
+        // Здесь нужно писать логи...
+
+        if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
+            // Если гость, то не давать заходить куда-то
+            $this->redirect('/');
+        }
+
         $roleModel = new Role();
         $currentRoles = $roleModel->getCurrentUserRoles();
         // Создаём иерархию для текущей роли пользователя

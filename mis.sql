@@ -1,4 +1,38 @@
 --
+-- PostgreSQL database cluster dump
+--
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE moniiag;
+ALTER ROLE moniiag WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION CONNECTION LIMIT 250 PASSWORD 'md540e07d8e1e620c28f2637d35320d317c' VALID UNTIL 'infinity';
+COMMENT ON ROLE moniiag IS 'МОНИИАГ';
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION PASSWORD 'md5738d021d4bc194576641fa9936656836';
+
+
+
+
+
+
+--
+-- Database creation
+--
+
+REVOKE ALL ON DATABASE template1 FROM PUBLIC;
+REVOKE ALL ON DATABASE template1 FROM postgres;
+GRANT ALL ON DATABASE template1 TO postgres;
+GRANT CONNECT ON DATABASE template1 TO PUBLIC;
+
+
+\connect postgres
+
+--
 -- PostgreSQL database dump
 --
 
@@ -67,6 +101,116 @@ SET search_path = mis, pg_catalog;
 SET default_tablespace = '';
 
 SET default_with_oids = false;
+
+--
+-- Name: access_actions; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE access_actions (
+    id integer NOT NULL,
+    name character varying(150),
+    "group" integer,
+    "accessKey" character varying
+);
+
+
+ALTER TABLE mis.access_actions OWNER TO moniiag;
+
+--
+-- Name: TABLE access_actions; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE access_actions IS 'Операции, к которым разделять права';
+
+
+--
+-- Name: COLUMN access_actions.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN access_actions.name IS 'Название экшена';
+
+
+--
+-- Name: COLUMN access_actions."group"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN access_actions."group" IS 'Группа экшена';
+
+
+--
+-- Name: COLUMN access_actions."accessKey"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN access_actions."accessKey" IS 'Ключ для иерархии прав';
+
+
+--
+-- Name: access_actions_groups; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE access_actions_groups (
+    id integer NOT NULL,
+    name character varying(100)
+);
+
+
+ALTER TABLE mis.access_actions_groups OWNER TO moniiag;
+
+--
+-- Name: TABLE access_actions_groups; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE access_actions_groups IS 'Группы экшенов прав';
+
+
+--
+-- Name: COLUMN access_actions_groups.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN access_actions_groups.name IS 'Название группы';
+
+
+--
+-- Name: access_actions_groups_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE access_actions_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.access_actions_groups_id_seq OWNER TO moniiag;
+
+--
+-- Name: access_actions_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE access_actions_groups_id_seq OWNED BY access_actions_groups.id;
+
+
+--
+-- Name: access_actions_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE access_actions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.access_actions_id_seq OWNER TO moniiag;
+
+--
+-- Name: access_actions_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE access_actions_id_seq OWNED BY access_actions.id;
+
 
 --
 -- Name: cabinet_types; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
@@ -270,13 +414,55 @@ ALTER SEQUENCE degrees_id_seq OWNED BY degrees.id;
 
 
 --
+-- Name: diagnosis_per_patient; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE diagnosis_per_patient (
+    mkb10_id integer,
+    greeting_id integer,
+    type integer
+);
+
+
+ALTER TABLE mis.diagnosis_per_patient OWNER TO moniiag;
+
+--
+-- Name: TABLE diagnosis_per_patient; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE diagnosis_per_patient IS 'Диагнозы пациентов (приём у врача)';
+
+
+--
+-- Name: COLUMN diagnosis_per_patient.type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN diagnosis_per_patient.type IS 'Тип (0 - первичный, 1 - добавочный)';
+
+
+--
+-- Name: doctor-cabinet_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE "doctor-cabinet_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+    CYCLE;
+
+
+ALTER TABLE mis."doctor-cabinet_id_seq" OWNER TO moniiag;
+
+--
 -- Name: doctor-cabinet; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 CREATE TABLE "doctor-cabinet" (
     doctor_id integer NOT NULL,
     cabinet_id integer NOT NULL,
-    id integer NOT NULL
+    id integer DEFAULT nextval('"doctor-cabinet_id_seq"'::regclass) NOT NULL
 );
 
 
@@ -301,6 +487,262 @@ COMMENT ON COLUMN "doctor-cabinet".doctor_id IS 'ID доктора';
 --
 
 COMMENT ON COLUMN "doctor-cabinet".cabinet_id IS 'ID кабинета';
+
+
+--
+-- Name: doctor_shedule_by_day; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE doctor_shedule_by_day (
+    id integer NOT NULL,
+    doctor_id integer,
+    medcard_id character varying(50),
+    patient_day date,
+    is_accepted integer,
+    patient_time time without time zone,
+    is_beginned integer,
+    time_begin time without time zone,
+    time_end time without time zone,
+    note text,
+    mediate_id integer
+);
+
+
+ALTER TABLE mis.doctor_shedule_by_day OWNER TO moniiag;
+
+--
+-- Name: TABLE doctor_shedule_by_day; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE doctor_shedule_by_day IS 'Расписание врачей по дням';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.doctor_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.doctor_id IS 'Доктор';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.medcard_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.medcard_id IS 'Медкарта';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.patient_day; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.patient_day IS 'Дата приёма';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.is_accepted; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.is_accepted IS 'Принят или нет';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.patient_time; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.patient_time IS 'Время приёма';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.is_beginned; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.is_beginned IS 'Начат приём пациента или нет';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.time_begin; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.time_begin IS 'Время начала приёма';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.time_end; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.time_end IS 'Время конца приёма';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.note; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.note IS 'Примечание к диагнозам (поставленным)';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.mediate_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.mediate_id IS 'ID опосредованного пациента (если есть. В противном случае - NULL)';
+
+
+--
+-- Name: doctor_shedule_by_day_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE doctor_shedule_by_day_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.doctor_shedule_by_day_id_seq OWNER TO moniiag;
+
+--
+-- Name: doctor_shedule_by_day_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE doctor_shedule_by_day_id_seq OWNED BY doctor_shedule_by_day.id;
+
+
+--
+-- Name: doctor_shedule_setted; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE doctor_shedule_setted (
+    id integer NOT NULL,
+    cabinet_id integer,
+    employee_id integer,
+    weekday integer,
+    time_begin time without time zone,
+    time_end time without time zone,
+    type integer,
+    day date,
+    date_id integer
+);
+
+
+ALTER TABLE mis.doctor_shedule_setted OWNER TO moniiag;
+
+--
+-- Name: TABLE doctor_shedule_setted; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE doctor_shedule_setted IS 'Настроенное расписание администратором';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.cabinet_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.cabinet_id IS 'ID кабинета';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.employee_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.employee_id IS 'ID сотрудника';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.weekday; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.weekday IS 'ID дня (от 0 до 6, от Пн до Вс)';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.time_begin; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.time_begin IS 'Время начала приёма';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.time_end; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.time_end IS 'Время конца приёма';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.type IS 'Тип элемента расписания: 0 - расписание общее, 1 - день-исключение';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.day; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.day IS 'День (дата) для дня-исключения';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted.date_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted.date_id IS 'Внешний ключ на таблицу того, каковы сроки расписания по датам';
+
+
+--
+-- Name: doctor_shedule_setted_be; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE doctor_shedule_setted_be (
+    id integer NOT NULL,
+    date_begin date,
+    date_end date
+);
+
+
+ALTER TABLE mis.doctor_shedule_setted_be OWNER TO moniiag;
+
+--
+-- Name: TABLE doctor_shedule_setted_be; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE doctor_shedule_setted_be IS 'Даты начала и конца действия расписания врача';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted_be.date_begin; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted_be.date_begin IS 'Дата начала действия раписания';
+
+
+--
+-- Name: COLUMN doctor_shedule_setted_be.date_end; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_setted_be.date_end IS 'Дата конца действия раписания';
+
+
+--
+-- Name: doctor_shedule_setted_be_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE doctor_shedule_setted_be_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.doctor_shedule_setted_be_id_seq OWNER TO moniiag;
+
+--
+-- Name: doctor_shedule_setted_be_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE doctor_shedule_setted_be_id_seq OWNED BY doctor_shedule_setted_be.id;
 
 
 --
@@ -414,6 +856,27 @@ COMMENT ON COLUMN doctors.date_end IS 'Дата конца действия';
 --
 
 COMMENT ON COLUMN doctors.ward_code IS 'Код отделения';
+
+
+--
+-- Name: doctors_shedule_setted_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE doctors_shedule_setted_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.doctors_shedule_setted_id_seq OWNER TO moniiag;
+
+--
+-- Name: doctors_shedule_setted_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE doctors_shedule_setted_id_seq OWNED BY doctor_shedule_setted.id;
 
 
 --
@@ -624,6 +1087,77 @@ ALTER SEQUENCE enterprise_types_name_seq OWNED BY enterprise_types.name;
 
 
 --
+-- Name: files; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE files (
+    id integer NOT NULL,
+    filename character varying(255),
+    path text,
+    owner_id integer,
+    type integer
+);
+
+
+ALTER TABLE mis.files OWNER TO moniiag;
+
+--
+-- Name: TABLE files; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE files IS 'Файлы';
+
+
+--
+-- Name: COLUMN files.filename; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN files.filename IS 'Имя файла (созданное)';
+
+
+--
+-- Name: COLUMN files.path; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN files.path IS 'Путь до файла';
+
+
+--
+-- Name: COLUMN files.owner_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN files.owner_id IS 'Кто загрузил';
+
+
+--
+-- Name: COLUMN files.type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN files.type IS 'Тип файла (0 - аватар, 1 - файл для ТАСУ)';
+
+
+--
+-- Name: files_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE files_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.files_id_seq OWNER TO moniiag;
+
+--
+-- Name: files_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE files_id_seq OWNED BY files.id;
+
+
+--
 -- Name: insurances; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -650,6 +1184,370 @@ COMMENT ON COLUMN insurances.name IS 'Название компании';
 
 
 --
+-- Name: medcard_categories; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_categories (
+    id integer NOT NULL,
+    name character varying(150),
+    parent_id integer
+);
+
+
+ALTER TABLE mis.medcard_categories OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_categories; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_categories IS 'Категории медкарт';
+
+
+--
+-- Name: COLUMN medcard_categories.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_categories.name IS 'Название категории';
+
+
+--
+-- Name: COLUMN medcard_categories.parent_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_categories.parent_id IS 'Категория-родитель';
+
+
+--
+-- Name: medcard_categories_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_categories_id_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_categories_id_seq OWNED BY medcard_categories.id;
+
+
+--
+-- Name: medcard_elements; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_elements (
+    id integer NOT NULL,
+    type integer,
+    categorie_id integer,
+    label character varying(150),
+    guide_id integer,
+    allow_add integer DEFAULT 0
+);
+
+
+ALTER TABLE mis.medcard_elements OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_elements; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_elements IS 'Контролы шаблонов медкарт';
+
+
+--
+-- Name: COLUMN medcard_elements.type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.type IS 'Тип контрола';
+
+
+--
+-- Name: COLUMN medcard_elements.categorie_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.categorie_id IS 'Тип категории';
+
+
+--
+-- Name: COLUMN medcard_elements.label; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.label IS 'Метка для контрола';
+
+
+--
+-- Name: COLUMN medcard_elements.guide_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.guide_id IS 'Справочник';
+
+
+--
+-- Name: COLUMN medcard_elements.allow_add; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.allow_add IS 'Можно ли добавлять новые значения или нет (комбо)';
+
+
+--
+-- Name: medcard_elements_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_elements_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_elements_id_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_elements_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_elements_id_seq OWNED BY medcard_elements.id;
+
+
+--
+-- Name: medcard_elements_patient; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_elements_patient (
+    medcard_id character varying(50) NOT NULL,
+    element_id integer NOT NULL,
+    value text,
+    history_id integer NOT NULL,
+    change_date timestamp without time zone,
+    greeting_id integer
+);
+
+
+ALTER TABLE mis.medcard_elements_patient OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_elements_patient; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_elements_patient IS 'Значения элементов для пациентов';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.medcard_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.medcard_id IS 'ID медкарты';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.element_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.element_id IS 'ID элемента для него';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.value; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.value IS 'Значение элемента';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.history_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.history_id IS 'ID для истории медкарты';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.change_date; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.change_date IS 'Дата изменения';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.greeting_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.greeting_id IS 'ID приёма, во время которого было изменено поле';
+
+
+--
+-- Name: medcard_guide_values; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_guide_values (
+    id integer NOT NULL,
+    guide_id integer,
+    value text
+);
+
+
+ALTER TABLE mis.medcard_guide_values OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_guide_values; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_guide_values IS 'Значения для справочников медкарт';
+
+
+--
+-- Name: COLUMN medcard_guide_values.guide_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_guide_values.guide_id IS 'ID медсправочника';
+
+
+--
+-- Name: COLUMN medcard_guide_values.value; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_guide_values.value IS 'Значение';
+
+
+--
+-- Name: medcard_guide_values_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_guide_values_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_guide_values_id_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_guide_values_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_guide_values_id_seq OWNED BY medcard_guide_values.id;
+
+
+--
+-- Name: medcard_guides; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_guides (
+    id integer NOT NULL,
+    name name
+);
+
+
+ALTER TABLE mis.medcard_guides OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_guides; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_guides IS 'Справочники медкарты';
+
+
+--
+-- Name: COLUMN medcard_guides.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_guides.name IS 'Название';
+
+
+--
+-- Name: medcard_guides_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_guides_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_guides_id_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_guides_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_guides_id_seq OWNED BY medcard_guides.id;
+
+
+--
+-- Name: medcard_templates; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_templates (
+    id integer NOT NULL,
+    name character varying(150),
+    page_id integer,
+    categorie_ids text
+);
+
+
+ALTER TABLE mis.medcard_templates OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_templates; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_templates IS 'Шаблоны медкарт';
+
+
+--
+-- Name: COLUMN medcard_templates.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_templates.name IS 'Название';
+
+
+--
+-- Name: COLUMN medcard_templates.page_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_templates.page_id IS 'ID страницы, где используется шаблон';
+
+
+--
+-- Name: COLUMN medcard_templates.categorie_ids; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_templates.categorie_ids IS 'IDS категорий в шаблоне';
+
+
+--
+-- Name: medcard_templates_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_templates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_templates_id_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_templates_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_templates_id_seq OWNED BY medcard_templates.id;
+
+
+--
 -- Name: medcards; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -672,7 +1570,9 @@ CREATE TABLE medcards (
     reg_date date,
     work_place character varying(100),
     work_address character varying(100),
-    post character varying(100)
+    post character varying(100),
+    profession character varying(200),
+    motion integer
 );
 
 
@@ -819,13 +1719,100 @@ COMMENT ON COLUMN medcards.post IS 'Должность на работе';
 
 
 --
+-- Name: COLUMN medcards.profession; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcards.profession IS 'Профессия';
+
+
+--
+-- Name: COLUMN medcards.motion; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcards.motion IS 'Статус движения медкарты';
+
+
+--
+-- Name: mediate_patients; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE mediate_patients (
+    id integer NOT NULL,
+    first_name character varying(150),
+    middle_name character varying(150),
+    last_name character varying(150),
+    phone character varying(100)
+);
+
+
+ALTER TABLE mis.mediate_patients OWNER TO moniiag;
+
+--
+-- Name: TABLE mediate_patients; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE mediate_patients IS 'Опосредованные пациенты';
+
+
+--
+-- Name: COLUMN mediate_patients.first_name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN mediate_patients.first_name IS 'Имя';
+
+
+--
+-- Name: COLUMN mediate_patients.middle_name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN mediate_patients.middle_name IS 'Отчество';
+
+
+--
+-- Name: COLUMN mediate_patients.last_name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN mediate_patients.last_name IS 'Фамилия';
+
+
+--
+-- Name: COLUMN mediate_patients.phone; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN mediate_patients.phone IS 'Контактный телефон';
+
+
+--
+-- Name: mediate_patients_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE mediate_patients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.mediate_patients_id_seq OWNER TO moniiag;
+
+--
+-- Name: mediate_patients_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE mediate_patients_id_seq OWNED BY mediate_patients.id;
+
+
+--
 -- Name: medpersonal; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 CREATE TABLE medpersonal (
     id integer NOT NULL,
     name character varying(200),
-    type integer
+    type integer,
+    is_for_pregnants integer,
+    payment_type integer
 );
 
 
@@ -850,6 +1837,20 @@ COMMENT ON COLUMN medpersonal.name IS 'Наименование типа раб�
 --
 
 COMMENT ON COLUMN medpersonal.type IS 'Тип медперсонала';
+
+
+--
+-- Name: COLUMN medpersonal.is_for_pregnants; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medpersonal.is_for_pregnants IS 'Может обслуживать беременных?';
+
+
+--
+-- Name: COLUMN medpersonal.payment_type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medpersonal.payment_type IS 'Тип оплаты (Омс / бюджет (0 / 1))';
 
 
 --
@@ -963,6 +1964,58 @@ COMMENT ON COLUMN mkb10.level IS 'Уровень дерева';
 
 
 --
+-- Name: mkb10_distrib; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE mkb10_distrib (
+    mkb10_id integer,
+    employee_id integer
+);
+
+
+ALTER TABLE mis.mkb10_distrib OWNER TO moniiag;
+
+--
+-- Name: TABLE mkb10_distrib; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE mkb10_distrib IS 'Диагнозы из "любимых", по которым можно искать врачей для записи';
+
+
+--
+-- Name: COLUMN mkb10_distrib.mkb10_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN mkb10_distrib.mkb10_id IS 'ID диагноза в справочнике МКБ-10';
+
+
+--
+-- Name: COLUMN mkb10_distrib.employee_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN mkb10_distrib.employee_id IS 'ID специальности медработника';
+
+
+--
+-- Name: mkb10_likes; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE mkb10_likes (
+    mkb10_id integer NOT NULL,
+    medworker_id integer NOT NULL
+);
+
+
+ALTER TABLE mis.mkb10_likes OWNER TO moniiag;
+
+--
+-- Name: TABLE mkb10_likes; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE mkb10_likes IS 'Любимые диагнозы медработников';
+
+
+--
 -- Name: oms; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -973,7 +2026,11 @@ CREATE TABLE oms (
     last_name character varying(100),
     oms_number character varying(100),
     gender integer,
-    birthday date
+    birthday date,
+    type integer,
+    givedate date,
+    enddate date,
+    status integer
 );
 
 
@@ -1026,6 +2083,34 @@ COMMENT ON COLUMN oms.gender IS 'Пол';
 --
 
 COMMENT ON COLUMN oms.birthday IS 'День рождения';
+
+
+--
+-- Name: COLUMN oms.type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN oms.type IS 'Тип (постоянный / временный)';
+
+
+--
+-- Name: COLUMN oms.givedate; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN oms.givedate IS 'Дата выдачи';
+
+
+--
+-- Name: COLUMN oms.enddate; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN oms.enddate IS 'Дата кокнчания действия (только для временных)';
+
+
+--
+-- Name: COLUMN oms.status; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN oms.status IS 'Активен / погашен (0 / 1)';
 
 
 --
@@ -1118,12 +2203,91 @@ COMMENT ON COLUMN posts.post_name IS 'Название должности';
 
 
 --
+-- Name: pregnants; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE pregnants (
+    id integer NOT NULL,
+    card_id character varying(50),
+    register_type integer,
+    doctor_id integer
+);
+
+
+ALTER TABLE mis.pregnants OWNER TO moniiag;
+
+--
+-- Name: TABLE pregnants; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE pregnants IS 'Беременные, общая информация';
+
+
+--
+-- Name: COLUMN pregnants.card_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN pregnants.card_id IS 'ID медкарты';
+
+
+--
+-- Name: COLUMN pregnants.register_type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN pregnants.register_type IS 'Тип учёта (первичный или вторичный)';
+
+
+--
+-- Name: COLUMN pregnants.doctor_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN pregnants.doctor_id IS 'Врач, наблюдающий пациентку';
+
+
+--
+-- Name: pregnants_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE pregnants_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.pregnants_id_seq OWNER TO moniiag;
+
+--
+-- Name: pregnants_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE pregnants_id_seq OWNED BY pregnants.id;
+
+
+--
+-- Name: privileges_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE privileges_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+    CYCLE;
+
+
+ALTER TABLE mis.privileges_id_seq OWNER TO moniiag;
+
+--
 -- Name: privileges; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 CREATE TABLE privileges (
-    id integer NOT NULL,
-    name character varying(150)
+    id integer DEFAULT nextval('privileges_id_seq'::regclass) NOT NULL,
+    name character varying(150),
+    code character varying(50)
 );
 
 
@@ -1141,6 +2305,284 @@ COMMENT ON TABLE privileges IS 'Льготы';
 --
 
 COMMENT ON COLUMN privileges.name IS 'Тип льготы (название)';
+
+
+--
+-- Name: COLUMN privileges.code; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges.code IS 'Код льготы';
+
+
+--
+-- Name: privileges_per_patient; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE privileges_per_patient (
+    id integer NOT NULL,
+    patient_id integer,
+    privilege_id integer,
+    docname character varying(200),
+    docnumber character varying(100),
+    docserie character varying(100),
+    docgivedate date
+);
+
+
+ALTER TABLE mis.privileges_per_patient OWNER TO moniiag;
+
+--
+-- Name: TABLE privileges_per_patient; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE privileges_per_patient IS 'Льготы у пациентов';
+
+
+--
+-- Name: COLUMN privileges_per_patient.patient_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges_per_patient.patient_id IS 'ID пациента';
+
+
+--
+-- Name: COLUMN privileges_per_patient.privilege_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges_per_patient.privilege_id IS 'ID льготы';
+
+
+--
+-- Name: COLUMN privileges_per_patient.docname; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges_per_patient.docname IS 'Название документа';
+
+
+--
+-- Name: COLUMN privileges_per_patient.docnumber; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges_per_patient.docnumber IS 'Номер документа';
+
+
+--
+-- Name: COLUMN privileges_per_patient.docserie; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges_per_patient.docserie IS 'Серия документа';
+
+
+--
+-- Name: COLUMN privileges_per_patient.docgivedate; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN privileges_per_patient.docgivedate IS 'Дата выдачи';
+
+
+--
+-- Name: privileges_per_patient_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE privileges_per_patient_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.privileges_per_patient_id_seq OWNER TO moniiag;
+
+--
+-- Name: privileges_per_patient_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE privileges_per_patient_id_seq OWNED BY privileges_per_patient.id;
+
+
+--
+-- Name: role_action; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE role_action (
+    role_id integer NOT NULL,
+    action_id integer NOT NULL
+);
+
+
+ALTER TABLE mis.role_action OWNER TO moniiag;
+
+--
+-- Name: TABLE role_action; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE role_action IS 'Права доступа у каждой роли';
+
+
+--
+-- Name: COLUMN role_action.role_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN role_action.role_id IS 'ID роли';
+
+
+--
+-- Name: COLUMN role_action.action_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN role_action.action_id IS 'ID экшена';
+
+
+--
+-- Name: role_to_user; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE role_to_user (
+    user_id integer,
+    role_id integer
+);
+
+
+ALTER TABLE mis.role_to_user OWNER TO moniiag;
+
+--
+-- Name: TABLE role_to_user; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE role_to_user IS 'Соответствие ролей к пользователям';
+
+
+--
+-- Name: COLUMN role_to_user.user_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN role_to_user.user_id IS 'ID пользователя';
+
+
+--
+-- Name: COLUMN role_to_user.role_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN role_to_user.role_id IS 'ID роли';
+
+
+--
+-- Name: roles; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE roles (
+    id integer NOT NULL,
+    name character varying(150),
+    parent_id integer
+);
+
+
+ALTER TABLE mis.roles OWNER TO moniiag;
+
+--
+-- Name: TABLE roles; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE roles IS 'Роли пользователей';
+
+
+--
+-- Name: COLUMN roles.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN roles.name IS 'Название роли';
+
+
+--
+-- Name: COLUMN roles.parent_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN roles.parent_id IS 'Родитель';
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE roles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.roles_id_seq OWNER TO moniiag;
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
+
+
+--
+-- Name: settings; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE settings (
+    id integer NOT NULL,
+    module_id integer,
+    name character varying(100),
+    value text
+);
+
+
+ALTER TABLE mis.settings OWNER TO moniiag;
+
+--
+-- Name: TABLE settings; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE settings IS 'Настройки системы';
+
+
+--
+-- Name: COLUMN settings.module_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN settings.module_id IS 'ID модуля (-1 - без модуля)';
+
+
+--
+-- Name: COLUMN settings.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN settings.name IS 'Название настройки';
+
+
+--
+-- Name: COLUMN settings.value; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN settings.value IS 'Значение настройки';
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.settings_id_seq OWNER TO moniiag;
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE settings_id_seq OWNED BY settings.id;
 
 
 --
@@ -1244,6 +2686,330 @@ COMMENT ON COLUMN shedule_global.date_end IS 'Дата конца действи
 
 
 --
+-- Name: shedule_rest; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE shedule_rest (
+    day integer NOT NULL
+);
+
+
+ALTER TABLE mis.shedule_rest OWNER TO moniiag;
+
+--
+-- Name: TABLE shedule_rest; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE shedule_rest IS 'Расписание выходных дней недели';
+
+
+--
+-- Name: COLUMN shedule_rest.day; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN shedule_rest.day IS 'День (0 - 6), который считается выходным';
+
+
+--
+-- Name: shedule_rest_days; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE shedule_rest_days (
+    id integer NOT NULL,
+    date timestamp without time zone
+);
+
+
+ALTER TABLE mis.shedule_rest_days OWNER TO moniiag;
+
+--
+-- Name: TABLE shedule_rest_days; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE shedule_rest_days IS 'Отдельные выходные дни (праздники, например)';
+
+
+--
+-- Name: COLUMN shedule_rest_days.date; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN shedule_rest_days.date IS 'Дата выходного дня';
+
+
+--
+-- Name: shedule_rest_days_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE shedule_rest_days_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.shedule_rest_days_id_seq OWNER TO moniiag;
+
+--
+-- Name: shedule_rest_days_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE shedule_rest_days_id_seq OWNED BY shedule_rest_days.id;
+
+
+--
+-- Name: shifts; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE shifts (
+    id integer NOT NULL,
+    time_begin time without time zone,
+    time_end time without time zone
+);
+
+
+ALTER TABLE mis.shifts OWNER TO moniiag;
+
+--
+-- Name: TABLE shifts; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE shifts IS 'Смены врачей';
+
+
+--
+-- Name: COLUMN shifts.time_begin; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN shifts.time_begin IS 'Время начала приёма';
+
+
+--
+-- Name: COLUMN shifts.time_end; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN shifts.time_end IS 'Время конца приёма';
+
+
+--
+-- Name: shifts_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE shifts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.shifts_id_seq OWNER TO moniiag;
+
+--
+-- Name: shifts_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE shifts_id_seq OWNED BY shifts.id;
+
+
+--
+-- Name: tasu_fields_templates_list; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE tasu_fields_templates_list (
+    name character varying(200),
+    template text,
+    id integer NOT NULL,
+    "table" character varying(200)
+);
+
+
+ALTER TABLE mis.tasu_fields_templates_list OWNER TO moniiag;
+
+--
+-- Name: TABLE tasu_fields_templates_list; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE tasu_fields_templates_list IS 'Шаблоны полей ТАСУ';
+
+
+--
+-- Name: COLUMN tasu_fields_templates_list.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_fields_templates_list.name IS 'Название';
+
+
+--
+-- Name: COLUMN tasu_fields_templates_list.template; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_fields_templates_list.template IS 'Сам шаблон';
+
+
+--
+-- Name: COLUMN tasu_fields_templates_list."table"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_fields_templates_list."table" IS 'Таблица';
+
+
+--
+-- Name: tasu_fields_templates_list_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE tasu_fields_templates_list_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.tasu_fields_templates_list_id_seq OWNER TO moniiag;
+
+--
+-- Name: tasu_fields_templates_list_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE tasu_fields_templates_list_id_seq OWNED BY tasu_fields_templates_list.id;
+
+
+--
+-- Name: tasu_history; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE tasu_history (
+    id integer NOT NULL,
+    obj_id character varying(50),
+    "table" character varying(100),
+    tasu_id character varying(50),
+    file_id integer
+);
+
+
+ALTER TABLE mis.tasu_history OWNER TO moniiag;
+
+--
+-- Name: TABLE tasu_history; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE tasu_history IS 'Соответствие загруженных записей из ТАСУ тому, что есть в базе';
+
+
+--
+-- Name: COLUMN tasu_history.obj_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_history.obj_id IS 'ID объекта в базе';
+
+
+--
+-- Name: COLUMN tasu_history."table"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_history."table" IS 'Таблица в базе, где лежит объект';
+
+
+--
+-- Name: COLUMN tasu_history.tasu_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_history.tasu_id IS 'ID в ТАСУ-файле';
+
+
+--
+-- Name: COLUMN tasu_history.file_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_history.file_id IS 'ID в файловой системе МИС';
+
+
+--
+-- Name: tasu_history_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE tasu_history_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.tasu_history_id_seq OWNER TO moniiag;
+
+--
+-- Name: tasu_history_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE tasu_history_id_seq OWNED BY tasu_history.id;
+
+
+--
+-- Name: tasu_keys_templates_list; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE tasu_keys_templates_list (
+    id integer NOT NULL,
+    name character varying(200),
+    template text,
+    "table" character varying(200)
+);
+
+
+ALTER TABLE mis.tasu_keys_templates_list OWNER TO moniiag;
+
+--
+-- Name: TABLE tasu_keys_templates_list; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE tasu_keys_templates_list IS 'Шаблоны ключей ТАСУ';
+
+
+--
+-- Name: COLUMN tasu_keys_templates_list.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_keys_templates_list.name IS 'Название';
+
+
+--
+-- Name: COLUMN tasu_keys_templates_list.template; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_keys_templates_list.template IS 'Сам шаблон';
+
+
+--
+-- Name: COLUMN tasu_keys_templates_list."table"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN tasu_keys_templates_list."table" IS 'Таблица';
+
+
+--
+-- Name: tasu_keys_templates_list_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE tasu_keys_templates_list_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.tasu_keys_templates_list_id_seq OWNER TO moniiag;
+
+--
+-- Name: tasu_keys_templates_list_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE tasu_keys_templates_list_id_seq OWNED BY tasu_keys_templates_list.id;
+
+
+--
 -- Name: tituls; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -1299,8 +3065,8 @@ CREATE TABLE users (
     username character varying(100),
     login character varying(100),
     password character varying(100),
-    role_id integer,
-    employee_id integer
+    employee_id integer,
+    role_id integer
 );
 
 
@@ -1332,13 +3098,6 @@ COMMENT ON COLUMN users.login IS 'Логин';
 --
 
 COMMENT ON COLUMN users.password IS 'Пароль';
-
-
---
--- Name: COLUMN users.role_id; Type: COMMENT; Schema: mis; Owner: moniiag
---
-
-COMMENT ON COLUMN users.role_id IS 'ID роли';
 
 
 --
@@ -1422,6 +3181,20 @@ COMMENT ON COLUMN wards.enterprise_id IS 'Ссылка на предприяти
 -- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
 --
 
+ALTER TABLE ONLY access_actions ALTER COLUMN id SET DEFAULT nextval('access_actions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY access_actions_groups ALTER COLUMN id SET DEFAULT nextval('access_actions_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
 ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq'::regclass);
 
 
@@ -1436,7 +3209,77 @@ ALTER TABLE ONLY degrees ALTER COLUMN id SET DEFAULT nextval('degrees_id_seq'::r
 -- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
 --
 
+ALTER TABLE ONLY doctor_shedule_by_day ALTER COLUMN id SET DEFAULT nextval('doctor_shedule_by_day_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY doctor_shedule_setted ALTER COLUMN id SET DEFAULT nextval('doctors_shedule_setted_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY doctor_shedule_setted_be ALTER COLUMN id SET DEFAULT nextval('doctor_shedule_setted_be_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
 ALTER TABLE ONLY enterprise_types ALTER COLUMN id SET DEFAULT nextval('enterprise_types_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY files ALTER COLUMN id SET DEFAULT nextval('files_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_categories ALTER COLUMN id SET DEFAULT nextval('medcard_categories_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_elements ALTER COLUMN id SET DEFAULT nextval('medcard_elements_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_guide_values ALTER COLUMN id SET DEFAULT nextval('medcard_guide_values_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_guides ALTER COLUMN id SET DEFAULT nextval('medcard_guides_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_templates ALTER COLUMN id SET DEFAULT nextval('medcard_templates_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY mediate_patients ALTER COLUMN id SET DEFAULT nextval('mediate_patients_id_seq'::regclass);
 
 
 --
@@ -1464,6 +3307,69 @@ ALTER TABLE ONLY oms ALTER COLUMN id SET DEFAULT nextval('oms_id_seq'::regclass)
 -- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
 --
 
+ALTER TABLE ONLY pregnants ALTER COLUMN id SET DEFAULT nextval('pregnants_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY privileges_per_patient ALTER COLUMN id SET DEFAULT nextval('privileges_per_patient_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY settings ALTER COLUMN id SET DEFAULT nextval('settings_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY shedule_rest_days ALTER COLUMN id SET DEFAULT nextval('shedule_rest_days_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY shifts ALTER COLUMN id SET DEFAULT nextval('shifts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY tasu_fields_templates_list ALTER COLUMN id SET DEFAULT nextval('tasu_fields_templates_list_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY tasu_history ALTER COLUMN id SET DEFAULT nextval('tasu_history_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY tasu_keys_templates_list ALTER COLUMN id SET DEFAULT nextval('tasu_keys_templates_list_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
 ALTER TABLE ONLY tituls ALTER COLUMN id SET DEFAULT nextval('tituls_id_seq'::regclass);
 
 
@@ -1472,6 +3378,91 @@ ALTER TABLE ONLY tituls ALTER COLUMN id SET DEFAULT nextval('tituls_id_seq'::reg
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Data for Name: access_actions; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY access_actions (id, name, "group", "accessKey") FROM stdin;
+2	Поиск пациента	2	searchPatient
+3	"Регистратура"	7	menuRegister
+4	"Работа с пациентами"	7	menuWorkWithPatients
+5	"Поиск пациента"	7	menuSearchPatient
+6	"Добавление пациента"	7	menuAddPatient
+7	"Расписание врачей"	7	menuRaspDoctor
+8	"Сводное"	7	menuRaspDoctorSvod
+9	"По врачам"	7	menuRaspDoctorDoc
+10	"Запись пациента"	7	menuPatientWrite
+11	"Приём больных"	7	menuDoctorMovement
+12	"Печать приёмов"	7	menuPrintMovements
+13	"Профиль"	7	menuUserProfile
+14	"Система"	7	menuSystemSettings
+15	"Администрирование"	7	menuAdmin
+16	"АРМ врача"	7	menuArm
+17	"Справочники"	7	menuGuides
+18	"Настройки"	7	menuSettings
+19	Добавление пациента	2	addPatient
+20	Запись пациента	2	writePatient
+21	Редактирование данных медкарты	2	editMedcard
+22	Редактирование данных ОМС	2	editOms
+23	Просмотр списка пациентов на дату	4	canViewPatientList
+24	Просмотр истории медкарты	4	canViewMedcardHistory
+25	Добавление нового значения в справочник	4	canAddNewGuideValue
+26	Может печатать лист приёма	4	canPrintMovement
+27	Может сохранить результат приёма пациента в медкарте	4	canSaveMedcardMovement
+28	Может массово печатать листы приёма	4	canMakeMassPrint
+29	Редактирование учреждений	1	guideEditEnterprise
+30	Добавление учреждений	1	guideAddEnterprise
+31	Удаление учреждений	1	guideDeleteEnterprise
+32	Добавление отделений	1	guideAddWard
+33	Редактирование отделений	1	guideEditWard
+34	Удаление отделений	1	guideDeleteWard
+35	Добавление медработника	1	guideAddMedworker
+36	Редактирование медработника	1	guideEditMedworker
+37	Удаление медработника	1	guideDeleteMedworker
+38	Добавление сотрудника	1	guideAddEmployee
+39	Удаление сотрудника	1	guideDeleteEmployee
+40	Добавление контакта	1	guideAddContact
+41	Редактирование контакта	1	guideEditContact
+42	Удаление контакта	1	guideDeleteContact
+43	Добавление кабинета	1	guideAddCabinet
+44	Редактирование кабинета	1	guideEditCabinet
+45	Удаление кабинета	1	guideDeleteCabinet
+46	Добавление льгот	1	guideAddPrivelege
+47	Редактирование льгот	1	guideEditPrivelege
+48	Удаление льгот	1	guideDeletePrivelege
+49	"ТАСУ"	7	menuTasu
+1	Редактирование сотрудника	1	guideEditEmployee
+\.
+
+
+--
+-- Data for Name: access_actions_groups; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY access_actions_groups (id, name) FROM stdin;
+1	Справочники
+2	Регистратура
+4	АРМ врача
+5	Настройки
+6	Администрирование
+7	Разделы меню
+\.
+
+
+--
+-- Name: access_actions_groups_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('access_actions_groups_id_seq', 7, true);
+
+
+--
+-- Name: access_actions_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('access_actions_id_seq', 49, true);
 
 
 --
@@ -1488,6 +3479,9 @@ COPY cabinet_types (id, name) FROM stdin;
 
 COPY cabinets (id, enterprise_id, ward_id, cab_number, description) FROM stdin;
 4	7	2	26	Смотровой кабинет
+5	1	3	53	Стоматологический кабинет
+6	8	5	45	Отделение для приема больных
+7	8	5	99	Кабинет акушера-гинеколога
 \.
 
 
@@ -1495,7 +3489,7 @@ COPY cabinets (id, enterprise_id, ward_id, cab_number, description) FROM stdin;
 -- Name: cabinets_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('cabinets_id_seq', 4, true);
+SELECT pg_catalog.setval('cabinets_id_seq', 7, true);
 
 
 --
@@ -1508,6 +3502,8 @@ COPY contacts (id, type, contact_value, employee_id) FROM stdin;
 15	1	123-456-789	12
 16	1	456-78	15
 17	2	8-977-555-55-55	17
+18	2	4343434343	19
+19	0	xromovgena@mail.ru	21
 \.
 
 
@@ -1515,7 +3511,7 @@ COPY contacts (id, type, contact_value, employee_id) FROM stdin;
 -- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('contacts_id_seq', 17, true);
+SELECT pg_catalog.setval('contacts_id_seq', 19, true);
 
 
 --
@@ -1537,11 +3533,272 @@ SELECT pg_catalog.setval('degrees_id_seq', 2, true);
 
 
 --
+-- Data for Name: diagnosis_per_patient; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY diagnosis_per_patient (mkb10_id, greeting_id, type) FROM stdin;
+12256	92	0
+12255	108	0
+12251	108	0
+12257	108	1
+12257	91	0
+12256	91	0
+12251	91	1
+12248	91	1
+\.
+
+
+--
 -- Data for Name: doctor-cabinet; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
 COPY "doctor-cabinet" (doctor_id, cabinet_id, id) FROM stdin;
+15	4	2
 \.
+
+
+--
+-- Name: doctor-cabinet_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('"doctor-cabinet_id_seq"', 2, true);
+
+
+--
+-- Data for Name: doctor_shedule_by_day; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted, patient_time, is_beginned, time_begin, time_end, note, mediate_id) FROM stdin;
+232	15	3/14	2014-01-24	0	11:30:00	\N	\N	\N	\N	\N
+43	18	1/14	2013-12-11	0	15:30:00	\N	\N	\N	\N	\N
+246	15	3/13	2014-02-07	0	15:30:00	\N	\N	\N	\N	\N
+50	18	1/14	2013-12-11	0	14:00:00	\N	\N	\N	\N	\N
+51	18	1/14	2013-12-11	0	14:00:00	\N	\N	\N	\N	\N
+55	18	1/14	2013-12-11	0	18:00:00	\N	\N	\N	\N	\N
+58	18	1/14	2013-12-18	0	14:00:00	\N	\N	\N	\N	\N
+60	18	1/14	2013-12-18	0	15:00:00	\N	\N	\N	\N	\N
+61	15	1/14	2013-12-24	0	14:00:00	\N	\N	\N	\N	\N
+62	15	1/14	2013-12-24	0	15:30:00	\N	\N	\N	\N	\N
+63	15	1/14	2013-12-12	0	14:00:00	\N	\N	\N	\N	\N
+64	15	1/14	2013-12-12	0	16:00:00	\N	\N	\N	\N	\N
+67	15	2/13	2013-12-25	0	14:30:00	\N	\N	\N	\N	\N
+69	15	1/14	2013-12-20	0	15:00:00	\N	\N	\N	\N	\N
+70	15	1/14	2013-12-20	0	16:30:00	\N	\N	\N	\N	\N
+71	15	4/13	2013-12-24	0	14:30:00	\N	\N	\N	\N	\N
+72	15	1/14	2013-10-01	0	14:30:00	\N	\N	\N	\N	\N
+73	15	1/14	2013-10-01	0	15:30:00	\N	\N	\N	\N	\N
+74	15	1/14	2013-10-01	0	16:30:00	\N	\N	\N	\N	\N
+75	18	7/13	2013-12-17	0	16:30:00	\N	\N	\N	\N	\N
+137	15	13/14	2014-01-22	0	10:00:00	\N	\N	\N	\N	\N
+138	15	13/14	2014-01-23	0	10:00:00	\N	\N	\N	\N	\N
+139	15	13/14	2014-01-22	0	10:30:00	\N	\N	\N	\N	\N
+140	15	13/14	2014-01-23	0	10:30:00	\N	\N	\N	\N	\N
+77	15	1/14	2013-12-19	0	15:30:00	\N	\N	\N	\N	\N
+78	15	1/14	2013-12-19	0	15:00:00	\N	\N	\N	\N	\N
+79	15	1/14	2013-12-19	0	14:30:00	\N	\N	\N	\N	\N
+80	15	1/14	2013-12-19	0	18:00:00	\N	\N	\N	\N	\N
+81	15	1/14	2013-12-19	0	17:30:00	\N	\N	\N	\N	\N
+82	15	1/14	2013-12-19	0	17:00:00	\N	\N	\N	\N	\N
+76	15	7/13	2013-12-17	0	17:30:00	0	01:17:00	12:17:00	\N	\N
+141	15	13/14	2014-01-22	0	11:00:00	\N	\N	\N	\N	\N
+65	15	1/14	2013-12-12	1	15:00:00	1	11:18:00	11:18:00	\N	\N
+83	15	1/13	2013-12-24	0	15:00:00	\N	\N	\N	\N	\N
+84	18	5/13	2013-12-24	0	08:00:00	\N	\N	\N	\N	\N
+85	15	7/13	2013-12-31	0	15:00:00	\N	\N	\N	\N	\N
+86	15	4/13	2013-12-31	0	15:30:00	\N	\N	\N	\N	\N
+264	15	3/14	2014-01-28	0	18:00:00	\N	\N	\N	\N	\N
+88	15	7/13	2014-01-03	0	15:30:00	\N	\N	\N	\N	\N
+266	15	3/14	2014-01-27	0	18:30:00	\N	\N	\N	\N	\N
+90	15	7/13	2014-01-02	0	14:00:00	\N	\N	\N	\N	\N
+92	15	7/13	2014-01-17	0	14:00:00	\N	\N	\N	\N	\N
+93	15	7/13	2014-01-31	0	14:30:00	\N	\N	\N	\N	\N
+94	15	7/13	2014-01-17	0	14:30:00	\N	\N	\N	\N	\N
+95	15	7/13	2014-01-31	0	15:00:00	\N	\N	\N	\N	\N
+96	15	7/13	2014-01-17	0	15:00:00	\N	\N	\N	\N	\N
+97	15	7/13	2014-01-31	0	15:30:00	\N	\N	\N	\N	\N
+98	15	7/13	2014-01-17	0	15:30:00	\N	\N	\N	\N	\N
+100	15	7/13	2014-01-17	0	16:00:00	\N	\N	\N	\N	\N
+101	15	7/13	2014-01-31	0	16:30:00	\N	\N	\N	\N	\N
+102	15	7/13	2014-01-17	0	16:30:00	\N	\N	\N	\N	\N
+103	15	7/13	2014-01-17	0	17:00:00	\N	\N	\N	\N	\N
+104	15	7/13	2014-01-31	0	17:30:00	\N	\N	\N	\N	\N
+105	15	7/13	2014-01-17	0	17:30:00	\N	\N	\N	\N	\N
+106	15	7/13	2014-01-31	0	18:00:00	\N	\N	\N	\N	\N
+107	15	7/13	2014-01-17	0	18:00:00	\N	\N	\N	\N	\N
+268	18	3/14	2014-01-30	0	08:30:00	\N	\N	\N	\N	\N
+142	15	13/14	2014-01-23	0	11:00:00	\N	\N	\N	\N	\N
+110	15	1/13	2014-01-30	0	14:30:00	\N	\N	\N	\N	\N
+91	15	7/13	2014-01-16	0	14:00:00	1	12:09:00	\N	12345	\N
+111	18	5/13	2014-01-15	0	14:00:00	1	12:15:00	\N	\N	\N
+112	19	11/14	2014-01-20	0	09:45:00	\N	\N	\N	\N	\N
+113	19	11/14	2014-01-21	0	18:50:00	\N	\N	\N	\N	\N
+114	19	9/14	2014-01-21	0	18:00:00	\N	\N	\N	\N	\N
+115	19	3/14	2014-01-21	0	18:30:00	\N	\N	\N	\N	\N
+118	19	10/14	2014-01-21	0	17:30:00	\N	\N	\N	\N	\N
+119	19	10/14	2014-01-20	0	18:30:00	\N	\N	\N	\N	\N
+120	19	10/14	2014-01-15	0	18:00:00	\N	\N	\N	\N	\N
+123	18	5/13	2014-01-20	0	14:30:00	\N	\N	\N	\N	\N
+124	18	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N
+125	18	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N
+126	15	5/13	2014-01-20	0	14:00:00	\N	\N	\N	\N	\N
+127	15	5/13	2014-01-17	0	17:00:00	\N	\N	\N	\N	\N
+128	15	5/13	2014-01-20	0	14:30:00	\N	\N	\N	\N	\N
+129	15	5/13	2014-01-17	0	15:00:00	\N	\N	\N	\N	\N
+130	15	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N
+122	18	5/13	2014-01-17	0	14:30:00	1	03:17:00	\N	\N	\N
+131	18	16/14	2014-01-21	0	11:00:00	\N	\N	\N	\N	\N
+132	18	16/14	2014-01-21	0	10:30:00	\N	\N	\N	\N	\N
+121	18	5/13	2014-01-20	0	14:00:00	1	12:20:00	\N	\N	\N
+133	15	13/14	2014-01-23	0	08:00:00	\N	\N	\N	\N	\N
+134	15	13/14	2014-01-23	0	08:30:00	\N	\N	\N	\N	\N
+135	15	13/14	2014-01-23	0	09:00:00	\N	\N	\N	\N	\N
+136	15	13/14	2014-01-23	0	09:30:00	\N	\N	\N	\N	\N
+143	15	13/14	2014-01-22	0	11:30:00	\N	\N	\N	\N	\N
+144	15	13/14	2014-01-23	0	11:30:00	\N	\N	\N	\N	\N
+145	15	13/14	2014-01-23	0	12:00:00	\N	\N	\N	\N	\N
+146	15	13/14	2014-01-23	0	12:30:00	\N	\N	\N	\N	\N
+147	15	13/14	2014-01-22	0	13:00:00	\N	\N	\N	\N	\N
+148	15	13/14	2014-01-23	0	13:00:00	\N	\N	\N	\N	\N
+149	15	13/14	2014-01-22	0	13:30:00	\N	\N	\N	\N	\N
+150	18	13/14	2014-01-30	0	08:00:00	\N	\N	\N	\N	\N
+151	18	13/14	2014-01-23	0	09:00:00	\N	\N	\N	\N	\N
+278	15	\N	2014-01-29	0	16:00:00	\N	\N	\N	\N	6
+155	15	3/14	2014-01-23	0	14:00:00	\N	\N	\N	\N	\N
+280	18	13/14	2014-01-29	0	15:00:00	\N	\N	\N	\N	\N
+281	15	8/14	2014-01-30	0	15:00:00	\N	\N	\N	\N	\N
+270	15	20/14	2014-01-31	0	14:00:00	\N	\N	\N	\N	\N
+283	15	\N	2014-01-31	0	16:00:00	\N	\N	\N	\N	9
+161	15	3/14	2014-01-23	0	17:30:00	\N	\N	\N	\N	\N
+162	15	3/14	2014-01-23	0	18:00:00	\N	\N	\N	\N	\N
+285	15	2/14	2014-01-31	0	17:00:00	\N	\N	\N	\N	\N
+165	15	3/14	2014-02-03	0	15:30:00	\N	\N	\N	\N	\N
+167	15	3/14	2014-01-23	0	14:30:00	\N	\N	\N	\N	\N
+168	15	3/14	2014-01-23	0	15:00:00	\N	\N	\N	\N	\N
+291	21	\N	2014-01-31	0	18:30:00	\N	\N	\N	\N	15
+170	15	3/14	2014-01-24	0	15:30:00	\N	\N	\N	\N	\N
+289	18	8/13	2014-01-31	0	14:40:00	1	05:31:00	\N	\N	\N
+173	15	3/14	2014-01-24	0	09:00:00	\N	\N	\N	\N	\N
+287	18	13/14	2014-01-31	0	15:10:00	1	05:31:00	\N	\N	\N
+293	12	22/14	2014-02-06	0	10:05:00	\N	\N	\N	\N	\N
+295	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N
+297	18	22/14	2014-02-10	0	17:00:00	\N	\N	\N	\N	\N
+299	18	\N	2014-02-10	0	15:00:00	\N	\N	\N	\N	17
+301	15	13/14	2014-02-19	0	17:00:00	\N	\N	\N	\N	\N
+197	18	3/14	2014-01-28	0	09:30:00	\N	\N	\N	\N	\N
+241	15	3/14	2014-01-24	0	09:30:00	\N	\N	\N	\N	\N
+243	15	3/14	2014-01-24	0	10:30:00	\N	\N	\N	\N	\N
+245	15	3/14	2014-01-24	0	13:30:00	\N	\N	\N	\N	\N
+247	15	2/14	2014-01-27	0	15:00:00	\N	\N	\N	\N	\N
+261	15	3/14	2014-01-27	0	18:00:00	\N	\N	\N	\N	\N
+263	15	3/14	2014-01-28	0	14:00:00	\N	\N	\N	\N	\N
+224	15	3/14	2014-01-24	0	08:00:00	\N	\N	\N	\N	\N
+265	15	3/14	2014-01-27	0	17:30:00	\N	\N	\N	\N	\N
+279	18	13/14	2014-01-29	0	14:30:00	\N	\N	\N	\N	\N
+277	18	12/14	2014-01-28	0	17:00:00	\N	\N	\N	\N	\N
+282	15	8/13	2014-01-30	0	15:30:00	\N	\N	\N	\N	\N
+284	21	\N	2014-01-31	0	15:30:00	\N	\N	\N	\N	10
+286	19	\N	2014-02-03	0	08:00:00	\N	\N	\N	\N	12
+269	18	13/14	2014-01-31	0	13:40:00	1	05:31:00	\N	\N	\N
+288	18	13/14	2014-01-31	0	15:40:00	1	05:31:00	\N	\N	\N
+292	21	\N	2014-01-31	0	21:00:00	\N	\N	\N	\N	16
+294	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N
+296	15	22/14	2014-02-19	0	15:30:00	\N	\N	\N	\N	\N
+300	18	13/14	2014-02-10	0	16:00:00	\N	\N	\N	\N	\N
+302	15	\N	2014-02-19	0	16:00:00	\N	\N	\N	\N	18
+303	19	\N	2014-06-18	0	10:00:00	\N	\N	\N	\N	19
+\.
+
+
+--
+-- Name: doctor_shedule_by_day_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('doctor_shedule_by_day_id_seq', 303, true);
+
+
+--
+-- Data for Name: doctor_shedule_setted; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY doctor_shedule_setted (id, cabinet_id, employee_id, weekday, time_begin, time_end, type, day, date_id) FROM stdin;
+283	7	15	\N	08:00:00	18:00:00	1	2014-01-24	\N
+284	7	15	\N	09:00:00	19:00:00	1	2011-11-11	\N
+282	4	15	0	14:00:00	18:30:00	0	2007-12-25	52
+261	4	15	1	14:00:00	18:30:00	0	\N	52
+334	5	18	1	14:00:00	18:00:00	0	\N	63
+335	4	18	2	09:30:00	18:15:00	0	\N	63
+336	5	18	3	14:00:00	18:00:00	0	\N	63
+337	5	18	4	09:00:00	15:00:00	0	\N	63
+338	4	18	5	11:10:00	21:10:00	0	\N	63
+262	4	15	2	14:00:00	18:30:00	0	\N	52
+272	4	15	3	14:00:00	18:30:00	0	\N	52
+263	4	15	4	14:00:00	18:30:00	0	\N	52
+273	4	15	5	14:00:00	18:30:00	0	\N	52
+274	4	15	6	13:00:00	18:30:00	0	\N	52
+285	4	21	0	15:00:00	20:00:00	0	\N	53
+286	4	21	2	12:00:00	18:40:00	0	\N	53
+287	4	21	5	11:00:00	22:45:00	0	\N	53
+288	4	15	0	14:00:00	18:30:00	0	\N	54
+289	4	15	1	14:00:00	18:36:00	0	\N	54
+290	4	15	2	14:00:00	18:30:00	0	\N	54
+291	4	15	3	14:00:00	18:30:00	0	\N	54
+292	4	15	4	14:00:00	18:30:00	0	\N	54
+293	4	15	5	14:00:00	18:30:00	0	\N	54
+294	4	15	6	13:00:00	18:30:00	0	\N	54
+339	4	12	0	08:35:00	19:25:00	0	\N	65
+340	4	12	1	08:35:00	19:25:00	0	\N	65
+341	4	12	2	08:35:00	19:25:00	0	\N	65
+342	4	12	3	08:35:00	19:25:00	0	\N	65
+343	4	12	4	08:35:00	19:25:00	0	\N	65
+344	4	12	5	08:35:00	19:25:00	0	\N	65
+345	4	12	6	08:35:00	19:25:00	0	\N	65
+280	6	19	\N	14:00:00	19:45:00	1	2014-01-18	\N
+281	4	19	\N	12:50:00	19:50:00	1	2014-03-09	\N
+275	7	19	0	08:00:00	18:50:00	0	\N	45
+276	7	19	1	08:00:00	18:50:00	0	\N	45
+277	7	19	2	08:00:00	18:50:00	0	\N	45
+278	7	19	3	08:00:00	18:50:00	0	\N	45
+279	7	19	4	08:00:00	18:50:00	0	\N	45
+271	4	18	\N	10:00:00	13:00:00	1	2013-12-19	\N
+\.
+
+
+--
+-- Data for Name: doctor_shedule_setted_be; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY doctor_shedule_setted_be (id, date_begin, date_end) FROM stdin;
+43	2013-11-01	2014-10-31
+45	2013-05-17	2017-02-17
+44	2013-12-01	2014-10-31
+46	2013-11-01	2016-10-31
+47	2013-11-01	2017-10-31
+48	2013-11-01	2016-10-31
+49	2013-11-01	2016-10-31
+50	2013-11-01	2016-10-31
+51	2013-11-01	2019-10-31
+52	2014-01-09	2014-12-31
+53	2014-01-20	2014-03-20
+54	2014-01-08	2014-01-31
+55	2014-01-28	2014-06-28
+56	2014-01-28	2014-06-28
+57	2014-01-28	2014-06-28
+58	2014-01-28	2014-06-28
+59	2014-01-28	2014-06-28
+60	2014-01-28	2014-06-28
+61	2014-01-28	2014-06-28
+62	2014-01-28	2014-06-28
+63	2014-01-28	2014-06-28
+64	2014-01-31	2014-12-31
+65	2014-02-01	2015-04-04
+\.
+
+
+--
+-- Name: doctor_shedule_setted_be_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('doctor_shedule_setted_be_id_seq', 65, true);
 
 
 --
@@ -1553,8 +3810,13 @@ COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, deg
 14	Иван	Иванович	Иванов	4		1	1	2013-11-06	2013-11-14	1
 17	1	2	3	5	4	-1	-1	2013-11-05	2013-11-14	1
 15	Инна	Леонидовна	Белова	11	3451	2	1	2013-11-01	2013-11-05	4
-12	Сидор	Сидорович	Сидоров	9		1	1	2013-11-12	2013-11-19	2
 16	Семен	Семенович	Семёнов	11	12233	-1	-1	2013-11-06	2015-03-22	1
+18	Ольга	Вадимовна	Бондарева	11	7564	-1	-1	2013-12-01	2014-06-29	5
+12	Сидор	Сидорович	Сидоров	9		1	1	2013-11-12	\N	2
+19	Георгий	Андреевич	Крупнов	11	7645	-1	-1	2012-09-27	2015-11-01	5
+20	Мария	Степановна	Егорова	8	443	1	1	2011-02-03	2016-07-03	1
+21	Геннадий	Викторович	Хромов	9	87899	2	4	2003-12-11	2020-02-01	1
+22	Новый	Очень	Сотрудник	8		-1	-1	2014-01-15	2014-01-09	1
 \.
 
 
@@ -1562,7 +3824,14 @@ COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, deg
 -- Name: doctors_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctors_id_seq', 17, true);
+SELECT pg_catalog.setval('doctors_id_seq', 22, true);
+
+
+--
+-- Name: doctors_shedule_setted_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('doctors_shedule_setted_id_seq', 345, true);
 
 
 --
@@ -1580,8 +3849,8 @@ COPY doctypes (id, name) FROM stdin;
 
 COPY enterprise_params (address_fact, address_jur, phone, shortname, fullname, bank, bank_account, inn, kpp, id, type) FROM stdin;
 Ул Некая, д. 13	Ул Некая, д. 13	(123)456-45-56	Поликлиника 71	Городская поликлиника 71	ВТБ	1234567	12345	54321	7	2
-Где-то на Чистых прудах	Там же	(123)456-78-90	МОНИИАГ	МОНИИАГ	ВТБ	1234567789	22222222	11111111	1	1
 4	6	8	Просто поликлиника	2	9	05656	56	65	8	1
+Где-то на Чистых прудах	Там же	(123)456-78-90	МОНИИАГ	Государственное учреждение здравоохранения "Московский областной НИИ акушерства и гинекологии"	ВТБ	1234567789	22222222	11111111	1	1
 \.
 
 
@@ -1617,6 +3886,64 @@ SELECT pg_catalog.setval('enterprise_types_name_seq', 1, false);
 
 
 --
+-- Data for Name: files; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY files (id, filename, path, owner_id, type) FROM stdin;
+22	0e01edfd5ff60550c0676889bb3dc8b5	/uploads/avatars/1/0e01edfd5ff60550c0676889bb3dc8b5.jpg	1	0
+23	3227b5bff78e2884e7a4159bb6028dd4	F:\\Hosts\\Celeroctos\\moniiag\\www/uploads/tasu/3227b5bff78e2884e7a4159bb6028dd4.php	1	1
+24	a662d436073402a4fbadaf59796862e0	/uploads/tasu/a662d436073402a4fbadaf59796862e0.pdf	1	1
+25	591e68a0ccbe69ddb32bf78a3e35845e	/uploads/tasu/591e68a0ccbe69ddb32bf78a3e35845e.doc	1	1
+26	5a313069d4f89631d46cb0946b621676	/uploads/tasu/5a313069d4f89631d46cb0946b621676.zip	1	1
+27	0461bb9ad72c000bda90b91ff51f17fb	/uploads/tasu/0461bb9ad72c000bda90b91ff51f17fb.exe	1	1
+28	5cd2c10898e7ad3cb5311e28145153bb	/uploads/tasu/5cd2c10898e7ad3cb5311e28145153bb.png	1	1
+29	7714b6c8aa443a42c895a3e7aa7d5e59	/uploads/tasu/7714b6c8aa443a42c895a3e7aa7d5e59.png	1	1
+30	e6f8c551a08532d65a961d5a7ff92c7a	/uploads/tasu/e6f8c551a08532d65a961d5a7ff92c7a.jpg	1	1
+31	6aa4cc00352dc824ae37f5bc67ebba48	/uploads/tasu/6aa4cc00352dc824ae37f5bc67ebba48.zip	1	1
+32	e25e23fb7db5b85434decb99569659fa	/uploads/tasu/e25e23fb7db5b85434decb99569659fa.sql	1	1
+33	999a520c4422a1baaaac87c91d74e467	/uploads/tasu/999a520c4422a1baaaac87c91d74e467.zip	1	1
+34	39a7948cc7c793b71a53c02436cceeb5	/uploads/tasu/39a7948cc7c793b71a53c02436cceeb5.exe	1	1
+35	f6d94b10f444ef5f932ba13e99c6c0dd	/uploads/tasu/f6d94b10f444ef5f932ba13e99c6c0dd.exe	1	1
+36	e9ca54915ae4ad1514d1059f4c108963	/uploads/tasu/e9ca54915ae4ad1514d1059f4c108963.rar	1	1
+37	55ce2a7f3d4a929717b8e4ee26d7b6d7	/uploads/tasu/55ce2a7f3d4a929717b8e4ee26d7b6d7.rar	1	1
+38	aef123cedd5f4dc546ec18765437bcd3	/uploads/tasu/aef123cedd5f4dc546ec18765437bcd3.exe	1	1
+39	f6551a2e70366ab6eb7c7b6298dbcf0d	/uploads/tasu/f6551a2e70366ab6eb7c7b6298dbcf0d.exe	1	1
+40	cc7aff8b635c0fa72a30067cb2f7dc8f	/uploads/tasu/cc7aff8b635c0fa72a30067cb2f7dc8f.sql	1	1
+41	3b144997aca90cd675b81cbb54ba57b3	/uploads/tasu/3b144997aca90cd675b81cbb54ba57b3.sql	1	1
+42	b9b743cdda3178889d5e2b1a6230c74e	/uploads/tasu/b9b743cdda3178889d5e2b1a6230c74e.sql	1	1
+43	46a48d47906d65500161edef07d06c2d	/uploads/tasu/46a48d47906d65500161edef07d06c2d.jpg	1	1
+44	cb3d38f3213c362ba30b0cf49db5747d	/uploads/tasu/cb3d38f3213c362ba30b0cf49db5747d.rar	1	1
+45	92ce2cadc59f9988ed68a45a2c52e107	/uploads/tasu/92ce2cadc59f9988ed68a45a2c52e107.zip	1	1
+46	d54c27d6273e3468491df4d56c3f7c5d	/uploads/tasu/d54c27d6273e3468491df4d56c3f7c5d.sql	1	1
+47	7a39ce4c4302b4566d5ba92534828c7d	/uploads/tasu/7a39ce4c4302b4566d5ba92534828c7d.png	1	1
+48	1fa0d65b2ea96ed35bc47ff6155e1abb	/uploads/tasu/1fa0d65b2ea96ed35bc47ff6155e1abb.xls	1	1
+49	fdd0fa8cfdcd56ffecdcffc729f24844	/uploads/tasu/fdd0fa8cfdcd56ffecdcffc729f24844.zip	1	1
+50	88ad48fad137f9fed6bc320f44d81641	/uploads/tasu/88ad48fad137f9fed6bc320f44d81641.zip	1	1
+51	cc72fb48f89f1cbeabb5cd56d6e02b7b	/uploads/tasu/cc72fb48f89f1cbeabb5cd56d6e02b7b.exe	1	1
+52	12a6d006c3ef3f0ff908f3acd50ae864	/uploads/tasu/12a6d006c3ef3f0ff908f3acd50ae864.mp3	1	1
+53	57ea195ce92eb7ea26a53e422faa0775	/uploads/tasu/57ea195ce92eb7ea26a53e422faa0775.xml	1	1
+54	Readme.txt	/uploads/tasu/c7093e49821546ddf08285d790d015c1.txt	1	1
+55	Patient_Policy.csv	/uploads/tasu/de603a267e861c49c6aac1adaf1fbd2f.csv	1	1
+56	Patient_Policy.csv	/uploads/tasu/7acec1c0b9663c8603e83712fc620bae.csv	1	1
+57	price.xls	/uploads/tasu/4d424e6e5c111bfded29d3babf8ed556.xls	1	1
+58	ТЗ_v1_1.docx	/uploads/tasu/776ae7902a90703c73e5cec036cf4592.docx	1	1
+59	doxbin-2.0.zip	/uploads/tasu/328ab46a9cbf0887e82f30dc20d0959c.zip	1	1
+60	bootstrap(2).zip	/uploads/tasu/8f5b563e11f2322428fa1b17b0fb4108.zip	1	1
+61	bootstrap.zip	/uploads/tasu/a3b2a17f6abdf26ec9660bed2f8e0f1b.zip	1	1
+62	Patient_Patient.csv	/uploads/tasu/baf40d94fe01e48559fcc400d0cde888.csv	7	1
+63	SonicCIS Внезапный всплеск активности 2013-11-30 by Ambidexter.doc	/uploads/tasu/4578186e1c72a85e4fb77c0e5609efc2.doc	1	1
+64	price.xls	/uploads/tasu/5756afc6db3f28a8c7d95302e1ec71bf.xls	1	1
+\.
+
+
+--
+-- Name: files_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('files_id_seq', 64, true);
+
+
+--
 -- Data for Name: insurances; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
@@ -1626,24 +3953,294 @@ COPY insurances (id, name) FROM stdin;
 
 
 --
+-- Data for Name: medcard_categories; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_categories (id, name, parent_id) FROM stdin;
+2	Анамнез	\N
+3	Объективно	\N
+4	Жалобы	\N
+5	I триместр	\N
+6	II триместр	\N
+7	||| триместр	\N
+8	Анамнез (беременность)	2
+9	Подкатегория	2
+10	Диагноз	9
+\.
+
+
+--
+-- Name: medcard_categories_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_categories_id_seq', 10, true);
+
+
+--
+-- Data for Name: medcard_elements; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_elements (id, type, categorie_id, label, guide_id, allow_add) FROM stdin;
+2	2	2	Цвет выделений	1	0
+5	0	2	Беременностей	\N	0
+6	0	2	Контрацепция	\N	0
+7	1	3	АД	\N	0
+8	1	5	Описание	\N	0
+9	1	6	Описание	\N	0
+10	1	7	Описание	\N	0
+11	1	8	Описание беременности	\N	0
+12	2	4	На усталость	5	1
+4	3	3	Жалобы на боли	3	1
+\.
+
+
+--
+-- Name: medcard_elements_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_elements_id_seq', 12, true);
+
+
+--
+-- Data for Name: medcard_elements_patient; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_elements_patient (medcard_id, element_id, value, history_id, change_date, greeting_id) FROM stdin;
+1/14	11		1	2013-12-12 13:40:00	\N
+1/14	2	5	1	2013-12-12 13:40:00	\N
+1/14	5	1	1	2013-12-12 13:40:00	\N
+1/14	6	Нет	1	2013-12-12 13:40:00	\N
+1/14	4	["10","12"]	1	2013-12-12 13:40:00	\N
+1/14	7	В норме	1	2013-12-12 13:40:00	\N
+1/14	2	3	2	2013-12-12 13:45:00	\N
+1/14	7	Не в норме	2	2013-12-12 13:45:00	\N
+1/14	11	Тест	2	2013-12-12 13:46:00	\N
+1/14	4	["11"]	2	2013-12-12 13:54:00	\N
+1/14	5	2	2	2013-12-12 14:37:00	\N
+1/14	5	3	3	2013-12-12 14:42:00	\N
+1/14	5	4	4	2013-12-12 14:44:00	\N
+1/14	5	5	5	2013-12-12 14:47:00	\N
+1/14	2	2	3	2013-12-13 10:27:00	\N
+1/14	4	["25"]	3	2013-12-13 10:27:00	\N
+1/14	12	27	1	2013-12-13 10:27:00	\N
+7/13	11		1	2013-12-17 13:43:00	\N
+7/13	2	13	1	2013-12-17 13:43:00	\N
+7/13	5		1	2013-12-17 13:43:00	\N
+7/13	6		1	2013-12-17 13:43:00	\N
+7/13	7	апап	1	2013-12-17 13:43:00	\N
+7/13	12	29	1	2013-12-17 13:43:00	\N
+1/14	5	6	6	2013-12-18 11:34:00	\N
+2/13	11		1	2013-12-25 12:17:00	\N
+2/13	2	13	1	2013-12-25 12:17:00	\N
+2/13	5		1	2013-12-25 12:17:00	\N
+2/13	6		1	2013-12-25 12:17:00	\N
+2/13	7		1	2013-12-25 12:17:00	\N
+2/13	12	29	1	2013-12-25 12:17:00	\N
+2/13	2	2	2	2013-12-25 12:17:00	\N
+2/13	8		1	2013-12-25 12:18:00	\N
+2/13	9		1	2013-12-25 12:18:00	\N
+2/13	10		1	2013-12-25 12:18:00	\N
+2/13	5	1	2	2013-12-25 13:29:00	67
+2/13	6	Нет	2	2013-12-25 13:29:00	67
+2/13	4	["28","25","24"]	1	2013-12-25 14:55:00	67
+2/13	5	2	3	2013-12-25 14:56:00	67
+2/13	2	6	3	2013-12-25 15:00:00	67
+2/13	11	Некая беременность	2	2013-12-25 15:24:00	67
+1/14	5	25	7	2013-12-25 15:55:00	69
+2/13	2	2	4	2013-12-25 15:58:00	67
+4/13	11		1	2013-12-30 12:41:00	71
+4/13	2	6	1	2013-12-30 12:41:00	71
+4/13	5	23	1	2013-12-30 12:41:00	71
+4/13	6	5	1	2013-12-30 12:41:00	71
+4/13	7	Норма	1	2013-12-30 12:41:00	71
+4/13	4	["28"]	1	2013-12-30 12:41:00	71
+4/13	12	29	1	2013-12-30 12:41:00	71
+4/13	2	2	2	2013-12-30 12:44:00	86
+4/13	5	232	2	2013-12-30 12:44:00	86
+4/13	6	53	2	2013-12-30 12:44:00	86
+7/13	2	2	2	2013-12-30 12:45:00	85
+7/13	5	22	2	2013-12-30 12:45:00	85
+7/13	6	333	2	2013-12-30 12:45:00	85
+7/13	8	23	1	2013-12-30 12:45:00	85
+7/13	9		1	2013-12-30 12:45:00	85
+7/13	10		1	2013-12-30 12:45:00	85
+7/13	7	Нормальное	2	2014-01-09 12:50:00	91
+7/13	4	["25"]	1	2014-01-09 12:50:00	91
+7/13	9	Какое-то описание	2	2014-01-09 12:50:00	91
+7/13	10	И ещё одно	2	2014-01-09 12:50:00	91
+5/13	11		1	2014-01-17 15:07:00	122
+5/13	2	13	1	2014-01-17 15:07:00	122
+5/13	5	5	1	2014-01-17 15:07:00	122
+5/13	6	нет	1	2014-01-17 15:07:00	122
+5/13	7	120х30	1	2014-01-17 15:07:00	122
+5/13	4	["28","26","25","24"]	1	2014-01-17 15:07:00	122
+5/13	12	17	1	2014-01-17 15:07:00	122
+5/13	8		1	2014-01-17 15:08:00	122
+5/13	9		1	2014-01-17 15:08:00	122
+5/13	10		1	2014-01-17 15:08:00	122
+5/13	2	2	2	2014-01-20 13:07:00	121
+13/14	11	56	1	2014-01-22 16:55:00	151
+13/14	2	4	1	2014-01-22 16:55:00	151
+13/14	5		1	2014-01-22 16:55:00	151
+13/14	6		1	2014-01-22 16:55:00	151
+13/14	7	120-23	1	2014-01-22 16:55:00	151
+13/14	4	["14","12","11"]	1	2014-01-22 16:55:00	151
+13/14	12	27	1	2014-01-22 16:55:00	151
+\.
+
+
+--
+-- Data for Name: medcard_guide_values; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_guide_values (id, guide_id, value) FROM stdin;
+2	1	Чёрные
+3	1	Серые
+4	1	Зелёные
+5	1	Коричневые
+6	1	Синие
+1	1	Белые
+10	3	Внизу живота
+11	3	Вверху живота
+12	3	С боков живота
+13	1	В крапинку
+14	3	Сверху живота
+15	3	Сбоку живота
+16	3	По центру живота
+17	5	Хроническая
+24	3	В спине
+25	3	В ноздре
+26	3	В пояснице
+27	5	Систематическая
+28	3	Головные
+29	5	Эпизодическая
+\.
+
+
+--
+-- Name: medcard_guide_values_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_guide_values_id_seq', 29, true);
+
+
+--
+-- Data for Name: medcard_guides; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_guides (id, name) FROM stdin;
+1	Выделения
+3	Боли
+4	Мочеиспускание
+5	Усталости
+6	Психические расстройства
+\.
+
+
+--
+-- Name: medcard_guides_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_guides_id_seq', 6, true);
+
+
+--
+-- Data for Name: medcard_templates; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_templates (id, name, page_id, categorie_ids) FROM stdin;
+5	Шаблон ведения беременности	1	["5","6","7","8"]
+1	Шаблон приёма	0	["2","3","4"]
+\.
+
+
+--
+-- Name: medcard_templates_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_templates_id_seq', 5, true);
+
+
+--
 -- Data for Name: medcards; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY medcards (insurance, privelege_code, snils, address, address_reg, doctype, serie, docnumber, who_gived, gived_date, contact, invalid_group, card_number, enterprise_id, policy_id, reg_date, work_place, work_address, post) FROM stdin;
-\N	\N	1234-55	Там же	Улица, дом, Мск	1	4510	1234567	Кто-то выдал	2013-11-14	Телефон, почта и вся хурма	0	1/13	\N	30	2013-11-13	АВК	Волоколамское Ш., д 2а	Проектировщик
+COPY medcards (insurance, privelege_code, snils, address, address_reg, doctype, serie, docnumber, who_gived, gived_date, contact, invalid_group, card_number, enterprise_id, policy_id, reg_date, work_place, work_address, post, profession, motion) FROM stdin;
+\N	\N		Флотская	Флотская	1	43	565323	Давыдково по г.москве	1969-05-24	фвдалофж	0	8/13	1	59	2013-12-20				\N	1
+\N	\N		Москва	Москва	1	4709	234567	ОВД	2000-11-23	91678890099	0	16/14	1	110	2014-01-20					0
+\N	\N		543	543	1	3543	5435	54353	2014-02-28	543543	0	17/14	1	6845	2014-01-28					0
+\N	\N		434	434	1	12121	4324324	243243	2014-01-30	4342	0	18/14	1	56	2014-01-29					0
+\N	\N		54543	545	1	111	2222	4444	2014-01-30	111(33)44	0	19/14	1	55	2014-01-29					0
+\N	\N		Туда же	Тот же	1	4511	1122	Ещё кто-то	2013-11-11	444-555-555	0	2/13	1	50	2013-12-03				\N	0
+\N	\N		22	11	1	11	22	22	2013-12-05	у	0	3/13	1	51	2013-12-04				\N	0
+\N	\N	111-434-444 33	22	11	1	113	223	223	2013-12-05	у	0	4/13	1	52	2013-12-04				\N	0
+\N	\N		Москва	Москва	1	123	1345677	овд	2013-12-09	1234567890	0	5/13	1	53	2013-12-09				\N	0
+\N	\N		543534	543534	1	54334	534543	534543	2014-01-30	45454	0	20/14	1	54	2014-01-30					0
+\N	\N	232-332-323-11	Ул. Новая, д.1	Ул. Новая, д.1	1	4512	1234562	ОВД	2013-12-20	555-5555-555	0	6/13	1	57	2013-12-16	Офис 450	Ул.Новая, дом 3	Секретарь	\N	0
+\N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	7/13	1	58	2013-12-17	АВК			\N	0
+\N	\N		1	1	1	а1	1	1	2014-01-23	2	0	9/13	1	60	2013-12-23				\N	0
+\N	\N	122-222-222-22	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 70	1	4510	1234567	ОМС района	2014-12-01	(555)555-55-55	0	1/14	1	49	2013-12-23	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
+\N	\N	111-111-111-11	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 71	1	4510	1234567	ОМС района	2013-12-01	(555)555-55-55	0	1/13	1	49	2013-12-24	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
+\N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	2/14	1	58	2014-01-10	АВК				0
+\N	\N	100-000-000-00	Москва	Москва	1	4798	21234211	ОВД	2010-02-01	телефон	0	3/14	1	61	2014-01-14	Москва				0
+\N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	3333333333	ОВД	2005-04-15	33333333	0	4/14	1	62	2014-01-14					0
+\N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	4534534534	ОВД	2005-04-15	33333333	0	5/14	1	63	2014-01-14					0
+\N	\N	454-545-454-54	Москва	Москва	1	1212	235467	ОФМС	2011-11-23	89678773456	0	6/14	1	64	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
+\N	\N		Москва	Москва	1	12092	235097	ОФМС	2011-11-23	89678773456	0	7/14	1	65	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
+\N	\N		Москва	Москва	1	233908444	545676	ОФМС	2011-11-23	89678773456	0	9/14	1	67	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
+\N	\N		Москва	Москва	1	2112444	509976	ОФМС	2011-11-23	89678773456	0	10/14	1	68	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
+\N	\N		москва	москва	1	3232	456765	уфмс	2012-09-06	2323232323	0	11/14	1	69	2014-01-15	мгсу	ул. ак.королева	лаборант		0
+\N	\N		москва	брянск	1	2345	21769	уфмс	2009-09-23	323232	0	12/14	1	70	2014-01-15					0
+\N	\N		Москва	Москва	1	3423	212343	УФМС	2009-09-09	8946545454	0	14/14	1	72	2014-01-20					0
+\N	\N		москва	москва	1	32323	343434	овд	2007-12-13	656565	0	15/14	1	73	2014-01-20					0
+\N	\N		Одинцово	Одинцово	1	2345	13445566	ОВД	2013-10-01	20985	0	21/14	1	6846	2014-01-31					\N
+\N	\N		Москва	Москва	1	2339084444444	545676	ОФМС	2011-11-23	89678773456	0	8/14	1	66	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	1
+\N	\N		выпыкркц	выпыкркц	1	4564	456778	вафыпватрврв	2014-02-04	97542478	0	22/14	1	6847	2014-02-03	авк				1
+\N	\N	141-963-887-90	МО Железнодорожный	МО Железнодорожный	1	4607	352696	ОВД	2006-07-26	9169233006	0	13/14	1	71	2014-01-17	АВК	Москва	Начальник	Начальник	1
 \.
+
+
+--
+-- Data for Name: mediate_patients; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY mediate_patients (id, first_name, middle_name, last_name, phone) FROM stdin;
+1	ааа	аааа	ааа	45454
+2	Имя	Отчество	Фамилия	111-111(2)
+3	Имя	Отчество	Фамилия	111-222-444
+4	ы	в	ы	а
+5	Опосредованный	С-отчеством	Некто	И телефоном
+6	А	И	Ф	589675876
+7	Роза 	Тюльпановна	Клевер	111(33)44
+9	средова	нный	Яопо	пациент
+10	ц	ц	й	4343
+12	Фатима		Баклажонова	916 477 8866
+14	Мария	Алексеевна	Золотухина	8-900-000-00-00
+15	Мария	Алексеевна	Золотухина	8-900-000-00-00
+16	Мария	Алексеевна	Золотухина	8-900-000-00-00
+17	Тамара	ивановна	Игнатова	9-00000000000000000
+18	Лера	Ивановна	Игнатова	89098578696
+19	ИЛЫВИМЫВЛ	рицвимвы	боифыавпло	98478565
+\.
+
+
+--
+-- Name: mediate_patients_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('mediate_patients_id_seq', 19, true);
 
 
 --
 -- Data for Name: medpersonal; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY medpersonal (id, name, type) FROM stdin;
-5	Главврач	1
-7	Заведующий	1
-8	Медсестра	3
-9	Травмотолог	2
-11	Акушер-гинеколог	1
+COPY medpersonal (id, name, type, is_for_pregnants, payment_type) FROM stdin;
+7	Заведующий	1	0	1
+11	Акушер-гинеколог	1	1	1
+8	Медсестра	3	0	0
+9	Травматолог	2	1	1
+5	Главврач	1	0	0
 \.
 
 
@@ -1651,7 +4248,7 @@ COPY medpersonal (id, name, type) FROM stdin;
 -- Name: medpersonal_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medpersonal_id_seq', 11, true);
+SELECT pg_catalog.setval('medpersonal_id_seq', 13, true);
 
 
 --
@@ -13915,11 +16512,95 @@ K28.9 Не уточненная как острая или хроническа�
 
 
 --
+-- Data for Name: mkb10_distrib; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY mkb10_distrib (mkb10_id, employee_id) FROM stdin;
+8487	12
+8437	12
+12256	18
+6095	18
+6274	18
+6279	18
+6097	15
+12256	15
+8437	15
+7037	22
+7041	20
+7037	20
+\.
+
+
+--
+-- Data for Name: mkb10_likes; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY mkb10_likes (mkb10_id, medworker_id) FROM stdin;
+7284	5
+7623	5
+7626	5
+7037	8
+7039	8
+7041	8
+7282	7
+7284	7
+7285	7
+3142	7
+8437	11
+12257	11
+12256	11
+6094	11
+6095	11
+6096	11
+6097	11
+6098	11
+6269	11
+6270	11
+6271	11
+6273	11
+6274	11
+6275	11
+6278	11
+6279	11
+8437	9
+8434	9
+12221	9
+2605	9
+8487	9
+\.
+
+
+--
 -- Data for Name: oms; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday) FROM stdin;
-30	Кирилл	Евгеньевич	Косоруков	123-456-6	1	2013-11-13
+COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, type, givedate, enddate, status) FROM stdin;
+49	Кирилл	Евгеньевич	Косоруков	123-456-7	1	1960-12-11	0	1970-12-11	2010-12-11	\N
+61	Татьяна		Богданова	90876591	0	1981-01-11	0	2012-01-23	\N	\N
+62	Иванов		Василий	111111111111	0	1985-07-13	0	2003-02-12	\N	\N
+63	Иванов		Василий	122222222222	0	1985-07-13	0	2003-02-12	\N	\N
+64	Адель	Яковлевна	Петрова	454567	0	1991-09-23	0	2011-12-15	\N	\N
+65	Адель	Яковлевна	Петрова	45456788	0	1991-09-23	0	2011-12-15	\N	\N
+66	Адель	Яковлевна	Петрова	76776908	0	1991-09-23	0	2011-12-15	\N	\N
+67	Адель	Яковлевна	Петрова	76776111	0	1991-09-23	0	2011-12-15	\N	\N
+68	Яна	Яковлевна	Смирнова	756434	0	1991-09-23	0	2011-12-15	\N	\N
+69	Надежда	Петровна	Пупкова	574574	0	1979-11-22	0	2012-09-14	\N	\N
+70	Дарья	Ивановна	Фокусникова	5555	0	1983-09-12	1	2013-09-11	2014-03-17	\N
+71	Ольга	Вадимовна	Бондарева	5058830873001747	0	1961-01-26	0	2011-05-10	\N	\N
+72	Маргарита	Павловна	Сушкина	676767	0	1984-12-29	0	2007-09-03	\N	\N
+73	Мария	Викторовна	Кроина	3434342	0	0198-12-12	0	2008-09-09	\N	\N
+51	К		К	к	1	2013-12-05	0	\N	\N	\N
+52	КаВв	КаВв	Ка-Вв	1234	1	2013-12-05	0	\N	\N	\N
+53	Ольга		Бондарева	34567899	0	1987-01-01	0	\N	\N	\N
+54	Нарциссовна	Клевер	Роза	12345	0	2013-12-18	0	\N	\N	\N
+55	Нарциссовна	Клевер	Роза	12346	0	2013-12-18	0	\N	\N	\N
+57	Нарциссовн	Клевера	Роз	123469	0	2013-12-18	0	\N	\N	\N
+58	Игорь	Владимирович	Хитров	111111111111111111111111111	0	1990-02-12	0	\N	\N	\N
+56	Нарциссовн	Клевера	Роз	123468	0	1969-11-18	1	2014-01-23	2015-10-23	1
+59	Иван	Иванович	Иванов	231312 1231 1231	1	1969-05-24	0	\N	\N	\N
+50	Иван	Иванович	Иванов	765-45-321	0	1990-12-12	0	2014-02-28	\N	0
+6846	Дильфуза	Каримовна	Баклажанова	3456789098765432	0	1980-01-31	0	2014-01-01	\N	0
+6847	Мария	Алексеевна	Золотухина	98723873295	0	2014-02-02	0	2014-02-04	\N	0
 \.
 
 
@@ -13927,7 +16608,7 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday) 
 -- Name: oms_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('oms_id_seq', 30, true);
+SELECT pg_catalog.setval('oms_id_seq', 6847, true);
 
 
 --
@@ -13947,11 +16628,246 @@ COPY posts (id, post_name) FROM stdin;
 
 
 --
+-- Data for Name: pregnants; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY pregnants (id, card_id, register_type, doctor_id) FROM stdin;
+\.
+
+
+--
+-- Name: pregnants_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('pregnants_id_seq', 14, true);
+
+
+--
 -- Data for Name: privileges; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY privileges (id, name) FROM stdin;
+COPY privileges (id, name, code) FROM stdin;
+7	Участник Чернобыля	1
+8	Ветеран войны	2
+9	Инвалид	3
 \.
+
+
+--
+-- Name: privileges_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('privileges_id_seq', 9, true);
+
+
+--
+-- Data for Name: privileges_per_patient; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY privileges_per_patient (id, patient_id, privilege_id, docname, docnumber, docserie, docgivedate) FROM stdin;
+2	60	7	1	2	2	2013-12-24
+3	49	9	Документ инвалида	111222111	1111	2014-01-24
+\.
+
+
+--
+-- Name: privileges_per_patient_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('privileges_per_patient_id_seq', 3, true);
+
+
+--
+-- Data for Name: role_action; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY role_action (role_id, action_id) FROM stdin;
+11	2
+11	3
+11	4
+11	5
+11	6
+11	7
+11	8
+11	9
+11	10
+11	11
+11	12
+11	13
+11	14
+11	15
+1	2
+1	1
+1	4
+13	3
+13	4
+13	5
+11	16
+11	17
+11	18
+11	19
+11	20
+11	21
+11	22
+11	23
+11	24
+11	25
+11	26
+11	27
+11	28
+11	29
+11	30
+11	31
+11	32
+11	33
+11	34
+11	35
+11	36
+11	37
+11	38
+11	39
+11	40
+11	41
+11	42
+11	43
+11	44
+11	45
+11	46
+11	47
+11	48
+11	1
+15	2
+15	7
+15	11
+15	12
+15	16
+15	17
+15	18
+15	19
+15	20
+15	21
+15	22
+15	23
+15	24
+15	25
+15	26
+15	27
+15	28
+15	32
+15	33
+15	34
+15	35
+15	36
+15	37
+15	38
+15	39
+15	40
+15	41
+15	42
+15	43
+15	46
+15	49
+15	1
+12	2
+12	3
+12	4
+12	5
+12	6
+12	7
+12	8
+12	9
+12	10
+12	12
+12	14
+12	15
+12	18
+12	19
+12	20
+12	23
+12	24
+12	26
+12	27
+12	28
+12	40
+12	41
+12	42
+18	2
+18	3
+18	4
+18	5
+18	21
+18	23
+18	26
+16	44
+16	49
+14	5
+14	11
+14	12
+14	13
+\.
+
+
+--
+-- Data for Name: role_to_user; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY role_to_user (user_id, role_id) FROM stdin;
+8	15
+8	13
+5	15
+5	14
+1	18
+1	15
+1	11
+9	18
+7	11
+13	16
+16	18
+16	16
+16	14
+\.
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY roles (id, name, parent_id) FROM stdin;
+1	Администратор	-1
+13	Регистратура	-1
+11	Супервайзер	-1
+15	Главврач	-1
+12	Call-Center	-1
+18	Тестирование	-1
+16	Отдел статистики	-1
+14	Врач	-1
+\.
+
+
+--
+-- Name: roles_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('roles_id_seq', 19, true);
+
+
+--
+-- Data for Name: settings; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY settings (id, module_id, name, value) FROM stdin;
+1	1	timePerPatient	30
+2	1	firstVisit	5
+3	1	quote	12
+4	1	shiftType	1
+\.
+
+
+--
+-- Name: settings_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('settings_id_seq', 4, true);
 
 
 --
@@ -13968,6 +16884,118 @@ COPY shedule_by_days (shedule_global_id, action_date, begin_time, end_time, "doc
 
 COPY shedule_global (id, doctor_id, date_begin, date_end) FROM stdin;
 \.
+
+
+--
+-- Data for Name: shedule_rest; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY shedule_rest (day) FROM stdin;
+6
+0
+\.
+
+
+--
+-- Data for Name: shedule_rest_days; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY shedule_rest_days (id, date) FROM stdin;
+77	2015-01-08 00:00:00
+78	2015-01-09 00:00:00
+79	2015-01-16 00:00:00
+80	2015-01-08 00:00:00
+81	2015-01-09 00:00:00
+82	2015-01-16 00:00:00
+83	2015-02-11 00:00:00
+84	2015-02-12 00:00:00
+85	2015-02-16 00:00:00
+86	2015-02-19 00:00:00
+87	2015-02-20 00:00:00
+88	2016-02-03 00:00:00
+89	2016-02-10 00:00:00
+90	2016-03-09 00:00:00
+154	2014-03-10 00:00:00
+155	2014-05-01 00:00:00
+156	2014-05-02 00:00:00
+157	2014-05-09 00:00:00
+158	2014-06-12 00:00:00
+\.
+
+
+--
+-- Name: shedule_rest_days_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('shedule_rest_days_id_seq', 158, true);
+
+
+--
+-- Data for Name: shifts; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY shifts (id, time_begin, time_end) FROM stdin;
+9	11:11:00	12:12:00
+8	08:35:00	19:25:00
+6	10:10:00	18:37:00
+\.
+
+
+--
+-- Name: shifts_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('shifts_id_seq', 9, true);
+
+
+--
+-- Data for Name: tasu_fields_templates_list; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY tasu_fields_templates_list (name, template, id, "table") FROM stdin;
+43	[{"dbField":"2","fileField":"0"}]	11	insurances
+Первый шаблон	[{"dbField":"insurance","fileField":"0"},{"dbField":"privelege_code","fileField":"1"},{"dbField":"snils","fileField":"4"}]	14	medcards
+rter	[{"dbField":"insurance","fileField":"0"},{"dbField":"address_reg","fileField":"2"},{"dbField":"serie","fileField":"5"}]	15	medcards
+ОМС	[{"dbField":"oms_number","fileField":"4"},{"dbField":"gender","fileField":"7"},{"dbField":"last_name","fileField":"3"}]	16	oms
+\.
+
+
+--
+-- Name: tasu_fields_templates_list_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('tasu_fields_templates_list_id_seq', 16, true);
+
+
+--
+-- Data for Name: tasu_history; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY tasu_history (id, obj_id, "table", tasu_id, file_id) FROM stdin;
+\.
+
+
+--
+-- Name: tasu_history_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('tasu_history_id_seq', 1, false);
+
+
+--
+-- Data for Name: tasu_keys_templates_list; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY tasu_keys_templates_list (id, name, template, "table") FROM stdin;
+16	ОМС	[{"dbField":"oms_number"},{"dbField":"gender"},{"dbField":"last_name"}]	oms
+\.
+
+
+--
+-- Name: tasu_keys_templates_list_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('tasu_keys_templates_list_id_seq', 16, true);
 
 
 --
@@ -13994,9 +17022,16 @@ SELECT pg_catalog.setval('tituls_id_seq', 4, true);
 -- Data for Name: users; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY users (id, username, login, password, role_id, employee_id) FROM stdin;
-1	Супервайзер	SYSTEM	SYuasGgY8rxlg	1	15
-5	Кирилл	admin	12tir.zIbWQ3c	1	16
+COPY users (id, username, login, password, employee_id, role_id) FROM stdin;
+7	Бондарева	obondareva	alkE22P2W9KZ2	18	11
+14	Егорова	egorova	eg5iybHCPF3p6	20	12
+15	Хромов	xromov	xr8ez/yinILdo	21	15
+8	Человек в регистратуре	meninreg	12tir.zIbWQ3c	14	1
+5	Кирилл	admin	12tir.zIbWQ3c	16	1
+1	Супервайзер	SYSTEM	SYuasGgY8rxlg	15	1
+9	Тестирование	test11	terzl.ls/oEYs	17	1
+13	Крупнов	krupnov	kr7AF6lo0BnNs	19	1
+16	Сидоров	Sidor	12tir.zIbWQ3c	12	1
 \.
 
 
@@ -14004,7 +17039,7 @@ COPY users (id, username, login, password, role_id, employee_id) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('users_id_seq', 6, true);
+SELECT pg_catalog.setval('users_id_seq', 16, true);
 
 
 --
@@ -14025,6 +17060,22 @@ COPY wards (id, name, enterprise_id) FROM stdin;
 --
 
 SELECT pg_catalog.setval('wards_id_seq', 6, true);
+
+
+--
+-- Name: access_actions_groups_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY access_actions_groups
+    ADD CONSTRAINT access_actions_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: access_actions_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY access_actions
+    ADD CONSTRAINT access_actions_pkey PRIMARY KEY (id);
 
 
 --
@@ -14068,11 +17119,35 @@ ALTER TABLE ONLY "doctor-cabinet"
 
 
 --
+-- Name: doctor_shedule_by_day_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY doctor_shedule_by_day
+    ADD CONSTRAINT doctor_shedule_by_day_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: doctor_shedule_setted_be_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY doctor_shedule_setted_be
+    ADD CONSTRAINT doctor_shedule_setted_be_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: doctors_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 ALTER TABLE ONLY doctors
     ADD CONSTRAINT doctors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: doctors_shedule_setted_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY doctor_shedule_setted
+    ADD CONSTRAINT doctors_shedule_setted_pkey PRIMARY KEY (id);
 
 
 --
@@ -14100,6 +17175,14 @@ ALTER TABLE ONLY enterprise_types
 
 
 --
+-- Name: files_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY files
+    ADD CONSTRAINT files_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: insurances_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -14108,11 +17191,67 @@ ALTER TABLE ONLY insurances
 
 
 --
+-- Name: medcard_categories_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_categories
+    ADD CONSTRAINT medcard_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medcard_elements_patient_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_elements_patient
+    ADD CONSTRAINT medcard_elements_patient_pkey PRIMARY KEY (medcard_id, element_id, history_id);
+
+
+--
+-- Name: medcard_elements_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_elements
+    ADD CONSTRAINT medcard_elements_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medcard_guide_values_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_guide_values
+    ADD CONSTRAINT medcard_guide_values_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medcard_guides_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_guides
+    ADD CONSTRAINT medcard_guides_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: medcard_templates_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_templates
+    ADD CONSTRAINT medcard_templates_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: medcards_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 ALTER TABLE ONLY medcards
     ADD CONSTRAINT medcards_pkey PRIMARY KEY (card_number);
+
+
+--
+-- Name: mediate_patients_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY mediate_patients
+    ADD CONSTRAINT mediate_patients_pkey PRIMARY KEY (id);
 
 
 --
@@ -14129,6 +17268,14 @@ ALTER TABLE ONLY medpersonal
 
 ALTER TABLE ONLY medpersonal_types
     ADD CONSTRAINT medpersonal_types_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: mkb10_likes_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY mkb10_likes
+    ADD CONSTRAINT mkb10_likes_pkey PRIMARY KEY (mkb10_id, medworker_id);
 
 
 --
@@ -14164,11 +17311,51 @@ ALTER TABLE ONLY posts
 
 
 --
+-- Name: pregnants_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY pregnants
+    ADD CONSTRAINT pregnants_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: privileges_per_patient_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY privileges_per_patient
+    ADD CONSTRAINT privileges_per_patient_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: privileges_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 ALTER TABLE ONLY privileges
     ADD CONSTRAINT privileges_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: role-action_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY role_action
+    ADD CONSTRAINT "role-action_pkey" PRIMARY KEY (role_id, action_id);
+
+
+--
+-- Name: roles_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: settings_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY settings
+    ADD CONSTRAINT settings_pkey PRIMARY KEY (id);
 
 
 --
@@ -14185,6 +17372,46 @@ ALTER TABLE ONLY shedule_by_days
 
 ALTER TABLE ONLY shedule_global
     ADD CONSTRAINT shedule_global_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: shedule_rest_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY shedule_rest
+    ADD CONSTRAINT shedule_rest_pkey PRIMARY KEY (day);
+
+
+--
+-- Name: shifts_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY shifts
+    ADD CONSTRAINT shifts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasu_fields_templates_list_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY tasu_fields_templates_list
+    ADD CONSTRAINT tasu_fields_templates_list_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasu_history_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY tasu_history
+    ADD CONSTRAINT tasu_history_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasu_keys_templates_list_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY tasu_keys_templates_list
+    ADD CONSTRAINT tasu_keys_templates_list_pkey PRIMARY KEY (id);
 
 
 --
@@ -14249,6 +17476,14 @@ ALTER TABLE ONLY "doctor-cabinet"
 
 ALTER TABLE ONLY enterprise_params
     ADD CONSTRAINT enterprise_params_type_fkey FOREIGN KEY (type) REFERENCES enterprise_types(id);
+
+
+--
+-- Name: medcard_guide_values_guide_id_fkey; Type: FK CONSTRAINT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_guide_values
+    ADD CONSTRAINT medcard_guide_values_guide_id_fkey FOREIGN KEY (guide_id) REFERENCES medcard_guides(id) ON DELETE CASCADE;
 
 
 --
@@ -14343,5 +17578,57 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 
 --
 -- PostgreSQL database dump complete
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: template1; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE template1 IS 'default template for new databases';
+
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- PostgreSQL database cluster dump complete
 --
 

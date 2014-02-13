@@ -89,7 +89,7 @@ class EmployeesController extends Controller {
         if(isset($_POST['FormEmployeeAdd'])) {
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
-                if(!isset($_POST['FormEmployeeAdd']['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
+                if(!isset($_POST['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
                     echo CJSON::encode(array('success' => 'false',
                                              'errors' => array(
                                                  'dateEnd' => array('Дата конца действия не может быть пустой!')
@@ -152,7 +152,7 @@ class EmployeesController extends Controller {
         if(isset($_POST['FormEmployeeAdd'])) {
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
-                if(!isset($_POST['FormEmployeeAdd']['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
+                if(!isset($_POST['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
                     echo CJSON::encode(array('success' => 'false',
                         'errors' => array(
                             'dateEnd' => array('Дата конца действия не может быть пустой!')

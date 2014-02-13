@@ -40,6 +40,7 @@ class MediatePatient extends MisActiveRecord  {
     }
 
     // Получить список опосредованных приёмов по критериям
+    // status - только с медкартами, только без медкарт, все
     public function getGreetingsPerQrit($patientId, $doctorId, $date = false) {
         try {
             $connection = Yii::app()->db;
@@ -47,6 +48,7 @@ class MediatePatient extends MisActiveRecord  {
                 ->select('dsbd.*, mp.first_name as p_first_name,
                                   mp.middle_name as p_middle_name,
                                   mp.last_name as p_last_name,
+                                  mp.phone,
                                   d.first_name as d_first_name,
                                   d.middle_name as d_middle_name,
                                   d.last_name as d_last_name')
@@ -61,8 +63,9 @@ class MediatePatient extends MisActiveRecord  {
             if($date !== false) {
                 $greetings->andWhere('dsbd.patient_day = :patient_day', array(':patient_day' => $date));
             }
+
             $greetings->order('dsbd.patient_time');
-            $greetings->group('dsbd.doctor_id, dsbd.id, mp.first_name, mp.last_name, mp.middle_name, d.first_name, d.last_name, d.middle_name');
+            $greetings->group('dsbd.doctor_id, dsbd.id, mp.first_name, mp.last_name, mp.middle_name, d.first_name, d.last_name, d.middle_name, mp.phone');
 
             return $greetings->queryAll();
         } catch(Exception $e) {

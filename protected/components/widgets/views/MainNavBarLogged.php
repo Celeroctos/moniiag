@@ -1,3 +1,14 @@
+<div class="navbar-fixed-top">
+    <div id="recycleBin-cont">
+        <img src="/images/icons/bin.jpg" class="recycleBin" alt="" width="40" height="40" title="Перенеся значок с панели в корзину, вы удалите его с панели быстрого доступа"/>
+    </div>
+    <!--<div id="quickPanel">
+        <?php $this->widget('application.components.widgets.QuickPanelListWidget'); ?>
+    </div>
+    <div id="quickPanelArrow">
+        <span class="glyphicon glyphicon-collapse-down"></span>
+    </div>-->
+</div>
 <div class="navbar navbar-blue navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -60,7 +71,6 @@
     <div class="pop-inner">
         <h5><strong>Управление с клавиатуры для текущего положения:</strong></h5>
         <div class="keyslist">
-
         </div>
     </div>
 </div>

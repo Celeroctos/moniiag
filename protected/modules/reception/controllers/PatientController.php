@@ -1,6 +1,6 @@
 <?php
 class PatientController extends Controller {
-    public $layout = 'application.views.layouts.index';
+    public $layout = 'application.modules.reception.views.layouts.index';
 
     // Стартовая
     public function actionIndex() {
@@ -12,6 +12,51 @@ class PatientController extends Controller {
         $this->render('searchPatient', array());
     }
 
+    // Получить страницу просмотра истории движения медкарты
+    public function actionViewHistoryMotion()
+    {
+        $omsId = trim($_GET['omsid']);
+        $omsModel = Oms::model()->findByPk($omsId );
+        $this->render('historyOfMotion', array(
+            'fio' => $omsModel->last_name.' '.$omsModel->first_name.' '.$omsModel->middle_name,
+		    'omsid' => $omsId
+	    ));
+    }
+    
+        // Получить саму историю движения медкарты
+    public function actionGetHistoryMotion()
+    {
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+	    $omsId = trim($_GET['omsid']);
+	    
+            $model = new Medcard();
+            $num = $model->getHistoryOfMotion( $omsId);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $history = $model->getHistoryOfMotion( $omsId,$sidx, $sord, $start, $rows);
+	    
+	    //var_dump($history);
+	    //exit();
+            foreach($history as &$element) {
+                $parts = explode(' ', $element['greeting_timestamp']);
+                $subparts1 = explode('-', $parts[0]);
+                $subparts2 = explode(':', $parts[1]);
+                $element['greeting_timestamp'] = $subparts1[2].'.'.$subparts1[1].'.'.$subparts1[0].' '.$subparts2[0].':'.$subparts2[1];
+            }
+	    
+            echo CJSON::encode(
+                array('rows' => $history,
+                    'total' => $totalPages,
+                    'records' => count($num))
+            );
+	    
+    }
+    
     // Получить список льгот
     private function getPrivileges() {
         // Льготы
@@ -539,9 +584,12 @@ class PatientController extends Controller {
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly);
 
             // Обрабатываем результат
-            foreach($items as $index => $item) {
+            foreach($items as $index => &$item) {
                 $parts = explode('-', $item['reg_date']);
                 $item['reg_date'] = $parts[0];
+
+                $parts = explode('-', $item['birthday']);
+                $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
             }
         } else {
             // Забираем фильтры только те, которые нужны: ФИО
@@ -884,6 +932,29 @@ class PatientController extends Controller {
         // TODO: дальше нужно переадресовать на экшн записи таким образом, чтобы автоматом раскрыть расписание к этому пациенту
         echo CJSON::encode(array('success' => 'true',
                                  'data' => 'Пациент успешно сопоставлен и записан на приём!'));
+    }
+
+
+    public function actionChangeMedcardStatus($ids, $status) {
+        $ids = CJSON::decode($ids);
+        if(count($ids) == 0) {
+            echo CJSON::encode(array('success' => false,
+                                     'error' => 'Не хватает данных!'));
+        }
+
+        foreach($ids as $medcardId) {
+            $medcard = Medcard::model()->findByPk($medcardId);
+            if($medcard != null) {
+                $medcard->motion = $status;
+                if(!$medcard->save()) {
+                    echo CJSON::encode(array('success' => false,
+                                             'error' => 'Не могу сохранить изменение статуса медкарты в базе!'));
+                }
+            }
+        }
+
+        echo CJSON::encode(array('success' => true,
+                                 'data' => 'Статус карт успешно изменён.'));
     }
 }
 

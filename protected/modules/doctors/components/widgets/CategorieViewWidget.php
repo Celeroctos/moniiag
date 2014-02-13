@@ -6,19 +6,22 @@ class CategorieViewWidget extends CWidget {
     public $greetingId = null; // ID приёма
     public $withoutSave = 0; // Флаг, нужно ли делать кнопку сохранения
     public $prefix = ''; // Если есть два одинаковых шаблона на странице, их айдишники надо как-то отличать. Отличаем по префиксу
+    public $canEditMedcard = 1; // Может ли редактировать медкарту
 
     public function run() {
         $this->createFormModel();
         $categories = $this->getCategories($this->templateType); // Шаблон страницы приёма
         /*echo "<pre>";
-        var_dump($categories);
+        var_dump($this->currentPatient);
         exit();*/
+
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
             'currentPatient' => $this->currentPatient,
             'greetingId' => $this->greetingId,
-            'withoutSave' => $this->withoutSave
+            'withoutSave' => $this->withoutSave,
+            'canEditMedcard' => $this->canEditMedcard
         ));
     }
 
@@ -154,6 +157,7 @@ class CategorieViewWidget extends CWidget {
             'form' => $form,
             'model' => $model,
             'prefix' => $this->prefix,
+            'canEditMedcard' => $this->canEditMedcard
         ));
     }
 

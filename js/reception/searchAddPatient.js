@@ -295,6 +295,7 @@ $(document).ready(function() {
                         '<input type="radio" name="existsPatient" value="m' + data[i].card_number + '"/>' +
                     '</td>' +
                     '<td><a href="#" title="Посмотреть информацию по пациенту" target="_blank">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
+                    '<td>' + data[i].birthday+ '</td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' + data[i].reg_date + '</td>' +
                     '<td>' + data[i].card_number + '</td>' +
@@ -321,6 +322,12 @@ $(document).ready(function() {
                     '<td>' +
                         '<a class="printlink" title="Печать титульной страницы медкарты" href="#' + data[i].card_number + '" target="_blank">' +
                             '<span class="glyphicon glyphicon-print"></span>' +
+                        '</a>' +
+                    '</td>' +
+                                      '</td>' +
+                    '<td>' +
+                        '<a title="История движения медкарты" href="http://' + location.host + '/index.php/reception/patient/viewhistorymotion/?omsid=' + data[i].id + '" target="_blank">' +
+                            '<span class="glyphicon glyphicon-list"></span>' +
                         '</a>' +
                     '</td>' +
                 '</tr>'

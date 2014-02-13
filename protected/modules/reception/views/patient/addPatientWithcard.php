@@ -294,8 +294,8 @@
                             'placeholder' => 'Формат гггг-мм-дд'
                         )); ?>
                         <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+<span class="glyphicon glyphicon-calendar"></span>
+</span>
                         <div class="subcontrol">
                             <div class="date-ctrl-up-buttons">
                                 <div class="btn-group">
@@ -325,11 +325,11 @@
         <div class="add-patient-submit">
             <?php echo CHtml::ajaxSubmitButton(
                 'Добавить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addcard'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
-                                    $("#patient-withcard-form").trigger("success", [data, textStatus, jqXHR])
-                                }'
+$("#patient-withoutcard-form").trigger("success", [data, textStatus, jqXHR])
+}'
                 ),
                 array(
                     'class' => 'btn btn-success'

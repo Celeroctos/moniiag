@@ -283,6 +283,8 @@ $(document).ready(function() {
                             }
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
+                        $('#dateBeginEdit-cont input[type=hidden]').trigger('change');
+                        $('#dateEndEdit-cont input[type=hidden]').trigger('change');
                         $("#editEmployeePopup").modal({
 
                         });

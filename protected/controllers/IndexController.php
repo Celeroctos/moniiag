@@ -1,5 +1,6 @@
 <?php
 class IndexController extends Controller {
+
     public $layout = 'index';
 
     public function actionIndex() {

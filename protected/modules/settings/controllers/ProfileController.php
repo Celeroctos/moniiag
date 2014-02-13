@@ -138,9 +138,11 @@ class ProfileController extends Controller {
 	public function getAvatarPath() {
 		$fileModel = FileModel::model()->find('owner_id = :owner_id AND type = 0', array(':owner_id' => Yii::app()->user->id));
 		if($fileModel == null) {
-			
-		}
-		return $fileModel->path;
+			$path = '/uploads/avatars/default.png';
+		} else {
+            $path = $fileModel->path;
+        }
+		return $path;
 	}
 }
 ?>
