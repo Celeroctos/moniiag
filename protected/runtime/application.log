@@ -15396,3 +15396,384 @@ Stack trace:
 REQUEST_URI=/index.php/doctors/shedule/view
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/patient/viewsearch
 ---
+2014/02/13 15:34:30 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php:20)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): RolesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): RolesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(179): RolesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): RolesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): RolesController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): RolesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): RolesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/roles/startpagesview
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php (20)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php (179)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+2014/02/13 15:35:12 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php:20)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): RolesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): RolesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(179): RolesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): RolesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): RolesController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): RolesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): RolesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/roles/startpagesview
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php (20)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php (179)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+2014/02/13 15:36:19 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php:19)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): RolesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): RolesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(180): RolesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): RolesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): RolesController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): RolesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): RolesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/roles/startpagesview
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php (19)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+2014/02/13 15:36:20 [error] [php] Undefined variable: model (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php:19)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): RolesController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): RolesController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(180): RolesController->render()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): RolesController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): RolesController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): RolesController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): RolesController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/roles/startpagesview
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php (19)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php (180)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+2014/02/13 15:36:28 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.startpagename" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('startpagename')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'startpagename')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'startpagename', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'startpagename', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php(42): CActiveForm->textField(Object(FormUserAdd), 'startpagename', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('startpages', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(182): CController->render('startpages', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpagesview')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/roles/startpagesview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2014/02/13 15:36:30 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.startpagename" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('startpagename')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'startpagename')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'startpagename', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'startpagename', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php(42): CActiveForm->textField(Object(FormUserAdd), 'startpagename', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('startpages', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(182): CController->render('startpages', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpagesview')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/roles/startpagesview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2014/02/13 15:44:44 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.name" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('name')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'name')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'name', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'name', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php(42): CActiveForm->textField(Object(FormUserAdd), 'name', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('startpages', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(182): CController->render('startpages', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpagesview')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/roles/startpagesview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2014/02/13 15:44:45 [error] [exception.CException] exception 'CException' with message 'Property "FormUserAdd.name" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('name')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormUserAdd), 'name')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormUserAdd), 'name', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormUserAdd), 'name', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php(42): CActiveForm->textField(Object(FormUserAdd), 'name', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('startpages', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(182): CController->render('startpages', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpagesview')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/roles/startpagesview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2014/02/13 15:45:04 [error] [exception.CException] exception 'CException' with message 'Property "FormStartpageAdd.password" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('password')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormStartpageAdd), 'password')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1628): CHtml::activeInputField('password', Object(FormStartpageAdd), 'password', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(771): CHtml::activePasswordField(Object(FormStartpageAdd), 'password', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php(208): CActiveForm->passwordField(Object(FormStartpageAdd), 'password', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('startpages', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(182): CController->render('startpages', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpagesview')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/roles/startpagesview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2014/02/13 15:45:05 [error] [exception.CException] exception 'CException' with message 'Property "FormStartpageAdd.password" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2529): CComponent->__get('password')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormStartpageAdd), 'password')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\helpers\CHtml.php(1628): CHtml::activeInputField('password', Object(FormStartpageAdd), 'password', Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CActiveForm.php(771): CHtml::activePasswordField(Object(FormStartpageAdd), 'password', Array)
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\views\roles\startpages.php(208): CActiveForm->passwordField(Object(FormStartpageAdd), 'password', Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require('F:\Hosts\Celero...')
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CBaseController->renderInternal('F:\Hosts\Celero...', Array, true)
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): CBaseController->renderFile('F:\Hosts\Celero...', Array, true)
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('startpages', Array, true)
+#9 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(182): CController->render('startpages', Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionStartpagesView()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#13 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpagesview')
+#19 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#20 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#21 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/index.php/admin/roles/startpagesview
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/users/view
+---
+2014/02/13 15:47:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/startpages/get".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/startpage...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/startpages/get?_search=false&nd=1392292064227&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 15:48:24 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "getstartpages".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('getstartpages')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('getstartpages')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/get...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/roles/getstartpages?_search=false&nd=1392292097149&rows=10&page=1&sidx=id&sord=desc
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 15:53:16 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/startpages/getone".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/startpage...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/startpages/getone?id=25&_=1392292384452
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 15:57:51 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/startpages/edit".' in F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php:286
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/startpage...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/startpages/edit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 16:03:43 [error] [php] Undefined index: id (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php:231)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): RolesController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): RolesController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): RolesController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): RolesController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/roles/editstartpage
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php (231)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 16:05:06 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "startpages".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('startpages')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpages')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/roles/startpages?_=1392293089855
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 16:05:21 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "startpages".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('startpages')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('startpages')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/sta...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/roles/startpages?_=1392293110875
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 16:06:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "addstartpage".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('addstartpage')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addstartpage')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/add...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/roles/addstartpage
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 16:09:32 [error] [exception.CException] exception 'CException' with message 'Property "FormStartpageAdd.parentId" is not defined.' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(122): CComponent->__get('parentId')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\RolesController.php(254): RolesController->addEditModel(Object(Startpage), Object(FormStartpageAdd), '???????????????...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): RolesController->actionAddStartpage()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addstartpage')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/add...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/roles/addstartpage
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 16:10:09 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "deletestartpages".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('deletestartpage...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('deletestartpage...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/del...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/roles/deletestartpages?id=26&_=1392293360700
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---
+2014/02/13 16:13:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "deletestartpages".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('deletestartpage...')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('deletestartpage...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/del...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/roles/deletestartpages?id=26&_=1392293612162
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
+---

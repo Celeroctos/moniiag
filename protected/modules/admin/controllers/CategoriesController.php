@@ -6,7 +6,8 @@ class CategoriesController extends Controller {
 		$categoriesList = array('-1' => 'Нет');
 		// Получить все категории 
 		$categoriesModel = new MedcardCategorie();
-        $categories = $categoriesModel->getRows(false);
+        $categories = $categoriesModel->getRows(false,  'name', 'asc', false, false);
+
         foreach($categories as $index => $categorie) {
             $categoriesList[$categorie['id']] = $categorie['name'];
         }
@@ -111,6 +112,9 @@ class CategoriesController extends Controller {
     public function actionGetone($id) {
         $model = new MedcardCategorie();
         $categorie = $model->getOne($id);
+        if($categorie['parent_id'] == null) {
+            $categorie['parent_id'] = -1;
+        }
         echo CJSON::encode(array('success' => true,
                                  'data' => $categorie)
         );

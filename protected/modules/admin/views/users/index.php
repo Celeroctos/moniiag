@@ -62,7 +62,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->textField($model,'password', array(
+                                <?php echo $form->passwordField($model,'password', array(
                                     'id' => 'password',
                                     'class' => 'form-control',
                                     'placeholder' => 'Пароль'
@@ -249,7 +249,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->textField($model,'password', array(
+                                <?php echo $form->passwordField($model,'password', array(
                                     'id' => 'username',
                                     'class' => 'form-control',
                                     'placeholder' => 'Пароль'
@@ -262,7 +262,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->textField($model,'passwordRepeat', array(
+                                <?php echo $form->passwordField($model,'passwordRepeat', array(
                                     'id' => 'passwordRepeat',
                                     'class' => 'form-control',
                                     'placeholder' => 'Повтор пароля'

@@ -98,7 +98,7 @@ $(document).ready(function() {
                             }
                         }
 
-                        if(shedule[i].medcard_id != null) {
+                        if(shedule[i].medcard_id != null  && shedule[i].motion == 0) {
                             content +=
                                 '<td>' +
                                     '<input type="checkbox" id="c' + shedule[i].medcard_id + '" />' +

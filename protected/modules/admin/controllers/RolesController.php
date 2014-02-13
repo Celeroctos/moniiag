@@ -103,7 +103,6 @@ class RolesController extends Controller {
         }
     }
 
-
     public function actionAdd() {
         $model = new FormRoleAdd();
         if(isset($_POST['FormRoleAdd'])) {
@@ -116,9 +115,7 @@ class RolesController extends Controller {
                                          'errors' => $model->errors));
             }
         }
-
     }
-
 
     private function addEditModel($role, $model, $msg) {
         $role->name = $model->name;
@@ -167,6 +164,113 @@ class RolesController extends Controller {
 
             echo CJSON::encode(array('success' => 'true',
                                      'text' => 'Роль успешно удалена.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'На данную запись есть ссылки!'));
+        }
+    }
+
+
+    public function actionStartpagesView() {
+        $model = new FormStartpageAdd();
+        $this->render('startpages', array(
+            'model' => $model
+        ));
+    }
+
+    public function actionGetStartpages() {
+        try {
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
+            $model = new Startpage();
+            $num = $model->getRows($filters);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $startpages = $model->getRows($filters, $sidx, $sord, $start, $rows);
+
+            echo CJSON::encode(
+                array('rows' => $startpages,
+                      'total' => $totalPages,
+                      'records' => count($num))
+            );
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function actionGetOneStartpage($id) {
+        $model = new Startpage();
+        $startpage = $model->getOne($id);
+
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $startpage)
+        );
+    }
+
+    public function actionEditStartpage() {
+        $model = new FormStartpageAdd();
+        if(isset($_POST['FormStartpageAdd'])) {
+            $model->attributes = $_POST['FormStartpageAdd'];
+            if($model->validate()) {
+                $startpage = Startpage::model()->find('id=:id', array(':id' => $_POST['FormStartpageAdd']['id']));
+                $this->addEditModelStartpage($startpage, $model, 'Стартовая страница успешно отредактирована.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
+    }
+
+    private function addEditModelStartpage($startpage, $model, $msg) {
+        $startpage->name = $model->name;
+        $startpage->url = $model->url;
+        $startpage->priority = $model->priority;
+
+        if($startpage->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'text' => $msg));
+        }
+    }
+
+    public function actionAddStartpage() {
+        $model = new FormStartpageAdd();
+        if(isset($_POST['FormStartpageAdd'])) {
+            $model->attributes = $_POST['FormStartpageAdd'];
+            if($model->validate()) {
+                $startpage = new Startpage();
+                $this->addEditModelStartpage($startpage, $model, 'Стартовая страница успешно добавлена.');
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => $model->errors));
+            }
+        }
+    }
+
+    public function actionDeleteStartpage($id) {
+        try {
+            $issetStartpageRole = Role::model()->find('startpage_id = :id', array(':id' => $id));
+            if($issetStartpageRole != null) {
+                throw new Exception();
+            }
+
+            $startpage = Startpage::model()->findByPk($id);
+            $startpage->delete();
+
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Стартовая страница успешно удалена.'));
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',

@@ -43,9 +43,12 @@ class MedcardCategorie extends MisActiveRecord {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
-            $categories->order($sidx.' '.$sord);
+        if($start !== false && $limit !== false) {
             $categories->limit($limit, $start);
+        }
+
+        if($sidx !== false && $sord !== false) {
+            $categories->order($sidx.' '.$sord);
         }
 
         return $categories->queryAll();

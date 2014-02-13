@@ -5,4 +5,7 @@
     <li <?php echo $controller == 'roles' && $action == 'view' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Роли', array('/admin/roles/view')) ?>
     </li>
+    <li <?php echo $controller == 'roles' && $action == 'startpagesview' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Стартовые страницы', array('/admin/roles/startpagesview')) ?>
+    </li>
 </ul>
