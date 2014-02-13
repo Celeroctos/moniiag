@@ -59,9 +59,7 @@ class DiagnosisController extends Controller {
         // В противном случае, устанавливаем все, которые могут быть установлены
         // Удаляем все, уже установленные
         LikeDiagnosis::model()->deleteAll('medworker_id = :medworker_id', array(':medworker_id' => $_GET['medworker_id']));
-        $diagnosis = CJSON::decode($_GET['diagnosis_ids']);
-      //  var_dump($diagnosis);
-     //  exit();
+        $diagnosis = CJSON::decode($_GET['diagnosis_ids']);;
         foreach($diagnosis as $dia) {
             $like = new LikeDiagnosis();
             $like->medworker_id = $_GET['medworker_id'];

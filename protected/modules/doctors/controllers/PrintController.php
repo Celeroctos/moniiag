@@ -161,9 +161,7 @@ class PrintController extends Controller {
                 }
             }
         }
-        //echo "<pre>";
-       // var_dump($response);
-       // exit();
+
         $this->render('massprintonelist', array(
             'greetings' => $response
         ));

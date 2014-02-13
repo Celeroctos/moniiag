@@ -11,10 +11,6 @@ class CategorieViewWidget extends CWidget {
     public function run() {
         $this->createFormModel();
         $categories = $this->getCategories($this->templateType); // Шаблон страницы приёма
-        /*echo "<pre>";
-        var_dump($this->currentPatient);
-        exit();*/
-
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,

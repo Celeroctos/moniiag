@@ -220,10 +220,10 @@
                                     ФИО
                                 </td>
                                 <td>
-                                    Номер ОМС
+                                    Год регистрации карты
                                 </td>
                                 <td>
-                                    Год регистрации карты
+                                    Номер ОМС
                                 </td>
                                 <td>
                                     Номер карты
@@ -261,6 +261,24 @@
             <div class="modal-body">
                 <div class="row">
                     <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, перейдя по <?php echo CHtml::link('этой', array('/reception/patient/viewadd'), array('target' => '_blank')) ?> ссылке.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="mediateOkPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Сообщение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Пациент успешно сопоставлен с существующей картой!</p>
                 </div>
             </div>
             <div class="modal-footer">

@@ -21,7 +21,7 @@
     ?>
     </div>
     <div class="col-xs-5">
-        <h5><strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
+        <h5 class="patient-list-h5"><strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
         <?php
         $filterForm = $this->beginWidget('CActiveForm', array(
             'id' => 'change-date-form',
@@ -64,14 +64,16 @@
                 </div>
             </div>
         </div>
-        <?php echo CHtml::submitButton(
-            'Показать',
-            array(
-                'class' => 'btn btn-success no-display',
-                'id' => 'showPatientsSubmit'
-            )
-        );
-        ?>
+        <div class="form-group" id="showPatientsSubmit-cont">
+            <?php echo CHtml::submitButton(
+                'Показать',
+                array(
+                    'class' => 'btn btn-success',
+                    'id' => 'showPatientsSubmit'
+                )
+            );
+            ?>
+        </div>
         <?php $this->endWidget(); ?>
         <div class="row">
             <div class="col-xs-12 borderedBox">
@@ -142,8 +144,6 @@
             <div class="modal-body">
                 <div class="row">
                     <?php
-                   // var_dump($canEditMedcard);
-                   // exit();
                     $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
                         'currentPatient' => $currentPatient,
                         'templateType' => 0,

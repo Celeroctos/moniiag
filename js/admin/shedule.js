@@ -138,13 +138,6 @@ $(document).ready(function() {
         var table = $('#searchDoctorsResult tbody');
         table.find('tr').remove();
         for(var i = 0; i < data.length; i++) {
-            var cabinetsStr = '';
-            for(var j = 0; j < data[i].cabinets.length; j++) {
-                if(j > 0) {
-                    cabinetsStr += ', ';
-                }
-                cabinetsStr += '<a href="#">' + data[i].cabinets[j].description + '</a>';
-            }
             table.append(
                 '<tr>' +
                     '<td>' +

@@ -293,14 +293,26 @@ form span.required {
         margin-left: 18%;
     }
 }
+#showPatientsSubmit-cont {
+  position: relative;
+  top: -170px;
+  width: 150px;
+}
 #change-date-form {
-    input[type='submit'],  input[type='button'] {
-      margin-left: 27%;
-    }
+   height: 240px;
+   input[type='submit'],  input[type='button'] {
+      margin: 0 0 0 15px;
+   }
 
-    + div {
+   + div {
       margin: 10px 0 0 0;
-    }
+   }
+}
+#omsSearchWithCardResult {
+  font-size: 12px !important;
+}
+.patient-list-h5 {
+  margin-left: 2%;
 }
 select[multiple="multiple"] {
   height: auto !important;
@@ -425,6 +437,12 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
       width: 39px;
       margin-left: 10px;
       padding: 0 0 0 4px;
+    }
+    html*.month {
+      margin-left: 8px;
+    }
+    html*.day {
+
     }
     .hour {
       width: 35px;
@@ -792,4 +810,19 @@ select#restDays {
   z-index: 99;
   display: none;
   padding: 4px 0 0 5px;
+}
+
+/* Хак для вебкита */
+
+@media all and (-webkit-min-device-pixel-ratio: 1){
+  .subcontrol {
+    .subfields {
+      .month {
+         margin-left: 6px;
+      }
+      .year {
+        margin-left: 8px;
+      }
+    }
+  }
 }

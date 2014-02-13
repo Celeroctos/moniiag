@@ -450,10 +450,34 @@ $(document).ready(function() {
         // Сопоставляется медкарта
         if(patientClicked.substr(0, 1) == 'm') {
             var patientId = patientClicked.substr(1);
-            // Редирект на экшн, который запишет уже существующего пациента на данную медкарту к врачу
-            window.open('/index.php/reception/patient/mediatetomedcard?medcardid=' + patientId + '&mediateid=' + mediateClicked,
-                        '_blank');
+            // Экшн, который запишет уже существующего пациента на данную медкарту к врачу
+            $.ajax({
+                'url' : '/index.php/reception/patient/mediatetomedcard?medcardid=' + patientId + '&mediateid=' + mediateClicked,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
+                        $('#mediateOkPopup').modal({});
+                        if($('#sheduleViewSubmit').length > 0) {
+                            $('#sheduleViewSubmit').trigger('click');
+                        }
+                        if($('#patient-search-submit').length > 0) {
+                            $('#patient-search-submit').trigger('click');
+                        }
+                    } else {
+
+                    }
+                    return;
+                }
+            });
         }
 
+    });
+
+    $('#mediateOkPopup').on('hidden.bs.modal', function() {
+        if($('#acceptGreetingPopup').length > 0) {
+            $('#acceptGreetingPopup').modal('hide');
+        }
     });
 });

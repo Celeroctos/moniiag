@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <head>
     <title>МИС МОНИИАГ</title>
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/bootstrap-3.0.0/less/bootstrap.less" rel="stylesheet/less" media="screen">
@@ -6,7 +6,6 @@
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.less" rel="stylesheet/less" media="screen">
-
     <script type="text/javascript">
         var globalVariables = {
             baseUrl : '<?php echo Yii::app()->request->baseUrl; ?>'

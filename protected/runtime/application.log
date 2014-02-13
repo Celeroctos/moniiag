@@ -15240,3 +15240,159 @@ in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\EmployeesController.php (90)
 in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
 in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "month" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "year" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "day" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "doctor_id" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "mode" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "time" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:20:23 [warning] [application] Failed to set unsafe attribute "_" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "month" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "year" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "day" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "doctor_id" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "mode" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "time" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:21:08 [warning] [application] Failed to set unsafe attribute "_" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "month" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "year" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "day" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "doctor_id" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "mode" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "time" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:07 [warning] [application] Failed to set unsafe attribute "_" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "month" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "year" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "day" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "doctor_id" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "mode" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "time" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:34:24 [warning] [application] Failed to set unsafe attribute "_" of "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (538)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:48:10 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\CategoriesController.php (63)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (24)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/13 12:58:50 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "index2".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index2', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(73): CController->render('index2', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/patient/viewsearch
+---
+2014/02/13 12:58:52 [error] [exception.CException] exception 'CException' with message 'SheduleController cannot find the requested view "index2".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:878
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): CController->renderPartial('index2', Array, true)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php(73): CController->render('index2', Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(24): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('view')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/patient/viewsearch
+---
