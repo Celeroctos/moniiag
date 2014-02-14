@@ -31,7 +31,11 @@ class SheduleByDay extends MisActiveRecord {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
         $patients = $connection->createCommand()
+<<<<<<< HEAD
             ->selectDistinct('dsbd.*, o.id as oms_id, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(CAST(dsbd.patient_time AS text), 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time')
+=======
+            ->selectDistinct('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(CAST(dsbd.patient_time AS text), 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time')
+>>>>>>> ebaa99cc87508d7084883441d9f0f3720e34fd13
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
@@ -70,8 +74,12 @@ class SheduleByDay extends MisActiveRecord {
                                   o.last_name as p_last_name,
                                   d.first_name as d_first_name,
                                   d.middle_name as d_middle_name,
+<<<<<<< HEAD
                                   d.last_name as d_last_name,
                                   o.id as oms_id')
+=======
+                                  d.last_name as d_last_name')
+>>>>>>> ebaa99cc87508d7084883441d9f0f3720e34fd13
                 ->from('mis.doctor_shedule_by_day dsbd')
                 ->join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
                 ->join('mis.oms o', 'm.policy_id = o.id')

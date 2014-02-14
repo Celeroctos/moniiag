@@ -47,8 +47,11 @@ class Medcard extends MisActiveRecord  {
         return $medcard->queryAll();
     }
 
+<<<<<<< HEAD
     
     
+=======
+>>>>>>> ebaa99cc87508d7084883441d9f0f3720e34fd13
     public function getLastByPatient($patientId) {
         $connection = Yii::app()->db;
         $medcard = $connection->createCommand()
