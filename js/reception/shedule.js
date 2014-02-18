@@ -211,13 +211,21 @@ $(document).ready(function() {
             return false;
         }
 
-        $('#todoctor-submit').prop('disabled', true);
         var ids = [];
+        var numChecked = 0;
         for(var i = 0; i < checked.length; i++) {
-            if($(checked[i]).prop('checked')) { // TODO: Как проверить кобмо на то, что оно прочекано?
+            if($(checked[i]).prop('checked')) {
                 ids.push($(checked[i]).prop('id').substr(1));
+                numChecked++;
             }
         }
+
+        if(numChecked == 0) {
+            return false;
+        }
+
+        $('#todoctor-submit').prop('disabled', true);
+
         $.ajax({
             'url' : '/index.php/reception/patient/changemedcardstatus',
             'data' : {

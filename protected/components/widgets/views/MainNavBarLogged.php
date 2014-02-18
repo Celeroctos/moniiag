@@ -27,14 +27,14 @@
             </ul>
             <ul class="nav navbar-nav navbar-right" id="loggedUserNavbar">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Здравствуйте, <strong><?php echo $userName; ?>!</strong> <b class="caret"></b></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong><?php echo isset(Yii::app()->user->fio) ? Yii::app()->user->fio : ''; ?></strong> <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li>
                             <?php echo CHtml::link('Редактирование профиля', array('/settings/profile/view')); ?>
                         </li>
-                        <li>
+                        <!--<li>
                             <?php echo CHtml::link('Просмотр пациентов', array('/doctors/shedule/view')); ?>
-                        </li>
+                        </li>-->
                     </ul>
                 </li>
             </ul>

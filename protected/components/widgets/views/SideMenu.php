@@ -1,9 +1,9 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/sidemenu.js"></script>
 <div role="complementary" class="bs-sidebar hidden-print" >
     <ul class="nav bs-sidenav" id="mainSideMenu">
-        <li <?php echo $controller == 'index' && $module == null ? 'class="active"' : ''; ?>>
+        <!--<li <?php echo $controller == 'index' && $module == null ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Главная', array('/')) ?>
-        </li>
+        </li>-->
         <?php if(Yii::app()->user->checkAccess('menuRegister')) { ?>
         <li <?php echo $module == 'reception' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Регистратура', array('#')) ?>
@@ -33,7 +33,7 @@
         <?php } ?>
         <?php if(Yii::app()->user->checkAccess('menuArm')) { ?>
         <li <?php echo $module == 'doctors' ? 'class="active"' : ''; ?>>
-            <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Рабочее место врача', array('#')) ?>
+            <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Кабинет врача', array('#')) ?>
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuDoctorMovement')) { ?>
                 <li <?php echo $controller == 'shedule' && $module == 'doctors' ? 'class="active"' : ''; ?>>
@@ -81,16 +81,16 @@
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuOrgGuides')) { ?>
                 <li <?php echo $module == 'guides' || ($module == 'admin' && $action == 'shedulesettings') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Организационные справочники', array('#')) ?>
+                    <?php echo CHtml::link('Организационные справочники', array('#')) ?>
                     <ul class="nav">
                         <?php if(Yii::app()->user->checkAccess('menuGuides')) { ?>
                         <li <?php echo $module == 'guides' ? 'class="active"' : ''; ?>>
-                                <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Справочники', array('/guides/enterprises/view')) ?>
+                                <?php echo CHtml::link('Справочники', array('/guides/enterprises/view')) ?>
                         </li>
                         <?php } ?>
                         <?php if(Yii::app()->user->checkAccess('menuGreetingRights')) { ?>
                         <li <?php echo $controller == 'modules' && $module == 'admin' && $action == 'shedulesettings' ? 'class="active"' : ''; ?>>
-                            <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Настройка правил приёма', array('/admin/modules/shedulesettings'));  ?>
+                            <?php echo CHtml::link('Настройка правил приёма', array('/admin/modules/shedulesettings'));  ?>
                         </li>
                         <?php } ?>
                     </ul>
@@ -98,20 +98,20 @@
                 </li>
                 <?php if(Yii::app()->user->checkAccess('menuAdminArm')) { ?>
                 <li <?php echo ($controller == 'guides' || $controller == 'diagnosis' || $controller == 'templates') && $module == 'admin' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Рабочее место врача', array('#')) ?>
+                    <?php echo CHtml::link('Рабочее место врача', array('#')) ?>
                     <ul class="nav">
                         <?php if(Yii::app()->user->checkAccess('menuGuidesAndTemplates')) { ?>
                         <li <?php echo ($controller == 'guides' || $controller == 'templates' || $controller == 'categories' || $controller == 'guides' || $controller == 'elements') && $module == 'admin' ? 'class="active"' : ''; ?>>
-                            <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Шаблоны и справочники', array('#')) ?>
+                            <?php echo CHtml::link('Шаблоны и справочники', array('#')) ?>
                             <ul class="nav">
                                 <?php if(Yii::app()->user->checkAccess('menuAdminGuides')) { ?>
                                 <li <?php echo $controller == 'templates' && $module == 'admin' ? 'class="active"' : ''; ?>>
-                                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Шаблоны', array('/admin/templates/view')) ?>
+                                    <?php echo CHtml::link('Шаблоны', array('/admin/templates/view')) ?>
                                 </li>
                                 <?php } ?>
                                 <?php if(Yii::app()->user->checkAccess('menuAdminTemplates')) { ?>
                                 <li <?php echo $controller == 'guides' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
-                                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Справочники', array('/admin/guides/allview')) ?>
+                                    <?php echo CHtml::link('Справочники', array('/admin/guides/allview')) ?>
                                 </li>
                                 <?php } ?>
                             </ul>
@@ -119,21 +119,21 @@
                         <?php } ?>
                         <?php if(Yii::app()->user->checkAccess('menuDiagnosis')) { ?>
                         <li <?php echo $controller == 'diagnosis' && $module == 'admin' ? 'class="active"' : ''; ?>>
-                            <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Диагнозы', array('#')); ?>
+                            <?php echo CHtml::link('Диагнозы', array('#')); ?>
                             <ul class="nav">
                                 <?php if(Yii::app()->user->checkAccess('menuDiagnosisMkb10')) { ?>
                                 <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'mkb10view' ? 'class="active"' : ''; ?>>
-                                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />МКБ-10', array('/admin/diagnosis/mkb10view')) ?>
+                                    <?php echo CHtml::link('МКБ-10', array('/admin/diagnosis/mkb10view')) ?>
                                 </li>
                                 <?php } ?>
                                 <?php if(Yii::app()->user->checkAccess('menuDiagnosisLikes')) { ?>
                                 <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'allview' ? 'class="active"' : ''; ?>>
-                                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Любимые диагнозы', array('/admin/diagnosis/allview')) ?>
+                                    <?php echo CHtml::link('Любимые диагнозы', array('/admin/diagnosis/allview')) ?>
                                 </li>
                                 <?php } ?>
                                 <?php if(Yii::app()->user->checkAccess('menuDiagnosisRasp')) { ?>
                                 <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'distribview' ? 'class="active"' : ''; ?>>
-                                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Диагнозы для распределения пациентов', array('/admin/diagnosis/distribview')) ?>
+                                    <?php echo CHtml::link('Диагнозы для распределения пациентов', array('/admin/diagnosis/distribview')) ?>
                                 </li>
                                 <?php } ?>
                             </ul>
@@ -144,39 +144,39 @@
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAdminUsers')) { ?>
                 <li <?php echo (($controller == 'users' || $controller == 'roles') && $module == 'admin') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Пользователи, роли, права', array('/admin/users/view')) ?>
+                    <?php echo CHtml::link('Пользователи, роли, права', array('/admin/users/view')) ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAdminRest')) { ?>
                 <li <?php echo ($controller == 'shedule' && $module == 'admin' && $action == 'viewrest') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Настройка календаря', array('/admin/shedule/viewrest')) ?>
+                    <?php echo CHtml::link('Настройка календаря', array('/admin/shedule/viewrest')) ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAdminDoctorRasp')) { ?>
                 <li <?php echo $controller == 'shedule' && $module == 'admin' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Настройка расписания врачей', array('/admin/shedule/view')) ?>
+                    <?php echo CHtml::link('Настройка расписания врачей', array('/admin/shedule/view')) ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuUserProfile')) { ?>
                     <li <?php echo $controller == 'profile' && $module == 'settings' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Профиль', array('/settings/profile/view')) ?>
+                        <?php echo CHtml::link('Профиль', array('/settings/profile/view')) ?>
                     </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuSystemSettings')) { ?>
                     <li <?php echo $controller == 'system' && $module == 'settings' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Система', array('/settings/system/view')) ?>
+                        <?php echo CHtml::link('Система', array('/settings/system/view')) ?>
                     </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAdminLogs')) { ?>
                     <li <?php echo $controller == 'logs' && $module == 'admin' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Логи', array('/admin/logs/view')) ?>
+                        <?php echo CHtml::link('Логи', array('/admin/logs/view')) ?>
                     </li>
                 <?php } ?>
             </ul>
         </li>
         <?php } ?>
-        <li>
+        <!--<li>
             <a href="http://moniiag.toonftp.ru/changelog.txt" class='bold red-color'>Лог изменений</a>
-        </li>
+        </li>-->
     </ul>
 </div>

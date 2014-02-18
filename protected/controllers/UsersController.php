@@ -10,7 +10,8 @@ class UsersController extends Controller {
                 if($userIdent->authenticate()) {
                     Yii::app()->user->login($userIdent);
                     echo CJSON::encode(array('success' => 'true',
-                                             'msg' => 'Вы успешно авторизовались в системе.'));
+                                             'data' => Yii::app()->request->baseUrl.'/index.php'.Yii::app()->user->startpageUrl));
+                    exit();
                 } else {
                     echo CJSON::encode(array('success' => 'notfound',
                                              'errors' => $userIdent->errorMessage));

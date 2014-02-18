@@ -372,14 +372,9 @@ $(document).ready(function() {
     });
 
     // Адрес регистрации совпадает с адресом проживания (флажок)
-    $('#regEqHab').on('click', function() {
-        var addressReg = $('#addressReg').val();
+    $('#addressReg').on('keyup', function() {
+        var addressReg = $(this).val();
         $('#address').val(addressReg);
-    });
-    $('#addressReg').on('keyup', function(e) {
-        if($('#regEqHab').prop('checked')) {
-            $('#address').val($('#addressReg').val());
-        }
     });
 
     // Льготы: раскрытие списка дополнительного редактирования документа льготы, если выбран какой-то тип льготы
@@ -478,6 +473,12 @@ $(document).ready(function() {
     $('#mediateOkPopup').on('hidden.bs.modal', function() {
         if($('#acceptGreetingPopup').length > 0) {
             $('#acceptGreetingPopup').modal('hide');
+        }
+    });
+
+    $('#addressReg, #address').on('keydown', function(e) {
+        if(e.keyCode == 13) {
+            return false;
         }
     });
 });

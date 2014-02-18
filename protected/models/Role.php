@@ -22,9 +22,10 @@ class Role extends MisActiveRecord  {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $roles = $connection->createCommand()
-            ->select('r.*, r2.name as parent')
+            ->select('r.*, r2.name as parent, mp.name as startpage')
             ->from('mis.roles r')
-            ->leftJoin('mis.roles r2', 'r.parent_id = r2.id');
+            ->leftJoin('mis.roles r2', 'r.parent_id = r2.id')
+            ->leftJoin('mis.menu_pages mp', 'r.startpage_id = mp.id');
 
         if($filters !== false) {
             $this->getSearchConditions($roles, $filters, array(
@@ -48,8 +49,9 @@ class Role extends MisActiveRecord  {
         try {
             $connection = Yii::app()->db;
             $role = $connection->createCommand()
-                ->select('r.*')
+                ->select('r.*, mp.url, mp.priority')
                 ->from('mis.roles r')
+                ->leftJoin('mis.menu_pages mp', 'r.startpage_id = mp.id')
                 ->where('r.id = :id', array(':id' => $id))
                 ->queryRow();
 
@@ -73,6 +75,8 @@ class Role extends MisActiveRecord  {
                 'id' => $roles[0]['id'], // В качестве id возьмём ID первой роли. Это неважно.
                 'actions' => array()
             );
+
+            $currentPriority = -1;
             for($i = 0; $i < $numRoles; $i++) {
                 // Получим все экшены к роли
                 $actionModel = new CheckedAction();

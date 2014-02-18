@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#roles").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/roles/get',
         datatype: "json",
-        colNames:['Код', 'Название', 'Родитель', ''],
+        colNames:['Код', 'Название', 'Родитель', 'Стартовая страница', '', ''],
         colModel:[
             {
                 name:'id',
@@ -18,6 +18,16 @@ $(document).ready(function() {
                 name: 'parent',
                 index: 'parent',
                 width: 150
+            },
+            {
+                name: 'startpage',
+                index: 'startpage',
+                width: 150
+            },
+            {
+                name: 'startpage_id',
+                index: 'startpage_id',
+                hidden: true
             },
             {
                 name: 'parent_id',
@@ -133,8 +143,13 @@ $(document).ready(function() {
                             {
                                 modelField: 'parent_id',
                                 formField: 'parentId'
+                            },
+                            {
+                                modelField: 'startpage_id',
+                                formField: 'pageId'
                             }
                         ];
+
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }

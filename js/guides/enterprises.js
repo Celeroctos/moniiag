@@ -180,7 +180,7 @@ $(document).ready(function() {
         }
     }
 
-    $("#editEnterprise").click(editEnterprise());
+    $("#editEnterprise").click(editEnterprise);
 
     $("#deleteEnterprise").click(function() {
         var currentRow = $('#enterprises').jqGrid('getGridParam','selrow');

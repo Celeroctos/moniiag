@@ -36,10 +36,10 @@
 <?php $this->widget('application.components.widgets.MainNavBar') ?>
 <div class="container-fluid" id="content">
     <div class="row main-container">
-        <div class="col-xs-3">
+        <div class="col-xs-2">
             <?php $this->widget('application.components.widgets.SideMenu') ?>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-9">
             <h4>Справочники врачей для выбора</h4>
             <p>Здесь Вы можете задать необходимые значения для созданных справочников в разделе "Рабочее место врача" -> "Справочники".</p>
             <?php echo $content; ?>

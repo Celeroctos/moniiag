@@ -35,10 +35,7 @@
             <div id="accordionH" class="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a href="#collapseH" data-parent="#accordionH" data-toggle="collapse" class="accordion-toggle"><strong>История медкарты</strong></a>
-                        <span class="help-block">
-                            Здесь Вы можете посмотреть историю изменений медицинской карты. Раскройте список и выберите запись для просмотра изменений медкарты.
-                        </span>
+                        <a href="#collapseH" data-parent="#accordionH" data-toggle="collapse" class="accordion-toggle" data-toggle="tooltip" data-placement="right" title="Здесь Вы можете посмотреть историю изменений медицинской карты. Раскройте список и выберите запись для просмотра изменений медкарты."><strong>История медкарты</strong></a>
                     </div>
                     <div class="accordion-body collapse in" id="collapseH">
                         <div class="accordion-inner">
@@ -56,10 +53,7 @@
             <div id="accordionD" class="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a href="#collapseD" data-parent="#accordionD" data-toggle="collapse" class="accordion-toggle red-color"><strong>Диагноз приёма (основной и сопутствующие)</strong></a>
-                    <span class="help-block">
-                        Здесь Вы можете посмотреть историю изменений медицинской карты. Раскройте список и выберите запись для просмотра изменений медкарты.
-                    </span>
+                        <a href="#collapseD" data-parent="#accordionD" data-toggle="collapse" class="accordion-toggle red-color" data-toggle="tooltip" data-placement="right" title="Диагноз приёма"><strong>Диагноз приёма (основной и сопутствующие)</strong></a>
                     </div>
                     <div class="accordion-body collapse in" id="collapseD">
                         <div class="accordion-inner">

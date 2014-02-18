@@ -170,7 +170,11 @@ body {
         padding: @default-padding;
     }
     .add-patient-submit {
-        margin-left: 14%;
+      input {
+        margin-left: 18%;
+        width: 120px;
+        margin-top: 30px;
+      }
     }
     .search-shedule-submit {
         margin-left: 14%;
@@ -288,10 +292,16 @@ form span.required {
 #firstName::first-letter {
     text-transform: uppercase;
 }
-#employee-filter-form, #contact-filter-form, #patient-search-form, #edit-profile-form, #pregnant-search-form, #shedule-settings-form,  #doctors-search-form {
+#employee-filter-form, #contact-filter-form, #edit-profile-form, #pregnant-search-form, #shedule-settings-form,  #doctors-search-form {
     input[type='submit'],  input[type='button'] {
         margin-left: 18%;
     }
+}
+#patient-search-form   {
+  input[type='submit'],  input[type='button'] {
+    margin-left: 37%;
+    width: 100px;
+  }
 }
 #showPatientsSubmit-cont {
   position: relative;
@@ -302,6 +312,7 @@ form span.required {
    height: 240px;
    input[type='submit'],  input[type='button'] {
       margin: 0 0 0 15px;
+      width: 100px;
    }
 
    + div {
@@ -369,6 +380,7 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
   margin-top: 20px;
   .input-group-addon {
     margin-left: 5px;
+    margin-top: -5px;
   }
 }
 .subcontrol {
@@ -379,17 +391,17 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
   }
   .date-ctrl-up-buttons {
     .btn-group {
-      top: -2px;
+      top: 2px;
     }
   }
  .date-ctrl-down-buttons {
    .btn-group {
-      top: 5px;
+      top: 1px;
    }
  }
  .time-ctrl-up-buttons {
     .btn-group {
-      top: -2px;
+      top: 0px;
     }
   }
  .time-ctrl-down-buttons {
@@ -403,19 +415,19 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
       width: 32px;
     }
     button + button {
-      margin-left: 10px !important;
       width: 32px;
+      margin-left: 0 !important;
     }
     button + button + button {
-      margin-left: 10px !important;
       width: 39px;
+      margin-left: 0 !important;
     }
 
   }
   .time-ctrl-up-buttons, .time-ctrl-down-buttons {
     button {
       margin-left: 5px !important;
-      top: -2px;
+      top: 2px;
     }
     button + button {
       margin-left: 20px !important;
@@ -424,22 +436,23 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
   }
   .subfields {
     min-width: 133px;
+    .day, .month, .year {
+      text-align: center;
+    }
     .day {
       width: 32px;
-      padding: 0 0 0 4px;
+      padding: 0 0 0 0px;
     }
     .month {
       width: 32px;
-      margin-left: 10px;
-      padding: 0 0 0 4px;
+      padding: 0 0 0 0px;
     }
     .year {
       width: 39px;
-      margin-left: 10px;
-      padding: 0 0 0 4px;
+      padding: 0 0 0 0px;
     }
     html*.month {
-      margin-left: 8px;
+      margin-left: 0px;
     }
     html*.day {
 
@@ -459,11 +472,14 @@ div.date-control {
     display: block;
     position: relative;
     top: 2px;
-    left: 125px;
+    left: 110px;
     z-index: 99;
+    padding: 12px 24px;
     span.glyphicon-calendar {
-      margin: -2px 0 0 -6px;
-      left: 0;
+      left: -10px;
+      top: -5px;
+      padding: 0;
+      font-size: 22px;
     }
   }
 }
@@ -818,11 +834,25 @@ select#restDays {
   .subcontrol {
     .subfields {
       .month {
-         margin-left: 6px;
+        margin-left: -3px;
       }
       .year {
-        margin-left: 8px;
+        margin-left: -3px;
       }
     }
   }
+}
+
+/* Bootstrap tooltips */
+.tooltip {
+  width: 150px;
+}
+#serie, #docnumber {
+  display: inline-block;
+}
+#serie {
+  width: 30%;
+}
+#docnumber {
+  width: 68%;
 }

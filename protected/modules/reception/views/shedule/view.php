@@ -163,8 +163,7 @@
                     <div class="form-group">
                         <label for="omsNumber" class="col-xs-2 control-label">Номер ОМС</label>
                         <div class="col-xs-4">
-                            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС">
-                            <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
+                            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС" title="Номер ОМС может состоять из цифр и пробелов">
                         </div>
                     </div>
                     <div class="form-group">
@@ -176,8 +175,7 @@
                     <div class="form-group">
                         <label for="docnumber" class="col-xs-2 control-label">Номер документа</label>
                         <div class="col-xs-4">
-                            <input type="text" class="form-control" id="docnumber" placeholder="Номер документа">
-                            <span class="help-block">Номер документа может состоять из цифр</span>
+                            <input type="text" class="form-control" id="docnumber" placeholder="Номер документа" title="Номер документа может состоять из цифр">
                         </div>
                     </div>
                     <div class="form-group">

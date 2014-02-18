@@ -8,10 +8,13 @@ class Controller extends CController {
         if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
             // Если гость, то не давать заходить куда-то
             $this->redirect('/');
+        } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
+            $this->redirect(Yii::app()->request->baseUrl.'/index.php'.Yii::app()->user->startpageUrl);
         }
 
         $roleModel = new Role();
         $currentRoles = $roleModel->getCurrentUserRoles();
+
         // Создаём иерархию для текущей роли пользователя
         $auth = Yii::app()->authManager;
         $role = $auth->createRole('r'.$currentRoles['id'], '');

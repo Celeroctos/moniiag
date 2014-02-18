@@ -15777,3 +15777,416 @@ Stack trace:
 REQUEST_URI=/index.php/admin/roles/deletestartpages?id=26&_=1392293612162
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/roles/startpagesview
 ---
+2014/02/14 10:45:48 [error] [exception.CException] exception 'CException' with message 'Startpage and its behaviors do not have a method or closure named "findBy".' in Z:\home\moniiag.my\yii\base\CComponent.php:267
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(227): CComponent->__call('findBy', Array)
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(239): CActiveRecord->__call('findBy', Array)
+#2 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(239): Startpage->findBy('priority = :pri...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(229): RolesController->addEditModelStartpage(Object(Startpage), Object(FormStartpageAdd), '???????????????...')
+#4 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): RolesController->actionEditStartpage()
+#5 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\moniiag.my\www\protected\components\Controller.php(24): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('editstartpage')
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/edi...')
+#14 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/roles/editstartpage
+HTTP_REFERER=http://moniiag.my/index.php/admin/roles/startpagesview
+---
+2014/02/14 10:45:50 [error] [exception.CException] exception 'CException' with message 'Startpage and its behaviors do not have a method or closure named "findBy".' in Z:\home\moniiag.my\yii\base\CComponent.php:267
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(227): CComponent->__call('findBy', Array)
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(239): CActiveRecord->__call('findBy', Array)
+#2 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(239): Startpage->findBy('priority = :pri...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(229): RolesController->addEditModelStartpage(Object(Startpage), Object(FormStartpageAdd), '???????????????...')
+#4 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): RolesController->actionEditStartpage()
+#5 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\moniiag.my\www\protected\components\Controller.php(24): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('editstartpage')
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/edi...')
+#14 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/roles/editstartpage
+HTTP_REFERER=http://moniiag.my/index.php/admin/roles/startpagesview
+---
+2014/02/14 10:45:55 [error] [exception.CException] exception 'CException' with message 'Startpage and its behaviors do not have a method or closure named "findBy".' in Z:\home\moniiag.my\yii\base\CComponent.php:267
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(227): CComponent->__call('findBy', Array)
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(239): CActiveRecord->__call('findBy', Array)
+#2 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(239): Startpage->findBy('priority = :pri...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\admin\controllers\RolesController.php(229): RolesController->addEditModelStartpage(Object(Startpage), Object(FormStartpageAdd), '???????????????...')
+#4 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): RolesController->actionEditStartpage()
+#5 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\moniiag.my\www\protected\components\Controller.php(24): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('editstartpage')
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/roles/edi...')
+#14 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/roles/editstartpage
+HTTP_REFERER=http://moniiag.my/index.php/admin/roles/startpagesview
+---
+2014/02/17 11:29:48 [error] [exception.CException] exception 'CException' with message 'Property "CWebUser.fio" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\auth\CWebUser.php(146): CComponent->__get('fio')
+#1 Z:\home\moniiag.my\www\protected\components\widgets\views\MainNavBarLogged.php(30): CWebUser->__get('fio')
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#3 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#4 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#5 Z:\home\moniiag.my\www\protected\components\widgets\MainNavBar.php(12): CWidget->render('application.com...', Array)
+#6 Z:\home\moniiag.my\yii\web\CBaseController.php(173): MainNavBar->run()
+#7 Z:\home\moniiag.my\www\protected\modules\doctors\views\layouts\index.php(36): CBaseController->widget('application.com...')
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#9 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#10 Z:\home\moniiag.my\yii\web\CController.php(784): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#11 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(73): CController->render('index', Array)
+#12 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#13 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#15 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#17 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#18 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#19 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#20 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#21 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#22 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#23 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#24 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/admin/users/view
+---
+2014/02/17 11:37:54 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:39:15 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:39:39 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:39:49 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:39:52 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:40:11 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:40:23 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:40:43 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:41:06 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:46:39 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:46:51 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:50:05 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:52:47 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:59:07 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:59:46 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 11:59:56 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 12:00:14 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 12:00:22 [warning] [application] Failed to set unsafe attribute "id" of "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (90)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/17 17:07:08 [error] [exception.CException] exception 'CException' with message 'PatientController cannot find the requested view "omsFormContent".' in Z:\home\moniiag.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('omsFormContent', Array, true)
+#1 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(169): CController->render('omsFormContent', Array)
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/editomsview/?omsid=61
+---
+2014/02/17 17:09:21 [error] [exception.CException] exception 'CException' with message 'Property "OmsFormWidget.form" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(161): CComponent->__set('form', Object(CActiveForm))
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(PatientController), 'application.mod...', Array)
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(25): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#6 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#8 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('addPatientWitho...', Array)
+#9 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#10 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#19 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/editomsview/?omsid=61
+---
+2014/02/17 17:10:44 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\medcardFormWidget.php(202): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): MedcardFormWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): MedcardFormWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\medcardFormWidget.php(9): MedcardFormWidget->render()
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(173): MedcardFormWidget->run()
+#6 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(32): PatientController->widget()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(95): PatientController->renderInternal()
+#9 Z:\home\moniiag.my\yii\web\CController.php(869): PatientController->renderFile()
+#10 Z:\home\moniiag.my\yii\web\CController.php(782): PatientController->renderPartial()
+#11 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#12 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#13 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#15 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#17 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#18 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#19 Z:\home\moniiag.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#20 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): PatientController->run()
+#21 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#22 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#23 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\medcardFormWidget.php (202)
+in Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\medcardFormWidget.php (9)
+in Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php (32)
+2014/02/17 17:13:34 [error] [exception.CException] exception 'CException' with message 'Property "OmsFormWidget.model" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(161): CComponent->__set('model', Object(FormPatientAdd))
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(PatientController), 'application.mod...', Array)
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(25): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#6 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#8 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('addPatientWitho...', Array)
+#9 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#10 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#19 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/editomsview/?omsid=61
+---
+2014/02/17 17:15:15 [error] [exception.CException] exception 'CException' with message 'Property "OmsFormWidget.model" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(161): CComponent->__set('model', Object(FormPatientAdd))
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(PatientController), 'application.mod...', Array)
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(25): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#6 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#8 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('addPatientWitho...', Array)
+#9 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#10 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#19 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/editomsview/?omsid=61
+---
+2014/02/17 17:15:29 [error] [exception.CException] exception 'CException' with message 'Property "OmsFormWidget.model" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(161): CComponent->__set('model', Object(FormPatientAdd))
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(PatientController), 'application.mod...', Array)
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(25): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#6 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#8 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('addPatientWitho...', Array)
+#9 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#10 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#19 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/editomsview/?omsid=61
+---
+2014/02/17 17:20:19 [error] [exception.CException] exception 'CException' with message 'Property "OmsFormWidget.model" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(161): CComponent->__set('model', Object(FormPatientAdd))
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(PatientController), 'application.mod...', Array)
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(27): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#6 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
+#8 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): CController->render('addPatientWitho...', Array)
+#9 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#10 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#19 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/editomsview/?omsid=61
+---
+2014/02/17 17:23:24 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\medcardFormWidget.php(202): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): MedcardFormWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): MedcardFormWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\medcardFormWidget.php(9): MedcardFormWidget->render()
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(173): MedcardFormWidget->run()
+#6 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(33): PatientController->widget()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(95): PatientController->renderInternal()
+#9 Z:\home\moniiag.my\yii\web\CController.php(869): PatientController->renderFile()
+#10 Z:\home\moniiag.my\yii\web\CController.php(782): PatientController->renderPartial()
+#11 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#12 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#13 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#15 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#17 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#18 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#19 Z:\home\moniiag.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#20 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): PatientController->run()
+#21 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#22 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#23 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\medcardFormWidget.php (202)
+in Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\medcardFormWidget.php (9)
+in Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php (33)
+2014/02/17 17:24:38 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\yii\web\helpers\CHtml.php:2325)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\medcardFormWidget.php(202): CActiveForm->dropDownList()
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require()
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): MedcardFormWidget->renderInternal()
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): MedcardFormWidget->renderFile()
+#4 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\medcardFormWidget.php(9): MedcardFormWidget->render()
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(173): MedcardFormWidget->run()
+#6 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(33): PatientController->widget()
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require()
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(95): PatientController->renderInternal()
+#9 Z:\home\moniiag.my\yii\web\CController.php(869): PatientController->renderFile()
+#10 Z:\home\moniiag.my\yii\web\CController.php(782): PatientController->renderPartial()
+#11 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(161): PatientController->render()
+#12 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
+#13 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#15 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#17 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#18 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#19 Z:\home\moniiag.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#20 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): PatientController->run()
+#21 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#22 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#23 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/viewadd
+in Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\medcardFormWidget.php (202)
+in Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\medcardFormWidget.php (9)
+in Z:\home\moniiag.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php (33)

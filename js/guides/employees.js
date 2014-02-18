@@ -163,7 +163,10 @@ $(document).ready(function() {
             $('#editEmployeePopup').modal('hide');
             // Перезагружаем таблицу
             $("#employees").trigger("reloadGrid");
-            $("#employee-edit-form")[0].reset(); // Сбрасываем форму
+            $("#employee-edit-form")[0].reset(); // Сбрасываем форму */
+            if(ajaxData.data.updateFio) {
+                $('#loggedUserNavbar strong').text(ajaxData.data.fio);
+            }
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddEmployeePopup .modal-body .row p').remove();

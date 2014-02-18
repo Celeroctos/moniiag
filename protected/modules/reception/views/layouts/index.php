@@ -26,7 +26,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery.keyfilter-1.7.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/timecontrol.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboard.js"></script>
+    <!--<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboard.js"></script>-->
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboardcnf.js"></script>
 </head>
@@ -34,10 +34,10 @@
 <?php $this->widget('application.components.widgets.MainNavBar') ?>
 <div class="container-fluid" id="content">
     <div class="row main-container">
-        <div class="col-xs-3">
+        <div class="col-xs-2">
             <?php $this->widget('application.components.widgets.SideMenu') ?>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-9">
             <?php echo $content; ?>
         </div>
     </div>

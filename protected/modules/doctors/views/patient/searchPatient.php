@@ -16,106 +16,98 @@
         )
     ));
     ?>
-    <div class="form-group">
-        <label for="omsNumber" class="col-xs-2 control-label">Номер ОМС</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС">
-            <span class="help-block">Номер ОМС может состоять из цифр и пробелов</span>
+    <div class="col-xs-5">
+        <div class="form-group">
+            <label for="omsNumber" class="col-xs-4 control-label">Номер ОМС</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС" title="Номер ОМС может состоять из цифр и пробелов">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="cardNumber" class="col-xs-2 control-label">Номер карты</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="cardNumber" placeholder="Номер карты">
-            <span class="help-block">Номер карты вводится в формате номер / год</span>
+        <div class="form-group">
+            <label for="cardNumber" class="col-xs-4 control-label">Номер карты</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="cardNumber" placeholder="Номер карты" title="Номер карты вводится в формате номер / год">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="lastName" class="col-xs-2 control-label">Фамилия</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="lastName" placeholder="Фамилия">
-            <span class="help-block">Фамилия может состоять из кириллицы и дефисов (двойные фамилии)</span>
+        <div class="form-group">
+            <label for="lastName" class="col-xs-4 control-label">Фамилия</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="lastName" placeholder="Фамилия" title="Фамилия может состоять из кириллицы и дефисов (двойные фамилии)">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="firstName" class="col-xs-2 control-label">Имя</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="firstName" placeholder="Имя">
-            <span class="help-block">Имя может состоять из кириллицы и дефисов</span>
+        <div class="form-group">
+            <label for="firstName" class="col-xs-4 control-label">Имя</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="firstName" placeholder="Имя" title="Имя может состоять из кириллицы и дефисов">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="middleName" class="col-xs-2 control-label">Отчество</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="middleName" placeholder="Отчество">
-            <span class="help-block">Отчество может состоять из кириллицы и дефисов. Это необязательное поле.</span>
+        <div class="form-group">
+            <label for="middleName" class="col-xs-4 control-label">Отчество</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="middleName" placeholder="Отчество" title="Отчество может состоять из кириллицы и дефисов. Это необязательное поле.">
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="serie" class="col-xs-2 control-label">Серия документа</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="serie" placeholder="Серия документа">
-        </div>
-    </div>
-      <div class="form-group">
-        <label for="docnumber" class="col-xs-2 control-label">Номер документа</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="docnumber" placeholder="Номер документа">
-            <span class="help-block">Номер документа может состоять из цифр</span>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="addressReg" class="col-xs-2 control-label">Адрес регистрации</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="addressReg" placeholder="Адрес регистрации">
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="address" class="col-xs-2 control-label">Адрес прописки</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="address" placeholder="Адрес прописки">
-        </div>
-    </div>
-     <div class="form-group">
-        <label for="snils" class="col-xs-2 control-label">СНИЛС</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX">
-            <span class="help-block">Страховой номер индивидуального лицевого счета гражданина в формате XXX-XXX-XXX-XX, где X - цифра.</span>
-        </div>
-    </div>
-	<div class="form-group">
-        <label for="birthday" class="col-xs-2 control-label required">Дата рождения</label>   
-    	<div id="birthday-cont" class="col-xs-3 input-group date">
-            <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
+        <div class="form-group">
+            <label for="birthday" class="col-xs-4 control-label required" style="vertical-align: middle;">Дата рождения</label>
+            <div id="birthday-cont" class="col-xs-3 input-group date">
+                <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
 			<span class="input-group-addon">
             	<span class="glyphicon-calendar glyphicon">
 				</span>
             </span>
-            <div class="subcontrol">
-                <div class="date-ctrl-up-buttons">
-                    <div class="btn-group">
-                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
-                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
-                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                <div class="subcontrol">
+                    <div class="date-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                        </div>
                     </div>
-                </div>
-                <div class="form-inline subfields">
-                    <input type="text" name="day" placeholder="ДД" class="form-control day">
-                    <input type="text" name="month" placeholder="ММ" class="form-control month">
-                    <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
-                </div>
-                <div class="date-ctrl-down-buttons">
-                    <div class="btn-group">
-                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
-                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
-                        <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                    <div class="form-inline subfields">
+                        <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                    </div>
+                    <div class="date-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                        </div>
                     </div>
                 </div>
             </div>
-    	</div>
+        </div>
+        <div class="form-group">
+            <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
+        </div>
     </div>
-    <div class="form-group">
-        <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
+    <div class="col-xs-7">
+        <div class="form-group">
+            <label for="serie" class="col-xs-4 control-label">Серия, номер</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="serie" placeholder="Серия" data-toggle="tooltip" data-placement="right" title="Серия, номер">
+                <input type="text" class="form-control" id="docnumber" placeholder="Номер документа" data-toggle="tooltip" data-placement="right" title="Номер документа может состоять из цифр">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="addressReg" class="col-xs-4 control-label">Адрес регистрации</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="addressReg" placeholder="Адрес регистрации">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="address" class="col-xs-4 control-label">Адрес прописки</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="address" placeholder="Адрес прописки">
+            </div>
+        </div>
+         <div class="form-group">
+            <label for="snils" class="col-xs-4 control-label">СНИЛС</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="snils" placeholder="Формат XXX-XXX-XXX-XX" title="Страховой номер индивидуального лицевого счета гражданина в формате XXX-XXX-XXX-XX, где X - цифра.">
+            </div>
+        </div>
     </div>
     <?php $this->endWidget(); ?>
 </div>

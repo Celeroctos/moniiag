@@ -135,6 +135,7 @@
             minView: 2,
             forceParse: 0
         });
+       $(DateField).parent().find('label').css({'padding-top' : '25px'});
         var ctrl = DateField.find('input.form-control:first');
         $(ctrl).on('change', function(e, type){
             console.log(e.target);

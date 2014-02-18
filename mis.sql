@@ -456,37 +456,37 @@ CREATE SEQUENCE "doctor-cabinet_id_seq"
 ALTER TABLE mis."doctor-cabinet_id_seq" OWNER TO moniiag;
 
 --
--- Name: doctor-cabinet; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+-- Name: doctor_cabinet; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
-CREATE TABLE "doctor-cabinet" (
+CREATE TABLE doctor_cabinet (
     doctor_id integer NOT NULL,
     cabinet_id integer NOT NULL,
     id integer DEFAULT nextval('"doctor-cabinet_id_seq"'::regclass) NOT NULL
 );
 
 
-ALTER TABLE mis."doctor-cabinet" OWNER TO moniiag;
+ALTER TABLE mis.doctor_cabinet OWNER TO moniiag;
 
 --
--- Name: TABLE "doctor-cabinet"; Type: COMMENT; Schema: mis; Owner: moniiag
+-- Name: TABLE doctor_cabinet; Type: COMMENT; Schema: mis; Owner: moniiag
 --
 
-COMMENT ON TABLE "doctor-cabinet" IS 'Связь доктор-кабинет';
-
-
---
--- Name: COLUMN "doctor-cabinet".doctor_id; Type: COMMENT; Schema: mis; Owner: moniiag
---
-
-COMMENT ON COLUMN "doctor-cabinet".doctor_id IS 'ID доктора';
+COMMENT ON TABLE doctor_cabinet IS 'Связь доктор-кабинет';
 
 
 --
--- Name: COLUMN "doctor-cabinet".cabinet_id; Type: COMMENT; Schema: mis; Owner: moniiag
+-- Name: COLUMN doctor_cabinet.doctor_id; Type: COMMENT; Schema: mis; Owner: moniiag
 --
 
-COMMENT ON COLUMN "doctor-cabinet".cabinet_id IS 'ID кабинета';
+COMMENT ON COLUMN doctor_cabinet.doctor_id IS 'ID доктора';
+
+
+--
+-- Name: COLUMN doctor_cabinet.cabinet_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_cabinet.cabinet_id IS 'ID кабинета';
 
 
 --
@@ -504,7 +504,8 @@ CREATE TABLE doctor_shedule_by_day (
     time_begin time without time zone,
     time_end time without time zone,
     note text,
-    mediate_id integer
+    mediate_id integer,
+    shedule_id integer
 );
 
 
@@ -585,6 +586,13 @@ COMMENT ON COLUMN doctor_shedule_by_day.note IS 'Примечание к диа�
 --
 
 COMMENT ON COLUMN doctor_shedule_by_day.mediate_id IS 'ID опосредованного пациента (если есть. В противном случае - NULL)';
+
+
+--
+-- Name: COLUMN doctor_shedule_by_day.shedule_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN doctor_shedule_by_day.shedule_id IS 'ID элемента расписания';
 
 
 --
@@ -1572,7 +1580,7 @@ CREATE TABLE medcards (
     work_address character varying(100),
     post character varying(100),
     profession character varying(200),
-    motion integer
+    motion integer DEFAULT 0
 );
 
 
@@ -1919,6 +1927,69 @@ ALTER TABLE mis.medpersonal_types_id_seq OWNER TO moniiag;
 --
 
 ALTER SEQUENCE medpersonal_types_id_seq OWNED BY medpersonal_types.id;
+
+
+--
+-- Name: menu_pages; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE menu_pages (
+    id integer NOT NULL,
+    name character varying(150),
+    url text,
+    priority integer
+);
+
+
+ALTER TABLE mis.menu_pages OWNER TO moniiag;
+
+--
+-- Name: TABLE menu_pages; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE menu_pages IS 'Страницы меню (для ролей)';
+
+
+--
+-- Name: COLUMN menu_pages.name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN menu_pages.name IS 'Название страницы';
+
+
+--
+-- Name: COLUMN menu_pages.url; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN menu_pages.url IS 'Адрес страницы';
+
+
+--
+-- Name: COLUMN menu_pages.priority; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN menu_pages.priority IS 'Приоритет страницы';
+
+
+--
+-- Name: menu_pages_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE menu_pages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.menu_pages_id_seq OWNER TO moniiag;
+
+--
+-- Name: menu_pages_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE menu_pages_id_seq OWNED BY menu_pages.id;
 
 
 --
@@ -2402,6 +2473,111 @@ ALTER SEQUENCE privileges_per_patient_id_seq OWNED BY privileges_per_patient.id;
 
 
 --
+-- Name: quick_panel; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE quick_panel (
+    id integer NOT NULL,
+    user_id integer,
+    href text,
+    icon character varying(255)
+);
+
+
+ALTER TABLE mis.quick_panel OWNER TO moniiag;
+
+--
+-- Name: TABLE quick_panel; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE quick_panel IS 'Панель быстрого доступа';
+
+
+--
+-- Name: COLUMN quick_panel.user_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN quick_panel.user_id IS 'Пользователь';
+
+
+--
+-- Name: COLUMN quick_panel.href; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN quick_panel.href IS 'Ссылка с иконки';
+
+
+--
+-- Name: COLUMN quick_panel.icon; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN quick_panel.icon IS 'Файл с иконкой';
+
+
+--
+-- Name: quick_panel_href_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE quick_panel_href_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.quick_panel_href_seq OWNER TO moniiag;
+
+--
+-- Name: quick_panel_href_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE quick_panel_href_seq OWNED BY quick_panel.href;
+
+
+--
+-- Name: quick_panel_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE quick_panel_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.quick_panel_id_seq OWNER TO moniiag;
+
+--
+-- Name: quick_panel_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE quick_panel_id_seq OWNED BY quick_panel.id;
+
+
+--
+-- Name: quick_panel_user_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE quick_panel_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.quick_panel_user_id_seq OWNER TO moniiag;
+
+--
+-- Name: quick_panel_user_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE quick_panel_user_id_seq OWNED BY quick_panel.user_id;
+
+
+--
 -- Name: role_action; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -2474,7 +2650,8 @@ COMMENT ON COLUMN role_to_user.role_id IS 'ID роли';
 CREATE TABLE roles (
     id integer NOT NULL,
     name character varying(150),
-    parent_id integer
+    parent_id integer,
+    startpage_id integer
 );
 
 
@@ -2499,6 +2676,13 @@ COMMENT ON COLUMN roles.name IS 'Название роли';
 --
 
 COMMENT ON COLUMN roles.parent_id IS 'Родитель';
+
+
+--
+-- Name: COLUMN roles.startpage_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN roles.startpage_id IS 'ID страницы, на которую идёт редирект после логина';
 
 
 --
@@ -3300,6 +3484,13 @@ ALTER TABLE ONLY medpersonal_types ALTER COLUMN id SET DEFAULT nextval('medperso
 -- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
 --
 
+ALTER TABLE ONLY menu_pages ALTER COLUMN id SET DEFAULT nextval('menu_pages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
 ALTER TABLE ONLY oms ALTER COLUMN id SET DEFAULT nextval('oms_id_seq'::regclass);
 
 
@@ -3315,6 +3506,13 @@ ALTER TABLE ONLY pregnants ALTER COLUMN id SET DEFAULT nextval('pregnants_id_seq
 --
 
 ALTER TABLE ONLY privileges_per_patient ALTER COLUMN id SET DEFAULT nextval('privileges_per_patient_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY quick_panel ALTER COLUMN id SET DEFAULT nextval('quick_panel_id_seq'::regclass);
 
 
 --
@@ -3385,17 +3583,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 COPY access_actions (id, name, "group", "accessKey") FROM stdin;
+68	"Логи"	7	menuAdminLogs
 2	Поиск пациента	2	searchPatient
+69	"Настройка расписания врачей"	7	menuAdminDoctorRasp
 3	"Регистратура"	7	menuRegister
-4	"Работа с пациентами"	7	menuWorkWithPatients
 5	"Поиск пациента"	7	menuSearchPatient
-6	"Добавление пациента"	7	menuAddPatient
 7	"Расписание врачей"	7	menuRaspDoctor
-8	"Сводное"	7	menuRaspDoctorSvod
-9	"По врачам"	7	menuRaspDoctorDoc
 10	"Запись пациента"	7	menuPatientWrite
-11	"Приём больных"	7	menuDoctorMovement
-12	"Печать приёмов"	7	menuPrintMovements
 13	"Профиль"	7	menuUserProfile
 14	"Система"	7	menuSystemSettings
 15	"Администрирование"	7	menuAdmin
@@ -3434,6 +3628,26 @@ COPY access_actions (id, name, "group", "accessKey") FROM stdin;
 48	Удаление льгот	1	guideDeletePrivelege
 49	"ТАСУ"	7	menuTasu
 1	Редактирование сотрудника	1	guideEditEmployee
+6	"Создание пациента"	7	menuAddPatient
+11	"Приём пациентов"	7	menuDoctorMovement
+12	"Массовая печать"	7	menuPrintMovements
+50	"Просмотр ЭМК"	7	menuDoctorEmk
+51	"Статистика"	7	menuStat
+52	"Загрузка в ТАСУ"	7	menuTasuIn
+53	"Загрузка из ТАСУ"	7	menuTasuOut
+54	"Отчётность"	7	menuReport
+55	"Организационные справочники	7	menuOrgGuides
+56	"Настройка правил приёма"	7	menuGreetingRights
+57	"Администрирование -> Рабочее место врача"	7	menuAdminArm
+58	"Шаблоны и справочники"	7	menuGuidesAndTemplates
+60	"Справочники"	7	menuAdminGuides
+61	"Шаблоны"	7	menuAdminTemplates
+62	"Диагнозы"	7	menuDiagnosis
+63	"Администрирование -> ... -> МКБ-10"	7	menuDiagnosisMkb10
+64	"Любимые диагнозы"	7	menuDiagnosisLikes
+65	"Диагнозы для распределения пациентов"	7	menuDiagnosisRasp
+66	"Пользователи, роли, права"	7	menuAdminUsers
+67	"Настройка календаря"	7	menuAdminRest
 \.
 
 
@@ -3462,7 +3676,7 @@ SELECT pg_catalog.setval('access_actions_groups_id_seq', 7, true);
 -- Name: access_actions_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('access_actions_id_seq', 49, true);
+SELECT pg_catalog.setval('access_actions_id_seq', 69, true);
 
 
 --
@@ -3482,6 +3696,8 @@ COPY cabinets (id, enterprise_id, ward_id, cab_number, description) FROM stdin;
 5	1	3	53	Стоматологический кабинет
 6	8	5	45	Отделение для приема больных
 7	8	5	99	Кабинет акушера-гинеколога
+8	1	4	15	Процедурный  кабинет
+9	8	5	201	Кабинет приема 
 \.
 
 
@@ -3489,7 +3705,7 @@ COPY cabinets (id, enterprise_id, ward_id, cab_number, description) FROM stdin;
 -- Name: cabinets_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('cabinets_id_seq', 7, true);
+SELECT pg_catalog.setval('cabinets_id_seq', 9, true);
 
 
 --
@@ -3504,6 +3720,8 @@ COPY contacts (id, type, contact_value, employee_id) FROM stdin;
 17	2	8-977-555-55-55	17
 18	2	4343434343	19
 19	0	xromovgena@mail.ru	21
+20	0	obon@mail.ru	18
+21	2	89045974312	18
 \.
 
 
@@ -3511,7 +3729,7 @@ COPY contacts (id, type, contact_value, employee_id) FROM stdin;
 -- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('contacts_id_seq', 19, true);
+SELECT pg_catalog.setval('contacts_id_seq', 21, true);
 
 
 --
@@ -3545,15 +3763,20 @@ COPY diagnosis_per_patient (mkb10_id, greeting_id, type) FROM stdin;
 12256	91	0
 12251	91	1
 12248	91	1
-\.
-
-
---
--- Data for Name: doctor-cabinet; Type: TABLE DATA; Schema: mis; Owner: moniiag
---
-
-COPY "doctor-cabinet" (doctor_id, cabinet_id, id) FROM stdin;
-15	4	2
+11136	317	0
+11589	317	1
+7394	317	1
+11994	325	0
+11498	325	0
+12219	325	1
+12257	165	0
+12257	165	1
+8437	165	1
+12198	379	0
+3548	408	0
+3388	408	1
+12010	412	0
+12220	412	1
 \.
 
 
@@ -3565,147 +3788,252 @@ SELECT pg_catalog.setval('"doctor-cabinet_id_seq"', 2, true);
 
 
 --
+-- Data for Name: doctor_cabinet; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY doctor_cabinet (doctor_id, cabinet_id, id) FROM stdin;
+15	4	2
+\.
+
+
+--
 -- Data for Name: doctor_shedule_by_day; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted, patient_time, is_beginned, time_begin, time_end, note, mediate_id) FROM stdin;
-232	15	3/14	2014-01-24	0	11:30:00	\N	\N	\N	\N	\N
-43	18	1/14	2013-12-11	0	15:30:00	\N	\N	\N	\N	\N
-246	15	3/13	2014-02-07	0	15:30:00	\N	\N	\N	\N	\N
-50	18	1/14	2013-12-11	0	14:00:00	\N	\N	\N	\N	\N
-51	18	1/14	2013-12-11	0	14:00:00	\N	\N	\N	\N	\N
-55	18	1/14	2013-12-11	0	18:00:00	\N	\N	\N	\N	\N
-58	18	1/14	2013-12-18	0	14:00:00	\N	\N	\N	\N	\N
-60	18	1/14	2013-12-18	0	15:00:00	\N	\N	\N	\N	\N
-61	15	1/14	2013-12-24	0	14:00:00	\N	\N	\N	\N	\N
-62	15	1/14	2013-12-24	0	15:30:00	\N	\N	\N	\N	\N
-63	15	1/14	2013-12-12	0	14:00:00	\N	\N	\N	\N	\N
-64	15	1/14	2013-12-12	0	16:00:00	\N	\N	\N	\N	\N
-67	15	2/13	2013-12-25	0	14:30:00	\N	\N	\N	\N	\N
-69	15	1/14	2013-12-20	0	15:00:00	\N	\N	\N	\N	\N
-70	15	1/14	2013-12-20	0	16:30:00	\N	\N	\N	\N	\N
-71	15	4/13	2013-12-24	0	14:30:00	\N	\N	\N	\N	\N
-72	15	1/14	2013-10-01	0	14:30:00	\N	\N	\N	\N	\N
-73	15	1/14	2013-10-01	0	15:30:00	\N	\N	\N	\N	\N
-74	15	1/14	2013-10-01	0	16:30:00	\N	\N	\N	\N	\N
-75	18	7/13	2013-12-17	0	16:30:00	\N	\N	\N	\N	\N
-137	15	13/14	2014-01-22	0	10:00:00	\N	\N	\N	\N	\N
-138	15	13/14	2014-01-23	0	10:00:00	\N	\N	\N	\N	\N
-139	15	13/14	2014-01-22	0	10:30:00	\N	\N	\N	\N	\N
-140	15	13/14	2014-01-23	0	10:30:00	\N	\N	\N	\N	\N
-77	15	1/14	2013-12-19	0	15:30:00	\N	\N	\N	\N	\N
-78	15	1/14	2013-12-19	0	15:00:00	\N	\N	\N	\N	\N
-79	15	1/14	2013-12-19	0	14:30:00	\N	\N	\N	\N	\N
-80	15	1/14	2013-12-19	0	18:00:00	\N	\N	\N	\N	\N
-81	15	1/14	2013-12-19	0	17:30:00	\N	\N	\N	\N	\N
-82	15	1/14	2013-12-19	0	17:00:00	\N	\N	\N	\N	\N
-76	15	7/13	2013-12-17	0	17:30:00	0	01:17:00	12:17:00	\N	\N
-141	15	13/14	2014-01-22	0	11:00:00	\N	\N	\N	\N	\N
-65	15	1/14	2013-12-12	1	15:00:00	1	11:18:00	11:18:00	\N	\N
-83	15	1/13	2013-12-24	0	15:00:00	\N	\N	\N	\N	\N
-84	18	5/13	2013-12-24	0	08:00:00	\N	\N	\N	\N	\N
-85	15	7/13	2013-12-31	0	15:00:00	\N	\N	\N	\N	\N
-86	15	4/13	2013-12-31	0	15:30:00	\N	\N	\N	\N	\N
-264	15	3/14	2014-01-28	0	18:00:00	\N	\N	\N	\N	\N
-88	15	7/13	2014-01-03	0	15:30:00	\N	\N	\N	\N	\N
-266	15	3/14	2014-01-27	0	18:30:00	\N	\N	\N	\N	\N
-90	15	7/13	2014-01-02	0	14:00:00	\N	\N	\N	\N	\N
-92	15	7/13	2014-01-17	0	14:00:00	\N	\N	\N	\N	\N
-93	15	7/13	2014-01-31	0	14:30:00	\N	\N	\N	\N	\N
-94	15	7/13	2014-01-17	0	14:30:00	\N	\N	\N	\N	\N
-95	15	7/13	2014-01-31	0	15:00:00	\N	\N	\N	\N	\N
-96	15	7/13	2014-01-17	0	15:00:00	\N	\N	\N	\N	\N
-97	15	7/13	2014-01-31	0	15:30:00	\N	\N	\N	\N	\N
-98	15	7/13	2014-01-17	0	15:30:00	\N	\N	\N	\N	\N
-100	15	7/13	2014-01-17	0	16:00:00	\N	\N	\N	\N	\N
-101	15	7/13	2014-01-31	0	16:30:00	\N	\N	\N	\N	\N
-102	15	7/13	2014-01-17	0	16:30:00	\N	\N	\N	\N	\N
-103	15	7/13	2014-01-17	0	17:00:00	\N	\N	\N	\N	\N
-104	15	7/13	2014-01-31	0	17:30:00	\N	\N	\N	\N	\N
-105	15	7/13	2014-01-17	0	17:30:00	\N	\N	\N	\N	\N
-106	15	7/13	2014-01-31	0	18:00:00	\N	\N	\N	\N	\N
-107	15	7/13	2014-01-17	0	18:00:00	\N	\N	\N	\N	\N
-268	18	3/14	2014-01-30	0	08:30:00	\N	\N	\N	\N	\N
-142	15	13/14	2014-01-23	0	11:00:00	\N	\N	\N	\N	\N
-110	15	1/13	2014-01-30	0	14:30:00	\N	\N	\N	\N	\N
-91	15	7/13	2014-01-16	0	14:00:00	1	12:09:00	\N	12345	\N
-111	18	5/13	2014-01-15	0	14:00:00	1	12:15:00	\N	\N	\N
-112	19	11/14	2014-01-20	0	09:45:00	\N	\N	\N	\N	\N
-113	19	11/14	2014-01-21	0	18:50:00	\N	\N	\N	\N	\N
-114	19	9/14	2014-01-21	0	18:00:00	\N	\N	\N	\N	\N
-115	19	3/14	2014-01-21	0	18:30:00	\N	\N	\N	\N	\N
-118	19	10/14	2014-01-21	0	17:30:00	\N	\N	\N	\N	\N
-119	19	10/14	2014-01-20	0	18:30:00	\N	\N	\N	\N	\N
-120	19	10/14	2014-01-15	0	18:00:00	\N	\N	\N	\N	\N
-123	18	5/13	2014-01-20	0	14:30:00	\N	\N	\N	\N	\N
-124	18	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N
-125	18	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N
-126	15	5/13	2014-01-20	0	14:00:00	\N	\N	\N	\N	\N
-127	15	5/13	2014-01-17	0	17:00:00	\N	\N	\N	\N	\N
-128	15	5/13	2014-01-20	0	14:30:00	\N	\N	\N	\N	\N
-129	15	5/13	2014-01-17	0	15:00:00	\N	\N	\N	\N	\N
-130	15	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N
-122	18	5/13	2014-01-17	0	14:30:00	1	03:17:00	\N	\N	\N
-131	18	16/14	2014-01-21	0	11:00:00	\N	\N	\N	\N	\N
-132	18	16/14	2014-01-21	0	10:30:00	\N	\N	\N	\N	\N
-121	18	5/13	2014-01-20	0	14:00:00	1	12:20:00	\N	\N	\N
-133	15	13/14	2014-01-23	0	08:00:00	\N	\N	\N	\N	\N
-134	15	13/14	2014-01-23	0	08:30:00	\N	\N	\N	\N	\N
-135	15	13/14	2014-01-23	0	09:00:00	\N	\N	\N	\N	\N
-136	15	13/14	2014-01-23	0	09:30:00	\N	\N	\N	\N	\N
-143	15	13/14	2014-01-22	0	11:30:00	\N	\N	\N	\N	\N
-144	15	13/14	2014-01-23	0	11:30:00	\N	\N	\N	\N	\N
-145	15	13/14	2014-01-23	0	12:00:00	\N	\N	\N	\N	\N
-146	15	13/14	2014-01-23	0	12:30:00	\N	\N	\N	\N	\N
-147	15	13/14	2014-01-22	0	13:00:00	\N	\N	\N	\N	\N
-148	15	13/14	2014-01-23	0	13:00:00	\N	\N	\N	\N	\N
-149	15	13/14	2014-01-22	0	13:30:00	\N	\N	\N	\N	\N
-150	18	13/14	2014-01-30	0	08:00:00	\N	\N	\N	\N	\N
-151	18	13/14	2014-01-23	0	09:00:00	\N	\N	\N	\N	\N
-278	15	\N	2014-01-29	0	16:00:00	\N	\N	\N	\N	6
-155	15	3/14	2014-01-23	0	14:00:00	\N	\N	\N	\N	\N
-280	18	13/14	2014-01-29	0	15:00:00	\N	\N	\N	\N	\N
-281	15	8/14	2014-01-30	0	15:00:00	\N	\N	\N	\N	\N
-270	15	20/14	2014-01-31	0	14:00:00	\N	\N	\N	\N	\N
-283	15	\N	2014-01-31	0	16:00:00	\N	\N	\N	\N	9
-161	15	3/14	2014-01-23	0	17:30:00	\N	\N	\N	\N	\N
-162	15	3/14	2014-01-23	0	18:00:00	\N	\N	\N	\N	\N
-285	15	2/14	2014-01-31	0	17:00:00	\N	\N	\N	\N	\N
-165	15	3/14	2014-02-03	0	15:30:00	\N	\N	\N	\N	\N
-167	15	3/14	2014-01-23	0	14:30:00	\N	\N	\N	\N	\N
-168	15	3/14	2014-01-23	0	15:00:00	\N	\N	\N	\N	\N
-291	21	\N	2014-01-31	0	18:30:00	\N	\N	\N	\N	15
-170	15	3/14	2014-01-24	0	15:30:00	\N	\N	\N	\N	\N
-289	18	8/13	2014-01-31	0	14:40:00	1	05:31:00	\N	\N	\N
-173	15	3/14	2014-01-24	0	09:00:00	\N	\N	\N	\N	\N
-287	18	13/14	2014-01-31	0	15:10:00	1	05:31:00	\N	\N	\N
-293	12	22/14	2014-02-06	0	10:05:00	\N	\N	\N	\N	\N
-295	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N
-297	18	22/14	2014-02-10	0	17:00:00	\N	\N	\N	\N	\N
-299	18	\N	2014-02-10	0	15:00:00	\N	\N	\N	\N	17
-301	15	13/14	2014-02-19	0	17:00:00	\N	\N	\N	\N	\N
-197	18	3/14	2014-01-28	0	09:30:00	\N	\N	\N	\N	\N
-241	15	3/14	2014-01-24	0	09:30:00	\N	\N	\N	\N	\N
-243	15	3/14	2014-01-24	0	10:30:00	\N	\N	\N	\N	\N
-245	15	3/14	2014-01-24	0	13:30:00	\N	\N	\N	\N	\N
-247	15	2/14	2014-01-27	0	15:00:00	\N	\N	\N	\N	\N
-261	15	3/14	2014-01-27	0	18:00:00	\N	\N	\N	\N	\N
-263	15	3/14	2014-01-28	0	14:00:00	\N	\N	\N	\N	\N
-224	15	3/14	2014-01-24	0	08:00:00	\N	\N	\N	\N	\N
-265	15	3/14	2014-01-27	0	17:30:00	\N	\N	\N	\N	\N
-279	18	13/14	2014-01-29	0	14:30:00	\N	\N	\N	\N	\N
-277	18	12/14	2014-01-28	0	17:00:00	\N	\N	\N	\N	\N
-282	15	8/13	2014-01-30	0	15:30:00	\N	\N	\N	\N	\N
-284	21	\N	2014-01-31	0	15:30:00	\N	\N	\N	\N	10
-286	19	\N	2014-02-03	0	08:00:00	\N	\N	\N	\N	12
-269	18	13/14	2014-01-31	0	13:40:00	1	05:31:00	\N	\N	\N
-288	18	13/14	2014-01-31	0	15:40:00	1	05:31:00	\N	\N	\N
-292	21	\N	2014-01-31	0	21:00:00	\N	\N	\N	\N	16
-294	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N
-296	15	22/14	2014-02-19	0	15:30:00	\N	\N	\N	\N	\N
-300	18	13/14	2014-02-10	0	16:00:00	\N	\N	\N	\N	\N
-302	15	\N	2014-02-19	0	16:00:00	\N	\N	\N	\N	18
-303	19	\N	2014-06-18	0	10:00:00	\N	\N	\N	\N	19
+COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted, patient_time, is_beginned, time_begin, time_end, note, mediate_id, shedule_id) FROM stdin;
+337	18	\N	2014-02-10	0	13:35:00	\N	\N	\N	\N	36	334
+232	15	3/14	2014-01-24	0	11:30:00	\N	\N	\N	\N	\N	\N
+43	18	1/14	2013-12-11	0	15:30:00	\N	\N	\N	\N	\N	\N
+338	18	22/14	2014-02-10	0	14:35:00	\N	\N	\N	\N	\N	334
+278	15	12/14	2014-01-29	0	16:00:00	\N	\N	\N	\N	\N	\N
+299	18	9/14	2014-02-10	1	15:00:00	1	01:10:00	01:10:00	\N	\N	\N
+246	15	3/13	2014-02-07	0	15:30:00	\N	\N	\N	\N	\N	\N
+50	18	1/14	2013-12-11	0	14:00:00	\N	\N	\N	\N	\N	\N
+51	18	1/14	2013-12-11	0	14:00:00	\N	\N	\N	\N	\N	\N
+55	18	1/14	2013-12-11	0	18:00:00	\N	\N	\N	\N	\N	\N
+58	18	1/14	2013-12-18	0	14:00:00	\N	\N	\N	\N	\N	\N
+60	18	1/14	2013-12-18	0	15:00:00	\N	\N	\N	\N	\N	\N
+61	15	1/14	2013-12-24	0	14:00:00	\N	\N	\N	\N	\N	\N
+62	15	1/14	2013-12-24	0	15:30:00	\N	\N	\N	\N	\N	\N
+63	15	1/14	2013-12-12	0	14:00:00	\N	\N	\N	\N	\N	\N
+64	15	1/14	2013-12-12	0	16:00:00	\N	\N	\N	\N	\N	\N
+67	15	2/13	2013-12-25	0	14:30:00	\N	\N	\N	\N	\N	\N
+69	15	1/14	2013-12-20	0	15:00:00	\N	\N	\N	\N	\N	\N
+70	15	1/14	2013-12-20	0	16:30:00	\N	\N	\N	\N	\N	\N
+71	15	4/13	2013-12-24	0	14:30:00	\N	\N	\N	\N	\N	\N
+72	15	1/14	2013-10-01	0	14:30:00	\N	\N	\N	\N	\N	\N
+73	15	1/14	2013-10-01	0	15:30:00	\N	\N	\N	\N	\N	\N
+74	15	1/14	2013-10-01	0	16:30:00	\N	\N	\N	\N	\N	\N
+75	18	7/13	2013-12-17	0	16:30:00	\N	\N	\N	\N	\N	\N
+137	15	13/14	2014-01-22	0	10:00:00	\N	\N	\N	\N	\N	\N
+138	15	13/14	2014-01-23	0	10:00:00	\N	\N	\N	\N	\N	\N
+139	15	13/14	2014-01-22	0	10:30:00	\N	\N	\N	\N	\N	\N
+140	15	13/14	2014-01-23	0	10:30:00	\N	\N	\N	\N	\N	\N
+77	15	1/14	2013-12-19	0	15:30:00	\N	\N	\N	\N	\N	\N
+78	15	1/14	2013-12-19	0	15:00:00	\N	\N	\N	\N	\N	\N
+79	15	1/14	2013-12-19	0	14:30:00	\N	\N	\N	\N	\N	\N
+80	15	1/14	2013-12-19	0	18:00:00	\N	\N	\N	\N	\N	\N
+81	15	1/14	2013-12-19	0	17:30:00	\N	\N	\N	\N	\N	\N
+82	15	1/14	2013-12-19	0	17:00:00	\N	\N	\N	\N	\N	\N
+76	15	7/13	2013-12-17	0	17:30:00	0	01:17:00	12:17:00	\N	\N	\N
+141	15	13/14	2014-01-22	0	11:00:00	\N	\N	\N	\N	\N	\N
+65	15	1/14	2013-12-12	1	15:00:00	1	11:18:00	11:18:00	\N	\N	\N
+83	15	1/13	2013-12-24	0	15:00:00	\N	\N	\N	\N	\N	\N
+84	18	5/13	2013-12-24	0	08:00:00	\N	\N	\N	\N	\N	\N
+85	15	7/13	2013-12-31	0	15:00:00	\N	\N	\N	\N	\N	\N
+86	15	4/13	2013-12-31	0	15:30:00	\N	\N	\N	\N	\N	\N
+264	15	3/14	2014-01-28	0	18:00:00	\N	\N	\N	\N	\N	\N
+88	15	7/13	2014-01-03	0	15:30:00	\N	\N	\N	\N	\N	\N
+266	15	3/14	2014-01-27	0	18:30:00	\N	\N	\N	\N	\N	\N
+90	15	7/13	2014-01-02	0	14:00:00	\N	\N	\N	\N	\N	\N
+92	15	7/13	2014-01-17	0	14:00:00	\N	\N	\N	\N	\N	\N
+93	15	7/13	2014-01-31	0	14:30:00	\N	\N	\N	\N	\N	\N
+94	15	7/13	2014-01-17	0	14:30:00	\N	\N	\N	\N	\N	\N
+95	15	7/13	2014-01-31	0	15:00:00	\N	\N	\N	\N	\N	\N
+96	15	7/13	2014-01-17	0	15:00:00	\N	\N	\N	\N	\N	\N
+97	15	7/13	2014-01-31	0	15:30:00	\N	\N	\N	\N	\N	\N
+98	15	7/13	2014-01-17	0	15:30:00	\N	\N	\N	\N	\N	\N
+100	15	7/13	2014-01-17	0	16:00:00	\N	\N	\N	\N	\N	\N
+101	15	7/13	2014-01-31	0	16:30:00	\N	\N	\N	\N	\N	\N
+102	15	7/13	2014-01-17	0	16:30:00	\N	\N	\N	\N	\N	\N
+103	15	7/13	2014-01-17	0	17:00:00	\N	\N	\N	\N	\N	\N
+104	15	7/13	2014-01-31	0	17:30:00	\N	\N	\N	\N	\N	\N
+105	15	7/13	2014-01-17	0	17:30:00	\N	\N	\N	\N	\N	\N
+106	15	7/13	2014-01-31	0	18:00:00	\N	\N	\N	\N	\N	\N
+107	15	7/13	2014-01-17	0	18:00:00	\N	\N	\N	\N	\N	\N
+268	18	3/14	2014-01-30	0	08:30:00	\N	\N	\N	\N	\N	\N
+142	15	13/14	2014-01-23	0	11:00:00	\N	\N	\N	\N	\N	\N
+110	15	1/13	2014-01-30	0	14:30:00	\N	\N	\N	\N	\N	\N
+91	15	7/13	2014-01-16	0	14:00:00	1	12:09:00	\N	12345	\N	\N
+111	18	5/13	2014-01-15	0	14:00:00	1	12:15:00	\N	\N	\N	\N
+112	19	11/14	2014-01-20	0	09:45:00	\N	\N	\N	\N	\N	\N
+113	19	11/14	2014-01-21	0	18:50:00	\N	\N	\N	\N	\N	\N
+114	19	9/14	2014-01-21	0	18:00:00	\N	\N	\N	\N	\N	\N
+115	19	3/14	2014-01-21	0	18:30:00	\N	\N	\N	\N	\N	\N
+118	19	10/14	2014-01-21	0	17:30:00	\N	\N	\N	\N	\N	\N
+119	19	10/14	2014-01-20	0	18:30:00	\N	\N	\N	\N	\N	\N
+120	19	10/14	2014-01-15	0	18:00:00	\N	\N	\N	\N	\N	\N
+123	18	5/13	2014-01-20	0	14:30:00	\N	\N	\N	\N	\N	\N
+124	18	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N	\N
+125	18	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N	\N
+126	15	5/13	2014-01-20	0	14:00:00	\N	\N	\N	\N	\N	\N
+127	15	5/13	2014-01-17	0	17:00:00	\N	\N	\N	\N	\N	\N
+128	15	5/13	2014-01-20	0	14:30:00	\N	\N	\N	\N	\N	\N
+129	15	5/13	2014-01-17	0	15:00:00	\N	\N	\N	\N	\N	\N
+130	15	5/13	2014-01-20	0	15:00:00	\N	\N	\N	\N	\N	\N
+122	18	5/13	2014-01-17	0	14:30:00	1	03:17:00	\N	\N	\N	\N
+131	18	16/14	2014-01-21	0	11:00:00	\N	\N	\N	\N	\N	\N
+132	18	16/14	2014-01-21	0	10:30:00	\N	\N	\N	\N	\N	\N
+121	18	5/13	2014-01-20	0	14:00:00	1	12:20:00	\N	\N	\N	\N
+133	15	13/14	2014-01-23	0	08:00:00	\N	\N	\N	\N	\N	\N
+134	15	13/14	2014-01-23	0	08:30:00	\N	\N	\N	\N	\N	\N
+135	15	13/14	2014-01-23	0	09:00:00	\N	\N	\N	\N	\N	\N
+136	15	13/14	2014-01-23	0	09:30:00	\N	\N	\N	\N	\N	\N
+143	15	13/14	2014-01-22	0	11:30:00	\N	\N	\N	\N	\N	\N
+144	15	13/14	2014-01-23	0	11:30:00	\N	\N	\N	\N	\N	\N
+145	15	13/14	2014-01-23	0	12:00:00	\N	\N	\N	\N	\N	\N
+146	15	13/14	2014-01-23	0	12:30:00	\N	\N	\N	\N	\N	\N
+147	15	13/14	2014-01-22	0	13:00:00	\N	\N	\N	\N	\N	\N
+148	15	13/14	2014-01-23	0	13:00:00	\N	\N	\N	\N	\N	\N
+149	15	13/14	2014-01-22	0	13:30:00	\N	\N	\N	\N	\N	\N
+150	18	13/14	2014-01-30	0	08:00:00	\N	\N	\N	\N	\N	\N
+151	18	13/14	2014-01-23	0	09:00:00	\N	\N	\N	\N	\N	\N
+155	15	3/14	2014-01-23	0	14:00:00	\N	\N	\N	\N	\N	\N
+280	18	13/14	2014-01-29	0	15:00:00	\N	\N	\N	\N	\N	\N
+281	15	8/14	2014-01-30	0	15:00:00	\N	\N	\N	\N	\N	\N
+270	15	20/14	2014-01-31	0	14:00:00	\N	\N	\N	\N	\N	\N
+283	15	\N	2014-01-31	0	16:00:00	\N	\N	\N	\N	9	\N
+161	15	3/14	2014-01-23	0	17:30:00	\N	\N	\N	\N	\N	\N
+162	15	3/14	2014-01-23	0	18:00:00	\N	\N	\N	\N	\N	\N
+285	15	2/14	2014-01-31	0	17:00:00	\N	\N	\N	\N	\N	\N
+167	15	3/14	2014-01-23	0	14:30:00	\N	\N	\N	\N	\N	\N
+168	15	3/14	2014-01-23	0	15:00:00	\N	\N	\N	\N	\N	\N
+170	15	3/14	2014-01-24	0	15:30:00	\N	\N	\N	\N	\N	\N
+289	18	8/13	2014-01-31	0	14:40:00	1	05:31:00	\N	\N	\N	\N
+173	15	3/14	2014-01-24	0	09:00:00	\N	\N	\N	\N	\N	\N
+287	18	13/14	2014-01-31	0	15:10:00	1	05:31:00	\N	\N	\N	\N
+293	12	22/14	2014-02-06	0	10:05:00	\N	\N	\N	\N	\N	\N
+295	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N	\N
+301	15	13/14	2014-02-19	0	17:00:00	\N	\N	\N	\N	\N	\N
+197	18	3/14	2014-01-28	0	09:30:00	\N	\N	\N	\N	\N	\N
+297	18	22/14	2014-02-10	1	17:00:00	1	12:06:00	01:10:00	\N	\N	\N
+340	24	\N	2014-02-11	0	09:30:00	\N	\N	\N	\N	38	366
+341	24	\N	2014-02-11	0	10:00:00	\N	\N	\N	\N	39	366
+342	24	\N	2014-02-10	0	19:00:00	\N	\N	\N	\N	40	365
+343	24	\N	2014-02-10	0	19:00:00	\N	\N	\N	\N	41	365
+241	15	3/14	2014-01-24	0	09:30:00	\N	\N	\N	\N	\N	\N
+243	15	3/14	2014-01-24	0	10:30:00	\N	\N	\N	\N	\N	\N
+245	15	3/14	2014-01-24	0	13:30:00	\N	\N	\N	\N	\N	\N
+344	24	\N	2014-02-10	0	19:00:00	\N	\N	\N	\N	42	365
+247	15	2/14	2014-01-27	0	15:00:00	\N	\N	\N	\N	\N	\N
+380	18	22/14	2014-02-17	0	13:05:00	\N	\N	\N	\N	\N	334
+345	24	\N	2014-02-10	0	17:30:00	\N	\N	\N	\N	43	365
+339	23	2/14	2014-02-11	1	14:00:00	1	05:10:00	05:10:00	\N	\N	359
+346	24	\N	2014-02-20	0	09:30:00	\N	\N	\N	\N	44	368
+350	18	\N	2014-02-11	0	19:05:00	\N	\N	\N	\N	48	335
+261	15	3/14	2014-01-27	0	18:00:00	\N	\N	\N	\N	\N	\N
+263	15	3/14	2014-01-28	0	14:00:00	\N	\N	\N	\N	\N	\N
+224	15	3/14	2014-01-24	0	08:00:00	\N	\N	\N	\N	\N	\N
+265	15	3/14	2014-01-27	0	17:30:00	\N	\N	\N	\N	\N	\N
+351	18	\N	2014-02-11	0	15:35:00	\N	\N	\N	\N	49	335
+279	18	13/14	2014-01-29	0	14:30:00	\N	\N	\N	\N	\N	\N
+277	18	12/14	2014-01-28	0	17:00:00	\N	\N	\N	\N	\N	\N
+282	15	8/13	2014-01-30	0	15:30:00	\N	\N	\N	\N	\N	\N
+284	21	\N	2014-01-31	0	15:30:00	\N	\N	\N	\N	10	\N
+286	19	\N	2014-02-03	0	08:00:00	\N	\N	\N	\N	12	\N
+269	18	13/14	2014-01-31	0	13:40:00	1	05:31:00	\N	\N	\N	\N
+288	18	13/14	2014-01-31	0	15:40:00	1	05:31:00	\N	\N	\N	\N
+294	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N	\N
+296	15	22/14	2014-02-19	0	15:30:00	\N	\N	\N	\N	\N	\N
+302	15	\N	2014-02-19	0	16:00:00	\N	\N	\N	\N	18	\N
+304	19	\N	2014-02-05	0	08:30:00	\N	\N	\N	\N	20	\N
+305	19	\N	2014-02-06	0	11:00:00	\N	\N	\N	\N	21	\N
+306	19	\N	2014-02-06	0	13:30:00	\N	\N	\N	\N	22	\N
+307	18	22/14	2014-02-06	0	11:30:00	1	01:03:00	\N	\N	\N	\N
+309	18	\N	2014-02-03	0	16:00:00	1	01:03:00	\N	\N	24	\N
+310	15	\N	2014-02-03	0	15:00:00	\N	\N	\N	\N	25	\N
+311	15	\N	2014-02-03	0	14:30:00	\N	\N	\N	\N	26	261
+312	21	22/14	2014-02-04	0	13:30:00	\N	\N	\N	\N	\N	\N
+313	21	24/14	2014-02-04	0	15:00:00	\N	\N	\N	\N	\N	\N
+314	19	25/14	2014-02-10	0	15:00:00	\N	\N	\N	\N	\N	\N
+291	21	22/14	2014-01-31	0	18:30:00	\N	\N	\N	\N	\N	\N
+292	21	22/14	2014-01-31	0	21:00:00	\N	\N	\N	\N	\N	\N
+362	18	\N	2014-02-11	0	14:05:00	\N	\N	\N	\N	60	335
+318	15	1/14	2014-02-07	0	14:30:00	1	04:05:00	\N	\N	\N	273
+303	19	27/14	2014-06-18	0	10:00:00	\N	\N	\N	\N	\N	\N
+319	19	22/14	2014-03-11	0	15:00:00	\N	\N	\N	\N	\N	277
+320	18	15/14	2014-02-06	0	13:00:00	1	12:06:00	\N	\N	\N	337
+321	20	\N	2014-02-19	0	13:09:00	\N	\N	\N	\N	31	351
+322	12	27/14	2014-02-07	0	10:05:00	\N	\N	\N	\N	\N	344
+363	18	\N	2014-02-11	0	14:35:00	\N	\N	\N	\N	61	335
+324	12	27/14	2014-02-07	0	11:05:00	\N	\N	\N	\N	\N	344
+325	15	27/14	2014-02-07	0	17:30:00	1	02:06:00	\N	\N	\N	273
+364	18	\N	2014-02-11	0	15:05:00	\N	\N	\N	\N	62	335
+327	12	15/14	2014-02-18	0	08:35:00	\N	\N	\N	\N	\N	341
+328	12	15/14	2014-02-18	0	09:05:00	\N	\N	\N	\N	\N	341
+365	18	\N	2014-02-11	0	16:05:00	\N	\N	\N	\N	63	335
+330	15	27/14	2014-02-07	0	17:00:00	1	11:07:00	\N	\N	\N	273
+317	15	2/14	2014-02-07	0	16:00:00	1	11:07:00	\N	\N	\N	273
+331	20	\N	2014-02-19	0	14:09:00	\N	\N	\N	\N	32	351
+332	20	\N	2014-02-10	0	12:09:00	\N	\N	\N	\N	33	349
+333	20	\N	2014-02-10	0	12:39:00	\N	\N	\N	\N	34	349
+366	18	\N	2014-02-11	0	16:35:00	\N	\N	\N	\N	64	335
+335	20	22/14	2014-02-10	0	14:39:00	\N	\N	\N	\N	\N	349
+336	20	22/14	2014-02-19	0	12:39:00	\N	\N	\N	\N	\N	351
+315	18	22/14	2014-02-10	1	15:30:00	1	04:07:00	11:10:00	\N	\N	334
+367	18	\N	2014-02-11	0	17:05:00	\N	\N	\N	\N	65	335
+300	18	13/14	2014-02-10	1	16:00:00	1	11:10:00	11:10:00	\N	\N	\N
+368	18	\N	2014-02-11	0	17:35:00	\N	\N	\N	\N	66	335
+369	18	\N	2014-02-11	0	18:05:00	\N	\N	\N	\N	67	335
+370	18	\N	2014-02-11	0	18:35:00	\N	\N	\N	\N	68	335
+371	18	\N	2014-02-11	0	13:35:00	\N	\N	\N	\N	69	335
+373	23	\N	2014-02-20	0	14:00:00	\N	\N	\N	\N	70	361
+374	24	\N	2014-02-11	0	13:00:00	\N	\N	\N	\N	71	366
+375	24	\N	2014-02-11	0	14:00:00	\N	\N	\N	\N	72	366
+376	24	\N	2014-02-20	0	10:00:00	\N	\N	\N	\N	73	368
+165	15	3/14	2014-02-03	1	15:30:00	1	11:12:00	11:12:00	Что-то из примечаний	\N	\N
+382	18	22/14	2014-02-18	0	11:35:00	\N	\N	\N	\N	\N	335
+383	18	22/14	2014-02-18	0	10:35:00	\N	\N	\N	\N	\N	335
+384	18	22/14	2014-02-18	0	13:35:00	\N	\N	\N	\N	\N	335
+378	18	13/14	2014-02-12	1	14:05:00	1	03:12:00	03:12:00	\N	\N	336
+386	25	28/14	2014-02-18	0	10:00:00	\N	\N	\N	\N	\N	373
+379	18	22/14	2014-02-17	1	09:35:00	1	01:12:00	01:12:00	апупук	\N	334
+377	15	3/14	2014-02-12	1	15:00:00	1	12:12:00	12:12:00	\N	\N	272
+385	24	29/14	2014-02-18	0	10:30:00	\N	\N	\N	\N	\N	366
+392	18	13/14	2014-02-12	0	17:35:00	\N	\N	\N	\N	\N	336
+388	24	28/14	2014-02-18	0	15:00:00	\N	\N	\N	\N	\N	366
+389	24	28/14	2014-02-18	0	14:30:00	\N	\N	\N	\N	\N	366
+390	18	13/14	2014-02-12	0	16:35:00	\N	\N	\N	\N	\N	336
+393	18	13/14	2014-02-12	0	18:05:00	\N	\N	\N	\N	\N	336
+394	18	13/14	2014-02-12	0	18:35:00	\N	\N	\N	\N	\N	336
+395	18	13/14	2014-02-12	0	19:05:00	\N	\N	\N	\N	\N	336
+396	24	13/14	2014-02-20	0	09:00:00	\N	\N	\N	\N	\N	368
+397	24	13/14	2014-02-18	0	11:00:00	\N	\N	\N	\N	\N	366
+398	24	13/14	2014-02-18	0	11:30:00	\N	\N	\N	\N	\N	366
+399	24	22/14	2014-02-26	0	11:30:00	\N	\N	\N	\N	\N	367
+400	24	22/14	2014-02-26	0	12:00:00	\N	\N	\N	\N	\N	367
+401	25	22/14	2014-02-18	0	10:30:00	\N	\N	\N	\N	\N	373
+402	25	22/14	2014-02-18	0	11:30:00	\N	\N	\N	\N	\N	373
+308	18	13/14	2014-02-12	0	15:30:00	\N	\N	\N	\N	\N	\N
+334	20	8/13	2014-02-12	0	12:39:00	\N	\N	\N	\N	\N	351
+316	15	2/14	2014-02-07	0	15:00:00	1	05:05:00	\N	\N	\N	273
+348	24	15/14	2014-02-18	0	09:30:00	\N	\N	\N	\N	\N	366
+347	24	15/14	2014-02-18	0	12:00:00	\N	\N	\N	\N	\N	366
+372	24	28/14	2014-02-12	1	11:00:00	1	03:13:00	03:13:00	проверка	\N	367
+403	25	22/14	2014-02-18	0	07:00:00	\N	\N	\N	\N	\N	373
+404	25	22/14	2014-02-18	0	09:00:00	\N	\N	\N	\N	\N	373
+391	18	13/14	2014-02-12	1	17:05:00	1	12:13:00	12:13:00	\N	\N	336
+381	18	22/14	2014-02-17	1	11:05:00	1	12:13:00	12:13:00	\N	\N	334
+405	25	5/14	2014-02-18	0	08:00:00	\N	\N	\N	\N	\N	373
+407	25	\N	2014-02-18	0	08:30:00	\N	\N	\N	\N	75	373
+409	29	15/14	2014-02-13	0	16:00:00	\N	\N	\N	\N	\N	382
+408	29	15/14	2014-02-13	1	15:00:00	1	01:13:00	01:13:00	тест тест тест	\N	382
+410	24	28/14	2014-02-20	0	11:00:00	\N	\N	\N	\N	\N	368
+411	24	30/14	2014-02-20	0	10:30:00	\N	\N	\N	\N	\N	368
+413	23	9/14	2014-02-17	0	14:00:00	\N	\N	\N	\N	\N	358
+415	23	2/14	2014-02-17	0	15:00:00	\N	\N	\N	\N	\N	358
+412	23	9/14	2014-02-17	1	13:30:00	1	11:17:00	11:17:00	\N	\N	358
+414	23	2/14	2014-02-17	1	14:30:00	1	11:17:00	11:17:00	\N	\N	358
 \.
 
 
@@ -3713,7 +4041,7 @@ COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted,
 -- Name: doctor_shedule_by_day_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctor_shedule_by_day_id_seq', 303, true);
+SELECT pg_catalog.setval('doctor_shedule_by_day_id_seq', 415, true);
 
 
 --
@@ -3721,15 +4049,16 @@ SELECT pg_catalog.setval('doctor_shedule_by_day_id_seq', 303, true);
 --
 
 COPY doctor_shedule_setted (id, cabinet_id, employee_id, weekday, time_begin, time_end, type, day, date_id) FROM stdin;
+372	9	25	1	07:00:00	19:06:00	0	\N	70
 283	7	15	\N	08:00:00	18:00:00	1	2014-01-24	\N
 284	7	15	\N	09:00:00	19:00:00	1	2011-11-11	\N
 282	4	15	0	14:00:00	18:30:00	0	2007-12-25	52
 261	4	15	1	14:00:00	18:30:00	0	\N	52
-334	5	18	1	14:00:00	18:00:00	0	\N	63
-335	4	18	2	09:30:00	18:15:00	0	\N	63
-336	5	18	3	14:00:00	18:00:00	0	\N	63
-337	5	18	4	09:00:00	15:00:00	0	\N	63
-338	4	18	5	11:10:00	21:10:00	0	\N	63
+373	9	25	2	07:00:00	19:06:00	0	\N	70
+374	9	25	3	07:00:00	19:06:00	0	\N	70
+375	9	25	4	07:00:00	19:06:00	0	\N	70
+376	9	25	5	07:00:00	19:06:00	0	\N	70
+377	4	25	6	07:00:00	19:06:00	0	\N	70
 262	4	15	2	14:00:00	18:30:00	0	\N	52
 272	4	15	3	14:00:00	18:30:00	0	\N	52
 263	4	15	4	14:00:00	18:30:00	0	\N	52
@@ -3752,14 +4081,52 @@ COPY doctor_shedule_setted (id, cabinet_id, employee_id, weekday, time_begin, ti
 343	4	12	4	08:35:00	19:25:00	0	\N	65
 344	4	12	5	08:35:00	19:25:00	0	\N	65
 345	4	12	6	08:35:00	19:25:00	0	\N	65
+275	7	19	0	13:00:00	19:00:00	0	\N	45
+276	7	19	1	13:00:00	19:00:00	0	\N	45
+277	7	19	2	13:00:00	19:00:00	0	\N	45
+278	7	19	3	13:00:00	19:00:00	0	\N	45
+279	7	19	4	13:00:00	19:00:00	0	\N	45
+346	4	19	5	13:00:00	19:00:00	0	\N	45
+347	4	19	6	13:00:00	19:00:00	0	\N	45
 280	6	19	\N	14:00:00	19:45:00	1	2014-01-18	\N
 281	4	19	\N	12:50:00	19:50:00	1	2014-03-09	\N
-275	7	19	0	08:00:00	18:50:00	0	\N	45
-276	7	19	1	08:00:00	18:50:00	0	\N	45
-277	7	19	2	08:00:00	18:50:00	0	\N	45
-278	7	19	3	08:00:00	18:50:00	0	\N	45
-279	7	19	4	08:00:00	18:50:00	0	\N	45
+348	4	20	0	11:09:00	17:08:00	0	\N	66
+349	4	20	1	11:09:00	17:08:00	0	\N	66
+350	4	20	2	11:09:00	17:08:00	0	\N	66
+351	4	20	3	11:09:00	17:08:00	0	\N	66
+378	4	29	0	13:01:00	16:00:00	0	\N	71
+379	4	29	1	13:00:00	19:00:00	0	\N	71
+380	4	29	2	13:00:00	19:00:00	0	\N	71
+364	6	24	0	15:00:00	19:06:00	0	\N	69
+365	6	24	1	08:00:00	20:06:00	0	\N	69
+366	6	24	2	08:00:00	20:06:00	0	\N	69
+352	4	20	4	11:09:00	17:08:00	0	\N	66
+353	4	20	5	11:09:00	17:08:00	0	\N	66
+354	4	20	6	11:09:00	17:08:00	0	\N	66
+355	4	18	0	08:35:00	19:25:00	0	\N	63
+334	5	18	1	08:35:00	19:25:00	0	\N	63
+335	4	18	2	08:35:00	19:25:00	0	\N	63
+336	5	18	3	08:35:00	19:25:00	0	\N	63
+337	5	18	4	08:35:00	19:25:00	0	\N	63
+338	4	18	5	08:35:00	19:25:00	0	\N	63
+356	4	18	6	08:35:00	19:25:00	0	\N	63
 271	4	18	\N	10:00:00	13:00:00	1	2013-12-19	\N
+357	4	23	0	13:00:00	19:00:00	0	\N	68
+358	4	23	1	13:00:00	19:00:00	0	\N	68
+359	4	23	2	13:00:00	19:00:00	0	\N	68
+360	4	23	3	13:00:00	19:00:00	0	\N	68
+361	4	23	4	13:00:00	19:00:00	0	\N	68
+362	4	23	5	13:00:00	19:00:00	0	\N	68
+363	4	23	6	13:00:00	19:00:00	0	\N	68
+381	4	29	3	13:00:00	19:00:00	0	\N	71
+382	4	29	4	13:00:00	19:00:00	0	\N	71
+383	4	29	5	13:00:00	19:00:00	0	\N	71
+384	4	29	6	13:00:00	16:00:00	0	\N	71
+367	6	24	3	08:00:00	20:06:00	0	\N	69
+368	6	24	4	08:00:00	20:06:00	0	\N	69
+369	6	24	5	08:00:00	20:06:00	0	\N	69
+370	6	24	6	15:00:00	19:06:00	0	\N	69
+371	4	25	0	07:00:00	19:06:00	0	\N	70
 \.
 
 
@@ -3769,7 +4136,6 @@ COPY doctor_shedule_setted (id, cabinet_id, employee_id, weekday, time_begin, ti
 
 COPY doctor_shedule_setted_be (id, date_begin, date_end) FROM stdin;
 43	2013-11-01	2014-10-31
-45	2013-05-17	2017-02-17
 44	2013-12-01	2014-10-31
 46	2013-11-01	2016-10-31
 47	2013-11-01	2017-10-31
@@ -3788,9 +4154,16 @@ COPY doctor_shedule_setted_be (id, date_begin, date_end) FROM stdin;
 60	2014-01-28	2014-06-28
 61	2014-01-28	2014-06-28
 62	2014-01-28	2014-06-28
-63	2014-01-28	2014-06-28
 64	2014-01-31	2014-12-31
 65	2014-02-01	2015-04-04
+45	2014-02-04	2014-02-12
+66	2014-02-05	2020-02-06
+63	2014-01-28	2014-06-28
+67	2014-02-01	2015-12-24
+68	2014-02-01	2015-12-24
+69	2013-02-10	2027-02-10
+70	2014-02-12	2023-02-12
+71	2013-02-12	2030-02-13
 \.
 
 
@@ -3798,7 +4171,7 @@ COPY doctor_shedule_setted_be (id, date_begin, date_end) FROM stdin;
 -- Name: doctor_shedule_setted_be_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctor_shedule_setted_be_id_seq', 65, true);
+SELECT pg_catalog.setval('doctor_shedule_setted_be_id_seq', 71, true);
 
 
 --
@@ -3817,6 +4190,13 @@ COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, deg
 20	Мария	Степановна	Егорова	8	443	1	1	2011-02-03	2016-07-03	1
 21	Геннадий	Викторович	Хромов	9	87899	2	4	2003-12-11	2020-02-01	1
 22	Новый	Очень	Сотрудник	8		-1	-1	2014-01-15	2014-01-09	1
+23	Груша	Тимофеевна	Петрова	14		-1	-1	2014-02-11	2015-01-06	5
+24	мария	алексеевна	золотухина	15	857454	2	4	1984-02-10	2024-02-02	5
+26	Дмитрий	Дмитриевич	Дмитриев	15	315235	2	4	2009-02-10	2025-02-12	5
+27	s	s	s	7		-1	-1	2014-02-13	\N	1
+28	Игорь	Иванович	Занозов	14	87576	1	2	2009-02-11	\N	5
+25	Сергей	Сергеевич	Сергеев	14	324215	1	3	2012-02-11	\N	5
+29	Георгий	Иванов	Георгиев	14	23423	2	4	2012-02-13	\N	5
 \.
 
 
@@ -3824,14 +4204,14 @@ COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, deg
 -- Name: doctors_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctors_id_seq', 22, true);
+SELECT pg_catalog.setval('doctors_id_seq', 29, true);
 
 
 --
 -- Name: doctors_shedule_setted_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctors_shedule_setted_id_seq', 345, true);
+SELECT pg_catalog.setval('doctors_shedule_setted_id_seq', 384, true);
 
 
 --
@@ -3851,6 +4231,8 @@ COPY enterprise_params (address_fact, address_jur, phone, shortname, fullname, b
 Ул Некая, д. 13	Ул Некая, д. 13	(123)456-45-56	Поликлиника 71	Городская поликлиника 71	ВТБ	1234567	12345	54321	7	2
 4	6	8	Просто поликлиника	2	9	05656	56	65	8	1
 Где-то на Чистых прудах	Там же	(123)456-78-90	МОНИИАГ	Государственное учреждение здравоохранения "Московский областной НИИ акушерства и гинекологии"	ВТБ	1234567789	22222222	11111111	1	1
+Москва, ул.Сааапрол д.3 стр.2	Москва, ул.Сааапрол д.3 стр.2	89009009090	ГУ ГБ	Городское учреждение государственная больница	Сбербанк	3825763908561280635	439709763045	38475265	10	1
+Ленина 1	Ленина 1	+74950101001	Больничка	Больница им. Пирогова	Сбербанк	40701014438582850001	701077104737	5010403001	11	1
 \.
 
 
@@ -3858,7 +4240,7 @@ COPY enterprise_params (address_fact, address_jur, phone, shortname, fullname, b
 -- Name: enterprise_params_id; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('enterprise_params_id', 9, true);
+SELECT pg_catalog.setval('enterprise_params_id', 11, true);
 
 
 --
@@ -3933,6 +4315,7 @@ COPY files (id, filename, path, owner_id, type) FROM stdin;
 62	Patient_Patient.csv	/uploads/tasu/baf40d94fe01e48559fcc400d0cde888.csv	7	1
 63	SonicCIS Внезапный всплеск активности 2013-11-30 by Ambidexter.doc	/uploads/tasu/4578186e1c72a85e4fb77c0e5609efc2.doc	1	1
 64	price.xls	/uploads/tasu/5756afc6db3f28a8c7d95302e1ec71bf.xls	1	1
+65	00d8c88dd52a2f145510790bee52d3eb	/uploads/avatars/19/00d8c88dd52a2f145510790bee52d3eb.png	19	0
 \.
 
 
@@ -3940,7 +4323,7 @@ COPY files (id, filename, path, owner_id, type) FROM stdin;
 -- Name: files_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('files_id_seq', 64, true);
+SELECT pg_catalog.setval('files_id_seq', 65, true);
 
 
 --
@@ -3963,9 +4346,11 @@ COPY medcard_categories (id, name, parent_id) FROM stdin;
 5	I триместр	\N
 6	II триместр	\N
 7	||| триместр	\N
-8	Анамнез (беременность)	2
-9	Подкатегория	2
-10	Диагноз	9
+11	Диагноз	-1
+12	Беременности	2
+13	Беременность	12
+15	Исход беременности	13
+17	Ещё одна категория	-1
 \.
 
 
@@ -3973,7 +4358,7 @@ COPY medcard_categories (id, name, parent_id) FROM stdin;
 -- Name: medcard_categories_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_categories_id_seq', 10, true);
+SELECT pg_catalog.setval('medcard_categories_id_seq', 17, true);
 
 
 --
@@ -3981,16 +4366,27 @@ SELECT pg_catalog.setval('medcard_categories_id_seq', 10, true);
 --
 
 COPY medcard_elements (id, type, categorie_id, label, guide_id, allow_add) FROM stdin;
-2	2	2	Цвет выделений	1	0
-5	0	2	Беременностей	\N	0
-6	0	2	Контрацепция	\N	0
-7	1	3	АД	\N	0
-8	1	5	Описание	\N	0
-9	1	6	Описание	\N	0
-10	1	7	Описание	\N	0
-11	1	8	Описание беременности	\N	0
-12	2	4	На усталость	5	1
-4	3	3	Жалобы на боли	3	1
+14	0	2	Начало половой жизни с	\N	0
+15	0	2	Возраст	\N	0
+16	0	2	Рост	\N	0
+17	0	2	Вес исходный	\N	0
+18	0	2	В настоящее время	\N	0
+19	2	2	Менархе с 	9	0
+20	1	2	Комментарий	\N	0
+21	0	2	Брак по счету	\N	0
+22	2	2	Семейное положение	11	0
+23	0	2	Брак по счету	\N	0
+24	0	2	Муж	\N	0
+25	1	2	Заболевания у мужа	\N	0
+26	2	2	Внебрачные дети	10	0
+28	0	12	Аборты	\N	0
+29	0	12	Самопроизвольные выкидыши	\N	0
+27	0	12	Роды	\N	0
+30	0	12	Неразвивающиеся беременности	\N	0
+31	2	12	Прерывание	12	1
+32	0	13	№	\N	0
+33	0	13	в	\N	0
+34	2	13	Наступила	14	0
 \.
 
 
@@ -3998,7 +4394,7 @@ COPY medcard_elements (id, type, categorie_id, label, guide_id, allow_add) FROM 
 -- Name: medcard_elements_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_elements_id_seq', 12, true);
+SELECT pg_catalog.setval('medcard_elements_id_seq', 34, true);
 
 
 --
@@ -4086,6 +4482,42 @@ COPY medcard_elements_patient (medcard_id, element_id, value, history_id, change
 13/14	7	120-23	1	2014-01-22 16:55:00	151
 13/14	4	["14","12","11"]	1	2014-01-22 16:55:00	151
 13/14	12	27	1	2014-01-22 16:55:00	151
+1/14	5	2	8	2014-02-05 17:59:00	318
+1/14	4	["26"]	4	2014-02-05 17:59:00	318
+1/14	12	17	2	2014-02-05 17:59:00	318
+2/14	8		1	2014-02-06 00:35:00	317
+2/14	9		1	2014-02-06 00:35:00	317
+2/14	10		1	2014-02-06 00:35:00	317
+2/14	11		1	2014-02-06 00:35:00	317
+2/14	2	13	1	2014-02-06 00:35:00	317
+2/14	5		1	2014-02-06 00:35:00	317
+2/14	6		1	2014-02-06 00:35:00	317
+2/14	7		1	2014-02-06 00:35:00	317
+2/14	12	29	1	2014-02-06 00:35:00	317
+27/14	11		1	2014-02-06 14:35:00	325
+27/14	2	13	1	2014-02-06 14:35:00	325
+27/14	5		1	2014-02-06 14:35:00	325
+27/14	6		1	2014-02-06 14:35:00	325
+27/14	7		1	2014-02-06 14:35:00	325
+27/14	12	29	1	2014-02-06 14:35:00	325
+27/14	2	2	2	2014-02-06 14:52:00	325
+2/14	2	4	2	2014-02-07 11:33:00	317
+2/14	5	78	2	2014-02-07 11:33:00	317
+2/14	6	нг	2	2014-02-07 11:33:00	317
+2/14	7	3450	2	2014-02-07 11:33:00	317
+2/14	4	["15","14","12"]	1	2014-02-07 11:33:00	317
+2/14	12	27	2	2014-02-07 11:33:00	317
+2/14	2	2	3	2014-02-10 16:03:00	339
+2/14	7	34/50	3	2014-02-10 16:03:00	339
+2/14	4	["14","12","11","10"]	2	2014-02-10 16:03:00	339
+3/14	11		1	2014-02-12 11:18:00	165
+3/14	2	4	1	2014-02-12 11:18:00	165
+3/14	5	1	1	2014-02-12 11:18:00	165
+3/14	6	Была	1	2014-02-12 11:18:00	165
+3/14	7		1	2014-02-12 11:18:00	165
+3/14	12	29	1	2014-02-12 11:18:00	165
+13/14	11	32	2	2014-02-12 15:06:00	378
+13/14	2	2	2	2014-02-12 15:06:00	378
 \.
 
 
@@ -4094,26 +4526,21 @@ COPY medcard_elements_patient (medcard_id, element_id, value, history_id, change
 --
 
 COPY medcard_guide_values (id, guide_id, value) FROM stdin;
-2	1	Чёрные
-3	1	Серые
-4	1	Зелёные
-5	1	Коричневые
-6	1	Синие
-1	1	Белые
-10	3	Внизу живота
-11	3	Вверху живота
-12	3	С боков живота
-13	1	В крапинку
-14	3	Сверху живота
-15	3	Сбоку живота
-16	3	По центру живота
-17	5	Хроническая
-24	3	В спине
-25	3	В ноздре
-26	3	В пояснице
-27	5	Систематическая
-28	3	Головные
-29	5	Эпизодическая
+35	9	14 лет
+34	9	13 лет
+33	9	12 лет
+32	9	11 лет
+31	9	10 лет
+36	10	Есть
+37	10	Нет
+38	11	В браке
+39	11	Не замужем
+40	12	По мед. показаниям
+41	12	По соц. показаниям
+42	14	спонтанно
+43	14	после индукции
+44	14	ЭКО
+45	14	инсеменация
 \.
 
 
@@ -4121,7 +4548,7 @@ COPY medcard_guide_values (id, guide_id, value) FROM stdin;
 -- Name: medcard_guide_values_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_guide_values_id_seq', 29, true);
+SELECT pg_catalog.setval('medcard_guide_values_id_seq', 45, true);
 
 
 --
@@ -4129,11 +4556,12 @@ SELECT pg_catalog.setval('medcard_guide_values_id_seq', 29, true);
 --
 
 COPY medcard_guides (id, name) FROM stdin;
-1	Выделения
-3	Боли
-4	Мочеиспускание
-5	Усталости
-6	Психические расстройства
+9	Менархе
+10	есть-нет
+11	В браке
+12	Прерывание беременности по показа
+13	Наступление беременности
+14	Беременность наступила
 \.
 
 
@@ -4141,7 +4569,7 @@ COPY medcard_guides (id, name) FROM stdin;
 -- Name: medcard_guides_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_guides_id_seq', 6, true);
+SELECT pg_catalog.setval('medcard_guides_id_seq', 14, true);
 
 
 --
@@ -4149,7 +4577,7 @@ SELECT pg_catalog.setval('medcard_guides_id_seq', 6, true);
 --
 
 COPY medcard_templates (id, name, page_id, categorie_ids) FROM stdin;
-5	Шаблон ведения беременности	1	["5","6","7","8"]
+5	Шаблон ведения беременности	1	["5","6","7"]
 1	Шаблон приёма	0	["2","3","4"]
 \.
 
@@ -4166,7 +4594,11 @@ SELECT pg_catalog.setval('medcard_templates_id_seq', 5, true);
 --
 
 COPY medcards (insurance, privelege_code, snils, address, address_reg, doctype, serie, docnumber, who_gived, gived_date, contact, invalid_group, card_number, enterprise_id, policy_id, reg_date, work_place, work_address, post, profession, motion) FROM stdin;
+\N	\N		вапмукп	вапмукп	1	3244	124124124	упукпукп	2008-04-12	цуацуацуа	0	29/14	1	6854	2014-02-12					1
+\N	\N		мамывсвы	мамывсвы	1	2131	23132131	цавмам	2008-02-16	ывасауцауца	0	30/14	1	6855	2014-02-17					0
+\N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	2/14	1	58	2014-01-10	АВК				0
 \N	\N		Флотская	Флотская	1	43	565323	Давыдково по г.москве	1969-05-24	фвдалофж	0	8/13	1	59	2013-12-20				\N	1
+\N	\N		543534	543534	1	54334	534543	534543	2014-01-30	45454	0	20/14	1	54	2014-01-30					1
 \N	\N		Москва	Москва	1	4709	234567	ОВД	2000-11-23	91678890099	0	16/14	1	110	2014-01-20					0
 \N	\N		543	543	1	3543	5435	54353	2014-02-28	543543	0	17/14	1	6845	2014-01-28					0
 \N	\N		434	434	1	12121	4324324	243243	2014-01-30	4342	0	18/14	1	56	2014-01-29					0
@@ -4175,28 +4607,32 @@ COPY medcards (insurance, privelege_code, snils, address, address_reg, doctype, 
 \N	\N		22	11	1	11	22	22	2013-12-05	у	0	3/13	1	51	2013-12-04				\N	0
 \N	\N	111-434-444 33	22	11	1	113	223	223	2013-12-05	у	0	4/13	1	52	2013-12-04				\N	0
 \N	\N		Москва	Москва	1	123	1345677	овд	2013-12-09	1234567890	0	5/13	1	53	2013-12-09				\N	0
-\N	\N		543534	543534	1	54334	534543	534543	2014-01-30	45454	0	20/14	1	54	2014-01-30					0
 \N	\N	232-332-323-11	Ул. Новая, д.1	Ул. Новая, д.1	1	4512	1234562	ОВД	2013-12-20	555-5555-555	0	6/13	1	57	2013-12-16	Офис 450	Ул.Новая, дом 3	Секретарь	\N	0
 \N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	7/13	1	58	2013-12-17	АВК			\N	0
 \N	\N		1	1	1	а1	1	1	2014-01-23	2	0	9/13	1	60	2013-12-23				\N	0
 \N	\N	122-222-222-22	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 70	1	4510	1234567	ОМС района	2014-12-01	(555)555-55-55	0	1/14	1	49	2013-12-23	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
 \N	\N	111-111-111-11	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 71	1	4510	1234567	ОМС района	2013-12-01	(555)555-55-55	0	1/13	1	49	2013-12-24	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
-\N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	2/14	1	58	2014-01-10	АВК				0
-\N	\N	100-000-000-00	Москва	Москва	1	4798	21234211	ОВД	2010-02-01	телефон	0	3/14	1	61	2014-01-14	Москва				0
 \N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	3333333333	ОВД	2005-04-15	33333333	0	4/14	1	62	2014-01-14					0
-\N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	4534534534	ОВД	2005-04-15	33333333	0	5/14	1	63	2014-01-14					0
 \N	\N	454-545-454-54	Москва	Москва	1	1212	235467	ОФМС	2011-11-23	89678773456	0	6/14	1	64	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
 \N	\N		Москва	Москва	1	12092	235097	ОФМС	2011-11-23	89678773456	0	7/14	1	65	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
-\N	\N		Москва	Москва	1	233908444	545676	ОФМС	2011-11-23	89678773456	0	9/14	1	67	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
 \N	\N		Москва	Москва	1	2112444	509976	ОФМС	2011-11-23	89678773456	0	10/14	1	68	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
 \N	\N		москва	москва	1	3232	456765	уфмс	2012-09-06	2323232323	0	11/14	1	69	2014-01-15	мгсу	ул. ак.королева	лаборант		0
 \N	\N		москва	брянск	1	2345	21769	уфмс	2009-09-23	323232	0	12/14	1	70	2014-01-15					0
 \N	\N		Москва	Москва	1	3423	212343	УФМС	2009-09-09	8946545454	0	14/14	1	72	2014-01-20					0
-\N	\N		москва	москва	1	32323	343434	овд	2007-12-13	656565	0	15/14	1	73	2014-01-20					0
 \N	\N		Одинцово	Одинцово	1	2345	13445566	ОВД	2013-10-01	20985	0	21/14	1	6846	2014-01-31					\N
 \N	\N		Москва	Москва	1	2339084444444	545676	ОФМС	2011-11-23	89678773456	0	8/14	1	66	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	1
+\N	\N	100-000-000-00	Москва	Москва	1	4798	21234211	ОВД	2010-02-01	телефон	0	3/14	1	61	2014-01-14	Москва				1
+\N	\N		москва	москва	1	32323	343434	овд	2007-12-13	656565	0	15/14	1	73	2014-01-20					1
+\N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	4534534534	ОВД	2005-04-15	33333333	0	5/14	1	63	2014-01-14					1
+\N	\N		Болшево	Болшево	1	2309	3456187	ОВД	2008-01-26	903897655411	0	23/14	1	6848	2014-02-03	Офис		\\начальник		\N
+\N	\N		уорыравпва купукп п	уорыравпва купукп п	1	6543	636236	АЕОРОВМ ПЦЫП КУР ЕР Е	2012-02-02	4363462	0	24/14	1	6849	2014-02-03					\N
+\N	\N		цку	цку	1	3445	235235	аркрапиа	2014-02-02	уцкцукцу	0	25/14	1	6850	2014-02-03	цукцук				\N
+\N	\N		лорпав	лорпав	1	875	96543	джэлоритмсч	2014-02-02	щшоправ	0	26/14	1	6851	2014-02-03					\N
+\N	\N	123-413-424-24	г. Москва	г. Москва	1	0101	0123456	ФМС	2008-11-28	нет	1	27/14	1	6852	2014-02-06					\N
 \N	\N		выпыкркц	выпыкркц	1	4564	456778	вафыпватрврв	2014-02-04	97542478	0	22/14	1	6847	2014-02-03	авк				1
-\N	\N	141-963-887-90	МО Железнодорожный	МО Железнодорожный	1	4607	352696	ОВД	2006-07-26	9169233006	0	13/14	1	71	2014-01-17	АВК	Москва	Начальник	Начальник	1
+\N	\N	324-234-325-25	пвапукп	пвапукп	1	5462	54365634	кевоапот	2000-02-10	523253252	3	28/14	1	6853	2014-02-10	упукфпкп	кппукп	фкпкупукпп	укппкупукп	1
+\N	\N	141-963-887-90	МО Железнодорожный	МО Железнодорожный	1	4607	352696	ОВД	2006-07-26	9169233006	0	13/14	1	71	2014-02-10	АВК	Москва	Начальник	Начальник	1
+\N	\N		Москва	Москва	1	233908444	545676	ОФМС	2011-11-23	89678773456	0	9/14	1	67	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
 \.
 
 
@@ -4210,17 +4646,58 @@ COPY mediate_patients (id, first_name, middle_name, last_name, phone) FROM stdin
 3	Имя	Отчество	Фамилия	111-222-444
 4	ы	в	ы	а
 5	Опосредованный	С-отчеством	Некто	И телефоном
-6	А	И	Ф	589675876
 7	Роза 	Тюльпановна	Клевер	111(33)44
 9	средова	нный	Яопо	пациент
 10	ц	ц	й	4343
 12	Фатима		Баклажонова	916 477 8866
-14	Мария	Алексеевна	Золотухина	8-900-000-00-00
-15	Мария	Алексеевна	Золотухина	8-900-000-00-00
-16	Мария	Алексеевна	Золотухина	8-900-000-00-00
-17	Тамара	ивановна	Игнатова	9-00000000000000000
 18	Лера	Ивановна	Игнатова	89098578696
-19	ИЛЫВИМЫВЛ	рицвимвы	боифыавпло	98478565
+20	ИВАН	ИВАНОВИЧ	иванов	85764685
+21	ИВАН	ИВАНОВИЧ	иванов	85764685
+22	иван	юрьевич	родионов	346585
+24	Инна	Игнатьевна	Короткова	90523498765
+25	Опосредованный	Пациент	Новый	111-11-22
+26	с	ф	ф	ыфыфыф
+31	первый	первый	первый	98767654635
+32	тынц	тынц	тынцтынц	78909876578
+33	тынц	тынц	тынцтынц	78909876578
+34	тынц	тынц	тынцтынц	78909876578
+36	выаиа	иыпиап	аырри	4362456426
+38	лоала	порм	ораеа	75763652456
+39	лоала	порм	ораеа	75763652456
+40	Иван	Иванович	Иванов	79008765432
+41	Иван	Иванович	Иванов	79008765432
+42	Иван	Иванович	Иванов	79008765432
+43	Иван	Иванович	Иванов	79008765432
+44	Иван	Иванович	Иванов	79008765432
+47	руыирыи	ыииу	атрыерт	6346346346
+48	руыирыи	ыииу	атрыерт	6346346346
+49	руыирыи	ыииу	атрыерт	6346346346
+50	руыирыи	ыииу	атрыерт	6346346346
+51	руыирыи	ыииу	атрыерт	6346346346
+52	руыирыи	ыииу	атрыерт	6346346346
+53	руыирыи	ыииу	атрыерт	6346346346
+54	руыирыи	ыииу	атрыерт	6346346346
+55	руыирыи	ыииу	атрыерт	6346346346
+56	руыирыи	ыииу	атрыерт	6346346346
+57	руыирыи	ыииу	атрыерт	6346346346
+58	руыирыи	ыииу	атрыерт	6346346346
+59	руыирыи	ыииу	атрыерт	6346346346
+60	руыирыи	ыииу	атрыерт	6346346346
+61	руыирыи	ыииу	атрыерт	6346346346
+62	руыирыи	ыииу	атрыерт	6346346346
+63	руыирыи	ыииу	атрыерт	6346346346
+64	руыирыи	ыииу	атрыерт	6346346346
+65	руыирыи	ыииу	атрыерт	6346346346
+66	руыирыи	ыииу	атрыерт	6346346346
+67	руыирыи	ыииу	атрыерт	6346346346
+68	руыирыи	ыииу	атрыерт	6346346346
+69	руыирыи	ыииу	атрыерт	6346346346
+70	Иван	Васильевич	Зитко	30983209832
+71	Иван	Васильевич	Зитко	30983209832
+72	Иван	Васильевич	Зитко	30983209832
+73	Иван	Васильевич	Зитко	30983209832
+74	новый	новый	новый	34567
+75	новый	новый	новый	34567
 \.
 
 
@@ -4228,7 +4705,7 @@ COPY mediate_patients (id, first_name, middle_name, last_name, phone) FROM stdin
 -- Name: mediate_patients_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('mediate_patients_id_seq', 19, true);
+SELECT pg_catalog.setval('mediate_patients_id_seq', 77, true);
 
 
 --
@@ -4241,6 +4718,8 @@ COPY medpersonal (id, name, type, is_for_pregnants, payment_type) FROM stdin;
 8	Медсестра	3	0	0
 9	Травматолог	2	1	1
 5	Главврач	1	0	0
+14	Окулист	2	0	0
+15	Эндокринолог	2	1	1
 \.
 
 
@@ -4248,7 +4727,7 @@ COPY medpersonal (id, name, type, is_for_pregnants, payment_type) FROM stdin;
 -- Name: medpersonal_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medpersonal_id_seq', 13, true);
+SELECT pg_catalog.setval('medpersonal_id_seq', 15, true);
 
 
 --
@@ -4267,6 +4746,43 @@ COPY medpersonal_types (id, name) FROM stdin;
 --
 
 SELECT pg_catalog.setval('medpersonal_types_id_seq', 3, true);
+
+
+--
+-- Data for Name: menu_pages; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY menu_pages (id, name, url, priority) FROM stdin;
+1	Поиск пациента	/reception/patient/viewsearch	\N
+4	Создание пациента	/reception/patient/viewadd	\N
+5	Запись пациента	/reception/patient/writepatientstepone	\N
+7	Расписание врачей	/reception/shedule/view	\N
+10	Просмотр ЭМК	/doctors/patient/viewsearch	\N
+11	Загрузка в ТАСУ	/admin/tasu/viewin	\N
+12	Загрузка из ТАСУ	/admin/tasu/view	\N
+13	Отчётность	/statistic/index/view	\N
+14	Справочники	/guides/enterprises/view	\N
+15	Настройка правил приёма	/admin/modules/shedulesettings	\N
+16	Шаблоны	/admin/templates/view	\N
+17	Справочники (администрирование)	/admin/guides/allview	\N
+18	МКБ-10	/admin/diagnosis/mkb10view	\N
+19	Любимые диагнозы	/admin/diagnosis/allview	\N
+20	Диагнозы для распределения пациентов	/admin/diagnosis/distribview	\N
+22	Настройка календаря	/admin/shedule/viewrest	\N
+23	Профиль	/settings/profile/view	\N
+24	Система	/settings/system/view	2
+8	Приём пациентов	/doctors/shedule/view	3
+9	Массовая печать	/doctors/print/massprintview	4
+25	Логи	/admin/logs/view	5
+21	Пользователи, роли, права	/admin/users/view	1
+\.
+
+
+--
+-- Name: menu_pages_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('menu_pages_id_seq', 26, true);
 
 
 --
@@ -16589,6 +17105,7 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, 
 71	Ольга	Вадимовна	Бондарева	5058830873001747	0	1961-01-26	0	2011-05-10	\N	\N
 72	Маргарита	Павловна	Сушкина	676767	0	1984-12-29	0	2007-09-03	\N	\N
 73	Мария	Викторовна	Кроина	3434342	0	0198-12-12	0	2008-09-09	\N	\N
+267	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 51	К		К	к	1	2013-12-05	0	\N	\N	\N
 52	КаВв	КаВв	Ка-Вв	1234	1	2013-12-05	0	\N	\N	\N
 53	Ольга		Бондарева	34567899	0	1987-01-01	0	\N	\N	\N
@@ -16598,9 +17115,1199 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, 
 58	Игорь	Владимирович	Хитров	111111111111111111111111111	0	1990-02-12	0	\N	\N	\N
 56	Нарциссовн	Клевера	Роз	123468	0	1969-11-18	1	2014-01-23	2015-10-23	1
 59	Иван	Иванович	Иванов	231312 1231 1231	1	1969-05-24	0	\N	\N	\N
+268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 50	Иван	Иванович	Иванов	765-45-321	0	1990-12-12	0	2014-02-28	\N	0
 6846	Дильфуза	Каримовна	Баклажанова	3456789098765432	0	1980-01-31	0	2014-01-01	\N	0
+269	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
 6847	Мария	Алексеевна	Золотухина	98723873295	0	2014-02-02	0	2014-02-04	\N	0
+6848	Инна	Игнатьевна	Короткова	1234567890987654	0	1990-02-15	0	2012-12-23	\N	0
+6849	Светлана	Аркадиевна	ИВАНОВА	85730284	0	2010-02-02	0	2012-03-02	\N	0
+6850	Александр	Алексанрович	Новиков	53245	0	2007-02-02	0	2004-02-02	\N	0
+6851	Роман	РОМАНОВИЧ	Романов	6533	1	2014-02-02	0	2014-02-02	\N	0
+60	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+74	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+75	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+76	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+77	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+78	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+80	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+92	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+153	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+154	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+155	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+156	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+157	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+158	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+159	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+160	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+161	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+162	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+164	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+165	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+166	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+167	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+168	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+169	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+170	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+171	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+172	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+173	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+174	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+175	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+176	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+178	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+180	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+253	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+254	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+255	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+256	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+257	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+258	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+259	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+260	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+261	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+262	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+264	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+265	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+266	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+270	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+271	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+273	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+274	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+275	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+276	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+353	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+354	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+355	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+356	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+358	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+359	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+360	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+361	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+362	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+363	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+364	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+365	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+366	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+367	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+368	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+369	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+370	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+371	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+372	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+373	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+374	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+375	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+376	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+452	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+453	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+454	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+455	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+456	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+457	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+458	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+459	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+460	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+461	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+462	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+464	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+465	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+466	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+467	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+468	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+469	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+470	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+471	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+472	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+473	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+474	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+475	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+476	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+553	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+554	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+555	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+556	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+557	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+558	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+559	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+560	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+561	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+562	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+563	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+564	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+565	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+566	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+567	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+568	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+569	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+570	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+571	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+572	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+573	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+574	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+575	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+576	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+652	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+654	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+655	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+656	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+657	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+658	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+659	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+660	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+661	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+662	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+663	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+664	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+665	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+666	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+667	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+668	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+669	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+670	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+671	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+672	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+673	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+674	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+675	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+676	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+752	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+753	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+755	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+756	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+757	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+758	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+759	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+760	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+761	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+762	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+763	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+764	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+765	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+766	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+767	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+768	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+769	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+770	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+771	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+772	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+773	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+774	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+775	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+776	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+852	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+853	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+854	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+855	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+856	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+857	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+858	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+859	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+860	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+861	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+862	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+863	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+864	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+865	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+866	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+867	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+868	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+869	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+870	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+871	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+872	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+873	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+874	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+875	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+876	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+953	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+954	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+955	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+956	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+957	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+958	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+959	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+960	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+961	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+962	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+963	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+964	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+965	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+966	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+967	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+968	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+969	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+970	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+971	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+972	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+973	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+974	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+975	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+976	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1053	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1054	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1055	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1056	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1057	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1058	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1059	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1060	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1061	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1062	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1063	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1064	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1065	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1066	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1067	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1069	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1071	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1072	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1073	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1074	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1075	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1152	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1153	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1154	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1156	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1157	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1158	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1159	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1160	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1161	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1162	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1164	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1165	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1166	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1167	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1168	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1169	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1170	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1171	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1172	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1173	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1174	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1175	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1252	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1253	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1254	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1255	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1256	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1257	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1258	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1259	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1260	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1261	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1262	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1263	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1264	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1265	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1266	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1267	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1269	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1270	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1271	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1272	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1273	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1274	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1275	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1352	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1353	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1354	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1355	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1356	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1357	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1358	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1359	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1360	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1361	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1362	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1363	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1364	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1366	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1367	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1368	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1369	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1370	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1371	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1372	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1373	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1374	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1375	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1453	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1454	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1456	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1457	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1458	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1459	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1460	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1461	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1462	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1463	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1464	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1465	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1466	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1467	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1468	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1469	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1470	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1471	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1472	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1473	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1474	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1475	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1552	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1553	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1554	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1555	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1556	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1557	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1558	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1559	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1560	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1561	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1562	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1563	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1564	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1565	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1566	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1567	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1568	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1569	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1570	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1571	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1572	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1573	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1574	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1575	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1652	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1653	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1654	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1655	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1656	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1657	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1658	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1659	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1660	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1662	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1663	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1664	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1665	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1666	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1667	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1668	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1669	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1670	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1671	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1672	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1673	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1674	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1675	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1752	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1753	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1754	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1755	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1756	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1757	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1758	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1759	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1760	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1761	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1762	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1763	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1764	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1765	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1766	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1767	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1768	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1769	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1770	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1771	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1772	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1773	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1774	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1775	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1852	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1853	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1854	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1855	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1856	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1857	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1858	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1859	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1860	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1861	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1862	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1863	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1864	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1865	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1867	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1868	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1869	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1870	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1871	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1872	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1873	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1874	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1952	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1953	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1954	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1955	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1956	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1957	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1958	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1959	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1960	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1961	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1962	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1963	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1964	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1965	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1966	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1967	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1968	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1969	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1970	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1971	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1972	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1973	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+1974	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2052	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2053	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2054	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2055	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2056	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2057	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2058	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2059	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2060	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2061	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2062	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2063	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2065	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2066	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2067	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2068	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2069	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2070	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2071	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2072	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2073	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2074	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2152	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2153	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2154	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2155	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2156	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2157	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2158	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2159	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2160	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2161	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2162	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2164	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2165	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2166	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2167	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2168	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2169	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2170	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2171	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2172	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2173	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2174	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2252	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2253	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2255	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2256	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2257	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2258	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2259	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2260	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2261	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2262	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2263	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2264	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2265	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2269	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2270	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2271	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2272	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2273	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2274	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2352	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2353	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2354	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2355	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2356	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2357	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2358	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2359	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2360	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2361	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2362	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2363	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2364	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2365	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2366	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2367	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2368	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2369	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2370	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2371	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2372	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2373	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2374	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2452	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2453	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2454	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2455	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2456	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2457	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2458	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2459	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2460	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2461	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2462	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2463	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2464	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2465	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2466	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2467	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2468	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2469	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2470	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2471	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2472	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2474	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2552	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2553	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2554	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2555	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2556	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2557	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2558	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2559	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2560	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2561	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2562	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2563	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2564	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2565	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2566	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2567	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2568	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2569	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2570	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2571	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2572	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2574	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2652	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2654	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2655	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2656	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2657	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2658	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2660	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2661	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2662	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2663	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2664	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2665	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2666	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2667	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2668	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2669	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2670	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2671	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2672	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2674	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2752	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2753	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2754	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2755	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2756	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2757	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2758	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2759	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2761	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2762	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2763	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2764	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2765	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2766	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2767	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2768	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2769	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2770	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2771	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2772	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2774	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2853	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2854	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2855	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2856	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2857	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2858	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2859	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2860	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2861	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2862	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2863	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2864	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2865	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2866	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2867	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2868	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2869	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2870	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2871	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2872	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2874	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2952	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2953	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2954	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2955	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2956	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2957	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2958	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2959	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2960	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2961	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2962	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2963	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2964	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2965	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2966	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2967	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2968	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2969	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2970	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2972	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+2974	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3052	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3053	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3054	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3055	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3056	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3057	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3058	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3059	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3060	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3061	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3062	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3063	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3064	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3065	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3066	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3067	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3068	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3069	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3070	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3071	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3072	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3074	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3152	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3153	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3154	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3155	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3156	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3157	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3158	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3159	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3160	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3161	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3162	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3163	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3164	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3165	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3166	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3167	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3168	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3169	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3170	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3171	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3172	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3174	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3252	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3253	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3254	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3255	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3256	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3257	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3258	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3259	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3260	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3263	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3264	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3265	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3266	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3267	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3269	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3270	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3271	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3272	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3274	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3352	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3353	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3354	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3355	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3356	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3357	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3358	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3359	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3360	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3361	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3362	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3363	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3364	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3365	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3366	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3367	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3368	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3369	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3370	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3371	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3372	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3374	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3452	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3453	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3454	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3455	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3456	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3457	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3458	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3459	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3460	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3461	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3462	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3463	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3464	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3465	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3466	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3467	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3468	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3469	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3470	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3471	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3472	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3474	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3552	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3553	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3554	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3555	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3556	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3557	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3558	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3559	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3560	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3561	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3562	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3563	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3564	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3566	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3567	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3568	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3569	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3570	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3571	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3572	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3574	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3652	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3654	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3655	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3656	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3657	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3658	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3659	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3660	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3661	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3662	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3663	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3664	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3665	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3666	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3667	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3668	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3669	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3670	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3671	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3672	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3674	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3752	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3753	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3754	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3756	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3757	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3758	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3759	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3760	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3761	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3762	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3763	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3764	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3765	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3766	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3767	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3768	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3769	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3770	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3771	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3772	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3774	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3852	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3853	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3854	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3855	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3856	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3857	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3858	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3859	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3860	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3861	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3862	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3863	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3864	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3865	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3866	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3867	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3868	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3869	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3870	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3871	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3872	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3874	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3952	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3953	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3954	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3955	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3956	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3957	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3958	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3959	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3960	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3961	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3962	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3963	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3964	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3965	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3966	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3967	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3968	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3969	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3970	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3971	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3972	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+3974	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4052	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4053	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4054	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4055	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4056	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4057	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4058	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4059	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4060	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4061	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4062	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4063	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4064	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4065	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4066	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4067	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4068	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4069	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4070	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4071	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4072	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4153	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4154	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4155	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4156	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4157	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4158	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4159	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4160	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4161	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4162	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4163	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4164	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4165	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4166	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4167	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4168	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4169	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4170	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4171	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4172	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4253	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4254	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4255	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4256	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4257	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4258	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4259	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4260	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4261	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4262	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4263	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4264	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4265	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4266	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4267	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4269	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4270	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4271	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4272	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4352	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4353	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4354	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4355	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4356	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4357	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4358	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4359	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4360	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4361	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4362	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4363	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4364	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4365	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4366	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4367	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4368	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4369	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4370	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4371	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4372	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4452	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4453	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4454	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4455	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4456	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4457	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4458	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4459	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4460	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4461	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4462	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4463	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4464	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4465	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4466	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4467	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4468	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4469	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4470	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4471	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4472	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4552	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4553	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4554	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4555	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4556	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4557	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4558	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4559	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4560	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4561	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4562	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4563	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4564	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4565	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4566	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4567	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4568	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4569	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4570	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4571	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4572	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4652	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4653	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4654	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4655	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4656	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4657	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4658	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4659	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4660	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4661	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4662	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4663	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4664	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4665	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4666	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4667	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4668	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4669	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4670	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4671	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4672	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4752	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4753	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4754	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4755	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4756	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4757	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4758	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4759	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4760	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4761	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4762	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4763	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4764	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4765	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4766	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4767	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4768	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4769	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4770	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4771	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4772	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4852	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4853	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4854	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4855	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4856	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4857	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4858	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4859	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4860	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4861	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4862	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4863	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4864	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4865	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4866	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4867	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4868	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4869	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4870	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4871	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4872	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4952	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4953	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4954	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4955	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4956	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4957	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4958	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4959	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4960	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4961	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4962	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4963	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4964	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4965	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4966	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4967	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4968	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4969	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4970	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4971	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+4972	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5052	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5053	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5054	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5055	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5056	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5057	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5058	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5059	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5060	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5061	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5062	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5063	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5064	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5065	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5066	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5067	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5068	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5069	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5071	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5072	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5152	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5153	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5154	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5155	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5156	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5157	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5158	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5159	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5160	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5161	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5162	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5163	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5164	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5165	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5166	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5167	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5168	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5169	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5170	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5171	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5172	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5252	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5253	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5254	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5255	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5256	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5257	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5259	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5260	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5261	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5262	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5263	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5264	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5265	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5266	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5267	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5269	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5270	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5271	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5272	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5352	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5353	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5354	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5355	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5356	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5357	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5358	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5359	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5360	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5361	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5362	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5363	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5364	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5365	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5366	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5367	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5368	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5369	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5370	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5371	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5372	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5452	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5453	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5454	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5455	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5456	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5457	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5458	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5459	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5460	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5461	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5462	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+5463	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
+6852	Делберт	Рэй	Фалкерсон	123456	1	1924-08-14	0	2013-08-30	\N	0
+6853	Анна	Илларионовна	Иванова	98347698376	0	1994-02-10	0	1996-02-10	\N	0
+6854	Ложка	ЛОЖКОВИЧ	Ложкин	46523	1	1965-12-10	0	1993-12-10	\N	0
+6855	Степан	Иванович	Добрый	756576589	1	1981-01-16	0	2007-02-17	\N	0
 \.
 
 
@@ -16608,7 +18315,7 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, 
 -- Name: oms_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('oms_id_seq', 6847, true);
+SELECT pg_catalog.setval('oms_id_seq', 6855, true);
 
 
 --
@@ -16650,6 +18357,7 @@ COPY privileges (id, name, code) FROM stdin;
 7	Участник Чернобыля	1
 8	Ветеран войны	2
 9	Инвалид	3
+10	Льготник	13
 \.
 
 
@@ -16657,7 +18365,7 @@ COPY privileges (id, name, code) FROM stdin;
 -- Name: privileges_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('privileges_id_seq', 9, true);
+SELECT pg_catalog.setval('privileges_id_seq', 10, true);
 
 
 --
@@ -16667,6 +18375,8 @@ SELECT pg_catalog.setval('privileges_id_seq', 9, true);
 COPY privileges_per_patient (id, patient_id, privilege_id, docname, docnumber, docserie, docgivedate) FROM stdin;
 2	60	7	1	2	2	2013-12-24
 3	49	9	Документ инвалида	111222111	1111	2014-01-24
+4	6852	9	документ	номер	серия	2011-11-11
+5	6853	8	325235цукауа	234234234	324234	1992-02-10
 \.
 
 
@@ -16674,7 +18384,40 @@ COPY privileges_per_patient (id, patient_id, privilege_id, docname, docnumber, d
 -- Name: privileges_per_patient_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('privileges_per_patient_id_seq', 3, true);
+SELECT pg_catalog.setval('privileges_per_patient_id_seq', 5, true);
+
+
+--
+-- Data for Name: quick_panel; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY quick_panel (id, user_id, href, icon) FROM stdin;
+38	1	http://moniiag.toonftp.ru/index.php/reception/patient/writepatientstepone	/images/icons/1.1.jpg
+39	1	http://mis.my/index.php/doctors/print/massprintview	/images/icons/2.3.jpg
+42	1	http://moniiag.toonftp.ru/index.php/reception/patient/viewadd	/images/icons/1.2.jpg
+43	1	http://moniiag.toonftp.ru/index.php/reception/patient/index	/images/icons/icon_sample.png
+\.
+
+
+--
+-- Name: quick_panel_href_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('quick_panel_href_seq', 1, false);
+
+
+--
+-- Name: quick_panel_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('quick_panel_id_seq', 50, true);
+
+
+--
+-- Name: quick_panel_user_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('quick_panel_user_id_seq', 1, false);
 
 
 --
@@ -16682,26 +18425,118 @@ SELECT pg_catalog.setval('privileges_per_patient_id_seq', 3, true);
 --
 
 COPY role_action (role_id, action_id) FROM stdin;
-11	2
-11	3
-11	4
-11	5
-11	6
-11	7
-11	8
-11	9
-11	10
-11	11
-11	12
-11	13
-11	14
-11	15
+14	2
+14	5
+14	13
+14	16
+14	23
+14	24
+14	25
+14	26
+14	27
+14	28
+14	11
+14	12
+14	50
+21	2
+21	3
+21	5
 1	2
 1	1
 1	4
 13	3
 13	4
 13	5
+21	7
+21	10
+21	19
+21	20
+21	22
+21	23
+21	24
+21	25
+21	26
+21	27
+21	28
+21	6
+21	11
+21	12
+21	50
+21	51
+15	2
+15	7
+15	16
+15	17
+15	18
+15	19
+15	20
+15	21
+15	22
+15	23
+15	24
+15	25
+15	26
+15	27
+15	28
+15	32
+15	33
+15	34
+15	35
+15	36
+15	37
+12	2
+12	3
+12	4
+12	5
+12	6
+12	7
+12	8
+12	9
+12	10
+12	12
+12	14
+12	15
+12	18
+12	19
+12	20
+15	38
+15	39
+15	40
+15	41
+15	42
+15	43
+15	46
+15	49
+15	1
+15	11
+15	12
+12	23
+12	24
+12	26
+12	27
+12	28
+12	40
+12	41
+12	42
+18	2
+18	3
+18	4
+18	5
+18	21
+18	23
+18	26
+16	44
+16	49
+11	68
+11	2
+11	69
+11	3
+11	5
+11	7
+11	10
+11	13
+11	14
+11	15
 11	16
 11	17
 11	18
@@ -16736,74 +18571,26 @@ COPY role_action (role_id, action_id) FROM stdin;
 11	47
 11	48
 11	1
-15	2
-15	7
-15	11
-15	12
-15	16
-15	17
-15	18
-15	19
-15	20
-15	21
-15	22
-15	23
-15	24
-15	25
-15	26
-15	27
-15	28
-15	32
-15	33
-15	34
-15	35
-15	36
-15	37
-15	38
-15	39
-15	40
-15	41
-15	42
-15	43
-15	46
-15	49
-15	1
-12	2
-12	3
-12	4
-12	5
-12	6
-12	7
-12	8
-12	9
-12	10
-12	12
-12	14
-12	15
-12	18
-12	19
-12	20
-12	23
-12	24
-12	26
-12	27
-12	28
-12	40
-12	41
-12	42
-18	2
-18	3
-18	4
-18	5
-18	21
-18	23
-18	26
-16	44
-16	49
-14	5
-14	11
-14	12
-14	13
+11	6
+11	11
+11	12
+11	50
+11	51
+11	52
+11	53
+11	54
+11	55
+11	56
+11	57
+11	58
+11	60
+11	61
+11	62
+11	63
+11	64
+11	65
+11	66
+11	67
 \.
 
 
@@ -16819,12 +18606,25 @@ COPY role_to_user (user_id, role_id) FROM stdin;
 1	18
 1	15
 1	11
-9	18
 7	11
 13	16
 16	18
 16	16
 16	14
+9	18
+19	14
+18	14
+21	18
+17	16
+17	15
+15	16
+14	14
+23	21
+24	11
+25	14
+26	13
+22	14
+27	14
 \.
 
 
@@ -16832,15 +18632,16 @@ COPY role_to_user (user_id, role_id) FROM stdin;
 -- Data for Name: roles; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY roles (id, name, parent_id) FROM stdin;
-1	Администратор	-1
-13	Регистратура	-1
-11	Супервайзер	-1
-15	Главврач	-1
-12	Call-Center	-1
-18	Тестирование	-1
-16	Отдел статистики	-1
-14	Врач	-1
+COPY roles (id, name, parent_id, startpage_id) FROM stdin;
+1	Администратор	-1	\N
+13	Регистратура	-1	\N
+12	Call-Center	-1	\N
+18	Тестирование	-1	\N
+16	Отдел статистики	-1	\N
+21	Врач спц	-1	8
+15	Главврач	-1	4
+11	Супервайзер	-1	21
+14	Врач	-1	8
 \.
 
 
@@ -16848,7 +18649,7 @@ COPY roles (id, name, parent_id) FROM stdin;
 -- Name: roles_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('roles_id_seq', 19, true);
+SELECT pg_catalog.setval('roles_id_seq', 21, true);
 
 
 --
@@ -16912,14 +18713,15 @@ COPY shedule_rest_days (id, date) FROM stdin;
 85	2015-02-16 00:00:00
 86	2015-02-19 00:00:00
 87	2015-02-20 00:00:00
-88	2016-02-03 00:00:00
-89	2016-02-10 00:00:00
-90	2016-03-09 00:00:00
 154	2014-03-10 00:00:00
 155	2014-05-01 00:00:00
 156	2014-05-02 00:00:00
 157	2014-05-09 00:00:00
 158	2014-06-12 00:00:00
+159	2016-02-03 00:00:00
+160	2016-02-10 00:00:00
+161	2016-03-09 00:00:00
+162	2016-09-08 00:00:00
 \.
 
 
@@ -16927,7 +18729,7 @@ COPY shedule_rest_days (id, date) FROM stdin;
 -- Name: shedule_rest_days_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('shedule_rest_days_id_seq', 158, true);
+SELECT pg_catalog.setval('shedule_rest_days_id_seq', 162, true);
 
 
 --
@@ -16938,6 +18740,10 @@ COPY shifts (id, time_begin, time_end) FROM stdin;
 9	11:11:00	12:12:00
 8	08:35:00	19:25:00
 6	10:10:00	18:37:00
+10	08:00:00	12:30:00
+11	13:00:00	19:00:00
+12	11:09:00	17:08:00
+13	07:00:00	19:06:00
 \.
 
 
@@ -16945,7 +18751,7 @@ COPY shifts (id, time_begin, time_end) FROM stdin;
 -- Name: shifts_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('shifts_id_seq', 9, true);
+SELECT pg_catalog.setval('shifts_id_seq', 13, true);
 
 
 --
@@ -17008,6 +18814,305 @@ COPY tituls (id, name) FROM stdin;
 3	Член-корреспондент
 4	Профессор
 -1	
+56	\N
+57	\N
+58	\N
+59	\N
+60	\N
+61	\N
+62	\N
+64	\N
+65	\N
+66	\N
+67	\N
+68	\N
+69	\N
+70	\N
+71	\N
+72	\N
+73	\N
+74	\N
+75	\N
+76	\N
+77	\N
+78	\N
+80	\N
+92	\N
+153	\N
+154	\N
+155	\N
+156	\N
+157	\N
+158	\N
+159	\N
+160	\N
+161	\N
+162	\N
+164	\N
+165	\N
+166	\N
+167	\N
+168	\N
+169	\N
+170	\N
+171	\N
+172	\N
+173	\N
+174	\N
+175	\N
+176	\N
+178	\N
+180	\N
+253	\N
+254	\N
+255	\N
+256	\N
+257	\N
+258	\N
+259	\N
+260	\N
+261	\N
+262	\N
+264	\N
+265	\N
+266	\N
+267	\N
+268	\N
+269	\N
+270	\N
+271	\N
+273	\N
+274	\N
+275	\N
+276	\N
+353	\N
+354	\N
+355	\N
+356	\N
+358	\N
+359	\N
+360	\N
+361	\N
+362	\N
+363	\N
+364	\N
+365	\N
+366	\N
+367	\N
+368	\N
+369	\N
+370	\N
+371	\N
+372	\N
+373	\N
+374	\N
+375	\N
+376	\N
+452	\N
+453	\N
+454	\N
+455	\N
+456	\N
+457	\N
+6	\N
+458	\N
+459	\N
+460	\N
+461	\N
+462	\N
+464	\N
+465	\N
+466	\N
+467	\N
+468	\N
+469	\N
+470	\N
+471	\N
+472	\N
+473	\N
+474	\N
+475	\N
+476	\N
+553	\N
+554	\N
+555	\N
+556	\N
+557	\N
+558	\N
+559	\N
+560	\N
+561	\N
+562	\N
+563	\N
+564	\N
+565	\N
+566	\N
+567	\N
+568	\N
+569	\N
+570	\N
+571	\N
+572	\N
+573	\N
+574	\N
+575	\N
+576	\N
+652	\N
+654	\N
+655	\N
+656	\N
+657	\N
+658	\N
+659	\N
+660	\N
+661	\N
+662	\N
+663	\N
+664	\N
+665	\N
+666	\N
+667	\N
+668	\N
+669	\N
+670	\N
+671	\N
+672	\N
+673	\N
+674	\N
+675	\N
+676	\N
+752	\N
+753	\N
+755	\N
+756	\N
+757	\N
+758	\N
+759	\N
+760	\N
+761	\N
+762	\N
+763	\N
+764	\N
+765	\N
+766	\N
+767	\N
+768	\N
+769	\N
+770	\N
+771	\N
+772	\N
+773	\N
+774	\N
+775	\N
+776	\N
+852	\N
+853	\N
+854	\N
+855	\N
+856	\N
+857	\N
+858	\N
+859	\N
+860	\N
+861	\N
+862	\N
+863	\N
+864	\N
+865	\N
+866	\N
+867	\N
+868	\N
+869	\N
+870	\N
+871	\N
+872	\N
+873	\N
+874	\N
+875	\N
+876	\N
+953	\N
+954	\N
+955	\N
+956	\N
+957	\N
+958	\N
+959	\N
+960	\N
+961	\N
+962	\N
+963	\N
+964	\N
+965	\N
+966	\N
+967	\N
+968	\N
+969	\N
+970	\N
+971	\N
+972	\N
+973	\N
+974	\N
+975	\N
+976	\N
+1053	\N
+1054	\N
+1055	\N
+1056	\N
+1057	\N
+1058	\N
+1059	\N
+1060	\N
+1061	\N
+1062	\N
+1063	\N
+1064	\N
+1065	\N
+1066	\N
+1067	\N
+1069	\N
+1071	\N
+1072	\N
+1073	\N
+1074	\N
+1075	\N
+1152	\N
+1153	\N
+1154	\N
+1156	\N
+1157	\N
+1158	\N
+1159	\N
+1160	\N
+1161	\N
+1162	\N
+1164	\N
+1165	\N
+1166	\N
+1167	\N
+1168	\N
+1169	\N
+1170	\N
+1171	\N
+1172	\N
+1173	\N
+1174	\N
+1175	\N
+1252	\N
+1253	\N
+1254	\N
+1255	\N
+1256	\N
+1257	\N
+1258	\N
+1259	\N
+1260	\N
+1261	\N
+1262	\N
+1263	\N
+1264	\N
+1265	\N
+1266	\N
+1267	\N
 \.
 
 
@@ -17024,14 +19129,22 @@ SELECT pg_catalog.setval('tituls_id_seq', 4, true);
 
 COPY users (id, username, login, password, employee_id, role_id) FROM stdin;
 7	Бондарева	obondareva	alkE22P2W9KZ2	18	11
-14	Егорова	egorova	eg5iybHCPF3p6	20	12
-15	Хромов	xromov	xr8ez/yinILdo	21	15
 8	Человек в регистратуре	meninreg	12tir.zIbWQ3c	14	1
 5	Кирилл	admin	12tir.zIbWQ3c	16	1
 1	Супервайзер	SYSTEM	SYuasGgY8rxlg	15	1
-9	Тестирование	test11	terzl.ls/oEYs	17	1
 13	Крупнов	krupnov	kr7AF6lo0BnNs	19	1
 16	Сидоров	Sidor	12tir.zIbWQ3c	12	1
+9	Тестирование	test11	terzl.ls/oEYs	17	1
+19	Петрова	petrova	peyxaMIqXYoXo	23	1
+18	Добавилбезавторизации	unath	12tir.zIbWQ3c	8	1
+17	Фалкерсонов	fulk	12tir.zIbWQ3c	22	1
+15	Хромов	xromov	xr8ez/yinILdo	21	1
+14	Егорова	egorova	eg5iybHCPF3p6	20	1
+24	Сергей Сергеевич	sergei	seF9.Dg644pEs	25	1
+25	Георгий Иванович	georgij	geFetrLXfbs/.	29	1
+26	4545е	енене	е/scu9lZDlq2	27	1
+22	Мария	zmaria	zmhm97Mp0uFiI	24	1
+27	Я тестовый врач	artzt	12tir.zIbWQ3c	28	1
 \.
 
 
@@ -17039,7 +19152,7 @@ COPY users (id, username, login, password, employee_id, role_id) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('users_id_seq', 16, true);
+SELECT pg_catalog.setval('users_id_seq', 27, true);
 
 
 --
@@ -17114,7 +19227,7 @@ ALTER TABLE ONLY degrees
 -- Name: doctor-cabinet_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
-ALTER TABLE ONLY "doctor-cabinet"
+ALTER TABLE ONLY doctor_cabinet
     ADD CONSTRAINT "doctor-cabinet_pkey" PRIMARY KEY (id);
 
 
@@ -17271,6 +19384,14 @@ ALTER TABLE ONLY medpersonal_types
 
 
 --
+-- Name: menu_pages_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY menu_pages
+    ADD CONSTRAINT menu_pages_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: mkb10_likes_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
@@ -17332,6 +19453,14 @@ ALTER TABLE ONLY privileges_per_patient
 
 ALTER TABLE ONLY privileges
     ADD CONSTRAINT privileges_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: quick_panel_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY quick_panel
+    ADD CONSTRAINT quick_panel_pkey PRIMARY KEY (id);
 
 
 --
@@ -17458,7 +19587,7 @@ ALTER TABLE ONLY contacts
 -- Name: doctor-cabinet_cabinet_id_fkey; Type: FK CONSTRAINT; Schema: mis; Owner: moniiag
 --
 
-ALTER TABLE ONLY "doctor-cabinet"
+ALTER TABLE ONLY doctor_cabinet
     ADD CONSTRAINT "doctor-cabinet_cabinet_id_fkey" FOREIGN KEY (cabinet_id) REFERENCES cabinets(id);
 
 
@@ -17466,7 +19595,7 @@ ALTER TABLE ONLY "doctor-cabinet"
 -- Name: doctor-cabinet_doctor_id_fkey; Type: FK CONSTRAINT; Schema: mis; Owner: moniiag
 --
 
-ALTER TABLE ONLY "doctor-cabinet"
+ALTER TABLE ONLY doctor_cabinet
     ADD CONSTRAINT "doctor-cabinet_doctor_id_fkey" FOREIGN KEY (doctor_id) REFERENCES doctors(id);
 
 
@@ -17531,7 +19660,7 @@ ALTER TABLE ONLY phones
 --
 
 ALTER TABLE ONLY shedule_by_days
-    ADD CONSTRAINT "shedule_by_days_doctor-cabinet_id_fkey" FOREIGN KEY ("doctor-cabinet_id") REFERENCES "doctor-cabinet"(id);
+    ADD CONSTRAINT "shedule_by_days_doctor-cabinet_id_fkey" FOREIGN KEY ("doctor-cabinet_id") REFERENCES doctor_cabinet(id);
 
 
 --

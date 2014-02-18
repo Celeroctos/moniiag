@@ -64,7 +64,7 @@ class FormPatientWithCardAdd extends FormMisDefault
             'privilege' => 'Льгота',
             'privDocname' => 'Название документа',
             'privDocnumber' => 'Номер',
-            'privDocserie' => 'Серия',
+            'privDocserie' => 'Серия, номер',
             'privDocGivedate' => 'Дата выдачи',
             'profession' => 'Профессия'
         );

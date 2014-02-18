@@ -142,8 +142,23 @@ class EmployeesController extends Controller {
         $employee->ward_code = $model->wardCode;
 
         if($employee->save()) {
+
+            // Если текущий юзер привязан к изменяемому сотруднику... Может измениться ФИО
+            if(Yii::app()->user->doctorId == $employee->id) {
+                Yii::app()->user->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
+                $updateFio = 1;
+            } else {
+                $updateFio = 0;
+            }
+
             echo CJSON::encode(array('success' => true,
-                                     'text' => $msg));
+                                     'data' => array(
+                                         'text' => $msg,
+                                         'updateFio' => $updateFio,
+                                         'fio' => Yii::app()->user->fio
+                                     )
+                                )
+                            );
         }
     }
 

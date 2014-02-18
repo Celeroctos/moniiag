@@ -22,9 +22,11 @@ class RolesController extends Controller {
         }
 
         $pagesListDb = MenuPage::model()->findAll();
-        $pagesList = array();
+        $pagesList = array('-1' => 'Нет');
         foreach($pagesListDb as $page) {
-            $pagesList[$page->id] = $page->name;
+            if($page->priority != null) {
+                $pagesList[$page->id] = $page->name;
+            }
         }
 
         $this->render('index', array(
@@ -60,6 +62,10 @@ class RolesController extends Controller {
                 if($role['parent_id'] == -1) {
                     $role['parent'] = 'Нет';
                 }
+                if($role['startpage_id'] == null) {
+                    $role['startpage_id'] = -1;
+                    $role['startpage'] = 'Нет';
+                }
             }
 
             echo CJSON::encode(
@@ -75,12 +81,17 @@ class RolesController extends Controller {
     public function actionGetone($id) {
         $model = new Role();
         $role = $model->getOne($id);
+        if($role['startpage_id'] == null) {
+            $role['startpage_id'] = -1;
+            $role['startpage'] = 'Нет';
+        }
 
         $actionModel = new CheckedAction();
         $actions = $actionModel->getByRole($id);
         $role['actions'] = array();
         foreach($actions as $key => $action) {
             $role['actions'][] = $action['action_id'];
+
         }
 
         echo CJSON::encode(array('success' => true,
@@ -235,6 +246,27 @@ class RolesController extends Controller {
     }
 
     private function addEditModelStartpage($startpage, $model, $msg) {
+        if($model->priority < 0) {
+            echo CJSON::encode(array('success' => false,
+                'errors' => array(
+                    'priority' => array(
+                        'Приоритет должен быть больше нуля!'
+                    )
+                )));
+            exit();
+        }
+        // Смотрим, нет ли страницы с таким приоритетом
+        $issetStartPage = Startpage::model()->find('priority = :priority', array(':priority' => $model->priority));
+        if($issetStartPage != null) {
+            echo CJSON::encode(array('success' => false,
+                                     'errors' => array(
+                                         'priority' => array(
+                                            'Такой приоритет страницы уже существует!'
+                                         )
+                                     )));
+            exit();
+        }
+
         $startpage->name = $model->name;
         $startpage->url = $model->url;
         $startpage->priority = $model->priority;

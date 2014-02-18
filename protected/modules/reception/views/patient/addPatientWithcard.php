@@ -44,27 +44,20 @@
                     <?php echo $form->labelEx($model,'serie', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
-                    <div class="col-xs-5">
+                    <div class="col-xs-9">
                         <?php echo $form->textField($model,'serie', array(
                             'id' => 'serie',
                             'class' => 'form-control',
                             'placeholder' => 'Серия'
                         )); ?>
-                        <?php echo $form->error($model,'serie'); ?>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <?php echo $form->labelEx($model,'docnumber', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-6">
                         <?php echo $form->textField($model,'docnumber', array(
                             'id' => 'docnumber',
                             'class' => 'form-control',
-                            'placeholder' => 'Номер'
+                            'placeholder' => 'Номер',
+                            'data-toggle' => 'tooltip',
+                            'data-placement' => 'right',
+                            'title' => 'Номер документа может состоять из цифр'
                         )); ?>
-                        <span class="help-block">Номер документа может состоять из цифр</span>
-                        <?php echo $form->error($model,'docnumber'); ?>
                     </div>
                 </div>
                 <div class="form-group">
@@ -77,7 +70,6 @@
                             'class' => 'form-control',
                             'placeholder' => 'Кем выдан'
                         )); ?>
-                        <?php echo $form->error($model,'whoGived'); ?>
                     </div>
                 </div>
                 <div class="form-group">
@@ -266,9 +258,9 @@
                         <?php echo $form->textField($model,'privDocserie', array(
                             'id' => 'privDocserie',
                             'class' => 'form-control',
-                            'placeholder' => 'Серия'
+                            'placeholder' => 'Серия',
+                            'title' => 'Номер документа может состоять из цифр'
                         )); ?>
-                        <span class="help-block">Номер документа может состоять из цифр</span>
                     </div>
                 </div>
                 <div class="form-group <?php echo $foundPriv ? '' : 'no-display'; ?>">

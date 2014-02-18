@@ -132,8 +132,9 @@
     $("#login-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == 'true') { // Логин прошёл удачно
-            $('#loginSuccessPopup').modal({
-            });
+            /*$('#loginSuccessPopup').modal({
+            });*/
+            location.href = ajaxData.data;
         } else if(ajaxData.success == 'notfound') {
             $('#loginNotFoundPopup').modal({
             });
@@ -329,5 +330,13 @@
             });
         }
     }
-   
+
+    /* Tooltips */
+    /*$('input[type="text"]').tooltip({
+        'trigger' : 'focus',
+        'delay': {
+            'show': 200,
+            'hide': 200
+        }
+    });*/
 });

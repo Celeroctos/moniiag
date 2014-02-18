@@ -15,13 +15,24 @@ class UserIdentity extends CUserIdentity
             $this->_id = $record->id;
             $employee = Doctor::model()->findByPk($record->employee_id);
             $roles = RoleToUser::model()->findAllRolesByUser($record->id);
+            $currentPriority = -1;
+            $url = '';
+            foreach($roles as $role) {
+                if($currentPriority < $role['priority']) {
+                    $currentPriority = $role['priority'];
+                    $url = $role['url'];
+                }
+            }
 
             // Данные юзера
             $this->setState('login', $record->login);
             $this->setState('id', $record->id);
             $this->setState('username', $record->username);
             $this->setState('roleId', $roles);
+            $this->SetState('doctorId', $employee->id);
             $this->setState('medworkerId', $employee->post_id);
+            $this->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
+            $this->setState('startpageUrl', $url);
 
             $this->errorCode = self::ERROR_NONE;
         }

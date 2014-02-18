@@ -35,10 +35,10 @@
 <?php $this->widget('application.components.widgets.MainNavBar') ?>
 <div class="container-fluid" id="content">
     <div class="row main-container">
-        <div class="col-xs-3">
+        <div class="col-xs-2">
             <?php $this->widget('application.components.widgets.SideMenu') ?>
         </div>
-        <div class="col-xs-8">
+        <div class="col-xs-9">
             <?php echo $content; ?>
         </div>
     </div>
