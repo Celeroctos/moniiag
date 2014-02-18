@@ -15,6 +15,9 @@ class PatientController extends Controller {
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()
     {
+        if(!isset($_GET['omsid'])) {
+            exit('Нехватка данных!');
+        }
         $omsId = trim($_GET['omsid']);
         $omsModel = Oms::model()->findByPk($omsId );
         $this->render('historyOfMotion', array(
@@ -22,38 +25,46 @@ class PatientController extends Controller {
 		    'omsid' => $omsId
 	    ));
     }
-    
-        // Получить саму историю движения медкарты
-    public function actionGetHistoryMotion()
-    {
-            $rows = $_GET['rows'];
-            $page = $_GET['page'];
-            $sidx = $_GET['sidx'];
-            $sord = $_GET['sord'];
-	    $omsId = trim($_GET['omsid']);
-	    
-            $model = new Medcard();
-            $num = $model->getHistoryOfMotion( $omsId);
 
-            $totalPages = ceil(count($num) / $rows);
-            $start = $page * $rows - $rows;
+    // Получить саму историю движения медкарты
+    public function actionGetHistoryMotion() {
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
 
-            $history = $model->getHistoryOfMotion( $omsId,$sidx, $sord, $start, $rows);
-	    
-	    //var_dump($history);
-	    //exit();
-            foreach($history as &$element) {
-                $parts = explode(' ', $element['greeting_timestamp']);
-                $subparts1 = explode('-', $parts[0]);
-                $subparts2 = explode(':', $parts[1]);
-                $element['greeting_timestamp'] = $subparts1[2].'.'.$subparts1[1].'.'.$subparts1[0].' '.$subparts2[0].':'.$subparts2[1];
+        if(isset($_GET['omsid'])) {
+            $omsId = trim($_GET['omsid']);
+        }
+        if(isset($_GET['medcardid'])) {
+            $medcard = Medcard::model()->findByPk($_GET['medcard']);
+            if($medcard != null) {
+                $omsId = $medcard->policy_id;
+            } else {
+                exit('Нехватка данных для запроса.');
             }
-	    
-            echo CJSON::encode(
-                array('rows' => $history,
-                    'total' => $totalPages,
-                    'records' => count($num))
-            );
+        }
+
+        $model = new Medcard();
+        $num = $model->getHistoryOfMotion($omsId);
+
+        $totalPages = ceil(count($num) / $rows);
+        $start = $page * $rows - $rows;
+
+        $history = $model->getHistoryOfMotion($omsId, $sidx, $sord, $start, $rows);
+
+        foreach($history as &$element) {
+            $parts = explode(' ', $element['greeting_timestamp']);
+            $subparts1 = explode('-', $parts[0]);
+            $subparts2 = explode(':', $parts[1]);
+            $element['greeting_timestamp'] = $subparts1[2].'.'.$subparts1[1].'.'.$subparts1[0].' '.$subparts2[0].':'.$subparts2[1];
+        }
+
+        echo CJSON::encode(
+            array('rows' => $history,
+                'total' => $totalPages,
+                'records' => count($num))
+        );
 	    
     }
     

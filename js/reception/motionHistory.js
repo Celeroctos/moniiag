@@ -1,7 +1,6 @@
 $(document).ready(function() {
-        $("#motion-history").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/reception/patient/gethistorymotion/?omsid='+ $('#oms-id').text(),
-        datatype: "json",
+   $("#motion-history").jqGrid({
+        datatype: "local",
         colNames:['Дата', 'Номер кабинета', 'ФИО врача', 'Номер карты'],
         colModel:[
             {
@@ -31,11 +30,10 @@ $(document).ready(function() {
         sortname: 'greeting_timestamp',
         viewrecords: true,
         sortorder: "desc",
-        height: 300,
-        //ondblClickRow: installShift
+        height: 300
     });
-        
-            $("#motion-history").jqGrid('navGrid','#motion-historyPager',{
+
+   $("#motion-history").jqGrid('navGrid', '#motion-historyPager',{
             edit: false,
             add: false,
             del: false

@@ -146,7 +146,7 @@ $(document).ready(function() {
 
                         if(typeof shedule[i].oms_id != 'undefined' && shedule[i].oms_id != null) {
                             content += '<td>' +
-                                '<a href="http://' + location.host + '/index.php/reception/patient/viewhistorymotion/?omsid=' + shedule[i].oms_id + '" target="_blank">' +
+                                '<a href="#' + shedule[i].oms_id + '" class="viewHistory" target="_blank">' +
                                     '<span class="glyphicon glyphicon-tasks" title="Посмотреть историю"></span>' +
                                 '</a>' +
                             '</td>';

@@ -190,7 +190,7 @@ $(document).ready(function() {
     $('#omsSearchWithCardResult').on('click', '.viewHistory', function() {
         $('#panelOfhistoryMedcard').parent().addClass('no-display');
         var medcardId = $(this).attr('href').substr(1);
-        $('#viewHistoryPopup modal-title').text('История карты пациента ' + $(this).text() + ' (карта № ' + medcardId + ' )');
+        $('#viewHistoryPopup .modal-title').text('История карты пациента ' + $(this).text() + ' (карта № ' + medcardId + ' )');
         $('#omsSearchWithCardResult tr').removeClass('active');
         $(this).parents('tr').addClass('active');
         $.ajax({

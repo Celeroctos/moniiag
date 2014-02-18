@@ -1,5 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/motionHistory.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
 <h4>Поиск пациента по ОМС</h4>
@@ -260,6 +261,26 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Пациент успешно сопоставлен с существующей картой!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="viewHistoryMotionPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">История движения карты пациента</h4>
+            </div>
+            <div class="modal-body">
+                <span id="oms-id" class="no-display"></span>
+                <div id="cardMotionHistory" class="row">
+                    <table id="motion-history"></table>
+                    <div id="motion-historyPager"></div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -48,12 +48,10 @@ $(document).ready(function() {
             var dateObj = new Date(date);
             var currentDateParts = [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDay() + 1];
         }
-        console.log(currentDateParts);
+
         var daysWithPatients = globalVariables.patientsInCalendar;
         for(var i in daysWithPatients) {
             var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
-           // console.log(daysWithPatients[i].patient_day);
-          //  console.log(currentDateParts);
             if(parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
                 $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
             }
@@ -62,6 +60,8 @@ $(document).ready(function() {
     $('#date-cont').trigger('refresh');
 
     $(document).on('click', '.medcard-history-showlink', function(e) {
+        $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active');
+        $(this).parent().addClass('active');
         var medcardId = $(this).attr('href').substr(1);
         var date = $(this).text();
         $('#historyPopup .medcardNumber').text('№ ' + medcardId);

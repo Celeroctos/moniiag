@@ -189,7 +189,7 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-3">
-                        <h4>Состояния карты</h4>
+                        <h4>Состояния карты:</h4>
                         <div class="panel panel-default" id="panelOfhistoryPoints">
                             <div class="panel-body">
 

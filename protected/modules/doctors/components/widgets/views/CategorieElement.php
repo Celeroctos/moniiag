@@ -4,7 +4,7 @@ if(isset($categorie['id'])) {
 <div id="accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" class="accordion">
     <div class="accordion-group">
         <div class="accordion-heading">
-            <a href="#collapse<?php echo $prefix.'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?></a>
+            <a href="#collapse<?php echo $prefix.'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?><?php echo count($categorie['elements']) == 0 ? ' (пустая категория)' : ''?></a>
         </div>
         <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$categorie['id']; ?>">
             <div class="accordion-inner">

@@ -294,11 +294,11 @@ $(document).ready(function() {
                     '<td>' +
                         '<input type="radio" name="existsPatient" value="m' + data[i].card_number + '"/>' +
                     '</td>' +
-                    '<td><a href="#" title="Посмотреть информацию по пациенту" target="_blank">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
+                    '<td><a href="#' + data[i].id + '" class="viewHistory" title="Посмотреть историю движения медкарты" target="_blank">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
                     '<td>' + data[i].birthday+ '</td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' + data[i].reg_date + '</td>' +
-                    '<td>' + data[i].card_number + '</td>' +
+                    '<td class="cardNumber">' + data[i].card_number + '</td>' +
                     '<td>' +
                         '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК" target="_blank">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
@@ -324,9 +324,9 @@ $(document).ready(function() {
                             '<span class="glyphicon glyphicon-print"></span>' +
                         '</a>' +
                     '</td>' +
-                                      '</td>' +
+                    '</td>' +
                     '<td>' +
-                        '<a title="История движения медкарты" href="http://' + location.host + '/index.php/reception/patient/viewhistorymotion/?omsid=' + data[i].id + '" target="_blank">' +
+                        '<a href="#' + data[i].id + '" class="viewHistory" title="Посмотреть историю движения медкарты" target="_blank">' +
                             '<span class="glyphicon glyphicon-list"></span>' +
                         '</a>' +
                     '</td>' +
@@ -480,5 +480,20 @@ $(document).ready(function() {
         if(e.keyCode == 13) {
             return false;
         }
+    });
+
+    // Просмотр истории медкарты
+    $(document).on('click', '.viewHistory', function() {
+        $('#panelOfhistoryMedcard').parent().addClass('no-display');
+        var omsId = $(this).attr('href').substr(1);
+        $('#viewHistoryMotionPopup .modal-title').text('История движения карты пациента ' + $(this).parents('tr').find('.viewHistory:eq(0)').text() + ' (карта № ' + $(this).parents('tr').find('.cardNumber:eq(0)').text() + ')');
+        $('#omsSearchWithCardResult tr').removeClass('active');
+        $(this).parents('tr').addClass('active');
+        $("#motion-history").jqGrid('setGridParam',{
+            'datatype' : 'json',
+            'url' : globalVariables.baseUrl + '/index.php/reception/patient/gethistorymotion/?omsid=' + omsId
+        }).trigger("reloadGrid");
+        $('#viewHistoryMotionPopup').modal({});
+        return false;
     });
 });
