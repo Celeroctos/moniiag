@@ -36,7 +36,8 @@
                     'form' => $form,
                     'model' => $model,
                     'privilegesList' => $privilegesList
-                )); ?>
+                ));
+                ?>
             </div>
         </div>
         <?php if(Yii::app()->user->checkAccess('editMedcard')) { ?>

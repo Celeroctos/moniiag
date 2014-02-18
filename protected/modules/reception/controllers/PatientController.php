@@ -9,7 +9,11 @@ class PatientController extends Controller {
 
     // Просмотр страницы поиска пациента
     public function actionViewSearch() {
-        $this->render('searchPatient', array());
+        $this->render('searchPatient', array(
+            'privilegesList' => $this->getPrivileges(),
+            'modelMedcard' => new FormPatientWithCardAdd(),
+            'modelOms' => new FormOmsEdit()
+        ));
     }
 
     // Получить страницу просмотра истории движения медкарты
@@ -316,6 +320,10 @@ class PatientController extends Controller {
 
     // Добавление льготы
     private function addEditModelPrivilege($privilege, $model, $patientId) {
+        // Это ситуация, когда привилегия создаётся посредством редактирования карты
+        if($privilege == null) {
+            $privilege = new PatientPrivilegie();
+        }
         $privilege->patient_id = $patientId;
         $privilege->privilege_id = $model->privilege;
         $privilege->docname = $model->privDocname;
@@ -334,37 +342,65 @@ class PatientController extends Controller {
 
     // Редактирование карты, вьюха
     public function actionEditCardView() {
-        if(isset($_GET['cardid'])) {
-            $modelCard = new Medcard();
-            $medcard = $modelCard->findByPk($_GET['cardid']);
-            if($medcard == null) {
-                $req = new CHttpRequest();
-                $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
-            }
-            $modelOms = new Oms();
-            $oms = $modelOms->findByPk($medcard->policy_id);
-            if($oms != null) {
-                $formModel = new FormPatientWithCardAdd();
-                $this->fillFormMedcardModel($formModel, $medcard);
-
-                $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $oms->id));
-                if(count($privileges) > 0) {
-                    // TODO: пока говорим о том, что одному пациенту соответствует одна привилегия. В будущем будем писать для целого массива льгот
-                    $this->fillPrivilegeFormPart($formModel, $privileges);
-                }
-                $privilegesList = $this->getPrivileges();
-
-                $this->render('editMedcard', array(
-                    'model' => $formModel,
-                    'policy_number' => $oms->oms_number,
-                    'policy_id' => $oms->id,
-                    'card_number' => $medcard->card_number,
-                    'fio' => $oms->first_name.' '.$oms->last_name.' '.$oms->middle_name,
-                    'privilegesList' => $privilegesList,
-                    'foundPriv' => count($privileges) > 0
-                ));
-            }
+        if(!isset($_GET['cardid'])) {
+            exit('Нехватка данных для редактирования медкарты!');
         }
+
+        $data = $this->prepareMedcard($_GET['cardid']);
+
+        $this->render('editMedcard', array(
+            'model' => $data['formModel'],
+            'policy_number' => $data['oms']->oms_number,
+            'policy_id' => $data['oms']->id,
+            'card_number' => $data['medcard']->card_number,
+            'fio' => $data['oms']->first_name.' '.$data['oms']->last_name.' '.$data['oms']->middle_name,
+            'privilegesList' => $data['privilegesList'],
+            'foundPriv' => count($data['privileges']) > 0
+        ));
+    }
+
+    // Редактирование карты, простое возвращение данных
+    public function actionGetMedcardData() {
+        if(!isset($_GET['cardid'])) {
+            exit('Нехватка данных для редактирования медкарты!');
+        }
+
+        $data = $this->prepareMedcard($_GET['cardid']);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $data));
+    }
+
+    // Подготовка данных медкарты
+    private function prepareMedcard() {
+        $modelCard = new Medcard();
+        $medcard = $modelCard->findByPk($_GET['cardid']);
+        if($medcard == null) {
+            $req = new CHttpRequest();
+            $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
+        }
+        $modelOms = new Oms();
+        $oms = $modelOms->findByPk($medcard->policy_id);
+        if($oms == null) {
+            exit('Такого пациента не существует!');
+        }
+
+        $formModel = new FormPatientWithCardAdd();
+        $this->fillFormMedcardModel($formModel, $medcard);
+
+        $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $oms->id));
+        if(count($privileges) > 0) {
+            // TODO: пока говорим о том, что одному пациенту соответствует одна привилегия. В будущем будем писать для целого массива льгот
+            $this->fillPrivilegeFormPart($formModel, $privileges);
+        } else {
+            $formModel->privilege = -1;
+        }
+        $privilegesList = $this->getPrivileges();
+        return array(
+            'formModel' => $formModel,
+            'oms' => $oms,
+            'medcard' => $medcard,
+            'privilegesList' => $privilegesList
+        );
     }
 
     // Заполнение модели формы значениями
@@ -431,24 +467,44 @@ class PatientController extends Controller {
     // Редактирование полиса (ОМС), вьюха
     public function actionEditOmsView() {
         if(isset($_GET['omsid'])) {
-            $modelOms = new Oms();
-            $oms = $modelOms->findByPk($_GET['omsid']);
-            if($oms == null) {
-                $req = new CHttpRequest();
-                $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
-            }
-
-            if($oms != null) {
-                $formModel = new FormOmsEdit();
-                $formModel = $this->fillOmsModel($formModel, $oms);
-                $this->render('editOms', array(
-                    'model' => $formModel,
-                    'policy_number' => $oms->oms_number,
-                    'policy_id' => $oms->id,
-                    'fio' => $oms->first_name.' '.$oms->last_name.' '.$oms->middle_name
-                ));
-            }
+            exit('Нехватка данных: нет номера полиса!');
         }
+
+        $data = $this->prepareOms($_GET['omsid']);
+
+        $this->render('editOms', array(
+            'model' => $data['formModel'],
+            'policy_number' => $data['oms']->oms_number,
+            'policy_id' => $data['oms']->id,
+            'fio' => $data['oms']->first_name.' '.$data['oms']->last_name.' '.$data['oms']->middle_name
+        ));
+    }
+
+    // Редактирование полиса простое возвращение данных
+    public function actionGetOmsData() {
+        if(!isset($_GET['omsid'])) {
+            exit('Нехватка данных для редактирования полиса!');
+        }
+
+        $data = $this->prepareOms($_GET['omsid']);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $data));
+    }
+
+    private function prepareOms() {
+        $modelOms = new Oms();
+        $oms = $modelOms->findByPk($_GET['omsid']);
+        if($oms == null) {
+            $req = new CHttpRequest();
+            $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
+        }
+
+        $formModel = new FormOmsEdit();
+        $formModel = $this->fillOmsModel($formModel, $oms);
+        return array(
+          'formModel' => $formModel,
+          'oms' => $oms
+        );
     }
 
     // Редактирование карты
@@ -463,7 +519,7 @@ class PatientController extends Controller {
                 if($model->privilege != -1) {
                     $patientPrivelege = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
                     if(count($patientPrivelege) > 0) {
-                        $this->addEditModelPrivilege($patientPrivelege, $model, $medcard->policy_id);
+                        $this->addEditModelPrivilege($patientPrivelege[0], $model, $medcard->policy_id);
                     } else {
                         $this->addEditModelPrivilege(new PatientPrivilegie(), $model, $medcard->policy_id);
                     }

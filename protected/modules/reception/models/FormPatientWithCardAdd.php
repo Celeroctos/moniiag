@@ -31,10 +31,10 @@ class FormPatientWithCardAdd extends FormMisDefault
         Yii::import('ext.validators.SerialNumberValidator');
         return array(
             array(
-                'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived', 'required'
+                'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, privilege', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId', 'safe'
             ),
             array(
                 'snils', 'SNILSValidator'

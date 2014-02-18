@@ -49,9 +49,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="birthday" class="col-xs-4 control-label required">Дата рождения</label>
-            <div id="birthday-cont" class="col-xs-3 input-group date">
-                <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
+            <label for="birthday2" class="col-xs-4 control-label required">Дата рождения</label>
+            <div id="birthday2-cont" class="col-xs-3 input-group date">
+                <input type="hidden" name="birthday2" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday2">
                 <span class="input-group-addon">
                     <span class="glyphicon-calendar glyphicon">
                     </span>
@@ -289,3 +289,103 @@
         </div>
     </div>
 </div>
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+    'id' => 'patient-medcard-edit-form',
+    'enableAjaxValidation' => true,
+    'enableClientValidation' => true,
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+    'htmlOptions' => array(
+        'class' => 'form-horizontal col-xs-12',
+        'role' => 'form'
+    )
+));
+?>
+<div class="modal fade error-popup" id="editMedcardPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Редактирование данных медкарты пациента</h4>
+            </div>
+            <div class="modal-body">
+                <?php echo $form->hiddenField($modelMedcard,'cardNumber', array(
+                    'id' => 'cardNumber',
+                    'class' => 'form-control'
+                )); ?>
+                <?php
+                    $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
+                        'form' => $form,
+                        'model' => $modelMedcard,
+                        'privilegesList' => $privilegesList
+                    ));
+                ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <?php echo CHtml::ajaxSubmitButton(
+                    'Редактировать',
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+                    array(
+                        'success' => 'function(data, textStatus, jqXHR) {
+                                    $("#patient-medcard-edit-form").trigger("success", [data, textStatus, jqXHR])
+                                }'
+                    ),
+                    array(
+                        'class' => 'btn btn-success'
+                    )
+                ); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->endWidget(); ?>
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+    'id' => 'patient-oms-edit-form',
+    'enableAjaxValidation' => true,
+    'enableClientValidation' => true,
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
+    'htmlOptions' => array(
+        'class' => 'form-horizontal col-xs-12',
+        'role' => 'form'
+    )
+));
+?>
+<div class="modal fade error-popup" id="editOmsPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Редактирование данных полиса пациента</h4>
+            </div>
+            <div class="modal-body">
+                <?php echo $form->hiddenField($modelOms,'id', array(
+                    'id' => 'id',
+                    'class' => 'form-control'
+                )); ?>
+                <?php
+                $this->widget('application.modules.reception.components.widgets.OmsFormWidget', array(
+                    'form' => $form,
+                    'model' => $modelOms
+                )); ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <?php echo CHtml::ajaxSubmitButton(
+                    'Редактировать',
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
+                    array(
+                        'success' => 'function(data, textStatus, jqXHR) {
+                                    $("#patient-oms-edit-form").trigger("success", [data, textStatus, jqXHR])
+                                }'
+                    ),
+                    array(
+                        'class' => 'btn btn-success'
+                    )
+                ); ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->endWidget(); ?>

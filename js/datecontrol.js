@@ -2,6 +2,7 @@
     var DateControlContainers =
     [
         '#birthday-cont',
+        '#birthday2-cont',
         '#document-givedate-cont',
         '#priv-document-givedate-cont',
         '#policy-givedate-cont',

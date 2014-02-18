@@ -40,10 +40,10 @@ class FormPatientAdd extends FormMisDefault
 		Yii::import('ext.validators.FathersNameValidator');
         return array(
             array(
-                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, omsType, policyGivedate, status', 'required'
+                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, omsType, policyGivedate, status, privilege', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, middleName, privilege, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate', 'safe'
             ),
 			array(
 				'snils', 'SNILSValidator'
