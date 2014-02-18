@@ -1,8 +1,8 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/medcardView.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
-<h4>Поиск пациента по ОМС</h4>
+<h4>Просмотр медкарт</h4>
 <div class="row">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -111,69 +111,15 @@
     </div>
     <?php $this->endWidget(); ?>
 </div>
-<div class="row no-display" id="mediateCont">
-    <h5>Найденные опосредованные пациенты:</h5>
-    <div class="col-xs-6 borderedBox">
-        <table class="table table-condensed table-hover" id="omsSearchMediateResult">
-            <thead>
-            <tr class="header">
-                <td></td>
-                <td>
-                    ФИО
-                </td>
-                <td>
-                    Контактный телефон
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    <div class="row no-display">
-        <ul class="pagination content-pagination">
-        </ul>
-    </div>
-</div>
-<div class="row no-display" id="withoutCardCont">
-    <h5>Найденные пациенты без карт:</h5>
-    <div class="col-xs-8 borderedBox">
-        <table class="table table-condensed table-hover" id="omsSearchWithoutCardResult">
-            <thead>
-                <tr class="header">
-                    <td></td>
-                    <td>
-                        ФИО
-                    </td>
-                    <td>
-                        Номер ОМС
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
-    <div class="row no-display">
-        <ul class="pagination content-pagination">
-        </ul>
-    </div>
-</div>
 <div class="row no-display" id="withCardCont">
-    <h5>Найденные пациенты с картами:</h5>
     <div class="col-xs-12 borderedBox">
         <table class="table table-condensed table-hover" id="omsSearchWithCardResult">
             <thead>
             <tr class="header">
-                <td></td>
                 <td>
                     ФИО
                 </td>
-		<td>
+		        <td>
                     Дата рождения
                 </td>
                 <td>
@@ -185,18 +131,6 @@
                 <td>
                     Номер карты
                 </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-		<td>
-                </td>
             </tr>
             </thead>
             <tbody>
@@ -206,11 +140,6 @@
     <div class="row no-display">
         <ul class="pagination content-pagination">
         </ul>
-    </div>
-</div>
-<div class="row no-display" id="mediateSubmit-cont">
-    <div class="form-group">
-        <input type="button" id="mediate-attach-submit" value="Сопоставить опосредованного пациента с существующими данными" name="mediate-attach-submit" class="btn btn-success disabled">
     </div>
 </div>
 <?php } ?>
@@ -242,6 +171,46 @@
             <div class="modal-body">
                 <div class="row">
                     <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, перейдя по <?php echo CHtml::link('этой', array('/reception/patient/viewadd')) ?> ссылке.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="viewHistoryPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">История медкарты пациента</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <h4>Состояния карты</h4>
+                        <div class="panel panel-default" id="panelOfhistoryPoints">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-9 no-display">
+                        <h4>Категории</h4>
+                        <div class="panel panel-default" id="panelOfhistoryMedcard">
+                            <div class="panel-body">
+                                <?php
+                                $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
+                                    'currentPatient' => -1,
+                                    'templateType' => 0,
+                                    'prefix' => 'history',
+                                    'withoutSave' => 1,
+                                    'canEditMedcard' => 0
+                                )); ?>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

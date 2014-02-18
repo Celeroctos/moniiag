@@ -73,11 +73,24 @@ class SheduleController extends Controller {
         ));
     }
 
+    public function actionGetHistoryPoints($medcardid) {
+        $medcard = Medcard::model()->findByPk($medcardid);
+        if($medcard == null) {
+            echo CJSON::encode(array('success' => false,
+                                     'error' => 'Не хватает данных для получения точек истории медкарты!'));
+            exit();
+        }
+        $historyPoints = $this->getHistoryPoints($medcard);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $historyPoints));
+    }
+
     // Получить точки истории для медкарты
     private function getHistoryPoints($medcard) {
         if($medcard == null) {
             return array();
         }
+
         $historyPoints = MedcardElementForPatient::model()->getHistoryPoints($medcard);
         return $historyPoints;
     }

@@ -157,6 +157,7 @@
 
 body {
   font-size: @default-font-size;
+  max-width: 98%;
  // background: url('/images/background.png') repeat-x;
 }
 .bold {
@@ -321,6 +322,9 @@ form span.required {
 }
 #omsSearchWithCardResult {
   font-size: 12px !important;
+  tr.active {
+    background: #DFF0D8;
+  }
 }
 .patient-list-h5 {
   margin-left: 2%;
@@ -778,7 +782,7 @@ select#restDays {
     padding: 3px 5px;
   }
 }
-/* Модальное окно у ресепшена в раписании */
+/* Модальное окно у ресепшена в раписании и истории медкарты пациента у врача */
 #acceptGreetingPopup .modal-dialog {
   width: 800px;
 }
@@ -855,4 +859,14 @@ select#restDays {
 }
 #docnumber {
   width: 68%;
+}
+
+/* Окно истории медкарты у врача */
+#viewHistoryPopup .modal-dialog {
+  width: 1050px;
+  .panel-body {
+    div.active {
+      background: #E0F8F1;
+    }
+  }
 }

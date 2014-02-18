@@ -149,7 +149,7 @@
                         'templateType' => 0,
                         'prefix' => 'history',
                         'withoutSave' => 1,
-                        'canEditMedcard' => $canEditMedcard
+                        'canEditMedcard' => 0
                     )); ?>
                 </div>
             </div>
