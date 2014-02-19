@@ -72,6 +72,53 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <?php echo $form->labelEx($model,'labelAfter', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'labelAfter', array(
+                                    'id' => 'labelAfter',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Метка после элемента'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'size', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'size', array(
+                                    'id' => 'size',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Размер поля'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isWrapped', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isWrapped', array('Нет', 'Да'), array(
+                                    'id' => 'isWrapped',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'position', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'position', array(
+                                    'id' => 'position',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Позиция в категории'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'guideId', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -182,6 +229,53 @@
                                     'placeholder' => 'Метка'
                                 )); ?>
                                 <?php echo $form->error($model,'label'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'labelAfter', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'labelAfter', array(
+                                    'id' => 'labelAfter',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Метка после элемента'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'size', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'size', array(
+                                    'id' => 'size',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Размер поля'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isWrapped', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isWrapped', array('Нет', 'Да'), array(
+                                    'id' => 'isWrapped',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'position', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'position', array(
+                                    'id' => 'position',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Позиция в категории'
+                                )); ?>
                             </div>
                         </div>
                         <div class="form-group">

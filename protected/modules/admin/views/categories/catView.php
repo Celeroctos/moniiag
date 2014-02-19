@@ -57,7 +57,28 @@
                                     'class' => 'form-control',
                                     'placeholder' => 'Категория-родитель'
                                 )); ?>
-                                <?php echo $form->error($model,'parentId'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isDynamic', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model,'isDynamic', array('Нет', 'Да'), array(
+                                    'id' => 'isDynamic',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'position', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'position', array(
+                                    'id' => 'position',
+                                    'class' => 'form-control'
+                                )); ?>
                             </div>
                         </div>
                     </div>
@@ -133,6 +154,28 @@
                                     'placeholder' => 'Категория-родитель'
                                 )); ?>
                                 <?php echo $form->error($model,'parentId'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isDynamic', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model,'isDynamic', array('Нет', 'Да'), array(
+                                    'id' => 'isDynamic',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'position', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'position', array(
+                                    'id' => 'position',
+                                    'class' => 'form-control'
+                                )); ?>
                             </div>
                         </div>
                     </div>

@@ -195,6 +195,46 @@ $(document).ready(function() {
             }
         }
     })(['primaryDiagnosisChooser', 'secondaryDiagnosisChooser']);
+
+
+    // Просмотр медкарты в попапе
+    $(document).on('click', '.editMedcard', function(e) {
+        $.ajax({
+            'url' : '/index.php/reception/patient/getmedcarddata',
+            'data' : {
+                'cardid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var data = data.data.formModel;
+                    var form = $('#patient-medcard-edit-form');
+                    for(var i in data) {
+                        $(form).find('#' + i).val(data[i]);
+                    }
+
+                    $(form).find('#documentGivedate').trigger('change');
+                    $(form).find('#privilege').trigger('change');
+
+                    $('#editMedcardPopup').modal({});
+                } else {
+                    $('#errorSearchPopup .modal-body .row p').remove();
+                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup').modal({
+
+                    });
+                }
+                return;
+            }
+        });
+        return false;
+    });
+
+    // Запрет редактирования карты
+    $('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
+    $('.date-control .input-group-addon').remove();
 });
 
 function getOnlyLikes() {

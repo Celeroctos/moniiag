@@ -69,7 +69,7 @@ $(document).ready(function() {
                 {
                     'field' : 'birthday',
                     'op' : 'eq',
-                    'data' : $('#birthday').val()
+                    'data' : $('#birthday2').val()
                 }
             ]
         };
@@ -232,7 +232,7 @@ $(document).ready(function() {
             table.append(
                 '<tr>' +
                     '<td>' +
-                        '<a title="Посмотреть информацию по пациенту" href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
+                        '<a title="Посмотреть информацию по пациенту" href="#' + data[i].id + '" class="viewHistory">' +
                             data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name +
                         '</a>' +
                     '</td>' +
@@ -240,12 +240,12 @@ $(document).ready(function() {
                         data[i].birthday +
                     '</td>' +
                     '<td>' +
-                        '<a title="Посмотреть информацию по карте" href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
+                        '<a title="Посмотреть информацию по карте" href="#' + data[i].card_number + '" class="editMedcard">' +
                             data[i].card_number +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a title="Посмотреть информацию по ОМС" href= "http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                        '<a title="Посмотреть информацию по ОМС" href= "#' + data[i].id + '" class="editOms">' +
                             data[i].oms_number +
                         '</a>' +
                     '</td>' +
@@ -526,4 +526,113 @@ $(document).ready(function() {
         });
     });
 
+    // Просмотр истории медкарты
+    $(document).on('click', '.viewHistory', function() {
+        $('#panelOfhistoryMedcard').parent().addClass('no-display');
+        var omsId = $(this).attr('href').substr(1);
+        $('#viewHistoryMotionPopup .modal-title').text('История движения карты пациента ' + $(this).parents('tr').find('.viewHistory:eq(0)').text() + ' (карта № ' + $(this).parents('tr').find('.cardNumber:eq(0)').text() + ')');
+        $('#omsSearchWithCardResult tr').removeClass('active');
+        $(this).parents('tr').addClass('active');
+        $("#motion-history").jqGrid('setGridParam',{
+            'datatype' : 'json',
+            'url' : globalVariables.baseUrl + '/index.php/reception/patient/gethistorymotion/?omsid=' + omsId
+        }).trigger("reloadGrid");
+        $('#viewHistoryMotionPopup').modal({});
+        return false;
+    });
+
+    // Редактирование медкарты в попапе
+    $(document).on('click', '.editMedcard', function(e) {
+        console.log($(this).prop('href'));
+        $.ajax({
+            'url' : '/index.php/reception/patient/getmedcarddata',
+            'data' : {
+                'cardid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var data = data.data.formModel;
+                    var form = $('#patient-medcard-edit-form');
+                    for(var i in data) {
+                        $(form).find('#' + i).val(data[i]);
+                    }
+
+                    $(form).find('#documentGivedate').trigger('change');
+                    $(form).find('#privilege').trigger('change');
+
+                    $('#editMedcardPopup').modal({});
+                } else {
+                    $('#errorSearchPopup .modal-body .row p').remove();
+                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup').modal({
+
+                    });
+                }
+                return;
+            }
+        });
+        return false;
+    });
+
+    // Редактирование полиса в попапе
+    $(document).on('click', '.editOms', function(e) {
+        $.ajax({
+            'url' : '/index.php/reception/patient/getomsdata',
+            'data' : {
+                'omsid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var data = data.data.formModel;
+                    var form = $('#patient-oms-edit-form');
+                    for(var i in data) {
+                        $(form).find('#' + i).val(data[i]);
+                    }
+
+                    $(form).find('#policyGivedate').trigger('change');
+                    $(form).find('#birthday').trigger('change');
+
+                    $('#editOmsPopup').modal({});
+                } else {
+                    $('#errorSearchPopup .modal-body .row p').remove();
+                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup').modal({
+
+                    });
+                }
+                return;
+            }
+        });
+        return false;
+    });
+
+    // Отобразить ошибки формы добавления пациента
+    $("#patient-medcard-edit-form, #patient-oms-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно, перезагружаем jqGrid
+            $('#editMedcardPopup').modal('hide');
+            $('#editOmsPopup').modal('hide');
+            $('#patient-search-submit').trigger('click');
+        } else {
+            // Удаляем предыдущие ошибки
+            var popup = $('#errorAddPopup').length > 0 ? $('#errorAddPopup') : $('#errorSearchPopup');
+            $(popup).find('.modal-body .row p').remove();
+            // Вставляем новые
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $(popup).find(' .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                }
+            }
+
+            $(popup).css({
+                'z-index' : '1051'
+            }).modal({});
+        }
+    });
 });

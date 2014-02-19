@@ -399,7 +399,8 @@ class PatientController extends Controller {
             'formModel' => $formModel,
             'oms' => $oms,
             'medcard' => $medcard,
-            'privilegesList' => $privilegesList
+            'privilegesList' => $privilegesList,
+            'privileges' => $privileges
         );
     }
 
@@ -919,7 +920,9 @@ class PatientController extends Controller {
     // Экшн записи пациента: шаг 1
     public function actionWritePatientStepOne() {
         $this->render('writePatient1', array(
-
+            'privilegesList' => $this->getPrivileges(),
+            'modelMedcard' => new FormPatientWithCardAdd(),
+            'modelOms' => new FormOmsEdit()
         ));
     }
 

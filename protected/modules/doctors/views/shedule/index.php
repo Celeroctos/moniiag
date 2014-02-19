@@ -108,7 +108,7 @@
                                 <?php echo $patient['patient_time']; ?>
                             </td>
                             <td>
-                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('/reception/patient/editcardview/?cardid='.$patient['medcard_id']), array('title' => 'Посмотреть медкарту')); ?>
+                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('#'.$patient['medcard_id']), array('title' => 'Посмотреть медкарту', 'class' => 'editMedcard')); ?>
                             </td>
                             <td>
                                 <?php echo ($patient['is_beginned'] == 1 || $patient['is_accepted'] == 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id']), array('title' => 'Начать приём')); ?>
@@ -298,3 +298,42 @@
         </div>
     </div>
 </div>
+<?php
+$form= $this->beginWidget('CActiveForm', array(
+    'id' => 'patient-medcard-edit-form',
+    'enableAjaxValidation' => true,
+    'enableClientValidation' => true,
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+    'htmlOptions' => array(
+        'class' => 'form-horizontal col-xs-12',
+        'role' => 'form'
+    )
+));
+?>
+<div class="modal fade error-popup" id="editMedcardPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Просмотр данных медкарты пациента</h4>
+            </div>
+            <div class="modal-body">
+                <?php echo $form->hiddenField($modelMedcard,'cardNumber', array(
+                    'id' => 'cardNumber',
+                    'class' => 'form-control'
+                )); ?>
+                <?php
+                $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
+                    'form' => $form,
+                    'model' => $modelMedcard,
+                    'privilegesList' => $privilegesList
+                ));
+                ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->endWidget(); ?>

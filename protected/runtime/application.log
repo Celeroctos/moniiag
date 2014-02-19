@@ -17491,3 +17491,232 @@ Stack trace:
 REQUEST_URI=/index.php/reception/patient/editcard
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch
 ---
+2014/02/18 19:20:00 [error] [php] Undefined index: privileges (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:358)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/editcardview/?cardid=22/14
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (358)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/02/19 10:41:47 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "3/14". The SQL statement executed was: SELECT (dsd.patient_day || ' ' || dsd.patient_time) as greeting_timestamp,
+                        dsd.medcard_id,
+                        (d.first_name || ' ' ||  d.middle_name  || ' ' || d.last_name) as doctor_name,
+                        c.cab_number
+FROM "mis"."doctor_shedule_by_day" "dsd"
+JOIN "mis"."medcards" "mc" ON mc.card_number = dsd.medcard_id
+JOIN "mis"."oms" "policy" ON mc.policy_id = policy.id
+JOIN "mis"."doctors" "d" ON d.id = dsd.doctor_id
+JOIN "mis"."doctor_cabinet" "cd" ON cd.doctor_id = d.id
+JOIN "mis"."cabinets" "c" ON cd.cabinet_id = c.id
+WHERE policy.id = :oms_id
+GROUP BY "dsd"."id", "greeting_timestamp", "dsd"."medcard_id", "doctor_name", "c"."cab_number".
+in Z:\home\moniiag.my\www\protected\models\Medcard.php (55)
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (53)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+2014/02/19 10:41:47 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "3/14". The SQL statement executed was: SELECT (dsd.patient_day || ' ' || dsd.patient_time) as greeting_timestamp,
+                        dsd.medcard_id,
+                        (d.first_name || ' ' ||  d.middle_name  || ' ' || d.last_name) as doctor_name,
+                        c.cab_number
+FROM "mis"."doctor_shedule_by_day" "dsd"
+JOIN "mis"."medcards" "mc" ON mc.card_number = dsd.medcard_id
+JOIN "mis"."oms" "policy" ON mc.policy_id = policy.id
+JOIN "mis"."doctors" "d" ON d.id = dsd.doctor_id
+JOIN "mis"."doctor_cabinet" "cd" ON cd.doctor_id = d.id
+JOIN "mis"."cabinets" "c" ON cd.cabinet_id = c.id
+WHERE policy.id = :oms_id
+GROUP BY "dsd"."id", "greeting_timestamp", "dsd"."medcard_id", "doctor_name", "c"."cab_number"' in Z:\home\moniiag.my\yii\db\CDbCommand.php:547
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(399): CDbCommand->queryInternal('fetchAll', Array, Array, false)
+#1 Z:\home\moniiag.my\www\protected\models\Medcard.php(55): CDbCommand->queryAll()
+#2 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(53): Medcard->getHistoryOfMotion('3/14')
+#3 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMotion()
+#4 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('gethistorymotio...')
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/gethistorymotion/?omsid=3/14&_search=false&nd=1392795706012&rows=10&page=1&sidx=greeting_timestamp&sord=desc
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
+---
+2014/02/19 10:55:51 [error] [exception.CException] exception 'CException' with message 'SheduleController and its behaviors do not have a method or closure named "getPrivileges".' in Z:\home\moniiag.my\yii\base\CComponent.php:267
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(73): CComponent->__call('getPrivileges', Array)
+#1 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(73): SheduleController->getPrivileges()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/viewadd
+---
+2014/02/19 10:56:28 [error] [php] include(FormPatientWithCardAdd.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory (Z:\home\moniiag.my\yii\YiiBase.php:427)
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(74): spl_autoload_call()
+#1 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#2 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#4 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#9 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (74)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 15:17:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "index".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/shedule
+---
+2014/02/19 16:27:18 [error] [system.db.CDbCommand] CDbCommand::fetch() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "position" не существует
+LINE 1: ...ELECT * FROM "mis"."medcard_categories" "t" WHERE position =...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."medcard_categories" "t" WHERE position = :position AND parent_id = :categorie_id LIMIT 1.
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (102)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (77)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+2014/02/19 16:27:18 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "position" не существует
+LINE 1: ...ELECT * FROM "mis"."medcard_categories" "t" WHERE position =...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."medcard_categories" "t" WHERE position = :position AND parent_id = :categorie_id LIMIT 1' in Z:\home\moniiag.my\yii\db\CDbCommand.php:547
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(418): CDbCommand->queryInternal('fetch', Array, Array)
+#1 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryRow()
+#2 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(1456): CActiveRecord->query(Object(CDbCriteria))
+#3 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(102): CActiveRecord->find('position = :pos...', Array)
+#4 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php(77): ElementsController->addEditModel(Object(MedcardElement), Object(FormElementAdd), '???????????????...')
+#5 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): ElementsController->actionEdit()
+#6 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('edit')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/elements/...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/elements/edit
+HTTP_REFERER=http://moniiag.my/index.php/admin/elements/view
+---
+2014/02/19 17:02:48 [error] [system.db.CDbCommand] CDbCommand::fetch() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT * FROM "mis"."users" "t" WHERE id=:id LIMIT 1.
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\UsersController.php (161)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:02:48 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT * FROM "mis"."users" "t" WHERE id=:id LIMIT 1' in Z:\home\moniiag.my\yii\db\CDbCommand.php:547
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbCommand.php(418): CDbCommand->queryInternal('fetch', Array, Array)
+#1 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryRow()
+#2 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(1456): CActiveRecord->query(Object(CDbCriteria))
+#3 Z:\home\moniiag.my\www\protected\modules\admin\controllers\UsersController.php(161): CActiveRecord->find('id=:id', Array)
+#4 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): UsersController->actionChangepass()
+#5 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('changepass')
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/users/cha...')
+#14 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/users/changepass
+HTTP_REFERER=http://moniiag.my/index.php/admin/users/view
+---
+2014/02/19 17:15:55 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:15:55 [error] [exception.CException] exception 'CException' with message 'Property "FormCategorieAdd.categorieId" is not defined.' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php(96): CComponent->__get('categorieId')
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php(72): CategoriesController->addEditModel(Object(MedcardCategorie), Object(FormCategorieAdd), '???????????????...')
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): CategoriesController->actionEdit()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('edit')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/categorie...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/categories/edit
+HTTP_REFERER=http://moniiag.my/index.php/admin/categories/view
+---
+2014/02/19 17:16:35 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:24:46 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:24:58 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:25:26 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:26:08 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:26:23 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:26:30 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:27:00 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/02/19 17:27:08 [warning] [application] Failed to set unsafe attribute "id" of "FormCategorieAdd".
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (69)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)

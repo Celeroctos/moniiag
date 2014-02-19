@@ -57,6 +57,11 @@ class ElementsController extends Controller {
                 if($element['guide_id'] == null) {
                     $element['guide_id'] = -1;
                 }
+                if($element['is_wrapped'] != 1) {
+                    $element['is_wrapped_name'] = 'Нет';
+                } else {
+                    $element['is_wrapped_name'] = 'Да';
+                }
             }
             echo CJSON::encode(
                 array('rows' => $elements,
@@ -98,9 +103,31 @@ class ElementsController extends Controller {
     }
 
     private function addEditModel($element, $model, $msg) {
+        // Посмотрим, нет ли уже элемента с такой позицией в данной категории: категории или элемента:
+        $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
+        $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
+        if($issetPositionInCats != null || $issetPositionInElements != null) {
+            if($issetPositionInElements->id != $element->id) {
+                echo CJSON::encode(array('success' => false,
+                        'errors' => array(
+                            'position' => array(
+                                'Такая позиция в данной категории существует (среди категорий или элементов).'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+        }
+
         $element->type = $model->type;
         $element->categorie_id = $model->categorieId;
         $element->label = $model->label;
+        $element->label_after = $model->labelAfter;
+        $element->size = $model->size;
+        $element->is_wrapped = $model->isWrapped;
+        $element->position = $model->position;
+
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
         }
@@ -109,6 +136,8 @@ class ElementsController extends Controller {
         } else {
             $element->allow_add = 0;
         }
+
+        // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
 
         if($element->save()) {
             echo CJSON::encode(array('success' => true,

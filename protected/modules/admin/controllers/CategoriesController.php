@@ -46,6 +46,11 @@ class CategoriesController extends Controller {
 						$categorie['parent_id'] = -1;
 					}
 				}
+                if($categorie['is_dynamic'] == 1) {
+                    $categorie['is_dynamic_name'] = 'Да';
+                } else {
+                    $categorie['is_dynamic_name'] = 'Нет';
+                }
 			}
             echo CJSON::encode(
                 array('rows' => $categories,
@@ -88,8 +93,27 @@ class CategoriesController extends Controller {
     }
 
     private function addEditModel($categorie, $model, $msg) {
+        $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->id));
+        $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->id));
+       // var_dump($issetPositionInElements);
+       // var_dump($issetPositionInCats);
+       // exit();
+        if($issetPositionInCats != null || $issetPositionInElements != null) {
+            if($issetPositionInCats->id != $categorie->id) {
+                echo CJSON::encode(array('success' => false,
+                        'errors' => array(
+                            'position' => array(
+                                'Такая позиция в данной категории существует (среди категорий или элементов).'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+        }
         $categorie->name = $model->name;
 		$categorie->parent_id = $model->parentId;
+        $categorie->position = $model->position;
         if($categorie->save()) {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));
@@ -114,6 +138,9 @@ class CategoriesController extends Controller {
         $categorie = $model->getOne($id);
         if($categorie['parent_id'] == null) {
             $categorie['parent_id'] = -1;
+        }
+        if($categorie['is_dynamic'] == null) {
+            $categorie['is_dynamic'] = 0;
         }
         echo CJSON::encode(array('success' => true,
                                  'data' => $categorie)

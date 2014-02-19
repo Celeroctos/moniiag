@@ -69,8 +69,24 @@ class SheduleController extends Controller {
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
             'note' => isset($note) ? $note : '',
-            'canEditMedcard' => isset($canEditMedcard) ? $canEditMedcard : 0
+            'canEditMedcard' => isset($canEditMedcard) ? $canEditMedcard : 0,
+            'privilegesList' => $this->getPrivileges(),
+            'modelMedcard' => new FormPatientWithCardAdd(),
+            'modelOms' => new FormOmsEdit()
         ));
+    }
+
+    // Получить список льгот
+    private function getPrivileges() {
+        // Льготы
+        $privilegeModel = new Privilege();
+        $privilegesList = array('-1' => 'Нет');
+
+        $privilegesListDb = $privilegeModel->getRows(false);
+        foreach($privilegesListDb as $privilege) {
+            $privilegesList[$privilege['id']] = $privilege['name'].' (Код '.$privilege['code'].')';
+        }
+        return $privilegesList;
     }
 
     public function actionGetHistoryPoints($medcardid) {
@@ -145,12 +161,28 @@ class SheduleController extends Controller {
                     continue;
                 }
 
+                // Категория элемента
+                $categorie = MedcardCategorie::model()->findByPk($element->categorie_id);
+                if($categorie == null) {
+                    continue;
+                }
+
+                // Смотрим: если в историю не занесена категория, то нужно занести с сохранением параметров
+                $path = $this->getElementHierarhy($categorie);
+
                 $elementModel = new MedcardElementForPatient();
                 $elementModel->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
                 $elementModel->element_id = $resArr[1];
                 $elementModel->value = $value;
                 $elementModel->change_date = $currentDate;
                 $elementModel->greeting_id = $_POST['FormTemplateDefault']['greetingId'];
+                $elementModel->categorie_name = $categorie->name;
+                $elementModel->path = $element->path;
+                $elementModel->label_before = $element->label;
+                $elementModel->label_after = $element->label_after;
+                $elementModel->size = $element->size;
+                $elementModel->is_wrapped = $element->is_wrapped;
+
                 $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId(array('id' => $elementModel->element_id), $elementModel->medcard_id);
                 if($historyIdResult['history_id_max'] == null) {
                     $elementModel->history_id = 1;
@@ -188,6 +220,19 @@ class SheduleController extends Controller {
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
         }
+    }
+
+    private function getElementHierarhy($obj) {
+        // Категория
+        $partOfPath = '';
+        if(isset($element['parent_id'])) {
+            if($element['parent_id'] != null) {
+
+            } else { // Достигли корневого элемента
+                $partOfPath = '';
+            }
+        }
+        return $partOfPath;
     }
 
     // Получить пациентов для текущего дня расписания

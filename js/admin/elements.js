@@ -2,12 +2,12 @@ $(document).ready(function() {
     $("#elements").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/elements/get',
         datatype: "json",
-        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка', '', '', '',''],
+        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Размер', 'Перенос строки', 'Позиция', '', '', '','',''],
         colModel:[
             {
                 name:'id',
                 index:'id',
-                width: 150
+                width: 50
             },
             {
                 name: 'type',
@@ -22,12 +22,32 @@ $(document).ready(function() {
             {
                 name: 'categorie',
                 index:'categorie',
-                width: 150
+                width: 120
             },
             {
                 name: 'label',
                 index: 'label',
                 width: 150
+            },
+            {
+                name: 'label_after',
+                index:'label_after',
+                width: 150
+            },
+            {
+                name: 'size',
+                index:'size',
+                width: 80
+            },
+            {
+                name: 'is_wrapped_name',
+                index:'is_wrapped_name',
+                width: 130
+            },
+            {
+                name: 'position',
+                index: 'position',
+                width: 80
             },
             {
                 name: 'categorie_id',
@@ -47,6 +67,11 @@ $(document).ready(function() {
             {
                 name: 'allow_add',
                 index: 'allow_add',
+                hidden: true
+            },
+            {
+                name: 'is_wrapped',
+                index:'is_wrapped',
                 hidden: true
             }
         ],
@@ -169,6 +194,22 @@ $(document).ready(function() {
                             {
                                 modelField: 'allow_add',
                                 formField: 'allowAdd'
+                            },
+                            {
+                                modelField: 'label_after',
+                                formField: 'labelAfter'
+                            },
+                            {
+                                modelField: 'size',
+                                formField: 'size'
+                            },
+                            {
+                                modelField: 'is_wrapped',
+                                formField:'isWrapped'
+                            },
+                            {
+                                modelField: 'position',
+                                formField: 'position'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {

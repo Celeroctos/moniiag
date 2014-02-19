@@ -270,18 +270,6 @@
                                 <?php echo $form->error($model,'passwordRepeat'); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'employeeId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'employeeId', $employeesList, array(
-                                    'id' => 'employeeId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'employeeId'); ?>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
