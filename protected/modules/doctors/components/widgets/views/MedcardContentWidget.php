@@ -125,7 +125,9 @@
             'templateType' => 0,
             'withoutSave' => 0,
             'greetingId' => $currentSheduleId,
-            'canEditMedcard' => $canEditMedcard
+            'canEditMedcard' => $canEditMedcard,
+            'medcard' => $medcard,
+            'currentDate' => $currentDate
         )); ?>
             <?php if($medcard['gender'] == 0) { ?>
                 <h5><strong>Ведение беременности</strong></h5>
@@ -133,7 +135,9 @@
                     'currentPatient' => $currentPatient,
                     'greetingId' => $currentSheduleId,
                     'templateType' => 1,
-                    'canEditMedcard' => $canEditMedcard
+                    'canEditMedcard' => $canEditMedcard,
+                    'medcard' => $medcard,
+                    'currentDate' => $currentDate
                 )); ?>
             <?php }?>
         <?php } ?>

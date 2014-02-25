@@ -143,14 +143,17 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <?php
+                    <!--<?php
                     $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
                         'currentPatient' => $currentPatient,
                         'templateType' => 0,
                         'prefix' => 'history',
                         'withoutSave' => 1,
-                        'canEditMedcard' => 0
-                    )); ?>
+                        'canEditMedcard' => 0,
+                        'medcard' => $medcard,
+                        'greetingId' => $currentSheduleId,
+                        'currentDate' => $currentTime
+                    )); ?>-->
                 </div>
             </div>
             <div class="modal-footer">

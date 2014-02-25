@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#categories").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/categories/get',
         datatype: "json",
-        colNames:['Код', 'Название', 'Родитель', 'Динамическая', 'Позиция', '',''],
+        colNames:['Код', 'Название', 'Родитель', 'Динамическая', 'Позиция', 'Полный путь', '',''],
         colModel:[
             {
                 name:'id',
@@ -27,7 +27,12 @@ $(document).ready(function() {
             {
                 name: 'position',
                 index: 'position',
-                width: 150
+                width: 100
+            },
+            {
+                name: 'path',
+                index: 'path',
+                width: 200
             },
             {
                 name: 'is_dynamic',

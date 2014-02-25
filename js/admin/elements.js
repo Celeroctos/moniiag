@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#elements").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/elements/get',
         datatype: "json",
-        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Размер', 'Перенос строки', 'Позиция', '', '', '','',''],
+        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Размер', 'Перенос строки', 'Позиция', 'Полный путь', '', '', '','',''],
         colModel:[
             {
                 name:'id',
@@ -48,6 +48,11 @@ $(document).ready(function() {
                 name: 'position',
                 index: 'position',
                 width: 80
+            },
+            {
+                name: 'path',
+                index: 'path',
+                width: 150
             },
             {
                 name: 'categorie_id',

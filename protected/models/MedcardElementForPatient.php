@@ -82,13 +82,17 @@ class MedcardElementForPatient extends MisActiveRecord {
         }
     }
 
-    public function getMaxHistoryPointId($element, $medcardId) {
+    public function getMaxHistoryPointId($element, $medcardId, $greetingId) {
         try {
             $connection = Yii::app()->db;
             $elements = $connection->createCommand()
                 ->select('MAX(mep.history_id) as history_id_max')
                 ->from('mis.medcard_elements_patient mep')
-                ->where('mep.element_id = :element_id AND mep.medcard_id = :medcard_id', array(':element_id' => $element['id'], ':medcard_id' => $medcardId));
+                ->where('mep.element_id = :element_id
+                        AND mep.medcard_id = :medcard_id
+                        AND mep.greeting_id = :greeting_id', array(':element_id' => $element['id'],
+                                                                   ':medcard_id' => $medcardId,
+                                                                   ':greeting_id' => $greetingId));
             return $elements->queryRow();
 
         } catch(Exception $e) {
@@ -117,7 +121,7 @@ class MedcardElementForPatient extends MisActiveRecord {
             $values = $connection->createCommand()
                 ->select('mep.*, me.type')
                 ->from('mis.medcard_elements_patient mep')
-                ->join('mis.medcard_elements me', 'me.id = mep.element_id')
+                ->leftJoin('mis.medcard_elements me', 'me.id = mep.element_id')
                 ->where('mep.medcard_id = :medcard_id AND mep.change_date <= :date', array(':medcard_id' => $medcardId,
                                                                                            ':date' => $date))
                 ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
@@ -126,7 +130,17 @@ class MedcardElementForPatient extends MisActiveRecord {
                                                     AND mep2.medcard_id = :medcard_id
                                                     AND mep2.change_date <= :date)', array(':medcard_id' => $medcardId,
                                                            ':date' => $date))
-                ->group('mep.element_id, mep.history_id, mep.medcard_id, me.type');
+                ->group('mep.element_id,
+                         mep.history_id,
+                         mep.medcard_id,
+                         me.type,
+                         mep.value,
+                         mep.change_date,
+                         mep.greeting_id,
+                         mep.categorie_name,
+                         mep.categorie_id,
+                         mep.path,
+                         ');
             return $values->queryAll();
 
         } catch(Exception $e) {
@@ -142,11 +156,21 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
                 ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
+                ->andWhere('mep.categorie_id != -1')
                 ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
                                               FROM mis.medcard_elements_patient mep2
                                               WHERE mep2.element_id = mep.element_id
                                                     AND mep2.greeting_id = :greetingId)', array(':greetingId' => $greetingId))
-                ->group('mep.element_id, mep.history_id, mep.medcard_id');
+                ->group('mep.element_id,
+                         mep.history_id,
+                         mep.medcard_id,
+                         mep.value,
+                         mep.change_date,
+                         mep.greeting_id,
+                         mep.categorie_name,
+                         mep.categorie_id,
+                         mep.path,
+                         ');
             return $values->queryAll();
 
         } catch(Exception $e) {

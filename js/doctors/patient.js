@@ -76,10 +76,11 @@ $(document).ready(function() {
             'dataType' : 'json',
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
+                console.log(data);
                 if(data.success == 'true') {
                     // Заполняем медкарту-историю значениями
                     var data = data.data;
-                    var form = $('#historyPopup #patient-edit-form');
+                   /* var form = $('#historyPopup #patient-edit-form');
                     // Сброс формы
                     $(form)[0].reset();
                     $(form).find('input').val('');
@@ -89,7 +90,8 @@ $(document).ready(function() {
                             data[i].value = $.parseJSON(data[i].value);
                         }
                         element.val(data[i].value);
-                    }
+                    }*/
+                    $('#historyPopup .modal-body .row').html(data);
                     $('#historyPopup').modal({
 
                     });
@@ -235,6 +237,74 @@ $(document).ready(function() {
     // Запрет редактирования карты
     $('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
     $('.date-control .input-group-addon').remove();
+
+    // Здесь будут храниться ID клонов элементов
+    var clones = {
+
+    };
+
+    // Клонирование элементов
+    /* Клоны считаются, как clone_xx_yy, где xx - ID аккордеона, yy - порядковый номер клона */
+    $(document).on('click', '.accordion-clone-btn', function(e) {
+        var accParent = $(this).parents('.accordion')[0];
+        var accClone = $(accParent).clone();
+
+        var toggle = $(accParent).find('.accordion-toggle');
+        var body = $(accParent).find('.accordion-body');
+
+        if(!clones.hasOwnProperty($(accParent).prop('id'))) {
+            clones[$(accParent).prop('id')] = 1;
+        } else {
+            clones[$(accParent).prop('id')]++;
+        }
+
+        var accId = $(accParent).prop('id');
+        var accNumberId = accId.substr(accId.lastIndexOf('_') + 1);
+        var idCloneCount = clones[$(accParent).prop('id')];
+
+        var toggleDataParent = $(toggle).data()['parent'];
+        var toggleDataHref = $(toggle).prop('href');
+        $(accClone).find('.accordion-clone-btn:eq(0)')
+                   .removeClass('accordion-clone-btn')
+                   .addClass('accordion-unclone-btn')
+                   .find('span.glyphicon-plus')
+                   .removeClass('glyphicon-plus')
+                   .addClass('glyphicon-minus');
+
+        $(accClone).find('.accordion-heading button:not(:eq(0))').remove();
+
+        $(accClone).prop('id', $(accParent).prop('id') + '_clone_' + accNumberId + '_' + idCloneCount);
+        $(accClone).find('.accordion-body:eq(0)').prop('id', 'collapse_clone_' + accNumberId + '_' + idCloneCount);
+        $(accClone).find('.accordion-heading:eq(0)').attr('data-parent', $(accParent).prop('id') + '_clone_' + accNumberId + '_' + idCloneCount);
+        $(accClone).find('.accordion-heading:eq(0) a').attr('href', '#collapse_clone_' + accNumberId + '_' + idCloneCount);
+
+        // Дальше пробегаемся по всем вложенным в дерево элементам. Ситуация повторяется: переименовываем
+        var inserts = $(accClone).find('.accordion');
+        for(var i = 0; i < inserts.length; i++) {
+            if(!clones.hasOwnProperty($(inserts[i]).prop('id'))) {
+                clones[$(inserts[i]).prop('id')] = 1;
+            } else {
+                clones[$(inserts[i]).prop('id')]++;
+            }
+
+            accId = $(inserts[i]).prop('id');
+            accNumberId = accId.substr(accId.lastIndexOf('_') + 1);
+            idCloneCount = clones[$(inserts[i]).prop('id')];
+
+            $(inserts[i]).prop('id', $(inserts[i]).prop('id') + '_clone_' + accNumberId + '_' + idCloneCount);
+            $(inserts[i]).find('.accordion-body:eq(0)').prop('id', 'collapse_clone_' + accNumberId + '_' + idCloneCount);
+            $(inserts[i]).find('.accordion-heading:eq(0)').attr('data-parent', $(accParent).prop('id') + '_clone_' + accNumberId + '_' + idCloneCount);
+            $(inserts[i]).find('.accordion-heading:eq(0) a').attr('href', '#collapse_clone_' + accNumberId + '_' + idCloneCount);
+        }
+
+        $(accClone).insertAfter($(accParent));
+    });
+
+    // UnКлонирование элементов
+    $(document).on('click', '.accordion-unclone-btn', function(e) {
+        var accParent = $(this).parents('.accordion')[0];
+        $(accParent).remove();
+    });
 });
 
 function getOnlyLikes() {

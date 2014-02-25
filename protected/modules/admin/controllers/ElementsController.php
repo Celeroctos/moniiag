@@ -138,11 +138,52 @@ class ElementsController extends Controller {
         }
 
         // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
+        $partOfPath = $this->getElementPath($element->categorie_id);
+        $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
+        $element->path = $partOfPath.'.'.$element->position;
 
         if($element->save()) {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));
         }
+    }
+
+    // Путь элемента считается в категории
+    private function getElementPath($categorieId) {
+        $categorie = MedcardCategorie::model()->findByPk($categorieId);
+        $path = '';
+        if($categorie != null) {
+            // Для построения пути не пойдёт: в иерархии должно быть всё определено
+            if($categorie->position == null) {
+                echo CJSON::encode(array('success' => false,
+                        'errors' => array(
+                            'position' => array(
+                                'Одна или несколько позиций в иерархии имеет неприсвоенные позиции!'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+
+            if($categorie->parent_id != -1) {
+                $path .= '.'.$this->getElementPath($categorie->parent_id);
+                return $categorie->position.$path;
+            } else {
+                return $categorie->position;
+            }
+        } else {
+            echo CJSON::encode(array('success' => false,
+                    'errors' => array(
+                        'position' => array(
+                            'Одна или несколько позиций в иерархии отсутствует!'
+                        )
+                    )
+                )
+            );
+            exit();
+        }
+        return $path;
     }
 
     public function actionDelete($id) {

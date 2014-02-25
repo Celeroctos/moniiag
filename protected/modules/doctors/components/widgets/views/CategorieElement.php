@@ -5,6 +5,11 @@ if(isset($categorie['id'])) {
     <div class="accordion-group">
         <div class="accordion-heading">
             <a href="#collapse<?php echo $prefix.'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?><?php echo count($categorie['elements']) == 0 ? ' (пустая категория)' : ''?></a>
+            <?php if($categorie['is_dynamic'] == 1) { ?>
+            <button class="btn btn-default btn-sm accordion-clone-btn" type="button">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <? } ?>
         </div>
         <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$categorie['id']; ?>">
             <div class="accordion-inner">

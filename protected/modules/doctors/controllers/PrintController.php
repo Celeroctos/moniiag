@@ -77,6 +77,7 @@ class PrintController extends Controller {
         // Сортируем по категориям
         $greetingInfo = array();
         $resultArr = array();
+
         foreach($changedElements as $element) {
             $elementInfo = MedcardElement::model()->getOne($element['element_id']);
             // Не существует общей информации по приёму
@@ -130,6 +131,7 @@ class PrintController extends Controller {
                 }
             }
         }
+
         // Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
         if($greetingIn === false) {
             $this->render('greeting', array(

@@ -565,9 +565,19 @@ tr.header {
     padding: 0 15px;
   }
 }
-.accordion-heading .accordion-toggle {
-  display: block;
-  padding: 8px 15px;
+.accordion-heading {
+  position: relative;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  .accordion-toggle {
+    display: block;
+    padding: 8px 15px;
+  }
+  .accordion-clone-btn, .accordion-unclone-btn {
+    position: absolute;
+    top: 4px;
+    left: 90%;
+  }
 }
 
 .accordion-inner {
