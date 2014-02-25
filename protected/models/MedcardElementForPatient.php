@@ -149,19 +149,30 @@ class MedcardElementForPatient extends MisActiveRecord {
     }
 
     // Найти все конечные состояния полей, изменённых во время приёма
-    public function findAllPerGreeting($greetingId) {
+    public function findAllPerGreeting($greetingId, $pathForFind = false, $categorieId = false) {
         try {
             $connection = Yii::app()->db;
             $values = $connection->createCommand()
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
                 ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
-                ->andWhere('mep.categorie_id != -1')
+//                ->andWhere('mep.categorie_id != -1')
                 ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
                                               FROM mis.medcard_elements_patient mep2
                                               WHERE mep2.element_id = mep.element_id
-                                                    AND mep2.greeting_id = :greetingId)', array(':greetingId' => $greetingId))
-                ->group('mep.element_id,
+                                                    AND mep2.greeting_id = :greetingId)', array(':greetingId' => $greetingId));
+                if($pathForFind !== false) {
+                    $values->andWhere('mep.categorie_id = (SELECT DISTINCT mep3.categorie_id
+                                                           FROM mis.medcard_elements_patient mep3
+                                                           WHERE
+                                                                mep3.path = :path
+                                                                AND mep3.greeting_id = :greetingId)', array(':greetingId' => $greetingId,
+                                                                                                            ':path' => $pathForFind));
+                }
+                if($categorieId !== false) {
+                    $values->andWhere('mep.categorie_id = :categorie_id', array(':categorie_id' => $categorieId));
+                }
+                $values->group('mep.element_id,
                          mep.history_id,
                          mep.medcard_id,
                          mep.value,
@@ -171,6 +182,7 @@ class MedcardElementForPatient extends MisActiveRecord {
                          mep.categorie_id,
                          mep.path,
                          ');
+
             return $values->queryAll();
 
         } catch(Exception $e) {

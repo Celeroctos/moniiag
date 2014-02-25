@@ -22,6 +22,9 @@ class CategorieViewWidget extends CWidget {
         // Категории нужны, чтобы сформировать первичный шаблон для пациента в том случае, когда у пациента нет перенесённых записей о данном приёме в хистори. Для начала проверим, есть ли шаблон приёма. Если нет - вынимаем категории и помещаем их в историю
         // Т.е. в приём не вносили изменений, шаблона истории нет
         $categories = $this->getCategories($this->templateType);
+      // echo "<pre>";
+      // var_dump($categories);
+       // exit();
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
@@ -64,9 +67,6 @@ class CategorieViewWidget extends CWidget {
             $categoriesResult[] = $categorieTemplateFill;
 
         }
-      // echo "<pre>";
-      // var_dump($categoriesResult);
-       // exit();
         return $categoriesResult;
     }
 
@@ -76,8 +76,7 @@ class CategorieViewWidget extends CWidget {
         if($categorie == null) {
             return;
         }
-        $historyCategorie = MedcardElementForPatient::model()->find('history_id = 1 AND categorie_id = :categorie_id AND greeting_id = :greeting_id AND path = :path AND medcard_id = :medcard_id', array(
-            ':categorie_id' => $id,
+        $historyCategorie = MedcardElementForPatient::model()->find('history_id = 1 AND greeting_id = :greeting_id AND path = :path AND medcard_id = :medcard_id', array(
             ':greeting_id' => $this->greetingId,
             ':path' => $categorie->path,
             ':medcard_id' => $this->medcard['card_number'])
@@ -96,7 +95,7 @@ class CategorieViewWidget extends CWidget {
             $medcardCategorie->categorie_name = $categorie->name;
             $medcardCategorie->path = $categorie->path;
             $medcardCategorie->is_wrapped = 0;
-            $medcardCategorie->categorie_id = $id;
+            $medcardCategorie->categorie_id = $categorie->parent_id;
             $medcardCategorie->element_id = -1;
             $medcardCategorie->change_date = $this->currentDate;
             $medcardCategorie->type = -1; // У категории нет типа контрола
@@ -112,13 +111,16 @@ class CategorieViewWidget extends CWidget {
         } else {
             $categorie = $historyCategorie;
         }
+
 		$categorieResult = array();
 		if($categorie != null) {
             // Разные поля при разных выборках
-            $categorieResult['id'] = $categorie['categorie_id'];
+            $categorieResult['id'] = $id;
             $categorieResult['name'] = $categorie['categorie_name'];
             $categorieResult['is_dynamic'] = $categorie['is_dynamic'];
-
+            if($categorieResult['is_dynamic'] == 1) {
+                $categorieResult['pr_key'] = $categorie['medcard_id'].'|'.$categorie['greeting_id'].'|'.$categorie['path'].'|'.$categorie['categorie_id'].'|'.$id;
+            }
             $parts = explode('.', $categorie['path']);
             // Если количество кусков и точек совпадает, то это неверно: в иерархии у этого элемента нет позиции
             if(mb_substr_count($categorie['path'], '.') == count($parts)) {
@@ -128,7 +130,7 @@ class CategorieViewWidget extends CWidget {
             $categorieResult['position'] = $parts[0];
             $categorieResult['elements'] = array();
 
-			$elements = MedcardElement::model()->getElementsByCategorie($categorie['categorie_id']);
+			$elements = MedcardElement::model()->getElementsByCategorie($id);
 			foreach($elements as $key => $element) {
                 // Проверим наличие элемента в истории
                 $historyCategorieElement = MedcardElementForPatient::model()->find('medcard_id = :medcard_id AND greeting_id = :greeting_id AND path = :path', array(
@@ -377,7 +379,7 @@ class CategorieViewWidget extends CWidget {
                             $node = array(
                                 'elements' => array(),
                                 'name' => $element['categorie_name'],
-                                'children' => array()
+                                'children' => array(),
                             );
                             $currentNode[$pathArr[$i]] = $node;
                         } else {

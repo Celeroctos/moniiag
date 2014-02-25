@@ -182,7 +182,7 @@ class SheduleController extends Controller {
                     $medcardCategorie->categorie_name = $categorie->name;
                     $medcardCategorie->path = $categorie->path;
                     $medcardCategorie->is_wrapped = 0;
-                    $medcardCategorie->categorie_id = $categorie->id;
+                    $medcardCategorie->categorie_id = $categorie->parent_id;
                     $medcardCategorie->element_id = -1;
                     $medcardCategorie->change_date = $currentDate;
                     $medcardCategorie->type = -1;
@@ -228,7 +228,7 @@ class SheduleController extends Controller {
                     $historyCategorieElement->categorie_name = '';
                     $historyCategorieElement->path = $element->path;
                     $historyCategorieElement->is_wrapped = $element->is_wrapped;
-                    $historyCategorieElement->categorie_id = $categorie->id;
+                    $historyCategorieElement->categorie_id = $categorie->parent_id;
                     $historyCategorieElement->element_id = $element->id;
                     $historyCategorieElement->label_before = $element->label;
                     $historyCategorieElement->label_after = $element->label_after;

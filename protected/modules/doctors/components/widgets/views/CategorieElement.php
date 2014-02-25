@@ -4,10 +4,15 @@ if(isset($categorie['id'])) {
 <div id="accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" class="accordion">
     <div class="accordion-group">
         <div class="accordion-heading">
-            <a href="#collapse<?php echo $prefix.'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?><?php echo count($categorie['elements']) == 0 ? ' (пустая категория)' : ''?></a>
+            <a href="#collapse<?php echo $prefix.'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
+                <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
+                    (пустая категория)
+                <?php } ?>
+            </a>
             <?php if($categorie['is_dynamic'] == 1) { ?>
             <button class="btn btn-default btn-sm accordion-clone-btn" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
+                <span class="no-display pr-key"><?php echo $categorie['pr_key']; ?></span>
             </button>
             <? } ?>
         </div>
