@@ -175,6 +175,9 @@ class CategorieViewWidget extends CWidget {
         /* В противом случае, находим категорию, как категорию из хистори.
                По ключам: номер приёма, максимальный размер истории (история у категории всегда единичка и не меняется, т.к. категория не изменяется), ключ категории */
         if(count($historyCategories) == 0) {
+			if(!isset($categorie)) {
+				$categorie = MedcardCategorie::model()->findByPk($id);
+			}
             if(isset($categorie) && $categorie->path == null) {
                 exit('Ошибка: категории c ID '.$categorie['id'].' не имеет пути в шаблоне!');
             }
@@ -308,6 +311,7 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['type'] = $eCopy->type;
                         $elementResult['label_before'] = $eCopy->label_before;
                         $elementResult['label_after'] = $eCopy->label_after;
+						$elementResult['id'] = $eCopy->element_id;
                         $elementResult['guide_id'] = $eCopy->guide_id;
                         $elementResult['path'] = $eCopy->path;
 						$elementResult['allow_add'] = $eCopy->allow_add;
