@@ -22,8 +22,6 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="#">Справка</a></li>
-                <li><a href="#">Об авторах</a></li>
-                <li><a href="#" class="keyboard-help-link" data-toggle="keyboard-help">Помощь по клавиатуре</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" id="loggedUserNavbar">
                 <li class="dropdown">

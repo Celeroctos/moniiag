@@ -8,88 +8,94 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/motionHistory.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <h4>Расписание</h4>
-<p class="text-left">
-   Задайте фильтр и посмотрите расписание, нажав на кнопку "Показать".
-</p>
 <form method="post" id="reception-shedule-form" role="form" class="form-horizontal col-xs-12">
-    <div class="form-group">
-        <label class="col-xs-2 control-label required" for="greetingDate">Дата</label>
-        <div class="col-xs-3 input-group date date-control" id="greetingDate-cont">
-            <input type="hidden" id="greetingDate" class="form-control col-xs-4" placeholder="Формат гггг-мм-дд" name="birthday">
-            <span class="input-group-addon">
-                <span class="glyphicon-calendar glyphicon">
-                </span>
-            </span>
-            <div class="subcontrol">
-                <div class="date-ctrl-up-buttons">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button" tabindex="-1" type="button"></button>
-                        <button class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button" tabindex="-1" type="button"></button>
-                        <button class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" tabindex="-1" type="button"></button>
-                    </div>
-                </div>
-                <div class="form-inline subfields">
-                    <input type="text" class="form-control day" placeholder="ДД" name="day">
-                    <input type="text" class="form-control month" placeholder="ММ" name="month">
-                    <input type="text" class="form-control year" placeholder="ГГГГ" name="year">
-                </div>
-                <div class="date-ctrl-down-buttons">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button" tabindex="-1" type="button"></button>
-                        <button class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button" tabindex="-1" type="button"></button>
-                        <button class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" tabindex="-1" type="button"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="col-xs-4">
+      <div class="form-group">
+          <label class="col-xs-2 control-label required" for="greetingDate">Дата</label>
+          <div class="col-xs-3 input-group date date-control" id="greetingDate-cont">
+              <input type="hidden" id="greetingDate" class="form-control col-xs-4" placeholder="Формат гггг-мм-дд" name="birthday">
+              <span class="input-group-addon">
+                  <span class="glyphicon-calendar glyphicon">
+                  </span>
+              </span>
+              <div class="subcontrol">
+                  <div class="date-ctrl-up-buttons">
+                      <div class="btn-group">
+                          <button class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button" tabindex="-1" type="button"></button>
+                          <button class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button" tabindex="-1" type="button"></button>
+                          <button class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" tabindex="-1" type="button"></button>
+                      </div>
+                  </div>
+                  <div class="form-inline subfields">
+                      <input type="text" class="form-control day" placeholder="ДД" name="day">
+                      <input type="text" class="form-control month" placeholder="ММ" name="month">
+                      <input type="text" class="form-control year" placeholder="ГГГГ" name="year">
+                  </div>
+                  <div class="date-ctrl-down-buttons">
+                      <div class="btn-group">
+                          <button class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button" tabindex="-1" type="button"></button>
+                          <button class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button" tabindex="-1" type="button"></button>
+                          <button class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" tabindex="-1" type="button"></button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <button type="button" class="btn btn-success" id="sheduleViewSubmit">Посмотреть расписание</button>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="status" class="col-xs-2 control-label required">Только опосредованные пациенты (без ЭМК)</label>
-        <div class="col-xs-4">
-            <input type="checkbox" name="status" id="status">
-        </div>
+    
+    <div class="col-xs-7">
+
+      <div class="form-group">
+          <label for="doctorCombo" class="col-xs-4 control-label required">Для врачей</label>
+          <div class="col-xs-6">
+              <select name="doctorCombo" class="form-control" id="doctorCombo">
+                  <option value="0" selected="selected">Всех</option>
+                  <option value="1">Указать конкретных</option>
+              </select>
+          </div>
+      </div>
+      <div class="form-group chooser no-display" id="doctorChooser">
+          <label for="doctor" class="col-xs-4 control-label">Врач (Enter - добавить)</label>
+          <div class="col-xs-6">
+              <input type="text" class="form-control" autofocus id="doctor" placeholder="ФИО врача">
+              <ul class="variants no-display">
+              </ul>
+              <div class="choosed">
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="patientCombo" class="col-xs-4 control-label required">Для пациентов</label>
+          <div class="col-xs-6">
+              <select name="patientCombo" class="form-control" id="patientCombo">
+                  <option value="0" selected="selected">Всех</option>
+                  <option value="1">Указать конкретных</option>
+              </select>
+          </div>
+      </div>
+      <div class="form-group chooser no-display" id="patientChooser">
+          <label for="categorie" class="col-xs-4 control-label">Пациент (Enter - добавить)</label>
+          <div class="col-xs-6">
+              <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
+              <ul class="variants no-display">
+              </ul>
+              <div class="choosed">
+              </div>
+          </div>
+      </div>
+      <div class="form-group">
+          <label for="status" class="col-xs-4 control-label required">Только опосредованные пациенты (без ЭМК)</label>
+          <div class="col-xs-4">
+              <input type="checkbox" name="status" id="status">
+          </div>
+      </div>
     </div>
-    <div class="form-group">
-        <label for="doctorCombo" class="col-xs-2 control-label required">Для врачей</label>
-        <div class="col-xs-4">
-            <select name="doctorCombo" class="form-control" id="doctorCombo">
-                <option value="0" selected="selected">Всех</option>
-                <option value="1">Указать конкретных</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group chooser no-display" id="doctorChooser">
-        <label for="doctor" class="col-xs-2 control-label">Врач (Enter - добавить)</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="doctor" placeholder="ФИО врача">
-            <ul class="variants no-display">
-            </ul>
-            <div class="choosed">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="patientCombo" class="col-xs-2 control-label required">Для пациентов</label>
-        <div class="col-xs-4">
-            <select name="patientCombo" class="form-control" id="patientCombo">
-                <option value="0" selected="selected">Всех</option>
-                <option value="1">Указать конкретных</option>
-            </select>
-        </div>
-    </div>
-    <div class="form-group chooser no-display" id="patientChooser">
-        <label for="categorie" class="col-xs-2 control-label">Пациент (Enter - добавить)</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
-            <ul class="variants no-display">
-            </ul>
-            <div class="choosed">
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <button type="button" class="btn btn-success" id="sheduleViewSubmit">Посмотреть расписание</button>
-    </div>
+    
+    
+
 </form>
 <div class="row">
     <table id="sheduleTable" class="col-xs-11">
@@ -113,15 +119,11 @@
         </tbody>
     </table>
 </div>
-<div id="toDoctorSubmit-cont" class="row">
-    <div class="form-group">
-        <input type="button" class="btn btn-success" name="todoctor-attach-submit" value="Разнести отмеченные карты по кабинетам" id="todoctor-submit">
-    </div>
-</div>
-<div id="printSubmit-cont" class="row">
-    <div class="form-group">
-        <input type="button" class="btn btn-success" name="print-submit" value="Распечатать расписание" id="print-submit">
-    </div>
+<div class="row">
+   <div class="form-group">
+      <input type="button" class="btn btn-success" name="todoctor-attach-submit" value="Разнести отмеченные карты по кабинетам" id="todoctor-submit">
+      <input type="button" class="btn btn-success" name="print-submit" value="Распечатать расписание" id="print-submit">
+   </div>
 </div>
 <div class="modal fade error-popup" id="errorPopup">
     <div class="modal-dialog">

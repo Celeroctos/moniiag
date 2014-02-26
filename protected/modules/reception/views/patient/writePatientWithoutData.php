@@ -14,53 +14,57 @@
 </div>
 <h4>Запись опосредованного пациента</h4>
 <p class="text-left">
-    Шаг 1. Найдите врачей по названному пациентом диагнозу или врачу. Шаг 2. Зарезервируйте время для пациента у этого врача, введя дополнительно контактные данные: ФИО пациента и контактный телефон.
+    Необходимо найти врача к которому следует записать пациента:
 </p>
-<h4>Шаг 1. Найти врача</h4>
-<form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
-    <div class="form-group">
-        <label for="ward" class="col-xs-2 control-label">Отделение</label>
-        <div class="col-xs-4">
-            <select class="form-control" id="ward">
-                <?php foreach($wardsList as $id => $name) { ?>
-                    <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                <?php } ?>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="post" class="col-xs-2 control-label">Должность</label>
-        <div class="col-xs-4">
-            <select class="form-control" id="post">
-                <?php foreach($postsList as $id => $name) { ?>
-                    <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                <?php } ?>
-            </select>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="lastName" class="col-xs-2 control-label">ФИО врача</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
-        </div>
-    </div>
-    <div class="form-group chooser first" id="diagnosisDistribChooser">
-        <label for="diagnosis" class="col-xs-2 control-label">Диагноз (enter - добавить)</label>
-        <div class="col-xs-4">
-            <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
-            <ul class="variants no-display">
-            </ul>
-            <div class="choosed">
+<div class="row">
+        <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
+            <div class="col-xs-6">
+                <div class="form-group">
+                <label for="ward" class="col-xs-4 control-label">Отделение</label>
+                <div class="col-xs-6">
+                    <select class="form-control" id="ward">
+                        <?php foreach($wardsList as $id => $name) { ?>
+                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
-    </div>
-</form>
-<h4>Список врачей по поисковому запросу</h4>
+            <div class="form-group">
+                <label for="post" class="col-xs-4 control-label">Должность</label>
+                <div class="col-xs-6">
+                    <select class="form-control" id="post">
+                        <?php foreach($postsList as $id => $name) { ?>
+                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
+                </div>
+            </div>
+                    <div class="form-group">
+                <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                                <div class="form-group chooser first" id="diagnosisDistribChooser">
+                        <label for="diagnosis" class="col-xs-4 control-label">Диагноз (enter - добавить)</label>
+                        <div class="col-xs-6">
+                            <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
+                            <ul class="variants no-display">
+                            </ul>
+                            <div class="choosed">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </form>
+</div>
 <p class="text-left">
-    В таблице отображаются результаты поискового запроса.
+Необходимо выбрать врача
 </p>
 <div class="row">
     <div class="col-xs-12 borderedBox">
@@ -95,70 +99,70 @@
         <ul class="pagination content-pagination">
         </ul>
     </div>
-    <div class="headerBusyCalendar no-display">
-        <h4>Занятость врача <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>
-        <p class="text-left">
-            Кликните на дату левой кнопкой мыши, чтобы посмотреть почасовую занятость врача на этот день
-        </p>
-
     </div>
-    <div class="row busyCalendar no-display">
-        <div class="col-xs-8 ">
-            <table class="table-bordered table calendar" id="writeShedule">
-                <thead>
-                <tr class="header">
-                    <td>Пн</td>
-                    <td>Вт</td>
-                    <td>Ср</td>
-                    <td>Чт</td>
-                    <td>Пт</td>
-                    <td>Сб</td>
-                    <td>Вс</td>
-                </tr>
-                </thead>
-                <tbody>
+        <h4><span class="text-danger busyFio"></span></h4>
+    <div class="row">
+        <div class="col-xs-5">
+                       <div class="row busyCalendar no-display">
+                    <div class="col-xs-12 ">
+                        <div class="headerBusyCalendar no-display">
+                         <!--<h4>Занятость <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>-->
+                        <h4>Занятость на <span class="text-danger busyDate"></span></h4>
+                    </div>
+                    <table class="table-bordered table calendar" id="writeShedule">
+                        <thead>
+                            <tr class="header">
+                                <td>Пн</td>
+                                <td>Вт</td>
+                                <td>Ср</td>
+                                <td>Чт</td>
+                                <td>Пт</td>
+                                <td>Сб</td>
+                                <td>Вс</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <div class="row default-padding-left">
+                        <button type="button" class="btn btn-primary" id="showPrevMonth">
+                            <span class="glyphicon glyphicon-arrow-left"> </span><span class='prev-months-button'></span>
+                        </button>
+                        <button type="button" class="btn btn-primary" id="showNextMonth">
+                           <span class='next-months-button'></span> <span class="glyphicon glyphicon-arrow-right"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <h4>Легенда</h4>
+                    <p><div class="legend-icon orange-block"></div>Выходные дни</p>
+                    <p><div class="legend-icon lightgreen-block"></div>Полностью свободные дни</p>
+                    <p><div class="legend-icon red-block"></div>Полностью занятые дни</p>
+                    <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
+                    <p><div class="legend-icon not-aviable-block"></div>Прошедшие дни (недоступные для записи)</p>
+                </div>
+        </div>
+        </div>
+        <div class="col-xs-7">
+            <div class="busySheduleHeader no-display">
+                <h4>Занятость на <span class="text-danger busyDay"></span></h4>
+            </div>
+            <div class="row busyShedule no-display">
+                <div class="col-xs-12 borderedBox">
+                    <table class="table table-condensed table-hover" id="sheduleByBusy">
+                        <thead>
+                        <tr class="header">
+                            <td class="col-xs-2">Время</td>
+                            <td class="col-xs-7">Пациент</td>
+                            <td class="col-xs-3">Записать на приём / отписать с приёма</td>
+                        </tr>
+                    </thead>
+                    <tbody>
                 </tbody>
             </table>
-            <div class="row default-padding-left">
-                <button type="button" class="btn btn-primary" id="showPrevMonth">
-                    <span class="glyphicon glyphicon-arrow-left"></span> Показать предыдущий месяц
-                </button>
-                <button type="button" class="btn btn-primary" id="showNextMonth">
-                    Показать следующий месяц <span class="glyphicon glyphicon-arrow-right"></span>
-                </button>
+            </div>
             </div>
         </div>
-        <div class="col-xs-4">
-            <h4>Легенда</h4>
-            <p><div class="legend-icon orange-block"></div>Выходные дни</p>
-            <p><div class="legend-icon lightgreen-block"></div>Полностью свободные дни</p>
-            <p><div class="legend-icon red-block"></div>Полностью занятые дни</p>
-            <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
-            <p><div class="legend-icon not-aviable-block"></div>Прошедшие дни (недоступные для записи)</p>
-        </div>
-    </div>
-    <div class="busySheduleHeader no-display">
-        <h4>Занятость врача <span class="text-danger busyFio"></span> на <span class="text-danger busyDay"></span></h4>
-        <p class="text-left">
-            Кликните на иконку часов левой кнопкой мыши, чтобы записать пациента на это время
-        </p>
-    </div>
-    <div class="row busyShedule no-display">
-        <div class="col-xs-8 borderedBox">
-            <table class="table table-condensed table-hover" id="sheduleByBusy">
-                <thead>
-                <tr class="header">
-                    <td>Время</td>
-                    <td>Пациент</td>
-                    <td>Записать на приём / отписать с приёма</td>
-                </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 <div class="modal fade error-popup" id="patientDataPopup">
     <div class="modal-dialog">
         <div class="modal-content">

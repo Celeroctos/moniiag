@@ -97,6 +97,8 @@ $(document).ready(function() {
             $('#' + clicked).trigger('click');
         }
 
+        changeArrowButtons();
+        
         // Добавляем подсказку для нерабочих дней "Этот день недоступен для записи"
         var HintBody = $('<div>');
         HintBody.addClass('busy-shedule-hint');
@@ -139,14 +141,39 @@ $(document).ready(function() {
                 }
             });
         });
+        changeArrowButtons();
     });
 
+    function changeArrowButtons()
+    {
+        // Берём текущий месяц
+        var currentMonth = globalVariables.month;
+        var prevMonths = currentMonth - 1;
+        var nextMonths = currentMonth + 1;
+        
+        // Проверим - если месяц меньше нуля или больше 11 - значит 
+        if (prevMonths<0) {
+            prevMonths = 11;
+        }
+        
+        if (nextMonths>=12) {
+            nextMonths = 0;
+        }
+        
+        $('#showPrevMonth span.prev-months-button').text(globalVariables.months[prevMonths]);
+        $('#showNextMonth span.next-months-button').text(globalVariables.months[nextMonths]);
+        
+    }
+    
     $('#showPrevMonth').click(function(e) {
         if(globalVariables.month - 1 < 0) {
             globalVariables.clickedLink.trigger('click', [11, parseInt(globalVariables.year) - 1]);
         } else {
             globalVariables.clickedLink.trigger('click', [globalVariables.month - 1, globalVariables.year]);
         }
+        
+    //    changeArrowButtons();
+        
     });
 
     $('#showNextMonth').click(function(e) {
@@ -155,5 +182,6 @@ $(document).ready(function() {
         } else {
             globalVariables.clickedLink.trigger('click', [globalVariables.month + 1, globalVariables.year]);
         }
+       // changeArrowButtons();
     });
 });

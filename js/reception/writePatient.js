@@ -1,4 +1,8 @@
 $(document).ready(function() {
+    
+    $('#greetingDate').val((new Date).getFullYear() + '-' + ((new Date).getMonth() + 1) + '-' + (new Date).getDate());
+    $('#greetingDate').trigger('change');
+    
     if($('#diagnosisDistribChooser').length > 0) {
         $.fn['diagnosisDistribChooser'].addExtraParam('medworkerid', -1); // Типа, флаг "все диагнозы"
     }
@@ -279,7 +283,7 @@ $(document).ready(function() {
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
                     '</td>' +
-                    '<td>' +
+                    '<td class="fio-cell">' +
                         '<a title="Посмотреть информацию по врачу" href="#">' +
                             data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name +
                         '</a>' +
@@ -309,7 +313,7 @@ $(document).ready(function() {
         $(this).parents('tr').addClass('success');
         globalVariables.doctorId = $(this).attr('href').substr(2);
         globalVariables.clickedLink = $(this);
-        globalVariables.fio = $(this).parents('tr').find('td:first a').text();
+        globalVariables.fio = $(this).parents('tr').find('td.fio-cell a').text();
         loadCalendar(month, year);
         return false;
     });
@@ -318,10 +322,10 @@ $(document).ready(function() {
         $('.busyShedule, .busySheduleHeader').hide();
        // var doctorId = $(link).attr('href').substr(2);
         var doctorId = globalVariables.doctorId;
-       // globalVariables.fio = $(link).parents('tr').find('td:first a').text();
+      //  globalVariables.fio = $(link).parents('tr').find('td.fio-cell a').text();
        // globalVariables.clickedLink = $(link);
         var params = {};
-        $('.busyFio').text(globalVariables.fio);
+
         if(typeof month == 'undefined' || typeof year == 'undefined') {
             $('.busyDate').text(globalVariables.months[(new Date()).getUTCMonth()] + ' ' + (new Date()).getFullYear() + ' г.');
         } else {
@@ -349,6 +353,7 @@ $(document).ready(function() {
                 if(data.success == 'true') {
                     $("#writeShedule").trigger("showShedule", [data, textStatus, jqXHR, clicked])
                     $('.headerBusyCalendar, .busyCalendar').show();
+                    $('.busyFio').text(globalVariables.fio);
                 } else {
                     $('#errorPopup .modal-body .row p').remove();
                     $('#errorPopup .modal-body .row').append('<p>' + data.data + '</p>')
@@ -363,6 +368,7 @@ $(document).ready(function() {
 
     $('#sheduleByBusy').on('showBusy', function(e, data, textStatus, jqXHR, doctorId, year, month, day) {
         $('.busyDay').text(day + '.' + (month + 1) + '.' + year + ' г.');
+        $('.busyFio').text(globalVariables.fio);
         var table = $(this).find('tbody');
         var data = data.data;
         table.find('tr').remove();
