@@ -11,8 +11,6 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a href="#">Справка</a></li>
-                <li><a href="#">Об авторах</a></li>
-                <li><a href="#" class="keyboard-help-link" data-toggle="keyboard-help">Помощь по клавиатуре</a></li>
             </ul>
             <?php
             $form = $this->beginWidget('CActiveForm', array(

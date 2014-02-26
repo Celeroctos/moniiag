@@ -21,7 +21,7 @@
     ?>
     </div>
     <div class="col-xs-5">
-        <h5 class="patient-list-h5"><strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
+        <h5 class="patient-choose-date-h5"><strong>Выберите дату:</strong></h5>
         <?php
         $filterForm = $this->beginWidget('CActiveForm', array(
             'id' => 'change-date-form',
@@ -76,6 +76,7 @@
         </div>
         <?php $this->endWidget(); ?>
         <div class="row">
+            <h5 class="patient-list-h5"><strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
             <div class="col-xs-12 borderedBox">
                 <table id="omsSearchWithCardResult" class="table table-condensed table-hover">
                     <thead>

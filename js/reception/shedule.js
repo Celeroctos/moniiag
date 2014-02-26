@@ -6,6 +6,10 @@ $(document).ready(function() {
         'Консилиум'
     ];
 
+    
+    $('#greetingDate').val((new Date).getFullYear() + '-' + ((new Date).getMonth() + 1) + '-' + (new Date).getDate());
+    $('#greetingDate').trigger('change');
+    
     $('#doctorCombo').on('change', function(e) {
         if($(this).val() == 0) {
             $('#doctorChooser').addClass('no-display');
