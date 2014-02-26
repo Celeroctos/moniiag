@@ -237,6 +237,7 @@ class SheduleController extends Controller {
                     $historyCategorieElement->change_date = $currentDate;
                     $historyCategorieElement->type = $element->type;
                     $historyCategorieElement->guide_id = $element->guide_id;
+					$historyCategorieElement->allow_add = $element->allow_add;
 
                     if(!$historyCategorieElement->save()) {
                         exit('Не могу перенести элемент из категории '.$categorie->id);
@@ -263,6 +264,7 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext->size = $historyCategorieElement->size;
                 $historyCategorieElementNext->change_date = $currentDate;
                 $historyCategorieElementNext->type = $historyCategorieElement->type;
+				$historyCategorieElementNext->allow_add = $historyCategorieElement->allow_add;
 
                 $answerCurrentDate = true;
                 if(!$historyCategorieElementNext->save()) {

@@ -175,10 +175,10 @@ class CategorieViewWidget extends CWidget {
         /* В противом случае, находим категорию, как категорию из хистори.
                По ключам: номер приёма, максимальный размер истории (история у категории всегда единичка и не меняется, т.к. категория не изменяется), ключ категории */
         if(count($historyCategories) == 0) {
-            if($categorie->path == null) {
+            if(isset($categorie) && $categorie->path == null) {
                 exit('Ошибка: категории c ID '.$categorie['id'].' не имеет пути в шаблоне!');
             }
-
+			
             $medcardCategorie = new MedcardElementForPatient();
             $medcardCategorie->medcard_id = $this->medcard['card_number'];
             $medcardCategorie->history_id = 1;
@@ -202,7 +202,7 @@ class CategorieViewWidget extends CWidget {
             $historyCategories[] = $medcardCategorie;
         } else {
             // Выбираем ещё и дополнительные категории (клонированные). Они не попадают в первый раз по условию пути
-            if($categorie != null) {
+            if(isset($categorie) && $categorie != null) {
                 $historyCategoriesPlus = $this->getHistoryElements('multiple', array(
                     ':greeting_id' => $this->greetingId,
                     ':medcard_id' => $this->medcard['card_number'],
@@ -295,6 +295,7 @@ class CategorieViewWidget extends CWidget {
                             $medcardCategorieElement->change_date = $this->currentDate;
                             $medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
                             $medcardCategorieElement->guide_id = $element['guide_id'];
+							$medcardCategorieElement->allow_add = $element['allow_add'];
 
                             if(!$medcardCategorieElement->save()) {
                                 exit('Не могу перенести элемент из категории '.$categorieResult['id']);
@@ -309,6 +310,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['label_after'] = $eCopy->label_after;
                         $elementResult['guide_id'] = $eCopy->guide_id;
                         $elementResult['path'] = $eCopy->path;
+						$elementResult['allow_add'] = $eCopy->allow_add;
+						$pathParts = explode('.', $element['path']);
+						$elementResult['position'] = array_pop($pathParts);
                     } else {
                         $elementResult['type'] = $element['type'];
                         $elementResult['label_before'] = $element['label_before'];
@@ -316,6 +320,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['id'] = $element['element_id'];
                         $elementResult['guide_id'] =  $element['guide_id'];
                         $elementResult['path'] = $element['path'];
+						$elementResult['allow_add'] = $element['allow_add'];
+						$pathParts = explode('.', $element['path']);
+						$elementResult['position'] = array_pop($pathParts);
                     }
 
                     // Для выпадающих списков есть справочник

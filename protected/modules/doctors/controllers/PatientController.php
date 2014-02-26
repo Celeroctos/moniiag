@@ -151,6 +151,7 @@ class PatientController extends Controller {
             $historyCategorieElementNext->change_date = $currentDate;
             $historyCategorieElementNext->type = $element['type'];
             $historyCategorieElementNext->guide_id = $element['guide_id'];
+			$historyCategorieElementNext->allow_add = $element['allow_add'];
             if(!$historyCategorieElementNext->save()) {
                 exit('Не могу отклонировать элемент '.$element['path']);
             }
