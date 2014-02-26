@@ -96,7 +96,7 @@ class CategoriesController extends Controller {
         $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :parent_id', array(':position' => $model->position, ':parent_id' => $model->parentId));
         $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->id));
         if($issetPositionInCats != null || $issetPositionInElements != null) {
-            if($issetPositionInCats->id != $categorie->id) {
+            if($issetPositionInCats->id != $categorie->id || ($issetPositionInCats->id == $categorie->id && $issetPositionInElements != null)) {
                 echo CJSON::encode(array('success' => false,
                         'errors' => array(
                             'position' => array(

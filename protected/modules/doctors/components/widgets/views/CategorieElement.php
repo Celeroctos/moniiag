@@ -9,7 +9,7 @@ if(isset($categorie['id'])) {
                     (пустая категория)
                 <?php } ?>
             </a>
-            <?php if($categorie['is_dynamic'] == 1) { ?>
+            <?php if($categorie['is_dynamic'] == 1 || isset($categorie['pr_key'])) { ?>
             <button class="btn btn-default btn-sm accordion-clone-btn" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 <span class="no-display pr-key"><?php echo $categorie['pr_key']; ?></span>
@@ -71,6 +71,7 @@ if(isset($categorie['id'])) {
                                         <div class="col-xs-10 no-padding-left">
                                         <?php
                                     }
+
                                     echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], $options);
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>

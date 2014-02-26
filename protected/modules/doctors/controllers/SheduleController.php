@@ -189,6 +189,7 @@ class SheduleController extends Controller {
                     $medcardCategorie->template_id = null; // TODO : вынуть идентификаторы шаблона
                     $medcardCategorie->template_name = null; // TODO : вынуть имя шаблона
                     $medcardCategorie->is_dynamic = $categorie->is_dynamic;
+                    $medcardCategorie->real_categorie_id = $categorie->id;
 
                     if(!$medcardCategorie->save()) {
                         exit('Не могу сохранить категорию по пути '.$categorie->path.'!');

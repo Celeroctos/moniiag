@@ -15,6 +15,7 @@ class CategorieViewWidget extends CWidget {
     public $dividedCats = array(); // Поделённые категории
 
     public function run() {
+        ini_set('max_execution_time', 60);
         $this->createFormModel();
         if($this->currentDate == null) {
             $this->currentDate = date('Y-m-d h:m');
@@ -22,9 +23,6 @@ class CategorieViewWidget extends CWidget {
         // Категории нужны, чтобы сформировать первичный шаблон для пациента в том случае, когда у пациента нет перенесённых записей о данном приёме в хистори. Для начала проверим, есть ли шаблон приёма. Если нет - вынимаем категории и помещаем их в историю
         // Т.е. в приём не вносили изменений, шаблона истории нет
         $categories = $this->getCategories($this->templateType);
-      // echo "<pre>";
-      // var_dump($categories);
-       // exit();
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
@@ -37,6 +35,69 @@ class CategorieViewWidget extends CWidget {
 
     public function createFormModel() {
         $this->formModel = new FormTemplateDefault();
+    }
+
+    private function getHistoryElements($mode = 'one', $data = array()) {
+        $conditions = '';
+        if(isset($data[':history_id'])) {
+            if($conditions == '') {
+                $conditions = 'history_id = :history_id';
+            } else {
+                $conditions .= ' AND history_id = :history_id';
+            }
+        }
+
+        if(isset($data[':greeting_id'])) {
+            if($conditions == '') {
+                $conditions = 'greeting_id = :greeting_id';
+            } else {
+                $conditions .= ' AND greeting_id = :greeting_id';
+            }
+        }
+
+        if(isset($data[':medcard_id'])) {
+            if($conditions == '') {
+                $conditions = 'medcard_id = :medcard_id';
+            } else {
+                $conditions .= ' AND medcard_id = :medcard_id';
+            }
+        }
+
+        if(isset($data[':path'])) {
+            if($conditions == '') {
+                $conditions = 'path = :path';
+            } else {
+                $conditions .= ' AND path = :path';
+            }
+        }
+
+        if(isset($data[':categorie_id'])) {
+            if($conditions == '') {
+                $conditions = 'categorie_id = :categorie_id';
+            } else {
+                $conditions .= ' AND categorie_id = :categorie_id';
+            }
+        }
+
+        if(isset($data[':element_id'])) {
+            if($conditions == '') {
+                $conditions = 'element_id != :element_id';
+            } else {
+                $conditions .= ' AND element_id != :element_id';
+            }
+        }
+
+        if($mode == 'one') {
+            return MedcardElementForPatient::model()->find(
+                $conditions,
+                $data
+            );
+        } elseif($mode == 'multiple') {
+            return MedcardElementForPatient::model()->findAll(
+                $conditions,
+                $data
+            );
+        }
     }
 
     // Получить иерархию категорий на странице
@@ -52,7 +113,24 @@ class CategorieViewWidget extends CWidget {
             // В случае выпадающих списков с множественным выборов стоит разобрать идентификаторы их
             $categorie_ids = CJSON::decode($template['categorie_ids']);
             foreach($categorie_ids as $index => $id) {
-				$categorieResult = $this->getCategorie($id, $template['id'], $template['name']);
+                // Попробуем выбрать категорию из истории. Если не получится, то нужно создавать новую. В противном случае, брать из истории
+                $categorie = MedcardCategorie::model()->findByPk($id);
+                if($categorie == null) {
+                    continue;
+                }
+
+                $historyCategorie = $this->getHistoryElements('one', array(
+                    ':greeting_id' => $this->greetingId,
+                    ':medcard_id' => $this->medcard['card_number'],
+                    ':history_id' => 1,
+                    ':path' => $categorie->path
+                ));
+
+                if($historyCategorie == null) {
+                    $categorieResult = $this->getCategorie($id, $template['id'], $template['name']);
+                } else {
+                    $categorieResult = $this->getCategorie(false, $template['id'], $template['name'], $historyCategorie->path);
+                }
                 $categorieTemplateFill[] = $categorieResult;
             }
             usort($categorieTemplateFill, function($element1, $element2) {
@@ -67,23 +145,36 @@ class CategorieViewWidget extends CWidget {
             $categoriesResult[] = $categorieTemplateFill;
 
         }
+
         return $categoriesResult;
     }
 
-	public function getCategorie($id = false, $templateId, $templateName) {
+	public function getCategorie($id = false, $templateId, $templateName, $path = false) {
 		// Выбираем категорию
-        $categorie = MedcardCategorie::model()->findByPk($id);
-        if($categorie == null) {
-            return;
+        if($id && !$path) { // Категории, для которых делается выборка по-первому
+            $categorie = MedcardCategorie::model()->findByPk($id);
+            if($categorie == null) {
+                return array();
+            }
+
+            $historyCategories = $this->getHistoryElements('multiple',  array(
+                ':greeting_id' => $this->greetingId,
+                ':medcard_id' => $this->medcard['card_number'],
+                ':history_id' => 1,
+                ':categorie_id' => $categorie->parent_id,
+                ':path' => $categorie->path
+            ));
+        } else {
+            $historyCategories = $this->getHistoryElements('multiple',  array(
+                ':greeting_id' => $this->greetingId,
+                ':medcard_id' => $this->medcard['card_number'],
+                ':history_id' => 1,
+                ':path' => $path
+            ));
         }
-        $historyCategorie = MedcardElementForPatient::model()->find('history_id = 1 AND greeting_id = :greeting_id AND path = :path AND medcard_id = :medcard_id', array(
-            ':greeting_id' => $this->greetingId,
-            ':path' => $categorie->path,
-            ':medcard_id' => $this->medcard['card_number'])
-        );
         /* В противом случае, находим категорию, как категорию из хистори.
                По ключам: номер приёма, максимальный размер истории (история у категории всегда единичка и не меняется, т.к. категория не изменяется), ключ категории */
-        if($historyCategorie == null) {
+        if(count($historyCategories) == 0) {
             if($categorie->path == null) {
                 exit('Ошибка: категории c ID '.$categorie['id'].' не имеет пути в шаблоне!');
             }
@@ -102,117 +193,216 @@ class CategorieViewWidget extends CWidget {
             $medcardCategorie->template_id = $templateId;
             $medcardCategorie->template_name = $templateName;
             $medcardCategorie->is_dynamic = $categorie->is_dynamic;
+            $medcardCategorie->real_categorie_id = $categorie->id;
 
             if(!$medcardCategorie->save()) {
                 exit('Не могу перенести категорию из шаблонов!');
             }
 
-            $categorie = $medcardCategorie;
+            $historyCategories[] = $medcardCategorie;
         } else {
-            $categorie = $historyCategorie;
+            // Выбираем ещё и дополнительные категории (клонированные). Они не попадают в первый раз по условию пути
+            if($categorie != null) {
+                $historyCategoriesPlus = $this->getHistoryElements('multiple', array(
+                    ':greeting_id' => $this->greetingId,
+                    ':medcard_id' => $this->medcard['card_number'],
+                    ':history_id' => 1,
+                    ':categorie_id' => $categorie->parent_id,
+                    ':element_id' => -1
+                ));
+
+                $foundedPath = $historyCategories[0]['path']; // Один путь мы уже включили при первой выборке
+                foreach($historyCategoriesPlus as $categoriePlus) {
+                    if($categoriePlus['path'] == $foundedPath) {
+                        continue;
+                    }
+                    $historyCategories[] = $categoriePlus;
+                }
+            }
         }
 
 		$categorieResult = array();
-		if($categorie != null) {
-            // Разные поля при разных выборках
-            $categorieResult['id'] = $id;
-            $categorieResult['name'] = $categorie['categorie_name'];
-            $categorieResult['is_dynamic'] = $categorie['is_dynamic'];
-            if($categorieResult['is_dynamic'] == 1) {
-                $categorieResult['pr_key'] = $categorie['medcard_id'].'|'.$categorie['greeting_id'].'|'.$categorie['path'].'|'.$categorie['categorie_id'].'|'.$id;
-            }
-            $parts = explode('.', $categorie['path']);
-            // Если количество кусков и точек совпадает, то это неверно: в иерархии у этого элемента нет позиции
-            if(mb_substr_count($categorie['path'], '.') == count($parts)) {
-                exit('Ошибка: категории c ID '.$categorie['categorie_id'].' не присвоена позиция в шаблоне!');
-            }
-            $parts = array_reverse($parts); // 1 с конца - номер элемента
-            $categorieResult['position'] = $parts[0];
-            $categorieResult['elements'] = array();
-
-			$elements = MedcardElement::model()->getElementsByCategorie($id);
-			foreach($elements as $key => $element) {
-                // Проверим наличие элемента в истории
-                $historyCategorieElement = MedcardElementForPatient::model()->find('medcard_id = :medcard_id AND greeting_id = :greeting_id AND path = :path', array(
-                    ':medcard_id' => $this->medcard['card_number'],
-                    ':greeting_id' => $this->greetingId,
-                    ':path' => $element['path']
-                ));
-                if($historyCategorieElement == null) {
-                    // Для элемента посмотрим путь на наличие NULL-позиции
-                    $parts = explode('.', $element['path']);
-                    $parts = array_filter($parts, function($element) {
-                        return trim($element) != '';
-                    }) ;
-                    // Если количество кусков и точек совпадает, то это неверно: в иерархии у этого элемента нет позиции
-                    if(mb_substr_count($element['path'], '.') == count($parts)) {
-                        exit('Ошибка: элементу c ID '.$element['id'].' не присвоена позиция в категории!');
-                    }
-
-                    $medcardCategorieElement = new MedcardElementForPatient();
-                    $medcardCategorieElement->medcard_id = $this->medcard['card_number'];
-                    $medcardCategorieElement->history_id = 1;
-                    $medcardCategorieElement->greeting_id = $this->greetingId;
-                    $medcardCategorieElement->categorie_name = '';
-                    $medcardCategorieElement->path = $element['path'];
-                    $medcardCategorieElement->is_wrapped = $element['is_wrapped'];
-                    $medcardCategorieElement->categorie_id = $categorieResult['id'];
-                    $medcardCategorieElement->element_id = $element['id'];
-                    $medcardCategorieElement->label_before = $element['label'];
-                    $medcardCategorieElement->label_after = $element['label_after'];
-                    $medcardCategorieElement->size = $element['size'];
-                    $medcardCategorieElement->change_date = $this->currentDate;
-                    $medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
-                    $medcardCategorieElement->guide_id = $element['guide_id'];
-
-                    if(!$medcardCategorieElement->save()) {
-                        exit('Не могу перенести элемент из категории '.$categorieResult['id']);
-                    }
+		if(count($historyCategories) > 0) {
+            foreach($historyCategories as $categorie) {
+                // Разные поля при разных выборках
+                $categorieResult['id'] = $id !== false ? $id : $categorie['real_categorie_id'];
+                $categorieResult['name'] = $categorie['categorie_name'];
+                $categorieResult['is_dynamic'] = $categorie['is_dynamic'];
+                if($categorieResult['is_dynamic'] == 1) {
+                    $categorieResult['pr_key'] = $categorie['medcard_id'].'|'.$categorie['greeting_id'].'|'.$categorie['path'].'|'.$categorie['categorie_id'].'|'.$id;
                 }
-				// Для выпадающих списков есть справочник
-				if(isset($element['guide_id']) && $element['guide_id'] != null) {
-					$medguideValuesModel = new MedcardGuideValue();
-					$medguideValues = $medguideValuesModel->getRows(false, $element['guide_id']);
-					if(count($medguideValues) > 0) {
-						$guideValues = array();
-						foreach($medguideValues as $value) {
-							$guideValues[$value['id']] = $value['value'];
-						}
-						$element['guide'] = $guideValues;
-					} else {
-                        $element['guide'] = array();
-                    }
-                    $element['label'] = $element['label'];
-				}
+                $parts = explode('.', $categorie['path']);
+                // Если количество кусков и точек совпадает, то это неверно: в иерархии у этого элемента нет позиции
+                if(mb_substr_count($categorie['path'], '.') == count($parts)) {
+                    exit('Ошибка: категории c ID '.$categorie['categorie_id'].' не присвоена позиция в шаблоне!');
+                }
+                $parts = array_reverse($parts); // 1 с конца - номер элемента
+                $categorieResult['position'] = $parts[0];
+                $categorieResult['elements'] = array();
 
-				// Добавляем в форму
-				$this->formModel->setSafeRule('f'.$element['id']);
-				$this->formModel->setAttributeLabels('f'.$element['id'], $element['label']);
-				$fieldName = 'f'.$element['id'];
-				$this->formModel->$fieldName = null;
-				$element = $this->getFormValue($element);
-				$categorieResult['elements'][] = $element;
-			}
-
-            usort($categorieResult['elements'], function($element1, $element2) {
-                if($element1['position'] > $element2['position']) {
-                    return 1;
-                } elseif($element1['position'] < $element2['position']) {
-                    return -1;
+                // Для клонов вынимаем элементы из истории, а не из основной таблицы
+                if($id && !$path) {
+                    $elements = MedcardElement::model()->getElementsByCategorie($id);
                 } else {
-                    return 0;
+                    $elements = MedcardElementForPatient::model()->findAll(
+                        'history_id = :history_id
+                        AND greeting_id = :greeting_id
+                        AND medcard_id = :medcard_id
+                        AND categorie_id = :categorie_id
+                        AND element_id != -1',
+                        array(
+                            ':greeting_id' => $this->greetingId,
+                            ':medcard_id' => $this->medcard['card_number'],
+                            ':history_id' => 1,
+                            ':categorie_id' => $categorieResult['id']
+                        )
+                    );
                 }
-            });
 
-			// Теперь смотрим, есть ли дочерние элементы
-			$categoriesChildren = MedcardCategorie::model()->findAll('parent_id = :parent_id', array(':parent_id' => $id));
-			if(count($categoriesChildren) > 0) {
-				// Дети есть. Для каждого из них вышеописанный процесс повторяется
-				$categorieResult['children'] = array();
-				foreach($categoriesChildren as $child) {
-					$categorieResult['children'][] = $this->getCategorie($child->id, $templateId, $templateName);
-				}
-			}
+                foreach($elements as $key => $element) {
+                    $elementResult = array();
+                    // Проверим наличие элемента в истории, если это не выборка исторических элементов
+                    if($id && !$path) {
+                        $historyCategorieElement = $this->getHistoryElements('one', array(
+                            ':medcard_id' => $this->medcard['card_number'],
+                            ':greeting_id' => $this->greetingId,
+                            ':path' => $element['path']
+                        ));
+
+                        if($historyCategorieElement == null) {
+                            // Для элемента посмотрим путь на наличие NULL-позиции
+                            $parts = explode('.', $element['path']);
+                            $parts = array_filter($parts, function($element) {
+                                return trim($element) != '';
+                            }) ;
+                            // Если количество кусков и точек совпадает, то это неверно: в иерархии у этого элемента нет позиции
+                            if(mb_substr_count($element['path'], '.') == count($parts)) {
+                                exit('Ошибка: элементу c ID '.$element['id'].' не присвоена позиция в категории!');
+                            }
+
+                            $medcardCategorieElement = new MedcardElementForPatient();
+                            $medcardCategorieElement->medcard_id = $this->medcard['card_number'];
+                            $medcardCategorieElement->history_id = 1;
+                            $medcardCategorieElement->greeting_id = $this->greetingId;
+                            $medcardCategorieElement->categorie_name = '';
+                            $medcardCategorieElement->path = $element['path'];
+                            $medcardCategorieElement->is_wrapped = $element['is_wrapped'];
+                            $medcardCategorieElement->categorie_id = $categorieResult['id'];
+                            $medcardCategorieElement->element_id = $element['id'];
+                            $medcardCategorieElement->label_before = $element['label'];
+                            $medcardCategorieElement->label_after = $element['label_after'];
+                            $medcardCategorieElement->size = $element['size'];
+                            $medcardCategorieElement->change_date = $this->currentDate;
+                            $medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
+                            $medcardCategorieElement->guide_id = $element['guide_id'];
+
+                            if(!$medcardCategorieElement->save()) {
+                                exit('Не могу перенести элемент из категории '.$categorieResult['id']);
+                            }
+
+                            $eCopy = $medcardCategorieElement;
+                        } else {
+                            $eCopy = $historyCategorieElement;
+                        }
+                        $elementResult['type'] = $eCopy->type;
+                        $elementResult['label_before'] = $eCopy->label_before;
+                        $elementResult['label_after'] = $eCopy->label_after;
+                        $elementResult['guide_id'] = $eCopy->guide_id;
+                        $elementResult['path'] = $eCopy->path;
+                    } else {
+                        $elementResult['type'] = $element['type'];
+                        $elementResult['label_before'] = $element['label_before'];
+                        $elementResult['label_after'] = $element['label_after'];
+                        $elementResult['id'] = $element['element_id'];
+                        $elementResult['guide_id'] =  $element['guide_id'];
+                        $elementResult['path'] = $element['path'];
+                    }
+
+                    // Для выпадающих списков есть справочник
+                    if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null) {
+                        $medguideValuesModel = new MedcardGuideValue();
+                        $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id']);
+                        if(count($medguideValues) > 0) {
+                            $guideValues = array();
+                            foreach($medguideValues as $value) {
+                                $guideValues[$value['id']] = $value['value'];
+                            }
+                            $elementResult['guide'] = $guideValues;
+                        } else {
+                            $elementResult['guide'] = array();
+                        }
+                    }
+
+                    // Добавляем в форму
+                    $this->formModel->setSafeRule('f'.$elementResult['id']);
+                    $this->formModel->setAttributeLabels('f'.$elementResult['id'], $elementResult['label_before']);
+                    $fieldName = 'f'.$elementResult['id'];
+                    $this->formModel->$fieldName = null;
+                    $elementResult = $this->getFormValue($elementResult);
+                    $categorieResult['elements'][] = $elementResult;
+                }
+
+                usort($categorieResult['elements'], function($element1, $element2) {
+                    if($element1['position'] > $element2['position']) {
+                        return 1;
+                    } elseif($element1['position'] < $element2['position']) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                // Теперь смотрим, есть ли дочерние элементы
+                if($id && !$path) {
+                    $categoriesChildren = MedcardCategorie::model()->findAll('parent_id = :parent_id', array(':parent_id' => $id));
+                // Дочерние элементы могут быть ещё и вложенными, поэтому выясняем ещё и в хистори, есть ли элементы, которые показать
+                    $categoriesChildrenPlus = MedcardElementForPatient::model()->findAll(
+                        'history_id = :history_id
+                        AND greeting_id = :greeting_id
+                        AND medcard_id = :medcard_id
+                        AND categorie_id = :categorie_id
+                        AND element_id = -1',
+                        array(
+                            ':greeting_id' => $this->greetingId,
+                            ':medcard_id' => $this->medcard['card_number'],
+                            ':history_id' => 1,
+                            ':categorie_id' => $id
+                        )
+                    );
+
+                    $numCategoriesChildren = count($categoriesChildren);
+                    $numChildrenPlus = count($categoriesChildrenPlus);
+                    for($i = 0; $i < $numChildrenPlus; $i++) {
+                        for($j = 0; $j < $numCategoriesChildren; $j++) {
+                            if($categoriesChildren[$j]->path != $categoriesChildrenPlus[$i]->path) {
+                                $categoriesChildren[] = $categoriesChildrenPlus[$i];
+                            }
+                        }
+                    }
+                } else {
+                    $categoriesChildren = MedcardElementForPatient::model()->findAll(
+                        'categorie_id = :categorie_id
+                        AND element_id = :element_id',
+                        array(
+                            ':categorie_id' => $categorieResult['id'],
+                            ':element_id' => -1
+                        )
+                    );
+                }
+
+                if(count($categoriesChildren) > 0) {
+                    // Дети есть. Для каждого из них вышеописанный процесс повторяется
+                    $categorieResult['children'] = array();
+                    foreach($categoriesChildren as $child) {
+                        // Обычная категория
+                        if(isset($child->id)) {
+                            $categorieResult['children'][] = $this->getCategorie($child->id, $templateId, $templateName);
+                        } else { // Категория-клон
+                            $categorieResult['children'][] = $this->getCategorie(false, $templateId, $templateName, $child->path);
+                        }
+                    }
+                }
+            }
 
 		}
 
@@ -298,8 +488,6 @@ class CategorieViewWidget extends CWidget {
     }
 
     public function divideTreebyCats() {
-       // var_dump($this->catsByTemplates);
-       // exit();
         foreach($this->catsByTemplates as $id => $templatesCatsIds) {
             $num = count($templatesCatsIds);
             for($i = 0; $i < $num; $i++) {
@@ -316,8 +504,6 @@ class CategorieViewWidget extends CWidget {
                 }
             }
         }
-        //var_dump($this->dividedCats);
-        //exit();
     }
 
     // Получить дерево актуальных категорий (не используется)
