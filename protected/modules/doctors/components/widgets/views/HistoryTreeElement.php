@@ -1,9 +1,17 @@
 <div id="accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$cId; ?>" class="accordion">
     <div class="accordion-group">
         <div class="accordion-heading">
-            <a href="#collapse<?php echo $prefix.'_'.$templateKey.'_'.$cId; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$cId; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?><?php echo count($categorie['elements']) == 0 ? ' (пустая категория)' : ''?></a>
+            <a href="#collapse<?php echo $prefix.'_'.$templateKey.'_'.$cId;; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$cId; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
+                <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
+                    (пустая категория)
+                <?php } ?>
+            </a>
         </div>
-        <div class="accordion-body" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$cId; ?>">
+        <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
+            <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$cId; ?>">
+        <?php } else { ?>
+            <div class="accordion-body" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$cId; ?>">
+        <?php } ?>
             <div class="accordion-inner">
                 <?php // Подкатегории
                 if(isset($categorie['children']) && count($categorie['children']) > 0) {
@@ -37,7 +45,8 @@
                                         'id' => 'f_'.$prefix.'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'disabled' => 'disabled'
+                                        'disabled' => 'disabled',
+                                        'value' => $element['value']
                                     );
                                     echo $form->textArea($model,'f'.$element['id'], $options);
                                 } elseif($element['type'] == 2) {

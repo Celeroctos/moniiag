@@ -148,105 +148,42 @@ class SheduleController extends Controller {
                 if($field == 'medcardId' || $field == 'greetingId') {
                     continue;
                 }
+
                 // Это для выпадающего списка с множественным выбором
                 if(is_array($value)) {
                     $value = CJSON::encode($value);
                 }
+
                 // Проверим, есть ли такое поле вообще
-                if(!preg_match('/^f(\d+)$/', $field, $resArr)) {
+                if(!preg_match('/^f(\d+\|)*\d+_(\d+)$/', $field, $resArr)) {
                     continue;
                 }
 
-                $element = MedcardElement::model()->findByPk($resArr[1]);
-                if($element == null) {
-                    continue;
-                }
-
-                // Категория элемента
-                $categorie = MedcardCategorie::model()->findByPk($element->categorie_id);
-                if($categorie == null) {
-                    continue;
-                }
-
+                // Берём и тупо находим элемент по пути
                 // Смотрим: если в историю не занесена категория, то нужно занести с сохранением параметров
-                $historyCategorie = MedcardElementForPatient::model()->find('medcard_id = :medcard_id AND greeting_id = :greeting_id AND categorie_id = :categorie_id', array(
-                    ':medcard_id' => $_POST['FormTemplateDefault']['medcardId'],
-                    ':greeting_id' => $_POST['FormTemplateDefault']['greetingId'],
-                    ':categorie_id' => $categorie->id
-                ));
-                if($historyCategorie == null) {
-                    $medcardCategorie = new MedcardElementForPatient();
-                    $medcardCategorie->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
-                    $medcardCategorie->history_id = 1;
-                    $medcardCategorie->greeting_id = $_POST['FormTemplateDefault']['greetingId'];
-                    $medcardCategorie->categorie_name = $categorie->name;
-                    $medcardCategorie->path = $categorie->path;
-                    $medcardCategorie->is_wrapped = 0;
-                    $medcardCategorie->categorie_id = $categorie->parent_id;
-                    $medcardCategorie->element_id = -1;
-                    $medcardCategorie->change_date = $currentDate;
-                    $medcardCategorie->type = -1;
-                    $medcardCategorie->template_id = null; // TODO : вынуть идентификаторы шаблона
-                    $medcardCategorie->template_name = null; // TODO : вынуть имя шаблона
-                    $medcardCategorie->is_dynamic = $categorie->is_dynamic;
-                    $medcardCategorie->real_categorie_id = $categorie->id;
-
-                    if(!$medcardCategorie->save()) {
-                        exit('Не могу сохранить категорию по пути '.$categorie->path.'!');
-                    }
-                }
-
+                // Находим путь
+                $pathWithSeparators = mb_substr($field, 1, mb_strrpos($field, '_') - 1);
+                $arrPath =  explode('|', $pathWithSeparators);
+                $path = implode('.', $arrPath);
 
                 $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId(
-                    array('id' => $resArr[1]),
+                    array('path' => $path),
                     $_POST['FormTemplateDefault']['medcardId'],
                     $_POST['FormTemplateDefault']['greetingId']
                 );
 
                 // Элемент. Если в историю не занесён, нужно заносить. И только тогда
-                $historyCategorieElement = MedcardElementForPatient::model()->find('medcard_id = :medcard_id AND greeting_id = :greeting_id AND element_id = :element_id AND history_id = :history_id', array(
+                $historyCategorieElement = MedcardElementForPatient::model()->find('medcard_id = :medcard_id AND greeting_id = :greeting_id AND element_id = :element_id AND history_id = :history_id AND path = :path', array(
                     ':medcard_id' => $_POST['FormTemplateDefault']['medcardId'],
                     ':greeting_id' => $_POST['FormTemplateDefault']['greetingId'],
-                    ':element_id' => $resArr[1],
-                    ':history_id' => $historyIdResult['history_id_max']
+                    ':element_id' => $resArr[count($resArr) - 1],
+                    ':history_id' => $historyIdResult['history_id_max'],
+                    ':path' => $path
                 ));
 
-                if($historyCategorieElement == null) {
-                    // Для элемента посмотрим путь на наличие NULL-позиции
-                    $parts = explode('.', $element['path']);
-                    $parts = array_filter($parts, function($element) {
-                        return trim($element) != '';
-                    }) ;
-                    // Если количество кусков и точек совпадает, то это неверно: в иерархии у этого элемента нет позиции
-                    if(mb_substr_count($element['path'], '.') == count($parts)) {
-                        exit('Ошибка: элементу c ID '.$element['id'].' не присвоена позиция в категории!');
-                    }
-
-                    $historyCategorieElement = new MedcardElementForPatient();
-                    $historyCategorieElement->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
-                    $historyCategorieElement->history_id = 1;
-                    $historyCategorieElement->greeting_id = $_POST['FormTemplateDefault']['greetingId'];
-                    $historyCategorieElement->categorie_name = '';
-                    $historyCategorieElement->path = $element->path;
-                    $historyCategorieElement->is_wrapped = $element->is_wrapped;
-                    $historyCategorieElement->categorie_id = $categorie->parent_id;
-                    $historyCategorieElement->element_id = $element->id;
-                    $historyCategorieElement->label_before = $element->label;
-                    $historyCategorieElement->label_after = $element->label_after;
-                    $historyCategorieElement->size = $element->size;
-                    $historyCategorieElement->change_date = $currentDate;
-                    $historyCategorieElement->type = $element->type;
-                    $historyCategorieElement->guide_id = $element->guide_id;
-					$historyCategorieElement->allow_add = $element->allow_add;
-
-                    if(!$historyCategorieElement->save()) {
-                        exit('Не могу перенести элемент из категории '.$categorie->id);
-                    }
-                } else {
-                    // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать. Это позволит не сохранять неизменённые поля
-                    if($value == $historyCategorieElement->value) {
-                        continue;
-                    }
+                // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать. Это позволит не сохранять неизменённые поля
+                if($value == $historyCategorieElement->value) {
+                    continue;
                 }
 
                 $historyCategorieElementNext = new MedcardElementForPatient();
@@ -265,6 +202,7 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext->change_date = $currentDate;
                 $historyCategorieElementNext->type = $historyCategorieElement->type;
 				$historyCategorieElementNext->allow_add = $historyCategorieElement->allow_add;
+                $historyCategorieElementNext->guide_id = $historyCategorieElement->guide_id;
 
                 $answerCurrentDate = true;
                 if(!$historyCategorieElementNext->save()) {

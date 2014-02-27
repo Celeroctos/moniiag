@@ -88,11 +88,11 @@ class MedcardElementForPatient extends MisActiveRecord {
             $elements = $connection->createCommand()
                 ->select('MAX(mep.history_id) as history_id_max')
                 ->from('mis.medcard_elements_patient mep')
-                ->where('mep.element_id = :element_id
-                        AND mep.medcard_id = :medcard_id
-                        AND mep.greeting_id = :greeting_id', array(':element_id' => $element['id'],
-                                                                   ':medcard_id' => $medcardId,
-                                                                   ':greeting_id' => $greetingId));
+                ->where('mep.medcard_id = :medcard_id
+                        AND mep.greeting_id = :greeting_id
+                        AND mep.path = :path', array(':path' => $element['path'],
+                                                     ':medcard_id' => $medcardId,
+                                                     ':greeting_id' => $greetingId));
             return $elements->queryRow();
 
         } catch(Exception $e) {

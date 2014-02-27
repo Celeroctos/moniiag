@@ -204,6 +204,10 @@ $(document).ready(function() {
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
                     var data = data.data;
+                    if(data.length == 0) {
+                        alert('Для выбранного пациента нет точек сохранения истории!');
+                        return false;
+                    }
                     var pointsPanel = $('#panelOfhistoryPoints .panel-body');
                     $(pointsPanel).find('div').remove();
                     for(var i = 0; i < data.length; i++) {
@@ -242,7 +246,8 @@ $(document).ready(function() {
                 if(data.success == 'true') {
                     // Заполняем медкарту-историю значениями
                     var data = data.data;
-                    var form = $('#panelOfhistoryMedcard #patient-edit-form');
+                    $('#panelOfhistoryMedcard .panel-body').html(data);
+                    /*var form = $('#panelOfhistoryMedcard #patient-edit-form');
                     // Сброс формы
                     $(form)[0].reset();
                     $(form).find('input').val('');
@@ -252,7 +257,7 @@ $(document).ready(function() {
                             data[i].value = $.parseJSON(data[i].value);
                         }
                         element.val(data[i].value);
-                    }
+                    }*/
                 } else {
 
                 }

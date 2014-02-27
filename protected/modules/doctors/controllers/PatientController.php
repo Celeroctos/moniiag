@@ -87,7 +87,7 @@ class PatientController extends Controller {
             exit();
         }
 
-        $currentDate = date('Y-m-d h:m');
+        $currentDate = date('Y-m-d h:i');
 
         // Создаём новую категорию, путь делаем + 1 у конечного элемента
         $medcardCategorieClone = new MedcardElementForPatient();

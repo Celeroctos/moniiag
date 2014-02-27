@@ -18,11 +18,15 @@ class CategorieViewWidget extends CWidget {
         ini_set('max_execution_time', 60);
         $this->createFormModel();
         if($this->currentDate == null) {
-            $this->currentDate = date('Y-m-d h:m');
+            $this->currentDate = date('Y-m-d h:i');
         }
         // Категории нужны, чтобы сформировать первичный шаблон для пациента в том случае, когда у пациента нет перенесённых записей о данном приёме в хистори. Для начала проверим, есть ли шаблон приёма. Если нет - вынимаем категории и помещаем их в историю
         // Т.е. в приём не вносили изменений, шаблона истории нет
-        $categories = $this->getCategories($this->templateType);
+        if($this->greetingId == null || $this->medcard == null) {
+            $categories = array();
+        } else {
+            $categories = $this->getCategories($this->templateType);
+        }
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
@@ -145,7 +149,9 @@ class CategorieViewWidget extends CWidget {
             $categoriesResult[] = $categorieTemplateFill;
 
         }
-
+     //   echo "<pre>";
+//var_dump($categoriesResult);
+     //   exit();
         return $categoriesResult;
     }
 
@@ -181,7 +187,7 @@ class CategorieViewWidget extends CWidget {
             if(isset($categorie) && $categorie->path == null) {
                 exit('Ошибка: категории c ID '.$categorie['id'].' не имеет пути в шаблоне!');
             }
-			
+
             $medcardCategorie = new MedcardElementForPatient();
             $medcardCategorie->medcard_id = $this->medcard['card_number'];
             $medcardCategorie->history_id = 1;
@@ -229,6 +235,8 @@ class CategorieViewWidget extends CWidget {
             foreach($historyCategories as $categorie) {
                 // Разные поля при разных выборках
                 $categorieResult['id'] = $id !== false ? $id : $categorie['real_categorie_id'];
+                $categorieResult['path'] = $path !== false ? $path : $categorie['path'];
+                $categorieResult['undotted_path'] = implode('', explode('.', $categorieResult['path']));
                 $categorieResult['name'] = $categorie['categorie_name'];
                 $categorieResult['is_dynamic'] = $categorie['is_dynamic'];
                 if($categorieResult['is_dynamic'] == 1) {
@@ -252,12 +260,14 @@ class CategorieViewWidget extends CWidget {
                         AND greeting_id = :greeting_id
                         AND medcard_id = :medcard_id
                         AND categorie_id = :categorie_id
+                        AND path LIKE :path
                         AND element_id != -1',
                         array(
                             ':greeting_id' => $this->greetingId,
                             ':medcard_id' => $this->medcard['card_number'],
                             ':history_id' => 1,
-                            ':categorie_id' => $categorieResult['id']
+                            ':categorie_id' => $categorieResult['id'],
+                            ':path' => $path.'%'
                         )
                     );
                 }
@@ -345,9 +355,10 @@ class CategorieViewWidget extends CWidget {
                     }
 
                     // Добавляем в форму
-                    $this->formModel->setSafeRule('f'.$elementResult['id']);
-                    $this->formModel->setAttributeLabels('f'.$elementResult['id'], $elementResult['label_before']);
-                    $fieldName = 'f'.$elementResult['id'];
+                    $elementResult['undotted_path'] = implode('|', explode('.', $elementResult['path']));
+                    $this->formModel->setSafeRule('f'.$elementResult['undotted_path'].'_'.$elementResult['id']);
+                    $this->formModel->setAttributeLabels('f'.$elementResult['undotted_path'].'_'.$elementResult['id'], $elementResult['label_before']);
+                    $fieldName = 'f'.$elementResult['undotted_path'].'_'.$elementResult['id'];
                     $this->formModel->$fieldName = null;
                     $elementResult = $this->getFormValue($elementResult);
                     $categorieResult['elements'][] = $elementResult;
@@ -393,10 +404,16 @@ class CategorieViewWidget extends CWidget {
                 } else {
                     $categoriesChildren = MedcardElementForPatient::model()->findAll(
                         'categorie_id = :categorie_id
-                        AND element_id = :element_id',
+                        AND element_id = :element_id
+                        AND greeting_id = :greeting_id
+                        AND medcard_id = :medcard_id
+                        AND history_id = :history_id',
                         array(
                             ':categorie_id' => $categorieResult['id'],
-                            ':element_id' => -1
+                            ':element_id' => -1,
+                            ':greeting_id' => $this->greetingId,
+                            ':medcard_id' => $this->medcard['card_number'],
+                            ':history_id' => 1
                         )
                     );
                 }
@@ -451,7 +468,7 @@ class CategorieViewWidget extends CWidget {
                  )
         );
         if($elementFinded != null) {
-            $fieldName = 'f'.$element['id'];
+            $fieldName = 'f'.$element['undotted_path'].'_'.$element['id'];
             // Если это комбо с множественным выбором
             if($element['type'] == 3) {
                 $element['selected'] = array();
@@ -489,6 +506,7 @@ class CategorieViewWidget extends CWidget {
         $this->makeTree();
         // Теперь поделим категории
         $this->divideTreebyCats();
+
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
             'model' => $this->formModel,
@@ -606,6 +624,7 @@ class CategorieViewWidget extends CWidget {
                             'type' => $element['type'],
                             'guide_id' => $element['guide_id']
                         );
+
                         if($element['guide_id'] != null) {
                             $medguideValuesModel = new MedcardGuideValue();
                             $medguideValues = $medguideValuesModel->getRows(false, $element['guide_id']);
@@ -618,9 +637,18 @@ class CategorieViewWidget extends CWidget {
                             } else {
                                 $data['guide'] = array();
                             }
-							if($element['type'] == 2 || $element['type'] == 3) {
-								$data['selected'] = CJSON::decode($element['value']);
-							}
+
+                            if($data['type'] == 3) {
+                                $data['selected'] = array();
+                                $data['value'] = CJSON::decode($element['value']);
+                                foreach($data['value'] as $id) {
+                                    $data['selected'][$id] = array('selected' => true);
+                                }
+                            }
+                            // Простой выпадающий список
+                            if($data['type'] == 2) {
+                                $data['selected'] = array($data['id'] => array('selected' => $data['value']));
+                            }
                         }
 
                         $currentNode['elements'][] = $data;
@@ -633,6 +661,8 @@ class CategorieViewWidget extends CWidget {
                 }
             }
         }
+      //  var_dump($this->historyTree);
+       // exit();
         ksort($this->historyTree);
     }
 
