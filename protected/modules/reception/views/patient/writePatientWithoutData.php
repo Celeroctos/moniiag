@@ -12,10 +12,7 @@
 <div class="row">
     <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu'); ?>
 </div>
-<h4>Запись опосредованного пациента</h4>
-<p class="text-left">
-    Необходимо найти врача к которому следует записать пациента:
-</p>
+<h4>Необходимо найти врача к которому следует записать пациента на приём:</h4>
 <div class="row">
         <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
             <div class="col-xs-6">
@@ -63,15 +60,13 @@
                 </div>
         </form>
 </div>
-<p class="text-left">
-Необходимо выбрать врача
-</p>
+<h4>Необходимо выбрать врача</h4>
 <div class="row">
     <div class="col-xs-12 borderedBox">
         <table class="table table-condensed table-hover" id="searchDoctorsResult">
             <thead>
             <tr class="header">
-                <td>
+                <td class="write-patient-cell">
                     Записать
                 </td>
                 <td>
@@ -87,7 +82,7 @@
                     Кабинет
                 </td>
                 <td>
-                    Ближайшая свободная дата
+                    Ближайшая дата
                 </td>
             </tr>
             </thead>
@@ -154,7 +149,7 @@
                         <tr class="header">
                             <td class="col-xs-2">Время</td>
                             <td class="col-xs-7">Пациент</td>
-                            <td class="col-xs-3">Записать на приём / отписать с приёма</td>
+                            <td class="col-xs-3 write-patient-cell">Записать</td>
                         </tr>
                     </thead>
                     <tbody>

@@ -155,11 +155,10 @@ $(document).ready(function() {
         if (prevMonths<0) {
             prevMonths = 11;
         }
-        
         if (nextMonths>=12) {
             nextMonths = 0;
         }
-        
+        // Обновим названия месяца
         $('#showPrevMonth span.prev-months-button').text(globalVariables.months[prevMonths]);
         $('#showNextMonth span.next-months-button').text(globalVariables.months[nextMonths]);
         
@@ -170,10 +169,7 @@ $(document).ready(function() {
             globalVariables.clickedLink.trigger('click', [11, parseInt(globalVariables.year) - 1]);
         } else {
             globalVariables.clickedLink.trigger('click', [globalVariables.month - 1, globalVariables.year]);
-        }
-        
-    //    changeArrowButtons();
-        
+        }  
     });
 
     $('#showNextMonth').click(function(e) {
@@ -182,6 +178,5 @@ $(document).ready(function() {
         } else {
             globalVariables.clickedLink.trigger('click', [globalVariables.month + 1, globalVariables.year]);
         }
-       // changeArrowButtons();
     });
 });

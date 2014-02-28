@@ -235,6 +235,11 @@ $(document).ready(function() {
         for(var i = 0; i < data.length; i++) {
             table.append(
                 '<tr>' +
+                    '<td class="write-patient-cell">' +
+                        '<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
+                            '<span class="glyphicon glyphicon-dashboard"></span>' +
+                        '</a>' +
+                    '</td>' +
                     '<td>' +
                         '<a title="Посмотреть информацию по пациенту" href="#' + data[i].id + '" class="viewHistory">' +
                             data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name +
@@ -251,11 +256,6 @@ $(document).ready(function() {
                     '<td>' +
                         '<a title="Посмотреть информацию по ОМС" href= "#' + data[i].id + '" class="editOms">' +
                             data[i].oms_number +
-                        '</a>' +
-                    '</td>' +
-                    '<td>' +
-                        '<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
-                            '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
                     '</td>' +
                 '</tr>'
@@ -278,7 +278,7 @@ $(document).ready(function() {
             }*/
             table.append(
                 '<tr>' +
-                    '<td>' +
+                    '<td class="write-patient-cell">' +
                         '<a title="Записать пациента" class="write-patient-link" href="#d' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
@@ -381,7 +381,7 @@ $(document).ready(function() {
                 '<tr>' +
                     '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
                     '<td></td>' +
-                    '<td>' +
+                    '<td class="write-patient-cell">' +
                         '<a class="write-link" href="#' + data[i].timeBegin + '" title="Записать пациента">' +
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
@@ -397,7 +397,7 @@ $(document).ready(function() {
                                     data[i].fio  +
                             '</a>' +
                         '</td>' +
-                        '<td>' +
+                        '<td class="write-patient-cell">' +
                             '<a class="unwrite-link" href="#' + data[i].id + '">' +
                                 '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
                             '</a>' +
@@ -410,7 +410,7 @@ $(document).ready(function() {
                             '<td>' +
                                 data[i].fio  +
                             '</td>' +
-                            '<td>' +
+                            '<td class="write-patient-cell">' +
                                 '<a class="unwrite-link" href="#' + data[i].id + '">' +
                                     '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
                                 '</a>' +

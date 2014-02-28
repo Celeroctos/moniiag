@@ -121,6 +121,9 @@
         <table class="table table-condensed table-hover" id="searchWithCardResult">
             <thead>
             <tr class="header">
+		<td class="write-patient-cell">
+                    Записать
+                </td>
                 <td>
                     ФИО пациента
                 </td>
@@ -132,9 +135,6 @@
                 </td>
                 <td>
                     Номер ОМС
-                </td>
-                <td>
-                    Записать на приём
                 </td>
             </tr>
             </thead>
