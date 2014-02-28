@@ -107,7 +107,7 @@ class ElementsController extends Controller {
         $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
         $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
         if($issetPositionInCats != null || $issetPositionInElements != null) {
-            if($issetPositionInElements->id != $element->id) {
+            if($issetPositionInElements->id != $element->id || ($issetPositionInElements->id == $element->id && $issetPositionInCats != null)) {
                 echo CJSON::encode(array('success' => false,
                         'errors' => array(
                             'position' => array(

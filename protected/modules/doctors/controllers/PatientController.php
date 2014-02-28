@@ -87,7 +87,7 @@ class PatientController extends Controller {
             exit();
         }
 
-        $currentDate = date('Y-m-d h:m');
+        $currentDate = date('Y-m-d h:i');
 
         // Создаём новую категорию, путь делаем + 1 у конечного элемента
         $medcardCategorieClone = new MedcardElementForPatient();
@@ -103,6 +103,7 @@ class PatientController extends Controller {
         $medcardCategorieClone->template_id = $historyCategorie->template_id; // TODO : вынуть идентификаторы шаблона
         $medcardCategorieClone->template_name = $historyCategorie->template_name; // TODO : вынуть имя шаблона
         $medcardCategorieClone->is_dynamic = 0; // Клонированные категории не должны быть динамичными
+        $medcardCategorieClone->real_categorie_id = $historyCategorie->real_categorie_id;
         // Путь: бьём на составляющие и прибавляем к последнему элементу в позиции + 1 к максимальному номеру в иерархии в данной категории
         $pathParts = explode('.', $historyCategorie->path);
         // Ищем все элементы в иерархии, которые по позиции больше, чем текущий. Составим путь категории-родителя
@@ -127,67 +128,42 @@ class PatientController extends Controller {
         }
 
         // Теперь смотрим все то, что находится в категории. И тоже клонируем, причём рекурсивно: там могут быть вложенные категории
-        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], false, $keyParts[4]);
-        // Выясним максимальную позицию в категории
-        $maxPosition = 0;
-        foreach($elementsInCategorie as $categorie) {
-            $pathParts2 = explode('.', $categorie['path']);
-            // Сравниваются пути с одинаковым количество элементов
-            if($maxPosition < $pathParts2[count($pathParts2) - 1]) {
-                $maxPosition = $pathParts2[count($pathParts2) - 1];
-            }
-        }
-
+        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $keyParts[2], 'like');
         foreach($elementsInCategorie as $element) {
-            // Если это категория, то запускаем рекурсивный клон
-            if($element['element_id'] == -1) {
-                // Вынимаем актуальную категорию для клона TODO: здесь надо отвязаться от реальных категорий. Передавать ID категории в базу аналогично
-                $categorieReal = MedcardCategorie::model()->find('path = :path', array(':path' => $element['path']));
-                if($categorieReal != null) {
-                    $this->actionCloneElement($element['medcard_id'].'|'.$element['greeting_id'].'|'.$element['path'].'|'.$element['categorie_id'].'|'.$categorieReal->id);
-                }
-            } else {
-                ++$maxPosition;
-                $pathParts2 = explode('.', $element['path']);
-                // Количество того, что нужно отбавить от пути, чтобы прибавить новый путь, равно количеству уровней вглубь
-                for($i = 0; $i < $level + 2; $i++) {
-                    array_pop($pathParts2);
-                }
-                // Дальше прибавляем позицию категории
-                $pathParts2[] = $savedCategoriePosition;
-                // А потом позицию элемента
-                $pathParts2[] = $maxPosition + 1;
+            $pathParts2 = explode('.', $element['path']);
+            $pathParts2[count($pathParts) - 1] =  $savedCategoriePosition;
+            // Если путь полностью совпадает, это категория, которая уже добавлена, её надо пропустить
+            if(implode('.', $pathParts2) == $medcardCategorieClone->path) {
+                continue;
+            }
 
-                $historyCategorieElementNext = new MedcardElementForPatient();
-                $historyCategorieElementNext->history_id = 1;
-                $historyCategorieElementNext->medcard_id = $element['medcard_id'];
-                $historyCategorieElementNext->greeting_id = $element['greeting_id'];
-                $historyCategorieElementNext->path = implode('.', $pathParts2);
-                $historyCategorieElementNext->is_wrapped = $element['is_wrapped'];
-                $historyCategorieElementNext->categorie_id = $element['categorie_id'];
-                $historyCategorieElementNext->element_id = $element['element_id'];
-                $historyCategorieElementNext->label_before = $element['label_before'];
-                $historyCategorieElementNext->label_after = $element['label_after'];
-                $historyCategorieElementNext->size = $element['size'];
-                $historyCategorieElementNext->change_date = $currentDate;
-                $historyCategorieElementNext->type = $element['type'];
-                if(!$historyCategorieElementNext->save()) {
-                    exit('Не могу отклонировать элемент '.$element['path']);
-                }
+            $historyCategorieElementNext = new MedcardElementForPatient();
+            $historyCategorieElementNext->history_id = 1;
+            $historyCategorieElementNext->medcard_id = $element['medcard_id'];
+            $historyCategorieElementNext->greeting_id = $element['greeting_id'];
+            $historyCategorieElementNext->path = implode('.', $pathParts2);
+            $historyCategorieElementNext->is_wrapped = $element['is_wrapped'];
+            $historyCategorieElementNext->categorie_id = $element['categorie_id'];
+            $historyCategorieElementNext->element_id = $element['element_id'];
+            $historyCategorieElementNext->label_before = $element['label_before'];
+            $historyCategorieElementNext->label_after = $element['label_after'];
+            $historyCategorieElementNext->size = $element['size'];
+            $historyCategorieElementNext->change_date = $currentDate;
+            $historyCategorieElementNext->type = $element['type'];
+            $historyCategorieElementNext->guide_id = $element['guide_id'];
+			$historyCategorieElementNext->allow_add = $element['allow_add'];
+            if(!$historyCategorieElementNext->save()) {
+                exit('Не могу отклонировать элемент '.$element['path']);
             }
         }
 
-        // Если корневой элемент - тогда выдаём ответ.
-        if($level == 0) {
-            echo CJSON::encode(array('success' => true,
-                                 'data' => array(
-                                    'pk_key' =>  $keyParts[0].'|'.$keyParts[1].'|'.$medcardCategorieClone->path.'|'.$keyParts[3]
-                                 )
-                              )
-                          );
-        } else {
-            return;
-        }
+        echo CJSON::encode(array(
+                 'success' => true,
+                 'data' => array(
+                    'pk_key' =>  $keyParts[0].'|'.$keyParts[1].'|'.$medcardCategorieClone->path.'|'.$keyParts[3].'|'.$keyParts[4]
+                 )
+              )
+          );
     }
 
     // UnКлонирование элемента (категории)
@@ -197,14 +173,21 @@ class PatientController extends Controller {
          * - Номер карты
          * - ID приёма
          * - Путь иерархии
-         * - ID категории
+         * - ID категории-родителя
+         * - ID категории реальный
          */
-        MedcardElementForPatient::model()->deleteAll('categorie_id = :categorie_id AND greeting_id = :greeting_id AND path = :path AND medcard_id = :medcard_id', array(
-            ':categorie_id' => $keyParts[3],
-            ':greeting_id' => $keyParts[1],
-            ':path' => $keyParts[2],
-            ':medcard_id' => $keyParts[0])
-        );
+        $elements = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $keyParts[2], 'like');
+        foreach($elements as $element) {
+            MedcardElementForPatient::model()->findByPk(
+                array(
+                    'path' => $element['path'],
+                    'greeting_id' => $element['greeting_id'],
+                    'medcard_id' => $element['medcard_id'],
+                    'categorie_id' => $element['categorie_id'],
+                    'history_id' => $element['history_id']
+                )
+            )->delete();
+        }
         echo CJSON::encode(array('success' => true,
                                  'data' => array()));
     }
