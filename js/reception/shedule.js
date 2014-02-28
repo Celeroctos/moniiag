@@ -6,7 +6,24 @@ $(document).ready(function() {
         'Консилиум'
     ];
 
+
     
+   
+   /*
+   $('#sheduleTable input[type="checkbox"]').on('click',
+               function()
+               {
+                    var checked = $('#sheduleTable input[type="checkbox"]');
+                    if(checked.length == 0) {
+                        $('#todoctor-submit').prop('disabled', true);
+                    }
+                    else
+                    {
+                        $('#todoctor-submit').prop('disabled', false);
+                    }
+               }
+               );
+   */
     $('#greetingDate').val((new Date).getFullYear() + '-' + ((new Date).getMonth() + 1) + '-' + (new Date).getDate());
     $('#greetingDate').trigger('change');
     
@@ -78,6 +95,7 @@ $(document).ready(function() {
                     var data = data.data;
                     var shedule = data.shedule;
                     var cabinets = data.cabinets;
+                    $('#todoctor-submit').prop('disabled', true);
                     var table = $('#sheduleTable');
                     $(table).find('tbody tr').remove();
                     var currentDoctorId = null;
@@ -206,6 +224,7 @@ $(document).ready(function() {
             $(this).prop('title', 'Отметить все');
             $('#sheduleTable tbody input[type="checkbox"]').prop('checked', false);
         }
+        checkToDoctorEnabled(e);
     });
 
     // Разнос отмеченных карт по кабинетам
@@ -213,7 +232,7 @@ $(document).ready(function() {
         var checked = $('#sheduleTable tbody input[type="checkbox"]');
         if(checked.length == 0 || $(this).prop('disabled')) {
             return false;
-        }
+        } 
 
         var ids = [];
         var numChecked = 0;
@@ -294,4 +313,40 @@ $(document).ready(function() {
             $('body', printWin.document).append(dateDiv, tableClone, printBtn);
         });
     })
+    
+        // Проверяет - нужно ли делатиь активной кнопку разноса медкарт
+    function checkToDoctorEnabled(e)
+    {
+                    var checked = $('#sheduleTable tbody input[type="checkbox"]');
+                    var checkedCount = 0;
+                    for (i=0;i<checked.length;i++)
+                    {
+                        if ($(checked[i]).prop('checked'))
+                        {
+                            checkedCount++;
+                            break;
+                        }
+                    }
+                    
+                    if(checkedCount > 0) {
+                        $('#todoctor-submit').prop('disabled', false);
+                    }
+                    else
+                    {
+                        $('#todoctor-submit').prop('disabled', true);
+                    }
+    }
+    
+    // Ставим на клик по чекбоксам в таблице расписания обрабочтчик,
+    //    задача которого проверить выделен ли хотя бы
+    //   один чекбокс в таблице, то делаем кнопку "Разнести отмеченные по кабинетам" активной,
+    //   в противном случае - ставим неактивной
+    $(document).on('change', '#sheduleTable tbody input[type="checkbox"]',
+               function(e)
+               {
+                    checkToDoctorEnabled(e);
+               }
+     );
+    
+
 });

@@ -240,14 +240,20 @@ class SheduleController extends Controller {
         $restModel = new FormRestDaysEdit();
         $restDays = SheduleRest::model()->findAll();
         $restDaysResponse = array();
+        $restDaysValues = array();
         if(!isset($_GET['date'])) {
             $dateBegin = date('Y-n-j');
         } else {
             $dateBegin = $_GET['date'];
         }
         foreach($restDays as $day) {
+            array_push($restDaysValues, $day['day']);
+            //var_dump ($day['day']);
             $restDaysResponse[$day['day']] = array('selected' => 'selected');
         }
+        //var_dump($restDaysValues);
+        //exit();
+        $restModel->restDays = $restDaysValues;
         $parts = explode('-', $dateBegin);
         $this->render('rest', array(
             'model' => $restModel,

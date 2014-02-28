@@ -9,7 +9,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <h4>Расписание</h4>
 <form method="post" id="reception-shedule-form" role="form" class="form-horizontal col-xs-12">
-    <div class="col-xs-4">
+    <div class="col-xs-6">
       <div class="form-group">
           <label class="col-xs-2 control-label required" for="greetingDate">Дата</label>
           <div class="col-xs-3 input-group date date-control" id="greetingDate-cont">
@@ -43,11 +43,11 @@
       </div>
       <div class="form-group">
           <button type="button" class="btn btn-success" id="sheduleViewSubmit">Посмотреть расписание</button>
+          <input type="button" class="btn btn-success" name="print-submit" value="Печать" id="print-submit">
       </div>
     </div>
     
-    <div class="col-xs-7">
-
+    <div class="col-xs-6">
       <div class="form-group">
           <label for="doctorCombo" class="col-xs-4 control-label required">Для врачей</label>
           <div class="col-xs-6">
@@ -87,7 +87,7 @@
           </div>
       </div>
       <div class="form-group">
-          <label for="status" class="col-xs-4 control-label required">Только опосредованные пациенты (без ЭМК)</label>
+          <label for="status" class="col-xs-8 control-label required">Только опосредованные пациенты (без ЭМК)</label>
           <div class="col-xs-4">
               <input type="checkbox" name="status" id="status">
           </div>
@@ -121,8 +121,7 @@
 </div>
 <div class="row">
    <div class="form-group">
-      <input type="button" class="btn btn-success" name="todoctor-attach-submit" value="Разнести отмеченные карты по кабинетам" id="todoctor-submit">
-      <input type="button" class="btn btn-success" name="print-submit" value="Распечатать расписание" id="print-submit">
+      <input type="button" class="btn btn-success" disabled='true' name="todoctor-attach-submit" value="Разнести отмеченные карты по кабинетам" id="todoctor-submit">
    </div>
 </div>
 <div class="modal fade error-popup" id="errorPopup">

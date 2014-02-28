@@ -1,4 +1,15 @@
 $(document).ready(function() {
+    
+    // Ставим обработчик - По изменению значений чекбоксов выбора
+    //    выходных - кликаем на кнопку, которая засабмичивает форму
+    $('#weekEndSelector :checkbox').on(
+                                       'change',
+                                       function(e)
+                                       {
+                                            $('#submitRestDays').click();
+                                       }
+                                       );
+    
     $('.calendarTable').on('showCalendar', function(e, restDays, row, col, year, holidays) {
         var holidaysArr = [];
         for(var i in holidays) {
@@ -12,7 +23,21 @@ $(document).ready(function() {
         var tableForCalendar = $('<table>');
         var theader = $('<thead>');
         for(var i = 0; i < 7; i++) {
-            $(theader).append($('<td>').text(daysOfWeek[i]));
+            tdDayOfWeek = $('<td>');
+            $(tdDayOfWeek).text(daysOfWeek[i]);
+            
+            // Смотрим - является ли день выходным.
+            //   Если является - ставим ему класс "rest"
+            for(var j = 0; j < holidaysArr.length; j++) {
+                if(holidaysArr[j] == 0) {
+                    holidaysArr[j] = 7;
+                }
+                if (i==holidaysArr[j]-1) {
+                    $(tdDayOfWeek).addClass('rest');
+                }
+            }
+            
+            $(theader).append(tdDayOfWeek);
         }
 
         // Смотрим, есть ли уже проставленные дни в календаре
@@ -36,6 +61,10 @@ $(document).ready(function() {
         var numPrevDays = 32 - new Date(year, prevMonth, 32).getDate();
         var numDays = 32 - new Date(year, month, 32).getDate();
 
+        // На кнопочки "Следующий" и "Предыдущий год" выведем цифры year+1 и year-1
+        $('#previousYearBtnCaption').text(year-1);
+        $('#nextYearBtnCaption').text(year+1);
+        
         // Сначала наполняем первую неделю
         var tr = $("<tr>");
         if(firstWday == 0) {
@@ -52,7 +81,7 @@ $(document).ready(function() {
             $(tr).appendTo($(tbody));
             tr = $('<tr>');
         }
-        if(month < 10) {
+        if(month < 9) {
             month = '0' + (month + 1);
         } else {
             month = month + 1;
@@ -61,7 +90,7 @@ $(document).ready(function() {
         for(; i < firstWday + numDays; i++) {
             var currentDay = (i - firstWday) + 1;
             var td = $('<td>').text(currentDay);
-            if(currentDay < 10) {
+            if(currentDay < 9) {
                 currentDay = '0' + currentDay;
             }
             var id = year + '-' + month + '-' + currentDay;
@@ -92,16 +121,18 @@ $(document).ready(function() {
 
         $(tr).appendTo($(tbody));
         // Теперь стабильные выхи
+        
         var trs = $(tbody).find('tr');
         for(var j = 0; j < trs.length; j++) {
             for(var i = 0; i < holidaysArr.length; i++) {
                 if(holidaysArr[i] == 0) {
                     holidaysArr[i] = 7;
                 }
-                $(trs[j]).find('td:eq(' + (holidaysArr[i] - 1) + ')').addClass('rest not-clicked');
+                $(trs[j]).find('td:eq(' + (holidaysArr[i] - 1) + ')').not('.not-clicked').addClass('rest not-clicked');
             }
         }
-
+        
+        
         $(tableForCalendar).appendTo(tdForTable);
     });
 
@@ -112,6 +143,7 @@ $(document).ready(function() {
         } else {
             $(this).addClass('clicked');
         }
+        onChangeHolidays();
     });
 
     $("#restcalendar-shedule-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
@@ -121,6 +153,7 @@ $(document).ready(function() {
         }
     });
 
+    /*
     $('#submitHolidays').on('click', function() {
         var clickedTds = $('.calendarTable td.calendarTd tbody td.clicked');
         var jsonData = [];
@@ -141,6 +174,32 @@ $(document).ready(function() {
             }
         });
     });
+    */
+    
+    // Обработчик, который должен быть вызван при изменении дня праздничный-рабочий.
+    //  Функция читает все праздничные дни, отмеченные во всём календаре и отправляет их на 
+    function onChangeHolidays()
+    {
+        var clickedTds = $('.calendarTable td.calendarTd tbody td.clicked');
+        var jsonData = [];
+        for(var i = 0; i < clickedTds.length; i++) {
+            jsonData.push($(clickedTds[i]).prop('id').substr(1));
+        }
+        $.ajax({
+            'url' : '/index.php/admin/shedule/setholidays?dates=' + $.toJSON(jsonData),
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    location.reload();
+                } else {
+
+                }
+            }
+        });
+    }
+    
     $('#showNextYear').click(function() {
         var year = parseInt($('.currentYear').text());
         location.href = globalVariables.baseUrl + '/index.php/admin/shedule/viewrest?date=' + (year + 1) + '-01-01';

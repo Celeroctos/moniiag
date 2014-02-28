@@ -1,5 +1,6 @@
-keyboard_cnf =
+﻿keyboard_cnf =
 {
+/**/
     'page_configs':[
      {
             'page_key':'\.php/test',
