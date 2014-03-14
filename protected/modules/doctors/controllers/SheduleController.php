@@ -23,22 +23,45 @@ class SheduleController extends Controller {
             }
             if(isset($_GET['rowid']) && trim($_GET['rowid']) != '') {
                 $this->currentSheduleId = trim($_GET['rowid']);
-
-                // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
-                $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
-                $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
-                // Если приём был, то можно вынуть примечание к диагнозам
-                $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
-                if($greeting != null) {
-                    $note = $greeting->note;
-                    // Пациента начали принимать, но он не принят: карту можно редактировать. В противном случае редактирование карты должно быть заблокировано
-                    if($greeting->is_beginned && !$greeting->is_accepted) {
-                        $canEditMedcard = 1;
-                    } else {
-                        $canEditMedcard = 0;
+                if(isset($_POST['templatesList'])) {
+                    $templatesChoose = 0;
+                    // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
+                    $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
+                    $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
+                    // Если приём был, то можно вынуть примечание к диагнозам
+                    $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
+                    if($greeting != null) {
+                        $note = $greeting->note;
+                        // Пациента начали принимать, но он не принят: карту можно редактировать. В противном случае редактирование карты должно быть заблокировано
+                        if($greeting->is_beginned && !$greeting->is_accepted) {
+                            $canEditMedcard = 1;
+                        } else {
+                            $canEditMedcard = 0;
+                        }
                     }
+
+                    // Запишем, что приём начат
+                    $sheduleElement = SheduleByDay::model()->findByPk($_GET['rowid']);
+                    if($sheduleElement != null && $sheduleElement->is_beginned != 1) {
+                        $sheduleElement->is_beginned = 1;
+                        $sheduleElement->time_begin = date('h:j');
+                        if(!$sheduleElement->save()) {
+                            echo CJSON::encode(array('success' => true,
+                                                     'text' => 'Ошибка сохранения записи.'));
+                        }
+                    }
+
+                    $templatesList = $_POST['templatesList'];
+                } else {
+                    $greeting = null;
+                    $canEditMedcard = 0;
+                    $templatesChoose = 1;
+                    $templatesList = MedcardTemplate::model()->findAll();
                 }
             }
+        }
+        if(!isset($templatesChoose)) {
+            $templatesChoose = 0;
         }
 
         // Если они не создались, это значит, что диагнозы пустые
@@ -73,7 +96,9 @@ class SheduleController extends Controller {
             'privilegesList' => $this->getPrivileges(),
             'modelMedcard' => new FormPatientWithCardAdd(),
             'modelOms' => new FormOmsEdit(),
-            'currentTime' => date('Y-m-d h:m:s')
+            'currentTime' => date('Y-m-d h:m:s'),
+            'templatesChoose' => $templatesChoose,
+            'templatesList' => isset($templatesList) ? $templatesList : array()
         ));
     }
 
@@ -203,6 +228,7 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext->type = $historyCategorieElement->type;
 				$historyCategorieElementNext->allow_add = $historyCategorieElement->allow_add;
                 $historyCategorieElementNext->guide_id = $historyCategorieElement->guide_id;
+                $historyCategorieElementNext->config = $historyCategorieElement->config;
 
                 $answerCurrentDate = true;
                 if(!$historyCategorieElementNext->save()) {

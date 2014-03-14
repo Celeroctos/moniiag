@@ -4,7 +4,8 @@ class MedcardElement extends MisActiveRecord {
         'Текстовое поле',
         'Текстовая область',
         'Выпадающий список',
-        'Выпадающий список с множественным выбором'
+        'Выпадающий список с множественным выбором',
+        'Редактируемая таблица'
     );
 
     public static function model($className=__CLASS__)
@@ -77,6 +78,25 @@ class MedcardElement extends MisActiveRecord {
                 ->queryAll();
 
             return $elements;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+    // Получить все значения справочника элемента по id элемента
+    public function getGuideValuesByElementId($id) {
+        try {
+            $connection = Yii::app()->db;
+            $values = $connection->createCommand()
+                ->select('mgv.*')
+                ->from('mis.medcard_elements me')
+                ->join('mis.medcard_guide_values mgv', 'mgv.guide_id = me.guide_id')
+                ->where('me.id = :id', array(':id' => $id))
+                ->queryAll();
+
+            return $values;
 
         } catch(Exception $e) {
             echo $e->getMessage();

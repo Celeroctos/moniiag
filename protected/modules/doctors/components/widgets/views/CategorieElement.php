@@ -1,10 +1,10 @@
 <?php
 if(isset($categorie['id'])) {
 ?>
-<div id="accordion<?php echo '_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" class="accordion">
+<div id="accordion<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" class="accordion">
     <div class="accordion-group">
         <div class="accordion-heading">
-            <a href="#collapse<?php echo $prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
+            <a href="#collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
                 <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
                     (пустая категория)
                 <?php } ?>
@@ -16,18 +16,48 @@ if(isset($categorie['id'])) {
             </button>
             <? } ?>
         </div>
-        <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
+        <div class="accordion-body collapse" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
             <div class="accordion-inner">
                 <?php // Подкатегории
                 if(isset($categorie['children']) && count($categorie['children']) > 0) {
                     foreach($categorie['children'] as $key => $childCategorie) {
-                        $this->drawCategorie($childCategorie, $form, $model);
+                        $this->drawCategorie($childCategorie, $form, $model, $lettersInPixel, $templatePrefix);
                     }
                 }
                 ?>
                 <?php
                 if(count($categorie['elements']) > 0) {
-                    foreach($categorie['elements'] as $element) { ?>
+                    ?>
+                    <!--<div class="form-group has-success has-feedback">
+                        <div class="col-xs-6">
+                            <div class="col-xs-7">
+                                <label class="control-label">Input with success</label>
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="col-xs-7">
+                                <label class="control-label">Input with success</label>
+                            </div>
+                            <div class="col-xs-5">
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>-->
+                    <?php
+                    foreach($categorie['elements'] as $element) {
+                        if(isset($element['dependences'])) {
+                        ?>
+                        <script type="text/javascript">
+                            globalVariables.elementsDependences.push({
+                                'path' : '<?php echo $element['path']; ?>',
+                                'dependences' : <?php echo CJSON::encode($element['dependences']); ?>,
+                                'elementId' : '<?php echo $element['id']; ?>'
+                            });
+                        </script>
+                        <?php } ?>
                         <div class="form-group">
                             <div class="col-xs-3">
                                 <?php echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
@@ -42,20 +72,36 @@ if(isset($categorie['id'])) {
                                         'class' => 'form-control',
                                         'placeholder' => ''
                                     );
+                                    if(isset($element['size']) && $element['size'] != null) {
+                                        $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
+                                    }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->textField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+                                    if($element['label_after'] != null) {
+                                    ?>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                    <?php
+                                    }
                                 } elseif($element['type'] == 1) {
                                     $options =  array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => ''
                                     );
+                                    if(isset($element['size']) && $element['size'] != null) {
+                                        $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
+                                    }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->textArea($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+                                    if($element['label_after'] != null) {
+                                        ?>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                    <?php
+                                    }
                                 } elseif($element['type'] == 2) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
@@ -63,6 +109,9 @@ if(isset($categorie['id'])) {
                                         'placeholder' => '',
                                         'options' => $element['selected']
                                     );
+                                    if(isset($element['size']) && $element['size'] != null) {
+                                        $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
+                                    }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
@@ -71,8 +120,12 @@ if(isset($categorie['id'])) {
                                         <div class="col-xs-10 no-padding-left">
                                         <?php
                                     }
-
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
+                                    if($element['label_after'] != null) {
+                                        ?>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                    <?php
+                                    }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
                                         </div>
@@ -93,6 +146,9 @@ if(isset($categorie['id'])) {
                                         'options' => $element['selected'],
                                         'multiple' => 'multiple'
                                     );
+                                    if(isset($element['size']) && $element['size'] != null) {
+                                        $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
+                                    }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
@@ -102,6 +158,11 @@ if(isset($categorie['id'])) {
                                     <?php
                                     }
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
+                                    if($element['label_after'] != null) {
+                                        ?>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                    <?php
+                                    }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
                                         </div>
@@ -114,7 +175,61 @@ if(isset($categorie['id'])) {
                                         </button>
                                     <?php
                                     }
-                                } ?>
+                                } elseif($element['type'] == 4) {
+                                ?>
+                                    <table class="controltable">
+                                        <tbody>
+                                            <?php if(isset($element['config']['cols']) && count($element['config']['cols']) > 0) {
+                                                ?>
+                                            <tr>
+                                                <?php if(isset($element['config']['rows']) && count($element['config']['rows']) > 0) {
+                                                ?>
+                                                    <td></td>
+                                                <?php
+                                                }
+                                                for($i = 0; $i < count($element['config']['cols']); $i++) {
+                                                    ?>
+                                                    <td>
+                                                        <?php echo $element['config']['cols'][$i]; ?>
+                                                    </td>
+                                                <?php
+                                                }
+                                                ?>
+                                            </tr>
+                                            <?php
+                                            }
+
+                                            for($i = 0; $i < $element['config']['numRows']; $i++) {
+                                            ?>
+                                            <tr>
+                                                <?php if(isset($element['config']['rows'][$i])) {
+                                                   ?>
+                                                    <td><?php echo $element['config']['rows'][$i]; ?></td>
+                                                   <?php
+                                                } ?>
+                                                <?php
+                                                for($j = 0; $j < $element['config']['numCols']; $j++) {
+                                                    if($canEditMedcard) {
+                                                ?>
+                                                <td class="content-<?php echo $i.'_'.$j; ?>">
+                                                </td>
+                                                 <?php } else { ?>
+                                                 <td>
+                                                 </td>
+                                                 <?php }
+                                                } ?>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                    <?php
+                                    $options = array(
+                                        'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
+                                    );
+                                    echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+                                    ?>
+                                <?php
+                                }?>
                             </div>
                         </div>
                     <?php  } ?>

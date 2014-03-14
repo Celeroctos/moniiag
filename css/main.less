@@ -294,7 +294,7 @@ form span.required {
 #firstName::first-letter {
     text-transform: uppercase;
 }
-#employee-filter-form, #contact-filter-form, #edit-profile-form, #pregnant-search-form, #shedule-settings-form,  #doctors-search-form {
+#employee-filter-form, #contact-filter-form, #edit-profile-form, #pregnant-search-form, #shedule-settings-form,  #doctors-search-form, #system-settings-form {
     input[type='submit'],  input[type='button'] {
         margin-left: 18%;
     }
@@ -312,14 +312,24 @@ form span.required {
 }
 #change-date-form {
    height: 240px;
+   padding-left: 0;
    input[type='submit'],  input[type='button'] {
-      margin: 0 0 0 15px;
+      margin: 0;
       width: 100px;
    }
 
    + div {
       margin: 10px 0 0 0;
    }
+  .subcontrol {
+    left: 0;
+  }
+  .form-group {
+    margin-left: 10px;
+  }
+  tfoot .today {
+    background: #D4FF5E;
+  }
 }
 #omsSearchWithCardResult {
   font-size: 12px !important;
@@ -335,7 +345,8 @@ form span.required {
   text-align: center;
 }
 .patient-choose-date-h5 {
-  margin-left: 2%;
+  margin-left: 0;
+  text-align: center;
 }
 select[multiple="multiple"] {
   height: auto !important;
@@ -516,7 +527,7 @@ div.date-control {
   margin-top: 20px;
   .datetimepicker-inline {
     margin-top: -25px;
-    margin-left: 130px;
+    margin-left: -15px;
   }
 }
 
@@ -571,6 +582,14 @@ tr.header {
   margin-bottom: 5px;
   .help-block {
     padding: 0 15px;
+  }
+  select {
+    display: inline-block;
+  }
+  .form-group {
+     input + label, select + label {
+      margin-left: 10px;
+    }
   }
 }
 .accordion-heading {
@@ -893,11 +912,72 @@ select#restDays {
     }
   }
 }
-#viewHistoryMotionPopup .modal-dialog {
+#viewHistoryMotionPopup .modal-dialog,  #editDependencesPopup .modal-dialog {
   width: 690px;
 }
 #collapseH {
   div.active {
     background: #E0F8F1;
   }
+}
+/* Панель зависимостей */
+#editDependencesPopup {
+  h5 {
+    font-weight: bold;
+  }
+  .modal-body {
+    .row + .row {
+      margin-top: @default-margin;
+    }
+  }
+  #controlDependencesPanel {
+    margin-left: @default-margin;
+  }
+  #controlDependencesList {
+    height: 200px !important;
+  }
+}
+/* Контрол таблиц */
+.controltable {
+  td {
+    border: 1px solid #CCCCCC;
+    padding: 2px 4px;
+    min-width: 60px;
+  }
+  thead {
+    font-weight: bold;
+    td {
+      border-collapse: collapse;
+    }
+  }
+  tbody {
+    td {
+      input {
+        width: 60px;
+      }
+    }
+  }
+}
+/* Редактирование таблиц (элементов) */
+#editElementPopup, #addElementPopup {
+  .headersLabel {
+    padding-top: 7px;
+  }
+  .table-config-container {
+
+  }
+  .rowsHeaders, .colsHeaders {
+    position: relative;
+    top: 5px;
+  }
+}
+/* */
+.null-padding-left {
+  padding-left: 0;
+}
+.null-padding-right {
+  padding-right: 0;
+}
+.null-margin-left  {
+ margin-left: 0;
 }

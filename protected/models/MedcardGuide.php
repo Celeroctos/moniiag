@@ -42,8 +42,10 @@ class MedcardGuide extends MisActiveRecord {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $guides->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
             $guides->limit($limit, $start);
         }
 

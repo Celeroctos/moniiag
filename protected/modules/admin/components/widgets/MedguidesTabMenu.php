@@ -4,7 +4,7 @@ class MedguidesTabMenu extends CWidget {
     public function getGuidesList() {
        $guidesList = array();
        $medguideModel = new MedcardGuide();
-       $guidesList = $medguideModel->getRows(false);
+       $guidesList = $medguideModel->getRows(false, 'name', 'asc');
        return $guidesList;
     }
 

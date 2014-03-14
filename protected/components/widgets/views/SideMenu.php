@@ -97,7 +97,7 @@
                     <?php } ?>
                 </li>
                 <?php if(Yii::app()->user->checkAccess('menuAdminArm')) { ?>
-                <li <?php echo ($controller == 'guides' || $controller == 'diagnosis' || $controller == 'templates') && $module == 'admin' ? 'class="active"' : ''; ?>>
+                <li <?php echo ($controller == 'guides' || $controller == 'diagnosis' || $controller == 'templates' || $controller == 'elements' || $controller == 'categories') && $module == 'admin' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Рабочее место врача', array('#')) ?>
                     <ul class="nav">
                         <?php if(Yii::app()->user->checkAccess('menuGuidesAndTemplates')) { ?>
@@ -105,7 +105,7 @@
                             <?php echo CHtml::link('Шаблоны и справочники', array('#')) ?>
                             <ul class="nav">
                                 <?php if(Yii::app()->user->checkAccess('menuAdminGuides')) { ?>
-                                <li <?php echo $controller == 'templates' && $module == 'admin' ? 'class="active"' : ''; ?>>
+                                <li <?php echo ($controller == 'templates' || $controller == 'categories' || $controller == 'elements' || ($controller == 'guides' && $action != 'allview')) && $module == 'admin' ? 'class="active"' : ''; ?>>
                                     <?php echo CHtml::link('Шаблоны', array('/admin/templates/view')) ?>
                                 </li>
                                 <?php } ?>

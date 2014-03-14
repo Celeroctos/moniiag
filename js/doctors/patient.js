@@ -100,6 +100,14 @@ $(document).ready(function() {
         });
     });
 
+    $('#historyPopup').on('show.bs.modal', function(e) {
+        var deps = filteredDeps;
+        for(var i = 0; i < deps.length; i++) {
+            var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
+            changeControlState(deps[i], elementValue, '#historyPopup');
+        }
+    });
+
     $('.print-greeting-link').on('click', function(e) {
         $('#noticePopup').modal({});
     });
@@ -313,8 +321,40 @@ $(document).ready(function() {
                     $(accClone).find('span.pr-key').text(data.data.pk_key);
 
                     $(accClone).insertAfter($(accParent));
-                } else {
 
+                    // Теперь переименуем все элементы, согласно изменённым путям
+                    var repath = data.data.repath;
+                    for(var i in repath) {
+                        var undottedPathBefore = i.split('.').join('|');
+                        var undottedPathAfter = repath[i].split('.').join('|');
+                        // Здесь большое TODO
+                        var control = $(accClone).find('[id*="_' + undottedPathBefore + '_"]');
+                        if(control.length > 0) {
+                            var controlId = $(control).prop('id');
+                            var substrFirst = controlId.substr(controlId.lastIndexOf('_'));
+                            var tempSubstr = controlId.substr(0, controlId.lastIndexOf('_'));
+                            var substrSecond = tempSubstr.substr(0, tempSubstr.lastIndexOf('_') + 1);
+                            $(control).prop('id', substrSecond + undottedPathAfter + substrFirst);
+                        }
+                    }
+
+                    // Теперь надо разобрать зависимость
+                    var deps = data.data.dependences;
+                    for(var i = 0; i < deps.length; i++) {
+                        // По этому пути вынимаем контрол
+                        var undottedPath = deps[i].path.split('.').join('|');
+                        if(deps[i].dependences.list.length > 0) {
+                            filteredDeps.push(deps[i]);
+                            (function(select, dep) {
+                                $(document).on('change', select, function(e) {
+                                    var elementValue = $(select).val();
+                                    changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
+                                });
+                                $(select).trigger('change');
+                            })($('select[id*="_' + undottedPath + '_"]'), deps[i]);
+                        }
+                    }
+                } else {
                     return;
                 }
             }
@@ -339,6 +379,80 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    var filteredDeps = [];
+    // Зависимости: дефолтные значения
+    function checkElementsDependences() {
+        if(globalVariables.hasOwnProperty('elementsDependences')) {
+            var deps = globalVariables.elementsDependences;
+            for(var i = 0; i < deps.length; i++) {
+                // По этому пути вынимаем контрол
+                var undottedPath = deps[i].path.split('.').join('|');
+                if(deps[i].dependences.list.length > 0) {
+                    filteredDeps.push(deps[i]);
+                    (function(select, dep) {
+                        $(select).on('change', function(e) {
+                            var elementValue = $(select).val();
+                            changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
+                        });
+                        $(select).trigger('change');
+
+                    })($('select[id*="_' + undottedPath + '_"]'), deps[i]);
+                }
+            }
+        }
+    }
+    checkElementsDependences();
+
+    function changeControlState(dep, elementValue, container) {
+        for(var j = 0; j < dep.dependences.list.length; j++) {
+            if(dep.dependences.list[j].value == elementValue) {
+                if(dep.dependences.list[j].action == 1) { // Это "скрыть"
+                    if(typeof container == 'undefined') {
+                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
+                    } else {
+                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
+                    }
+                } else if(dep.dependences.list[j].action == 2) { // Это "показать"
+                    if(typeof container == 'undefined') {
+                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
+                    } else {
+                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
+                    }
+                }
+            }  else {
+                // Противоположное действие экшену по дефолту
+                if(dep.dependences.list[j].action == 1) { // Это "скрыть"
+                    if(typeof container == 'undefined') {
+                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
+                    } else {
+                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
+                    }
+                } else if(dep.dependences.list[j].action == 2) { // Это "показать"
+                    if(typeof container == 'undefined') {
+                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
+                    } else {
+                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
+                    }
+                }
+            }
+        }
+    }
+
+    $('#templates-choose-form input[type="submit"]').on('click', function(e) {
+        var checkboxes = $(this).parents('form').find('input[type="checkbox"]');
+        $(this).attr('disabled', true);
+        for(var i = 0; i < checkboxes.length; i++) {
+            if($(checkboxes[i]).prop('checked')) {
+                $(this).attr('value', 'Подождите, приём начинается...');
+                $('#templates-choose-form').submit();
+                return;
+            }
+        }
+        alert('Вы не выбрали ни одного шаблона для приёма!');
+        $(this).attr('disabled', false);
+        return false;
     });
 });
 
