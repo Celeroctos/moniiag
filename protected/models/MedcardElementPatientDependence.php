@@ -38,6 +38,15 @@ class MedcardElementPatientDependence extends MisActiveRecord {
 
         return $dependences->queryAll(); */
     }
+
+    public function getDistinctDependences() {
+        $connection = Yii::app()->db;
+        $dependences = $connection->createCommand()
+            ->selectDistinct('mepd.action,  mepd.element_id,  mepd.dep_element_id, mepd.value')
+            ->from('mis.medcard_elements_patient_dependences mepd');
+
+        return $dependences->queryAll();
+    }
 }
 
 ?>

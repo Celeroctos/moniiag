@@ -23,16 +23,25 @@ class SheduleController extends Controller {
             }
             if(isset($_GET['rowid']) && trim($_GET['rowid']) != '') {
                 $this->currentSheduleId = trim($_GET['rowid']);
+                $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
                 if(isset($_POST['templatesList'])) {
                     $templatesChoose = 0;
                     // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
                     $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
                     $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
                     // Если приём был, то можно вынуть примечание к диагнозам
-                    $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
                     if($greeting != null) {
                         $note = $greeting->note;
                         // Пациента начали принимать, но он не принят: карту можно редактировать. В противном случае редактирование карты должно быть заблокировано
+                        if($greeting->is_beginned != 1) {
+                            $greeting->is_beginned = 1;
+                            $greeting->time_begin = date('h:j');
+                            if(!$greeting->save()) {
+                                echo CJSON::encode(array('success' => true,
+                                                         'text' => 'Ошибка сохранения записи.'));
+                            }
+                        }
+
                         if($greeting->is_beginned && !$greeting->is_accepted) {
                             $canEditMedcard = 1;
                         } else {
@@ -40,20 +49,8 @@ class SheduleController extends Controller {
                         }
                     }
 
-                    // Запишем, что приём начат
-                    $sheduleElement = SheduleByDay::model()->findByPk($_GET['rowid']);
-                    if($sheduleElement != null && $sheduleElement->is_beginned != 1) {
-                        $sheduleElement->is_beginned = 1;
-                        $sheduleElement->time_begin = date('h:j');
-                        if(!$sheduleElement->save()) {
-                            echo CJSON::encode(array('success' => true,
-                                                     'text' => 'Ошибка сохранения записи.'));
-                        }
-                    }
-
                     $templatesList = $_POST['templatesList'];
                 } else {
-                    $greeting = null;
                     $canEditMedcard = 0;
                     $templatesChoose = 1;
                     $templatesList = MedcardTemplate::model()->findAll();
@@ -98,7 +95,8 @@ class SheduleController extends Controller {
             'modelOms' => new FormOmsEdit(),
             'currentTime' => date('Y-m-d h:m:s'),
             'templatesChoose' => $templatesChoose,
-            'templatesList' => isset($templatesList) ? $templatesList : array()
+            'templatesList' => isset($templatesList) ? $templatesList : array(),
+            'greeting' => (isset($greeting)) ? $greeting : null,
         ));
     }
 

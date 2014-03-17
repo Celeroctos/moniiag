@@ -17,6 +17,35 @@ class CategorieViewWidget extends CWidget {
     public $templateId = null; // Это айдишник шаблона
 
     public function run() {
+       /* $deps = MedcardElementPatientDependence::model()->getDistinctDependences();
+        foreach($deps as $dep) {
+            $dep2 = MedcardElementDependence::model()->find(
+                'dep_element_id = :dep_element_id
+                AND value_id = :value_id
+                AND element_id = :element_id
+                AND action = :action',
+                array(
+                    ':dep_element_id' => $dep['dep_element_id'],
+                    ':value_id' => $dep['value'],
+                    ':element_id' => $dep['element_id'],
+                    ':action' => $dep['action']
+                )
+            );
+            if($dep2 == null) {
+                var_dump("?");
+                $dep2 = new MedcardElementDependence();
+                $dep2->element_id = $dep['element_id'];
+                $dep2->value_id = $dep['value'];
+                $dep2->dep_element_id = $dep['dep_element_id'];
+                $dep2->action = $dep['action';
+                if(!$dep2->save()) {
+                    exit("!");
+                }
+            }
+        }
+        var_dump($deps);
+        exit(); */
+
         ini_set('max_execution_time', 60);
         $this->createFormModel();
         if($this->currentDate == null) {
@@ -35,6 +64,7 @@ class CategorieViewWidget extends CWidget {
             'model' => $this->formModel,
             'currentPatient' => $this->currentPatient,
             'greetingId' => $this->greetingId,
+            'greeting' => ($this->greetingId != null) ? SheduleByDay::model()->findByPk($this->greetingId) : null,
             'withoutSave' => $this->withoutSave,
             'lettersInPixel' => Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'lettersInPixel'))->value,
             'canEditMedcard' => $this->canEditMedcard,
@@ -804,8 +834,8 @@ class CategorieViewWidget extends CWidget {
 
                 // Чтобы узнать путь зависимого элемента, его надо выбрать
                 $depElementModel = MedcardElement::model()->findByPk($actor['dep_element_id']);
-                if($dependenceModel == null) {
-                    exit('Зависимый элемент не найден в базе!');
+                if($depElementModel == null) {
+                    continue;
                 }
                 $dependenceModel->dep_element_path = $depElementModel->path;
 
