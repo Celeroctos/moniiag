@@ -4264,3 +4264,391 @@ Stack trace:
 REQUEST_URI=/index.php/doctors/patient/cloneelement?pr_key=5%2F13%7C469%7C3.1%7C20%7C33&_=1394976266327
 HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=5/13&date=2014-3-17&rowid=469
 ---
+2014/03/17 14:21:42 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка r.startpage_id не существует
+LINE 4: LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+                                                     ^. The SQL statement executed was: SELECT "r".*, "mp"."priority", "mp"."url"
+FROM "mis"."roles" "r"
+LEFT JOIN "mis"."role_to_user" "ru" ON ru.role_id = r.id
+LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+WHERE ru.user_id = :user_id.
+in Z:\home\mis.my\www\protected\models\RoleToUser.php (69)
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (17)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+2014/03/17 14:21:42 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\components\UserIdentity.php:20)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#2 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(282): UsersController->run()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (20)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/03/17 14:21:47 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка r.startpage_id не существует
+LINE 4: LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+                                                     ^. The SQL statement executed was: SELECT "r".*, "mp"."priority", "mp"."url"
+FROM "mis"."roles" "r"
+LEFT JOIN "mis"."role_to_user" "ru" ON ru.role_id = r.id
+LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+WHERE ru.user_id = :user_id.
+in Z:\home\mis.my\www\protected\models\RoleToUser.php (69)
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (17)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+2014/03/17 14:21:47 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\components\UserIdentity.php:20)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#2 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(282): UsersController->run()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (20)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/03/17 14:23:51 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка r.startpage_id не существует
+LINE 4: LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+                                                     ^. The SQL statement executed was: SELECT "r".*, "mp"."priority", "mp"."url"
+FROM "mis"."roles" "r"
+LEFT JOIN "mis"."role_to_user" "ru" ON ru.role_id = r.id
+LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+WHERE ru.user_id = :user_id.
+in Z:\home\mis.my\www\protected\models\RoleToUser.php (69)
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (17)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+2014/03/17 14:23:51 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\components\UserIdentity.php:21)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#2 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(282): UsersController->run()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (21)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/03/17 14:24:09 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка r.startpage_id не существует
+LINE 4: LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+                                                     ^. The SQL statement executed was: SELECT "r".*, "mp"."priority", "mp"."url"
+FROM "mis"."roles" "r"
+LEFT JOIN "mis"."role_to_user" "ru" ON ru.role_id = r.id
+LEFT JOIN "mis"."menu_pages" "mp" ON mp.id = r.startpage_id
+WHERE ru.user_id = :user_id.
+in Z:\home\mis.my\www\protected\models\RoleToUser.php (69)
+in Z:\home\mis.my\www\protected\components\UserIdentity.php (17)
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (10)
+2014/03/17 15:10:34 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: ""
+LINE 1: ...is.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.l...
+                                                             ^. The SQL statement executed was: SELECT * FROM mis.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.last_name = '6175491469'.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php (468)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/03/17 15:10:34 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: ""
+LINE 1: ...is.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.l...
+                                                             ^. The SQL statement executed was: SELECT * FROM mis.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.last_name = '6175491469'' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php(468): CDbCommand->queryAll(true, Array, true)
+#2 [internal function]: TasuController->actionImport('oms', '[{"dbField":"om...', '["oms_number","...', '55', '100', '100', '65581', '100', '0', '0', '4699')
+#3 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(TasuController), Array)
+#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(TasuController), Object(ReflectionMethod), Array)
+#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('import')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/impo...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/tasu/import?table=oms&fields=%5B%7B%22dbField%22%3A%22oms_number%22%2C%22tasuField%22%3A%224%22%7D%2C%7B%22dbField%22%3A%22gender%22%2C%22tasuField%22%3A%227%22%7D%2C%7B%22dbField%22%3A%22last_name%22%2C%22tasuField%22%3A%223%22%7D%5D&key=%5B%22oms_number%22%2C%22gender%22%2C%22last_name%22%5D&file=55&per_query=100&rows_numall=65581&rows_num=100&rows_accepted=100&rows_discarded=0&rows_error=0&processed=4699&_=1395054582453
+HTTP_REFERER=http://mis.my/index.php/admin/tasu/view
+---
+2014/03/17 15:13:34 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: ""
+LINE 1: ...is.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.l...
+                                                             ^. The SQL statement executed was: SELECT * FROM mis.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.last_name = '6175491469'.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php (470)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/03/17 15:13:34 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: ""
+LINE 1: ...is.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.l...
+                                                             ^. The SQL statement executed was: SELECT * FROM mis.oms t WHERE t.oms_number = '""' AND t.gender = '' AND t.last_name = '6175491469'' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php(470): CDbCommand->queryAll(true, Array, true)
+#2 [internal function]: TasuController->actionImport('oms', '[{"dbField":"om...', '["oms_number","...', '55', '100', '100', '65581', '0', '100', '0', '4699')
+#3 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(TasuController), Array)
+#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(TasuController), Object(ReflectionMethod), Array)
+#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('import')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/impo...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/tasu/import?table=oms&fields=%5B%7B%22dbField%22%3A%22oms_number%22%2C%22tasuField%22%3A%224%22%7D%2C%7B%22dbField%22%3A%22gender%22%2C%22tasuField%22%3A%227%22%7D%2C%7B%22dbField%22%3A%22last_name%22%2C%22tasuField%22%3A%223%22%7D%5D&key=%5B%22oms_number%22%2C%22gender%22%2C%22last_name%22%5D&file=55&per_query=100&rows_numall=65581&rows_num=100&rows_accepted=0&rows_discarded=100&rows_error=0&processed=4699&_=1395054750123
+HTTP_REFERER=http://mis.my/index.php/admin/tasu/view
+---
+2014/03/17 15:41:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/tasu2/view".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/tasu/view
+---
+2014/03/17 15:42:55 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "admin/tasu2/view".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/tasu/view
+---
+2014/03/17 15:44:18 [error] [exception.CException] exception 'CException' with message 'Tasu2Controller cannot find the requested view "view".' in Z:\home\mis.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php(41): CController->render('view', Array)
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): TasuController->actionView()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/users/view
+---
+2014/03/17 15:50:25 [error] [exception.CException] exception 'CException' with message 'Tasu2Controller cannot find the requested view "view".' in Z:\home\mis.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php(41): CController->render('view', Array)
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): TasuController->actionView()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/users/view
+---
+2014/03/17 16:03:29 [error] [exception.CException] exception 'CException' with message 'Tasu2Controller cannot find the requested view "view".' in Z:\home\mis.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\Tasu2Controller.php(41): CController->render('view', Array)
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): Tasu2Controller->actionView()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/users/view
+---
+2014/03/17 16:03:41 [error] [exception.CException] exception 'CException' with message 'Tasu2Controller cannot find the requested view "view".' in Z:\home\mis.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\Tasu2Controller.php(41): CController->render('view', Array)
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): Tasu2Controller->actionView()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/users/view
+---
+2014/03/17 16:09:07 [error] [exception.CException] exception 'CException' with message 'Tasu2Controller cannot find the requested view "view".' in Z:\home\mis.my\yii\web\CController.php:878
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php(41): CController->render('view', Array)
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): TasuController->actionView()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu2/vie...')
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu2/view
+HTTP_REFERER=http://mis.my/index.php/admin/users/view
+---
+2014/03/17 17:00:59 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса в конце
+LINE 1: SELECT * FROM mis. t WHERE 
+                                   ^. The SQL statement executed was: SELECT * FROM mis. t WHERE .
+in Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php (493)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/03/17 17:00:59 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса в конце
+LINE 1: SELECT * FROM mis. t WHERE 
+                                   ^. The SQL statement executed was: SELECT * FROM mis. t WHERE ' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\www\protected\modules\admin\controllers\TasuController.php(493): CDbCommand->queryAll(true, Array, true)
+#2 [internal function]: TasuController->actionImport('oms', '[{"dbField":"om...', '["oms_number","...', '55', '100', '0', '0', '0', '0', '0', '0')
+#3 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(TasuController), Array)
+#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(TasuController), Object(ReflectionMethod), Array)
+#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('import')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/impo...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/tasu/import?table=oms&fields=%5B%7B%22dbField%22%3A%22oms_number%22%2C%22tasuField%22%3A%224%22%7D%2C%7B%22dbField%22%3A%22gender%22%2C%22tasuField%22%3A%227%22%7D%2C%7B%22dbField%22%3A%22last_name%22%2C%22tasuField%22%3A%223%22%7D%5D&key=%5B%22oms_number%22%2C%22gender%22%2C%22last_name%22%5D&file=55&per_query=100&rows_numall=0&rows_num=0&rows_accepted=0&rows_discarded=0&rows_error=0&processed=0&_=1395061224112
+HTTP_REFERER=http://mis.my/index.php/admin/tasu/view
+---
+2014/03/17 17:11:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\mis.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\mis.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\mis.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\mis.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\mis.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('getonefieldtemp...')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/geto...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/tasu/getonefieldtemplate?id=16&_=1395061313331
+HTTP_REFERER=http://mis.my/index.php/admin/tasu/view
+---
+2014/03/17 18:49:59 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[22021]: Character not in repertoire: 7 ОШИБКА:  неверная последовательность байт для кодировки "UTF8": 0xaf
+ВАЖНО:  неправильный тип клиентского сообщения 76
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. The SQL statement executed was: SELECT a.attname, LOWER(format_type(a.atttypid, a.atttypmod)) AS type, d.adsrc, a.attnotnull, a.atthasdef,
+	pg_catalog.col_description(a.attrelid, a.attnum) AS comment
+FROM pg_attribute a LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+WHERE a.attnum > 0 AND NOT a.attisdropped
+	AND a.attrelid = (SELECT oid FROM pg_catalog.pg_class WHERE relname=:table
+		AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = :schema))
+ORDER BY a.attnum.
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (72)
+in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (9)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/03/17 18:49:59 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[22021]: Character not in repertoire: 7 ОШИБКА:  неверная последовательность байт для кодировки "UTF8": 0xaf
+ВАЖНО:  неправильный тип клиентского сообщения 76
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. The SQL statement executed was: SELECT a.attname, LOWER(format_type(a.atttypid, a.atttypmod)) AS type, d.adsrc, a.attnotnull, a.atthasdef,
+	pg_catalog.col_description(a.attrelid, a.attnum) AS comment
+FROM pg_attribute a LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+WHERE a.attnum > 0 AND NOT a.attisdropped
+	AND a.attrelid = (SELECT oid FROM pg_catalog.pg_class WHERE relname=:table
+		AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = :schema))
+ORDER BY a.attnum' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\schema\pgsql\CPgsqlSchema.php(179): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\schema\pgsql\CPgsqlSchema.php(111): CPgsqlSchema->findColumns(Object(CPgsqlTableSchema))
+#3 Z:\home\mis.my\yii\db\schema\CDbSchema.php(103): CPgsqlSchema->loadTable('mis.shedule_res...')
+#4 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(2361): CDbSchema->getTable('mis.shedule_res...')
+#5 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(SheduleRest))
+#6 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(658): CActiveRecord->getMetaData()
+#7 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1350): CActiveRecord->getTableSchema()
+#8 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#9 Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php(72): CActiveRecord->findAll('day = :day', Array)
+#10 Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php(9): DoctorsController->checkFilters()
+#11 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
+#12 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#13 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#14 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#15 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#16 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#17 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#18 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#19 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
+#20 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/docto...')
+#21 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#22 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#23 {main}
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]},{%22field%22:%22greeting_date%22,%22op%22:%22eq%22,%22data%22:%222014-3-17%22}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&_=1395067785289
+HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientsteptwo/?cardid=1/14
+---
+2014/03/17 18:55:22 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'The system is unable to find the requested action "index".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/shedule/
+HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=1/14&date=2014-3-18&rowid=471
+---

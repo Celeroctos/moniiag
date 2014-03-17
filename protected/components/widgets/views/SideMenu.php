@@ -64,7 +64,9 @@
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuTasuOut')) { ?>
                 <li <?php echo ($controller == 'tasu' && $module == 'admin' && $action == 'view') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/3.2.jpg" width="32" height="32" alt="" />Загрузка из ТАСУ', array('/admin/tasu/view')) ?>
+                    <?php echo CHtml::link('<img src="/images/icons/3.2.jpg" width="32" height="32" alt="" />Загрузка из ТАСУ', array('/admin/tasu/view'))
+                  //  echo CHtml::link('<img src="/images/icons/3.2.jpg" width="32" height="32" alt="" />Загрузка из ТАСУ', array('/admin/tasu2/view'))
+                    ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuReport')) { ?>
