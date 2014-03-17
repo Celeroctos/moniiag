@@ -129,13 +129,17 @@ class PatientController extends Controller {
 
         // Теперь смотрим все то, что находится в категории. И тоже клонируем, причём рекурсивно: там могут быть вложенные категории
         $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $keyParts[2], 'like');
+        $historyTransform = array();
+        $historyTransformToId = array();
+        $dependencesAnswer = array();
+
         foreach($elementsInCategorie as $element) {
-            $pathParts2 = explode('.', $element['path']);
-            $pathParts2[count($pathParts) - 1] =  $savedCategoriePosition;
             // Если путь полностью совпадает, это категория, которая уже добавлена, её надо пропустить
-            if(implode('.', $pathParts2) == $medcardCategorieClone->path) {
+            if($keyParts[2] == $element['path']) {
                 continue;
             }
+            $pathParts2 = explode('.', $element['path']);
+            $pathParts2[count($pathParts) - 1] =  $savedCategoriePosition;
 
             $historyCategorieElementNext = new MedcardElementForPatient();
             $historyCategorieElementNext->history_id = 1;
@@ -144,6 +148,7 @@ class PatientController extends Controller {
             $historyCategorieElementNext->path = implode('.', $pathParts2);
             $historyCategorieElementNext->is_wrapped = $element['is_wrapped'];
             $historyCategorieElementNext->categorie_id = $element['categorie_id'];
+            $historyCategorieElementNext->categorie_name = $element['categorie_name'];
             $historyCategorieElementNext->element_id = $element['element_id'];
             $historyCategorieElementNext->label_before = $element['label_before'];
             $historyCategorieElementNext->label_after = $element['label_after'];
@@ -152,15 +157,100 @@ class PatientController extends Controller {
             $historyCategorieElementNext->type = $element['type'];
             $historyCategorieElementNext->guide_id = $element['guide_id'];
 			$historyCategorieElementNext->allow_add = $element['allow_add'];
+            $historyCategorieElementNext->real_categorie_id = $element['real_categorie_id'];
+            $historyCategorieElementNext->config = $element['config'];
+
             if(!$historyCategorieElementNext->save()) {
                 exit('Не могу отклонировать элемент '.$element['path']);
+            }
+
+            // Теперь смотрим на зависимости клонированного элемента
+            // Зависимости могут быть инициатор + зависимый, просто зависимый от стороннего
+            $dependences = MedcardElementPatientDependence::model()->findAll('
+                medcard_id = :medcard_id
+                AND greeting_id = :greeting_id
+                AND element_path = :element_path
+            ', array(
+               ':medcard_id' => $keyParts[0],
+               ':greeting_id' => $keyParts[1],
+               ':element_path' => $element['path']
+            ));
+
+            $historyTransform[$element['path']] =  $historyCategorieElementNext->path; // Сохраняем для апдейта зависимостей контрола
+            $historyTransformToId[$historyCategorieElementNext->path] = $element['element_id']; // Для выдачи ответа айдишника инициатора зависимости
+            foreach($dependences as $dependence) {
+                $newDep = new MedcardElementPatientDependence();
+                $newDep->greeting_id = $dependence['greeting_id'];
+                $newDep->medcard_id = $dependence['medcard_id'];
+                $newDep->element_path = $historyCategorieElementNext->path;
+                $newDep->action = $dependence['action'];
+                $newDep->value = $dependence['value'];
+                $newDep->element_id = $dependence['element_id'];
+                // А вот эти поля ставим пока в прежнем состоянии. Как только будем выяснять зависимые элементы (см. ниже), нужно будет прогнать процедуру апдейта
+                $newDep->dep_element_id = $dependence['dep_element_id'];
+                $newDep->dep_element_path = $dependence['dep_element_path'];
+                if(!$newDep->save()) {
+                    exit('Не могу сохранить клонированную зависимость (элемент-инициатор)!');
+                }
+            }
+        }
+
+
+        foreach($historyTransform as $key => $transform) {
+            $elements = MedcardElementPatientDependence::model()->findAll(
+                'medcard_id = :medcard_id
+                AND greeting_id = :greeting_id
+                AND element_path = :element_path',
+                array(
+                    ':medcard_id' => $keyParts[0],
+                    ':greeting_id' => $keyParts[1],
+                    ':element_path' => $transform
+                )
+            );
+
+            if(count($elements) > 0) {
+                $dependencesAnswer[] = array(
+                    'path' => $transform,
+                    'elementId' => $historyTransformToId[$transform],
+                    'dependences' => array(
+                        'list' => array()
+                    )
+                );
+            }
+
+            $list = array();
+            foreach($elements as $element) {
+                MedcardElementPatientDependence::model()->updateAll(array(
+                   'dep_element_path' => $historyTransform[$element['dep_element_path']]
+                ), 'medcard_id = :medcard_id
+                    AND greeting_id = :greeting_id
+                    AND element_path = :element_path
+                    AND dep_element_path = :dep_element_path',
+                    array(
+                        ':medcard_id' => $keyParts[0],
+                        ':greeting_id' => $keyParts[1],
+                        ':element_path' => $element['element_path'],
+                        ':dep_element_path' => $element['dep_element_path']
+                    )
+                );
+                $list[] = array(
+                  'elementId' => $element['dep_element_id'],
+                  'action' => $element['action'],
+                  'value' => $element['value']
+                );
+            }
+
+            if(count($elements) > 0) {
+                $dependencesAnswer[count($dependencesAnswer) - 1]['dependences']['list'] = $list;
             }
         }
 
         echo CJSON::encode(array(
                  'success' => true,
                  'data' => array(
-                    'pk_key' =>  $keyParts[0].'|'.$keyParts[1].'|'.$medcardCategorieClone->path.'|'.$keyParts[3].'|'.$keyParts[4]
+                    'pk_key' =>  $keyParts[0].'|'.$keyParts[1].'|'.$medcardCategorieClone->path.'|'.$keyParts[3].'|'.$keyParts[4],
+                    'dependences' => $dependencesAnswer, // Массив выстроенных зависимостей (для того, чтобы можно было отобразить зависимости "на лету" без перезагрузки страницы
+                    'repath' =>  $historyTransform // Массив для реплейса путей
                  )
               )
           );
@@ -187,6 +277,18 @@ class PatientController extends Controller {
                     'history_id' => $element['history_id']
                 )
             )->delete();
+
+            MedcardElementPatientDependence::model()->deleteAll(
+                'medcard_id = :medcard_id
+                 AND greeting_id = :greeting_id
+                 AND (element_path = :element_path
+                      OR dep_element_path = :element_path)',
+                array(
+                    ':element_path' => $element['path'],
+                    ':greeting_id' => $element['greeting_id'],
+                    ':medcard_id' => $element['medcard_id'],
+                )
+            );
         }
         echo CJSON::encode(array('success' => true,
                                  'data' => array()));

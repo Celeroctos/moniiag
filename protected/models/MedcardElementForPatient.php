@@ -4,7 +4,8 @@ class MedcardElementForPatient extends MisActiveRecord {
         'Текстовое поле',
         'Текстовая область',
         'Выпадающий список',
-        'Выпадающий список с множественным выбором'
+        'Выпадающий список с множественным выбором',
+        'Редактируемая таблица'
     );
 
     public static function model($className=__CLASS__)

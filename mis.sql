@@ -1198,7 +1198,10 @@ COMMENT ON COLUMN insurances.name IS 'Название компании';
 CREATE TABLE medcard_categories (
     id integer NOT NULL,
     name character varying(150),
-    parent_id integer
+    parent_id integer,
+    "position" integer,
+    is_dynamic integer,
+    path character varying(150)
 );
 
 
@@ -1223,6 +1226,27 @@ COMMENT ON COLUMN medcard_categories.name IS 'Название категори�
 --
 
 COMMENT ON COLUMN medcard_categories.parent_id IS 'Категория-родитель';
+
+
+--
+-- Name: COLUMN medcard_categories."position"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_categories."position" IS 'Позиция в других категориях (среди категорий и элементов)';
+
+
+--
+-- Name: COLUMN medcard_categories.is_dynamic; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_categories.is_dynamic IS 'Возможность размножения';
+
+
+--
+-- Name: COLUMN medcard_categories.path; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_categories.path IS '(Math. path)';
 
 
 --
@@ -1256,7 +1280,13 @@ CREATE TABLE medcard_elements (
     categorie_id integer,
     label character varying(150),
     guide_id integer,
-    allow_add integer DEFAULT 0
+    allow_add integer DEFAULT 0,
+    label_after character varying(200),
+    size integer,
+    is_wrapped integer,
+    path character varying(150),
+    "position" integer,
+    config text
 );
 
 
@@ -1287,7 +1317,7 @@ COMMENT ON COLUMN medcard_elements.categorie_id IS 'Тип категории';
 -- Name: COLUMN medcard_elements.label; Type: COMMENT; Schema: mis; Owner: moniiag
 --
 
-COMMENT ON COLUMN medcard_elements.label IS 'Метка для контрола';
+COMMENT ON COLUMN medcard_elements.label IS 'Метка для контрола до поля';
 
 
 --
@@ -1302,6 +1332,119 @@ COMMENT ON COLUMN medcard_elements.guide_id IS 'Справочник';
 --
 
 COMMENT ON COLUMN medcard_elements.allow_add IS 'Можно ли добавлять новые значения или нет (комбо)';
+
+
+--
+-- Name: COLUMN medcard_elements.label_after; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.label_after IS 'Метка после поля';
+
+
+--
+-- Name: COLUMN medcard_elements.size; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.size IS 'Размер поля';
+
+
+--
+-- Name: COLUMN medcard_elements.is_wrapped; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.is_wrapped IS 'Перенос строки (да/нет)';
+
+
+--
+-- Name: COLUMN medcard_elements.path; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.path IS '(Путь math. path)';
+
+
+--
+-- Name: COLUMN medcard_elements."position"; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements."position" IS 'Позиция элемента в категории (приоритет)';
+
+
+--
+-- Name: COLUMN medcard_elements.config; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements.config IS 'Конфигурация элемента. Используется, например, в таблицах';
+
+
+--
+-- Name: medcard_elements_dependences; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_elements_dependences (
+    id integer NOT NULL,
+    element_id integer,
+    value_id integer,
+    dep_element_id integer,
+    action integer
+);
+
+
+ALTER TABLE mis.medcard_elements_dependences OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_elements_dependences; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_elements_dependences IS 'Зависимости показов элементов медкарты от значений';
+
+
+--
+-- Name: COLUMN medcard_elements_dependences.element_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_dependences.element_id IS 'ID элемента';
+
+
+--
+-- Name: COLUMN medcard_elements_dependences.value_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_dependences.value_id IS 'ID значения элемента';
+
+
+--
+-- Name: COLUMN medcard_elements_dependences.dep_element_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_dependences.dep_element_id IS 'ID зависимого элемента';
+
+
+--
+-- Name: COLUMN medcard_elements_dependences.action; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_dependences.action IS 'Действие (0 - показать, 1 - скрыть)';
+
+
+--
+-- Name: medcard_elements_dependences_id_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_elements_dependences_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_elements_dependences_id_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_elements_dependences_id_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_elements_dependences_id_seq OWNED BY medcard_elements_dependences.id;
 
 
 --
@@ -1335,7 +1478,22 @@ CREATE TABLE medcard_elements_patient (
     value text,
     history_id integer NOT NULL,
     change_date timestamp without time zone,
-    greeting_id integer
+    greeting_id integer NOT NULL,
+    categorie_name character varying(200),
+    path character varying(100) NOT NULL,
+    label_before character varying(150),
+    label_after character varying(150),
+    size integer,
+    is_wrapped integer,
+    categorie_id integer NOT NULL,
+    type integer NOT NULL,
+    template_id integer,
+    template_name character varying(150),
+    guide_id integer,
+    is_dynamic integer,
+    real_categorie_id integer,
+    allow_add integer,
+    config text
 );
 
 
@@ -1388,6 +1546,213 @@ COMMENT ON COLUMN medcard_elements_patient.change_date IS 'Дата измене
 --
 
 COMMENT ON COLUMN medcard_elements_patient.greeting_id IS 'ID приёма, во время которого было изменено поле';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.categorie_name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.categorie_name IS 'Название категории (история)';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.path; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.path IS 'Путь (mathr. path)';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.label_before; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.label_before IS 'Метка для контрола до поля';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.label_after; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.label_after IS 'Метка после контрола';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.size; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.size IS 'Размер поля';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.is_wrapped; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.is_wrapped IS 'Перенос строки (да/нет)';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.categorie_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.categorie_id IS 'Ключ категории (если есть)';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.type; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.type IS 'Тип контрола (-1, если категория)';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.template_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.template_id IS 'ID шаблона';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.template_name; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.template_name IS 'Название шаблона';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.guide_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.guide_id IS 'ID справочника (комбо)';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.is_dynamic; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.is_dynamic IS 'Динамичность элемента';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.real_categorie_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.real_categorie_id IS 'Реальный ID категории';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.allow_add; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.allow_add IS 'Можно ли добавлять новые значения или нет';
+
+
+--
+-- Name: COLUMN medcard_elements_patient.config; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient.config IS 'Запомненная конфигурация элемента';
+
+
+--
+-- Name: medcard_elements_patient_dependences; Type: TABLE; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+CREATE TABLE medcard_elements_patient_dependences (
+    element_path character varying(150),
+    dep_element_path character varying(150),
+    action integer,
+    medcard_id character varying(50),
+    greeting_id integer,
+    value text,
+    dep_element_id integer,
+    element_id integer
+);
+
+
+ALTER TABLE mis.medcard_elements_patient_dependences OWNER TO moniiag;
+
+--
+-- Name: TABLE medcard_elements_patient_dependences; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON TABLE medcard_elements_patient_dependences IS 'Хистори для выяснения зависимостей элементов';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.element_path; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.element_path IS 'Путь элемента, от которого зависят';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.dep_element_path; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.dep_element_path IS 'Пусть элемента, который зависит';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.action; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.action IS 'Действие';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.medcard_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.medcard_id IS 'ID медкарты';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.greeting_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.greeting_id IS 'ID приёма';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.value; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.value IS 'Значение, при котором срабатывает зависимость';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.dep_element_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.dep_element_id IS 'ID зависимого элемента';
+
+
+--
+-- Name: COLUMN medcard_elements_patient_dependences.element_id; Type: COMMENT; Schema: mis; Owner: moniiag
+--
+
+COMMENT ON COLUMN medcard_elements_patient_dependences.element_id IS 'ID элемента-инициатора';
+
+
+--
+-- Name: medcard_elements_patient_type_seq; Type: SEQUENCE; Schema: mis; Owner: moniiag
+--
+
+CREATE SEQUENCE medcard_elements_patient_type_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE mis.medcard_elements_patient_type_seq OWNER TO moniiag;
+
+--
+-- Name: medcard_elements_patient_type_seq; Type: SEQUENCE OWNED BY; Schema: mis; Owner: moniiag
+--
+
+ALTER SEQUENCE medcard_elements_patient_type_seq OWNED BY medcard_elements_patient.type;
 
 
 --
@@ -3442,6 +3807,20 @@ ALTER TABLE ONLY medcard_elements ALTER COLUMN id SET DEFAULT nextval('medcard_e
 -- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
 --
 
+ALTER TABLE ONLY medcard_elements_dependences ALTER COLUMN id SET DEFAULT nextval('medcard_elements_dependences_id_seq'::regclass);
+
+
+--
+-- Name: type; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
+ALTER TABLE ONLY medcard_elements_patient ALTER COLUMN type SET DEFAULT nextval('medcard_elements_patient_type_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: mis; Owner: moniiag
+--
+
 ALTER TABLE ONLY medcard_guide_values ALTER COLUMN id SET DEFAULT nextval('medcard_guide_values_id_seq'::regclass);
 
 
@@ -3698,6 +4077,8 @@ COPY cabinets (id, enterprise_id, ward_id, cab_number, description) FROM stdin;
 7	8	5	99	Кабинет акушера-гинеколога
 8	1	4	15	Процедурный  кабинет
 9	8	5	201	Кабинет приема 
+10	1	3	23	Кабинет гинеколога
+11	1	3	23	
 \.
 
 
@@ -3705,7 +4086,7 @@ COPY cabinets (id, enterprise_id, ward_id, cab_number, description) FROM stdin;
 -- Name: cabinets_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('cabinets_id_seq', 9, true);
+SELECT pg_catalog.setval('cabinets_id_seq', 11, true);
 
 
 --
@@ -3729,7 +4110,7 @@ COPY contacts (id, type, contact_value, employee_id) FROM stdin;
 -- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('contacts_id_seq', 21, true);
+SELECT pg_catalog.setval('contacts_id_seq', 23, true);
 
 
 --
@@ -3777,6 +4158,8 @@ COPY diagnosis_per_patient (mkb10_id, greeting_id, type) FROM stdin;
 3388	408	1
 12010	412	0
 12220	412	1
+5132	417	0
+7955	417	1
 \.
 
 
@@ -3944,7 +4327,6 @@ COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted,
 269	18	13/14	2014-01-31	0	13:40:00	1	05:31:00	\N	\N	\N	\N
 288	18	13/14	2014-01-31	0	15:40:00	1	05:31:00	\N	\N	\N	\N
 294	12	5/13	2014-02-25	0	09:35:00	\N	\N	\N	\N	\N	\N
-296	15	22/14	2014-02-19	0	15:30:00	\N	\N	\N	\N	\N	\N
 302	15	\N	2014-02-19	0	16:00:00	\N	\N	\N	\N	18	\N
 304	19	\N	2014-02-05	0	08:30:00	\N	\N	\N	\N	20	\N
 305	19	\N	2014-02-06	0	11:00:00	\N	\N	\N	\N	21	\N
@@ -3992,8 +4374,6 @@ COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted,
 375	24	\N	2014-02-11	0	14:00:00	\N	\N	\N	\N	72	366
 376	24	\N	2014-02-20	0	10:00:00	\N	\N	\N	\N	73	368
 165	15	3/14	2014-02-03	1	15:30:00	1	11:12:00	11:12:00	Что-то из примечаний	\N	\N
-382	18	22/14	2014-02-18	0	11:35:00	\N	\N	\N	\N	\N	335
-383	18	22/14	2014-02-18	0	10:35:00	\N	\N	\N	\N	\N	335
 384	18	22/14	2014-02-18	0	13:35:00	\N	\N	\N	\N	\N	335
 378	18	13/14	2014-02-12	1	14:05:00	1	03:12:00	03:12:00	\N	\N	336
 386	25	28/14	2014-02-18	0	10:00:00	\N	\N	\N	\N	\N	373
@@ -4014,26 +4394,77 @@ COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted,
 400	24	22/14	2014-02-26	0	12:00:00	\N	\N	\N	\N	\N	367
 401	25	22/14	2014-02-18	0	10:30:00	\N	\N	\N	\N	\N	373
 402	25	22/14	2014-02-18	0	11:30:00	\N	\N	\N	\N	\N	373
-308	18	13/14	2014-02-12	0	15:30:00	\N	\N	\N	\N	\N	\N
 334	20	8/13	2014-02-12	0	12:39:00	\N	\N	\N	\N	\N	351
 316	15	2/14	2014-02-07	0	15:00:00	1	05:05:00	\N	\N	\N	273
 348	24	15/14	2014-02-18	0	09:30:00	\N	\N	\N	\N	\N	366
 347	24	15/14	2014-02-18	0	12:00:00	\N	\N	\N	\N	\N	366
+296	15	22/14	2014-02-19	0	15:30:00	1	03:18:00	\N	\N	\N	\N
 372	24	28/14	2014-02-12	1	11:00:00	1	03:13:00	03:13:00	проверка	\N	367
+308	18	13/14	2014-02-12	0	15:30:00	1	04:28:00	\N	\N	\N	\N
+382	18	22/14	2014-02-18	0	11:35:00	1	04:18:00	\N	\N	\N	335
 403	25	22/14	2014-02-18	0	07:00:00	\N	\N	\N	\N	\N	373
 404	25	22/14	2014-02-18	0	09:00:00	\N	\N	\N	\N	\N	373
 391	18	13/14	2014-02-12	1	17:05:00	1	12:13:00	12:13:00	\N	\N	336
 381	18	22/14	2014-02-17	1	11:05:00	1	12:13:00	12:13:00	\N	\N	334
 405	25	5/14	2014-02-18	0	08:00:00	\N	\N	\N	\N	\N	373
 407	25	\N	2014-02-18	0	08:30:00	\N	\N	\N	\N	75	373
+457	18	15/14	2014-03-14	1	13:35:00	1	01:14:00	01:14:00	\N	\N	338
 409	29	15/14	2014-02-13	0	16:00:00	\N	\N	\N	\N	\N	382
 408	29	15/14	2014-02-13	1	15:00:00	1	01:13:00	01:13:00	тест тест тест	\N	382
 410	24	28/14	2014-02-20	0	11:00:00	\N	\N	\N	\N	\N	368
 411	24	30/14	2014-02-20	0	10:30:00	\N	\N	\N	\N	\N	368
 413	23	9/14	2014-02-17	0	14:00:00	\N	\N	\N	\N	\N	358
-415	23	2/14	2014-02-17	0	15:00:00	\N	\N	\N	\N	\N	358
+452	18	29/14	2014-03-06	1	16:05:00	1	02:14:00	02:14:00	\N	\N	337
 412	23	9/14	2014-02-17	1	13:30:00	1	11:17:00	11:17:00	\N	\N	358
 414	23	2/14	2014-02-17	1	14:30:00	1	11:17:00	11:17:00	\N	\N	358
+458	18	18/14	2014-03-14	1	14:05:00	1	02:14:00	02:14:00	\N	\N	338
+415	23	2/14	2014-02-17	1	15:00:00	1	03:17:00	03:17:00	\N	\N	358
+416	23	9/14	2014-02-21	0	15:00:00	\N	\N	\N	\N	\N	362
+459	18	21/14	2014-03-14	0	14:35:00	\N	\N	\N	\N	\N	338
+417	23	9/14	2014-02-24	1	16:30:00	1	03:24:00	03:24:00	\N	\N	358
+420	15	9/14	2014-02-26	0	16:30:00	\N	\N	\N	\N	\N	272
+421	15	1/13	2014-02-26	0	15:30:00	\N	\N	\N	\N	\N	272
+422	15	23/14	2015-03-18	0	14:30:00	\N	\N	\N	\N	\N	272
+423	15	\N	2014-02-28	0	15:30:00	\N	\N	\N	\N	78	273
+424	15	\N	2014-02-28	0	16:00:00	\N	\N	\N	\N	79	273
+425	15	\N	2014-02-28	0	15:00:00	\N	\N	\N	\N	80	273
+419	15	8/13	2014-02-27	0	14:30:00	1	11:27:00	\N	\N	\N	263
+433	15	1/13	2014-02-27	0	16:00:00	\N	\N	\N	\N	\N	263
+434	15	4/13	2014-02-27	0	16:30:00	\N	\N	\N	\N	\N	263
+435	15	27/14	2014-02-27	0	15:30:00	\N	\N	\N	\N	\N	263
+436	23	9/14	2014-02-28	0	16:00:00	\N	\N	\N	\N	\N	362
+383	18	22/14	2014-02-18	1	10:35:00	1	04:18:00	03:28:00	\N	\N	335
+437	18	22/14	2014-03-04	0	12:05:00	\N	\N	\N	\N	\N	335
+440	23	32/14	2014-03-03	0	13:30:00	\N	\N	\N	\N	\N	358
+441	23	32/14	2014-03-03	0	14:00:00	\N	\N	\N	\N	\N	358
+446	23	32/14	2014-03-03	0	15:00:00	\N	\N	\N	\N	\N	358
+439	18	5/13	2014-03-03	1	10:35:00	1	11:03:00	04:03:00	\N	\N	334
+447	18	15/14	2014-03-03	0	17:05:00	\N	\N	\N	\N	\N	334
+448	23	33/14	2014-03-03	0	18:00:00	\N	\N	\N	\N	\N	358
+449	23	33/14	2014-03-04	0	14:00:00	\N	\N	\N	\N	\N	359
+450	23	33/14	2014-03-04	0	15:00:00	\N	\N	\N	\N	\N	359
+451	18	\N	2014-03-04	0	14:35:00	\N	\N	\N	\N	83	335
+438	18	13/14	2014-03-04	0	12:35:00	1	01:04:00	\N	\N	\N	335
+442	15	2/14	2014-03-19	0	15:30:00	1	02:04:00	\N	\N	\N	272
+460	18	34/14	2014-03-14	1	15:05:00	1	02:14:00	06:14:00	\N	\N	338
+443	15	2/14	2014-03-03	0	15:30:00	1	12:03:00	04:05:00	\N	\N	261
+453	15	2/14	2014-03-19	0	16:00:00	\N	\N	\N	\N	\N	272
+454	15	2/14	2014-03-07	0	15:30:00	\N	\N	\N	\N	\N	273
+430	15	13/14	2014-02-27	0	17:30:00	1	03:12:00	\N	\N	\N	263
+456	15	32/14	2014-03-13	0	14:00:00	1	05:12:00	\N	\N	\N	263
+432	15	13/14	2014-02-27	0	14:00:00	1	12:14:00	\N	\N	\N	263
+431	15	13/14	2014-02-27	0	18:00:00	1	12:14:00	\N	\N	\N	263
+455	18	15/14	2014-03-11	1	12:05:00	1	05:12:00	01:14:00	\N	\N	335
+462	18	27/14	2014-03-17	0	12:05:00	\N	\N	\N	\N	\N	334
+463	18	27/14	2014-03-17	0	14:35:00	\N	\N	\N	\N	\N	334
+465	18	34/14	2014-03-17	0	11:05:00	1	09:14:00	\N	\N	\N	334
+464	18	34/14	2014-03-17	0	11:35:00	1	09:14:00	\N	\N	\N	334
+466	18	34/14	2014-03-18	0	10:35:00	1	09:14:00	\N	\N	\N	335
+467	18	34/14	2014-03-18	0	13:35:00	1	09:14:00	\N	\N	\N	335
+461	18	5/13	2014-03-14	1	18:35:00	1	06:14:00	10:14:00	\N	\N	338
+469	18	5/13	2014-03-17	0	08:35:00	1	11:14:00	\N	\N	\N	334
+468	18	34/14	2014-03-18	1	16:35:00	1	09:14:00	11:15:00	\N	\N	335
+470	18	13/14	2014-03-18	0	10:05:00	\N	\N	\N	\N	\N	335
 \.
 
 
@@ -4041,7 +4472,7 @@ COPY doctor_shedule_by_day (id, doctor_id, medcard_id, patient_day, is_accepted,
 -- Name: doctor_shedule_by_day_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctor_shedule_by_day_id_seq', 415, true);
+SELECT pg_catalog.setval('doctor_shedule_by_day_id_seq', 470, true);
 
 
 --
@@ -4179,12 +4610,13 @@ SELECT pg_catalog.setval('doctor_shedule_setted_be_id_seq', 71, true);
 --
 
 COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, degree_id, titul_id, date_begin, date_end, ward_code) FROM stdin;
+15	Инна	Леонидовна	Белова	11	3451	2	1	2013-11-01	2013-11-05	4
+30	Юлия	Вадимовна	Маркина	17		-1	-1	2014-02-01	\N	5
+27	Мария	Владимировна	Иванова	7		-1	-1	2014-02-13	\N	1
 8	Тестов	Тестик	Тестов	6		2	4	2013-10-01	2013-10-31	4
 14	Иван	Иванович	Иванов	4		1	1	2013-11-06	2013-11-14	1
 17	1	2	3	5	4	-1	-1	2013-11-05	2013-11-14	1
-15	Инна	Леонидовна	Белова	11	3451	2	1	2013-11-01	2013-11-05	4
 16	Семен	Семенович	Семёнов	11	12233	-1	-1	2013-11-06	2015-03-22	1
-18	Ольга	Вадимовна	Бондарева	11	7564	-1	-1	2013-12-01	2014-06-29	5
 12	Сидор	Сидорович	Сидоров	9		1	1	2013-11-12	\N	2
 19	Георгий	Андреевич	Крупнов	11	7645	-1	-1	2012-09-27	2015-11-01	5
 20	Мария	Степановна	Егорова	8	443	1	1	2011-02-03	2016-07-03	1
@@ -4193,10 +4625,10 @@ COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, deg
 23	Груша	Тимофеевна	Петрова	14		-1	-1	2014-02-11	2015-01-06	5
 24	мария	алексеевна	золотухина	15	857454	2	4	1984-02-10	2024-02-02	5
 26	Дмитрий	Дмитриевич	Дмитриев	15	315235	2	4	2009-02-10	2025-02-12	5
-27	s	s	s	7		-1	-1	2014-02-13	\N	1
 28	Игорь	Иванович	Занозов	14	87576	1	2	2009-02-11	\N	5
 25	Сергей	Сергеевич	Сергеев	14	324215	1	3	2012-02-11	\N	5
 29	Георгий	Иванов	Георгиев	14	23423	2	4	2012-02-13	\N	5
+18	Ольга	Вадимовна	Бондарева	11	7564	-1	-1	2013-12-01	2014-06-29	5
 \.
 
 
@@ -4204,7 +4636,7 @@ COPY doctors (id, first_name, middle_name, last_name, post_id, tabel_number, deg
 -- Name: doctors_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('doctors_id_seq', 29, true);
+SELECT pg_catalog.setval('doctors_id_seq', 30, true);
 
 
 --
@@ -4339,18 +4771,41 @@ COPY insurances (id, name) FROM stdin;
 -- Data for Name: medcard_categories; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY medcard_categories (id, name, parent_id) FROM stdin;
-2	Анамнез	\N
-3	Объективно	\N
-4	Жалобы	\N
-5	I триместр	\N
-6	II триместр	\N
-7	||| триместр	\N
-11	Диагноз	-1
-12	Беременности	2
-13	Беременность	12
-15	Исход беременности	13
-17	Ещё одна категория	-1
+COPY medcard_categories (id, name, parent_id, "position", is_dynamic, path) FROM stdin;
+12	Беременности	2	18	0	1.18
+13	Беременность	12	7	1	1.18.7
+25	Жалобы(гинекологический прием)	-1	4	0	4
+26	Осмотр акушера-гинеколога	-1	2	0	2
+5	I триместр	26	6	0	2.6
+23	Консультации специалистов	5	10	0	2.6.10
+24	ИППП:	5	11	0	2.6.11
+6	II триместр	26	7	0	2.7
+7	III триместр	26	8	0	2.8
+21	Объективно (беременность) :	26	9	0	2.9
+22	Влагалищное исследование:беременной	26	10	0	2.10
+28	Осмотр эндокринолога	-1	6	0	6
+27	Осмотр  консультанта по патологии бронхо-легочной системы 	-1	5	0	5
+29	Объективно (гинекология)	-1	7	0	7
+30	Влагалищные исследования(гинекология)	-1	8	0	8
+31	Осмотр при помощи зеркал:	-1	10	0	10
+32	При бимануальном исследовании:	-1	11	0	11
+20	Результаты обследований	-1	3	0	3
+33	Гормоны крови	20	1	1	3.1
+34	Гормоны щитовидной железы	20	2	1	3.2
+35	УЗИ малого таза	20	3	1	3.3
+43	Мазок на флору	20	12	1	3.12
+42	ПГТТ с 75 г глюкозы	20	11	1	3.11
+41	Биохимия крови	20	10	1	3.10
+40	Мутации генов гемостаза	20	9	1	3.9
+39	АТ к ХГЧ	20	8	1	3.8
+38	АТ к фосфолипидам	20	7	1	3.7
+37	Гемостазиограмма	20	6	1	3.6
+44	Клинический анализ крови	20	5	1	3.5
+45	Мазок на ИППП (ПЦР)	20	13	1	3.13
+46	Мазок на цитологию	20	14	1	3.14
+47	Кровь на TORCH	20	15	1	3.15
+48	Спермограмма мужа	20	16	1	3.16
+2	Анамнез	-1	1	0	1
 \.
 
 
@@ -4358,167 +4813,800 @@ COPY medcard_categories (id, name, parent_id) FROM stdin;
 -- Name: medcard_categories_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_categories_id_seq', 17, true);
+SELECT pg_catalog.setval('medcard_categories_id_seq', 48, true);
 
 
 --
 -- Data for Name: medcard_elements; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY medcard_elements (id, type, categorie_id, label, guide_id, allow_add) FROM stdin;
-14	0	2	Начало половой жизни с	\N	0
-15	0	2	Возраст	\N	0
-16	0	2	Рост	\N	0
-17	0	2	Вес исходный	\N	0
-18	0	2	В настоящее время	\N	0
-19	2	2	Менархе с 	9	0
-20	1	2	Комментарий	\N	0
-21	0	2	Брак по счету	\N	0
-22	2	2	Семейное положение	11	0
-23	0	2	Брак по счету	\N	0
-24	0	2	Муж	\N	0
-25	1	2	Заболевания у мужа	\N	0
-26	2	2	Внебрачные дети	10	0
-28	0	12	Аборты	\N	0
-29	0	12	Самопроизвольные выкидыши	\N	0
-27	0	12	Роды	\N	0
-30	0	12	Неразвивающиеся беременности	\N	0
-31	2	12	Прерывание	12	1
-32	0	13	№	\N	0
-33	0	13	в	\N	0
-34	2	13	Наступила	14	0
+COPY medcard_elements (id, type, categorie_id, label, guide_id, allow_add, label_after, size, is_wrapped, path, "position", config) FROM stdin;
+126	2	2	Менструации	106	1		\N	0	1.6	6	\N
+42	2	20	Данная беременность	14	1		\N	1	3.4	4	\N
+62	1	6	Протекал	\N	0		\N	0	2.7.1	1	\N
+59	2	24	ВПЧ:	38	0		\N	1	2.6.11.6	6	\N
+16	0	2	Рост	\N	0	см	3	\N	1.2	2	\N
+15	0	2	Возраст	\N	0	лет	2	\N	1.1	1	\N
+17	0	2	Вес исходный	\N	0	кг	3	\N	1.3	3	\N
+18	0	2	В настоящее время	\N	0	кг	3	\N	1.4	4	\N
+55	2	24	Микоплазма:	38	1		\N	1	2.6.11.2	2	\N
+33	0	13	в	\N	0	году	4	\N	1.18.7.4	4	\N
+93	3	2	Детские инфекции:	95	0		\N	1	1.19	19	\N
+85	0	12	Всего:	\N	0	из них:	3	1	1.18.1	1	\N
+27	0	12	Роды	\N	0		3	\N	1.18.2	2	\N
+86	2	13	Исход беременности	90	0		\N	1	1.18.7.5	5	\N
+47	2	5	Скриннинг	36	0		\N	1	2.6.7	7	\N
+20	1	2	Дополнительно (анамнез):	\N	0		\N	\N	1.36	36	\N
+50	0	23	ЛОР:	\N	0		\N	1	2.6.10.2	2	\N
+19	2	2	Менархе с 	9	1	лет	2	1	1.5	5	\N
+22	2	2	Семейное положение	11	0		\N	\N	1.12	12	\N
+38	0	2	Аллергические реакции:	\N	0		\N	1	1.34	34	\N
+21	0	2	Брак по счету	\N	0		2	0	1.13	13	\N
+24	0	2	Муж	\N	0	лет	2	\N	1.14	14	\N
+39	0	2	Черепно-мозговые травмы:	\N	0		\N	1	1.33	33	\N
+40	0	2	Гемотрансфузии:	\N	0		\N	1	1.32	32	\N
+25	1	2	Заболевания у мужа:	\N	0		\N	1	1.16	16	\N
+54	2	24	Хламидии:	38	0		\N	1	2.6.11.1	1	\N
+14	0	2	Начало половой жизни с	\N	0	лет	2	1	1.11	11	\N
+64	3	21	Жалобы	17	0		\N	1	2.9.2	2	\N
+65	2	21	Дыхание	18	0		\N	1	2.9.3	3	\N
+66	2	21	Тоны сердца:	19	0		\N	0	2.9.4	4	\N
+67	0	21	АД	\N	0	мм.рт.ст.	20	1	2.9.5	5	\N
+69	0	21	ВДМ:	\N	0	см.	4	0	2.9.7	7	\N
+71	2	21	Матка:	49	0		\N	1	2.9.9	9	\N
+73	2	21	Предлежит:	39	0		\N	1	2.9.11	11	\N
+49	0	23	Терапевт	\N	0		\N	1	2.6.10.1	1	\N
+72	2	21	Положение плода:	29	0		\N	1	2.9.10	10	\N
+79	2	21	Патозность	34	0		\N	0	2.9.20	20	\N
+74	2	21	Шевеление плода	30	0		\N	1	2.9.12	12	\N
+75	2	21	Сердцебиение плода	31	0		\N	0	2.9.13	13	\N
+127	0	2	через	\N	0	дней	4	0	1.7	7	\N
+76	2	21	Выделения из половых путей	27	0		\N	1	2.9.17	17	\N
+77	0	21	Физиологические отправления:	\N	0		\N	1	2.9.18	18	\N
+78	2	21	Отеки:	33	0		\N	1	2.9.19	19	\N
+68	0	21	Пульс	\N	0	уд. в минуту	4	0	2.9.6	6	\N
+56	2	24	Уреаплазма:	38	1		\N	1	2.6.11.3	3	\N
+57	2	24	ВПГ:	38	0		\N	1	2.6.11.4	4	\N
+60	2	24	Другие	38	1		\N	1	2.6.11.7	7	\N
+70	0	21	ОЖ:	\N	0	см.	4	0	2.9.8	8	\N
+51	1	23	Окулист:	\N	0		\N	1	2.6.10.3	3	\N
+52	1	23	Невролог	\N	0		\N	1	2.6.10.4	4	\N
+53	1	23	Эндокринолог:	\N	0		\N	1	2.6.10.5	5	\N
+58	2	24	ЦМВ:	38	1		\N	1	2.6.11.5	5	\N
+48	3	5	Прием препаратов	37	0		\N	1	2.6.8	8	\N
+43	2	5	Угроза прерывания беременности:	35	0		\N	1	2.6.1	1	\N
+44	0	5	В сроке	\N	0	нед.	\N	0	2.6.2	2	\N
+45	0	5	Беременность	\N	0	недель	\N	0	2.6.5	5	\N
+29	0	12	Самопроизвольные выкидыши	\N	0		3	\N	1.18.4	4	\N
+26	2	2	Внебрачные дети	10	0		\N	1	1.17	17	\N
+89	0	13	аборт в сроке	\N	0	недель	3	0	1.18.7.6	6	\N
+41	1	2	Перенесенные операции:	\N	0		\N	1	1.31	31	\N
+46	0	5	УЗИ  I триместра дата	\N	0	:	10	1	2.6.4	4	\N
+63	2	21	Состояние	16	1		\N	1	2.9.1	1	\N
+88	2	13	Осложнения	87	0		\N	0	1.18.7.8	8	\N
+87	2	13	Аборт тип	86	1		\N	0	1.18.7.7	7	\N
+92	2	13	Показания:	91	0		\N	0	1.18.7.11	11	\N
+96	2	13	Роды тип	88	1		\N	0	1.18.7.9	9	\N
+37	3	2	Наследственность:	15	0		\N	1	1.35	35	\N
+95	3	2	Гинекологические заболевания	93	0		\N	1	1.21	21	\N
+91	3	13	Причина	92	0		\N	0	1.18.7.13	13	\N
+90	3	13	Осложнения:	89	0		\N	0	1.18.7.12	12	\N
+28	0	12	Аборты	\N	0		3	0	1.18.3	3	\N
+107	2	2	Лечение ИППП	102	0		\N	0	1.28	28	\N
+32	0	13	№	\N	0		3	\N	1.18.7.1	1	\N
+81	4	2	Хронические заболевания	\N	0		\N	1	1.20	20	{"cols":[],"rows":["Сердечно-сосудистая система:","Желудочно-кишечный тракт:","Мочевыводящая система:","Опорно-двигательная система:","Нервная система:","Орган зрения:","Онкологические заболевания:","Состояние после:"],"numCols":"2","numRows":"8"}
+100	1	2	Гормональная терапия	\N	0		\N	1	1.29	29	\N
+101	2	2	лечение эрозии	96	0		\N	0	1.22	22	\N
+102	2	2	Лечение дисплазии	97	0		\N	0	1.23	23	\N
+104	2	2	Лечение миомы	99	0		\N	0	1.25	25	\N
+117	0	25	Отсутствие беременности в течение :	\N	0	лет	3	1	4.12	12	\N
+105	2	2	Лечение андексита	100	0		\N	0	1.26	26	\N
+106	2	2	Лечение полипов	101	0		\N	0	1.27	27	\N
+108	4	2	Вирусные заболевания	\N	0		\N	1	1.30	30	{"cols":["не обнаружен","ДНК вирус","антитела"],"rows":["Туберкулез","ВИЧ, Leus","Гепатит А","Гепатит В","Гепатит С"],"numCols":"3","numRows":"6"}
+115	3	25	Болевой синдром:	55	0		\N	1	4.10	10	\N
+114	2	25	Изменение веса:	54	0		\N	1	4.6	6	\N
+113	3	25	Симптомы гиперандрогении:	53	0		\N	1	4.5	5	\N
+112	3	25	Межменструальные кровотечения:	52	0		\N	1	4.4	4	\N
+111	3	25	Предменструальный синдром:	51	0		\N	1	4.3	3	\N
+110	3	25	Нарушения менструального цикла:	50	0		\N	1	4.2	2	\N
+103	2	2	Лечение кисты	98	0		\N	0	1.24	24	\N
+97	0	13	в сроке	\N	0	недель	3	0	1.18.7.14	14	\N
+98	0	13	Ребенок: вес	\N	0	грамм, 	5	0	1.18.7.15	15	\N
+99	0	13	Ребенок рост:	\N	0	см. 	3	0	1.18.7.16	16	\N
+30	0	12	Неразвивающиеся беременности	\N	0		3	\N	1.18.5	5	\N
+116	3	25	Интенсивность болей:	63	0		\N	0	4.11	11	\N
+122	3	25	Симптомы гиперактивного мочевого пузыря:	60	0		\N	1	4.18	18	\N
+123	3	25	Истинное недержание мочи при напряжении (стрессовое):	61	0		\N	1	4.19	19	\N
+121	3	25	Симптому урогенитальной атрофии:	59	0		\N	1	4.17	17	\N
+120	3	25	Климактерические нарушения:	58	0		\N	1	4.16	16	\N
+118	2	25	Невынашивание беременности:	56	0		\N	1	4.14	14	\N
+109	3	25	Выделения из половых путей:	27	0		\N	1	4.1	1	\N
+124	0	25	Опущение стенок влагалища:	\N	0		\N	0	4.20	20	\N
+119	2	25	Осложнения после удаления плодного яйца:	57	0		\N	0	4.15	15	\N
+125	0	21	до	\N	0	уд. в минуту	4	0	2.9.14	14	\N
+128	0	2	задержки до 	\N	0		4	0	1.8	8	\N
+34	2	13	Наступила	14	0		\N	\N	1.18.7.2	2	\N
+129	0	2	до	\N	0		20	0	1.9	9	\N
+130	0	2	по	\N	0	дней, 	4	0	1.10	10	\N
+61	0	24	 Если обнаружено	\N	0		\N	0	2.6.11.8	8	\N
+131	2	26	Группа крови	20	1		\N	1	2.1	1	\N
+132	2	26	Антитела	41	0		\N	0	2.2	2	\N
+133	2	26	Групповые антитела	41	0		\N	0	2.3	3	\N
+134	0	26	Данная беременность	\N	0	Протекает:	\N	1	2.4	4	\N
+135	1	5	Стационарное (амбулаторное) лечение	\N	0		\N	0	2.6.3	3	\N
+136	2	6	Угроза прерывания беременности:	35	0		\N	1	2.7.2	2	\N
+137	0	6	В сроке	\N	0	нед.	3	0	2.7.3	3	\N
+139	0	6	УЗИ II триместра дата	\N	0		20	1	2.7.5	5	\N
+145	0	7	Беременность	\N	0	недель	3	0	2.8.5	5	\N
+141	2	7	Угроза прерывания беременности III	35	0		\N	1	2.8.1	1	\N
+142	0	7	в сроке (III)	\N	0	нед.	3	0	2.8.2	2	\N
+138	1	6	Стационарное (амбулаторное) лечение (II)	\N	0		\N	0	2.7.4	4	\N
+143	1	7	Стационарное-амбулаторное лечение (III)	\N	0		\N	1	2.8.3	3	\N
+144	0	7	УЗИ III триместр дата	\N	0		20	1	2.8.4	4	\N
+146	2	7	Предлежание	39	0		\N	1	2.8.6	6	\N
+147	2	7	Положение плода	29	0		\N	0	2.8.7	7	\N
+148	2	7	ФПН	109	0		\N	1	2.8.8	8	\N
+149	2	7	Синдром задержки роста плода (СЗРП):	108	0		\N	0	2.8.9	9	\N
+150	0	7	Признаки диабетической фетопатии: Толщина ПЖК до:	\N	0		5	1	2.8.10	10	\N
+151	2	7	Размеры печени:	67	1		\N	1	2.8.12	12	\N
+152	2	7	Макросомия плода:	35	1		\N	1	2.8.13	13	\N
+153	2	7	Количество околоплодных вод:	44	1		\N	1	2.8.14	14	\N
+154	0	7	Предполагаемая масса плода:	\N	0		5	1	2.8.15	15	\N
+195	2	30	Наружные половые органы развиты:	81	1		\N	1	8.1	1	\N
+155	2	22	Оволосение:	21	0		\N	1	2.10.2	2	\N
+156	3	22	Осмотр шейки матки:	23	1		\N	1	2.10.3	3	\N
+157	2	22	Шейка матки:	42	1		\N	1	2.10.5	5	\N
+158	0	22	Длиной 	\N	0		0	0	2.10.6	6	\N
+159	2	22	Консистенция:	43	1		\N	1	2.10.7	7	\N
+160	2	22	Цервикальный канал:	24	1		\N	1	2.10.9	9	\N
+161	2	22	Тело матки:	28	1		\N	1	2.10.11	11	\N
+162	0	22	увеличено до:	\N	0	недель беременности	4	0	2.10.12	12	\N
+163	2	22	Воды:	25	1		\N	1	2.10.14	14	\N
+164	2	22	Предлежит:	39	1		\N	1	2.10.15	15	\N
+165	2	22	Выделения из половых путей:	27	1		\N	1	2.10.16	16	\N
+166	2	29	Состояние:	16	0		\N	1	7.1	1	\N
+167	0	29	Рост	\N	0	(см), 	5	1	7.2	2	\N
+168	0	29	Вес	\N	0	(кг)	5	0	7.3	3	\N
+169	0	29	ИМТ	\N	0	,	10	0	7.4	4	\N
+170	0	29	ОТ/ОБ	\N	0		5	0	7.5	5	\N
+171	0	29	АД	\N	0	мм.рт.ст.	20	1	7.6	6	\N
+172	0	29	Пульс	\N	0		4	0	7.7	7	\N
+173	2	29	Пульс ритмика:	110	1		\N	0	7.9	9	\N
+174	3	29	Кожные покровы и видимые слизистые оболочки:	64	1		\N	1	7.10	10	\N
+175	2	29	Тоны сердца:	19	0		\N	1	7.11	11	\N
+177	2	29	при пальпации	67	1		\N	0	7.13	13	\N
+176	2	29	Щитовидная железа: визуально область шеи:	65	1	,	\N	1	7.12	12	\N
+178	2	29	Молочные железы:	69	0		\N	1	7.25	25	\N
+179	2	29	Живот:	70	1		\N	0	7.26	26	\N
+180	2	29	Живот в акте дыхания:	77	1		\N	0	7.27	27	\N
+181	2	29	Перистальтика:	111	1		\N	0	7.28	28	\N
+182	2	29	симптомов раздражения брюшины 	10	1		\N	0	7.29	29	\N
+183	2	29	Боли в животе:	114	1		\N	0	7.30	30	\N
+184	0	29	в области	\N	0		\N	0	7.31	31	\N
+185	1	29	Боли живота	\N	0		\N	0	7.32	32	\N
+186	2	29	Печень 	67	1		\N	1	7.34	34	\N
+187	2	29	край печени	80	1		\N	0	7.35	35	\N
+188	2	29	Селезенка	67	1		\N	1	7.36	36	\N
+189	2	29	Селезенка	80	1		\N	0	7.37	37	\N
+190	2	29	Симптом Пастернацкого:	73	1		\N	1	7.40	40	\N
+191	2	29	Опорно-двигательная система:	74	0		\N	1	7.41	41	\N
+192	3	29	Физиологические отправления	32	0		\N	1	7.42	42	\N
+193	3	29	Отеки	33	0		\N	1	7.43	43	\N
+194	1	29	Дополнительно (объективно гинекология)	\N	0		\N	1	7.45	45	\N
+80	2	22	Наружные половые органы сформированы:	81	1		\N	1	2.10.1	1	\N
+196	2	30	Оволосение 	21	1		\N	1	8.4	4	\N
+197	2	30	Изменения на слизистой наружных половых органов	10	1		\N	1	8.5	5	\N
+198	2	30	Слизистая	82	0		\N	0	8.6	6	\N
+199	2	30	Отверстие мочеиспускательного канала: 	83	0		\N	1	8.7	7	\N
+200	2	30	Промежность	84	0		\N	1	8.8	8	\N
+201	3	30	Область заднего прохода	85	1		\N	1	8.9	9	\N
+202	2	30	Половая щель:	116	1		\N	1	8.10	10	\N
+203	2	30	Леваторы расположены	117	1		\N	1	8.11	11	\N
+204	2	30	При натуживании за приделы половой щели выходит:	118	1		\N	1	8.12	12	\N
+205	2	31	Слизистая влагалища:	119	1		\N	1	10.1	1	\N
+206	2	31	Перегородка влагалища:	10	0		\N	1	10.4	4	\N
+207	2	31	Шейка матки расположена	42	1		\N	1	10.5	5	\N
+208	2	31	Форма шейки матки:	120	1		\N	1	10.6	6	\N
+209	2	31	удвоение:	10	1		\N	0	10.7	7	\N
+210	3	31	Слизистая шейки матки:	121	1		\N	1	10.10	10	\N
+211	3	31	Цервикальный канал:	122	1		\N	1	10.11	11	\N
+212	0	31	размером	\N	0		5	0	10.12	12	\N
+213	2	32	Тело матки:	28	1		\N	1	11.1	1	\N
+214	0	32	до	\N	0		5	0	11.2	2	\N
+215	2	32	Тело матки расположено:	123	0		\N	1	11.5	5	\N
+252	2	45	Уреаплазма	133	0		\N	1	3.13.4	4	\N
+216	2	32	Подвижность матки	124	0		\N	0	11.6	6	\N
+217	2	32	Консистенция:	43	0		\N	0	11.8	8	\N
+218	2	32	Болезненность при пальпации:	10	0		\N	1	11.9	9	\N
+219	2	32	Своды влагалища::	125	0		\N	1	11.11	11	\N
+220	2	32	Лигатуры:	10	0		\N	0	11.12	12	\N
+221	2	32	Образования в сводах	10	0		\N	0	11.13	13	\N
+222	2	32	Придатки:	126	0		\N	1	11.15	15	\N
+223	2	32	размер	127	0		\N	0	11.16	16	\N
+224	0	32	до	\N	0	см	5	0	11.17	17	\N
+225	2	31	Консистенция	128	0		\N	0	10.18	18	\N
+226	2	32	Крестцово-маточные связки:	129	0		\N	1	11.20	20	\N
+227	3	32	Образования	10	0		\N	0	11.21	21	\N
+228	2	32	Объемные образования в брюшной полости:	76	0		\N	1	11.23	23	\N
+229	0	32	размерами	\N	0		\N	0	11.24	24	\N
+230	2	32	образования:	131	0		\N	0	11.25	25	\N
+231	1	32	Дополнительно:	\N	0		\N	0	11.30	30	\N
+232	0	48	от	\N	0		20	1	3.16.1	1	\N
+233	0	48	Количество	\N	0		20	1	3.16.2	2	\N
+235	0	48	Подвижность "в"	\N	0		20	0	3.16.4	4	\N
+236	0	48	"а+в"	\N	0		20	0	3.16.5	5	\N
+234	0	48	Подвижность "а"	\N	0		20	1	3.16.3	3	\N
+237	0	48	Патологические	\N	0		20	1	3.16.6	6	\N
+238	0	48	Жизнеспособность	\N	0		\N	0	3.16.7	7	\N
+239	0	48	Лейкоциты	\N	0		20	1	3.16.8	8	\N
+240	0	48	Агрегация, агглютинация	\N	0		\N	1	3.16.9	9	\N
+241	0	47	от	\N	0		20	1	3.15.1	1	\N
+242	4	47	Показатели:	\N	0		\N	1	3.15.2	2	{"cols":["LgM","LgG"],"rows":["ЦМВ","ВЭБ","Токсоплазма","ВПГ 1","ВПГ 2","Краснуха"],"numCols":"2","numRows":"6"}
+243	0	46	от	\N	0		20	1	3.14.1	1	\N
+244	0	46	ЦЭ	\N	0		\N	1	3.14.2	2	\N
+245	0	46	МПЭ	\N	0		\N	1	3.14.3	3	\N
+246	2	46	Атипических клеток	132	0		\N	1	3.14.4	4	\N
+247	0	46	Флора	\N	0		\N	1	3.14.5	5	\N
+248	0	46	Лейкоциты	\N	0		20	0	3.14.6	6	\N
+249	0	45	от	\N	0		20	1	3.13.1	1	\N
+250	2	45	\\хламидия	133	0		\N	1	3.13.2	2	\N
+251	2	45	Микоплазма	133	0		\N	1	3.13.3	3	\N
+253	2	45	ЦМВ	133	0		\N	1	3.13.5	5	\N
+254	2	45	ВПГ 1,2	133	0		\N	1	3.13.6	6	\N
+255	2	45	ВПЧ выс.онког. риска	133	0		\N	1	3.13.7	7	\N
+256	0	43	от	\N	0		20	1	3.12.1	1	\N
+257	4	43	Показатели	\N	0		\N	1	3.12.2	2	{"cols":["\\"С\\"","\\"V\\"","\\"U\\""],"rows":["Лейкоциты","Эпителий","Флора","Neisseria gonor.","Трихомонада","SOOR","Ключевые клетки"],"numCols":"3","numRows":"7"}
+258	0	42	от	\N	0		20	1	3.11.1	1	\N
+259	4	42	Показатели	\N	0		\N	1	3.11.2	2	{"cols":["0 мин","120 мин"],"rows":["гликемия","инсулин"],"numCols":"2","numRows":"2"}
+260	0	41	от	\N	0		20	1	3.10.1	1	\N
+261	4	41	Показатели	\N	0		\N	1	3.10.2	2	{"cols":[],"rows":["АЛТ","АСТ","ЦПФ","Билирубин общ.","Прямой","ГТТ","Глюкозо","alfa-амилаза","Гликированный Нв","Общ. белок","Креатинин","Мочевина","Холестерин","Триглецириды","ЛПВП","ЛПНП","Коэф. атер."],"numCols":"1","numRows":"17"}
+262	0	40	jn	\N	0		20	1	3.9.1	1	\N
+263	4	40	Показатели:	\N	0		\N	1	3.9.2	2	{"cols":[],"rows":["Протромбин G/G","МТГФР С/С","Leiden G/C","PAI-1 5G/5G","Гомоцистеин"],"numCols":"1","numRows":"5"}
+264	0	39	от	\N	0		20	1	3.8.1	1	\N
+265	4	39	Показатели	\N	0		\N	1	3.8.2	2	{"cols":["IgM","LgG"],"rows":[],"numCols":"2","numRows":"1"}
+266	0	38	от 	\N	0		20	1	3.7.1	1	\N
+267	4	38	Показатели	\N	0		\N	1	3.7.2	2	{"cols":["LgM","LgG"],"rows":[],"numCols":"2","numRows":"1"}
+268	0	37	до	\N	0		20	1	3.6.1	1	\N
+270	4	37	показатели	\N	0		\N	1	3.6.2	2	{"cols":[],"rows":["АЧТВ","МНО","Протромбин","Фибриноген","Тромбиновое время","Протромбиновое время","Антитромбин-III","Волч. антикоагулянт","D-димер","Протеин С","Протеин S","РФМК"],"numCols":"1","numRows":"12"}
+271	0	44	от 	\N	0		20	1	3.5.1	1	\N
+272	4	44	Показатели	\N	0		\N	1	3.5.2	2	{"cols":[],"rows":["Гемоглобин","Эритроциты","Лейкоциты","формула","Тромбоциты","СОЭ"],"numCols":"1","numRows":"6"}
+274	0	35	Матка	\N	0		\N	1	3.3.2	2	\N
+275	0	35	М-Эхо	\N	0		\N	1	3.3.3	3	\N
+276	0	35	Правый яичник	\N	0		\N	1	3.3.4	4	\N
+277	0	35	Левый яичник	\N	0		\N	1	3.3.5	5	\N
+278	2	35	Объемных образований в млом тазу	38	1		\N	1	3.3.6	6	\N
+279	0	34	от	\N	0		\N	1	3.2.1	1	\N
+280	4	34	Показатели	\N	0		\N	1	3.2.2	2	{"cols":["ТТГ","Т4св","Ат-ТПО"],"rows":[],"numCols":"3","numRows":"1"}
+273	0	35	от	\N	0	(д.м.ц)	20	1	3.3.1	1	\N
+281	0	33	от	\N	0	(д.м.ц)	20	1	3.1.1	1	\N
+282	4	33	показатели	\N	0		\N	1	3.1.2	2	{"cols":[],"rows":["ЛГ","ФСГ","Пролактин","Е2","ДГЭА-С","17-ОП","Тестостерон общ.","ГСПГ","Тестостерон св.","Кортизол","Андростендион","Дигидротестостерон"],"numCols":"1","numRows":"12"}
+140	0	6	Беременность	\N	0	недель	3	0	2.7.6	6	\N
 \.
+
+
+--
+-- Data for Name: medcard_elements_dependences; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_elements_dependences (id, element_id, value_id, dep_element_id, action) FROM stdin;
+85	75	124	125	2
+86	126	435	129	2
+87	126	436	130	2
+88	126	436	127	2
+89	86	346	31	2
+90	86	340	89	2
+91	31	41	29	2
+92	95	380	104	2
+93	86	340	87	2
+94	96	356	97	2
+95	86	339	90	2
+96	95	376	101	2
+97	95	379	103	2
+98	95	381	105	2
+99	95	378	102	2
+100	95	382	106	2
+101	86	340	88	2
+\.
+
+
+--
+-- Name: medcard_elements_dependences_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_elements_dependences_id_seq', 101, true);
 
 
 --
 -- Name: medcard_elements_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_elements_id_seq', 34, true);
+SELECT pg_catalog.setval('medcard_elements_id_seq', 285, true);
 
 
 --
 -- Data for Name: medcard_elements_patient; Type: TABLE DATA; Schema: mis; Owner: moniiag
 --
 
-COPY medcard_elements_patient (medcard_id, element_id, value, history_id, change_date, greeting_id) FROM stdin;
-1/14	11		1	2013-12-12 13:40:00	\N
-1/14	2	5	1	2013-12-12 13:40:00	\N
-1/14	5	1	1	2013-12-12 13:40:00	\N
-1/14	6	Нет	1	2013-12-12 13:40:00	\N
-1/14	4	["10","12"]	1	2013-12-12 13:40:00	\N
-1/14	7	В норме	1	2013-12-12 13:40:00	\N
-1/14	2	3	2	2013-12-12 13:45:00	\N
-1/14	7	Не в норме	2	2013-12-12 13:45:00	\N
-1/14	11	Тест	2	2013-12-12 13:46:00	\N
-1/14	4	["11"]	2	2013-12-12 13:54:00	\N
-1/14	5	2	2	2013-12-12 14:37:00	\N
-1/14	5	3	3	2013-12-12 14:42:00	\N
-1/14	5	4	4	2013-12-12 14:44:00	\N
-1/14	5	5	5	2013-12-12 14:47:00	\N
-1/14	2	2	3	2013-12-13 10:27:00	\N
-1/14	4	["25"]	3	2013-12-13 10:27:00	\N
-1/14	12	27	1	2013-12-13 10:27:00	\N
-7/13	11		1	2013-12-17 13:43:00	\N
-7/13	2	13	1	2013-12-17 13:43:00	\N
-7/13	5		1	2013-12-17 13:43:00	\N
-7/13	6		1	2013-12-17 13:43:00	\N
-7/13	7	апап	1	2013-12-17 13:43:00	\N
-7/13	12	29	1	2013-12-17 13:43:00	\N
-1/14	5	6	6	2013-12-18 11:34:00	\N
-2/13	11		1	2013-12-25 12:17:00	\N
-2/13	2	13	1	2013-12-25 12:17:00	\N
-2/13	5		1	2013-12-25 12:17:00	\N
-2/13	6		1	2013-12-25 12:17:00	\N
-2/13	7		1	2013-12-25 12:17:00	\N
-2/13	12	29	1	2013-12-25 12:17:00	\N
-2/13	2	2	2	2013-12-25 12:17:00	\N
-2/13	8		1	2013-12-25 12:18:00	\N
-2/13	9		1	2013-12-25 12:18:00	\N
-2/13	10		1	2013-12-25 12:18:00	\N
-2/13	5	1	2	2013-12-25 13:29:00	67
-2/13	6	Нет	2	2013-12-25 13:29:00	67
-2/13	4	["28","25","24"]	1	2013-12-25 14:55:00	67
-2/13	5	2	3	2013-12-25 14:56:00	67
-2/13	2	6	3	2013-12-25 15:00:00	67
-2/13	11	Некая беременность	2	2013-12-25 15:24:00	67
-1/14	5	25	7	2013-12-25 15:55:00	69
-2/13	2	2	4	2013-12-25 15:58:00	67
-4/13	11		1	2013-12-30 12:41:00	71
-4/13	2	6	1	2013-12-30 12:41:00	71
-4/13	5	23	1	2013-12-30 12:41:00	71
-4/13	6	5	1	2013-12-30 12:41:00	71
-4/13	7	Норма	1	2013-12-30 12:41:00	71
-4/13	4	["28"]	1	2013-12-30 12:41:00	71
-4/13	12	29	1	2013-12-30 12:41:00	71
-4/13	2	2	2	2013-12-30 12:44:00	86
-4/13	5	232	2	2013-12-30 12:44:00	86
-4/13	6	53	2	2013-12-30 12:44:00	86
-7/13	2	2	2	2013-12-30 12:45:00	85
-7/13	5	22	2	2013-12-30 12:45:00	85
-7/13	6	333	2	2013-12-30 12:45:00	85
-7/13	8	23	1	2013-12-30 12:45:00	85
-7/13	9		1	2013-12-30 12:45:00	85
-7/13	10		1	2013-12-30 12:45:00	85
-7/13	7	Нормальное	2	2014-01-09 12:50:00	91
-7/13	4	["25"]	1	2014-01-09 12:50:00	91
-7/13	9	Какое-то описание	2	2014-01-09 12:50:00	91
-7/13	10	И ещё одно	2	2014-01-09 12:50:00	91
-5/13	11		1	2014-01-17 15:07:00	122
-5/13	2	13	1	2014-01-17 15:07:00	122
-5/13	5	5	1	2014-01-17 15:07:00	122
-5/13	6	нет	1	2014-01-17 15:07:00	122
-5/13	7	120х30	1	2014-01-17 15:07:00	122
-5/13	4	["28","26","25","24"]	1	2014-01-17 15:07:00	122
-5/13	12	17	1	2014-01-17 15:07:00	122
-5/13	8		1	2014-01-17 15:08:00	122
-5/13	9		1	2014-01-17 15:08:00	122
-5/13	10		1	2014-01-17 15:08:00	122
-5/13	2	2	2	2014-01-20 13:07:00	121
-13/14	11	56	1	2014-01-22 16:55:00	151
-13/14	2	4	1	2014-01-22 16:55:00	151
-13/14	5		1	2014-01-22 16:55:00	151
-13/14	6		1	2014-01-22 16:55:00	151
-13/14	7	120-23	1	2014-01-22 16:55:00	151
-13/14	4	["14","12","11"]	1	2014-01-22 16:55:00	151
-13/14	12	27	1	2014-01-22 16:55:00	151
-1/14	5	2	8	2014-02-05 17:59:00	318
-1/14	4	["26"]	4	2014-02-05 17:59:00	318
-1/14	12	17	2	2014-02-05 17:59:00	318
-2/14	8		1	2014-02-06 00:35:00	317
-2/14	9		1	2014-02-06 00:35:00	317
-2/14	10		1	2014-02-06 00:35:00	317
-2/14	11		1	2014-02-06 00:35:00	317
-2/14	2	13	1	2014-02-06 00:35:00	317
-2/14	5		1	2014-02-06 00:35:00	317
-2/14	6		1	2014-02-06 00:35:00	317
-2/14	7		1	2014-02-06 00:35:00	317
-2/14	12	29	1	2014-02-06 00:35:00	317
-27/14	11		1	2014-02-06 14:35:00	325
-27/14	2	13	1	2014-02-06 14:35:00	325
-27/14	5		1	2014-02-06 14:35:00	325
-27/14	6		1	2014-02-06 14:35:00	325
-27/14	7		1	2014-02-06 14:35:00	325
-27/14	12	29	1	2014-02-06 14:35:00	325
-27/14	2	2	2	2014-02-06 14:52:00	325
-2/14	2	4	2	2014-02-07 11:33:00	317
-2/14	5	78	2	2014-02-07 11:33:00	317
-2/14	6	нг	2	2014-02-07 11:33:00	317
-2/14	7	3450	2	2014-02-07 11:33:00	317
-2/14	4	["15","14","12"]	1	2014-02-07 11:33:00	317
-2/14	12	27	2	2014-02-07 11:33:00	317
-2/14	2	2	3	2014-02-10 16:03:00	339
-2/14	7	34/50	3	2014-02-10 16:03:00	339
-2/14	4	["14","12","11","10"]	2	2014-02-10 16:03:00	339
-3/14	11		1	2014-02-12 11:18:00	165
-3/14	2	4	1	2014-02-12 11:18:00	165
-3/14	5	1	1	2014-02-12 11:18:00	165
-3/14	6	Была	1	2014-02-12 11:18:00	165
-3/14	7		1	2014-02-12 11:18:00	165
-3/14	12	29	1	2014-02-12 11:18:00	165
-13/14	11	32	2	2014-02-12 15:06:00	378
-13/14	2	2	2	2014-02-12 15:06:00	378
+COPY medcard_elements_patient (medcard_id, element_id, value, history_id, change_date, greeting_id, categorie_name, path, label_before, label_after, size, is_wrapped, categorie_id, type, template_id, template_name, guide_id, is_dynamic, real_categorie_id, allow_add, config) FROM stdin;
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Анамнез	1	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	2	\N	\N
+5/13	126	\N	1	2014-03-17 00:00:00	469		1.6	Менструации		\N	0	2	2	\N	\N	106	\N	\N	1	\N
+5/13	16	\N	1	2014-03-17 00:00:00	469		1.2	Рост	см	3	\N	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	15	\N	1	2014-03-17 00:00:00	469		1.1	Возраст	лет	2	\N	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	17	\N	1	2014-03-17 00:00:00	469		1.3	Вес исходный	кг	3	\N	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	18	\N	1	2014-03-17 00:00:00	469		1.4	В настоящее время	кг	3	\N	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	93	\N	1	2014-03-17 00:00:00	469		1.19	Детские инфекции:		\N	1	2	3	\N	\N	95	\N	\N	0	\N
+5/13	20	\N	1	2014-03-17 00:00:00	469		1.36	Дополнительно (анамнез):		\N	\N	2	1	\N	\N	\N	\N	\N	0	\N
+5/13	19	\N	1	2014-03-17 00:00:00	469		1.5	Менархе с 	лет	2	1	2	2	\N	\N	9	\N	\N	1	\N
+5/13	22	\N	1	2014-03-17 00:00:00	469		1.12	Семейное положение		\N	\N	2	2	\N	\N	11	\N	\N	0	\N
+5/13	38	\N	1	2014-03-17 00:00:00	469		1.34	Аллергические реакции:		\N	1	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	21	\N	1	2014-03-17 00:00:00	469		1.13	Брак по счету		2	0	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	24	\N	1	2014-03-17 00:00:00	469		1.14	Муж	лет	2	\N	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	39	\N	1	2014-03-17 00:00:00	469		1.33	Черепно-мозговые травмы:		\N	1	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	40	\N	1	2014-03-17 00:00:00	469		1.32	Гемотрансфузии:		\N	1	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	25	\N	1	2014-03-17 00:00:00	469		1.16	Заболевания у мужа:		\N	1	2	1	\N	\N	\N	\N	\N	0	\N
+5/13	14	\N	1	2014-03-17 00:00:00	469		1.11	Начало половой жизни с	лет	2	1	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	127	\N	1	2014-03-17 00:00:00	469		1.7	через	дней	4	0	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	26	\N	1	2014-03-17 00:00:00	469		1.17	Внебрачные дети		\N	1	2	2	\N	\N	10	\N	\N	0	\N
+5/13	41	\N	1	2014-03-17 00:00:00	469		1.31	Перенесенные операции:		\N	1	2	1	\N	\N	\N	\N	\N	0	\N
+5/13	37	\N	1	2014-03-17 00:00:00	469		1.35	Наследственность:		\N	1	2	3	\N	\N	15	\N	\N	0	\N
+5/13	95	\N	1	2014-03-17 00:00:00	469		1.21	Гинекологические заболевания		\N	1	2	3	\N	\N	93	\N	\N	0	\N
+5/13	107	\N	1	2014-03-17 00:00:00	469		1.28	Лечение ИППП		\N	0	2	2	\N	\N	102	\N	\N	0	\N
+5/13	81	\N	1	2014-03-17 00:00:00	469		1.20	Хронические заболевания		\N	1	2	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["Сердечно-сосудистая система:","Желудочно-кишечный тракт:","Мочевыводящая система:","Опорно-двигательная система:","Нервная система:","Орган зрения:","Онкологические заболевания:","Состояние после:"],"numCols":"2","numRows":"8"}
+5/13	100	\N	1	2014-03-17 00:00:00	469		1.29	Гормональная терапия		\N	1	2	1	\N	\N	\N	\N	\N	0	\N
+5/13	101	\N	1	2014-03-17 00:00:00	469		1.22	лечение эрозии		\N	0	2	2	\N	\N	96	\N	\N	0	\N
+5/13	102	\N	1	2014-03-17 00:00:00	469		1.23	Лечение дисплазии		\N	0	2	2	\N	\N	97	\N	\N	0	\N
+5/13	104	\N	1	2014-03-17 00:00:00	469		1.25	Лечение миомы		\N	0	2	2	\N	\N	99	\N	\N	0	\N
+5/13	105	\N	1	2014-03-17 00:00:00	469		1.26	Лечение андексита		\N	0	2	2	\N	\N	100	\N	\N	0	\N
+5/13	106	\N	1	2014-03-17 00:00:00	469		1.27	Лечение полипов		\N	0	2	2	\N	\N	101	\N	\N	0	\N
+5/13	108	\N	1	2014-03-17 00:00:00	469		1.30	Вирусные заболевания		\N	1	2	4	\N	\N	\N	\N	\N	0	{"cols":["не обнаружен","ДНК вирус","антитела"],"rows":["Туберкулез","ВИЧ, Leus","Гепатит А","Гепатит В","Гепатит С"],"numCols":"3","numRows":"6"}
+5/13	103	\N	1	2014-03-17 00:00:00	469		1.24	Лечение кисты		\N	0	2	2	\N	\N	98	\N	\N	0	\N
+5/13	128	\N	1	2014-03-17 00:00:00	469		1.8	задержки до 		4	0	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	129	\N	1	2014-03-17 00:00:00	469		1.9	до		20	0	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	130	\N	1	2014-03-17 00:00:00	469		1.10	по	дней, 	4	0	2	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Беременности	1.18	\N	\N	\N	0	2	-1	1	Осмотр гинеколога	\N	0	12	\N	\N
+5/13	85	\N	1	2014-03-17 00:00:00	469		1.18.1	Всего:	из них:	3	1	12	0	\N	\N	\N	\N	\N	0	\N
+5/13	27	\N	1	2014-03-17 00:00:00	469		1.18.2	Роды		3	\N	12	0	\N	\N	\N	\N	\N	0	\N
+5/13	29	\N	1	2014-03-17 00:00:00	469		1.18.4	Самопроизвольные выкидыши		3	\N	12	0	\N	\N	\N	\N	\N	0	\N
+5/13	28	\N	1	2014-03-17 00:00:00	469		1.18.3	Аборты		3	0	12	0	\N	\N	\N	\N	\N	0	\N
+5/13	30	\N	1	2014-03-17 00:00:00	469		1.18.5	Неразвивающиеся беременности		3	\N	12	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Беременность	1.18.7	\N	\N	\N	0	12	-1	1	Осмотр гинеколога	\N	1	13	\N	\N
+5/13	33	\N	1	2014-03-17 00:00:00	469		1.18.7.4	в	году	4	\N	13	0	\N	\N	\N	\N	\N	0	\N
+5/13	86	\N	1	2014-03-17 00:00:00	469		1.18.7.5	Исход беременности		\N	1	13	2	\N	\N	90	\N	\N	0	\N
+5/13	89	\N	1	2014-03-17 00:00:00	469		1.18.7.6	аборт в сроке	недель	3	0	13	0	\N	\N	\N	\N	\N	0	\N
+5/13	88	\N	1	2014-03-17 00:00:00	469		1.18.7.8	Осложнения		\N	0	13	2	\N	\N	87	\N	\N	0	\N
+5/13	87	\N	1	2014-03-17 00:00:00	469		1.18.7.7	Аборт тип		\N	0	13	2	\N	\N	86	\N	\N	1	\N
+5/13	92	\N	1	2014-03-17 00:00:00	469		1.18.7.11	Показания:		\N	0	13	2	\N	\N	91	\N	\N	0	\N
+5/13	96	\N	1	2014-03-17 00:00:00	469		1.18.7.9	Роды тип		\N	0	13	2	\N	\N	88	\N	\N	1	\N
+5/13	91	\N	1	2014-03-17 00:00:00	469		1.18.7.13	Причина		\N	0	13	3	\N	\N	92	\N	\N	0	\N
+5/13	90	\N	1	2014-03-17 00:00:00	469		1.18.7.12	Осложнения:		\N	0	13	3	\N	\N	89	\N	\N	0	\N
+5/13	32	\N	1	2014-03-17 00:00:00	469		1.18.7.1	№		3	\N	13	0	\N	\N	\N	\N	\N	0	\N
+5/13	97	\N	1	2014-03-17 00:00:00	469		1.18.7.14	в сроке	недель	3	0	13	0	\N	\N	\N	\N	\N	0	\N
+5/13	98	\N	1	2014-03-17 00:00:00	469		1.18.7.15	Ребенок: вес	грамм, 	5	0	13	0	\N	\N	\N	\N	\N	0	\N
+5/13	99	\N	1	2014-03-17 00:00:00	469		1.18.7.16	Ребенок рост:	см. 	3	0	13	0	\N	\N	\N	\N	\N	0	\N
+5/13	34	\N	1	2014-03-17 00:00:00	469		1.18.7.2	Наступила		\N	\N	13	2	\N	\N	14	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Осмотр акушера-гинеколога	2	\N	\N	\N	0	-1	-1	5	Шаблон ведения беременности	\N	0	26	\N	\N
+5/13	131	\N	1	2014-03-17 00:00:00	469		2.1	Группа крови		\N	1	26	2	\N	\N	20	\N	\N	1	\N
+5/13	132	\N	1	2014-03-17 00:00:00	469		2.2	Антитела		\N	0	26	2	\N	\N	41	\N	\N	0	\N
+5/13	133	\N	1	2014-03-17 00:00:00	469		2.3	Групповые антитела		\N	0	26	2	\N	\N	41	\N	\N	0	\N
+5/13	134	\N	1	2014-03-17 00:00:00	469		2.4	Данная беременность	Протекает:	\N	1	26	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	I триместр	2.6	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	5	\N	\N
+5/13	47	\N	1	2014-03-17 00:00:00	469		2.6.7	Скриннинг		\N	1	5	2	\N	\N	36	\N	\N	0	\N
+5/13	48	\N	1	2014-03-17 00:00:00	469		2.6.8	Прием препаратов		\N	1	5	3	\N	\N	37	\N	\N	0	\N
+5/13	43	\N	1	2014-03-17 00:00:00	469		2.6.1	Угроза прерывания беременности:		\N	1	5	2	\N	\N	35	\N	\N	0	\N
+5/13	44	\N	1	2014-03-17 00:00:00	469		2.6.2	В сроке	нед.	\N	0	5	0	\N	\N	\N	\N	\N	0	\N
+5/13	45	\N	1	2014-03-17 00:00:00	469		2.6.5	Беременность I	нед.	\N	0	5	0	\N	\N	\N	\N	\N	0	\N
+5/13	46	\N	1	2014-03-17 00:00:00	469		2.6.4	УЗИ  I триместра дата	:	10	1	5	0	\N	\N	\N	\N	\N	0	\N
+5/13	135	\N	1	2014-03-17 00:00:00	469		2.6.3	Стационарное (амбулаторное) лечение		\N	0	5	1	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Консультации специалистов	2.6.10	\N	\N	\N	0	5	-1	5	Шаблон ведения беременности	\N	0	23	\N	\N
+5/13	50	\N	1	2014-03-17 00:00:00	469		2.6.10.2	ЛОР:		\N	1	23	0	\N	\N	\N	\N	\N	0	\N
+5/13	49	\N	1	2014-03-17 00:00:00	469		2.6.10.1	Терапевт		\N	1	23	0	\N	\N	\N	\N	\N	0	\N
+5/13	51	\N	1	2014-03-17 00:00:00	469		2.6.10.3	Окулист:		\N	1	23	1	\N	\N	\N	\N	\N	0	\N
+5/13	52	\N	1	2014-03-17 00:00:00	469		2.6.10.4	Невролог		\N	1	23	1	\N	\N	\N	\N	\N	0	\N
+5/13	53	\N	1	2014-03-17 00:00:00	469		2.6.10.5	Эндокринолог:		\N	1	23	1	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	ИППП:	2.6.11	\N	\N	\N	0	5	-1	5	Шаблон ведения беременности	\N	0	24	\N	\N
+5/13	59	\N	1	2014-03-17 00:00:00	469		2.6.11.6	ВПЧ:		\N	1	24	2	\N	\N	38	\N	\N	0	\N
+5/13	55	\N	1	2014-03-17 00:00:00	469		2.6.11.2	Микоплазма:		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+5/13	54	\N	1	2014-03-17 00:00:00	469		2.6.11.1	Хламидии:		\N	1	24	2	\N	\N	38	\N	\N	0	\N
+5/13	56	\N	1	2014-03-17 00:00:00	469		2.6.11.3	Уреаплазма:		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+5/13	57	\N	1	2014-03-17 00:00:00	469		2.6.11.4	ВПГ:		\N	1	24	2	\N	\N	38	\N	\N	0	\N
+5/13	60	\N	1	2014-03-17 00:00:00	469		2.6.11.7	Другие		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+5/13	58	\N	1	2014-03-17 00:00:00	469		2.6.11.5	ЦМВ:		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+5/13	61	\N	1	2014-03-17 00:00:00	469		2.6.11.8	 Если обнаружено		\N	0	24	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	II триместр	2.7	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	6	\N	\N
+5/13	62	\N	1	2014-03-17 00:00:00	469		2.7.1	Протекал		\N	0	6	1	\N	\N	\N	\N	\N	0	\N
+5/13	136	\N	1	2014-03-17 00:00:00	469		2.7.2	Угроза прерывания беременности:		\N	1	6	2	\N	\N	35	\N	\N	0	\N
+5/13	137	\N	1	2014-03-17 00:00:00	469		2.7.3	В сроке	нед.	3	0	6	0	\N	\N	\N	\N	\N	0	\N
+5/13	139	\N	1	2014-03-17 00:00:00	469		2.7.5	УЗИ II триместра дата		20	1	6	0	\N	\N	\N	\N	\N	0	\N
+5/13	140	\N	1	2014-03-17 00:00:00	469		2.7.6	Беременность II		3	0	6	0	\N	\N	\N	\N	\N	0	\N
+5/13	138	\N	1	2014-03-17 00:00:00	469		2.7.4	Стационарное (амбулаторное) лечение (II)		\N	0	6	1	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	III триместр	2.8	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	7	\N	\N
+5/13	141	\N	1	2014-03-17 00:00:00	469		2.8.1	Угроза прерывания беременности III		\N	1	7	2	\N	\N	35	\N	\N	0	\N
+5/13	142	\N	1	2014-03-17 00:00:00	469		2.8.2	в сроке (III)	нед.	3	0	7	0	\N	\N	\N	\N	\N	0	\N
+5/13	143	\N	1	2014-03-17 00:00:00	469		2.8.3	Стационарное-амбулаторное лечение (III)		\N	1	7	1	\N	\N	\N	\N	\N	0	\N
+5/13	144	\N	1	2014-03-17 00:00:00	469		2.8.4	УЗИ III триместр дата		20	1	7	0	\N	\N	\N	\N	\N	0	\N
+5/13	145	\N	1	2014-03-17 00:00:00	469		2.8.5	Беременность III	нед.	3	0	7	0	\N	\N	\N	\N	\N	0	\N
+5/13	146	\N	1	2014-03-17 00:00:00	469		2.8.6	Предлежание		\N	1	7	2	\N	\N	39	\N	\N	0	\N
+5/13	147	\N	1	2014-03-17 00:00:00	469		2.8.7	Положение плода		\N	0	7	2	\N	\N	29	\N	\N	0	\N
+5/13	148	\N	1	2014-03-17 00:00:00	469		2.8.8	ФПН		\N	1	7	2	\N	\N	109	\N	\N	0	\N
+5/13	149	\N	1	2014-03-17 00:00:00	469		2.8.9	Синдром задержки роста плода (СЗРП):		\N	0	7	2	\N	\N	108	\N	\N	0	\N
+5/13	150	\N	1	2014-03-17 00:00:00	469		2.8.10	Признаки диабетической фетопатии: Толщина ПЖК до:		5	1	7	0	\N	\N	\N	\N	\N	0	\N
+5/13	151	\N	1	2014-03-17 00:00:00	469		2.8.12	Размеры печени:		\N	1	7	2	\N	\N	67	\N	\N	1	\N
+5/13	152	\N	1	2014-03-17 00:00:00	469		2.8.13	Макросомия плода:		\N	1	7	2	\N	\N	35	\N	\N	1	\N
+5/13	153	\N	1	2014-03-17 00:00:00	469		2.8.14	Количество околоплодных вод:		\N	1	7	2	\N	\N	44	\N	\N	1	\N
+5/13	154	\N	1	2014-03-17 00:00:00	469		2.8.15	Предполагаемая масса плода:		5	1	7	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Объективно (беременность) :	2.9	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	21	\N	\N
+5/13	64	\N	1	2014-03-17 00:00:00	469		2.9.2	Жалобы		\N	1	21	3	\N	\N	17	\N	\N	0	\N
+5/13	65	\N	1	2014-03-17 00:00:00	469		2.9.3	Дыхание		\N	1	21	2	\N	\N	18	\N	\N	0	\N
+5/13	66	\N	1	2014-03-17 00:00:00	469		2.9.4	Тоны сердца:		\N	0	21	2	\N	\N	19	\N	\N	0	\N
+5/13	67	\N	1	2014-03-17 00:00:00	469		2.9.5	АД	мм.рт.ст.	20	1	21	0	\N	\N	\N	\N	\N	0	\N
+5/13	69	\N	1	2014-03-17 00:00:00	469		2.9.7	ВДМ:	см.	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+5/13	71	\N	1	2014-03-17 00:00:00	469		2.9.9	Матка:		\N	1	21	2	\N	\N	49	\N	\N	0	\N
+5/13	73	\N	1	2014-03-17 00:00:00	469		2.9.11	Предлежит:		\N	1	21	2	\N	\N	39	\N	\N	0	\N
+5/13	72	\N	1	2014-03-17 00:00:00	469		2.9.10	Положение плода:		\N	1	21	2	\N	\N	29	\N	\N	0	\N
+5/13	79	\N	1	2014-03-17 00:00:00	469		2.9.20	Патозность		\N	0	21	2	\N	\N	34	\N	\N	0	\N
+5/13	74	\N	1	2014-03-17 00:00:00	469		2.9.12	Шевеление плода		\N	1	21	2	\N	\N	30	\N	\N	0	\N
+5/13	75	\N	1	2014-03-17 00:00:00	469		2.9.13	Сердцебиение плода		\N	0	21	2	\N	\N	31	\N	\N	0	\N
+5/13	76	\N	1	2014-03-17 00:00:00	469		2.9.17	Выделения из половых путей		\N	1	21	2	\N	\N	27	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Анамнез	1	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	2	\N	\N
+32/14	126	\N	1	2014-03-13 00:00:00	456		1.6	Менструации		\N	0	2	2	\N	\N	106	\N	\N	1	\N
+32/14	16	\N	1	2014-03-13 00:00:00	456		1.2	Рост	см	3	\N	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	15	\N	1	2014-03-13 00:00:00	456		1.1	Возраст	лет	2	\N	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	17	\N	1	2014-03-13 00:00:00	456		1.3	Вес исходный	кг	3	\N	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	18	\N	1	2014-03-13 00:00:00	456		1.4	В настоящее время	кг	3	\N	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	93	\N	1	2014-03-13 00:00:00	456		1.19	Детские инфекции:		\N	1	2	3	\N	\N	95	\N	\N	0	\N
+32/14	20	\N	1	2014-03-13 00:00:00	456		1.36	Дополнительно (анамнез):		\N	\N	2	1	\N	\N	\N	\N	\N	0	\N
+32/14	19	\N	1	2014-03-13 00:00:00	456		1.5	Менархе с 	лет	2	1	2	2	\N	\N	9	\N	\N	1	\N
+32/14	22	\N	1	2014-03-13 00:00:00	456		1.12	Семейное положение		\N	\N	2	2	\N	\N	11	\N	\N	0	\N
+32/14	38	\N	1	2014-03-13 00:00:00	456		1.34	Аллергические реакции:		\N	1	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	21	\N	1	2014-03-13 00:00:00	456		1.13	Брак по счету		2	0	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	24	\N	1	2014-03-13 00:00:00	456		1.14	Муж	лет	2	\N	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	39	\N	1	2014-03-13 00:00:00	456		1.33	Черепно-мозговые травмы:		\N	1	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	40	\N	1	2014-03-13 00:00:00	456		1.32	Гемотрансфузии:		\N	1	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	25	\N	1	2014-03-13 00:00:00	456		1.16	Заболевания у мужа:		\N	1	2	1	\N	\N	\N	\N	\N	0	\N
+32/14	14	\N	1	2014-03-13 00:00:00	456		1.11	Начало половой жизни с	лет	2	1	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	127	\N	1	2014-03-13 00:00:00	456		1.7	через	дней	4	0	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	26	\N	1	2014-03-13 00:00:00	456		1.17	Внебрачные дети		\N	1	2	2	\N	\N	10	\N	\N	0	\N
+32/14	41	\N	1	2014-03-13 00:00:00	456		1.31	Перенесенные операции:		\N	1	2	1	\N	\N	\N	\N	\N	0	\N
+32/14	37	\N	1	2014-03-13 00:00:00	456		1.35	Наследственность:		\N	1	2	3	\N	\N	15	\N	\N	0	\N
+32/14	95	\N	1	2014-03-13 00:00:00	456		1.21	Гинекологические заболевания		\N	1	2	3	\N	\N	93	\N	\N	0	\N
+32/14	107	\N	1	2014-03-13 00:00:00	456		1.28	Лечение ИППП		\N	0	2	2	\N	\N	102	\N	\N	0	\N
+32/14	81	\N	1	2014-03-13 00:00:00	456		1.20	Хронические заболевания		\N	1	2	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["Сердечно-сосудистая система:","Желудочно-кишечный тракт:","Мочевыводящая система:","Опорно-двигательная система:","Нервная система:","Орган зрения:","Онкологические заболевания:","Состояние после:"],"numCols":"2","numRows":"8"}
+32/14	100	\N	1	2014-03-13 00:00:00	456		1.29	Гормональная терапия		\N	1	2	1	\N	\N	\N	\N	\N	0	\N
+32/14	101	\N	1	2014-03-13 00:00:00	456		1.22	лечение эрозии		\N	0	2	2	\N	\N	96	\N	\N	0	\N
+32/14	102	\N	1	2014-03-13 00:00:00	456		1.23	Лечение дисплазии		\N	0	2	2	\N	\N	97	\N	\N	0	\N
+32/14	104	\N	1	2014-03-13 00:00:00	456		1.25	Лечение миомы		\N	0	2	2	\N	\N	99	\N	\N	0	\N
+32/14	105	\N	1	2014-03-13 00:00:00	456		1.26	Лечение андексита		\N	0	2	2	\N	\N	100	\N	\N	0	\N
+32/14	106	\N	1	2014-03-13 00:00:00	456		1.27	Лечение полипов		\N	0	2	2	\N	\N	101	\N	\N	0	\N
+32/14	108	\N	1	2014-03-13 00:00:00	456		1.30	Вирусные заболевания		\N	1	2	4	\N	\N	\N	\N	\N	0	{"cols":["не обнаружен","ДНК вирус","антитела"],"rows":["Туберкулез","ВИЧ, Leus","Гепатит А","Гепатит В","Гепатит С"],"numCols":"3","numRows":"6"}
+32/14	103	\N	1	2014-03-13 00:00:00	456		1.24	Лечение кисты		\N	0	2	2	\N	\N	98	\N	\N	0	\N
+32/14	128	\N	1	2014-03-13 00:00:00	456		1.8	задержки до 		4	0	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	129	\N	1	2014-03-13 00:00:00	456		1.9	до		20	0	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	130	\N	1	2014-03-13 00:00:00	456		1.10	по	дней, 	4	0	2	0	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Беременности	1.18	\N	\N	\N	0	2	-1	1	Осмотр гинеколога	\N	0	12	\N	\N
+32/14	85	\N	1	2014-03-13 00:00:00	456		1.18.1	Всего:	из них:	3	1	12	0	\N	\N	\N	\N	\N	0	\N
+32/14	27	\N	1	2014-03-13 00:00:00	456		1.18.2	Роды		3	\N	12	0	\N	\N	\N	\N	\N	0	\N
+32/14	29	\N	1	2014-03-13 00:00:00	456		1.18.4	Самопроизвольные выкидыши		3	\N	12	0	\N	\N	\N	\N	\N	0	\N
+32/14	28	\N	1	2014-03-13 00:00:00	456		1.18.3	Аборты		3	0	12	0	\N	\N	\N	\N	\N	0	\N
+32/14	30	\N	1	2014-03-13 00:00:00	456		1.18.5	Неразвивающиеся беременности		3	\N	12	0	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Беременность	1.18.7	\N	\N	\N	0	12	-1	1	Осмотр гинеколога	\N	1	13	\N	\N
+32/14	33	\N	1	2014-03-13 00:00:00	456		1.18.7.4	в	году	4	\N	13	0	\N	\N	\N	\N	\N	0	\N
+32/14	86	\N	1	2014-03-13 00:00:00	456		1.18.7.5	Исход беременности		\N	1	13	2	\N	\N	90	\N	\N	0	\N
+32/14	89	\N	1	2014-03-13 00:00:00	456		1.18.7.6	аборт в сроке	недель	3	0	13	0	\N	\N	\N	\N	\N	0	\N
+32/14	88	\N	1	2014-03-13 00:00:00	456		1.18.7.8	Осложнения		\N	0	13	2	\N	\N	87	\N	\N	0	\N
+32/14	87	\N	1	2014-03-13 00:00:00	456		1.18.7.7	Аборт тип		\N	0	13	2	\N	\N	86	\N	\N	1	\N
+32/14	92	\N	1	2014-03-13 00:00:00	456		1.18.7.11	Показания:		\N	0	13	2	\N	\N	91	\N	\N	0	\N
+32/14	96	\N	1	2014-03-13 00:00:00	456		1.18.7.9	Роды тип		\N	0	13	2	\N	\N	88	\N	\N	1	\N
+32/14	91	\N	1	2014-03-13 00:00:00	456		1.18.7.13	Причина		\N	0	13	3	\N	\N	92	\N	\N	0	\N
+32/14	90	\N	1	2014-03-13 00:00:00	456		1.18.7.12	Осложнения:		\N	0	13	3	\N	\N	89	\N	\N	0	\N
+32/14	32	\N	1	2014-03-13 00:00:00	456		1.18.7.1	№		3	\N	13	0	\N	\N	\N	\N	\N	0	\N
+32/14	97	\N	1	2014-03-13 00:00:00	456		1.18.7.14	в сроке	недель	3	0	13	0	\N	\N	\N	\N	\N	0	\N
+32/14	98	\N	1	2014-03-13 00:00:00	456		1.18.7.15	Ребенок: вес	грамм, 	5	0	13	0	\N	\N	\N	\N	\N	0	\N
+32/14	99	\N	1	2014-03-13 00:00:00	456		1.18.7.16	Ребенок рост:	см. 	3	0	13	0	\N	\N	\N	\N	\N	0	\N
+32/14	34	\N	1	2014-03-13 00:00:00	456		1.18.7.2	Наступила		\N	\N	13	2	\N	\N	14	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Осмотр акушера-гинеколога	2	\N	\N	\N	0	-1	-1	5	Шаблон ведения беременности	\N	0	26	\N	\N
+32/14	131	\N	1	2014-03-13 00:00:00	456		2.1	Группа крови		\N	1	26	2	\N	\N	20	\N	\N	1	\N
+32/14	132	\N	1	2014-03-13 00:00:00	456		2.2	Антитела		\N	0	26	2	\N	\N	41	\N	\N	0	\N
+32/14	133	\N	1	2014-03-13 00:00:00	456		2.3	Групповые антитела		\N	0	26	2	\N	\N	41	\N	\N	0	\N
+32/14	134	\N	1	2014-03-13 00:00:00	456		2.4	Данная беременность	Протекает:	\N	1	26	0	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	I триместр	2.6	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	5	\N	\N
+32/14	47	\N	1	2014-03-13 00:00:00	456		2.6.7	Скриннинг		\N	1	5	2	\N	\N	36	\N	\N	0	\N
+32/14	48	\N	1	2014-03-13 00:00:00	456		2.6.8	Прием препаратов		\N	1	5	3	\N	\N	37	\N	\N	0	\N
+32/14	43	\N	1	2014-03-13 00:00:00	456		2.6.1	Угроза прерывания беременности:		\N	1	5	2	\N	\N	35	\N	\N	0	\N
+32/14	44	\N	1	2014-03-13 00:00:00	456		2.6.2	В сроке	нед.	\N	0	5	0	\N	\N	\N	\N	\N	0	\N
+32/14	45	\N	1	2014-03-13 00:00:00	456		2.6.5	Беременность I	нед.	\N	0	5	0	\N	\N	\N	\N	\N	0	\N
+32/14	46	\N	1	2014-03-13 00:00:00	456		2.6.4	УЗИ  I триместра дата	:	10	1	5	0	\N	\N	\N	\N	\N	0	\N
+32/14	135	\N	1	2014-03-13 00:00:00	456		2.6.3	Стационарное (амбулаторное) лечение		\N	0	5	1	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Консультации специалистов	2.6.10	\N	\N	\N	0	5	-1	5	Шаблон ведения беременности	\N	0	23	\N	\N
+32/14	50	\N	1	2014-03-13 00:00:00	456		2.6.10.2	ЛОР:		\N	1	23	0	\N	\N	\N	\N	\N	0	\N
+32/14	49	\N	1	2014-03-13 00:00:00	456		2.6.10.1	Терапевт		\N	1	23	0	\N	\N	\N	\N	\N	0	\N
+32/14	51	\N	1	2014-03-13 00:00:00	456		2.6.10.3	Окулист:		\N	1	23	1	\N	\N	\N	\N	\N	0	\N
+32/14	52	\N	1	2014-03-13 00:00:00	456		2.6.10.4	Невролог		\N	1	23	1	\N	\N	\N	\N	\N	0	\N
+32/14	53	\N	1	2014-03-13 00:00:00	456		2.6.10.5	Эндокринолог:		\N	1	23	1	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	ИППП:	2.6.11	\N	\N	\N	0	5	-1	5	Шаблон ведения беременности	\N	0	24	\N	\N
+32/14	59	\N	1	2014-03-13 00:00:00	456		2.6.11.6	ВПЧ:		\N	1	24	2	\N	\N	38	\N	\N	0	\N
+32/14	55	\N	1	2014-03-13 00:00:00	456		2.6.11.2	Микоплазма:		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+32/14	54	\N	1	2014-03-13 00:00:00	456		2.6.11.1	Хламидии:		\N	1	24	2	\N	\N	38	\N	\N	0	\N
+32/14	56	\N	1	2014-03-13 00:00:00	456		2.6.11.3	Уреаплазма:		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+32/14	57	\N	1	2014-03-13 00:00:00	456		2.6.11.4	ВПГ:		\N	1	24	2	\N	\N	38	\N	\N	0	\N
+32/14	60	\N	1	2014-03-13 00:00:00	456		2.6.11.7	Другие		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+32/14	58	\N	1	2014-03-13 00:00:00	456		2.6.11.5	ЦМВ:		\N	1	24	2	\N	\N	38	\N	\N	1	\N
+32/14	61	\N	1	2014-03-13 00:00:00	456		2.6.11.8	 Если обнаружено		\N	0	24	0	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	II триместр	2.7	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	6	\N	\N
+32/14	62	\N	1	2014-03-13 00:00:00	456		2.7.1	Протекал		\N	0	6	1	\N	\N	\N	\N	\N	0	\N
+32/14	136	\N	1	2014-03-13 00:00:00	456		2.7.2	Угроза прерывания беременности:		\N	1	6	2	\N	\N	35	\N	\N	0	\N
+32/14	137	\N	1	2014-03-13 00:00:00	456		2.7.3	В сроке	нед.	3	0	6	0	\N	\N	\N	\N	\N	0	\N
+32/14	139	\N	1	2014-03-13 00:00:00	456		2.7.5	УЗИ II триместра дата		20	1	6	0	\N	\N	\N	\N	\N	0	\N
+32/14	140	\N	1	2014-03-13 00:00:00	456		2.7.6	Беременность II		3	0	6	0	\N	\N	\N	\N	\N	0	\N
+32/14	138	\N	1	2014-03-13 00:00:00	456		2.7.4	Стационарное (амбулаторное) лечение (II)		\N	0	6	1	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	III триместр	2.8	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	7	\N	\N
+32/14	141	\N	1	2014-03-13 00:00:00	456		2.8.1	Угроза прерывания беременности III		\N	1	7	2	\N	\N	35	\N	\N	0	\N
+32/14	142	\N	1	2014-03-13 00:00:00	456		2.8.2	в сроке (III)	нед.	3	0	7	0	\N	\N	\N	\N	\N	0	\N
+32/14	143	\N	1	2014-03-13 00:00:00	456		2.8.3	Стационарное-амбулаторное лечение (III)		\N	1	7	1	\N	\N	\N	\N	\N	0	\N
+32/14	144	\N	1	2014-03-13 00:00:00	456		2.8.4	УЗИ III триместр дата		20	1	7	0	\N	\N	\N	\N	\N	0	\N
+32/14	145	\N	1	2014-03-13 00:00:00	456		2.8.5	Беременность III	нед.	3	0	7	0	\N	\N	\N	\N	\N	0	\N
+32/14	146	\N	1	2014-03-13 00:00:00	456		2.8.6	Предлежание		\N	1	7	2	\N	\N	39	\N	\N	0	\N
+32/14	147	\N	1	2014-03-13 00:00:00	456		2.8.7	Положение плода		\N	0	7	2	\N	\N	29	\N	\N	0	\N
+32/14	148	\N	1	2014-03-13 00:00:00	456		2.8.8	ФПН		\N	1	7	2	\N	\N	109	\N	\N	0	\N
+32/14	149	\N	1	2014-03-13 00:00:00	456		2.8.9	Синдром задержки роста плода (СЗРП):		\N	0	7	2	\N	\N	108	\N	\N	0	\N
+32/14	150	\N	1	2014-03-13 00:00:00	456		2.8.10	Признаки диабетической фетопатии: Толщина ПЖК до:		5	1	7	0	\N	\N	\N	\N	\N	0	\N
+32/14	151	\N	1	2014-03-13 00:00:00	456		2.8.12	Размеры печени:		\N	1	7	2	\N	\N	67	\N	\N	1	\N
+32/14	152	\N	1	2014-03-13 00:00:00	456		2.8.13	Макросомия плода:		\N	1	7	2	\N	\N	35	\N	\N	1	\N
+32/14	153	\N	1	2014-03-13 00:00:00	456		2.8.14	Количество околоплодных вод:		\N	1	7	2	\N	\N	44	\N	\N	1	\N
+32/14	154	\N	1	2014-03-13 00:00:00	456		2.8.15	Предполагаемая масса плода:		5	1	7	0	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Объективно (беременность) :	2.9	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	21	\N	\N
+32/14	64	\N	1	2014-03-13 00:00:00	456		2.9.2	Жалобы		\N	1	21	3	\N	\N	17	\N	\N	0	\N
+32/14	65	\N	1	2014-03-13 00:00:00	456		2.9.3	Дыхание		\N	1	21	2	\N	\N	18	\N	\N	0	\N
+32/14	66	\N	1	2014-03-13 00:00:00	456		2.9.4	Тоны сердца:		\N	0	21	2	\N	\N	19	\N	\N	0	\N
+32/14	67	\N	1	2014-03-13 00:00:00	456		2.9.5	АД	мм.рт.ст.	20	1	21	0	\N	\N	\N	\N	\N	0	\N
+32/14	69	\N	1	2014-03-13 00:00:00	456		2.9.7	ВДМ:	см.	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+32/14	71	\N	1	2014-03-13 00:00:00	456		2.9.9	Матка:		\N	1	21	2	\N	\N	49	\N	\N	0	\N
+32/14	73	\N	1	2014-03-13 00:00:00	456		2.9.11	Предлежит:		\N	1	21	2	\N	\N	39	\N	\N	0	\N
+32/14	72	\N	1	2014-03-13 00:00:00	456		2.9.10	Положение плода:		\N	1	21	2	\N	\N	29	\N	\N	0	\N
+32/14	79	\N	1	2014-03-13 00:00:00	456		2.9.20	Патозность		\N	0	21	2	\N	\N	34	\N	\N	0	\N
+32/14	74	\N	1	2014-03-13 00:00:00	456		2.9.12	Шевеление плода		\N	1	21	2	\N	\N	30	\N	\N	0	\N
+32/14	75	\N	1	2014-03-13 00:00:00	456		2.9.13	Сердцебиение плода		\N	0	21	2	\N	\N	31	\N	\N	0	\N
+32/14	76	\N	1	2014-03-13 00:00:00	456		2.9.17	Выделения из половых путей		\N	1	21	2	\N	\N	27	\N	\N	0	\N
+32/14	77	\N	1	2014-03-13 00:00:00	456		2.9.18	Физиологические отправления:		\N	1	21	0	\N	\N	\N	\N	\N	0	\N
+32/14	78	\N	1	2014-03-13 00:00:00	456		2.9.19	Отеки:		\N	1	21	2	\N	\N	33	\N	\N	0	\N
+32/14	68	\N	1	2014-03-13 00:00:00	456		2.9.6	Пульс	уд. в минуту	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+32/14	70	\N	1	2014-03-13 00:00:00	456		2.9.8	ОЖ:	см.	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+32/14	63	\N	1	2014-03-13 00:00:00	456		2.9.1	Состояние		\N	1	21	2	\N	\N	16	\N	\N	1	\N
+32/14	125	\N	1	2014-03-13 00:00:00	456		2.9.14	до	уд. в минуту	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Влагалищное исследование:беременной	2.10	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	22	\N	\N
+32/14	155	\N	1	2014-03-13 00:00:00	456		2.10.2	Оволосение:		\N	1	22	2	\N	\N	21	\N	\N	0	\N
+32/14	156	\N	1	2014-03-13 00:00:00	456		2.10.3	Осмотр шейки матки:		\N	1	22	3	\N	\N	23	\N	\N	1	\N
+32/14	157	\N	1	2014-03-13 00:00:00	456		2.10.5	Шейка матки:		\N	1	22	2	\N	\N	42	\N	\N	1	\N
+32/14	158	\N	1	2014-03-13 00:00:00	456		2.10.6	Длиной 		0	0	22	0	\N	\N	\N	\N	\N	0	\N
+32/14	159	\N	1	2014-03-13 00:00:00	456		2.10.7	Консистенция:		\N	1	22	2	\N	\N	43	\N	\N	1	\N
+32/14	160	\N	1	2014-03-13 00:00:00	456		2.10.9	Цервикальный канал:		\N	1	22	2	\N	\N	24	\N	\N	1	\N
+32/14	161	\N	1	2014-03-13 00:00:00	456		2.10.11	Тело матки:		\N	1	22	2	\N	\N	28	\N	\N	1	\N
+32/14	162	\N	1	2014-03-13 00:00:00	456		2.10.12	увеличено до:	недель беременности	4	0	22	0	\N	\N	\N	\N	\N	0	\N
+32/14	163	\N	1	2014-03-13 00:00:00	456		2.10.14	Воды:		\N	1	22	2	\N	\N	25	\N	\N	1	\N
+32/14	164	\N	1	2014-03-13 00:00:00	456		2.10.15	Предлежит:		\N	1	22	2	\N	\N	39	\N	\N	1	\N
+32/14	165	\N	1	2014-03-13 00:00:00	456		2.10.16	Выделения из половых путей:		\N	1	22	2	\N	\N	27	\N	\N	1	\N
+32/14	80	\N	1	2014-03-13 00:00:00	456		2.10.1	Наружные половые органы сформированы:		\N	1	22	2	\N	\N	81	\N	\N	1	\N
+32/14	-1	\N	1	2014-03-13 00:00:00	456	Осмотр  консультанта по патологии бронхо-легочной системы 	5	\N	\N	\N	0	-1	-1	7	Осмотр консультанта по патологии бронхо-легочной системы	\N	0	27	\N	\N
+5/13	77	\N	1	2014-03-17 00:00:00	469		2.9.18	Физиологические отправления:		\N	1	21	0	\N	\N	\N	\N	\N	0	\N
+5/13	78	\N	1	2014-03-17 00:00:00	469		2.9.19	Отеки:		\N	1	21	2	\N	\N	33	\N	\N	0	\N
+5/13	68	\N	1	2014-03-17 00:00:00	469		2.9.6	Пульс	уд. в минуту	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+5/13	70	\N	1	2014-03-17 00:00:00	469		2.9.8	ОЖ:	см.	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+5/13	63	\N	1	2014-03-17 00:00:00	469		2.9.1	Состояние		\N	1	21	2	\N	\N	16	\N	\N	1	\N
+5/13	125	\N	1	2014-03-17 00:00:00	469		2.9.14	до	уд. в минуту	4	0	21	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Влагалищное исследование:беременной	2.10	\N	\N	\N	0	26	-1	5	Шаблон ведения беременности	\N	0	22	\N	\N
+5/13	155	\N	1	2014-03-17 00:00:00	469		2.10.2	Оволосение:		\N	1	22	2	\N	\N	21	\N	\N	0	\N
+5/13	156	\N	1	2014-03-17 00:00:00	469		2.10.3	Осмотр шейки матки:		\N	1	22	3	\N	\N	23	\N	\N	1	\N
+5/13	157	\N	1	2014-03-17 00:00:00	469		2.10.5	Шейка матки:		\N	1	22	2	\N	\N	42	\N	\N	1	\N
+5/13	158	\N	1	2014-03-17 00:00:00	469		2.10.6	Длиной 		0	0	22	0	\N	\N	\N	\N	\N	0	\N
+5/13	159	\N	1	2014-03-17 00:00:00	469		2.10.7	Консистенция:		\N	1	22	2	\N	\N	43	\N	\N	1	\N
+5/13	160	\N	1	2014-03-17 00:00:00	469		2.10.9	Цервикальный канал:		\N	1	22	2	\N	\N	24	\N	\N	1	\N
+5/13	161	\N	1	2014-03-17 00:00:00	469		2.10.11	Тело матки:		\N	1	22	2	\N	\N	28	\N	\N	1	\N
+5/13	162	\N	1	2014-03-17 00:00:00	469		2.10.12	увеличено до:	недель беременности	4	0	22	0	\N	\N	\N	\N	\N	0	\N
+5/13	163	\N	1	2014-03-17 00:00:00	469		2.10.14	Воды:		\N	1	22	2	\N	\N	25	\N	\N	1	\N
+5/13	164	\N	1	2014-03-17 00:00:00	469		2.10.15	Предлежит:		\N	1	22	2	\N	\N	39	\N	\N	1	\N
+5/13	165	\N	1	2014-03-17 00:00:00	469		2.10.16	Выделения из половых путей:		\N	1	22	2	\N	\N	27	\N	\N	1	\N
+5/13	80	\N	1	2014-03-17 00:00:00	469		2.10.1	Наружные половые органы сформированы:		\N	1	22	2	\N	\N	81	\N	\N	1	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Осмотр  консультанта по патологии бронхо-легочной системы 	5	\N	\N	\N	0	-1	-1	7	Осмотр консультанта по патологии бронхо-легочной системы	\N	0	27	\N	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Результаты обследований	3	\N	\N	\N	0	-1	-1	8	Данные обследования	\N	0	20	\N	\N
+5/13	42	\N	1	2014-03-17 00:00:00	469		3.4	Данная беременность		\N	1	20	2	\N	\N	14	\N	\N	1	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Гормоны крови	3.1	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	33	\N	\N
+5/13	281	\N	1	2014-03-17 00:00:00	469		3.1.1	от	(д.м.ц)	20	1	33	0	\N	\N	\N	\N	\N	0	\N
+5/13	282	\N	1	2014-03-17 00:00:00	469		3.1.2	показатели		\N	1	33	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["ЛГ","ФСГ","Пролактин","Е2","ДГЭА-С","17-ОП","Тестостерон общ.","ГСПГ","Тестостерон св.","Кортизол","Андростендион","Дигидротестостерон"],"numCols":"1","numRows":"12"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Гормоны щитовидной железы	3.2	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	34	\N	\N
+5/13	279	\N	1	2014-03-17 00:00:00	469		3.2.1	от		\N	1	34	0	\N	\N	\N	\N	\N	0	\N
+5/13	280	\N	1	2014-03-17 00:00:00	469		3.2.2	Показатели		\N	1	34	4	\N	\N	\N	\N	\N	0	{"cols":["ТТГ","Т4св","Ат-ТПО"],"rows":[],"numCols":"3","numRows":"1"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	УЗИ малого таза	3.3	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	35	\N	\N
+5/13	274	\N	1	2014-03-17 00:00:00	469		3.3.2	Матка		\N	1	35	0	\N	\N	\N	\N	\N	0	\N
+5/13	275	\N	1	2014-03-17 00:00:00	469		3.3.3	М-Эхо		\N	1	35	0	\N	\N	\N	\N	\N	0	\N
+5/13	276	\N	1	2014-03-17 00:00:00	469		3.3.4	Правый яичник		\N	1	35	0	\N	\N	\N	\N	\N	0	\N
+5/13	277	\N	1	2014-03-17 00:00:00	469		3.3.5	Левый яичник		\N	1	35	0	\N	\N	\N	\N	\N	0	\N
+5/13	278	\N	1	2014-03-17 00:00:00	469		3.3.6	Объемных образований в млом тазу		\N	1	35	2	\N	\N	38	\N	\N	1	\N
+5/13	273	\N	1	2014-03-17 00:00:00	469		3.3.1	от	(д.м.ц)	20	1	35	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Мазок на флору	3.12	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	43	\N	\N
+5/13	256	\N	1	2014-03-17 00:00:00	469		3.12.1	от		20	1	43	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-16 05:40:00	469	Гормоны крови	3.17	\N	\N	\N	0	20	-1	8	Данные обследования	\N	0	33	\N	\N
+5/13	257	\N	1	2014-03-17 00:00:00	469		3.12.2	Показатели		\N	1	43	4	\N	\N	\N	\N	\N	0	{"cols":["\\"С\\"","\\"V\\"","\\"U\\""],"rows":["Лейкоциты","Эпителий","Флора","Neisseria gonor.","Трихомонада","SOOR","Ключевые клетки"],"numCols":"3","numRows":"7"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	ПГТТ с 75 г глюкозы	3.11	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	42	\N	\N
+5/13	258	\N	1	2014-03-17 00:00:00	469		3.11.1	от		20	1	42	0	\N	\N	\N	\N	\N	0	\N
+5/13	259	\N	1	2014-03-17 00:00:00	469		3.11.2	Показатели		\N	1	42	4	\N	\N	\N	\N	\N	0	{"cols":["0 мин","120 мин"],"rows":["гликемия","инсулин"],"numCols":"2","numRows":"2"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Биохимия крови	3.10	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	41	\N	\N
+5/13	260	\N	1	2014-03-17 00:00:00	469		3.10.1	от		20	1	41	0	\N	\N	\N	\N	\N	0	\N
+5/13	261	\N	1	2014-03-17 00:00:00	469		3.10.2	Показатели		\N	1	41	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["АЛТ","АСТ","ЦПФ","Билирубин общ.","Прямой","ГТТ","Глюкозо","alfa-амилаза","Гликированный Нв","Общ. белок","Креатинин","Мочевина","Холестерин","Триглецириды","ЛПВП","ЛПНП","Коэф. атер."],"numCols":"1","numRows":"17"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Мутации генов гемостаза	3.9	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	40	\N	\N
+5/13	262	\N	1	2014-03-17 00:00:00	469		3.9.1	jn		20	1	40	0	\N	\N	\N	\N	\N	0	\N
+5/13	263	\N	1	2014-03-17 00:00:00	469		3.9.2	Показатели:		\N	1	40	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["Протромбин G/G","МТГФР С/С","Leiden G/C","PAI-1 5G/5G","Гомоцистеин"],"numCols":"1","numRows":"5"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	АТ к ХГЧ	3.8	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	39	\N	\N
+5/13	264	\N	1	2014-03-17 00:00:00	469		3.8.1	от		20	1	39	0	\N	\N	\N	\N	\N	0	\N
+5/13	265	\N	1	2014-03-17 00:00:00	469		3.8.2	Показатели		\N	1	39	4	\N	\N	\N	\N	\N	0	{"cols":["IgM","LgG"],"rows":[],"numCols":"2","numRows":"1"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	АТ к фосфолипидам	3.7	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	38	\N	\N
+5/13	266	\N	1	2014-03-17 00:00:00	469		3.7.1	от 		20	1	38	0	\N	\N	\N	\N	\N	0	\N
+5/13	267	\N	1	2014-03-17 00:00:00	469		3.7.2	Показатели		\N	1	38	4	\N	\N	\N	\N	\N	0	{"cols":["LgM","LgG"],"rows":[],"numCols":"2","numRows":"1"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Гемостазиограмма	3.6	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	37	\N	\N
+5/13	268	\N	1	2014-03-17 00:00:00	469		3.6.1	до		20	1	37	0	\N	\N	\N	\N	\N	0	\N
+5/13	270	\N	1	2014-03-17 00:00:00	469		3.6.2	показатели		\N	1	37	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["АЧТВ","МНО","Протромбин","Фибриноген","Тромбиновое время","Протромбиновое время","Антитромбин-III","Волч. антикоагулянт","D-димер","Протеин С","Протеин S","РФМК"],"numCols":"1","numRows":"12"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Клинический анализ крови	3.5	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	44	\N	\N
+5/13	271	\N	1	2014-03-17 00:00:00	469		3.5.1	от 		20	1	44	0	\N	\N	\N	\N	\N	0	\N
+5/13	272	\N	1	2014-03-17 00:00:00	469		3.5.2	Показатели		\N	1	44	4	\N	\N	\N	\N	\N	0	{"cols":[],"rows":["Гемоглобин","Эритроциты","Лейкоциты","формула","Тромбоциты","СОЭ"],"numCols":"1","numRows":"6"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Мазок на ИППП (ПЦР)	3.13	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	45	\N	\N
+5/13	252	\N	1	2014-03-17 00:00:00	469		3.13.4	Уреаплазма		\N	1	45	2	\N	\N	133	\N	\N	0	\N
+5/13	249	\N	1	2014-03-17 00:00:00	469		3.13.1	от		20	1	45	0	\N	\N	\N	\N	\N	0	\N
+5/13	250	\N	1	2014-03-17 00:00:00	469		3.13.2	\\хламидия		\N	1	45	2	\N	\N	133	\N	\N	0	\N
+5/13	251	\N	1	2014-03-17 00:00:00	469		3.13.3	Микоплазма		\N	1	45	2	\N	\N	133	\N	\N	0	\N
+5/13	253	\N	1	2014-03-17 00:00:00	469		3.13.5	ЦМВ		\N	1	45	2	\N	\N	133	\N	\N	0	\N
+5/13	254	\N	1	2014-03-17 00:00:00	469		3.13.6	ВПГ 1,2		\N	1	45	2	\N	\N	133	\N	\N	0	\N
+5/13	255	\N	1	2014-03-17 00:00:00	469		3.13.7	ВПЧ выс.онког. риска		\N	1	45	2	\N	\N	133	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Мазок на цитологию	3.14	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	46	\N	\N
+5/13	243	\N	1	2014-03-17 00:00:00	469		3.14.1	от		20	1	46	0	\N	\N	\N	\N	\N	0	\N
+5/13	244	\N	1	2014-03-17 00:00:00	469		3.14.2	ЦЭ		\N	1	46	0	\N	\N	\N	\N	\N	0	\N
+5/13	245	\N	1	2014-03-17 00:00:00	469		3.14.3	МПЭ		\N	1	46	0	\N	\N	\N	\N	\N	0	\N
+5/13	246	\N	1	2014-03-17 00:00:00	469		3.14.4	Атипических клеток		\N	1	46	2	\N	\N	132	\N	\N	0	\N
+5/13	247	\N	1	2014-03-17 00:00:00	469		3.14.5	Флора		\N	1	46	0	\N	\N	\N	\N	\N	0	\N
+5/13	248	\N	1	2014-03-17 00:00:00	469		3.14.6	Лейкоциты		20	0	46	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Кровь на TORCH	3.15	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	47	\N	\N
+5/13	241	\N	1	2014-03-17 00:00:00	469		3.15.1	от		20	1	47	0	\N	\N	\N	\N	\N	0	\N
+5/13	242	\N	1	2014-03-17 00:00:00	469		3.15.2	Показатели:		\N	1	47	4	\N	\N	\N	\N	\N	0	{"cols":["LgM","LgG"],"rows":["ЦМВ","ВЭБ","Токсоплазма","ВПГ 1","ВПГ 2","Краснуха"],"numCols":"2","numRows":"6"}
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Спермограмма мужа	3.16	\N	\N	\N	0	20	-1	8	Данные обследования	\N	1	48	\N	\N
+5/13	232	\N	1	2014-03-17 00:00:00	469		3.16.1	от		20	1	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	233	\N	1	2014-03-17 00:00:00	469		3.16.2	Количество		20	1	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	235	\N	1	2014-03-17 00:00:00	469		3.16.4	Подвижность "в"		20	0	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	236	\N	1	2014-03-17 00:00:00	469		3.16.5	"а+в"		20	0	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	234	\N	1	2014-03-17 00:00:00	469		3.16.3	Подвижность "а"		20	1	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	237	\N	1	2014-03-17 00:00:00	469		3.16.6	Патологические		20	1	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	238	\N	1	2014-03-17 00:00:00	469		3.16.7	Жизнеспособность		\N	0	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	239	\N	1	2014-03-17 00:00:00	469		3.16.8	Лейкоциты		20	1	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	240	\N	1	2014-03-17 00:00:00	469		3.16.9	Агрегация, агглютинация		\N	1	48	0	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Жалобы(гинекологический прием)	4	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	25	\N	\N
+5/13	117	\N	1	2014-03-17 00:00:00	469		4.12	Отсутствие беременности в течение :	лет	3	1	25	0	\N	\N	\N	\N	\N	0	\N
+5/13	115	\N	1	2014-03-17 00:00:00	469		4.10	Болевой синдром:		\N	1	25	3	\N	\N	55	\N	\N	0	\N
+5/13	114	\N	1	2014-03-17 00:00:00	469		4.6	Изменение веса:		\N	1	25	2	\N	\N	54	\N	\N	0	\N
+5/13	113	\N	1	2014-03-17 00:00:00	469		4.5	Симптомы гиперандрогении:		\N	1	25	3	\N	\N	53	\N	\N	0	\N
+5/13	112	\N	1	2014-03-17 00:00:00	469		4.4	Межменструальные кровотечения:		\N	1	25	3	\N	\N	52	\N	\N	0	\N
+5/13	111	\N	1	2014-03-17 00:00:00	469		4.3	Предменструальный синдром:		\N	1	25	3	\N	\N	51	\N	\N	0	\N
+5/13	110	\N	1	2014-03-17 00:00:00	469		4.2	Нарушения менструального цикла:		\N	1	25	3	\N	\N	50	\N	\N	0	\N
+5/13	116	\N	1	2014-03-17 00:00:00	469		4.11	Интенсивность болей:		\N	0	25	3	\N	\N	63	\N	\N	0	\N
+5/13	122	\N	1	2014-03-17 00:00:00	469		4.18	Симптомы гиперактивного мочевого пузыря:		\N	1	25	3	\N	\N	60	\N	\N	0	\N
+5/13	123	\N	1	2014-03-17 00:00:00	469		4.19	Истинное недержание мочи при напряжении (стрессовое):		\N	1	25	3	\N	\N	61	\N	\N	0	\N
+5/13	121	\N	1	2014-03-17 00:00:00	469		4.17	Симптому урогенитальной атрофии:		\N	1	25	3	\N	\N	59	\N	\N	0	\N
+5/13	120	\N	1	2014-03-17 00:00:00	469		4.16	Климактерические нарушения:		\N	1	25	3	\N	\N	58	\N	\N	0	\N
+5/13	118	\N	1	2014-03-17 00:00:00	469		4.14	Невынашивание беременности:		\N	1	25	2	\N	\N	56	\N	\N	0	\N
+5/13	109	\N	1	2014-03-17 00:00:00	469		4.1	Выделения из половых путей:		\N	1	25	3	\N	\N	27	\N	\N	0	\N
+5/13	124	\N	1	2014-03-17 00:00:00	469		4.20	Опущение стенок влагалища:		\N	0	25	0	\N	\N	\N	\N	\N	0	\N
+5/13	119	\N	1	2014-03-17 00:00:00	469		4.15	Осложнения после удаления плодного яйца:		\N	0	25	2	\N	\N	57	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Объективно (гинекология)	7	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	29	\N	\N
+5/13	166	\N	1	2014-03-17 00:00:00	469		7.1	Состояние:		\N	1	29	2	\N	\N	16	\N	\N	0	\N
+5/13	167	\N	1	2014-03-17 00:00:00	469		7.2	Рост	(см), 	5	1	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	168	\N	1	2014-03-17 00:00:00	469		7.3	Вес	(кг)	5	0	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	169	\N	1	2014-03-17 00:00:00	469		7.4	ИМТ	,	10	0	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	170	\N	1	2014-03-17 00:00:00	469		7.5	ОТ/ОБ		5	0	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	171	\N	1	2014-03-17 00:00:00	469		7.6	АД	мм.рт.ст.	20	1	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	172	\N	1	2014-03-17 00:00:00	469		7.7	Пульс		4	0	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	173	\N	1	2014-03-17 00:00:00	469		7.9	Пульс ритмика:		\N	0	29	2	\N	\N	110	\N	\N	1	\N
+5/13	174	\N	1	2014-03-17 00:00:00	469		7.10	Кожные покровы и видимые слизистые оболочки:		\N	1	29	3	\N	\N	64	\N	\N	1	\N
+5/13	175	\N	1	2014-03-17 00:00:00	469		7.11	Тоны сердца:		\N	1	29	2	\N	\N	19	\N	\N	0	\N
+5/13	177	\N	1	2014-03-17 00:00:00	469		7.13	при пальпации		\N	0	29	2	\N	\N	67	\N	\N	1	\N
+5/13	176	\N	1	2014-03-17 00:00:00	469		7.12	Щитовидная железа: визуально область шеи:	,	\N	1	29	2	\N	\N	65	\N	\N	1	\N
+5/13	178	\N	1	2014-03-17 00:00:00	469		7.25	Молочные железы:		\N	1	29	2	\N	\N	69	\N	\N	0	\N
+5/13	179	\N	1	2014-03-17 00:00:00	469		7.26	Живот:		\N	0	29	2	\N	\N	70	\N	\N	1	\N
+5/13	180	\N	1	2014-03-17 00:00:00	469		7.27	Живот в акте дыхания:		\N	0	29	2	\N	\N	77	\N	\N	1	\N
+5/13	181	\N	1	2014-03-17 00:00:00	469		7.28	Перистальтика:		\N	0	29	2	\N	\N	111	\N	\N	1	\N
+5/13	182	\N	1	2014-03-17 00:00:00	469		7.29	симптомов раздражения брюшины 		\N	0	29	2	\N	\N	10	\N	\N	1	\N
+5/13	183	\N	1	2014-03-17 00:00:00	469		7.30	Боли в животе:		\N	0	29	2	\N	\N	114	\N	\N	1	\N
+5/13	184	\N	1	2014-03-17 00:00:00	469		7.31	в области		\N	0	29	0	\N	\N	\N	\N	\N	0	\N
+5/13	185	\N	1	2014-03-17 00:00:00	469		7.32	Боли живота		\N	0	29	1	\N	\N	\N	\N	\N	0	\N
+5/13	186	\N	1	2014-03-17 00:00:00	469		7.34	Печень 		\N	1	29	2	\N	\N	67	\N	\N	1	\N
+5/13	187	\N	1	2014-03-17 00:00:00	469		7.35	край печени		\N	0	29	2	\N	\N	80	\N	\N	1	\N
+5/13	188	\N	1	2014-03-17 00:00:00	469		7.36	Селезенка		\N	1	29	2	\N	\N	67	\N	\N	1	\N
+5/13	189	\N	1	2014-03-17 00:00:00	469		7.37	Селезенка		\N	0	29	2	\N	\N	80	\N	\N	1	\N
+5/13	190	\N	1	2014-03-17 00:00:00	469		7.40	Симптом Пастернацкого:		\N	1	29	2	\N	\N	73	\N	\N	1	\N
+5/13	191	\N	1	2014-03-17 00:00:00	469		7.41	Опорно-двигательная система:		\N	1	29	2	\N	\N	74	\N	\N	0	\N
+5/13	192	\N	1	2014-03-17 00:00:00	469		7.42	Физиологические отправления		\N	1	29	3	\N	\N	32	\N	\N	0	\N
+5/13	193	\N	1	2014-03-17 00:00:00	469		7.43	Отеки		\N	1	29	3	\N	\N	33	\N	\N	0	\N
+5/13	194	\N	1	2014-03-17 00:00:00	469		7.45	Дополнительно (объективно гинекология)		\N	1	29	1	\N	\N	\N	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Влагалищные исследования(гинекология)	8	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	30	\N	\N
+5/13	195	\N	1	2014-03-17 00:00:00	469		8.1	Наружные половые органы развиты:		\N	1	30	2	\N	\N	81	\N	\N	1	\N
+5/13	196	\N	1	2014-03-17 00:00:00	469		8.4	Оволосение 		\N	1	30	2	\N	\N	21	\N	\N	1	\N
+5/13	197	\N	1	2014-03-17 00:00:00	469		8.5	Изменения на слизистой наружных половых органов		\N	1	30	2	\N	\N	10	\N	\N	1	\N
+5/13	198	\N	1	2014-03-17 00:00:00	469		8.6	Слизистая		\N	0	30	2	\N	\N	82	\N	\N	0	\N
+5/13	199	\N	1	2014-03-17 00:00:00	469		8.7	Отверстие мочеиспускательного канала: 		\N	1	30	2	\N	\N	83	\N	\N	0	\N
+5/13	200	\N	1	2014-03-17 00:00:00	469		8.8	Промежность		\N	1	30	2	\N	\N	84	\N	\N	0	\N
+5/13	201	\N	1	2014-03-17 00:00:00	469		8.9	Область заднего прохода		\N	1	30	3	\N	\N	85	\N	\N	1	\N
+5/13	202	\N	1	2014-03-17 00:00:00	469		8.10	Половая щель:		\N	1	30	2	\N	\N	116	\N	\N	1	\N
+5/13	203	\N	1	2014-03-17 00:00:00	469		8.11	Леваторы расположены		\N	1	30	2	\N	\N	117	\N	\N	1	\N
+5/13	204	\N	1	2014-03-17 00:00:00	469		8.12	При натуживании за приделы половой щели выходит:		\N	1	30	2	\N	\N	118	\N	\N	1	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	Осмотр при помощи зеркал:	10	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	31	\N	\N
+5/13	205	\N	1	2014-03-17 00:00:00	469		10.1	Слизистая влагалища:		\N	1	31	2	\N	\N	119	\N	\N	1	\N
+5/13	206	\N	1	2014-03-17 00:00:00	469		10.4	Перегородка влагалища:		\N	1	31	2	\N	\N	10	\N	\N	0	\N
+5/13	207	\N	1	2014-03-17 00:00:00	469		10.5	Шейка матки расположена		\N	1	31	2	\N	\N	42	\N	\N	1	\N
+5/13	208	\N	1	2014-03-17 00:00:00	469		10.6	Форма шейки матки:		\N	1	31	2	\N	\N	120	\N	\N	1	\N
+5/13	209	\N	1	2014-03-17 00:00:00	469		10.7	удвоение:		\N	0	31	2	\N	\N	10	\N	\N	1	\N
+5/13	210	\N	1	2014-03-17 00:00:00	469		10.10	Слизистая шейки матки:		\N	1	31	3	\N	\N	121	\N	\N	1	\N
+5/13	211	\N	1	2014-03-17 00:00:00	469		10.11	Цервикальный канал:		\N	1	31	3	\N	\N	122	\N	\N	1	\N
+5/13	212	\N	1	2014-03-17 00:00:00	469		10.12	размером		5	0	31	0	\N	\N	\N	\N	\N	0	\N
+5/13	225	\N	1	2014-03-17 00:00:00	469		10.18	Консистенция		\N	0	31	2	\N	\N	128	\N	\N	0	\N
+5/13	-1	\N	1	2014-03-17 00:00:00	469	При бимануальном исследовании:	11	\N	\N	\N	0	-1	-1	1	Осмотр гинеколога	\N	0	32	\N	\N
+5/13	213	\N	1	2014-03-17 00:00:00	469		11.1	Тело матки:		\N	1	32	2	\N	\N	28	\N	\N	1	\N
+5/13	214	\N	1	2014-03-17 00:00:00	469		11.2	до		5	0	32	0	\N	\N	\N	\N	\N	0	\N
+5/13	215	\N	1	2014-03-17 00:00:00	469		11.5	Тело матки расположено:		\N	1	32	2	\N	\N	123	\N	\N	0	\N
+5/13	216	\N	1	2014-03-17 00:00:00	469		11.6	Подвижность матки		\N	0	32	2	\N	\N	124	\N	\N	0	\N
+5/13	217	\N	1	2014-03-17 00:00:00	469		11.8	Консистенция:		\N	0	32	2	\N	\N	43	\N	\N	0	\N
+5/13	218	\N	1	2014-03-17 00:00:00	469		11.9	Болезненность при пальпации:		\N	1	32	2	\N	\N	10	\N	\N	0	\N
+5/13	219	\N	1	2014-03-17 00:00:00	469		11.11	Своды влагалища::		\N	1	32	2	\N	\N	125	\N	\N	0	\N
+5/13	220	\N	1	2014-03-17 00:00:00	469		11.12	Лигатуры:		\N	0	32	2	\N	\N	10	\N	\N	0	\N
+5/13	221	\N	1	2014-03-17 00:00:00	469		11.13	Образования в сводах		\N	0	32	2	\N	\N	10	\N	\N	0	\N
+5/13	222	\N	1	2014-03-17 00:00:00	469		11.15	Придатки:		\N	1	32	2	\N	\N	126	\N	\N	0	\N
+5/13	223	\N	1	2014-03-17 00:00:00	469		11.16	размер		\N	0	32	2	\N	\N	127	\N	\N	0	\N
+5/13	224	\N	1	2014-03-17 00:00:00	469		11.17	до	см	5	0	32	0	\N	\N	\N	\N	\N	0	\N
+5/13	226	\N	1	2014-03-17 00:00:00	469		11.20	Крестцово-маточные связки:		\N	1	32	2	\N	\N	129	\N	\N	0	\N
+5/13	227	\N	1	2014-03-17 00:00:00	469		11.21	Образования		\N	0	32	3	\N	\N	10	\N	\N	0	\N
+5/13	228	\N	1	2014-03-17 00:00:00	469		11.23	Объемные образования в брюшной полости:		\N	1	32	2	\N	\N	76	\N	\N	0	\N
+5/13	229	\N	1	2014-03-17 00:00:00	469		11.24	размерами		\N	0	32	0	\N	\N	\N	\N	\N	0	\N
+5/13	230	\N	1	2014-03-17 00:00:00	469		11.25	образования:		\N	0	32	2	\N	\N	131	\N	\N	0	\N
+5/13	231	\N	1	2014-03-17 00:00:00	469		11.30	Дополнительно:		\N	0	32	1	\N	\N	\N	\N	\N	0	\N
 \.
+
+
+--
+-- Data for Name: medcard_elements_patient_dependences; Type: TABLE DATA; Schema: mis; Owner: moniiag
+--
+
+COPY medcard_elements_patient_dependences (element_path, dep_element_path, action, medcard_id, greeting_id, value, dep_element_id, element_id) FROM stdin;
+1.6	1.9	2	5/13	469	435	129	126
+1.6	1.10	2	5/13	469	436	130	126
+1.6	1.7	2	5/13	469	436	127	126
+1.21	1.25	2	5/13	469	380	104	95
+1.21	1.22	2	5/13	469	376	101	95
+1.21	1.24	2	5/13	469	379	103	95
+1.21	1.26	2	5/13	469	381	105	95
+1.21	1.23	2	5/13	469	378	102	95
+1.21	1.27	2	5/13	469	382	106	95
+1.18.7.5	1.18.7.6	2	5/13	469	340	89	86
+1.18.7.5	1.18.7.7	2	5/13	469	340	87	86
+1.18.7.5	1.18.7.12	2	5/13	469	339	90	86
+1.18.7.5	1.18.7.8	2	5/13	469	340	88	86
+1.18.7.9	1.18.7.14	2	5/13	469	356	97	96
+2.9.13	2.9.14	2	5/13	469	124	125	75
+1.6	1.9	2	32/14	456	435	129	126
+1.6	1.10	2	32/14	456	436	130	126
+1.6	1.7	2	32/14	456	436	127	126
+1.21	1.25	2	32/14	456	380	104	95
+1.21	1.22	2	32/14	456	376	101	95
+1.21	1.24	2	32/14	456	379	103	95
+1.21	1.26	2	32/14	456	381	105	95
+1.21	1.23	2	32/14	456	378	102	95
+1.21	1.27	2	32/14	456	382	106	95
+1.18.7.5	1.18.7.6	2	32/14	456	340	89	86
+1.18.7.5	1.18.7.7	2	32/14	456	340	87	86
+1.18.7.5	1.18.7.12	2	32/14	456	339	90	86
+1.18.7.5	1.18.7.8	2	32/14	456	340	88	86
+1.18.7.9	1.18.7.14	2	32/14	456	356	97	96
+2.9.13	2.9.14	2	32/14	456	124	125	75
+\.
+
+
+--
+-- Name: medcard_elements_patient_type_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
+--
+
+SELECT pg_catalog.setval('medcard_elements_patient_type_seq', 206, true);
 
 
 --
@@ -4526,11 +5614,18 @@ COPY medcard_elements_patient (medcard_id, element_id, value, history_id, change
 --
 
 COPY medcard_guide_values (id, guide_id, value) FROM stdin;
-35	9	14 лет
-34	9	13 лет
-33	9	12 лет
-32	9	11 лет
-31	9	10 лет
+103	23	другое
+104	24	закрыт
+105	24	проходим для кончика пальца до внутреннего зева
+106	24	проходим для 1 пальца
+107	24	проходим для 2-х пальцев
+108	24	другое
+109	25	Целы
+110	25	Подтекают
+111	25	Другое
+112	22	другое
+113	27	слизистые, светлые
+114	27	кровянистые
 36	10	Есть
 37	10	Нет
 38	11	В браке
@@ -4541,6 +5636,480 @@ COPY medcard_guide_values (id, guide_id, value) FROM stdin;
 43	14	после индукции
 44	14	ЭКО
 45	14	инсеменация
+35	9	14
+34	9	13
+33	9	12
+32	9	11
+31	9	10
+46	15	не отягощена
+47	15	Сахарный диабет в семье
+48	15	Бронхиальная астма
+49	15	Заболевания щитовидной железы
+50	15	Онкологические заболевания
+51	15	Варикозное расширение вен
+52	15	Гипертоническая болезнь, инфаркты, инсульты
+53	15	Новообразования молочной железы
+54	15	Переломы костей
+55	16	Удовлетворительное
+56	16	Средней тяжести
+57	16	тяжелое
+58	17	тянущие боли внизу живота
+59	17	схваткообразные боли внизу живота
+60	17	Выделения из половых путей
+61	18	везикулярное, хрипов нет
+62	19	ясные, чистые
+63	35	Да
+64	35	Нет
+65	29	продольное
+66	29	поперечное
+67	29	косое
+68	36	Низкий риск ХА
+69	36	Высокий риск ХА
+70	37	Урожестан
+71	37	Дюфастон
+72	37	Вытамины
+73	37	Гепарин
+74	37	Фраксипарин
+75	37	Антибиотики
+76	38	Обнаружено
+77	38	Не обнаружено
+78	39	головка плода
+79	39	Тазовый конец. Прижата ко входу
+83	20	I RH(+)
+84	20	II RH(+)
+85	20	III RH(+)
+86	20	IV RH(+)
+87	20	I RH(-)
+88	20	II RH(-)
+89	20	III RH(-)
+90	20	IV RH(-)
+91	41	Обнаружены в титре
+92	41	Не обнаружены
+93	21	по женскому типу
+94	21	по мужскому типу
+95	22	правильно
+96	23	чистая
+97	23	с явлениями цервицита
+98	23	эктопия шейки матки
+99	23	деформация
+100	23	гипертрофия
+101	23	полип цервикального канала
+102	23	децидуоз
+115	27	сукровичные
+116	27	творожистые
+118	27	другое
+120	28	не увеличено
+121	28	другое
+119	28	увеличено 
+122	30	не ощущает 
+123	30	ощущает хорошо
+124	31	ясное, ритмичное
+125	31	не выслушивается
+126	32	не нарушены
+127	32	учащенное мочеипускание
+128	32	жидкий стул
+129	32	запоры
+130	32	другое
+131	33	нижних конечностей
+132	33	голеней
+133	33	стои
+134	33	кистей рук
+135	34	голеней
+136	34	стоп
+137	34	кистей рук
+138	37	другое
+80	39	Над входом в малый таз
+139	42	по оси малого таза
+140	42	отклонена кпереди
+141	42	отклонена кзади
+142	43	мягкая
+143	43	умеренно плотная
+144	43	плотная
+145	43	другое
+146	44	нормальное
+147	44	многоводие
+148	44	маловодие
+149	44	ангидрамнион
+150	45	Амбулаторно
+151	45	Стационарно
+153	46	мокрый
+154	46	сухой
+155	46	другое
+156	47	при ходьбе
+157	47	в покое
+158	47	при физический нагрузке
+159	47	другое
+160	48	в дневное время суток
+161	48	В ночное время суток
+162	48	другое
+163	18	рассеянные сухие хрипы
+164	18	единичны сухие хрипы
+165	18	сухие хрипы при форсированном выжохе
+166	18	хрипов нет
+167	18	другое
+168	19	приглушенные
+169	19	чистые
+170	19	ясные
+171	49	в физиологическом тонусе
+172	49	возбудима при пальпации
+173	49	периодически приходит в тонус
+174	50	Аменорея
+175	50	Олигоменорея
+176	50	Гипономенорея
+177	50	Полименорея
+178	50	Дисменорея
+179	50	Гиперменорея
+180	50	Менорралгия с амнезией
+181	50	Менорралгия без амнезии
+182	50	Опсоменорея
+183	50	Физиологическая аменорея
+184	50	Другое
+185	51	слабость
+186	51	головокружение
+187	51	головные боли
+188	51	тошнота
+189	51	рвота
+190	51	эмоциональная лабильность, депрессия
+191	51	отеки
+192	51	нагрубание молочный желез
+193	51	вздутие живота
+194	51	панические атаки
+195	51	другое
+196	52	мажущие кровяные выделения в середине цикла
+197	52	меноррагия
+198	52	мено-метроррагия
+199	52	другое
+256	60	нокткрия
+200	53	гирсутизм 
+201	53	акне 
+202	53	шелушение кожи
+203	53	избыточная жирность волос
+204	53	выпадение волос общее
+205	53	выпадение волос гнездное
+206	53	стрии
+207	53	потливость
+208	53	другое
+209	54	прибавка веса
+210	54	снижение веса
+211	27	светлые бели
+212	27	скудные
+213	27	гноевидные
+117	27	обильные 
+214	27	с запахом
+215	27	без запаха
+216	55	боли, связанные с менструальным циклом
+217	55	боли, не связанные с менструальным циклом
+218	55	боли в середине цикла
+219	55	боли в предменструальные дни
+220	55	боли в предменструальные дни
+221	55	болезненные менструации
+222	56	1 эпизод
+223	56	более одного эпизода
+224	57	энодомиометрит
+225	57	панметрит
+226	57	сальпингоофарит
+227	58	Приливы жара
+228	58	ознобы
+229	58	повышенная потливость
+230	58	головные боли
+231	58	повышение артериального давления
+232	58	понижение давления
+233	58	учащенное сердцебиение
+234	58	раздражительность
+235	58	сонливость
+236	58	нарушение ритма сна
+237	58	слабость
+238	58	беспокойство
+239	58	депрессия
+240	58	забывчивость
+241	58	невнимательность
+242	58	снижение полового влечения
+243	58	снижение полового влечения
+244	58	чувство страха
+245	58	ком за грдиной
+246	58	выделение большого количества светлой мочи после снижения давления
+247	58	другое
+248	59	жжение
+249	59	зуд в области половых органов
+250	59	сухость во влагалище
+251	59	диспареуния
+252	59	контактные кровянистые выделения
+253	59	сексуальные нарушения
+254	59	другое
+255	60	палариурия
+257	60	ургентные позывы
+258	60	ургентное недержание мочи при позыве
+259	61	при любой физической нагрузке
+260	61	смешанное (эпизоды гиперактивного мочевого пузыря и стрессового недержания мочи)
+261	61	постоянное подтекание мочи из мочевого пузыря
+262	61	постоянное подтекание мочи из влвгвлища
+263	61	другое
+486	120	шейка отсутствует
+488	121	розовая
+264	63	интенсивные боли, снижающие работоспособность
+265	63	умеренные боли
+266	63	незначительные боли
+267	63	тянущие боли внизу живота
+268	63	острые боли
+269	63	тупые боли
+270	64	обычной окраски
+271	64	бледно-розовые
+272	64	гиперемия
+273	64	акне (локализация)
+274	64	шелушении кожи
+275	64	стрии (локализация)
+276	69	неоперированы
+353	91	другое
+279	69	импланты
+280	69	оперированы
+278	69	мастэктомия
+277	69	резекция
+281	65	Изменена
+282	65	Не изменена
+283	76	определяются
+284	76	не определяются
+285	67	Увеличина
+286	67	Не увеличина
+287	73	Положительный
+288	73	Отрицательный
+289	70	Мягкий
+290	70	Напряженный
+291	80	пальпируется
+292	80	не пальпируется
+293	74	грубые нарушения скелета
+294	74	искривление позвоночника
+295	74	другое
+296	75	надключичные
+297	75	подключичные
+298	75	подмышечные
+299	75	справа
+300	75	слева
+301	77	участвует в акте дыхания
+302	77	не участвует в акте дыхания
+303	78	активная
+304	78	не выслушивается
+305	81	развиты правильно
+306	81	развиты неправильно
+307	81	гипоплазия наружных половых губ
+308	81	гипертрофия клитора
+309	81	малых половых губ
+310	81	гиперпегментация наружных половых органов и внутренней поверхности бедер
+311	81	"негроидный акантоз:"
+312	81	другое
+313	82	розового цвета
+314	82	блестящая
+315	82	гиперемирована
+316	82	цианотичная
+317	82	атрофичная
+318	82	остроконечные кандиломы
+319	82	герпетические высыпания
+320	82	другое
+321	83	без особенностей
+322	83	другое
+323	84	без особенностей
+324	84	рубцы на промежности
+325	84	крауроз
+326	84	другое
+327	85	без особенностей
+328	85	трещины
+329	85	геморроидальные узлы
+330	85	другое
+332	86	инструментальный по желанию
+331	86	медикаментозный по желанию
+333	86	инструментальный по мед. показаниям
+334	86	медикаментозный по мед. показаниям
+335	87	без осложнений
+336	87	осложнившийся острым эндометритом
+337	87	перфорацией матки
+338	87	другое
+339	90	Роды
+340	90	Аборт
+342	90	Самопроизвольный выкидыш с выскабливанием стенок полости матки
+341	90	Неразвивающаяся беременность с выскабливанием стенок полости матки
+343	90	Самопроизвольный выкидыш без выскабливания
+344	90	Неразвивающаяся беременность без выскабливания
+347	91	ВПР плода
+348	91	тяжесть экстагенитальной патологии
+349	91	тяжелый гестоз
+346	90	Прерывание по мед.,соц. показаниям
+350	91	лечение цитостатиками
+351	91	лучевая/химиотерапия
+352	91	беременность в результате изнасилования
+355	88	Срочные самопроизвольные роды с осложнениями::
+354	88	Срочные самопроизвольные роды без осложнений
+356	88	Преждевременные самопроизвольные роды
+357	88	Кесарево сечение плановое
+358	88	Кесарево сечение экстренное
+359	88	Вакуум-экстракция плода
+360	88	Акушерские щипцы
+361	92	Гипоксия плода
+362	92	слабость родовой деятельности
+363	92	узкий таз
+364	92	тяжелый гестоз
+365	92	тяжелая экстрагенитальная патология
+366	92	наличие рубца на матке
+367	92	многоплодная беременность
+368	92	другое
+370	89	полным плотным прикреплением плаценты
+369	89	гипотоническим кровотечением
+371	89	полным приращением плаценты
+372	89	разрывами промежности 1, 2. 3 степени
+373	89	послеродовым эндометритом
+374	89	гематомой
+375	89	разрывами шейки матки 1,2,3 степени
+378	93	Дисплазия шейки матки I степени
+379	93	Кисты яичников
+380	93	Миома матки
+376	93	Эрозия шейки матки
+381	93	Аднексит
+382	93	Полипы эндометрия
+383	93	ИППП
+386	95	корь
+387	95	краснуха
+388	95	ветреная оспа
+389	95	эпидемический паротит
+390	95	полиомиелит
+391	95	менингит
+392	95	другое
+393	102	без лечения
+394	102	антибактериальная терапия
+395	102	противовирусная терапия
+396	102	другое
+397	103	Хламидии
+398	103	Уреплазма
+399	103	Микоплазма
+400	103	Гардлерелла
+401	103	ВПГ
+402	103	ЦМВ
+403	103	ВПЧ
+404	103	Другое
+405	100	Без лечения
+406	100	антибактериальная терапия
+407	100	физиотерапия
+408	100	другое
+409	97	медикаментозное
+410	97	биопсия шейки матки
+411	97	канонизация шейки матки
+412	98	без лечения
+413	98	оперативное
+414	98	медикаментозное
+415	98	гормональное
+416	98	другое
+417	99	без лечения
+418	99	Lt удаление
+419	99	Ls удаление без вскрытия полости
+420	99	Ls удаление со вскрытием полости
+421	101	без лечения
+422	101	Hs удаление
+423	101	гормональная терапия
+424	101	другое
+425	96	без лечения
+426	96	ДЭК
+427	96	лазер
+428	96	радиоволна
+429	96	медикаментозный
+430	104	функциональные
+431	104	эндометриозные
+432	104	тератомы
+433	104	параовариальные
+434	104	цистадономы
+435	106	Нерегулярные
+436	106	Регулярные
+437	107	Дней
+438	107	Месяцев
+439	33	нет
+440	108	Синдром задержки роста плода 1 степени 1 тип
+441	108	Синдром задержки роста плода 2 степени 1 тип
+442	108	Синдром задержки роста плода 3 степени 1 тип
+443	108	Синдром задержки роста плода 1 степени 2 тип
+444	108	Синдром задержки роста плода 2 степени 2 тип
+445	108	Синдром задержки роста плода 3 степени 2 тип
+447	109	отсутствие фетоплацентарной недостаточности
+446	109	Наличие фетоплацентарной недостаточности:
+448	110	ритмичный
+449	110	неритмичный
+450	110	тахикардия
+451	110	брадикардия
+452	111	активная
+453	111	не выслушивается
+454	114	безболезненный при пальпации
+455	114	локальная болезненность в области
+456	114	другое
+457	116	сомкнута
+458	116	зияет
+459	117	пристеночно
+460	117	правильно
+461	118	передняя стенка влагалища, задняя стенка мочевого пузыря
+462	118	задняя стенка влагалища, передняя стенка прямой кишки
+463	118	шейка матки
+464	118	тело матки
+465	118	другое
+466	119	розовая
+467	119	блестящая
+468	119	гиперемирована
+469	119	цианотичная
+470	119	атрофичная
+471	119	контактные кровотечения
+472	119	петехии
+473	119	купол влагалища заканчивается слепо
+474	119	другое
+475	122	щелевидный
+476	122	точечный
+477	122	сомкнут
+478	122	зияет
+479	122	деформирован
+480	122	исходит полип размером
+481	122	сумбукозный узел
+482	122	другое
+483	120	коническая
+484	120	субконическая
+485	120	цилиндрическое
+487	120	другое
+489	121	блестящая
+490	121	гладкая
+491	121	гиперемирована
+492	121	цианотичная
+493	121	атрофичная
+494	121	контактные кровотечения
+495	121	эрозирована
+496	121	рубцовая деформация
+497	121	кисты
+498	121	лейкоплакия
+499	121	другое
+500	124	подвижная
+501	124	неподвижная
+502	123	кпереди
+503	123	кзади
+504	123	вправо
+505	123	влево
+506	125	глубокие
+507	125	слизистая сводов сглажена
+508	125	своды нависают
+509	128	тяжистые
+510	128	эластической консистенции
+511	128	повышенной плотности
+512	128	другое
+513	127	не увеличены в размере
+514	127	увеличены в размере справа
+515	127	увеличены в размере слева
+516	126	не пальпируются
+517	126	без особенностей с обеих сторон
+518	126	болезненные
+519	126	безболезненные при пальпации
+520	126	локальная болезненность
+521	129	без особенностей
+522	129	утолщены
+523	129	напряжены
+524	129	болезненные при пальпации
+525	129	образования
+526	131	локализация
+527	131	плотные
+528	131	эластичные
+529	131	другое
+530	132	Выявлено
+531	132	Не выявлено
+532	133	Положительно
+533	133	Отрицательно
 \.
 
 
@@ -4548,7 +6117,7 @@ COPY medcard_guide_values (id, guide_id, value) FROM stdin;
 -- Name: medcard_guide_values_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_guide_values_id_seq', 45, true);
+SELECT pg_catalog.setval('medcard_guide_values_id_seq', 533, true);
 
 
 --
@@ -4557,11 +6126,118 @@ SELECT pg_catalog.setval('medcard_guide_values_id_seq', 45, true);
 
 COPY medcard_guides (id, name) FROM stdin;
 9	Менархе
-10	есть-нет
 11	В браке
 12	Прерывание беременности по показа
-13	Наступление беременности
 14	Беременность наступила
+15	Наследственность
+16	Состояние
+17	Жалобы беременной
+18	Дыхание
+19	Тоны сердца:
+20	Группа крови
+21	Оволосение
+22	Сформированы органы
+24	Цервикальный канал
+25	Воды:
+27	Выделения:
+29	Положение плода:
+30	Шевеления плода
+31	Сердцебиение плода
+32	Физиологические отправления:
+33	Отеки
+34	Патозность
+35	Да-Нет
+36	ХА
+37	Препараты
+38	Обнаружено
+41	В титре
+39	Предлежит
+43	Консистенция шейки матки
+44	Количество вод
+45	Вид лечения
+46	Кашель
+47	Одышка
+48	Приступы удушья
+28	Тело матки
+49	Тонус матки
+10	Есть-нет
+51	ПМС
+53	Симптомы гиперандрогении
+54	Изменение веса
+55	Болевой синдром
+56	Невынашивание
+57	Осложнения после удаления плодног
+58	Климактерические изменения
+59	Симптомы урогенитальной атрофии
+60	Симптомы гиперактивного моч пуз
+62	Опущение стенок влагалища
+63	Интенсивность болей
+64	Кожн покровы и слиз оболоч
+69	Молочные железы 2
+65	Изменена - не изменена
+61	Стрессовое недержание
+75	Региональные лимфоузлы
+67	Увеличена не увеличена
+70	Живот 1
+81	Наружные половые органы
+83	Отверстие мочеиспускательного ка
+85	Область заднего прохода
+84	Промежность
+82	Слизистая
+80	Пальпируется не пальпируется
+79	Пальпация живота
+78	Перистальтика
+77	Живот в акте дыхания
+76	Определяются не определяются
+74	Опорно-двигательная система
+73	Положительный отрицательный
+68	Молочные железы 1
+52	Меж. менст. кровотечения
+50	Нарушения МЦ
+86	Аборт тип
+87	Аборт осложнения
+88	Роды тип
+89	Роды осложнение
+90	Исход беременности
+91	Показания для прерывания беременн
+92	Роды: плод, ребенок
+93	Гинекологические заболевания
+95	Детские инфекции
+42	Шейка матки расположение
+97	Лечение дисплазии шейки
+98	Лечение кисты яичников
+99	Лечение миомы матки
+96	Лечение эрозии
+100	Лечение андексита
+101	Лечение полипов эндометрия
+102	Лечение ИППП
+103	ИППП список
+104	Киста яичников тип
+106	Менструации
+107	Дней месяцев
+108	ФПН
+109	ФПН наличие
+23	Шейка матки осмотр
+110	Пульс
+111	Живот перистальтика
+114	Живот пальпация
+116	Половая щель
+117	Леваторы
+118	Половая щель натуживание
+119	Слизистая влагалища
+120	Шейка матки форма
+121	Шейка матки слизистая
+122	Цервикальный канал гинекология
+123	Тело матки расположено
+124	Тело матки подвижность
+125	Своды влагалища:
+126	Придатки:
+127	Придатки увеличение:
+128	Придатки консистенция
+129	Крестцово-маточные связки
+131	Образования в брюшной полости кон
+132	Выявлено не выявлено
+133	Отрицательно положительно
 \.
 
 
@@ -4569,7 +6245,7 @@ COPY medcard_guides (id, name) FROM stdin;
 -- Name: medcard_guides_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_guides_id_seq', 14, true);
+SELECT pg_catalog.setval('medcard_guides_id_seq', 133, true);
 
 
 --
@@ -4577,8 +6253,10 @@ SELECT pg_catalog.setval('medcard_guides_id_seq', 14, true);
 --
 
 COPY medcard_templates (id, name, page_id, categorie_ids) FROM stdin;
-5	Шаблон ведения беременности	1	["5","6","7"]
-1	Шаблон приёма	0	["2","3","4"]
+7	Осмотр консультанта по патологии бронхо-легочной системы	0	["27"]
+8	Данные обследования	0	["20"]
+1	Осмотр гинеколога	0	["25","29","30","31","32","2"]
+5	Шаблон ведения беременности	1	["26","21","22","2"]
 \.
 
 
@@ -4586,7 +6264,7 @@ COPY medcard_templates (id, name, page_id, categorie_ids) FROM stdin;
 -- Name: medcard_templates_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medcard_templates_id_seq', 5, true);
+SELECT pg_catalog.setval('medcard_templates_id_seq', 8, true);
 
 
 --
@@ -4594,24 +6272,26 @@ SELECT pg_catalog.setval('medcard_templates_id_seq', 5, true);
 --
 
 COPY medcards (insurance, privelege_code, snils, address, address_reg, doctype, serie, docnumber, who_gived, gived_date, contact, invalid_group, card_number, enterprise_id, policy_id, reg_date, work_place, work_address, post, profession, motion) FROM stdin;
-\N	\N		вапмукп	вапмукп	1	3244	124124124	упукпукп	2008-04-12	цуацуацуа	0	29/14	1	6854	2014-02-12					1
-\N	\N		мамывсвы	мамывсвы	1	2131	23132131	цавмам	2008-02-16	ывасауцауца	0	30/14	1	6855	2014-02-17					0
+\N	\N		г. Москва, ул. Ленина, д. 5	г. Москва, ул. Ленина, д. 5	1	0202	010203	ФМС России	1977-03-02	+79110120102	0	32/14	1	6857	2014-03-03	АВК-Коммьюникейшнз	Волоколамское ш., д. 1	бухгалтер	экономист	1
+\N	\N		мамывсвы	мамывсвы	1	2131	23132131	цавмам	2008-02-16	ывасауцауца	0	30/14	1	6855	2014-02-17					1
 \N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	2/14	1	58	2014-01-10	АВК				0
+\N	\N	111-111-111-11	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 71	1	4510	1234567	ОМС района	2013-12-01	(555)555-55-55	0	1/13	1	49	2014-02-18	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
+\N	\N		вапмукп	вапмукп	1	3244	124124124	упукпукп	2008-04-12	цуацуацуа	0	29/14	1	6854	2014-02-12					0
+\N	\N		434	434	1	12121	4324324	243243	2014-01-30	4342	0	18/14	1	56	2014-01-29					0
+\N	\N	232-332-323-11	Ул. Новая, д.1	Ул. Новая, д.1	1	4512	1234562	ОВД	2013-12-20	555-5555-555	0	6/13	1	57	2014-02-18	Офис 450	Ул.Новая, дом 3	Секретарь		0
+\N	\N		Туда же	Тот же	1	4511	1122	Ещё кто-то	2013-11-11	444-555-555	0	2/13	1	50	2014-02-18					0
+\N	\N		Москва	Москва	1	123	1345677	овд	2013-12-09	1234567890	0	5/13	1	53	2013-12-09				\N	1
+\N	\N		Жел	Жел	1	4706	125478	овд свао	2010-03-21	123456789	0	34/14	1	6859	2014-03-14					0
 \N	\N		Флотская	Флотская	1	43	565323	Давыдково по г.москве	1969-05-24	фвдалофж	0	8/13	1	59	2013-12-20				\N	1
 \N	\N		543534	543534	1	54334	534543	534543	2014-01-30	45454	0	20/14	1	54	2014-01-30					1
 \N	\N		Москва	Москва	1	4709	234567	ОВД	2000-11-23	91678890099	0	16/14	1	110	2014-01-20					0
 \N	\N		543	543	1	3543	5435	54353	2014-02-28	543543	0	17/14	1	6845	2014-01-28					0
-\N	\N		434	434	1	12121	4324324	243243	2014-01-30	4342	0	18/14	1	56	2014-01-29					0
 \N	\N		54543	545	1	111	2222	4444	2014-01-30	111(33)44	0	19/14	1	55	2014-01-29					0
-\N	\N		Туда же	Тот же	1	4511	1122	Ещё кто-то	2013-11-11	444-555-555	0	2/13	1	50	2013-12-03				\N	0
 \N	\N		22	11	1	11	22	22	2013-12-05	у	0	3/13	1	51	2013-12-04				\N	0
 \N	\N	111-434-444 33	22	11	1	113	223	223	2013-12-05	у	0	4/13	1	52	2013-12-04				\N	0
-\N	\N		Москва	Москва	1	123	1345677	овд	2013-12-09	1234567890	0	5/13	1	53	2013-12-09				\N	0
-\N	\N	232-332-323-11	Ул. Новая, д.1	Ул. Новая, д.1	1	4512	1234562	ОВД	2013-12-20	555-5555-555	0	6/13	1	57	2013-12-16	Офис 450	Ул.Новая, дом 3	Секретарь	\N	0
 \N	\N		Моя Улица, 12	Моя Улица, 12	1	44444444	44444444	ОТДЕЛЕНИЕМ ПО УМВД	2007-12-12	1222222	0	7/13	1	58	2013-12-17	АВК			\N	0
 \N	\N		1	1	1	а1	1	1	2014-01-23	2	0	9/13	1	60	2013-12-23				\N	0
 \N	\N	122-222-222-22	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 70	1	4510	1234567	ОМС района	2014-12-01	(555)555-55-55	0	1/14	1	49	2013-12-23	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
-\N	\N	111-111-111-11	Ул. обычная, д. 34, кв. 70	Ул. обычная, д. 34, кв. 71	1	4510	1234567	ОМС района	2013-12-01	(555)555-55-55	0	1/13	1	49	2013-12-24	АВК	Волоколамское Ш., д 2а	Проектировщик	Погромист	0
 \N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	3333333333	ОВД	2005-04-15	33333333	0	4/14	1	62	2014-01-14					0
 \N	\N	454-545-454-54	Москва	Москва	1	1212	235467	ОФМС	2011-11-23	89678773456	0	6/14	1	64	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
 \N	\N		Москва	Москва	1	12092	235097	ОФМС	2011-11-23	89678773456	0	7/14	1	65	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
@@ -4620,19 +6300,21 @@ COPY medcards (insurance, privelege_code, snils, address, address_reg, doctype, 
 \N	\N		москва	брянск	1	2345	21769	уфмс	2009-09-23	323232	0	12/14	1	70	2014-01-15					0
 \N	\N		Москва	Москва	1	3423	212343	УФМС	2009-09-09	8946545454	0	14/14	1	72	2014-01-20					0
 \N	\N		Одинцово	Одинцово	1	2345	13445566	ОВД	2013-10-01	20985	0	21/14	1	6846	2014-01-31					\N
+\N	\N		москва	москва	1	32323	343434	овд	2007-12-13	656565	0	15/14	1	73	2014-01-20					0
 \N	\N		Москва	Москва	1	2339084444444	545676	ОФМС	2011-11-23	89678773456	0	8/14	1	66	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	1
-\N	\N	100-000-000-00	Москва	Москва	1	4798	21234211	ОВД	2010-02-01	телефон	0	3/14	1	61	2014-01-14	Москва				1
-\N	\N		москва	москва	1	32323	343434	овд	2007-12-13	656565	0	15/14	1	73	2014-01-20					1
 \N	\N		Улица, 6-4	Улица, 6-4	1	2222222222	4534534534	ОВД	2005-04-15	33333333	0	5/14	1	63	2014-01-14					1
+\N	\N	100-000-000-00	Москва	Москва	1	4798	21234211	ОВД	2010-02-01	телефон	0	3/14	1	61	2014-02-18	Москва				1
 \N	\N		Болшево	Болшево	1	2309	3456187	ОВД	2008-01-26	903897655411	0	23/14	1	6848	2014-02-03	Офис		\\начальник		\N
 \N	\N		уорыравпва купукп п	уорыравпва купукп п	1	6543	636236	АЕОРОВМ ПЦЫП КУР ЕР Е	2012-02-02	4363462	0	24/14	1	6849	2014-02-03					\N
 \N	\N		цку	цку	1	3445	235235	аркрапиа	2014-02-02	уцкцукцу	0	25/14	1	6850	2014-02-03	цукцук				\N
 \N	\N		лорпав	лорпав	1	875	96543	джэлоритмсч	2014-02-02	щшоправ	0	26/14	1	6851	2014-02-03					\N
 \N	\N	123-413-424-24	г. Москва	г. Москва	1	0101	0123456	ФМС	2008-11-28	нет	1	27/14	1	6852	2014-02-06					\N
-\N	\N		выпыкркц	выпыкркц	1	4564	456778	вафыпватрврв	2014-02-04	97542478	0	22/14	1	6847	2014-02-03	авк				1
 \N	\N	324-234-325-25	пвапукп	пвапукп	1	5462	54365634	кевоапот	2000-02-10	523253252	3	28/14	1	6853	2014-02-10	упукфпкп	кппукп	фкпкупукпп	укппкупукп	1
 \N	\N	141-963-887-90	МО Железнодорожный	МО Железнодорожный	1	4607	352696	ОВД	2006-07-26	9169233006	0	13/14	1	71	2014-02-10	АВК	Москва	Начальник	Начальник	1
-\N	\N		Москва	Москва	1	233908444	545676	ОФМС	2011-11-23	89678773456	0	9/14	1	67	2014-01-14	НИИ Питания	Москва	Старший специалист	Специалист	0
+\N	\N		Москва	Москва	1	233908444	545676	ОФМС	2011-11-23	89678773456	0	9/14	1	67	2014-02-18	НИИ Питания	Москва	Старший специалист	Специалист	1
+\N	\N		выпыкркц	выпыкркц	1	4564	456778	вафыпватрврв	2014-02-04	97542478	0	22/14	1	6847	2014-02-18	авк				0
+\N	\N		МО	МО	1	1233	1234566	ОВД	2013-11-01	тел	0	31/14	1	6856	2014-02-18	МО	МО			0
+\N	\N		г. Москва, ул. Связистов, д.2	г. Москва, ул. Ленина, д.6	1	0101	020202	фмс	1988-02-12	+79131313123	0	33/14	1	6858	2014-03-03	АВК-Коммьюникейншз	Волоколамское ш., д 1	Бухгалтер	Экономист	1
 \.
 
 
@@ -4698,6 +6380,10 @@ COPY mediate_patients (id, first_name, middle_name, last_name, phone) FROM stdin
 73	Иван	Васильевич	Зитко	30983209832
 74	новый	новый	новый	34567
 75	новый	новый	новый	34567
+78	Татьяна	Леонидовна	Петросян	1234567
+79	Иван	Иваныч	Хитров	1234567
+80	Алла		Пугачёва	123456
+83	Анна		Иванова	+79111212312
 \.
 
 
@@ -4705,7 +6391,7 @@ COPY mediate_patients (id, first_name, middle_name, last_name, phone) FROM stdin
 -- Name: mediate_patients_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('mediate_patients_id_seq', 77, true);
+SELECT pg_catalog.setval('mediate_patients_id_seq', 83, true);
 
 
 --
@@ -4714,12 +6400,13 @@ SELECT pg_catalog.setval('mediate_patients_id_seq', 77, true);
 
 COPY medpersonal (id, name, type, is_for_pregnants, payment_type) FROM stdin;
 7	Заведующий	1	0	1
-11	Акушер-гинеколог	1	1	1
 8	Медсестра	3	0	0
 9	Травматолог	2	1	1
 5	Главврач	1	0	0
 14	Окулист	2	0	0
 15	Эндокринолог	2	1	1
+17	Кардиолог	1	0	1
+11	Акушер-гинеколог	1	1	0
 \.
 
 
@@ -4727,7 +6414,7 @@ COPY medpersonal (id, name, type, is_for_pregnants, payment_type) FROM stdin;
 -- Name: medpersonal_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('medpersonal_id_seq', 15, true);
+SELECT pg_catalog.setval('medpersonal_id_seq', 17, true);
 
 
 --
@@ -4753,9 +6440,7 @@ SELECT pg_catalog.setval('medpersonal_types_id_seq', 3, true);
 --
 
 COPY menu_pages (id, name, url, priority) FROM stdin;
-1	Поиск пациента	/reception/patient/viewsearch	\N
 4	Создание пациента	/reception/patient/viewadd	\N
-5	Запись пациента	/reception/patient/writepatientstepone	\N
 7	Расписание врачей	/reception/shedule/view	\N
 10	Просмотр ЭМК	/doctors/patient/viewsearch	\N
 11	Загрузка в ТАСУ	/admin/tasu/viewin	\N
@@ -4775,6 +6460,8 @@ COPY menu_pages (id, name, url, priority) FROM stdin;
 9	Массовая печать	/doctors/print/massprintview	4
 25	Логи	/admin/logs/view	5
 21	Пользователи, роли, права	/admin/users/view	1
+27	Поиск пациента	http://moniiag.toonftp.ru/index.php/reception/patient/viewsearch	0
+5	Запись пациента	/reception/patient/writepatientstepone	6
 \.
 
 
@@ -4782,7 +6469,7 @@ COPY menu_pages (id, name, url, priority) FROM stdin;
 -- Name: menu_pages_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('menu_pages_id_seq', 26, true);
+SELECT pg_catalog.setval('menu_pages_id_seq', 27, true);
 
 
 --
@@ -17092,7 +18779,6 @@ COPY mkb10_likes (mkb10_id, medworker_id) FROM stdin;
 
 COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, type, givedate, enddate, status) FROM stdin;
 49	Кирилл	Евгеньевич	Косоруков	123-456-7	1	1960-12-11	0	1970-12-11	2010-12-11	\N
-61	Татьяна		Богданова	90876591	0	1981-01-11	0	2012-01-23	\N	\N
 62	Иванов		Василий	111111111111	0	1985-07-13	0	2003-02-12	\N	\N
 63	Иванов		Василий	122222222222	0	1985-07-13	0	2003-02-12	\N	\N
 64	Адель	Яковлевна	Петрова	454567	0	1991-09-23	0	2011-12-15	\N	\N
@@ -17112,7 +18798,6 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, 
 54	Нарциссовна	Клевер	Роза	12345	0	2013-12-18	0	\N	\N	\N
 55	Нарциссовна	Клевер	Роза	12346	0	2013-12-18	0	\N	\N	\N
 57	Нарциссовн	Клевера	Роз	123469	0	2013-12-18	0	\N	\N	\N
-58	Игорь	Владимирович	Хитров	111111111111111111111111111	0	1990-02-12	0	\N	\N	\N
 56	Нарциссовн	Клевера	Роз	123468	0	1969-11-18	1	2014-01-23	2015-10-23	1
 59	Иван	Иванович	Иванов	231312 1231 1231	1	1969-05-24	0	\N	\N	\N
 268	\N	\N	\N	\N	\N	\N	\N	\N	\N	\N
@@ -18308,6 +19993,12 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, 
 6853	Анна	Илларионовна	Иванова	98347698376	0	1994-02-10	0	1996-02-10	\N	0
 6854	Ложка	ЛОЖКОВИЧ	Ложкин	46523	1	1965-12-10	0	1993-12-10	\N	0
 6855	Степан	Иванович	Добрый	756576589	1	1981-01-16	0	2007-02-17	\N	0
+6856	Ирина	Анатольевна	Савельева	908765346222294846444444444	0	1981-11-01	0	2014-02-01	\N	0
+6857	Мария	Петровна	Соколова	5001020304050607	0	1966-02-02	0	2014-02-01	\N	0
+58	Игорь	Владимирович	Хитров	111111111111111111111111111	0	1990-02-12	0	2014-02-18	\N	0
+61	Татьяна		Богданова	90876591	0	1980-01-11	0	2012-01-23	\N	0
+6858	Анна	Петровна	Соколова	7701020304050607	0	1977-04-03	0	2014-01-09	\N	0
+6859	Галина	Александровна	Тихонова	1234567936987412	0	1961-12-20	0	2014-02-24	\N	0
 \.
 
 
@@ -18315,7 +20006,7 @@ COPY oms (id, first_name, middle_name, last_name, oms_number, gender, birthday, 
 -- Name: oms_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('oms_id_seq', 6855, true);
+SELECT pg_catalog.setval('oms_id_seq', 6859, true);
 
 
 --
@@ -18374,9 +20065,11 @@ SELECT pg_catalog.setval('privileges_id_seq', 10, true);
 
 COPY privileges_per_patient (id, patient_id, privilege_id, docname, docnumber, docserie, docgivedate) FROM stdin;
 2	60	7	1	2	2	2013-12-24
-3	49	9	Документ инвалида	111222111	1111	2014-01-24
 4	6852	9	документ	номер	серия	2011-11-11
 5	6853	8	325235цукауа	234234234	324234	1992-02-10
+6	67	7	1	2	2	2014-02-19
+7	57	8	3	4	34	2014-02-19
+8	50	10	1	3	2	2014-03-18
 \.
 
 
@@ -18384,7 +20077,7 @@ COPY privileges_per_patient (id, patient_id, privilege_id, docname, docnumber, d
 -- Name: privileges_per_patient_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('privileges_per_patient_id_seq', 5, true);
+SELECT pg_catalog.setval('privileges_per_patient_id_seq', 8, true);
 
 
 --
@@ -18444,9 +20137,6 @@ COPY role_action (role_id, action_id) FROM stdin;
 1	2
 1	1
 1	4
-13	3
-13	4
-13	5
 21	7
 21	10
 21	19
@@ -18484,6 +20174,16 @@ COPY role_action (role_id, action_id) FROM stdin;
 15	35
 15	36
 15	37
+13	2
+13	3
+13	5
+13	7
+13	10
+13	19
+13	20
+13	21
+13	22
+13	6
 12	2
 12	3
 12	4
@@ -18620,11 +20320,12 @@ COPY role_to_user (user_id, role_id) FROM stdin;
 15	16
 14	14
 23	21
-24	11
-25	14
-26	13
 22	14
 27	14
+28	14
+24	15
+25	13
+26	13
 \.
 
 
@@ -18634,7 +20335,6 @@ COPY role_to_user (user_id, role_id) FROM stdin;
 
 COPY roles (id, name, parent_id, startpage_id) FROM stdin;
 1	Администратор	-1	\N
-13	Регистратура	-1	\N
 12	Call-Center	-1	\N
 18	Тестирование	-1	\N
 16	Отдел статистики	-1	\N
@@ -18642,6 +20342,7 @@ COPY roles (id, name, parent_id, startpage_id) FROM stdin;
 15	Главврач	-1	4
 11	Супервайзер	-1	21
 14	Врач	-1	8
+13	Регистратура	-1	5
 \.
 
 
@@ -18661,6 +20362,7 @@ COPY settings (id, module_id, name, value) FROM stdin;
 2	1	firstVisit	5
 3	1	quote	12
 4	1	shiftType	1
+5	-1	lettersInPixel	10
 \.
 
 
@@ -18668,7 +20370,7 @@ COPY settings (id, module_id, name, value) FROM stdin;
 -- Name: settings_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('settings_id_seq', 4, true);
+SELECT pg_catalog.setval('settings_id_seq', 5, true);
 
 
 --
@@ -18702,26 +20404,32 @@ COPY shedule_rest (day) FROM stdin;
 --
 
 COPY shedule_rest_days (id, date) FROM stdin;
-77	2015-01-08 00:00:00
-78	2015-01-09 00:00:00
-79	2015-01-16 00:00:00
-80	2015-01-08 00:00:00
-81	2015-01-09 00:00:00
-82	2015-01-16 00:00:00
-83	2015-02-11 00:00:00
-84	2015-02-12 00:00:00
-85	2015-02-16 00:00:00
-86	2015-02-19 00:00:00
-87	2015-02-20 00:00:00
-154	2014-03-10 00:00:00
-155	2014-05-01 00:00:00
-156	2014-05-02 00:00:00
-157	2014-05-09 00:00:00
-158	2014-06-12 00:00:00
-159	2016-02-03 00:00:00
-160	2016-02-10 00:00:00
-161	2016-03-09 00:00:00
-162	2016-09-08 00:00:00
+273	2014-03-10 00:00:00
+274	2014-05-01 00:00:00
+275	2014-05-02 00:00:00
+276	2014-06-12 00:00:00
+277	2014-06-17 00:00:00
+278	2014-07-08 00:00:00
+279	2014-07-10 00:00:00
+280	2014-07-23 00:00:00
+218	2015-01-08 00:00:00
+219	2015-01-16 00:00:00
+220	2015-02-11 00:00:00
+221	2015-02-12 00:00:00
+222	2015-02-16 00:00:00
+223	2015-02-19 00:00:00
+224	2015-02-20 00:00:00
+225	2015-10-14 00:00:00
+226	2015-10-15 00:00:00
+227	2013-09-18 00:00:00
+281	2014-08-19 00:00:00
+282	2014-10-15 00:00:00
+283	2014-10-29 00:00:00
+163	2016-02-03 00:00:00
+164	2016-02-10 00:00:00
+165	2016-03-09 00:00:00
+166	2016-09-08 00:00:00
+167	2016-09-21 00:00:00
 \.
 
 
@@ -18729,7 +20437,7 @@ COPY shedule_rest_days (id, date) FROM stdin;
 -- Name: shedule_rest_days_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('shedule_rest_days_id_seq', 162, true);
+SELECT pg_catalog.setval('shedule_rest_days_id_seq', 283, true);
 
 
 --
@@ -19131,20 +20839,21 @@ COPY users (id, username, login, password, employee_id, role_id) FROM stdin;
 7	Бондарева	obondareva	alkE22P2W9KZ2	18	11
 8	Человек в регистратуре	meninreg	12tir.zIbWQ3c	14	1
 5	Кирилл	admin	12tir.zIbWQ3c	16	1
-1	Супервайзер	SYSTEM	SYuasGgY8rxlg	15	1
 13	Крупнов	krupnov	kr7AF6lo0BnNs	19	1
 16	Сидоров	Sidor	12tir.zIbWQ3c	12	1
 9	Тестирование	test11	terzl.ls/oEYs	17	1
-19	Петрова	petrova	peyxaMIqXYoXo	23	1
 18	Добавилбезавторизации	unath	12tir.zIbWQ3c	8	1
 17	Фалкерсонов	fulk	12tir.zIbWQ3c	22	1
 15	Хромов	xromov	xr8ez/yinILdo	21	1
 14	Егорова	egorova	eg5iybHCPF3p6	20	1
-24	Сергей Сергеевич	sergei	seF9.Dg644pEs	25	1
-25	Георгий Иванович	georgij	geFetrLXfbs/.	29	1
-26	4545е	енене	е/scu9lZDlq2	27	1
 22	Мария	zmaria	zmhm97Mp0uFiI	24	1
 27	Я тестовый врач	artzt	12tir.zIbWQ3c	28	1
+28	Юлия Вадимовна	ulia	12tir.zIbWQ3c	26	1
+19	Петрова	petrova	peyxaMIqXYoXo	23	1
+24	Сергей Сергеевич	sergei	seF9.Dg644pEs	25	1
+25	Георгий Иванович	georgij	geFetrLXfbs/.	29	1
+1	Супервайзер	SYSTEM	SYuasGgY8rxlg	15	1
+26	Регистратура	mivanova	mioIR2zCTUm6s	27	1
 \.
 
 
@@ -19152,7 +20861,7 @@ COPY users (id, username, login, password, employee_id, role_id) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('users_id_seq', 27, true);
+SELECT pg_catalog.setval('users_id_seq', 28, true);
 
 
 --
@@ -19172,7 +20881,7 @@ COPY wards (id, name, enterprise_id) FROM stdin;
 -- Name: wards_id_seq; Type: SEQUENCE SET; Schema: mis; Owner: moniiag
 --
 
-SELECT pg_catalog.setval('wards_id_seq', 6, true);
+SELECT pg_catalog.setval('wards_id_seq', 7, true);
 
 
 --
@@ -19312,11 +21021,19 @@ ALTER TABLE ONLY medcard_categories
 
 
 --
+-- Name: medcard_elements_dependences_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
+--
+
+ALTER TABLE ONLY medcard_elements_dependences
+    ADD CONSTRAINT medcard_elements_dependences_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: medcard_elements_patient_pkey; Type: CONSTRAINT; Schema: mis; Owner: moniiag; Tablespace: 
 --
 
 ALTER TABLE ONLY medcard_elements_patient
-    ADD CONSTRAINT medcard_elements_patient_pkey PRIMARY KEY (medcard_id, element_id, history_id);
+    ADD CONSTRAINT medcard_elements_patient_pkey PRIMARY KEY (medcard_id, history_id, path, greeting_id, categorie_id);
 
 
 --
@@ -19703,6 +21420,14 @@ REVOKE ALL ON SCHEMA public FROM PUBLIC;
 REVOKE ALL ON SCHEMA public FROM postgres;
 GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: medcard_elements_patient_dependences; Type: ACL; Schema: mis; Owner: moniiag
+--
+
+REVOKE ALL ON TABLE medcard_elements_patient_dependences FROM PUBLIC;
+REVOKE ALL ON TABLE medcard_elements_patient_dependences FROM moniiag;
 
 
 --

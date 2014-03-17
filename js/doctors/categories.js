@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('button[id^=ba]').filter('[id*=history]').prop('disabled', true);
     $('button[id^=ba]').filter(':not([id*=history])').on('click', function(e) {
-        var elementId = $(this).attr('id').substr(4);
+        var elementId = $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
         $('#guideId').val(elementId);
         globalVariables.elementId = elementId;
         $('#addValuePopup').modal({

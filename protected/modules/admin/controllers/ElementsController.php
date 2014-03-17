@@ -107,7 +107,7 @@ class ElementsController extends Controller {
         $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
         $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
         if($issetPositionInCats != null || $issetPositionInElements != null) {
-            if($issetPositionInElements->id != $element->id || ($issetPositionInElements->id == $element->id && $issetPositionInCats != null)) {
+            if(($issetPositionInElements != null && $issetPositionInElements->id != $element->id) || $issetPositionInCats != null) {
                 echo CJSON::encode(array('success' => false,
                         'errors' => array(
                             'position' => array(
@@ -135,6 +135,10 @@ class ElementsController extends Controller {
             $element->allow_add = $model->allowAdd;
         } else {
             $element->allow_add = 0;
+        }
+
+        if($model->type == 4) {
+            $element->config = $model->config;
         }
 
         // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
@@ -207,6 +211,110 @@ class ElementsController extends Controller {
         }
         echo CJSON::encode(array('success' => true,
                                  'data' => $element)
+        );
+    }
+
+    // Получение зависимостей элементов
+    public function actionGetDependences($id) {
+        $dependencesArr = $this->getDependences($id);
+        // Получаем все контролы
+        $controls = MedcardElement::model()->findAll('id != :element_id', array(':element_id' => $id));
+        $comboValues = MedcardElement::model()->getGuideValuesByElementId($id);
+        echo CJSON::encode(array(
+             'success' => true,
+             'data' => array(
+                 'dependences' => $dependencesArr,
+                 'comboValues' => $comboValues,
+                 'controls' => $controls,
+                 'actions' => array(
+                     'Нет',
+                     'Скрыть',
+                     'Показать'
+                 )
+               )
+            )
+        );
+    }
+
+    public function actionGetDependencesList() {
+        echo CJSON::encode(array(
+                'success' => true,
+                'rows' => $this->getDependences(false)
+            )
+        );
+    }
+
+    private function getDependences($id) {
+        //$dependences = MedcardElementDependence::model()->findAll('element_id = :element_id', array(':element_id' => $id));
+        $dependences = MedcardElementDependence::model()->getRows($id);
+        $dependencesArr = array();
+        foreach($dependences as $dependence) {
+            $dependence['action'] = $dependence['action'] == 1 ? 'Скрыть' : 'Показать';
+            $dependencesArr[] = $dependence;
+        }
+        return $dependencesArr;
+    }
+
+    // Сохранить все зависимости. Есть зависимость == "Нет", это означает, что строку из базы зависимостей надо удалить
+    public function actionSaveDependences($values, $dependenced, $action, $controlId) {
+        $values = CJSON::decode($values);
+        $dependenced = CJSON::decode($dependenced);
+
+        foreach($values as $value) {
+            foreach($dependenced as $dependence) {
+                // Это удаление зависимостей
+                if($action == 0) {
+                    MedcardElementDependence::model()->deleteAll('
+                        element_id = :element_id
+                        AND value_id = :value_id
+                        AND dep_element_id = :dep_element_id
+                    ', array(
+                        ':element_id' => $controlId,
+                        ':value_id' => $value,
+                        ':dep_element_id' => $dependence
+                    ));
+                } else { // В противном случае, это установка зависимостей
+                    // Может быть только один элемент у зависимого контрола, от которого ставится зависимость
+                    $issetDependence =  MedcardElementDependence::model()->findAll('
+                        dep_element_id = :dep_element_id
+                    ', array(
+                        ':dep_element_id' => $dependence
+                    ));
+                    if(count($issetDependence) == 0) {
+                        $dependenceElement = new MedcardElementDependence();
+                        $dependenceElement->element_id = $controlId;
+                        $dependenceElement->value_id = $value;
+                        $dependenceElement->dep_element_id = $dependence;
+                        $dependenceElement->action = $action;
+                        if(!$dependenceElement->save()) {
+                            exit('Не могу сохранить зависимость!');
+                        }
+                    } else {
+                        foreach($issetDependence as $dep) {
+                            $depModel = MedcardElementDependence::model()->find('
+                                element_id = :element_id
+                                AND value_id = :value_id
+                                AND dep_element_id = :dep_element_id
+                            ', array(
+                                ':element_id' => $controlId,
+                                ':value_id' => $value,
+                                ':dep_element_id' => $dependence
+                            ));
+
+                            $depModel->action = $action;
+                            if(!$depModel->save()) {
+                                exit('Не могу сохранить зависимость!');
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array()
+            )
         );
     }
 }

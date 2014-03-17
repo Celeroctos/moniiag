@@ -1,3 +1,4 @@
+<script type="text/javascript">globalVariables.elementsDependences = [];</script>
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-edit-form',
@@ -21,8 +22,11 @@ echo $form->hiddenField($model,'greetingId', array(
 ));
 ?>
 <?php foreach($categories  as $index => $template) {
-    foreach($template  as $key => $categorie) {
-			$this->drawCategorie($categorie, $form, $model);
+    ?>
+    <h5><strong><?php echo $template['templateName']; ?></strong></h5>
+    <?php
+    foreach($template['cats']  as $key => $categorie) {
+			$this->drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix);
 		} ?>
 <?php } ?>
     <?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement')) { ?>

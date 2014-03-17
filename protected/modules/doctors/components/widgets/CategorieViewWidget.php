@@ -13,8 +13,39 @@ class CategorieViewWidget extends CWidget {
     public $historyTree = array(); // Построенное дерево историии
     public $catsByTemplates = array(); // Категории по шаблону
     public $dividedCats = array(); // Поделённые категории
+    public $templatePrefix = null;
+    public $templateId = null; // Это айдишник шаблона
 
     public function run() {
+       /* $deps = MedcardElementPatientDependence::model()->getDistinctDependences();
+        foreach($deps as $dep) {
+            $dep2 = MedcardElementDependence::model()->find(
+                'dep_element_id = :dep_element_id
+                AND value_id = :value_id
+                AND element_id = :element_id
+                AND action = :action',
+                array(
+                    ':dep_element_id' => $dep['dep_element_id'],
+                    ':value_id' => $dep['value'],
+                    ':element_id' => $dep['element_id'],
+                    ':action' => $dep['action']
+                )
+            );
+            if($dep2 == null) {
+                var_dump("?");
+                $dep2 = new MedcardElementDependence();
+                $dep2->element_id = $dep['element_id'];
+                $dep2->value_id = $dep['value'];
+                $dep2->dep_element_id = $dep['dep_element_id'];
+                $dep2->action = $dep['action';
+                if(!$dep2->save()) {
+                    exit("!");
+                }
+            }
+        }
+        var_dump($deps);
+        exit(); */
+
         ini_set('max_execution_time', 60);
         $this->createFormModel();
         if($this->currentDate == null) {
@@ -25,15 +56,19 @@ class CategorieViewWidget extends CWidget {
         if($this->greetingId == null || $this->medcard == null) {
             $categories = array();
         } else {
-            $categories = $this->getCategories($this->templateType);
+            $categories = $this->getCategories($this->templateType, $this->templateId);
         }
+
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
             'currentPatient' => $this->currentPatient,
             'greetingId' => $this->greetingId,
+            'greeting' => ($this->greetingId != null) ? SheduleByDay::model()->findByPk($this->greetingId) : null,
             'withoutSave' => $this->withoutSave,
-            'canEditMedcard' => $this->canEditMedcard
+            'lettersInPixel' => Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'lettersInPixel'))->value,
+            'canEditMedcard' => $this->canEditMedcard,
+            'templatePrefix' => $this->templatePrefix
         ));
     }
 
@@ -105,9 +140,22 @@ class CategorieViewWidget extends CWidget {
     }
 
     // Получить иерархию категорий на странице
-    public function getCategories($pageId) {
+    public function getCategories($pageId, $templateId = null) {
         $templateModel = new MedcardTemplate();
-        $templates = $templateModel->getTemplatesByPageId($pageId);
+        if($templateId == null) {
+            $templates = $templateModel->getTemplatesByPageId($pageId);
+        } else {
+            $template = $templateModel->findByPk($templateId);
+            if($template == null) {
+                exit('Невозможно найти шаблон с ID '.$templateId.'!');
+            }
+            $templates = array(array(
+               'id' => $template->id,
+               'name' => $template->name,
+               'page_id' => $template->page_id,
+               'categorie_ids' => $template->categorie_ids
+            ));
+        }
         // Получаем типы элементов
         $elementModel = new MedcardElement();
         $typesList = $elementModel->getTypesList();
@@ -146,7 +194,10 @@ class CategorieViewWidget extends CWidget {
                     return 0;
                 }
             });
-            $categoriesResult[] = $categorieTemplateFill;
+            $categoriesResult[] = array(
+                'templateName' => $template['name'],
+                'cats' => $categorieTemplateFill
+            );
 
         }
      //   echo "<pre>";
@@ -272,6 +323,7 @@ class CategorieViewWidget extends CWidget {
                     );
                 }
 
+                $numWrapped = 0; // Это число элементов, которые следуют за каким-то конкретным элементом
                 foreach($elements as $key => $element) {
                     $elementResult = array();
                     // Проверим наличие элемента в истории, если это не выборка исторических элементов
@@ -309,6 +361,7 @@ class CategorieViewWidget extends CWidget {
                             $medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
                             $medcardCategorieElement->guide_id = $element['guide_id'];
 							$medcardCategorieElement->allow_add = $element['allow_add'];
+                            $medcardCategorieElement->config = $element['config'];
 
                             if(!$medcardCategorieElement->save()) {
                                 exit('Не могу перенести элемент из категории '.$categorieResult['id']);
@@ -327,6 +380,9 @@ class CategorieViewWidget extends CWidget {
 						$elementResult['allow_add'] = $eCopy->allow_add;
 						$pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
+                        $elementResult['size'] = $element['size'];
+                        $elementResult['is_wrapped'] = $element['is_wrapped'];
+                        $elementResult['config'] = CJSON::decode($element['config']);
                     } else {
                         $elementResult['type'] = $element['type'];
                         $elementResult['label_before'] = $element['label_before'];
@@ -337,6 +393,9 @@ class CategorieViewWidget extends CWidget {
 						$elementResult['allow_add'] = $element['allow_add'];
 						$pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
+                        $elementResult['size'] = $element['size'];
+                        $elementResult['is_wrapped'] = $element['is_wrapped'];
+                        $elementResult['config'] = CJSON::decode($element['config']);
                     }
 
                     // Для выпадающих списков есть справочник
@@ -361,6 +420,18 @@ class CategorieViewWidget extends CWidget {
                     $fieldName = 'f'.$elementResult['undotted_path'].'_'.$elementResult['id'];
                     $this->formModel->$fieldName = null;
                     $elementResult = $this->getFormValue($elementResult);
+
+                    // Выясняем зависимости элемента. Для этого ориентируемся на значение
+                    $elementResult = $this->getDependences($elementResult);
+
+                    $numWrapped++;
+                    if($elementResult['is_wrapped'] == 1) {
+                        $elementResult['num_wraps'] = null;
+                    } else {
+                        $elementResult['num_wraps'] = $numWrapped;
+                        $numWrapped = 0;
+                    }
+
                     $categorieResult['elements'][] = $elementResult;
                 }
 
@@ -407,13 +478,15 @@ class CategorieViewWidget extends CWidget {
                         AND element_id = :element_id
                         AND greeting_id = :greeting_id
                         AND medcard_id = :medcard_id
-                        AND history_id = :history_id',
+                        AND history_id = :history_id
+                        AND path LIKE :path',
                         array(
                             ':categorie_id' => $categorieResult['id'],
                             ':element_id' => -1,
                             ':greeting_id' => $this->greetingId,
                             ':medcard_id' => $this->medcard['card_number'],
-                            ':history_id' => 1
+                            ':history_id' => 1,
+                            ':path' => $categorieResult['path'].'%'
                         )
                     );
                 }
@@ -451,9 +524,11 @@ class CategorieViewWidget extends CWidget {
                 if($element['type'] == 3 || $element['type'] == 2) {
                     $element['selected'] = array();
                 }
+                $element['history_id_max'] = 1;
                 return $element;
             } else {
                 $historyId = $historyIdResult['history_id_max'];
+                $element['history_id_max'] = $historyId;
             }
         }
 
@@ -473,8 +548,12 @@ class CategorieViewWidget extends CWidget {
             if($element['type'] == 3) {
                 $element['selected'] = array();
                 $element['value'] = CJSON::decode($elementFinded['value']);
-                foreach($element['value'] as $id) {
-                    $element['selected'][$id] = array('selected' => true);
+                if($element['value'] != null) {
+                    foreach($element['value'] as $id) {
+                        $element['selected'][$id] = array('selected' => true);
+                    }
+                } else {
+                    $element['selected'] = array();
                 }
             }
             // Простой выпадающий список
@@ -489,13 +568,15 @@ class CategorieViewWidget extends CWidget {
         return $element;
     }
 
-    public function drawCategorie($categorie, $form, $model) {
+    public function drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix) {
         $this->render('CategorieElement', array(
             'categorie' => $categorie,
             'form' => $form,
             'model' => $model,
             'prefix' => $this->prefix,
-            'canEditMedcard' => $this->canEditMedcard
+            'canEditMedcard' => $this->canEditMedcard,
+            'lettersInPixel' => $lettersInPixel,
+            'templatePrefix' => $templatePrefix
         ));
     }
 
@@ -506,12 +587,14 @@ class CategorieViewWidget extends CWidget {
         $this->makeTree();
         // Теперь поделим категории
         $this->divideTreebyCats();
-
+        // Рассортируем
+        $this->sortTree();
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
             'model' => $this->formModel,
             'templates' => $this->catsByTemplates,
-            'dividedCats' => $this->dividedCats
+            'dividedCats' => $this->dividedCats,
+            'lettersInPixel' => Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'lettersInPixel'))->value,
         ), true);
         return $result;
     }
@@ -529,7 +612,7 @@ class CategorieViewWidget extends CWidget {
                         );
                     }
 
-                    $this->dividedCats[$templateId]['cats'][] = $this->historyTree[$id];
+                    $this->dividedCats[$templateId]['cats'][$id] = $this->historyTree[$id];
                 }
             }
         }
@@ -562,11 +645,6 @@ class CategorieViewWidget extends CWidget {
             for($i = 0; $i < $numParts; $i++) {
                 if($i < $numParts - 1) {
                     if(!isset($currentNode[$pathArr[$i]])) {
-                        $node = array(
-                            'elements' => array(),
-                            'children' => array()
-                        );
-                        $currentNode[$pathArr[$i]] = $node;
                         // Корневую записываем в шаблоны
                         if($i == 0 && $element['template_id'] != null && $element['template_name'] != null) {
                             if(!isset($this->catsByTemplates[$pathArr[$i]])) {
@@ -578,6 +656,11 @@ class CategorieViewWidget extends CWidget {
                                 'name' => $element['template_name']
                             );
                         }
+                        $node = array(
+                            'elements' => array(),
+                            'children' => array()
+                        );
+                        $currentNode[$pathArr[$i]] = $node;
                     }
                     if($i == $numParts - 2) { // Предпоследняя итерация определяет категорию, предпоследняя итерация определяет элемент
                         if($element['element_id'] == -1) {
@@ -592,13 +675,15 @@ class CategorieViewWidget extends CWidget {
                     if($element['element_id'] == -1) { // Только конечный элемент можно рассмотреть как определённый
                         if(!isset($currentNode[$pathArr[$i]])) {
                             $node = array(
-                                'elements' => array(),
                                 'name' => $element['categorie_name'],
+                                'path' => implode('-', explode('.', $element['path'])),
                                 'children' => array(),
+                                'elements' => array(),
                             );
                             $currentNode[$pathArr[$i]] = $node;
                         } else {
                             $currentNode[$pathArr[$i]]['name'] = $element['categorie_name'];
+                            $currentNode[$pathArr[$i]]['path'] = implode('-', explode('.', $element['path']));
                         }
 
                         // Корневую-концевую записываем в шаблоны
@@ -622,7 +707,9 @@ class CategorieViewWidget extends CWidget {
                             'value' => $element['value'],
                             'id' => $element['element_id'],
                             'type' => $element['type'],
-                            'guide_id' => $element['guide_id']
+                            'guide_id' => $element['guide_id'],
+                            'path' => $element['path'],
+                            'config' => CJSON::decode($element['config'])
                         );
 
                         if($element['guide_id'] != null) {
@@ -641,15 +728,20 @@ class CategorieViewWidget extends CWidget {
                             if($data['type'] == 3) {
                                 $data['selected'] = array();
                                 $data['value'] = CJSON::decode($element['value']);
-                                foreach($data['value'] as $id) {
-                                    $data['selected'][$id] = array('selected' => true);
+                                if($data['value'] != null) {
+                                    foreach($data['value'] as $id) {
+                                        $data['selected'][$id] = array('selected' => true);
+                                    }
+                                } else {
+                                    $data['selected'] = array();
                                 }
                             }
                             // Простой выпадающий список
                             if($data['type'] == 2) {
-                                $data['selected'] = array($data['id'] => array('selected' => $data['value']));
+                                $data['selected'] = array($data['value'] => array('selected' => true));
                             }
                         }
+                        $data = $this->getDependences($data);
 
                         $currentNode['elements'][] = $data;
 
@@ -661,12 +753,41 @@ class CategorieViewWidget extends CWidget {
                 }
             }
         }
-      //  var_dump($this->historyTree);
-       // exit();
-        ksort($this->historyTree);
+
+        //ksort($this->historyTree);
+        //$this->sortTree();
+        //var_dump($this->historyTree);
+        //exit();
     }
 
-    public function drawHistoryCategorie($categorie, $cId, $form, $model, $prefix = false, $templateKey) {
+    private function sortTree(&$node = false) {
+        if(!$node) {
+            $node = $this->dividedCats;
+        }
+
+        if(isset($node['cats'])) {
+            foreach($node['cats'] as &$cat) {
+                usort($cat['elements'], function($element1, $element2) {
+                    $position1 = array_pop(explode('.', $element1['path']));
+                    $position2 = array_pop(explode('.', $element2['path']));
+
+                    if($position1 > $position2) {
+                        return 1;
+                    } elseif($position1 < $position2) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
+
+                if(isset($cat['children']) && count($cat['children']) > 0) {
+                    $this->sortTree($cat['children']);
+                }
+            }
+        }
+    }
+
+    public function drawHistoryCategorie($categorie, $cId, $form, $model, $prefix = false, $templateKey, $lettersInPixel) {
         if($prefix === false) {
             $prefix = $this->prefix;
         }
@@ -676,8 +797,74 @@ class CategorieViewWidget extends CWidget {
             'form' => $form,
             'model' => $model,
             'cId' => $cId,
-            'templateKey' => $templateKey
+            'templateKey' => $templateKey,
+            'lettersInPixel' => $lettersInPixel
         ));
+    }
+
+    private function getDependences($element) {
+        $element['dependences'] = array();
+        // Элемент участвует в зависимостях как тот, от кого зависят
+        // Попробуем найти его в истории зависимостей
+        $actorsHistory = MedcardElementPatientDependence::model()->findAll(
+            'element_path = :element_path
+            AND medcard_id = :medcard_id
+            AND greeting_id = :greeting_id',
+            array(
+                ':element_path' => $element['path'],
+                ':greeting_id' => $this->greetingId,
+                ':medcard_id' => $this->medcard['card_number'],
+            )
+        );
+        // Если нет отметок зависимостях, то добавить новые: это означает, что шаблон запускается первый раз
+        if(count($actorsHistory) == 0) {
+            $actors =  MedcardElementDependence::model()->findAll('
+                element_id = :element_id', array(
+                ':element_id' => $element['id']
+            ));
+            foreach($actors as $actor) {
+                $dependenceModel = new MedcardElementPatientDependence();
+                $dependenceModel->element_path = $element['path'];
+                $dependenceModel->action = $actor['action'];
+                $dependenceModel->medcard_id = $this->medcard['card_number'];
+                $dependenceModel->greeting_id = $this->greetingId;
+                $dependenceModel->value = $actor['value_id'];
+                $dependenceModel->dep_element_id = $actor['dep_element_id'];
+                $dependenceModel->element_id = $element['id'];
+
+                // Чтобы узнать путь зависимого элемента, его надо выбрать
+                $depElementModel = MedcardElement::model()->findByPk($actor['dep_element_id']);
+                if($depElementModel == null) {
+                    continue;
+                }
+                $dependenceModel->dep_element_path = $depElementModel->path;
+
+                if(!$dependenceModel->save()) {
+                    exit('Не могу сохранить зависимости для элемента '.$element['path']);
+                }
+                $actorsHistory[] = $dependenceModel;
+            }
+        }
+
+        $element['dependences'] = array(
+            'list' => array()
+        );
+
+        // Смотрим, не установлено ли значение элемента, от которого зависит данный элемент. Для этого нужно выяснить, от кого зависит данный элемент. Смотрим: если в хистори не занесено, от кого зависит данный элемент, значит это первая генерация шаблона, и можно взять из актуальных зависимостей
+        // Выбираем всё, от чего зависит данный элемент
+        /*
+         Если мы говорим о том, что какой-то элемент нужно показать, то по умолчанию он скрыт. Если мы говорим, что какой-то элемент         нужно скрыть при определённом значении, то, значит, по умолчанию его надо скрыть
+        */
+        foreach($actorsHistory as $actorHistory) {
+            $element['dependences']['list'][] = array(
+                'action' => $actorHistory['action'],
+                'value' => $actorHistory['value'],
+                'path' => $actorHistory['dep_element_path'],
+                'elementId' => $actorHistory['dep_element_id']
+            );
+        }
+
+        return $element;
     }
 }
 ?>
