@@ -421,18 +421,21 @@ class TasuController extends Controller {
         $key = CJSON::decode($key);
         // Формирование происходит в два этапа. Сначала расписывается ключ
         $sql = 'SELECT * FROM mis.'.$table.' t WHERE ';
+        $sqlWhere = ''; // Строка для предложения Where
         $sqlInsert = 'INSERT INTO mis.'.$table.' ';
         $sqlInsertFields = '(';
         $sqlInsertPlaceholders = 'VALUES(';
         $data = array();
-
+        $updateFieldValues = array();
+        
         foreach($fields as $obj) {
-            $sql .= 't.'.$obj['dbField'].' = :'.$obj['dbField'].' AND ';
+            $sqlWhere .= 't.'.$obj['dbField'].' = :'.$obj['dbField'].' AND ';
             $data[':'.$obj['dbField']] = $obj['tasuField']; // Пока нет данных, то ставим соответствие номер поля в CSV
             $sqlInsertFields .= $obj['dbField'].',';
             $sqlInsertPlaceholders .= ':'.$obj['dbField'].',';
+            $updateFieldValues[$obj['dbField']] = '';
         }
-        $sql = mb_substr($sql, 0, mb_strlen($sql) - 5);
+        $sqlWhere = mb_substr($sqlWhere, 0, mb_strlen($sqlWhere) - 5);
         $sqlInsertFields = mb_substr($sqlInsertFields, 0, mb_strlen($sqlInsertFields) - 1);
         $sqlInsertFields .= ')';
         $sqlInsertPlaceholders = mb_substr($sqlInsertPlaceholders, 0, mb_strlen($sqlInsertPlaceholders) - 1);
@@ -452,32 +455,61 @@ class TasuController extends Controller {
                 // Делим строку в CSV в массив
                 $csvArr = explode(',', $currentRow);
                 $tempArr = $data;
-                $sqlCopy = $sql;
+                $sqlCopy = $sql.$sqlWhere;
                 $sqlInsertPlaceholdersCopy = $sqlInsertPlaceholders;
                 foreach($data as $key => &$field) {
                     $field = $csvArr[$field];
                     // Заменяем в запросе
-                    $sqlCopy = str_replace($key, "'".$field."'", $sqlCopy);
-                    $sqlInsertPlaceholdersCopy  = str_replace($key, "'".$field."'", $sqlInsertPlaceholdersCopy);
+                    $sqlCopy = str_replace($key, "'".str_replace("'","''",mb_convert_encoding($field, "UTF-8"))."'", $sqlCopy);
+                    $sqlInsertPlaceholdersCopy  = str_replace($key, "'".str_replace("'","''",mb_convert_encoding($field, "UTF-8"))."'", $sqlInsertPlaceholdersCopy);
                 }
 
                 $command = Yii::app()->db->createCommand($sqlCopy);
                 $elements = @$command->queryAll(true, array(), true);
+                var_dump($elements);
+                exit();
                 if($elements === false) { // Строка с ошибкой
                     $rows_error++;
                 } elseif(count($elements) > 0) {
                     // Строка есть, пропускать-не импортировать
+                    //   TODO: Сделать обновление строки
+                    //  Перебираем обновляемые поля текущей записи и добавляемой строки и сравниваем.
+                    //  Если хотя бы значение одного поля в файле не равно хотя бы одному полю в базе -
+                    //    выполняем update
+                    
+                    
+                    
                     $rows_discarded++;
                 } else {
                     $rows_accepted++;
                     // TODO: здесь сделать вставку в таблицу новых данных
                     $query = $sqlInsert.' '.$sqlInsertFields.' '.$sqlInsertPlaceholdersCopy;
                     $command = Yii::app()->db->createCommand($query);
+                    // Пытаемся выполнить команду
+                    try
+                    {
+                        $result = @$command->execute(array(), true);
+                        if($result === false)
+                        {
+                            // Запрос не выполнен, т.к. строка не вставлена. Это ошибка
+                            $rows_error++;
+                        }
+                    }
+                    catch (Exception $e)
+                    {
+                        // Если произошло исключение - значит строка не вставлена
+                        $rows_error++;
+                    }
+                    
+                    /*
                     $result = @$command->execute(array(), true);
                     if($result === false) {
                         // Запрос не выполнен, т.к. строка не вставлена. Это ошибка
                         $rows_error++;
                     }
+                    */
+                    
+                    
                 }
                 // После того, как запрос прошёл, сбросить аргументы на то, что было
                 $data = $tempArr;
