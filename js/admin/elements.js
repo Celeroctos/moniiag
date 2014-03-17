@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#elements").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/elements/get',
         datatype: "json",
-        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Размер', 'Перенос строки', 'Позиция', 'Полный путь', '', '', '','',''],
+        colNames:['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после',  'Метка для администратора', 'Размер', 'Перенос строки', 'Позиция', 'Полный путь', '', '', '','',''],
         colModel:[
             {
                 name:'id',
@@ -32,6 +32,11 @@ $(document).ready(function() {
             {
                 name: 'label_after',
                 index:'label_after',
+                width: 150
+            },
+            {
+                name: 'label_display',
+                index: 'label_display',
                 width: 150
             },
             {
@@ -190,6 +195,7 @@ $(document).ready(function() {
             $('#addElementPopup').modal('hide');
             // Перезагружаем таблицу
             $("#elements").trigger("reloadGrid");
+            $("#element-add-form").find("#guideId, #allowAdd, #defaultValue").prop('disabled', true);
             $("#element-add-form")[0].reset(); // Сбрасываем форму
         } else {
             // Удаляем предыдущие ошибки
@@ -290,9 +296,23 @@ $(document).ready(function() {
                             {
                                 modelField: 'config',
                                 formField: 'config'
+                            },
+                            {
+                                modelField: 'default_value',
+                                formField: 'defaultValue'
+                            },
+                            {
+                                modelField: 'label_display',
+                                formField: 'labelDisplay'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
+                            // Подгрузка значений справочника для дефолтного значения
+                            if(fields[i].formField == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
+                                // Это значение ставится асинхронно
+                                $('select#guideId').trigger('change', [data.data[fields[i].modelField]]);
+                                continue;
+                            }
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                             // Таблица
                             if(fields[i].formField == 'config' && data.data['type'] == 4) {
@@ -396,6 +416,7 @@ console.log(newTr);
         if($(this).val() == 2 || $(this).val() == 3) {
             form.find("select#guideId").prop('disabled', false);
             form.find("select#allowAdd").prop('disabled', false);
+            form.find("select#defaultValue").prop('disabled', false);
         } else {
             // Поставить на дефолт
             form.find("select#guideId")
@@ -404,6 +425,11 @@ console.log(newTr);
 
             form.find("select#allowAdd")
                 .val(0)
+                .prop('disabled', true);
+
+            form.find("select#defaultValue option:not([value=-1])").remove();
+            form.find("select#defaultValue")
+                .val(-1)
                 .prop('disabled', true);
         }
 
@@ -671,4 +697,38 @@ console.log(newTr);
 
         $(hiddenConfig).val($.toJSON(tempConfig));
     });
+
+    $('select#guideId').on('change', function(e, currentValue) {
+        var form = $(this).parents('form');
+        var defaultSelect = $(form).find('select#defaultValue');
+        $(defaultSelect).find('option:not([value=-1])').remove();
+        $(defaultSelect).val(-1);
+        if($(this).val() == -1) {
+            return false;
+        }
+        $(defaultSelect).attr('disabled', true);
+
+        $.ajax({
+            'url' : '/index.php/admin/guides/getvalues',
+            'data' : {
+                'id' : $(this).val()
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    for(var i = 0; i < data.rows.length; i++) {
+                        $(defaultSelect).append($('<option>').prop({
+                            'value' : data.rows[i].id
+                        }).text(data.rows[i].value));
+                    }
+                    $(defaultSelect).attr('disabled', false);
+                    if(typeof currentValue != 'undefined') {
+                        $(defaultSelect).val(currentValue);
+                    }
+                }
+            }
+        });
+    })
 });

@@ -118,10 +118,10 @@ class GuidesController extends Controller {
                                          'error' => 'Без указания справочника.'));
                 exit();
             }
-            $rows = $_GET['rows'];
-            $page = $_GET['page'];
-            $sidx = $_GET['sidx'];
-            $sord = $_GET['sord'];
+            $rows = (isset($_GET['rows'])) ? $_GET['rows'] : false;
+            $page = (isset($_GET['page'])) ? $_GET['page'] : false;
+            $sidx = (isset($_GET['sidx'])) ? $_GET['sidx'] : 'value';
+            $sord = (isset($_GET['sord'])) ? $_GET['sord'] : 'asc';
 
             // Фильтры поиска
             if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
@@ -133,15 +133,21 @@ class GuidesController extends Controller {
             $model = new MedcardGuideValue();
             $num = $model->getRows($filters, $id);
 
-            $totalPages = ceil(count($num) / $rows);
-            $start = $page * $rows - $rows;
+            if($rows != false && $page != false && $sidx != false && $sord != false) {
+                $totalPages = ceil(count($num) / $rows);
+                $start = $page * $rows - $rows;
+            } else {
+                $start = false;
+                $totalPages = 1;
+            }
 
             $values = $model->getRows($filters, $id, $sidx, $sord, $start, $rows);
 
             echo CJSON::encode(
                 array('rows' => $values,
                       'total' => $totalPages,
-                      'records' => count($num))
+                      'records' => count($num),
+                      'success' => true)
             );
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -152,10 +158,10 @@ class GuidesController extends Controller {
     public function actionAddInGuide($id = false) {
         // Если вынимаем у непонятно чего - давать поворот-отворот
         if($id == false) {
-            if(isset($_POST['FormValueAdd']['guideId'])) {
-                $guide = MedcardGuide::model()->findByPk($_POST['FormValueAdd']['guideId']);
-                if($guide != null) {
-                    $id = $_POST['FormValueAdd']['guideId'];
+            if(isset($_POST['FormValueAdd']['controlId'])) {
+                $control = MedcardElement::model()->findByPk($_POST['FormValueAdd']['controlId']);
+                if($control != null) {
+                    $id = $control->guide_id;
                 }
             }
         }

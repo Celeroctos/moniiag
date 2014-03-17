@@ -43,9 +43,12 @@ class MedcardGuideValue extends MisActiveRecord {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
-            $guideValues->order($sidx.' '.$sord);
+        if($start !== false && $limit !== false) {
             $guideValues->limit($limit, $start);
+        }
+
+        if($sidx !== false && $sord !== false) {
+            $guideValues->order($sidx.' '.$sord);
         } else {
             $guideValues->order('mgv.id DESC');
         }

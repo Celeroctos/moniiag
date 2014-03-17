@@ -240,6 +240,14 @@ class CategoriesController extends Controller {
                                  'data' => $categorie)
         );
     }
+
+    public function actionClearGreetingsData() {
+        MedcardElementPatientDependence::model()->deleteAll();
+        MedcardElementForPatient::model()->deleteAll();
+        echo CJSON::encode(array('success' => true,
+                                 'data' => 'Таблицы данных приёмов успешно очищены.')
+        );
+    }
 }
 
 ?>

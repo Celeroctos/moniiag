@@ -158,11 +158,7 @@ $(document).ready(function() {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                             form.find('#' + fields[i].formField).trigger('change');
                         }
-                        $("#editShiftPopup").modal(
-                                                   {
-                                                        
-                                                   }
-                                                   );
+                        $("#editShiftPopup").modal({});
                     }
                 }
             });

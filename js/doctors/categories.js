@@ -2,8 +2,9 @@ $(document).ready(function() {
     $('button[id^=ba]').filter('[id*=history]').prop('disabled', true);
     $('button[id^=ba]').filter(':not([id*=history])').on('click', function(e) {
         var elementId = $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
-        $('#guideId').val(elementId);
+        $('#controlId').val(elementId);
         globalVariables.elementId = elementId;
+        globalVariables.domElement = $(this).attr('id');
         $('#addValuePopup').modal({
         });
     });
@@ -13,8 +14,7 @@ $(document).ready(function() {
         if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#addValuePopup').modal('hide');
             $("#add-value-form")[0].reset(); // Сбрасываем форму
-            console.log($('#ba__' + globalVariables.comboId).prev().find('option:first'));
-            $('#ba__' + globalVariables.elementId).prev().find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+            $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
         } else {
             // Удаляем предыдущие ошибки
             $('#errorPopup .modal-body .row p').remove();

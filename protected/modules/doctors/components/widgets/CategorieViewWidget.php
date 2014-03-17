@@ -362,6 +362,9 @@ class CategorieViewWidget extends CWidget {
                             $medcardCategorieElement->guide_id = $element['guide_id'];
 							$medcardCategorieElement->allow_add = $element['allow_add'];
                             $medcardCategorieElement->config = $element['config'];
+                            if($element['default_value'] != null) {
+                                $medcardCategorieElement->value = $element['default_value'];
+                            }
 
                             if(!$medcardCategorieElement->save()) {
                                 exit('Не могу перенести элемент из категории '.$categorieResult['id']);
