@@ -86,6 +86,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <?php echo $form->labelEx($model,'labelDisplay', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'labelDisplay', array(
+                                    'id' => 'labelDisplay',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Метка для отображения у администратора'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'size', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -135,11 +147,24 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <?php echo $form->labelEx($model,'defaultValue', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'defaultValue', $guideValuesList, array(
+                                    'id' => 'defaultValue',
+                                    'class' => 'form-control',
+                                    'disabled' => true,
+                                    'options' => array('selected' => -1)
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'allowAdd', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'allowAdd', array('Да', 'Нет'), array(
+                                <?php echo $form->dropDownList($model, 'allowAdd', array('Нет', 'Да'), array(
                                     'id' => 'allowAdd',
                                     'class' => 'form-control',
                                     'disabled' => true,
@@ -295,6 +320,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <?php echo $form->labelEx($model,'labelDisplay', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'labelDisplay', array(
+                                    'id' => 'labelDisplay',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Метка для отображения у администратора'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'size', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -340,6 +377,19 @@
                                     'disabled' => true
                                 )); ?>
                                 <?php echo $form->error($model,'guideId'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'defaultValue', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'defaultValue', $guideValuesList, array(
+                                    'id' => 'defaultValue',
+                                    'class' => 'form-control',
+                                    'disabled' => true,
+                                    'options' => array('selected' => -1)
+                                )); ?>
                             </div>
                         </div>
                         <div class="form-group">

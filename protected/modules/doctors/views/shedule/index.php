@@ -292,21 +292,21 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title">Добавить значение в справочник</h4>
                     </div>
+                    <?php
+                    $addForm = $this->beginWidget('CActiveForm', array(
+                        'id' => 'add-value-form',
+                        'enableAjaxValidation' => true,
+                        'enableClientValidation' => true,
+                        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/addinguide'),
+                        'htmlOptions' => array(
+                            'class' => 'form-horizontal col-xs-12',
+                            'role' => 'form',
+                            'name' => 'add-value-form'
+                        )
+                    ));
+                    ?>
                     <div class="modal-body">
                         <div class="row">
-                            <?php
-                            $addForm = $this->beginWidget('CActiveForm', array(
-                                'id' => 'add-value-form',
-                                'enableAjaxValidation' => true,
-                                'enableClientValidation' => true,
-                                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/addinguide'),
-                                'htmlOptions' => array(
-                                    'class' => 'form-horizontal col-xs-12',
-                                    'role' => 'form',
-                                    'name' => 'add-value-form'
-                                )
-                            ));
-                            ?>
                             <div class="form-group col-xs-3">
                                 <?php
                                 echo $addForm->labelEx($addModel,'value', array(
@@ -316,8 +316,8 @@
                             </div>
                             <div class="form-group col-xs-7">
                                 <?php
-                                echo $addForm->hiddenField($addModel,'guideId', array(
-                                    'id' => 'guideId',
+                                echo $addForm->hiddenField($addModel,'controlId', array(
+                                    'id' => 'controlId',
                                     'class' => 'form-control',
                                     'placeholder' => ''
                                 ));

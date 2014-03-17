@@ -15,6 +15,8 @@ class FormElementAdd extends CFormModel
     public $numCols;
     public $numRows;
     public $config;
+    public $labelDisplay;
+    public $defaultValue;
 
     public function rules()
     {
@@ -23,7 +25,7 @@ class FormElementAdd extends CFormModel
                 'type, categorieId, label, position', 'required'
             ),
             array(
-                'id, guideId, allowAdd, labelAfter, size, isWrapped, numCols, numRows, config', 'safe'
+                'id, guideId, allowAdd, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue', 'safe'
             )
         );
     }
@@ -41,7 +43,9 @@ class FormElementAdd extends CFormModel
             'position' => 'Позиция в категории',
             'isWrapped' => 'Перенос строки',
             'numRows' => 'Количество строк',
-            'numCols' => 'Количество столбцов'
+            'numCols' => 'Количество столбцов',
+            'labelDisplay' => 'Метка для отображения в администрировании',
+            'defaultValue' => 'Значение по умолчанию'
         );
     }
 }

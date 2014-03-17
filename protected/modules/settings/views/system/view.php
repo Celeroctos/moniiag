@@ -45,6 +45,18 @@
     </div>
     <?php $this->endWidget(); ?>
 </div>
+<h4>Обслуживание</h4>
+<div class="row">
+    <div class="form-group">
+        <?php echo CHtml::button(
+            'Очистить таблицы для приёмов пациентов',
+            array(
+                'class' => 'btn btn-success',
+                'id' => 'clearGreetingDataSubmit'
+            )
+        ); ?>
+    </div>
+</div>
 <div class="modal fade error-popup" id="successSystemSettingsEditPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -55,6 +67,23 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Настройки системы сохранены.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
                 </div>
             </div>
             <div class="modal-footer">

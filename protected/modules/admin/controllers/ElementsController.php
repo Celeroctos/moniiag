@@ -5,7 +5,7 @@ class ElementsController extends Controller {
     public function actionView() {
         // Категории
         $categoriesModel = new MedcardCategorie();
-        $categories = $categoriesModel->getRows(false);
+        $categories = $categoriesModel->getRows(false, 'name', 'asc');
         $categoriesList = array();
         foreach($categories as $index => $categorie) {
             $categoriesList[$categorie['id']] = $categorie['name'];
@@ -13,7 +13,7 @@ class ElementsController extends Controller {
 
         // Справочники
         $guidesModel = new MedcardGuide();
-        $guides = $guidesModel->getRows(false);
+        $guides = $guidesModel->getRows(false, 'name', 'asc');
         $guidesList = array('-1' => 'Нет');
         foreach($guides as $index => $guide) {
             $guidesList[$guide['id']] = $guide['name'];
@@ -24,7 +24,8 @@ class ElementsController extends Controller {
             'model' => new FormElementAdd(),
             'typesList' => $elementModel->getTypesList(),
             'categoriesList' => $categoriesList,
-            'guidesList' => $guidesList
+            'guidesList' => $guidesList,
+            'guideValuesList' => array('-1' => 'Нет')
         ));
     }
 
@@ -127,14 +128,21 @@ class ElementsController extends Controller {
         $element->size = $model->size;
         $element->is_wrapped = $model->isWrapped;
         $element->position = $model->position;
+        $element->label_display = $model->labelDisplay;
 
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
         }
         if($model->type == 2 || $model->type == 3) {
             $element->allow_add = $model->allowAdd;
+            if($model->defaultValue != -1) {
+                $element->default_value = $model->defaultValue;
+            } else {
+                $element->default_value = null;
+            }
         } else {
             $element->allow_add = 0;
+            $element->default_value = null;
         }
 
         if($model->type == 4) {
@@ -209,6 +217,9 @@ class ElementsController extends Controller {
         if($element['guide_id'] == null) {
             $element['guide_id'] = -1;
         }
+        if($element['default_value'] == null) {
+            $element['default_value'] = -1;
+        }
         echo CJSON::encode(array('success' => true,
                                  'data' => $element)
         );
@@ -218,7 +229,12 @@ class ElementsController extends Controller {
     public function actionGetDependences($id) {
         $dependencesArr = $this->getDependences($id);
         // Получаем все контролы
-        $controls = MedcardElement::model()->findAll('id != :element_id', array(':element_id' => $id));
+        $controls = MedcardElement::model()->findAll('id != :element_id ORDER BY label', array(':element_id' => $id));
+        foreach($controls as &$control) {
+            if(trim($control['label_display']) != '' && $control['label_display'] != null) {
+                $control['label'] .= ' ('.$control['label_display'].')';
+            }
+        }
         $comboValues = MedcardElement::model()->getGuideValuesByElementId($id);
         echo CJSON::encode(array(
              'success' => true,
@@ -250,6 +266,12 @@ class ElementsController extends Controller {
         $dependencesArr = array();
         foreach($dependences as $dependence) {
             $dependence['action'] = $dependence['action'] == 1 ? 'Скрыть' : 'Показать';
+            if($dependence['me_display_label'] != null) {
+                $dependence['element'] .= ' ('.$dependence['me_display_label'].')';
+            }
+            if($dependence['me2_display_label'] != null) {
+                $dependence['dep_element'] .= ' ('.$dependence['me2_display_label'].')';
+            }
             $dependencesArr[] = $dependence;
         }
         return $dependencesArr;
