@@ -293,29 +293,48 @@ class SheduleController extends Controller {
     // Закончить приём пациента
     public function actionAcceptComplete() {
         $req = new CHttpRequest();
+        
         if(isset($_GET['id']) && trim($_GET['id']) != '') {
             // Записать, что пациент принят
             $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
             if($sheduleElement != null) {
-                $sheduleElement->is_accepted = 1;
-                $sheduleElement->time_end = date('h:j');
-                // Записать статус медкарты: медкарта вернулась обратно в регистратуру
-                $medcard = Medcard::model()->findByPk($sheduleElement->medcard_id);
-                if($medcard != null) {
-                    $medcard->motion = 0; // Сразу в регистратуру: человеческий фактор говорит о том, что связку врач-регистратура можно будет отловить по истории
-                    if(!$medcard->save()) {
+                // Порверим - установлен ли первичый диагноз. Если нет - выводим сообщение
+                $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
+                //var_dump($primaryDiagnosis);
+                //exit();
+                
+                if (count($primaryDiagnosis) == 0)
+                {
+                    echo CJSON::encode(array('success' => false,
+                                             'text' => 'Введите основной диагноз!'));
+                    return;
+                }
+                else
+                {
+                    $sheduleElement->is_accepted = 1;
+                    $sheduleElement->time_end = date('h:j');
+                    // Записать статус медкарты: медкарта вернулась обратно в регистратуру
+                    $medcard = Medcard::model()->findByPk($sheduleElement->medcard_id);
+                    if($medcard != null) {
+                        $medcard->motion = 0; // Сразу в регистратуру: человеческий фактор говорит о том, что связку врач-регистратура можно будет отловить по истории
+                        if(!$medcard->save()) {
+                            echo CJSON::encode(array('success' => false,
+                                                     'text' => 'Ошибка сохранения статуса медкарты.'));
+                            return;
+                        }
+                    }
+                    if(!$sheduleElement->save()) {
                         echo CJSON::encode(array('success' => false,
-                                                 'text' => 'Ошибка сохранения статуса медкарты.'));
+                                                 'text' => 'Ошибка сохранения записи.'));
+                        return;
                     }
                 }
-                if(!$sheduleElement->save()) {
-                    echo CJSON::encode(array('success' => false,
-                                             'text' => 'Ошибка сохранения записи.'));
-                }
+
             }
         }
-
-        $req->redirect($_SERVER['HTTP_REFERER']);
+        echo CJSON::encode(array('success' => true,
+            'text' => ''));
+        //$req->redirect($_SERVER['HTTP_REFERER']);
     }
 
     // Выдать календарь для записи врача

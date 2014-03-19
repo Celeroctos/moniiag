@@ -120,7 +120,7 @@ $(document).ready(function() {
                             }
                         }
 
-                        if(shedule[i].medcard_id != null  && shedule[i].motion == 0) {
+                        if(shedule[i].medcard_id != null  && shedule[i].motion == 0 && shedule[i].is_accepted!=1) {
                             content +=
                                 '<td>' +
                                     '<input type="checkbox" id="c' + shedule[i].medcard_id + '" />' +
