@@ -197,6 +197,8 @@ $(document).ready(function() {
             $("#elements").trigger("reloadGrid");
             $("#element-add-form").find("#guideId, #allowAdd, #defaultValue").prop('disabled', true);
             $("#element-add-form")[0].reset(); // Сбрасываем форму
+            $('.table-config-container').addClass('no-display').find('#numCols, #numRows').attr('disabled', false);
+            $('.table-config-headers tbody tr').remove();
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddElementPopup .modal-body .row p').remove();
@@ -472,15 +474,13 @@ console.log(newTr);
                             $('#controlValues').append(option);
                         }
 
-                        // Ставим список всех контролов
-                        if($('#controlDependencesList option').length == 0) {
-                            $('#controlDependencesList option').remove();
-                            for(var i = 0; i < data.controls.length; i++) {
-                                var option = $('<option>').prop({
-                                    'value' : data.controls[i].id
-                                }).text(data.controls[i].label);
-                                $('#controlDependencesList').append(option);
-                            }
+                        // Ставим список всех контролов. Он обновляется всякий раз.
+                        $('#controlDependencesList option').remove();
+                        for(var i = 0; i < data.controls.length; i++) {
+                            var option = $('<option>').prop({
+                                'value' : data.controls[i].id
+                            }).text(data.controls[i].label);
+                            $('#controlDependencesList').append(option);
                         }
                         $('#controlValues').trigger('change');
 

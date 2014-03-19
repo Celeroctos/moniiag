@@ -228,8 +228,14 @@ class ElementsController extends Controller {
     // Получение зависимостей элементов
     public function actionGetDependences($id) {
         $dependencesArr = $this->getDependences($id);
+        // Получаем категорию контрола
+        $elementModel = MedcardElement::model()->findByPk($id);
+        if($elementModel == null) {
+            exit('Элемент №'.$id.' не имеет категории!');
+        }
+
         // Получаем все контролы
-        $controls = MedcardElement::model()->findAll('id != :element_id ORDER BY label', array(':element_id' => $id));
+        $controls = MedcardElement::model()->findAll('id != :element_id AND categorie_id = :categorie_id ORDER BY label', array(':element_id' => $id, ':categorie_id' => $elementModel->categorie_id));
         foreach($controls as &$control) {
             if(trim($control['label_display']) != '' && $control['label_display'] != null) {
                 $control['label'] .= ' ('.$control['label_display'].')';
@@ -253,16 +259,26 @@ class ElementsController extends Controller {
     }
 
     public function actionGetDependencesList() {
+        if(isset($_GET['id'])) {
+            $elementModel = MedcardElement::model()->findByPk($_GET['id']);
+            if($elementModel != null) {
+                $categorieId = $elementModel->categorie_id;
+            } else {
+                $categorieId = false;
+            }
+        } else {
+            $categorieId = false;
+        }
         echo CJSON::encode(array(
                 'success' => true,
-                'rows' => $this->getDependences(false)
+                'rows' => $this->getDependences(false, $categorieId)
             )
         );
     }
 
-    private function getDependences($id) {
+    private function getDependences($id, $categorieId = false) {
         //$dependences = MedcardElementDependence::model()->findAll('element_id = :element_id', array(':element_id' => $id));
-        $dependences = MedcardElementDependence::model()->getRows($id);
+        $dependences = MedcardElementDependence::model()->getRows($id, $categorieId);
         $dependencesArr = array();
         foreach($dependences as $dependence) {
             $dependence['action'] = $dependence['action'] == 1 ? 'Скрыть' : 'Показать';

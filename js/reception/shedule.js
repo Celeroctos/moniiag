@@ -120,6 +120,10 @@ $(document).ready(function() {
                             }
                         }
 
+                        if(shedule.motion == null) {
+                            shedule[i].motion = 0;
+                        }
+
                         if(shedule[i].medcard_id != null  && shedule[i].motion == 0) {
                             content +=
                                 '<td>' +
