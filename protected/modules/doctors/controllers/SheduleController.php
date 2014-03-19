@@ -53,7 +53,11 @@ class SheduleController extends Controller {
                 } else {
                     $canEditMedcard = 0;
                     $templatesChoose = 1;
-                    $templatesList = MedcardTemplate::model()->findAll();
+                    // Получим должность пользователя
+                    $medworkerId = Yii::app()->user->medworkerId;
+                    // Получим разрешённые для него шаблоны
+                    $medcardTemplates = new MedcardTemplate();
+                    $templatesList = $medcardTemplates->getTemplatesByEmployee($medworkerId);
                 }
             }
         }

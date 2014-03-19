@@ -20,9 +20,13 @@ class MedworkersController extends Controller {
                 $typesList[(string)$value['id']] = $value['name'];
             }
 
+            // Выберем все шаблоны приёмов, чтобы из вывести в интерфейс
+            $allTemplates = MedcardTemplate::model()->findAll();
+            
             $this->render('view', array(
                 'model' => $formAddEdit,
-                'typesList' => $typesList
+                'typesList' => $typesList,
+                'allTemplates' => $allTemplates
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -61,11 +65,37 @@ class MedworkersController extends Controller {
         $medworker->type = $model->type;
         $medworker->payment_type = $model->paymentType;
         $medworker->is_for_pregnants = $model->isForPregnants;
+        
+        $success = true;
+        if(!$medworker->save()) {
+            $success = false;
+        }
+        
+        // Берём все шаблоны
+        $templatesList = MedcardTemplate::model()->findAll();
+        // Берём разрешённые шаблоны и убиваем их для данной должности
+        $checkedModel = new EnabledTemplate();
+        // Удаляем шаблоны
+        $checkedModel->deleteByMedpersonal($medworker->id);
 
-        if($medworker->save()) {
+        foreach($templatesList as $key => $template) {
+            // Если шаблон перечислен - проставляем
+            if(isset($_POST['template'.$template['id']])) {
+                $checked = new EnabledTemplate();
+                $checked->id_template = $template['id'];
+                $checked->id_medpersonal = $medworker->id;
+                if(!$checked->save()) {
+                    echo CJSON::encode(array('success' => false,
+                                             'text' => 'Невозможно сохранить шаблон.'));
+                }
+            }
+        }
+        
+        if($success) {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));
         }
+
     }
 
     public function actionAdd() {
@@ -143,6 +173,16 @@ class MedworkersController extends Controller {
         } else {
             $medworker['payment_type_desc'] = '';
         }
+        
+        // Берём прочитываем разрешённые для должности шаблоны приёма и записываем в поле "templates"
+        $templatesModel = new EnabledTemplate();
+        $templates = $templatesModel->getByMedpersonalType($id);
+        $medworker['templates'] = array();
+        foreach($templates as $key => $template) {
+            $medworker['templates'][] = $template['id_template'];
+
+        }
+        
         echo CJSON::encode(array('success' => true,
                                  'data' => $medworker)
         );

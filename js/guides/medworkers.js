@@ -161,6 +161,16 @@ $(document).ready(function() {
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
+                        
+                        // Вытаскиваем список разрешённых шаблонов
+                        
+                        // Проставим шаблоны
+                        form.find('input[type="checkbox"]').prop('checked', false); // Сбрасываем все галочки
+                        var templates = data.data.templates;
+                        for(var i = 0; i < templates.length; i++) {
+                            form.find('input[name="template' + templates[i] + '"]').prop('checked', true);
+                        }
+                        
                         $("#editMedworkerPopup").modal({
 
                         });
