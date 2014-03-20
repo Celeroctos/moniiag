@@ -592,6 +592,8 @@ class CategorieViewWidget extends CWidget {
         $this->divideTreebyCats();
         // Рассортируем
         $this->sortTree();
+	//var_dump($this->dividedCats);
+	//exit();
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
             'model' => $this->formModel,
@@ -718,22 +720,49 @@ class CategorieViewWidget extends CWidget {
                         if($element['guide_id'] != null) {
                             $medguideValuesModel = new MedcardGuideValue();
                             $medguideValues = $medguideValuesModel->getRows(false, $element['guide_id']);
-                            if(count($medguideValues) > 0) {
+                            // Проинициализируем пустым массивом массив значений
+			    $data['guide'] = array();
+			    if(count($medguideValues) > 0) {
+                                // Если не список множественного выбора
+				if($data['type'] != 3)
+				{
+				    $guideValues = array();
+				    foreach($medguideValues as $value) {
+				        $guideValues[$value['id']] = $value['value'];
+				    }
+				    $data['guide'] = $guideValues;
+				}
+                            }
+				
+			    /*
+			    if(count($medguideValues) > 0) {
                                 $guideValues = array();
                                 foreach($medguideValues as $value) {
                                     $guideValues[$value['id']] = $value['value'];
                                 }
-                                $data['guide'] = $guideValues;
-                            } else {
-                                $data['guide'] = array();
-                            }
-
+				// Если не список множественного выбора
+				//if($data['type'] != 3)
+				    $data['guide'] = $guideValues;
+                            }*/
+			    
                             if($data['type'] == 3) {
                                 $data['selected'] = array();
                                 $data['value'] = CJSON::decode($element['value']);
                                 if($data['value'] != null) {
                                     foreach($data['value'] as $id) {
                                         $data['selected'][$id] = array('selected' => true);
+					//$data['guide'][$id] = $medguideValues[$id];
+					// Перебираем массив $medguideValues и в случае, если выбранное значение
+					//   равно значению из $medguideValues, то добавляем в $data['guide']
+					//     значение из справочника
+					foreach ($medguideValues as $value)
+					{
+					    if ($value['id']==$id)
+					    {
+						$data['guide'][$value['id']] = $value['value'];
+					    }
+					}
+					
                                     }
                                 } else {
                                     $data['selected'] = array();

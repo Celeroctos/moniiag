@@ -73,6 +73,8 @@ class SheduleController extends Controller {
 
         $this->filterModel = new FormSheduleFilter();
         $patients = $this->getCurrentPatients();
+        //var_dump($patients);
+        //exit();
         $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
         $curDate = $this->getCurrentDate();
 
@@ -267,7 +269,7 @@ class SheduleController extends Controller {
         }
         // Выбираем пациентов на обозначенный день
         $sheduleByDay = new SheduleByDay();
-        $patients = $sheduleByDay->getRows($date, $doctor['employee_id'], 0, 1);
+        $patients = $sheduleByDay->getRows($date, $doctor['employee_id'], 0);
         return $patients;
     }
 

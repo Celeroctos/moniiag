@@ -96,7 +96,7 @@
                                         'id' => 'f_'.$prefix.'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'options' => $element['selected'],
+                                     //   'options' => $element['selected'],
                                         'multiple' => 'multiple',
                                         'disabled' => 'disabled'
                                     );
