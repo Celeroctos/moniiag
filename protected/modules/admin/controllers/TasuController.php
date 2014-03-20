@@ -385,33 +385,158 @@ class TasuController extends Controller {
         }
     }
 
-    // Сама процедура импорта
-    public function actionImport($table, $fields, $key, $file, $per_query, $rows_num, $rows_numall, $rows_accepted, $rows_discarded, $rows_error, $processed) {
-        // Вынимаем файл из базы
-        $fileFromDb = FileModel::model()->findByPk($file);
+    // Проверяем есть ли файл на диске и в базе
+    private function checkDbFile($fileFromDb)
+    {
         if($fileFromDb == null) {
             echo CJSON::encode(array('success' => false,
                                      'error' => 'Такого файла не существует.'));
             exit();
-
         }
         if(!(file_exists(getcwd().$fileFromDb->path))) {
             echo CJSON::encode(array('success' => false,
                                      'error' => 'Такого файла нет на диске'));
             exit();
         }
+    }
+    
+    // Считает кол-во строк в файле CSV
+    private function countRowFile($file)
+    {
+        $result = 0;
+        while(!feof($file)) {
+            $row = fgets($file);
+            $result ++;
+        }
+        return $result;
+    }
+    
+    /*
+    public function actionImport($table, $fields, $key, $file, $per_query, $rows_num, $rows_numall, $rows_accepted, $rows_discarded, $rows_error, $processed) {
+        
+         
+        // Вынимаем файл из базы
+        $fileFromDb = FileModel::model()->findByPk($file);
+        // Проверим наличие файла на диске и в базе
+        $this->checkDbFile($fileFromDb);
 
         $csvHeaders = $this->getTasuCsvFileHeaders($fileFromDb->path);
 
         $filesize = filesize(getcwd().$fileFromDb->path);
         $file = fopen(getcwd().$fileFromDb->path, 'r');
 
-        // Посчитаем общее количество строк
+        // Если кол-во строк нулевое - посчитаем общее количество строк
         if($rows_numall == 0) {
-            while(!feof($file)) {
-                $row = fgets($file);
-                $rows_numall++;
+          $this->countRowFile($file);
+        }
+
+        fseek($file, $processed); // Это позволяет читать файл с того места, где закончили
+
+        // Расписываем фильтры: формировать sql-запрос можно один раз
+        $fields = CJSON::decode($fields);
+        $key = CJSON::decode($key);
+        // Формирование происходит в два этапа. Сначала расписывается ключ
+      
+        $Context = new TasuImportContext($fields,$table,$key);
+       
+    
+        $count = 0;
+        $headerFlag = false; // Флаг о том, что заголовки прочитаны
+        while(!feof($file)) {
+            if($rows_num == 0 && $headerFlag === false) {
+                $currentRow = fgets($file); // Это строка заголовков
+                $headerFlag = true;
+                continue;
             }
+            if($count < $per_query) {
+                $currentRow = fgets($file);
+                $processed += mb_strlen($currentRow);
+                
+                $Context->onBeforeRowTreating($currentRow);
+                // Делим строку в CSV в массив
+                
+                
+                $command = Yii::app()->db->createCommand($Context->getSqlCopy());
+                var_dump($Context->getSqlCopy());
+               // $elements = @$command->queryAll(true, array(), true);
+                //var_dump($elements);
+                //exit();
+                if($elements === false) { // Строка с ошибкой
+                    $rows_error++;
+                } elseif(count($elements) > 0) {
+                    // Строка есть, пропускать-не импортировать
+                    //   TODO: Сделать обновление строки
+                    //  Перебираем обновляемые поля текущей записи и добавляемой строки и сравниваем.
+                    //  Если хотя бы значение одного поля в файле не равно хотя бы одному полю в базе -
+                    //    выполняем update
+                    
+                    
+                    
+                    $rows_discarded++;
+                } else {
+                    $rows_accepted++;
+                    // TODO: здесь сделать вставку в таблицу новых данных
+                    //$query = $sqlInsert.' '.$sqlInsertFields.' '.$sqlInsertPlaceholdersCopy;
+                    $query = $Context->getInsertSql();
+                    var_dump($Context->getInsertSql());
+                  //  $command = Yii::app()->db->createCommand($query);
+                    // Пытаемся выполнить команду
+                    try
+                    {
+                       // $result = @$command->execute(array(), true);
+                        if($result === false)
+                        {
+                            // Запрос не выполнен, т.к. строка не вставлена. Это ошибка
+                            $rows_error++;
+                        }
+                    }
+                    catch (Exception $e)
+                    {
+                        // Если произошло исключение - значит строка не вставлена
+                        $rows_error++;
+                    }
+                    
+                
+                    
+                    
+                }
+                // После того, как запрос прошёл, сбросить аргументы на то, что было
+                $data = $tempArr;
+                $rows_num++;
+                $count++;
+                $command = Yii::app()->db->createCommand($sql, $data);
+            } else {
+                break;
+            }
+        }
+        fclose($file);
+        echo CJSON::encode(array('success' => true,
+                                 'data' => array(
+                                     'rowsNumAll' => $rows_numall,
+                                     'rowsNum' => $rows_num,
+                                     'rowsError' => $rows_error,
+                                     'rowsAccepted' => $rows_accepted,
+                                     'rowsDiscarded' => $rows_discarded,
+                                     'filesize' => $filesize,
+                                     'processed' => $processed // Кол-во обработанных байт
+                                 )));
+    }*/
+    
+    // Сама процедура импорта
+    public function actionImport($table, $fields, $key, $file, $per_query, $rows_num, $rows_numall, $rows_accepted, $rows_discarded, $rows_error, $processed) {
+        // Вынимаем файл из базы
+        $fileFromDb = FileModel::model()->findByPk($file);
+        // Проверим наличие файла на диске и в базе
+        $this->checkDbFile($fileFromDb);
+
+        $csvHeaders = $this->getTasuCsvFileHeaders($fileFromDb->path);
+
+        $filesize = filesize(getcwd().$fileFromDb->path);
+        $file = fopen(getcwd().$fileFromDb->path, 'r');
+
+        // Если кол-во строк нулевое - посчитаем общее количество строк
+        if($rows_numall == 0) {
+          $this->countRowFile($file);
         }
 
         fseek($file, $processed); // Это позволяет читать файл с того места, где закончили
@@ -421,18 +546,21 @@ class TasuController extends Controller {
         $key = CJSON::decode($key);
         // Формирование происходит в два этапа. Сначала расписывается ключ
         $sql = 'SELECT * FROM mis.'.$table.' t WHERE ';
+        $sqlWhere = ''; // Строка для предложения Where
         $sqlInsert = 'INSERT INTO mis.'.$table.' ';
         $sqlInsertFields = '(';
         $sqlInsertPlaceholders = 'VALUES(';
         $data = array();
-
+        $updateFieldValues = array();
+        
         foreach($fields as $obj) {
-            $sql .= 't.'.$obj['dbField'].' = :'.$obj['dbField'].' AND ';
+            $sqlWhere .= 't.'.$obj['dbField'].' = :'.$obj['dbField'].' AND ';
             $data[':'.$obj['dbField']] = $obj['tasuField']; // Пока нет данных, то ставим соответствие номер поля в CSV
             $sqlInsertFields .= $obj['dbField'].',';
             $sqlInsertPlaceholders .= ':'.$obj['dbField'].',';
+            $updateFieldValues[$obj['dbField']] = '';
         }
-        $sql = mb_substr($sql, 0, mb_strlen($sql) - 5);
+        $sqlWhere = mb_substr($sqlWhere, 0, mb_strlen($sqlWhere) - 5);
         $sqlInsertFields = mb_substr($sqlInsertFields, 0, mb_strlen($sqlInsertFields) - 1);
         $sqlInsertFields .= ')';
         $sqlInsertPlaceholders = mb_substr($sqlInsertPlaceholders, 0, mb_strlen($sqlInsertPlaceholders) - 1);
@@ -452,32 +580,54 @@ class TasuController extends Controller {
                 // Делим строку в CSV в массив
                 $csvArr = explode(',', $currentRow);
                 $tempArr = $data;
-                $sqlCopy = $sql;
+                $sqlCopy = $sql.$sqlWhere;
                 $sqlInsertPlaceholdersCopy = $sqlInsertPlaceholders;
                 foreach($data as $key => &$field) {
                     $field = $csvArr[$field];
                     // Заменяем в запросе
-                    $sqlCopy = str_replace($key, "'".$field."'", $sqlCopy);
-                    $sqlInsertPlaceholdersCopy  = str_replace($key, "'".$field."'", $sqlInsertPlaceholdersCopy);
+                   // $sqlCopy = str_replace($key, "'".str_replace("'","''",mb_convert_encoding($field, "UTF-8"))."'", $sqlCopy);
+                    //$sqlInsertPlaceholdersCopy  = str_replace($key, "'".str_replace("'","''",mb_convert_encoding($field, "UTF-8"))."'", $sqlInsertPlaceholdersCopy);
+                    $sqlCopy = str_replace($key, "'".str_replace("'","''",$field)."'", $sqlCopy);
+                    $sqlInsertPlaceholdersCopy  = str_replace($key, "'".str_replace("'","''",$field)."'", $sqlInsertPlaceholdersCopy);
                 }
 
                 $command = Yii::app()->db->createCommand($sqlCopy);
                 $elements = @$command->queryAll(true, array(), true);
+                //var_dump($elements);
+                //exit();
                 if($elements === false) { // Строка с ошибкой
                     $rows_error++;
                 } elseif(count($elements) > 0) {
                     // Строка есть, пропускать-не импортировать
+                    //   TODO: Сделать обновление строки
+                    //  Перебираем обновляемые поля текущей записи и добавляемой строки и сравниваем.
+                    //  Если хотя бы значение одного поля в файле не равно хотя бы одному полю в базе -
+                    //    выполняем update
+                    
+                    
+                    
                     $rows_discarded++;
                 } else {
                     $rows_accepted++;
                     // TODO: здесь сделать вставку в таблицу новых данных
                     $query = $sqlInsert.' '.$sqlInsertFields.' '.$sqlInsertPlaceholdersCopy;
                     $command = Yii::app()->db->createCommand($query);
-                    $result = @$command->execute(array(), true);
-                    if($result === false) {
-                        // Запрос не выполнен, т.к. строка не вставлена. Это ошибка
+                    // Пытаемся выполнить команду
+                    try
+                    {
+                        $result = @$command->execute(array(), true);
+                        if($result === false)
+                        {
+                            // Запрос не выполнен, т.к. строка не вставлена. Это ошибка
+                            $rows_error++;
+                        }
+                    }
+                    catch (Exception $e)
+                    {
+                        // Если произошло исключение - значит строка не вставлена
                         $rows_error++;
                     }
+                    
                 }
                 // После того, как запрос прошёл, сбросить аргументы на то, что было
                 $data = $tempArr;

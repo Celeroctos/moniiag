@@ -1,4 +1,36 @@
 $(document).ready(function() {
+    // По нажатию клавиши в контроле поиска
+    $('#searchValue').on('keyup', function(e)
+                         {
+                            
+                            // В $('#searchValue').val() лежит строка, которую ввёл пользователь
+                            // Нужно перебрать все значения из списка
+                            var enteredValue = $('#searchValue').val();
+                            var itemsStore = ($('.medguide-list')[0]);
+                            //console.log(items);
+                            var items = $(itemsStore).find('li');
+                            // Перебираем items
+                            for (i=0;i<items.length;i++) {
+                                var currentItem = items[i];
+                                
+                                // Внутри - берём ссылку и вытаскиваем текст из неё
+                                var internalText = ($(currentItem).find ('a')[0]).innerText;
+                                
+                                if ((internalText.toUpperCase()).indexOf(enteredValue.toUpperCase())>=0) {
+                                    // Делаем тэг li - выдимым
+                                    $(currentItem).removeClass('no-display');
+                                }
+                                else
+                                {
+                                    $(currentItem).addClass('no-display');
+                                }
+                                
+                            }
+                            
+                            
+                         });
+    
+    
     $("#medguides").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/guides/getvalues?id=' + globalVariables.currentGuideId,
         datatype: "json",

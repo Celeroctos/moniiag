@@ -59,6 +59,39 @@ $(document).ready(function() {
     });
     $('#date-cont').trigger('refresh');
 
+    // Закрытие приёма
+    $(document).on('click', '.accept-greeting-link', function(e) {
+        console.log(this);
+        // Берём id-шник приёма
+        var greetingId = $(this).attr('href').substr(1);
+        //'/doctors/shedule/acceptcomplete/?id='.$patient['id']
+        //console.log(greetingId);
+        
+        // Дёргаем Ajax
+        $.ajax({
+            'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                   // Перезагружаем страницу
+                   location.reload();
+                } else {
+                    // Выводим сообщение об ошибке
+                     $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
+                        $('#errorPopup').modal({
+
+                        });
+                }
+                console.log(data);
+                return;
+            }
+        });
+        
+    });
+    
+    
     $(document).on('click', '.medcard-history-showlink', function(e) {
         $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active');
         $(this).parent().addClass('active');

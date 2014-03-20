@@ -86,6 +86,15 @@
                                 )); ?>
                             </div>
                         </div>
+                        <h5><strong>Шаблоны приёма:</strong></h5>
+                        <div class="form-group">
+                        <?php foreach ($allTemplates as $key => $template) { ?>
+                            <div>
+                            <input type="checkbox" value="<?php echo $template['id']; ?>" name="template<?php echo $template['id']; ?>">
+                            <label class="control-label"><?php echo $template['name']; ?></label>
+                            </div>
+                        <?php } ?>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -182,6 +191,15 @@
                                     'class' => 'form-control'
                                 )); ?>
                             </div>
+                        </div>
+                        <h5><strong>Шаблоны приёма:</strong></h5>
+                        <div class="form-group">
+                        <?php foreach ($allTemplates as $key => $template) { ?>
+                            <div>
+                            <input type="checkbox" value="<?php echo $template['id']; ?>" name="template<?php echo $template['id']; ?>">
+                            <label class="control-label"><?php echo $template['name']; ?></label>
+                            </div>
+                        <?php } ?>
                         </div>
                     </div>
                 </div>

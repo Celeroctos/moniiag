@@ -31,11 +31,11 @@ class MedguidesTabMenu extends CWidget {
                 }
             }
         } else {
-            if(count($guidesList) > 0) {
-                $currentGuide = $guidesList[0]['id']; // Отмеченный первый справочник
-            } else {
+           // if(count($guidesList) > 0) {
+           //     $currentGuide = $guidesList[0]['id']; // Отмеченный первый справочник
+           // } else {
                 $currentGuide = -1;
-            }
+           // }
         }
         return $currentGuide;
     }

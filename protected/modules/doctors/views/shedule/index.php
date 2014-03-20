@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
+﻿<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/categories.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/tablecontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
@@ -179,7 +179,15 @@
                                 <?php echo ($patient['is_beginned'] == 1 || $patient['is_accepted'] == 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id']), array('title' => 'Начать приём')); ?>
                             </td>-->
                                 <td>
-                                    <?php echo ($patient['is_accepted'] == 1 || $patient['is_beginned'] != 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', array('/doctors/shedule/acceptcomplete/?id='.$patient['id']), array('title' => 'Закончить приём')); ?>
+                                    <?php
+                                    //echo ($patient['is_accepted'] == 1 ||$patient['is_beginned'] != 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', array('/doctors/shedule/acceptcomplete/?id='.$patient['id']), array('title' => 'Закончить приём')); 
+                                    if (!($patient['is_accepted'] == 1 ||$patient['is_beginned'] != 1) )
+                                    {
+                                        echo CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '#'.$patient['id'],
+                                            array('title' => 'Закончить приём',
+                                                  'class' => 'accept-greeting-link'));
+                                    }
+                                    ?>
                                 </td>
                                 <?php if(Yii::app()->user->checkAccess('canPrintMovement')) { ?>
                                     <td>
