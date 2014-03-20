@@ -99,6 +99,7 @@ return array(
 		),
 
 		'db'=>array(
+            'class'=>'system.db.CDbConnection',
 		    'connectionString' => 'pgsql:host=moniiag.toonftp.ru;port=5432;dbname=postgres;',
              //       'connectionString' => 'pgsql:host=localhost;port=5432;dbname=postgres;',
             'username' => 'moniiag',
@@ -107,15 +108,14 @@ return array(
             //'password' => '12345'
         ),
 		// uncomment the following to use a MySQL database
-		/*
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+
+		'db2' => array(
+            'class'=>'system.db.CDbConnection',
+			'connectionString' => 'sqlsrv:Server=7.31.116.34\HISSQLEE;Database=dbo',
+			'username' => 'sa',
+			'password' => 'system',
 			'charset' => 'utf8',
 		),
-		*/
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'index/error',

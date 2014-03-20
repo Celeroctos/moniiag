@@ -503,6 +503,8 @@ class TasuController extends Controller {
 
 
     public function actionViewIn() {
+		$tasuTap = new TasuTap();
+		
         $this->render('viewin', array());
     }
 }
