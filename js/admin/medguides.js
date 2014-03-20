@@ -14,7 +14,7 @@ $(document).ready(function() {
                                 var currentItem = items[i];
                                 
                                 // Внутри - берём ссылку и вытаскиваем текст из неё
-                                var internalText = ($(currentItem).find ('a')[0]).innerText;
+                                var internalText = $($(currentItem).find ('a')[0]).text();
                                 
                                 if ((internalText.toUpperCase()).indexOf(enteredValue.toUpperCase())>=0) {
                                     // Делаем тэг li - выдимым
