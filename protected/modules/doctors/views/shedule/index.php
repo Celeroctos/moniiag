@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
+﻿<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/categories.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/tablecontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
@@ -116,6 +116,15 @@
         </div>
         <div class="col-xs-4">
             <div class="row">
+                <div class="col-xs-12 borderedBox">
+                    <h5><strong>Легенда:</strong></h5>
+                    <p><div class="legend-icon magenta-block"></div>Приём не начат</p>
+                    <p><div class="legend-icon yellow-block"></div>Приём идёт</p>
+                    <p><div class="legend-icon lightgreen-block"></div>Текущий выбранный приём</p>
+                    <p><div class="legend-icon orange-block"></div>Приём окончен</p>
+                </div>
+            </div>
+            <div class="row">
                 <h5 class="patient-list-h5"><strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
                 <div class="col-xs-12 borderedBox">
                     <table id="omsSearchWithCardResult" class="table table-condensed table-hover">
@@ -140,8 +149,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($patients as $key => $patient) { ?>
-                            <tr <?php echo $patient['id'] == $currentSheduleId ? "class='success activeGreeting'" : ''; ?>>
+                        <?php foreach ($patients as $key => $patient) {
+                                if($patient['id'] == $currentSheduleId) { // TODO
+                            ?>
+                            <tr class='success activeGreeting'>
+                            <?php
+                                } elseif($patient['is_accepted'] == 1) {
+                            ?>
+                            <tr class='orange-block'>
+                            <?php
+                                } elseif($patient['is_beginned'] == 1) {
+                            ?>
+                            <tr class='yellow-block'>
+                            <?php
+                                } else {
+                            ?>
+                            <tr class='magenta-block'>
+                            <?php } ?>
                                 <td>
                                     <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid='.$patient['medcard_id'].'&date='.$filterModel->date.'&rowid='.$patient['id'])); ?>
                                 </td>

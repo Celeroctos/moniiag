@@ -23,7 +23,7 @@ class MedcardElementDependence extends MisActiveRecord {
         return $this->typesList;
     }
 
-    public function getRows($id = false) {
+    public function getRows($id = false, $categorieId = false) {
         $connection = Yii::app()->db;
         $dependences = $connection->createCommand()
             ->select('med.*, me.label as element, mgv.value as value, me2.label as dep_element, me.label_display as me_display_label, me2.label_display as me2_display_label,')
@@ -34,6 +34,9 @@ class MedcardElementDependence extends MisActiveRecord {
 
         if($id != false) {
             $dependences->where('med.element_id = :element_id', array(':element_id' => $id));
+        }
+        if($categorieId != false) {
+            $dependences->where('me.categorie_id = :categorie_id', array(':categorie_id' => $categorieId));
         }
 
         return $dependences->queryAll();
