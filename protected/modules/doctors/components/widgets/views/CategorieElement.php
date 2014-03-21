@@ -16,7 +16,12 @@ if(isset($categorie['id'])) {
             </button>
             <? } ?>
         </div>
-        <div class="accordion-body collapse" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
+         <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
+            <div class="accordion-body collapse" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
+        <?php } else { ?>
+            <div class="accordion-body in" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
+        <?php } ?>
+        <!--<div class="accordion-body collapse" id="collapse--><?php /* echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; */?><!--">-->
             <div class="accordion-inner">
                 <?php // Подкатегории
                 if(isset($categorie['children']) && count($categorie['children']) > 0) {
@@ -60,6 +65,17 @@ if(isset($categorie['id'])) {
                         <?php } ?>
                         <div class="form-group">
                             <div class="col-xs-3">
+                                <?php
+                                //var_dump($element);
+                                //exit();
+                                // Добавляем звёздочку к метке, если элемент обязателен для заполнения
+                                if ($element["is_required"]==1)
+                                {
+                                    $model->setAttributeLabels('f'.$element['undotted_path'].'_'.$element['id'],
+                                        $model->attributeLabels['f'.$element['undotted_path'].'_'.$element['id']].
+                                        " <span class=\"required\">*</span>");
+                                }   
+                               ?>
                                 <?php echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
                                     'class' => 'col-xs-12 control-label'
                                 )); ?>
@@ -120,6 +136,8 @@ if(isset($categorie['id'])) {
                                         <div class="col-xs-10 no-padding-left">
                                         <?php
                                     }
+                                    // Добавим пустое значение к выпадающему списку
+                                    $element['guide'][""] = 'Не выбрано';
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
                                     if($element['label_after'] != null) {
                                         ?>

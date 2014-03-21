@@ -160,6 +160,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <?php echo $form->labelEx($model,'isRequired', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isRequired', array('Нет', 'Да'), array(
+                                    'id' => 'isRequired',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'isRequired'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <?php echo $form->labelEx($model,'allowAdd', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -392,6 +404,20 @@
                                 )); ?>
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isRequired', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isRequired', array('Нет', 'Да'), array(
+                                    'id' => 'isRequired',
+                                    'class' => 'form-control',
+                                )); ?>
+                                <?php echo $form->error($model,'isRequired'); ?>
+                            </div>
+                        </div>
+                        
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'allowAdd', array(
                                 'class' => 'col-xs-3 control-label'

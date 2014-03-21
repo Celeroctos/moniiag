@@ -129,7 +129,8 @@ class ElementsController extends Controller {
         $element->is_wrapped = $model->isWrapped;
         $element->position = $model->position;
         $element->label_display = $model->labelDisplay;
-
+        $element->is_required = $model->isRequired;
+        
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
         }
