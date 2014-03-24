@@ -280,6 +280,10 @@ $(document).ready(function() {
                                 formField: 'allowAdd'
                             },
                             {
+                                modelField: 'is_required',
+                                formField: 'isRequired'
+                            },
+                            {
                                 modelField: 'label_after',
                                 formField: 'labelAfter'
                             },
@@ -428,7 +432,7 @@ console.log(newTr);
             form.find("select#allowAdd")
                 .val(0)
                 .prop('disabled', true);
-
+                
             form.find("select#defaultValue option:not([value=-1])").remove();
             form.find("select#defaultValue")
                 .val(-1)

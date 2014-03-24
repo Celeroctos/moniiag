@@ -244,6 +244,7 @@ class CategorieViewWidget extends CWidget {
             $medcardCategorie->history_id = 1;
             $medcardCategorie->greeting_id = $this->greetingId;
             $medcardCategorie->categorie_name = $categorie->name;
+	   // $medcardCategorie->is_required = $categorie->is_required;
             $medcardCategorie->path = $categorie->path;
             $medcardCategorie->is_wrapped = 0;
             $medcardCategorie->categorie_id = $categorie->parent_id;
@@ -352,6 +353,7 @@ class CategorieViewWidget extends CWidget {
                             $medcardCategorieElement->categorie_name = '';
                             $medcardCategorieElement->path = $element['path'];
                             $medcardCategorieElement->is_wrapped = $element['is_wrapped'];
+			    $medcardCategorieElement->is_required = $element['is_required'];
                             $medcardCategorieElement->categorie_id = $categorieResult['id'];
                             $medcardCategorieElement->element_id = $element['id'];
                             $medcardCategorieElement->label_before = $element['label'];
@@ -383,6 +385,7 @@ class CategorieViewWidget extends CWidget {
 						$elementResult['allow_add'] = $eCopy->allow_add;
 						$pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
+			$elementResult['is_required'] = $element['is_required'];
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
                         $elementResult['config'] = CJSON::decode($element['config']);
@@ -398,6 +401,7 @@ class CategorieViewWidget extends CWidget {
 						$elementResult['position'] = array_pop($pathParts);
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
+			$elementResult['is_required'] = $element['is_required'];
                         $elementResult['config'] = CJSON::decode($element['config']);
                     }
 

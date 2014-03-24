@@ -8,6 +8,7 @@ class FormElementAdd extends CFormModel
     public $guideId;
     public $id;
     public $allowAdd;
+    public $isRequired;
     public $labelAfter;
     public $size;
     public $position;
@@ -25,7 +26,7 @@ class FormElementAdd extends CFormModel
                 'type, categorieId, label, position', 'required'
             ),
             array(
-                'id, guideId, allowAdd, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue', 'safe'
+                'id, guideId, allowAdd, isRequired, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue', 'safe'
             )
         );
     }
@@ -38,6 +39,7 @@ class FormElementAdd extends CFormModel
             'label' => 'Метка рядом с элементом',
             'guideId' => 'Справочник',
             'allowAdd' => 'Можно добавлять новые значения врачу?',
+            'isRequired' => 'Обязателен для заполнения',
             'labelAfter' => 'Метка после элемента',
             'size' => 'Размер элемента',
             'position' => 'Позиция в категории',

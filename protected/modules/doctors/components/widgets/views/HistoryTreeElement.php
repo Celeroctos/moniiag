@@ -75,6 +75,12 @@
                                     <?php
                                     }
                                 } elseif($element['type'] == 2) {
+                                    //var_dump($element['selected']);
+                                    //exit();
+                                    if (isset($element['selected']['']))
+                                    {
+                                        $element['guide'][''] = 'Не выбрано';
+                                    }
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['id'],
                                         'class' => 'form-control',
@@ -85,6 +91,9 @@
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     }
+                                 
+                                   // var_dump($options);
+                                    //exit();
                                     echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], $options);
                                     if($element['label_after'] != null) {
                                         ?>
