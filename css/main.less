@@ -665,7 +665,7 @@ body #editPopup {
     }
   }
 }
-#print-search-form .print-submit {
+#print-search-form .print-submit, .import-submit  {
   button {
     margin: 10px 0 0 18%;
   }
@@ -1005,4 +1005,30 @@ select#restDays {
 
 #clearGreetingDataSubmit {
   margin-left: 18%;
+}
+/* Контейнер для импорта */
+.progressBox {
+	padding: 0 20px;
+}
+.logWindow {
+	max-height: 200px;
+	overflow-y: scroll;
+	margin-top: @default-margin;
+	padding: 0 20px;
+	.list-group-item {
+		padding: 3px 15px;
+	}
+}
+#importGreetings {
+	background: #80cb56;
+	font-weight: bold;
+	color: #ffffff;
+}
+#clearGreetings {
+	background: #e34b34;
+	color: #ffffff;
+	font-weight: bold;
+}
+.importTable,  .importHistoryTable {
+	padding-left: 25px;
 }

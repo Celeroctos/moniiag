@@ -11,7 +11,7 @@ class TasuTap extends MisActiveRecord {
 
     public function tableName()
     {
-        return 'PDPStdStorage.dbo.p_tapset_07615';
+        return 'PDPStdStorage.dbo.t_tap_10874';
     }
 
 

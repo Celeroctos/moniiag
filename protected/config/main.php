@@ -110,9 +110,9 @@ return array(
 
 		'db2' => array(
             'class'=>'system.db.CDbConnection',
-			'connectionString' => 'sqlsrv:Server=7.31.116.34\HISSQLEE;Database=dbo',
+			'connectionString' => 'sqlsrv:Server=212.42.63.62\HISSQLEE,1433;Database=PDPStdStorage',
 			'username' => 'sa',
-			'password' => 'system',
+			'password' => 'system54@nof',
 			'charset' => 'utf8',
 		),
 		'errorHandler'=>array(

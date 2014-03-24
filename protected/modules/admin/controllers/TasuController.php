@@ -653,9 +653,18 @@ class TasuController extends Controller {
 
 
     public function actionViewIn() {
-		$tasuTap = new TasuTap();
+		//$tasuTap = new TasuTap();
 		
         $this->render('viewin', array());
+    }
+
+    // Получить все приёмы для импорта в ТАСУ
+    public function actionGetBufferGreetings() {
+
+    }
+
+    public function actionGetBufferHistoryGreetings() {
+
     }
 }
 ?>
