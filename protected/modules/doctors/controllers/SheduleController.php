@@ -300,7 +300,7 @@ class SheduleController extends Controller {
             // Записать, что пациент принят
             $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
             if($sheduleElement != null) {
-                // Порверим - установлен ли первичый диагноз. Если нет - выводим сообщение
+                // Проверим - установлен ли первичый диагноз. Если нет - выводим сообщение
                 $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
                 //var_dump($primaryDiagnosis);
                 //exit();
@@ -329,6 +329,17 @@ class SheduleController extends Controller {
                         echo CJSON::encode(array('success' => false,
                                                  'text' => 'Ошибка сохранения записи.'));
                         return;
+                    }
+                    // Далее сохраняем приём для выгрузки в ТАСУ, если этот приём не записан ещё туда
+                    $buffer = new TasuGreetingsBuffer();
+                    $issetBufferedGreeting = $buffer->find('greeting_id = :greeting_id', array(':greeting_id' => $sheduleElement->id));
+                    if($issetBufferedGreeting == null) {
+                        $buffer->greeting_id = $sheduleElement->id;
+                        $buffer->import_id = $buffer->getLastImportId();
+                        if(!$buffer->save()) {
+                            echo CJSON::encode(array('success' => false,
+                                                     'text' => 'Ошибка сохранения буфера выгрузки ТАСУ.'));
+                        }
                     }
                 }
 

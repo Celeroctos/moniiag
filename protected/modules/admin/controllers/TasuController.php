@@ -655,16 +655,167 @@ class TasuController extends Controller {
     public function actionViewIn() {
 		//$tasuTap = new TasuTap();
 		
-        $this->render('viewin', array());
+        $this->render('viewin', array(
+            'modelAdd' => new FormTasuBufferAdd()
+        ));
     }
 
-    // Получить все приёмы для импорта в ТАСУ
+    // Получить все приёмы для импорта в ТАСУ для последнего задания
     public function actionGetBufferGreetings() {
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
 
+        // Фильтры поиска
+        if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+            $filters = CJSON::decode($_GET['filters']);
+        } else {
+            $filters = false;
+        }
+
+        $model = new TasuGreetingsBuffer();
+        $num = $model->getLastBuffer($filters);
+
+        $totalPages = ceil(count($num) / $rows);
+        $start = $page * $rows - $rows;
+
+        $buffer = $model->getLastBuffer($filters, $sidx, $sord, $start, $rows);
+        foreach($buffer as &$element) {
+            $parts = explode('-', $element['patient_day']);
+            $element['patient_day'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+        }
+
+        echo CJSON::encode(array(
+            'success' => true,
+            'rows' => $buffer,
+            'total' => $totalPages,
+            'records' => count($num)));
     }
 
     public function actionGetBufferHistoryGreetings() {
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
 
+        // Фильтры поиска
+        if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+            $filters = CJSON::decode($_GET['filters']);
+        } else {
+            $filters = false;
+        }
+
+        $model = new TasuGreetingsBufferHistory();
+        $num = $model->getRows($filters);
+
+        $totalPages = ceil(count($num) / $rows);
+        $start = $page * $rows - $rows;
+
+        $buffer = $model->getRows($filters, $sidx, $sord, $start, $rows);
+        echo CJSON::encode(array(
+            'success' => true,
+            'rows' => $buffer,
+            'total' => $totalPages,
+            'records' => count($num)));
+    }
+
+    /* Получить все приёмы, которые не занесены в буфер */
+    public function actionGetNotBufferedGreetings() {
+        $notBuffered = TasuGreetingsBuffer::model()->getAllNotBuffered();
+        $forCombo = array();
+        foreach($notBuffered as &$element) {
+            $parts = explode('-', $element['patient_day']);
+            $forCombo[$element['id']] = '№'.$element['id'].', пациент '.$element['patient_fio'].', врач '.$element['doctor_fio'].', дата приёма - '.$parts[2].'.'.$parts[1].'.'.$parts[0]; // TODO
+        }
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => $forCombo
+        ));
+    }
+
+    /* Добавить приём к буферу */
+    public function actionAddGreetingToBuffer() {
+        if(isset($_POST['FormTasuBufferAdd'], $_POST['FormTasuBufferAdd']['greetingId'])) {
+            // Проверим, есть ли такой приём, и, если есть добавим в буфер
+            $issetGreeting = SheduleByDay::model()->findByPk($_POST['FormTasuBufferAdd']['greetingId']);
+            if($issetGreeting != null) {
+                $buffer = new TasuGreetingsBuffer();
+                $buffer->greeting_id = $issetGreeting->id;
+                $buffer->import_id = $buffer->getLastImportId();
+                if(!$buffer->save()) {
+                    echo CJSON::encode(array('success' => false,
+                                             'text' => 'Ошибка сохранения буфера выгрузки ТАСУ.'));
+                }
+            }
+            echo CJSON::encode(array(
+                'success' => true,
+                'data' => array()
+            ));
+        }
+    }
+
+    /* Удалить элемент из выгрузки */
+    public function actionDeleteFromBuffer() {
+        if(!isset($_GET['id'])) {
+            echo CJSON::encode(array(
+                'success' => false,
+                'error' => 'Не задан элемент для удаления!'
+            ));
+            exit();
+        }
+        TasuGreetingsBuffer::model()->deleteByPk($_GET['id']);
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => 'Приём успешно удалён из очереди для выгрузки.'
+        ));
+    }
+
+    /* Очистка всего буфера */
+    public function actionClearBuffer() {
+        TasuGreetingsBuffer::model()->deleteAll();
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => 'Буфер успешно очищен.'
+        ));
+    }
+
+    /* Добавление всех возможных приёмов */
+    public function actionAddAllGreetings() {
+        $notBuffered = TasuGreetingsBuffer::model()->getAllNotBuffered();
+        $lastImportId = null;
+        foreach($notBuffered as $key => $element) {
+            $buffer = new TasuGreetingsBuffer();
+            if($lastImportId == null) {
+                $lastImportId = $buffer->getLastImportId();
+            }
+            $buffer->greeting_id = $element['id'];
+            $buffer->import_id = $lastImportId;
+            if(!$buffer->save()) {
+                echo CJSON::encode(array(
+                    'success' => false,
+                    'data' => 'Невозможно добавить приём в буфер выгрузки!'
+                ));
+                exit();
+            }
+        }
+
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => 'Успешно сформирован список приёмов на выгрузку!'
+        ));
+    }
+
+    public function actionImportGreetings() {
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => array(
+                'processed' => 50,
+                'lastGreetingId' => 1,
+                'totalRows' => 1005,
+                'logs' => array('Сообщение!')
+            )
+        ));
     }
 }
 ?>
