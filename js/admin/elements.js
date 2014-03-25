@@ -161,6 +161,7 @@ $(document).ready(function() {
         rowList:[10,20,30],
         pager: '#dependencesPager',
         sortname: 'id',
+        loadComplete: testDirection,
         viewrecords: true,
         sortorder: "desc",
         caption: "Список добавленных зависимостей",
@@ -215,6 +216,32 @@ $(document).ready(function() {
         }
     });
 
+    // Функция пробегает по строкам грида с зависимостями и проверяет,
+    //    какое направление было задано для зависимостей - скрывать, или показывать.
+    //   Если скрывать - то нельзя указывать "Показывать" при выборе действия - и наоборот
+    function testDirection()
+    {
+        $("#controlActions option[value='1']").removeClass('no-display');
+        $("#controlActions option[value='2']").removeClass('no-display');
+        var idsList = jQuery("#dependences").getDataIDs();
+        for(i=0;i<idsList.length;i++)
+        {
+            var rowData=jQuery("#dependences").getRowData(idsList[i]);
+            //console.log(rowData.action);    
+            if (rowData.action == "Показать")
+            {
+                // Прячем опцию "Скрыть"
+                $("#controlActions option[value='1']").addClass('no-display');
+            }
+            else
+            {
+                // Прячем опцию "Показать"
+                $("#controlActions option[value='2']").addClass('no-display');
+            }
+            break;
+        }
+    }
+    
     $("#element-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
@@ -501,7 +528,11 @@ console.log(newTr);
                                 $('#controlActions').append(option);
                             }
                         }
-
+                        // По событию shown - вызов функции, которая спрячет запрещённые для данного элемента направления
+                        $('#editDependencesPopup').on('shown.bs.modal', function (e)
+                        {
+                            testDirection();
+                        });
                        $('#editDependencesPopup').modal({});
                     } else {
 

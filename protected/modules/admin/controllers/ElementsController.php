@@ -316,8 +316,12 @@ class ElementsController extends Controller {
                     // Может быть только один элемент у зависимого контрола, от которого ставится зависимость
                     $issetDependence =  MedcardElementDependence::model()->findAll('
                         dep_element_id = :dep_element_id
+                        AND value_id = :value_id
                     ', array(
-                        ':dep_element_id' => $dependence
+                        ':dep_element_id' => $dependence,
+                        //--------
+                        ':value_id' => $value
+                        //--------
                     ));
                     if(count($issetDependence) == 0) {
                         $dependenceElement = new MedcardElementDependence();

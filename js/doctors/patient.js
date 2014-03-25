@@ -1,4 +1,7 @@
 $(document).ready(function() {
+      
+    
+    
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
     $("#patient-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
@@ -438,6 +441,7 @@ $(document).ready(function() {
 
                     // Теперь надо разобрать зависимость
                     var deps = data.data.dependences;
+                    
                     for(var i = 0; i < deps.length; i++) {
                         // По этому пути вынимаем контрол
                         var undottedPath = deps[i].path.split('.').join('|');
@@ -478,7 +482,6 @@ $(document).ready(function() {
             }
         });
     });
-
     var filteredDeps = [];
     // Зависимости: дефолтные значения
     function checkElementsDependences() {
@@ -519,6 +522,8 @@ $(document).ready(function() {
                         $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
                     }
                 }
+                // Если значение совпало - то выходим из цикла
+                break;
             }  else {
                 // Противоположное действие экшену по дефолту
                 if(dep.dependences.list[j].action == 1) { // Это "скрыть"

@@ -1,4 +1,9 @@
-<script type="text/javascript">globalVariables.elementsDependences = [];</script>
+<script type="text/javascript">
+		    if (globalVariables.elementsDependences==undefined)		    
+		    {
+					globalVariables.elementsDependences = new Array();
+		    }
+</script>
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-edit-form',
