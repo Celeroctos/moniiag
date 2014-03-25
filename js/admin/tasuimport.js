@@ -63,7 +63,7 @@
 	$("#importHistory").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['Дата', 'Количество выгруженных записей', 'Дата создания', 'Статус'],
+        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус'],
         colModel:[
             {
                 name:'id',
@@ -172,7 +172,7 @@
 
         $('#importContainer').slideDown(500, function() {
             var currentGreeting = 0;
-            var rowsPerQuery = 50;
+            var rowsPerQuery = 10;
             var totalMaked = 0; // Сколько уже обработано строк
             var totalRows = null;
             var isPaused = false;
@@ -183,7 +183,8 @@
                     'data' : {
                         currentGreeting : currentGreeting,
                         rowsPerQuery : rowsPerQuery,
-                        totalMaked : totalMaked
+                        totalMaked : totalMaked,
+                        totalRows : totalRows
                     },
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -195,7 +196,7 @@
                             for(var i = 0; i < data.logs.length; i++) {
                                 $(ul).prepend($('<li>').prop({
                                     'class' : 'list-group-item'
-                                }).text(data.logs[i]));
+                                }).html(data.logs[i]));
                             }
                             // Выполнение такого условия означает, что количество строки подошли к концу
                             if(data.processed < rowsPerQuery) {
@@ -233,6 +234,10 @@
                                     $('.successImport').removeClass('no-display');
                                 }
                             }
+                        } else {
+                            alert(data.error);
+                            $('.successImport').trigger('click');
+                            return false;
                         }
                     }
                 });
@@ -247,6 +252,10 @@
                 $('.continueImport').removeAttr('disabled');
                 $(this).attr('disabled', true);
                 isPaused = true;
+                var ul = $('.logWindow .list-group');
+                $(ul).prepend($('<li>').prop({
+                    'class' : 'list-group-item'
+                }).html('<strong class="text-warning">[Выгрузка приостановлена пользователем]</strong>'));
             });
 
             $('.continueImport').on('click', function(e) {
@@ -256,6 +265,10 @@
                 $('.pauseImport').attr('disabled', false);
                 $(this).attr('disabled', true);
                 isPaused = false;
+                var ul = $('.logWindow .list-group');
+                $(ul).prepend($('<li>').prop({
+                    'class' : 'list-group-item'
+                }).html('<strong class="text-warning">[Выгрузка возобновлена пользователем]</strong>'));
                 makeImport();
             });
 
@@ -272,6 +285,7 @@
                     });
                     totalRows = null;
                     $('.numStringsAll').text(0);
+                    $('.numStrings').text(0);
                 }).addClass('no-display');
             });
         }).removeClass('no-display');

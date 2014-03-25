@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class CategorieViewWidget extends CWidget {
     public $formModel = null;
     public $currentPatient = false;
@@ -555,13 +555,20 @@ class CategorieViewWidget extends CWidget {
             if($element['type'] == 3) {
                 $element['selected'] = array();
                 $element['value'] = CJSON::decode($elementFinded['value']);
-                if($element['value'] != null) {
-                    foreach($element['value'] as $id) {
-                        $element['selected'][$id] = array('selected' => true);
-                    }
-                } else {
-                    $element['selected'] = array();
-                }
+				if($element['value'] != null)
+				{
+					// Если $element['value'] - не массив, то считаем это один айдишник - 
+					if(!is_array($element['value'])) {
+						$element['selected'][$element['value']] = array('selected' => true);
+					}
+					else
+					{
+					// Иначе перебираем массив и записываем
+						foreach($element['value'] as $id) {
+                        		$element['selected'][$id] = array('selected' => true);
+                    		}
+					}
+				}
             }
             // Простой выпадающий список
             if($element['type'] == 2) {
