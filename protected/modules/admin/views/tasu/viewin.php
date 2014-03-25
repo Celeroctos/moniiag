@@ -14,31 +14,33 @@
 		<button type="button" class="btn btn-default" id="clearGreetings">Очистить</button>
 	</div>
 </div>
-<div class="row borderedBox default-margin-top progressBox">
-	<h5><strong>Прогресс импорта</strong></h5>
-	<div class="progress progress-striped active">
-		<div class="progress-bar progress-bar-warning" id="importProgressbarP" role="progressbar" aria-valuenow="37" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-			<span class="sr-only"></span>
-		</div>
-	</div>
-	<p class="text-warning">Всего приёмов (строк): <span class="numStringsAll">0</span></p>
-	<p class="text-primary">Обработано приёмов (строк): <span class="numStrings">0</span></p>
-	<p class="text-success">Добавлено (строк): <span class="numStringsAdded">0</span></p>
-	<p class="text-danger">Отклонено (строк): <span class="numStringsDiscarded">0</span></p>
-	<p class="text-danger"><strong>Ошибок (строк): <span class="numStringsError">0</span></strong></p>
-	<p class="text-success"><strong>Добавлено (медкарт): <span class="numMedcardsAdded">0</span></strong></p>
-	<p class="text-success"><strong>Добавлено (пациентов): <span class="numPatientsAdded">0</span></strong></p>
-	<div class="form-group clear">
-		<input type="button" class="btn btn-success successImport no-display" value="Закончить импорт">
-		<input type="button" class="btn btn-danger pauseImport" value="Пауза">
-		<input type="button" class="btn btn-danger continueImport" value="Продолжить" disabled="disabled">
-	</div>
+<div id="importContainer" class="no-display">
+    <div class="row borderedBox default-margin-top progressBox">
+        <h5><strong>Прогресс импорта</strong></h5>
+        <div class="progress progress-striped active">
+            <div class="progress-bar progress-bar-warning" id="importProgressbarP" role="progressbar" aria-valuenow="37" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span class="sr-only"></span>
+            </div>
+        </div>
+        <p class="text-warning">Всего приёмов (строк): <span class="numStringsAll">0</span></p>
+        <p class="text-primary">Обработано приёмов (строк): <span class="numStrings">0</span></p>
+        <p class="text-success">Добавлено (строк): <span class="numStringsAdded">0</span></p>
+        <p class="text-danger">Отклонено (строк): <span class="numStringsDiscarded">0</span></p>
+        <p class="text-danger"><strong>Ошибок (строк): <span class="numStringsError">0</span></strong></p>
+        <p class="text-success"><strong>Добавлено (медкарт): <span class="numMedcardsAdded">0</span></strong></p>
+        <p class="text-success"><strong>Добавлено (пациентов): <span class="numPatientsAdded">0</span></strong></p>
+        <div class="form-group clear">
+            <input type="button" class="btn btn-success successImport no-display" value="Закончить импорт">
+            <input type="button" class="btn btn-danger pauseImport" value="Пауза">
+            <input type="button" class="btn btn-danger continueImport" value="Продолжить" disabled="disabled">
+        </div>
+    </div>
+    <h4>Лог выгрузки</h4>
+    <div class="row logWindow">
+        <ul class="list-group">
+        </ul>
+    </div>
 </div>
-<h4>Лог выгрузки</h4>
-<div class="row logWindow">
-	<ul class="list-group">
-	</ul>
-</div>      
 <h4>История выгрузок</h4>
 <div class="row importHistoryTable">
 	<table id="importHistory"></table>

@@ -684,6 +684,15 @@ class TasuController extends Controller {
         foreach($buffer as &$element) {
             $parts = explode('-', $element['patient_day']);
             $element['patient_day'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+            if($element['is_beginned'] == null && $element['is_accepted'] == null) {
+                $element['status'] = 'Не начат';
+            } elseif($element['is_beginned'] == 1 && $element['is_accepted'] == null) {
+                $element['status'] = 'Начат, идёт';
+            } elseif($element['is_beginned'] == 1 && $element['is_accepted'] == 1) {
+                $element['status'] = 'Окончен';
+            } else {
+                $element['status'] = 'Неизвестно';
+            }
         }
 
         echo CJSON::encode(array(
@@ -807,6 +816,27 @@ class TasuController extends Controller {
     }
 
     public function actionImportGreetings() {
+        // Делаем выборку чанка приёмов с целью последующей выгрузки
+        $currentGreeting = isset($_GET['currentGreeting']) ? $_GET['currentGreeting'] : false;
+        $limit = isset($_GET['rowsPerQuery']) ? $_GET['rowsPerQuery'] : false;
+        $sord = 'asc';
+        $sidx = 'id';
+        $start = 0;
+
+        $buffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $currentGreeting);
+        $logs = array();
+        // Смотрим буфер
+        foreach($buffer as $element) {
+            $bufferGreetingModel = TasuGreetingsBuffer::model()->findByPk($element['id']);
+            if($bufferGreetingModel != null) {
+                $bufferGreetingModel->status = 1;
+                if(!$bufferGreetingModel->save()) {
+                    $logs[] = 'Невозможно изменить статус приёма в буфере '
+                } else {
+
+                }
+            }
+        }
         echo CJSON::encode(array(
             'success' => true,
             'data' => array(

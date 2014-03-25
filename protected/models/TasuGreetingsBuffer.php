@@ -10,18 +10,22 @@ class TasuGreetingsBuffer extends MisActiveRecord {
         return 'mis.tasu_greetings_buffer';
     }
 
-    public function getLastBuffer($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getLastBuffer($filters, $sidx = false, $sord = false, $start = false, $limit = false, $lastGreeting = false) {
         try {
             $connection = Yii::app()->db;
             $buffer = $connection->createCommand()
-                ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard')
+                ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted')
                 ->from(TasuGreetingsBuffer::tableName().' tgb')
                 ->join(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
                 ->join(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
                 ->join(Oms::tableName().' o', 'm.policy_id = o.id')
                 ->join(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
                 ->where('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id)
-                                          FROM '.TasuGreetingsBuffer::tableName().' tgb2)');
+                                          FROM '.TasuGreetingsBuffer::tableName().' tgb2)')
+                ->andWhere('tgb.status = 0'); // Получить всё то, что не выгружено
+            if($lastGreeting !== false) {
+                $buffer->andWhere('tgb.id > :last_greeting', array(':last_greeting' => $lastGreeting));
+            }
 
             if($filters !== false) {
                 $this->getSearchConditions($buffer, $filters, array(

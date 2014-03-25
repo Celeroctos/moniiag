@@ -1404,3 +1404,193 @@ ORDER BY "id" DESC LIMIT 30.
 in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
 in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:03:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (710)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:03:04 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:05:48 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (710)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:05:48 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:07:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (710)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:07:22 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:08:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (710)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/24 18:08:05 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 11:28:58 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:756)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=18%2F14&date=2014-03-25+00%3A00&_=1395732515710
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (756)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (594)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PatientController.php (14)
+2014/03/25 11:29:01 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:756)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=18%2F14&date=2014-03-25+00%3A00&_=1395732515711
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (756)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (594)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PatientController.php (14)
+2014/03/25 11:29:08 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:756)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=18%2F14&date=2014-03-25+00%3A00&_=1395732515712
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (756)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (594)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PatientController.php (14)
+2014/03/25 12:04:38 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (710)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:04:38 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:05:44 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (710)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:05:44 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (715)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:10:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (719)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:10:29 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (724)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:10:29 [error] [php] Undefined index: is_beginned (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:687)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/getbuffergreetings?_search=false&nd=1395735025777&rows=30&page=1&sidx=id&sord=desc
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (687)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/03/25 12:27:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (719)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/03/25 12:27:27 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "tgbh" отсутствует в предложении FROM
+LINE 1: SELECT "tgbh".*
+               ^. The SQL statement executed was: SELECT "tgbh".*
+FROM "mis"."tasu_greetings_buffer_history" "tgbs"
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\TasuGreetingsBufferHistory.php (34)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (724)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)

@@ -2,7 +2,7 @@
 	$("#greetings").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings',
         datatype: "json",
-        colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма'],
+        colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус'],
         colModel:[
             {
                 name:'id',
@@ -27,6 +27,11 @@
             {
                 name: 'patient_day',
                 index: 'patient_day',
+                width: 150
+            },
+            {
+                name: 'status',
+                index: 'status',
                 width: 150
             }
         ],
@@ -114,6 +119,10 @@
         $('#clearGreetings').attr({
             'disabled' : true
         }).text('Подождите, идёт очистка буфера...');
+        $('#importGreetings').attr({
+            'disabled' : true
+        });
+
         $.ajax({
             'url' : '/index.php/admin/tasu/clearbuffer',
             'cache' : false,
@@ -124,6 +133,9 @@
                     $('#clearGreetings').attr({
                         'disabled' : false
                     }).text('Очистить');
+                    $('#importGreetings').attr({
+                        'disabled' : false
+                    });
                     $("#greetings").trigger("reloadGrid");
                 }
             }
@@ -153,101 +165,116 @@
 	$('#importGreetings').on('click', function(e) {
 	    $(this).attr({
             'disabled' : true
-        }).text('Совершается выгрузка...')
+        }).text('Совершается выгрузка...');
+        $('#clearGreetings').attr({
+            'disabled' : true
+        });
 
-        var currentGreeting = 0;
-        var rowsPerQuery = 50;
-        var totalMaked = 0; // Сколько уже обработано строк
-        var totalRows = null;
-        var isPaused = false;
-        function makeImport() {
-            $.ajax({
-                'url' : '/index.php/admin/tasu/importgreetings',
-                'cache' : false,
-                'data' : {
-                    currentGreeting : currentGreeting,
-                    rowsPerQuery : rowsPerQuery,
-                    totalMaked : totalMaked
-                },
-                'dataType' : 'json',
-                'type' : 'GET',
-                'success' : function(data, textStatus, jqXHR) {
-                    if(data.success) {
-                        data = data.data;
-                        // Заполним лог выгрузки..
-                        var ul = $('.logWindow .list-group');
-                        for(var i = 0; i < data.logs.length; i++) {
-                            $(ul).prepend($('<li>').prop({
-                                'class' : 'list-group-item'
-                            }).text(data.logs[i]));
-                        }
-                        // Выполнение такого условия означает, что количество строки подошли к концу
-                        if(data.processed < rowsPerQuery) {
-                            if(totalRows == null) {
-                                totalRows = data.totalRows;
+        $('#importContainer').slideDown(500, function() {
+            var currentGreeting = 0;
+            var rowsPerQuery = 50;
+            var totalMaked = 0; // Сколько уже обработано строк
+            var totalRows = null;
+            var isPaused = false;
+            function makeImport() {
+                $.ajax({
+                    'url' : '/index.php/admin/tasu/importgreetings',
+                    'cache' : false,
+                    'data' : {
+                        currentGreeting : currentGreeting,
+                        rowsPerQuery : rowsPerQuery,
+                        totalMaked : totalMaked
+                    },
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success) {
+                            data = data.data;
+                            // Заполним лог выгрузки..
+                            var ul = $('.logWindow .list-group');
+                            for(var i = 0; i < data.logs.length; i++) {
+                                $(ul).prepend($('<li>').prop({
+                                    'class' : 'list-group-item'
+                                }).text(data.logs[i]));
                             }
-                            $('#importProgressbarP').prop({
-                                'style' : '100%',
-                                'aria-valuenow' : '100'
-                            });
-                        } else {
-                            currentGreeting = data.lastGreetingId;
-                            totalMaked += data.processed;
-                            $('.numStrings').text(totalMaked);
-                            if(totalRows == null) {
-                                totalRows = data.totalRows;
-                                $('.numStringsAll').text(totalRows);
-                            }
-
-                            var currentProzent = Math.floor((totalMaked / totalRows) * 100);
-                            $('#importProgressbarP').prop({
-                                'style' : 'width: ' + currentProzent + '%',
-                                'aria-valuenow' : currentProzent
-                            });
-
-                            if(totalRows > totalMaked) {
-                                if(!isPaused) {
-                                    makeImport();
-                                } else {
-                                    return;
+                            // Выполнение такого условия означает, что количество строки подошли к концу
+                            if(data.processed < rowsPerQuery) {
+                                if(totalRows == null) {
+                                    totalRows = data.totalRows;
                                 }
+                                $('#importProgressbarP').prop({
+                                    'style' : '100%',
+                                    'aria-valuenow' : '100'
+                                });
                             } else {
-                                alert('Импорт в ТАСУ завершён!');
-                                $('.continueImport, .pauseImport').addClass('no-display');
-                                $('.successImport').removeClass('no-display');
+                                currentGreeting = data.lastGreetingId;
+                                totalMaked += data.processed;
+                                $('.numStrings').text(totalMaked);
+                                if(totalRows == null) {
+                                    totalRows = data.totalRows;
+                                    $('.numStringsAll').text(totalRows);
+                                }
+
+                                var currentProzent = Math.floor((totalMaked / totalRows) * 100);
+                                $('#importProgressbarP').prop({
+                                    'style' : 'width: ' + currentProzent + '%',
+                                    'aria-valuenow' : currentProzent
+                                });
+
+                                if(totalRows > totalMaked) {
+                                    if(!isPaused) {
+                                        makeImport();
+                                    } else {
+                                        return;
+                                    }
+                                } else {
+                                    alert('Импорт в ТАСУ завершён!');
+                                    $('.continueImport, .pauseImport').addClass('no-display');
+                                    $('.successImport').removeClass('no-display');
+                                }
                             }
                         }
                     }
-                }
-            });
-        }
-        makeImport();
-
-        $('.pauseImport').on('click', function(e) {
-            if($(this).attr('disabled')) {
-                return false;
+                });
             }
-
-            $('.continueImport').removeAttr('disabled');
-            $(this).attr('disabled', true);
-            isPaused = true;
-        });
-
-        $('.continueImport').on('click', function(e) {
-            if($(this).attr('disabled')) {
-                return false;
-            }
-            $('.pauseImport').attr('disabled', false);
-            $(this).attr('disabled', true);
-            isPaused = false;
             makeImport();
-        });
 
-        $('.successImport').on('click', function(e) {
-            $('.continueImport, .pauseImport').removeClass('no-display');
-            $('.successImport').addClass('no-display');
-            $('.logWindow .list-group li').remove();
-        });
+            $('.pauseImport').on('click', function(e) {
+                if($(this).attr('disabled')) {
+                    return false;
+                }
+
+                $('.continueImport').removeAttr('disabled');
+                $(this).attr('disabled', true);
+                isPaused = true;
+            });
+
+            $('.continueImport').on('click', function(e) {
+                if($(this).attr('disabled')) {
+                    return false;
+                }
+                $('.pauseImport').attr('disabled', false);
+                $(this).attr('disabled', true);
+                isPaused = false;
+                makeImport();
+            });
+
+            $('.successImport').on('click', function(e) {
+                $('#importContainer').slideUp(500, function() {
+                    $("#greetings").trigger("reloadGrid");
+                    $("#importHistory").trigger("reloadGrid");
+                    $('.continueImport, .pauseImport').removeClass('no-display');
+                    $('.successImport').addClass('no-display');
+                    $('.logWindow .list-group li').remove();
+                    $('#importGreetings').attr('disabled', false).text('Выгрузить');
+                    $('#clearGreetings').attr({
+                        'disabled' : false
+                    });
+                    totalRows = null;
+                    $('.numStringsAll').text(0);
+                }).addClass('no-display');
+            });
+        }).removeClass('no-display');
 	});
 
     $('#addGreeting').on('click', function(e) {
