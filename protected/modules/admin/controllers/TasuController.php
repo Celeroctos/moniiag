@@ -782,7 +782,7 @@ class TasuController extends Controller {
 
     /* Очистка всего буфера */
     public function actionClearBuffer() {
-        TasuGreetingsBuffer::model()->deleteAll();
+        TasuGreetingsBuffer::model()->deleteAll('status != 1');
         echo CJSON::encode(array(
             'success' => true,
             'data' => 'Буфер успешно очищен.'
@@ -831,7 +831,7 @@ class TasuController extends Controller {
             if($bufferGreetingModel != null) {
                 $bufferGreetingModel->status = 1;
                 if(!$bufferGreetingModel->save()) {
-                    $logs[] = 'Невозможно изменить статус приёма в буфере '
+                    $logs[] = 'Невозможно изменить статус приёма в буфере '.$;
                 } else {
 
                 }
