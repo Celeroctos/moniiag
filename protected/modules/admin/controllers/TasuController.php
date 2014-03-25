@@ -722,6 +722,18 @@ class TasuController extends Controller {
         $start = $page * $rows - $rows;
 
         $buffer = $model->getRows($filters, $sidx, $sord, $start, $rows);
+        foreach($buffer as &$element) {
+            $parts = explode(' ', $element['create_date']);
+            $parts2 = explode('-', $parts[0]);
+            $element['create_date'] = $parts2[2].'.'.$parts2[1].'.'.$parts2[0].' '.$parts[1];
+
+            if($element['status'] == 1) {
+                $element['status'] = 'Завершена';
+            } else {
+                $element['status'] = 'Не завершена';
+            }
+        }
+
         echo CJSON::encode(array(
             'success' => true,
             'rows' => $buffer,
@@ -825,27 +837,111 @@ class TasuController extends Controller {
 
         $buffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $currentGreeting);
         $logs = array();
+        $lastGreetingId = null;
+        $importId = null;
+        if(isset($_GET['totalRows']) && $_GET['totalRows'] == null) {
+            $rows = TasuGreetingsBuffer::model()->getLastBuffer(false);
+            $totalRows = count($rows);
+            // Это прогон в первый раз. Если totalRows = 0, то заданий нет, это ошибка
+            if($totalRows == 0) {
+                echo CJSON::encode(array(
+                    'success' => false,
+                    'error' => 'Нет приёмов для выгрузки!'
+                ));
+                exit();
+            }
+        } elseif(isset($_GET['totalRows'])) {
+            $totalRows = $_GET['totalRows'];
+        } else {
+            $totalRows = null;
+        }
         // Смотрим буфер
         foreach($buffer as $element) {
             $bufferGreetingModel = TasuGreetingsBuffer::model()->findByPk($element['id']);
+            if($importId == null) {
+                $importId = $element['import_id'];
+            }
+            /* --------------- Интеграция с удалённой базой ------------- */
+            if(Yii::app()->db2 != null) {
+                $logs[] = '<strong class="text-sucess">[ТАСУ OK]</strong> Соединились с базой ТАСУ...';
+            } else {
+                $logs[] = '<strong class="text-danger">[ТАСУ Ошибка]</strong> Потеряно соединение с базой ТАСУ';
+                continue;
+            }
+
+            $this->moveGreetingToTasuDb($element);
+            /* --------------- */
             if($bufferGreetingModel != null) {
                 $bufferGreetingModel->status = 1;
                 if(!$bufferGreetingModel->save()) {
-                    $logs[] = 'Невозможно изменить статус приёма в буфере '.$;
+                    $logs[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id;
                 } else {
-
+                    $logs[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id.' успешно изменён.';
                 }
             }
+            $lastGreetingId = $bufferGreetingModel->id;
         }
+
+        // Делаем контрольный запрос. Если на выборку контрольного запроса выбирается 0 строк, то, значит, это окончание выгрузки. Надо перенести выгрузку в историю
+        $moreBuffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $lastGreetingId);
+        if(count($moreBuffer) == 0) {
+            $historyBuffer = new TasuGreetingsBufferHistory();
+            $historyBuffer->num_rows = $totalRows;
+            $historyBuffer->create_date = date('Y-m-d h:i');
+            $historyBuffer->status = 1; // Выгружено
+            $historyBuffer->import_id = $importId;
+            if(!$historyBuffer->save()) {
+                $logs[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно занести выгрузку c ID'.$importId.' в историю выгрузок.';
+            } else {
+                $logs[] = '<strong class="text-success">[OK]</strong> Выгрузка с ID'.$importId.' успешно сохранена в истории выгрузок.';
+            }
+        }
+
         echo CJSON::encode(array(
             'success' => true,
             'data' => array(
-                'processed' => 50,
-                'lastGreetingId' => 1,
-                'totalRows' => 1005,
-                'logs' => array('Сообщение!')
+                'processed' => count($buffer),
+                'lastGreetingId' => $lastGreetingId,
+                'totalRows' => $totalRows,
+                'logs' => $logs
             )
         ));
+    }
+
+    private function moveGreetingToTasuDb($greeting) {
+        $conn = Yii::app()->db2;
+        $transaction = $conn->beginTransaction();
+        try {
+            $sql = "IF EXISTS(
+                        SELECT * FROM tempdb.dbo.sysobjects
+                        WHERE id = object_id('tempdb.dbo.#ut_tlocal') AND xtype='U'
+                        )
+                        DROP TABLE #ut_tlocal
+                        CREATE TABLE #ut_tlocal (
+                            [pat] INT,
+                            [pat_cloud] INT,
+                            [local_guid] UNIQUEIDENTIFIER,
+                            [src] INT,
+                            [fam] VARCHAR(40),
+                            [im] VARCHAR(40),
+                            [ot] VARCHAR(40),
+                            [dr] DATETIME,
+                            [stat] VARCHAR(3),
+                            [pol_ser] VARCHAR(20),
+                            [pol_num] VARCHAR(20),
+                            [pol_state] VARCHAR(1),
+                            [dul_type] VARCHAR(2),
+                            [dul_ser] VARCHAR(20),
+                            [dul_num] VARCHAR(20),
+                            [card] VARCHAR(40),
+                            [card_type] VARCHAR(2),
+                            [snils] VARCHAR(20),
+                            [code] VARCHAR(25),
+                            [closed] VARCHAR(20))";
+           //$conn->
+        } catch(Exception $e) {
+            $transaction->rollback();
+        }
     }
 }
 ?>
