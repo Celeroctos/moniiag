@@ -251,9 +251,19 @@ if(isset($categorie['id'])) {
                             </div>
                         </div>
                     <?php  } ?>
+              
                 <?php } ?>
             </div>
         </div>
     </div>
 </div>
+                      <script>
+                         /* console.log(globalVariables.elementsDependences);
+                            for(var i = 0; i < globalVariables.elementsDependences.length; i++) {
+                               if (globalVariables.elementsDependences[i].elementId=='119') {
+                                                console.log('Попали');
+                                           }
+                            
+                            }  */
+                    </script>    
 <? } ?>
