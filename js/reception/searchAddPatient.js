@@ -131,9 +131,8 @@ $(document).ready(function() {
                     }
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
-                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
-
                     });
                 }
                 return;
@@ -175,7 +174,7 @@ $(document).ready(function() {
                     }
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
-                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
 
                     });
@@ -219,7 +218,7 @@ $(document).ready(function() {
                     }
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
-                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
 
                     });
@@ -361,7 +360,7 @@ $(document).ready(function() {
             // Вставляем новые
             for(var i in ajaxData.errors) {
                 for(var j = 0; j < ajaxData.errors[i].length; j++) {
-                    $(popup).find(' .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
+                    $(popup).find(' .modal-body .row').append("<p class=\"errorText\">" + ajaxData.errors[i][j] + "</p>")
                 }
             }
 
@@ -529,7 +528,7 @@ $(document).ready(function() {
                     $('#editMedcardPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
-                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
 
                     });
@@ -564,7 +563,7 @@ $(document).ready(function() {
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
-                    $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')
+                    $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
 
                     });

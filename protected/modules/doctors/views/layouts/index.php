@@ -35,6 +35,9 @@
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;
         }
+        .errorText {
+            font-size: <?php echo Yii::app()->user->fontSize + 2; ?>px;
+        }
     </style>
 </head>
 <body>

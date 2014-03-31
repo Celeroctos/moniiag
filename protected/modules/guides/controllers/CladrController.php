@@ -2,11 +2,6 @@
 class CladrController extends Controller {
     public $layout = 'application.modules.guides.views.layouts.index';
 
-    public function actionView() {
-        $this->render('cladrView', array(
-        ));
-    }
-
     public function actionViewRegions() {
         $this->render('regionView', array(
             'model' => new FormCladrRegionAdd()
@@ -18,6 +13,19 @@ class CladrController extends Controller {
             'model' => new FormCladrDistrictAdd()
         ));
     }
+
+    public function actionViewSettlements() {
+        $this->render('settlementView', array(
+            'model' => new FormCladrSettlementAdd()
+        ));
+    }
+
+    public function actionViewStreets() {
+        $this->render('streetView', array(
+            'model' => new FormCladrStreetAdd()
+        ));
+    }
+
 
     public function actionDistrictGet() {
         try {
@@ -43,6 +51,7 @@ class CladrController extends Controller {
 
             echo CJSON::encode(
                 array(
+                    'success' => true,
                     'rows' => $districts,
                     'total' => $totalPages,
                     'records' => count($num))
@@ -76,7 +85,94 @@ class CladrController extends Controller {
 
             echo CJSON::encode(
                 array(
+                    'success' => true,
                     'rows' => $regions,
+                    'total' => $totalPages,
+                    'records' => count($num))
+            );
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function actionSettlementGet() {
+        ini_set('memory_limit', '1024M');
+        try {
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
+            $model = new CladrSettlement();
+            $num = $model->getRows($filters);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            foreach($settlements as &$settlement) {
+                $district = CladrDistrict::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $settlement['code_district']));
+                if($district != null) {
+                    $settlement['district'] = $district->name;
+                }
+            }
+
+            echo CJSON::encode(
+                array(
+                    'success' => true,
+                    'rows' => $settlements,
+                    'total' => $totalPages,
+                    'records' => count($num))
+            );
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function actionStreetGet() {
+        ini_set('memory_limit', '1024M');
+        try {
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+
+            // Фильтры поиска
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
+            $model = new CladrStreet();
+            $num = $model->getRows($filters);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $streets = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            foreach($streets as &$street) {
+                $district = CladrDistrict::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $street['code_district']));
+                if($district != null) {
+                    $street['district'] = $district->name;
+                }
+                $settlement = CladrSettlement::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $street['code_settlement']));
+                if($settlement != null) {
+                    $street['settlement'] = $settlement->name;
+                }
+            }
+
+            echo CJSON::encode(
+                array(
+                    'success' => true,
+                    'rows' => $streets,
                     'total' => $totalPages,
                     'records' => count($num))
             );
@@ -105,6 +201,31 @@ class CladrController extends Controller {
         );
     }
 
+    public function actionSettlementGetOne($id) {
+        $model = new CladrRegion();
+        $settlement = $model->getOne($id);
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => $settlement
+            )
+        );
+    }
+
+    public function actionSettlementEdit() {
+        $model = new FormCladrSettlementAdd();
+        if(isset($_POST['FormCladrSettlementAdd'])) {
+            $model->attributes = $_POST['FormCladrSettlementAdd'];
+            if($model->validate()) {
+                $district = CladrSettlement::model()->findByPk($_POST['FormCladrDistrictAdd']['id']);
+                $this->addEditSettlementModel($district, $model, 'Населённый пункт успешно отредактирован.');
+            } else {
+                echo CJSON::encode(array(
+                    'success' => 'false',
+                    'errors' => $model->errors));
+            }
+        }
+    }
+
     public function actionDistrictEdit() {
         $model = new FormCladrDistrictAdd();
         if(isset($_POST['FormCladrDistrictAdd'])) {
@@ -127,6 +248,21 @@ class CladrController extends Controller {
             if($model->validate()) {
                 $region = CladrRegion::model()->findByPk($_POST['FormCladrRegionAdd']['id']);
                 $this->addEditRegionModel($region, $model, 'Регион успешно отредактирован.');
+            } else {
+                echo CJSON::encode(array(
+                    'success' => 'false',
+                    'errors' => $model->errors));
+            }
+        }
+    }
+
+    public function actionSettlementAdd() {
+        $model = new FormCladrSettlementAdd();
+        if(isset($_POST['FormCladrSettlementAdd'])) {
+            $model->attributes = $_POST['FormCladrSettlementAdd'];
+            if($model->validate()) {
+                $settlement = new CladrSettlement();
+                $this->addEditDistrictModel($settlement, $model, 'Новый населённый пункт успешно добавлен.');
             } else {
                 echo CJSON::encode(array(
                     'success' => 'false',
@@ -165,6 +301,20 @@ class CladrController extends Controller {
         }
     }
 
+    public function actionSettlementDelete($id) {
+        try {
+            $settlement = CladrSetllement::model()->findByPk($id);
+            $settlement->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Населённый пункт успешно удалён.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array(
+                'success' => 'false',
+                'error' => 'На данную запись есть ссылки!'));
+        }
+    }
+
     public function actionDistrictDelete($id) {
         try {
             $district = CladrDistrict::model()->findByPk($id);
@@ -191,8 +341,23 @@ class CladrController extends Controller {
         }
     }
 
+    private function addEditSettlementModel($settlement, $model, $msg) {
+        $settlement->code_region = $model->codeRegion;
+        $settlement->code_district = $model->codeDistrict;
+        $settlement->code_cladr = $model->codeCladr;
+        $settlement->name = $model->name;
+
+        if($settlement->save()) {
+            echo CJSON::encode(array(
+                'success' => true,
+                'text' => $msg
+            ));
+        }
+    }
+
     private function addEditDistrictModel($district, $model, $msg) {
         $district->code_region = $model->codeRegion;
+        $district->code_cladr = $model->codeCladr;
         $district->name = $model->name;
 
         if($district->save()) {
@@ -213,16 +378,6 @@ class CladrController extends Controller {
                 'text' => $msg
             ));
         }
-    }
-
-    public function actionViewSettlements() {
-        $this->render('settlementView', array(
-        ));
-    }
-
-    public function actionViewStreets() {
-        $this->render('streetView', array(
-        ));
     }
 
     /* Синхронизация стран */
@@ -459,6 +614,86 @@ class CladrController extends Controller {
 
     /* Синхронизация улиц */
     public function actionSyncStreets() {
+        ini_set('memory_limit', '1024M');
+        if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
+            echo CJSON::encode(array(
+                    'success' => false,
+                    'data' => array(
+                        'error' => 'Недостаточно информации о считывании данных!'
+                    ))
+            );
+            exit();
+        }
 
+        $processed = 0;
+        $numErrors = 0;
+        $numAdded = 0;
+
+        $log = array();
+
+        $streets = TasuCladrStreet::model()->getRows(false, 'codestreet_52685', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
+
+        if($_GET['totalRows'] == null) {
+            $totalRows = TasuCladrStreet::model()->getNumRows();
+            // Ставим отметку о дате синхронизации
+            $syncdateModel = Syncdate::model()->findByPk('cladrStreets');
+            if($syncdateModel == null) {
+                $syncdateModel = new Syncdate();
+            }
+            $syncdateModel->name = 'cladrStreets';
+            $syncdateModel->syncdate = date('Y-m-d h:i');
+            if(!$syncdateModel->save()) {
+                $log[] = 'Невозможно сохранить временную отметку о синронизации.';
+            }
+        } else {
+            $totalRows = $_GET['totalRows'];
+        }
+
+        foreach($streets as $street) {
+            $processed++;
+            $issetCode = CladrStreet::model()->find('code_cladr = :code_cladr
+                                                        AND code_region = :code_region
+                                                        AND code_district = :code_district
+                                                        AND code_settlement = :code_settlement',
+                array(
+                    ':code_cladr' => $street['codestreet_52685'],
+                    ':code_region' => $street['coderegion_17901'],
+                    ':code_district' => $street['codedistrict_58020'],
+                    ':code_settlement' => $street['codesettlement_38285']
+                )
+            );
+            if($issetCode != null) {
+                continue;
+            }
+            // Добавляем улицу, если её нет
+            try {
+                $newStreet = new CladrStreet();
+                $newStreet->name = $street['socr_31302'].' '.$street['name_53962'];
+                $newStreet->code_cladr = $street['codestreet_52685'];
+                $newStreet->code_region = $street['coderegion_17901'];
+                $newStreet->code_district = $street['codedistrict_58020'];
+                $newStreet->code_settlement = $street['codesettlement_38285'];
+                if(!$newStreet->save()) {
+                    $log[] = 'Невозможно импортировать улицу с кодом '.$street['codestreet_52685'];
+                    $numErrors++;
+                } else {
+                    $numAdded++;
+                }
+            } catch(Exception $e) {
+                $numErrors++;
+            }
+        }
+
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'log' => $log,
+                    'successMsg' => 'Успешно импортировано '.($_GET['totalRows'] + $processed).' улиц.',
+                    'processed' => $processed,
+                    'totalRows' => $totalRows,
+                    'numErrors' => $numErrors,
+                    'numAdded' => $numAdded
+                ))
+        );
     }
 }

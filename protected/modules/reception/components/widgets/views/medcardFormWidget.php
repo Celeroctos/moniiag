@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <div class="form-group">
     <?php echo $form->labelEx($model,'doctype', array(
@@ -301,16 +302,6 @@ $form = $this->beginWidget('CActiveForm', array(
                 <h4 class="modal-title">Редактирование адреса</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group chooser" id="landChooser">
-                    <label for="land" class="col-xs-4 control-label">Страна (Enter - добавить)</label>
-                    <div class="col-xs-7">
-                        <input type="text" class="form-control" autofocus id="land" placeholder="Страна">
-                        <ul class="variants no-display">
-                        </ul>
-                        <div class="choosed">
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group chooser" id="regionChooser">
                     <label for="region" class="col-xs-4 control-label">Регион (Enter - добавить)</label>
                     <div class="col-xs-7">
@@ -324,7 +315,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="districtChooser">
                     <label for="district" class="col-xs-4 control-label">Район (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="district" placeholder="Район">
+                        <input type="text" class="form-control" id="district" placeholder="Район" disabled="disabled">
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">
@@ -334,7 +325,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="settlementChooser">
                     <label for="settlement" class="col-xs-4 control-label">Населённый пункт (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="settlement" placeholder="Населённый пункт">
+                        <input type="text" class="form-control" id="settlement" placeholder="Населённый пункт" disabled="disabled">
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">
@@ -344,7 +335,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="streetChooser">
                     <label for="street" class="col-xs-4 control-label">Улица (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="street" placeholder="Улица">
+                        <input type="text" class="form-control" id="street" placeholder="Улица" disabled="disabled">
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">

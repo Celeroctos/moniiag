@@ -417,7 +417,8 @@ class CategorieViewWidget extends CWidget {
                     if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null) {
                         $medguideValuesModel = new MedcardGuideValue();
                         $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id']);
-                        if(count($medguideValues) > 0) {
+                        $guideValues = array();
+						if(count($medguideValues) > 0) {
                             $guideValues = array();
                             foreach($medguideValues as $value) {
                                 $guideValues[$value['id']] = $value['value'];

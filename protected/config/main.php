@@ -10,6 +10,8 @@ return array(
 	'name'=>'МИС Notum',
     'defaultController' => 'index',
     'layout' => 'index',
+    'language' => 'ru',
+    'sourceLanguage'=>'en_us',
 
 	// preloading 'log' component
 	'preload'=>array('log'),

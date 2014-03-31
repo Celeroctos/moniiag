@@ -4,6 +4,8 @@
 ));
 ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/cladrdistricts.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <script type="text/javascript">
     globalVariables.guideEdit = '<?php echo Yii::app()->user->checkAccess('guideEditPrivelege'); ?>';
 </script>
@@ -25,11 +27,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Добавить регион</h4>
+                <h4 class="modal-title">Добавить район</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
-                'focus' => array($model,'description'),
+                'focus' => array($model,'name'),
                 'id' => 'district-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
@@ -63,8 +65,24 @@
                                 <?php echo $form->textField($model,'codeCladr', array(
                                     'id' => 'codeCladr',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Код'
+                                    'placeholder' => 'Код в КЛАДР'
                                 )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group chooser" id="regionChooser">
+                            <?php echo $form->labelEx($model,'codeRegion', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'codeRegion', array(
+                                    'id' => 'codeRegion',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Регион'
+                                )); ?>
+                                <ul class="variants no-display">
+                                </ul>
+                                <div class="choosed">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -94,11 +112,11 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Редактировать регион</h4>
+                <h4 class="modal-title">Редактировать район</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
-                'focus' => array($model,'shortName'),
+                'focus' => array($model,'name'),
                 'id' => 'district-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
@@ -136,8 +154,24 @@
                                 <?php echo $form->textField($model,'codeCladr', array(
                                     'id' => 'codeCladr',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Код'
+                                    'placeholder' => 'Код в КЛАДР'
                                 )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group chooser" id="regionChooser">
+                            <?php echo $form->labelEx($model,'codeRegion', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'codeRegion', array(
+                                    'id' => 'codeRegion',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Регион'
+                                )); ?>
+                                <ul class="variants no-display">
+                                </ul>
+                                <div class="choosed">
+                                </div>
                             </div>
                         </div>
                     </div>

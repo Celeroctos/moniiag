@@ -1,7 +1,4 @@
 <ul class="nav nav-tabs default-margin-bottom">
-    <li <?php echo $action == 'view' ? 'class="active"' : ''; ?>>
-        <?php echo CHtml::link('Страны', array('/guides/cladr/view')) ?>
-    </li>
     <li <?php echo $action == 'viewregions' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Регионы', array('/guides/cladr/viewregions')) ?>
     </li>

@@ -20,7 +20,7 @@
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAddPatient')) { ?>
                     <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewadd' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/patient_add.png" width="32" height="32" alt="" />Создание пациента', array('/reception/patient/viewadd')) ?>
+                        <?php echo CHtml::link('<img src="/images/icons/patient_add.png" width="32" height="32" alt="" />Регистрация пациента', array('/reception/patient/viewadd')) ?>
                     </li>
                 <? } ?>
                 <?php if(Yii::app()->user->checkAccess('menuPatientWrite')) { ?>

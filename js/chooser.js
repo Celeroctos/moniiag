@@ -174,6 +174,7 @@ $(document).ready(function() {
                     }
                 }
                 $(this).parent().remove();
+                $(chooser).find('input').prop('disabled', false);
             });
 
             $(document).on('click', '.choosed span.item span.glyphicon-arrow-down', function(e) {
@@ -241,6 +242,13 @@ $(document).ready(function() {
                             $(chooser).find('input').val('');
                             prevVal = null;
                             choosedElements.push(currentElements[i]);
+                            /* Логика работы: если есть настройка о количестве добавляемых максмально вариантов, то нужно блокировать строку, если количество вариантов достигло максимума */
+                            if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
+                                $(chooser).find('input').prop('disabled', true);
+                            }
+                            if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterInsert') && typeof choosersConfig[$(chooser).prop('id')].afterInsert == 'function') {
+                                choosersConfig[$(chooser).prop('id')].afterInsert();
+                            }
                         } else {
                             // TODO: сделать анимацию на вариант, который уже есть в списке, чтобы показать, что он есть
                         }
@@ -378,42 +386,25 @@ $(document).ready(function() {
                 ]
             }
         },
-        'landChooser' : {
-            'primary' : 'id',
-            'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.description));
-            },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
-            'extraparams' : {
-                // Здесь - специальность, но она даётся извне
-                'medworkerid' : null
-            },
-            'filters' : {
-                'groupOp' : 'AND',
-                'rules': [
-                    {
-                        'field' : 'description',
-                        'op' : 'cn',
-                        'data' : ''
-                    }
-                ]
-            }
-        },
         'regionChooser' : {
             'primary' : 'id',
+            'maxChoosed' : 1,
+            'afterInsert' : function() {
+                if($.fn['regionChooser'].getChoosed().length > 0) {
+                    $('#districtChooser input').attr('disabled', false);
+                } else {
+                    $('#districtChooser input').attr('disabled', true);
+                }
+            },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.description));
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
-            'extraparams' : {
-                // Здесь - специальность, но она даётся извне
-                'medworkerid' : null
-            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
                     {
-                        'field' : 'description',
+                        'field' : 'name',
                         'op' : 'cn',
                         'data' : ''
                     }
@@ -422,19 +413,26 @@ $(document).ready(function() {
         },
         'districtChooser' : {
             'primary' : 'id',
+            'maxChoosed' : 1,
+            'afterInsert' : function() {
+                if($.fn['districtChooser'].getChoosed().length > 0) {
+                    $('#settlementChooser input').attr('disabled', false);
+                } else {
+                    $('#settlementChooser input').attr('disabled', true);
+                }
+            },
+            'extraParams' : {
+                'region' : $.fn['regionChooser'].getChoosed()
+            },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.description));
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
-            'extraparams' : {
-                // Здесь - специальность, но она даётся извне
-                'medworkerid' : null
-            },
+            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
                     {
-                        'field' : 'description',
+                        'field' : 'name',
                         'op' : 'cn',
                         'data' : ''
                     }
@@ -443,10 +441,22 @@ $(document).ready(function() {
         },
         'settlementChooser' : {
             'primary' : 'id',
-            'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.description));
+            'maxChoosed' : 1,
+            'extraParams' : {
+                'region' : $.fn['regionChooser'].getChoosed(),
+                'district' : $.fn['districtChooser'].getChoosed()
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
+            'afterInsert' : function() {
+                if($.fn['settlementChooser'].getChoosed().length > 0) {
+                    $('#streetChooser input').attr('disabled', false);
+                } else {
+                    $('#streetChooser input').attr('disabled', true);
+                }
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'extraparams' : {
                 // Здесь - специальность, но она даётся извне
                 'medworkerid' : null
@@ -455,7 +465,7 @@ $(document).ready(function() {
                 'groupOp' : 'AND',
                 'rules': [
                     {
-                        'field' : 'description',
+                        'field' : 'name',
                         'op' : 'cn',
                         'data' : ''
                     }
@@ -464,24 +474,29 @@ $(document).ready(function() {
         },
         'streetChooser' : {
             'primary' : 'id',
+            'maxChoosed' : 1,
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.description));
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
-            'extraparams' : {
-                // Здесь - специальность, но она даётся извне
-                'medworkerid' : null
+            'afterInsert': function() {
+
+            },
+            'url' : '/index.php/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'extraParams' : {
+                'region' : $.fn['regionChooser'].getChoosed(),
+                'district' : $.fn['districtChooser'].getChoosed(),
+                'settlement' : $.fn['settlementChooser'].getChoosed()
             },
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
                     {
-                        'field' : 'description',
+                        'field' : 'name',
                         'op' : 'cn',
                         'data' : ''
                     }
                 ]
             }
-        },
+        }
     };
 });

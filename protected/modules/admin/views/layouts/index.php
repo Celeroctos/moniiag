@@ -35,10 +35,13 @@
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;
         }
+        .errorText {
+            font-size: <?php echo Yii::app()->user->fontSize + 2; ?>px;
+        }
     </style>
 </head>
 <body>
-<?php $this->widget('application.components.widgets.MainNavBar') ?>
+<?php $this->widget('application.components.widgets.MainNavBar'); ?>
 <div class="container-fluid" id="content">
     <div class="row main-container">
         <div class="col-xs-2">

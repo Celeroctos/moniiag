@@ -66,8 +66,8 @@ class FormPatientAdd extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'omsType' => 'Тип ОМС',
-            'policy' => 'ОМС',
+            'omsType' => 'Тип',
+            'policy' => 'Номер',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',

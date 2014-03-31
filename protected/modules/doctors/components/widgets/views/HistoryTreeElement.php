@@ -135,8 +135,27 @@
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     }
-                                    echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], $options);
-                                    if($element['label_after'] != null) {
+									
+									if (isset($element['guide']))
+									{
+										if ($element['guide']==NULL)
+										{
+											?><!--<label class="control-label">--><?php /*echo ("Не выбрано");*/?><!--</label>--><?php	
+											$vals = array (-1 => "Не выбрано");
+											echo $form->dropDownList($model,'f'.$element['id'], $vals , $options);
+										}
+										else
+										{
+											echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], $options);
+										}
+									}
+									else
+									{
+										$vals = array (-1 => "Не выбрано");
+										echo $form->dropDownList($model,'f'.$element['id'], $vals , $options);
+									}
+									
+									if($element['label_after'] != null) {
                                         ?>
                                         <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
