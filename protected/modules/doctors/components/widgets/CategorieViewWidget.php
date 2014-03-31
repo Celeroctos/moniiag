@@ -495,31 +495,30 @@ class CategorieViewWidget extends CWidget {
                         AND medcard_id = :medcard_id
                         AND history_id = :history_id
                         AND path LIKE :path',
-						array(
-								':categorie_id' => $categorieResult['id'],
-								':element_id' => -1,
-								':greeting_id' => $this->greetingId,
-								':medcard_id' => $this->medcard['card_number'],
-								':history_id' => 1,
-								':path' => $categorieResult['path'].'%'
-								)
-							);
-				}
+                        array(
+                            ':categorie_id' => $categorieResult['id'],
+                            ':element_id' => -1,
+                            ':greeting_id' => $this->greetingId,
+                            ':medcard_id' => $this->medcard['card_number'],
+                            ':history_id' => 1,
+                            ':path' => $categorieResult['path'].'%'
+                        )
+                    );
+                }
 				$categorieResult['children'] = array();
-				if(count($categoriesChildren) > 0) {
-					// Дети есть. Для каждого из них вышеописанный процесс повторяется
-					
-					foreach($categoriesChildren as $child) {
-						// Обычная категория
-						if(isset($child->id)) {
-							$categorieResult['children'][] = $this->getCategorie($child->id, $templateId, $templateName);
-						} else { // Категория-клон
-							$categorieResult['children'][] = $this->getCategorie(false, $templateId, $templateName, $child->path);
-						}
-					}
-				}
-			}
-
+                if(count($categoriesChildren) > 0) {
+                    // Дети есть. Для каждого из них вышеописанный процесс повторяется
+                  
+                    foreach($categoriesChildren as $child) {
+                        // Обычная категория
+                        if(isset($child->id)) {
+                            $categorieResult['children'][] = $this->getCategorie($child->id, $templateId, $templateName);
+                        } else { // Категория-клон
+                            $categorieResult['children'][] = $this->getCategorie(false, $templateId, $templateName, $child->path);
+                        }
+                    }
+                }
+            }
 		}
 		// Имеем два массива - children, с категориями-детьми. 
 		//    И массив elements - c элементами-детьми
@@ -845,8 +844,13 @@ class CategorieViewWidget extends CWidget {
 		
 		//if (!isset($nodeContent['path']))
 		//	{
+<<<<<<< HEAD
 		//var_dump($historyElement);
 		//exit();
+=======
+				//var_dump($historyElement);
+				//exit();
+>>>>>>> 1cf89e21b0e6aa7251e6d50d3c93fb09a8ca6c22
 		//	}
 		return $nodeContent;
 	}

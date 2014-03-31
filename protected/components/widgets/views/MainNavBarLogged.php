@@ -62,6 +62,11 @@
                     )
                 ); ?>
             <?php $this->endWidget(); ?>
+            <div class="navbar-right font-panel">
+                <button id="fontPlus" class="btn btn-success" title="Увеличить размер шрифта">+</button>
+                <span class="sampleLetterSize">A</span>
+                <button id="fontMinus" class="btn btn-success" title="Уменьшить размер шрифта">-</button>
+            </div>
         </div>
     </div>
 </div>

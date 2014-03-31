@@ -794,7 +794,7 @@ class TasuController extends Controller {
 
     /* Очистка всего буфера */
     public function actionClearBuffer() {
-        TasuGreetingsBuffer::model()->deleteAll('status != 1');
+        TasuGreetingsBuffer::model()->deleteAll(); // TODO
         echo CJSON::encode(array(
             'success' => true,
             'data' => 'Буфер успешно очищен.'
@@ -836,6 +836,7 @@ class TasuController extends Controller {
         $start = 0;
 
         $buffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $currentGreeting);
+
         $logs = array();
         $lastGreetingId = null;
         $importId = null;
@@ -909,39 +910,246 @@ class TasuController extends Controller {
     }
 
     private function moveGreetingToTasuDb($greeting) {
+        $patients = $this->searchTasuPatient($greeting);
+        // Добавление пациента, если такой не найден
+        if(count($patients) == 0) {
+            $oms = Oms::model()->findByPk($greeting['oms_id']);
+            $medcard = Medcard::model()->findByPk($greeting['medcard']);
+            $this->addTasuPatient($medcard, $oms);
+            $patients = $this->searchTasuPatient($greeting);
+        }
+        // Пациент такой должен быть всего один
+        $patient = $patients[0];
+        // Добавляем приём (талон, ТАП) к пациенту
+        $this->addTasuTap($patient, $greeting);
+    }
+
+    private function searchTasuPatient($greeting) {
+        $conn = Yii::app()->db2;
+        try {
+            // Номер полиса состоит из двух частей: серия (пробел) номер
+            $policyParts = explode(' ', $greeting['oms_number']);
+            // Неправильный номер полиса по формату
+            if(count($policyParts) != 2) {
+                throw new Exception();
+            }
+
+            $sql = "SELECT DISTINCT
+	                  [pat].[uid] AS [PatientUID],
+	                  NULL AS [_guid],
+	                  [pat].[fam_18565] AS [Fam],
+	                  [pat].[im_53316] AS [Im],
+	                  [pat].[ot_48206] AS [Ot],
+	                  [pat].[birthday_38523] AS [Birthday],
+	                  [pat].[socialstatus_59270] AS [SocialStatus],
+	                  [p].[series_14820] AS [Series],
+	                  [p].[number_12574] AS [Number],
+	                  [p].[state_19333] AS [PolicyState],
+	                  [pat].[closeregistrationcause_59292] AS [CloseRegistrationCause]
+                    FROM
+	                  PDPStdStorage.dbo.t_patient_10905 AS [pat]
+	                INNER JOIN PDPStdStorage.dbo.t_policy_43176 AS [p] ON (([p].[patientuid_09882] =
+[pat].[uid])) AND ([p].version_end = 9223372036854775807)
+                    INNER JOIN PDPStdStorage.dbo.t_smo_30821 AS [s] ON (([p].[smouid_25976] =
+[s].[uid])) AND ([s].version_end = 9223372036854775807)
+                    WHERE
+	                  ((([p].[series_14820] = '".trim($policyParts[0])."') AND ([p].[number_12574] = '".trim($policyParts[1])."')
+	                  AND ([pat].[closeregistrationcause_59292] IS NULL)))
+	                  AND [pat].version_end = 9223372036854775807";
+
+            $resultPatient = $conn->createCommand($sql)->queryAll();
+            return $resultPatient;
+        } catch(Exception $e) {
+            return false;
+        }
+    }
+
+    private function addTasuPatient($medcard, $oms) {
         $conn = Yii::app()->db2;
         $transaction = $conn->beginTransaction();
         try {
-            $sql = "IF EXISTS(
-                        SELECT * FROM tempdb.dbo.sysobjects
-                        WHERE id = object_id('tempdb.dbo.#ut_tlocal') AND xtype='U'
-                        )
-                        DROP TABLE #ut_tlocal
-                        CREATE TABLE #ut_tlocal (
-                            [pat] INT,
-                            [pat_cloud] INT,
-                            [local_guid] UNIQUEIDENTIFIER,
-                            [src] INT,
-                            [fam] VARCHAR(40),
-                            [im] VARCHAR(40),
-                            [ot] VARCHAR(40),
-                            [dr] DATETIME,
-                            [stat] VARCHAR(3),
-                            [pol_ser] VARCHAR(20),
-                            [pol_num] VARCHAR(20),
-                            [pol_state] VARCHAR(1),
-                            [dul_type] VARCHAR(2),
-                            [dul_ser] VARCHAR(20),
-                            [dul_num] VARCHAR(20),
-                            [card] VARCHAR(40),
-                            [card_type] VARCHAR(2),
-                            [snils] VARCHAR(20),
-                            [code] VARCHAR(25),
-                            [closed] VARCHAR(20))";
-           //$conn->
+            // Номер полиса состоит из двух частей: серия (пробел) номер
+            $version = '9223372036854775807';
+            $policyParts = explode(' ', $oms->oms_number);
+            // Неправильный номер полиса по формату
+            if(count($policyParts) != 2) {
+                throw new Exception();
+            }
+
+            $sql = "EXEC PDPStdStorage.dbo.p_patset_20892
+                        0,
+                        '',
+                        '".$oms->last_name."',
+                        '".$oms->first_name."',
+                        '".$oms->middle_name."',
+                        '".$oms->birthday."',
+                        '".(($oms->gender == 1) ? 1 : 2)."',
+                        NULL,
+                        '0',
+                        0,
+                        0,
+                        0,
+                        NULL,
+                        NULL,
+                        NULL,
+                        '',
+                        NULL,
+                        '',
+                        '',
+                        '".$medcard->work_place.", ".$medcard->work_address."',
+                        '".$medcard->profession."',
+                        '".$medcard->post."',
+                        0,
+                        'III(B)',
+                        NULL,
+                        1,
+                        NULL,
+                        NULL,
+                        NULL,
+                        '',
+                        ''";
+            $result = $conn->createCommand($sql)->execute();
+
+            $birthdayParts = explode('-', $oms->birthday);
+
+            $sql = "SELECT
+	                  [_unmdtbl2636].[uid] AS [PatientUID]
+                    FROM
+                        PDPStdStorage.dbo.t_patient_10905 AS [_unmdtbl2636]
+                    WHERE
+	                    ((([_unmdtbl2636].[fam_18565] = '".$oms->last_name."')
+	                      AND ([_unmdtbl2636].[im_53316] = '".$oms->first_name."')
+	                      AND ([_unmdtbl2636].[ot_48206] = '".$oms->middle_name."')
+	                      AND (DATEPART(year,[_unmdtbl2636].[birthday_38523]) = ".(int)$birthdayParts[0].")
+	                      AND (DATEPART(month,[_unmdtbl2636].[birthday_38523]) = ".(int)$birthdayParts[1].")
+	                      AND (DATEPART(day,[_unmdtbl2636].[birthday_38523]) = ".(int)$birthdayParts[2].")
+                          AND ([_unmdtbl2636].[uid] <> 0)))
+                          AND [_unmdtbl2636].version_end = ".$version;
+
+            $patientRow = $conn->createCommand($sql)->queryRow();
+
+            $regionCode = '77'; // TODO: времянка
+            $smoCode = '025';
+
+            /* Выборка СМО по региону и ID СМО */
+            $sql = "SELECT
+                        [_unmdtbl2635].[enabled_56485] AS [Enabled],
+                        [_unmdtbl2635].[shortname_50023] AS [ShortName]
+                    FROM
+                        PDPStdStorage.dbo.t_smo_30821 AS [_unmdtbl2635]
+                    WHERE
+                        ((([_unmdtbl2635].[coderegion_54021] = '".$regionCode."')
+                        AND ([_unmdtbl2635].[codesmo_46978] = '".$smoCode."')))
+                        AND [_unmdtbl2635].version_end = ".$version;
+
+            $smoRow = $conn->createCommand($sql)->queryRow();
+            if($smoRow == null) {
+                return false;
+            }
+
+            $sql = "SELECT TOP 1
+	                    [_unmdtbl2638].[uid] AS [SMOUID]
+                    FROM
+                        PDPStdStorage.dbo.t_smo_30821 AS [_unmdtbl2638]
+                    WHERE
+                    ((([_unmdtbl2638].[coderegion_54021] = '".$regionCode."')
+                    AND ([_unmdtbl2638].[codesmo_46978] = '".$smoCode."')))
+                    AND [_unmdtbl2638].version_end = ".$version."
+                    ORDER BY
+                        [_unmdtbl2638].[enabled_56485] DESC";
+
+            $smoIdRow = $conn->createCommand($sql)->queryRow();
+            if($smoIdRow == null) {
+                return false;
+            }
+
+            $sql = "EXEC PDPStdStorage.dbo.p_patsetpol_48135
+                        ".$patientRow['PatientUID'].",
+                        0,
+                        ".$smoIdRow['SMOUID'].",
+                        '".$policyParts[0]."',
+                        '".$policyParts[1]."',
+                        '".$smoRow['ShortName']."',
+                        '".(($oms->status == 0) ? 1 : 3)."',
+                        '1',
+                        '".$oms->givedate."',
+                        '".$oms->enddate."',
+                        NULL,
+                        '',
+                        '',
+                        '',
+                        NULL,
+                        NULL,
+                        NULL";
+
+            $result = $conn->createCommand($sql)->execute();
+
+            $sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
+                        ".$patientRow['PatientUID'].",
+                        0,
+                        '14',
+                        '".$medcard->serie."',
+                        '".$medcard->docnumber."',
+                        '00',
+                        '".$oms->last_name."',
+                        '".$oms->first_name."',
+                        '".$oms->middle_name."',
+                        0,
+                        '".(($oms->gender == 1) ? 1 : 2)."',
+                        '".$oms->birthday."',
+                        '".$medcard->gived_date."',
+                        NULL,
+                        '',
+                        NULL";
+
+            $result = $conn->createCommand($sql)->execute();
+
+            // КВАДР пока не прикручен
+            /*$sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
+                        0,
+                        ".$patientRow->PatientUID.",
+                        '1',
+                        '643',
+                        '01',
+                        '002',
+                        '000020',
+                        '0010',
+                        'Адыгея Респ',
+                        'Кошехабльский р-н',
+                        'Хачемзий аул',
+                        'Пушкина ул',
+                        '31',
+                        '22',
+                        '121',
+                        '',
+                        0";
+
+            $conn->createCommand($sql)->execute(); */
+            $transaction->commit();
+            return $result;
         } catch(Exception $e) {
-            $transaction->rollback();
+            return false;
         }
+    }
+
+    private function addTasuTap($patient, $greeting) {
+
+    }
+
+    /* Посмотреть страницу синхронизации с ТАСУ */
+    public function actionViewSync() {
+        $timestamps = Syncdate::model()->findAll();
+        $toTempl = array();
+        foreach($timestamps as &$timestamp) {
+            $parts = explode(' ', $timestamp['syncdate']);
+            $parts2 = explode('-', $parts[0]);
+            $timestamp['syncdate'] = $parts2[2].'.'.$parts2[1].'.'.$parts2[0].' '.$parts[1];
+            $toTempl[$timestamp['name']] = $timestamp['syncdate'];
+        }
+
+        $this->render('viewsync', array(
+            'timestamps' => $toTempl
+        ));
     }
 }
 ?>

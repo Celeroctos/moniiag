@@ -31,6 +31,11 @@
             <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboard.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboardcnf.js"></script>
+    <style>
+        body {
+            font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;
+        }
+    </style>
 </head>
 <body>
 <?php $this->widget('application.components.widgets.MainNavBar') ?>

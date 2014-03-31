@@ -4,11 +4,12 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/fileuploader.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/tablechooser.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/tasu.js" ></script>
-
-
 <h4>Инструменты интеграции с ТАСУ</h4>
 <p>Раздел предлагает инструменты управления интеграцией с ТАСУ (Типовой Автоматизированной Системой Управления) ОМС.</p>
-<h4>Загрузка данных в базу данных</h4>
+<?php $this->widget('application.modules.admin.components.widgets.UploadTasuTypesTabMenu', array(
+    ));
+?>
+<h4>Загрузка данных в базу данных из CSV</h4>
 <div class="row">
     <form class="form-horizontal col-xs-12" role="form" id="tasu-upload-form">
         <div class="fileinput-group" id="tasuIn">

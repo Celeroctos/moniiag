@@ -20,10 +20,7 @@ class PatientController extends Controller {
         $categorieWidget->createFormModel();
         $historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid']); // Получаем поля для всех полей относительно хистори
 
-        //var_dump('!');
-        //exit();
-       // echo CJSON::encode(array('success' => 'true','data' => '')); exit();
-        ob_end_clean();
+		ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));
         exit();

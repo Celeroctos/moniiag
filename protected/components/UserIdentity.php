@@ -33,6 +33,11 @@ class UserIdentity extends CUserIdentity
             $this->setState('medworkerId', $employee->post_id);
             $this->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
             $this->setState('startpageUrl', $url);
+            if(isset($_SESSION['fontSize'])) {
+                $this->setState('fontSize', $_SESSION['fontSize']);
+            } else {
+                $this->setState('fontSize', 12);
+            }
 
             $this->errorCode = self::ERROR_NONE;
         }

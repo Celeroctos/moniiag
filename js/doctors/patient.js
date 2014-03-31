@@ -509,7 +509,6 @@ $(document).ready(function() {
     }
     checkElementsDependences();
 
-
 	function hideControl(container, elementId)
 	{
 		if(typeof container == 'undefined') 

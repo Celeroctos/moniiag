@@ -574,4 +574,9 @@ $(document).ready(function() {
         });
         return false;
     });
+
+    $('.editAddress').on('click', function(e) {
+        $('#editAddressPopup').modal('show');
+        return false;
+    });
 });

@@ -407,4 +407,12 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('.syncBtn').on('click', function(e) {
+        $(this).attr({
+            'disabled' : true,
+            'value' : 'Идёт синхронизация...'
+        });
+        $(this).parents('.accordion-inner').find('.progressBox').trigger('begin')
+    });
 });

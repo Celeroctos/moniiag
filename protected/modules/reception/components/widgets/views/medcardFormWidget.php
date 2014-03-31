@@ -1,3 +1,5 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <div class="form-group">
     <?php echo $form->labelEx($model,'doctype', array(
         'class' => 'col-xs-3 control-label'
@@ -87,7 +89,9 @@
             'class' => 'form-control',
             'placeholder' => 'Адрес регистрации'
         )); ?>
-        <?php echo $form->error($model,'addressReg'); ?>
+        <a href="#" class="editAddress" title="Редактировать адрес регистрации">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
     </div>
 </div>
 <div class="form-group">
@@ -100,6 +104,9 @@
             'class' => 'form-control',
             'placeholder' => 'Адрес проживания'
         )); ?>
+        <a href="#" class="editAddress" title="Редактировать адрес проживания">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
     </div>
 </div>
 <div class="form-group">
@@ -275,3 +282,81 @@
         </div>
     </div>
 </div>
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+    'id' => 'address-edit-form',
+    'enableAjaxValidation' => true,
+    'enableClientValidation' => true,
+    'htmlOptions' => array(
+        'class' => 'form-horizontal col-xs-12',
+        'role' => 'form'
+    )
+));
+?>
+<div class="modal fade error-popup" id="editAddressPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Редактирование адреса</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group chooser" id="landChooser">
+                    <label for="land" class="col-xs-4 control-label">Страна (Enter - добавить)</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" autofocus id="land" placeholder="Страна">
+                        <ul class="variants no-display">
+                        </ul>
+                        <div class="choosed">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group chooser" id="regionChooser">
+                    <label for="region" class="col-xs-4 control-label">Регион (Enter - добавить)</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="region" placeholder="Регион">
+                        <ul class="variants no-display">
+                        </ul>
+                        <div class="choosed">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group chooser" id="districtChooser">
+                    <label for="district" class="col-xs-4 control-label">Район (Enter - добавить)</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="district" placeholder="Район">
+                        <ul class="variants no-display">
+                        </ul>
+                        <div class="choosed">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group chooser" id="settlementChooser">
+                    <label for="settlement" class="col-xs-4 control-label">Населённый пункт (Enter - добавить)</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="settlement" placeholder="Населённый пункт">
+                        <ul class="variants no-display">
+                        </ul>
+                        <div class="choosed">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group chooser" id="streetChooser">
+                    <label for="street" class="col-xs-4 control-label">Улица (Enter - добавить)</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="street" placeholder="Улица">
+                        <ul class="variants no-display">
+                        </ul>
+                        <div class="choosed">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-success" class="editSubmit">Сохранить адрес</button>
+            </div>
+        </div>
+    </div>
+</div>
+<?php $this->endWidget(); ?>

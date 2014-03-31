@@ -14,7 +14,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
         try {
             $connection = Yii::app()->db;
             $buffer = $connection->createCommand()
-                ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted')
+                ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted, o.oms_number, o.id as oms_id')
                 ->from(TasuGreetingsBuffer::tableName().' tgb')
                 ->join(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
                 ->join(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')

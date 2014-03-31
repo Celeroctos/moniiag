@@ -23,4 +23,10 @@
     <li <?php echo $controller == 'mkb10' && $action == 'view' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('МКБ-10', array('/guides/mkb10/view')) ?>
     </li>
+    <li <?php echo $controller == 'service' && $action == 'view' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Медуслуги', array('/guides/service/view')) ?>
+    </li>
+    <li <?php echo $controller == 'cladr' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('КЛАДР', array('/guides/cladr/view')) ?>
+    </li>
 </ul>
