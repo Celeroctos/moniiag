@@ -1,7 +1,9 @@
-<div id="accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>" class="accordion">
+﻿<?php
+?>
+<div id="accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['element']['path'].'_'.$cId; ?>" class="accordion">
        <div class="accordion-group">
         <div class="accordion-heading">
-            <a href="#collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId;; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['element']['name']; ?>
+            <a href="#collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['element']['path'].'_'.$cId;; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['element']['path'].'_'.$cId; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['element']['name']; ?>
                 <?php 
                  if ((count($categorie)==1) && ($categorie["element"]["element_id"]==-1)
                  )         
@@ -14,9 +16,9 @@
                 <?php if ((count($categorie)==1) && ($categorie["element"]["element_id"]==-1)
                  )    
                  { ?>
-            <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>">
+            <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['element']['path'].'_'.$cId; ?>">
         <?php } else { ?>
-            <div class="accordion-body in" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>">
+            <div class="accordion-body in" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['element']['path'].'_'.$cId; ?>">
         <?php } ?>
         <div class="accordion-inner">
         <?php

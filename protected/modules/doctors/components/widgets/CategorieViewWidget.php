@@ -505,10 +505,10 @@ class CategorieViewWidget extends CWidget {
                         )
                     );
                 }
-
+				$categorieResult['children'] = array();
                 if(count($categoriesChildren) > 0) {
                     // Дети есть. Для каждого из них вышеописанный процесс повторяется
-                    $categorieResult['children'] = array();
+                  
                     foreach($categoriesChildren as $child) {
                         // Обычная категория
                         if(isset($child->id)) {
@@ -737,7 +737,9 @@ class CategorieViewWidget extends CWidget {
 			$nodeContent['name'] = $historyElement['categorie_name'];
 			$nodeContent['template_id'] = $historyElement['template_id'];
 			$nodeContent['template_name'] = $historyElement['template_name'];
+			$nodeContent['path'] = $historyElement['path'];
 			$nodeContent['element_id'] = -1;
+			
 		}
 		else
 		{
@@ -841,7 +843,11 @@ class CategorieViewWidget extends CWidget {
 						//------
 		}
 		
-		
+		//if (!isset($nodeContent['path']))
+		//	{
+				//var_dump($historyElement);
+				//exit();
+		//	}
 		return $nodeContent;
 	}
 

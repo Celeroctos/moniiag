@@ -339,4 +339,41 @@
             'hide': 200
         }
     });*/
+
+    $('#fontPlus').on('click', function(e) {
+        var fontSize = parseInt($('.sampleLetterSize').css('font-size'));
+        $('#fontPlus, #fontMinus').attr('disabled', true);
+        $.ajax({
+            'url' : '/index.php/style/changefontsize',
+            'cache' : false,
+            'dataType' : 'json',
+            'data' : {
+                'size' : fontSize + 1
+            },
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success) {
+                    location.reload();
+                }
+            }
+        });
+    });
+    $('#fontMinus').on('click', function(e) {
+        var fontSize = parseInt($('.sampleLetterSize').css('font-size'));
+        $('#fontPlus, #fontMinus').attr('disabled', true);
+        $.ajax({
+            'url' : '/index.php/style/changefontsize',
+            'cache' : false,
+            'dataType' : 'json',
+            'data' : {
+                'size' : fontSize - 1
+            },
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success) {
+                    location.reload();
+                }
+            }
+        });
+    });
 });
