@@ -9,7 +9,7 @@ if(isset($categorie['id'])) {
                     (пустая категория)
                 <?php } ?>
             </a>
-            <?php if($categorie['is_dynamic'] == 1 || isset($categorie['pr_key'])) { ?>
+            <?php if(($categorie['is_dynamic'] == 1 || isset($categorie['pr_key'])) && false ) { ?>
             <button class="btn btn-default btn-sm accordion-clone-btn" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 <span class="no-display pr-key"><?php echo $categorie['pr_key']; ?></span>
@@ -24,50 +24,39 @@ if(isset($categorie['id'])) {
         <!--<div class="accordion-body collapse" id="collapse--><?php /* echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; */?><!--">-->
             <div class="accordion-inner">
                 <?php // Подкатегории
-                if(isset($categorie['children']) && count($categorie['children']) > 0) {
-                    foreach($categorie['children'] as $key => $childCategorie) {
-                        $this->drawCategorie($childCategorie, $form, $model, $lettersInPixel, $templatePrefix);
-                    }
-                }
-                ?>
-                <?php
-                if(count($categorie['elements']) > 0) {
-                    ?>
-                    <!--<div class="form-group has-success has-feedback">
-                        <div class="col-xs-6">
-                            <div class="col-xs-7">
-                                <label class="control-label">Input with success</label>
-                            </div>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-xs-6">
-                            <div class="col-xs-7">
-                                <label class="control-label">Input with success</label>
-                            </div>
-                            <div class="col-xs-5">
-                                <input type="text" class="form-control">
-                            </div>
-                        </div>
-                    </div>-->
-                    <?php
-                    foreach($categorie['elements'] as $element) {
-                        if(isset($element['dependences'])) {
+                foreach($categorie['childrenElementsOrder'] as $item)
+                {
+					if ($item['arrayNumber']=='1')
+					{
+						// Выводим категорию
+                        $this->drawCategorie(
+                        	$categorie['children'][$item['numberInArray']], 
+                        	$form,
+                        	$model,
+                        	$lettersInPixel,
+                        	$templatePrefix
+                        );
+					}
+					else
+					{
+						$element = $categorie['elements'][$item['numberInArray']];
+						// Выведем зависимости, если они есть
+						if(isset($element['dependences'])) {
                         ?>
-                        <script type="text/javascript">
-                            globalVariables.elementsDependences.push({
-                                'path' : '<?php echo $element['path']; ?>',
-                                'dependences' : <?php echo CJSON::encode($element['dependences']); ?>,
-                                'elementId' : '<?php echo $element['id']; ?>'
-                            });
-                        </script>
-                        <?php } ?>
+	                        <script type="text/javascript">
+	                            globalVariables.elementsDependences.push({
+	                                'path' : '<?php echo $element['path']; ?>',
+	                                'dependences' : <?php echo CJSON::encode($element['dependences']); ?>,
+	                                'elementId' : '<?php echo $element['id']; ?>'
+	                            });
+	                        </script>
+                        <?php } 
+                        // Выводим сам элемент
+                       ?>
                         <div class="form-group">
+                        	<!-- Выводим метку элемента -->
                             <div class="col-xs-3">
                                 <?php
-                                //var_dump($element);
-                                //exit();
                                 // Добавляем звёздочку к метке, если элемент обязателен для заполнения
                                 if ($element["is_required"]==1)
                                 {
@@ -80,9 +69,11 @@ if(isset($categorie['id'])) {
                                     'class' => 'col-xs-12 control-label'
                                 )); ?>
                             </div>
+                           	<!-- Выводим сам элемент -->
                             <div class="col-xs-9">
-                                <?php
-                                if($element['type'] == 0) {
+                        
+                        	<?php
+                       	 if($element['type'] == 0) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -193,7 +184,8 @@ if(isset($categorie['id'])) {
                                         </button>
                                     <?php
                                     }
-                                } elseif($element['type'] == 4) {
+                                } 
+ 									elseif($element['type'] == 4) {
                                 ?>
                                     <table class="controltable">
                                         <tbody>
@@ -248,22 +240,16 @@ if(isset($categorie['id'])) {
                                     ?>
                                 <?php
                                 }?>
-                            </div>
-                        </div>
-                    <?php  } ?>
-              
-                <?php } ?>
+                   
+                       
+                       		</div>
+                       	</div>
+                       	<? 
+                     }
+                }      
+                ?>    
             </div>
         </div>
     </div>
-</div>
-                      <script>
-                         /* console.log(globalVariables.elementsDependences);
-                            for(var i = 0; i < globalVariables.elementsDependences.length; i++) {
-                               if (globalVariables.elementsDependences[i].elementId=='119') {
-                                                console.log('Попали');
-                                           }
-                            
-                            }  */
-                    </script>    
+</div>    
 <? } ?>

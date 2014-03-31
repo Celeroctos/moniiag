@@ -143,7 +143,15 @@ class ElementsController extends Controller {
             }
         } else {
             $element->allow_add = 0;
-            $element->default_value = null;
+            // Если текст или текстовая область - берём другое поле модели
+            if ($model->type == 0 || $model->type == 1)
+            {
+                $element->default_value = $model->defaultValueText;
+            }
+            else
+            {
+                $element->default_value = null;
+            }
         }
 
         if($model->type == 4) {
@@ -218,7 +226,7 @@ class ElementsController extends Controller {
         if($element['guide_id'] == null) {
             $element['guide_id'] = -1;
         }
-        if($element['default_value'] == null) {
+        if(($element['default_value'] == null) && ($element['type']!=0)&&($element['type']!=1)) {
             $element['default_value'] = -1;
         }
         echo CJSON::encode(array('success' => true,

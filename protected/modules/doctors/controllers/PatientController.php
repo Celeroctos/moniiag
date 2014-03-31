@@ -4,17 +4,34 @@ class PatientController extends Controller {
         if(!Yii::app()->request->isAjaxRequest) {
             exit('Error!');
         }
+        //echo CJSON::encode(array('success' => 'true','data' => '')); exit();
         if(!isset($_GET['date'], $_GET['medcardid'])) {
             echo CJSON::encode(array('success' => true,
                                      'data' => 'Не хватает данных для запроса!'));
         }
+        //echo CJSON::encode(array('success' => 'true','data' => '')); exit();
         $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
-
+        //ob_end_clean();
+        //echo CJSON::encode(array('success' => 'true','data' => '')); exit();
+        //exit();
+        //var_dump($categorieWidget );
+        //exit();
+        
         $categorieWidget->createFormModel();
         $historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid']); // Получаем поля для всех полей относительно хистори
 
+        //var_dump('!');
+        //exit();
+       // echo CJSON::encode(array('success' => 'true','data' => '')); exit();
+        ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));
+        exit();
+        //echo CJSON::encode(array('success' => 'true',
+        //                         'data' => ''));
+        
+      //  echo CJSON::encode('');
+       // exit();
     }
 
 

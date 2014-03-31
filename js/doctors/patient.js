@@ -176,6 +176,9 @@ $(document).ready(function() {
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
+            'error' : function(data, textStatus, jqXHR) {
+                console.log(data);
+            },
             'success' : function(data, textStatus, jqXHR) {
                 console.log(data);
                 if(data.success == 'true') {
@@ -506,41 +509,89 @@ $(document).ready(function() {
     }
     checkElementsDependences();
 
-    function changeControlState(dep, elementValue, container) {
-        for(var j = 0; j < dep.dependences.list.length; j++) {
-            if(dep.dependences.list[j].value == elementValue) {
-                if(dep.dependences.list[j].action == 1) { // Это "скрыть"
-                    if(typeof container == 'undefined') {
-                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
-                    } else {
-                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
-                    }
-                } else if(dep.dependences.list[j].action == 2) { // Это "показать"
-                    if(typeof container == 'undefined') {
-                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
-                    } else {
-                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
-                    }
-                }
-                // Если значение совпало - то выходим из цикла
-                break;
-            }  else {
-                // Противоположное действие экшену по дефолту
-                if(dep.dependences.list[j].action == 1) { // Это "скрыть"
-                    if(typeof container == 'undefined') {
-                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
-                    } else {
-                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').show();
-                    }
-                } else if(dep.dependences.list[j].action == 2) { // Это "показать"
-                    if(typeof container == 'undefined') {
-                        $('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
-                    } else {
-                        $(container).find('[id$="_' + dep.dependences.list[j].elementId + '"]').parents('.form-group').hide();
-                    }
-                }
-            }
+
+	function hideControl(container, elementId)
+	{
+		if(typeof container == 'undefined') 
+		{
+        	$('[id$="_' + elementId + '"]').parents('.form-group').hide();
+        } 
+        else 
+        {
+        	$(container).find('[id$="_' + elementId + '"]').parents('.form-group').hide();
         }
+	}
+	
+	function showControl(container, elementId)
+	{
+		if(typeof container == 'undefined') 
+		{
+        	$('[id$="_' + elementId + '"]').parents('.form-group').show();
+        } else 
+        {
+        	$(container).find('[id$="_' + elementId + '"]').parents('.form-group').show();
+        }
+	}
+
+	// Вызывается при совпадении свойства главного контрола
+	function onEqualValue(container, dependence)
+	{
+		 if(dependence.action == 1) { // Это "скрыть"
+			hideControl(container,dependence.elementId);
+         } else if(dependence.action == 2) { // Это "показать"
+         	showControl(container,dependence.elementId);   
+         }
+	}
+	
+	// Вызывается при НЕсовпадении свойства главного контрола
+	function onNotEqualValue(container, dependence)
+	{
+		 if(dependence.action == 1) { // Это "скрыть"
+        	showControl(container,dependence.elementId);
+		} else if(dependence.action == 2) { // Это "показать"
+        	hideControl(container,dependence.elementId);
+        }
+	}
+
+
+    function changeControlState(dep, elementValue, container) {
+        // Значение элемента является массивом в том случае, если у нас 
+        //    список с множественным выбором
+        if ($.isArray(elementValue))
+        {
+			
+				for(var j = 0; j < dep.dependences.list.length; j++)
+				{
+					// Перебираем elementValue как массив
+					for (k=0;k<elementValue.length;k++)
+					{
+            			if(dep.dependences.list[j].value == elementValue[k]) {
+               				onEqualValue(container,dep.dependences.list[j]);
+               				break;
+            			}  else {
+                			// Противоположное действие экшену по дефолту
+                			onNotEqualValue(container,dep.dependences.list[j]);
+            			}
+            		}
+				}
+			
+		}
+        else
+        {
+			for(var j = 0; j < dep.dependences.list.length; j++) 
+			{
+            	if(dep.dependences.list[j].value == elementValue) 
+            	{
+               		onEqualValue(container,dep.dependences.list[j]);
+            	}
+            	else 
+            	{
+                	// Противоположное действие экшену по дефолту
+                	onNotEqualValue(container,dep.dependences.list[j]);
+            	}
+            }
+		}
+      
     }
 
     $('#templates-choose-form input[type="submit"]').on('click', function(e) {

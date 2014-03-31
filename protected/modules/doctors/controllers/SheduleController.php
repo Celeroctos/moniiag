@@ -173,6 +173,9 @@ class SheduleController extends Controller {
             // Перебираем весь входной массив, чтобы записать изменения в базу
             $currentDate = date('Y-m-d H:i');
             $answerCurrentDate = false;
+            //var_dump($_POST['FormTemplateDefault']);
+            //var_dump($_POST['FormTemplateDefault']['f__3|3|5_277']);
+            //exit();
             foreach($_POST['FormTemplateDefault'] as $field => $value) {
                 if($field == 'medcardId' || $field == 'greetingId') {
                     continue;
