@@ -176,6 +176,9 @@ $(document).ready(function() {
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
+            'error' : function(data, textStatus, jqXHR) {
+                console.log(data);
+            },
             'success' : function(data, textStatus, jqXHR) {
                 console.log(data);
                 if(data.success == 'true') {

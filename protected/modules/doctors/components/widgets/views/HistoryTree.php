@@ -1,5 +1,67 @@
 <script type="text/javascript">
-    elementsDependences = [];
+elementsDependences = [];
+filteredDeps = [];
+</script>
+<?php
+$form = $this->beginWidget('CActiveForm', array(
+    'id' => 'patient-edit-form',
+    'enableAjaxValidation' => true,
+    'enableClientValidation' => true,
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+    'htmlOptions' => array(
+        'class' => 'form-horizontal col-xs-12',
+        'role' => 'form'
+    )
+));
+// Выводим список диагнозов
+if (count($primaryDiagnosis)>0)
+{
+	?>
+	<h4>
+        Диагноз:
+    </h4>
+    <ul>
+	<?php
+	foreach ($primaryDiagnosis as $diag)
+	{
+		?><li><?php
+			echo $diag['description'];
+		?></li><?php
+	}
+	?></ul><?php
+}
+
+if (count($secondaryDiagnosis)>0)
+{
+	?>
+	<h4>
+        Сопутствующие диагнозы
+    </h4>
+ <ul>
+	<?php
+	foreach ($secondaryDiagnosis as $diag)
+	{
+		?><li><?php
+			echo $diag['description'];
+		?></li><?php
+	}
+	?></ul><?php
+	
+}
+foreach($dividedCats as $key => $template) {
+    ?>
+    <h4>
+        <?php echo $template['name']; ?>
+    </h4>
+    <?php
+    foreach($template['cats']  as $index => $categorie) {
+        $this->drawHistoryCategorie($categorie, $index, $form, $model, 'h'.$key, $key, $lettersInPixel);
+    }
+}
+$this->endWidget();
+?>
+<script type="text/javascript">
+    //elementsDependences = [];
     $(document).ready(function() {
         // Выяснение зависимостей
         var deps = elementsDependences;
@@ -31,26 +93,3 @@
         }
     });
 </script>
-<?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'patient-edit-form',
-    'enableAjaxValidation' => true,
-    'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
-    'htmlOptions' => array(
-        'class' => 'form-horizontal col-xs-12',
-        'role' => 'form'
-    )
-));
-foreach($dividedCats as $key => $template) {
-    ?>
-    <h4>
-        <?php echo $template['name']; ?>
-    </h4>
-    <?php
-    foreach($template['cats']  as $index => $categorie) {
-        $this->drawHistoryCategorie($categorie, $index, $form, $model, 'h'.$key, $key, $lettersInPixel);
-    }
-}
-$this->endWidget();
-?>

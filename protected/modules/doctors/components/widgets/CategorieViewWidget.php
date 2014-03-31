@@ -59,6 +59,14 @@ class CategorieViewWidget extends CWidget {
             $categories = $this->getCategories($this->templateType, $this->templateId);
         }
 
+		// 
+		/*echo('--------');
+		var_dump($categories);
+		
+		echo('--------');
+		*/
+		//
+
         echo $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
@@ -200,9 +208,9 @@ class CategorieViewWidget extends CWidget {
             );
 
         }
-     //   echo "<pre>";
-//var_dump($categoriesResult);
-     //   exit();
+       // echo "<pre>";
+		//var_dump($categoriesResult);
+       // exit();
         return $categoriesResult;
     }
 
@@ -513,7 +521,46 @@ class CategorieViewWidget extends CWidget {
             }
 
 		}
+		// Имеем два массива - children, с категориями-детьми. 
+		//    И массив elements - c элементами-детьми
+		//   Создаём специальный массив, каждый элемент которого будет содержать следующее:
+		//    - Номер массива (children/elements)
+		//    - Значение поля "Позиция в родителе"
+		//    - Номер в массиве children или elements
+		$itemsOrders = array();
+		for($i=0;$i<count($categorieResult['children']);$i++)
+		{
+			$itemsOrders[] = array(
+				'arrayNumber' => '1',
+				'position' => $categorieResult['children'][$i]['position'],
+				'numberInArray' => $i
+			);
+		}
 
+		for($i=0;$i<count($categorieResult['elements']);$i++)
+		{
+			$itemsOrders[] = array(
+				'arrayNumber' => '2',
+				'position' => $categorieResult['elements'][$i]['position'],
+				'numberInArray' => $i
+			);
+		}
+		
+		// Сортируем массив itemsOrder по элементу position
+		usort($itemsOrders, function($element1, $element2) {
+                    if($element1['position'] > $element2['position']) {
+                        return 1;
+                    } elseif($element1['position'] < $element2['position']) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+        });
+		
+		
+		$categorieResult['childrenElementsOrder'] = $itemsOrders;
+		//var_dump($categorieResult['childrenElementsOrder']);
+		
 		return $categorieResult;
 	}
 
@@ -597,16 +644,38 @@ class CategorieViewWidget extends CWidget {
     public function getFieldsHistoryByDate($date, $medcardId) {
         $this->formModel = new FormTemplateDefault();
         $this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId);
+        //var_dump($this->historyElements);
+        //exit();
         // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
         $this->makeTree();
+        $this->sortTree();
         // Теперь поделим категории
         $this->divideTreebyCats();
         // Рассортируем
-        $this->sortTree();
+        
+        //exit();
+	//var_dump($this->dividedCats);
 	//var_dump($this->dividedCats);
 	//exit();
+		
+		// Вытащим приёмы
+		// Берём элементы истории и прочитываем id приёма
+		if (count($this->historyElements)>0)
+		$greeting = $this->historyElements[0]['greeting_id'];
+		
+		$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
+		$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
+		/*
+		var_dump($pd);
+		var_dump("------");
+		var_dump($sd);	
+		exit();
+	*/
+	
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
+            'primaryDiagnosis' => $pd,
+            'secondaryDiagnosis' => $sd,
             'model' => $this->formModel,
             'templates' => $this->catsByTemplates,
             'dividedCats' => $this->dividedCats,
@@ -616,22 +685,29 @@ class CategorieViewWidget extends CWidget {
     }
 
     public function divideTreebyCats() {
-        foreach($this->catsByTemplates as $id => $templatesCatsIds) {
-            $num = count($templatesCatsIds);
-            for($i = 0; $i < $num; $i++) {
-                $templateId = $templatesCatsIds[$i]['id'];
-                if(isset($this->historyTree[$id])) {
-                    if(!isset($this->dividedCats[$templateId])) {
-                        $this->dividedCats[$templateId] = array(
-                            'name' => $templatesCatsIds[$i]['name'],
-                            'cats' => array()
-                        );
-                    }
-
-                    $this->dividedCats[$templateId]['cats'][$id] = $this->historyTree[$id];
-                }
-            }
-        }
+    	
+    	$templates = array();
+    	// Перебираем верхний уровень дерева
+    	
+    	foreach ($this->historyTree as $nodeTopLevel)
+    	{
+			// Возьмём элемент массива element и прочитаем у 
+			//     него template_name и templateid
+			$tName = $nodeTopLevel['element']['template_name'];
+			$tId = $nodeTopLevel['element']['template_id'];
+			// Если в templates нет ИД шаблона - добавляем
+			if (!isset($templates[$tId]))
+			{
+				$templates[$tId] = array(
+					'name' => $tName,
+					'cats' => array()
+				);
+			}
+			// Теперь добавим категорию в соответвующий шаблон
+			$templates[$tId]['cats'][] = $nodeTopLevel;
+		}
+    	// В dividedCats - добавляем собранные категории
+    	$this->dividedCats = $templates;
     }
 
     // Получить дерево актуальных категорий (не используется)
@@ -652,196 +728,172 @@ class CategorieViewWidget extends CWidget {
         }
     }
 
-    public function makeTree() {
-        foreach($this->historyElements as $element) {
-            $pathArr = explode('.', $element['path']);
-            $numParts = count($pathArr);
-            $currentNode = &$this->historyTree;
-            // Если element_id == -1, то это категория
-            for($i = 0; $i < $numParts; $i++) {
-                if($i < $numParts - 1) {
-                    if(!isset($currentNode[$pathArr[$i]])) {
-                        // Корневую записываем в шаблоны
-                        if($i == 0 && $element['template_id'] != null && $element['template_name'] != null) {
-                            if(!isset($this->catsByTemplates[$pathArr[$i]])) {
-                                $this->catsByTemplates[$pathArr[$i]] = array();
-                            }
-                            // Записываем категории
-                            $this->catsByTemplates[$pathArr[$i]][] = array(
-                                'id' => $element['template_id'],
-                                'name' => $element['template_name']
-                            );
-                        }
-                        $node = array(
-                            'elements' => array(),
-                            'children' => array()
+	// Функция принимает элмент истории и делает из него узел дерева
+	private function getTreeNode($historyElement)
+	{
+		$nodeContent = array();
+		if ($historyElement['element_id'] == -1)
+		{
+			$nodeContent['name'] = $historyElement['categorie_name'];
+			$nodeContent['template_id'] = $historyElement['template_id'];
+			$nodeContent['template_name'] = $historyElement['template_name'];
+			$nodeContent['element_id'] = -1;
+		}
+		else
+		{
+			$nodeContent = array(
+                           'label' => $historyElement['label_before'],
+                            'label_after' => $historyElement['label_after'],
+                            'size' => $historyElement['size'],
+                            'is_wrapped' => $historyElement['is_wrapped'],
+                            'value' => $historyElement['value'],
+                            'id' => $historyElement['element_id'],
+                            'element_id' => $historyElement['element_id'],
+                            'type' => $historyElement['type'],
+                            'guide_id' => $historyElement['guide_id'],
+                            'path' => $historyElement['path'],
+                            'config' => CJSON::decode($historyElement['config'])	
                         );
-                        $currentNode[$pathArr[$i]] = $node;
-                    }
-                    if($i == $numParts - 2) { // Предпоследняя итерация определяет категорию, предпоследняя итерация определяет элемент
-                        if($element['element_id'] == -1) {
-                            $currentNode = &$currentNode[$pathArr[$i]]['children'];
-                        } else {
-                            $currentNode = &$currentNode[$pathArr[$i]];
-                        }
-                    } else {
-                        $currentNode = &$currentNode[$pathArr[$i]]['children'];
-                    }
-                } else {
-                    if($element['element_id'] == -1) { // Только конечный элемент можно рассмотреть как определённый
-                        if(!isset($currentNode[$pathArr[$i]])) {
-                            $node = array(
-                                'name' => $element['categorie_name'],
-                                'path' => implode('-', explode('.', $element['path'])),
-                                'children' => array(),
-                                'elements' => array(),
-                            );
-                            $currentNode[$pathArr[$i]] = $node;
-                        } else {
-                            $currentNode[$pathArr[$i]]['name'] = $element['categorie_name'];
-                            $currentNode[$pathArr[$i]]['path'] = implode('-', explode('.', $element['path']));
-                        }
-
-                        // Корневую-концевую записываем в шаблоны
-                        if($i == 0 && $element['template_id'] != null && $element['template_name'] != null) {
-                            if(!isset($this->catsByTemplates[$pathArr[$i]])) {
-                                $this->catsByTemplates[$pathArr[$i]] = array();
-                            }
-                            // Записываем категории
-                            $this->catsByTemplates[$pathArr[$i]][] = array(
-                                'id' => $element['template_id'],
-                                'name' => $element['template_name']
-                            );
-                        }
-
-                    } else {
-                        $data = array(
-                            'label' => $element['label_before'],
-                            'label_after' => $element['label_after'],
-                            'size' => $element['size'],
-                            'is_wrapped' => $element['is_wrapped'],
-                            'value' => $element['value'],
-                            'id' => $element['element_id'],
-                            'type' => $element['type'],
-                            'guide_id' => $element['guide_id'],
-                            'path' => $element['path'],
-                            'config' => CJSON::decode($element['config'])
-                        );
-
-                        if($element['guide_id'] != null) {
+             // Дальше идёт трэш по инициализации значений контролов
+			//----------
+			    if($nodeContent['guide_id'] != null)
+                        {
                             $medguideValuesModel = new MedcardGuideValue();
-                            $medguideValues = $medguideValuesModel->getRows(false, $element['guide_id']);
+                            $medguideValues = 
+                            	$medguideValuesModel->
+                            		getRows(false, $nodeContent['guide_id']);
                             // Проинициализируем пустым массивом массив значений
-			    $data['guide'] = array();
-			    if(count($medguideValues) > 0) {
+			    			$nodeContent['guide'] = array();
+			    			if(count($medguideValues) > 0)
+			    			{
                                 // Если не список множественного выбора
-				if($data['type'] != 3)
-				{
-				    $guideValues = array();
-				    foreach($medguideValues as $value) {
-				        $guideValues[$value['id']] = $value['value'];
-				    }
-				    $data['guide'] = $guideValues;
-				}
+								if($nodeContent['type'] != 3)
+								{
+				    				$guideValues = array();
+				    				foreach($medguideValues as $value)
+				    				{
+				        				$guideValues[$value['id']] = 
+				        				$value['value'];
+				    				}
+				    				$nodeContent['guide'] = $guideValues;
+								}
                             }
-				
-			    /*
-			    if(count($medguideValues) > 0) {
-                                $guideValues = array();
-                                foreach($medguideValues as $value) {
-                                    $guideValues[$value['id']] = $value['value'];
-                                }
-				// Если не список множественного выбора
-				//if($data['type'] != 3)
-				    $data['guide'] = $guideValues;
-                            }*/
-			    
-                           if($data['type'] == 3) {
-                                $data['selected'] = array();
-                                $data['value'] = CJSON::decode($element['value']);
-                                if($data['value'] != null) {
-				    if (is_array($data['value']))
-				    {
-					foreach($data['value'] as $id) {
-					    $data['selected'][$id] = array('selected' => true);
-					    //$data['guide'][$id] = $medguideValues[$id];
-					    // Перебираем массив $medguideValues и в случае, если выбранное значение
-					    //   равно значению из $medguideValues, то добавляем в $data['guide']
-					    //     значение из справочника
-					    foreach ($medguideValues as $value)
-					    {
-					        if ($value['id']==$id)
-					        {
-						    $data['guide'][$value['id']] = $value['value'];
-					        }
-					    }
+                            if($nodeContent['type'] == 3)
+                            {
+                                $nodeContent['selected'] = array();
+                                $nodeContent['value'] = 
+                                CJSON::decode($nodeContent['value']);
+                                if($nodeContent['value'] != null)
+                                {
+				    				if (is_array($nodeContent['value']))
+				    				{
+										foreach($nodeContent['value'] as $id)
+										{
+					    					$nodeContent['selected'][$id] = 
+					    						array('selected' => true);
+					    
+					    					foreach ($medguideValues as $value)
+					    					{
+					        					if ($value['id']==$id)
+					        					{
+						    						$nodeContent['guide']
+						    						[$value['id']] 
+						    							= $value['value'];
+					        					}
+					    					}
 					
-					}
-				    }
-				    else
-				    {
-					$data['selected'][$data['value']] = array('selected' => true);
-					foreach ($medguideValues as $value)
-					{
-					    if ($value['id']==$data['value'])
-					    {
-						$data['guide'][$value['id']] = $value['value'];
-					    }
-					}
-				    }
-                                } else {
-                                    $data['selected'] = array();
+										}
+				    				}
+				    				else
+				    				{
+										$nodeContent['selected'][$nodeContent['value']] 
+											= array('selected' => true);
+										foreach ($medguideValues as $value)
+										{
+					    					if ($value['id']==$nodeContent['value'])
+					    					{
+												$nodeContent['guide']
+												[$value['id']] = 
+													$value['value'];
+					    					}
+										}
+				    				}
+                                } 
+                                else
+                                {
+                                    $nodeContent['selected'] = array();
                                 }
                             }
                             // Простой выпадающий список
-                            if($data['type'] == 2) {
-                                $data['selected'] = array($data['value'] => array('selected' => true));
+                            if($nodeContent['type'] == 2)
+                            {
+                                $nodeContent['selected'] = 
+                                	array($nodeContent['value'] => array('selected' => 										true));
                             }
                         }
-                        $data = $this->getDependences($data);
-
-                        $currentNode['elements'][] = $data;
-
-                        $this->formModel->setSafeRule('f'.$element['element_id']);
-                        $this->formModel->setAttributeLabels('f'.$element['element_id'], $element['label_before']);
-                        $fieldName = 'f'.$element['element_id'];
+                        
+                        $nodeContent = $this->getDependences($nodeContent);
+                        
+						$this->formModel->setSafeRule('f'.$historyElement['element_id']);
+                        $this->formModel->setAttributeLabels('f'.$historyElement['element_id'], $historyElement['label_before']);
+                        $fieldName = 'f'.$historyElement['element_id'];
                         $this->formModel->$fieldName = null;
-                    }
-                }
-            }
-        }
+						//------
+		}
+		
+		
+		return $nodeContent;
+	}
 
-        //ksort($this->historyTree);
-        //$this->sortTree();
-        //var_dump($this->historyTree);
-        //exit();
+    public function makeTree() {
+
+    	foreach($this->historyElements as $element) {
+    		// Делим путь 
+    		$pathArr = explode('.', $element['path']);
+    		$currentResultTree = &$this->historyTree;
+    		// Перебираем куски адреса  с каждым куском адреса 
+    		//     перемещаем указатель на текущий узел
+    		//var_dump($element['path']);
+    		for ($i=0;$i<count($pathArr)-1;$i++)
+    		{
+    			// Если в узле нет такого ключа - создаём его
+				if (!isset($currentResultTree[$pathArr[$i]]))
+				{
+					//var_dump("!");
+					$currentResultTree[$pathArr[$i]] = array();
+				}
+				//var_dump($currentResultTree);
+				$currentResultTree = &$currentResultTree[$pathArr[$i]];
+			}
+    		//var_dump($currentResultTree);
+    		// Нашли местечко для категории/элемента - вставили в текущий узел
+    		// Проверим - есть ли в узле путь к узлу, который мы добавляем
+    		if (!isset($currentResultTree[$pathArr[count($pathArr)-1]]))
+    		{
+				$currentResultTree[$pathArr[count($pathArr)-1]] = array();
+			}
+			$currentResultTree[$pathArr[count($pathArr)-1]]['element'] = 
+			array();
+    		$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->getTreeNode($element);
+    	}
     }
 
     private function sortTree(&$node = false) {
+        
         if(!$node) {
-            $node = $this->dividedCats;
+        	$node = &$this->historyTree;	
         }
-
-        if(isset($node['cats'])) {
-            foreach($node['cats'] as &$cat) {
-                usort($cat['elements'], function($element1, $element2) {
-                    $position1 = array_pop(explode('.', $element1['path']));
-                    $position2 = array_pop(explode('.', $element2['path']));
-
-                    if($position1 > $position2) {
-                        return 1;
-                    } elseif($position1 < $position2) {
-                        return -1;
-                    } else {
-                        return 0;
-                    }
-                });
-
-                if(isset($cat['children']) && count($cat['children']) > 0) {
-                    $this->sortTree($cat['children']);
-                }
-            }
-        }
+        // Вызываем сортировку по ключу для массива node
+        ksort($node);
+        // Перебираем детей элемента node и рекурсивно вызываем сортировку
+        foreach ($node as $key => &$subNode)
+        {
+        	// Для элемента element не вызываем сортировку
+			if ($key!="element")
+			{
+				$this->sortTree($subNode);
+			}
+		}
     }
 
     public function drawHistoryCategorie($categorie, $cId, $form, $model, $prefix = false, $templateKey, $lettersInPixel) {

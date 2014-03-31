@@ -104,8 +104,15 @@ $(document).ready(function() {
 
             if(row.type_id == 4) {
                 $('.table-config-container').removeClass('no-display');
+                // Также покажем таблицу значений по умолчанию
+                $('.defaultValuesTable').removeClass('no-display');
+
             } else {
                 $('.table-config-container').addClass('no-display');
+				
+				// Скроем таблицу значений по умолчанию
+				$('.defaultValuesTable').addClass('no-display');
+                
             }
         }
     });
@@ -185,6 +192,9 @@ $(document).ready(function() {
 
 
     $("#addElement").click(function() {
+    	
+    	printDefaultValuesTable(0,0);
+    	
         $('#addElementPopup').modal({
 
         });
@@ -215,6 +225,50 @@ $(document).ready(function() {
             });
         }
     });
+
+	function writeDefValuesFromConfig(defValues)
+	{
+		// Вычисляем макиммальный индекс по строке и столбцу в таблице значений по умолчанию
+		var tableOfDefaults = $('div.defaultValuesTable table.controltable tbody');
+		var maxRowIndex = 0;
+		var maxColIndex = 0;
+		
+		// Делим на два, так как две таблицы
+		maxRowIndex = tableOfDefaults.find('tr').length/2;
+		
+		if (maxRowIndex>0)
+		{
+			maxColIndex = $(tableOfDefaults.find('tr')[0]).find('td').length;
+		}
+		// Есди максимальный индекс - нулевой в строке или столбце, то выходим
+		if (maxRowIndex<=0 ||maxColIndex<=0)
+		{
+				return;
+		}	
+		for (j=0;j<tableOfDefaults.length;j++)
+		{
+			// Перебираем значения defValues
+			for (i=0;i<defValues.length;i++)
+			{
+				// Берём индексы
+				var Indexes = defValues[i].indexes.split('_');
+				
+				// Проверяем - не больше ли индекс строки и столбца, чем индекс таблицы
+				if ((Indexes[0]<maxRowIndex) && (Indexes[1]<maxColIndex))
+				{
+					var strToSelect = 'tr:eq('+ Indexes[0] + 
+						') td:eq(' + Indexes[1] + ') input';
+					
+					var cellToSelect = 
+					$(tableOfDefaults[j]).find(strToSelect);
+					
+					cellToSelect.val(defValues[i].def_val);
+				}
+				
+			}
+		}
+		
+	}
 
     // Функция пробегает по строкам грида с зависимостями и проверяет,
     //    какое направление было задано для зависимостей - скрывать, или показывать.
@@ -334,6 +388,10 @@ $(document).ready(function() {
                                 modelField: 'default_value',
                                 formField: 'defaultValue'
                             },
+                             {
+                                modelField: 'default_value',
+                                formField: 'defaultValueText'
+                            },
                             {
                                 modelField: 'label_display',
                                 formField: 'labelDisplay'
@@ -400,6 +458,11 @@ console.log(config);
 console.log(newTr);
                                     $(tbody).append(newTr);
                                 }
+                                printDefaultValuesTable(config.numCols,config.numRows);
+                                if (config.values!=undefined && config.values!=null)
+                                {
+									writeDefValuesFromConfig(config.values);
+								}
                             }
                         }
 
@@ -413,6 +476,45 @@ console.log(newTr);
             })
         }
     }
+
+	// Создаёт таблицу для значений по умолчанию для редактируемых таблиц
+	function printDefaultValuesTable(numberOfCols, numberOfRows)
+	{
+		// Берём таблицу из соответствующего контейнера
+		var tableOfDefaults = $('div.defaultValuesTable table.controltable tbody');
+		// Очищаем таблицу
+		$(tableOfDefaults).find('tr').remove('');
+		// Во внешнем цикле пробегаемся сначала по строкам
+		for (i=0;i<numberOfRows;i++)
+		{
+			var newTr = $('<tr>');
+			// Во внутреннем цикле пробегаемся по столбцам
+			for (j=0;j<numberOfCols;j++)
+			{
+				var newTd = $('<td>');
+				//newTd.html(i.toString()+'_'+j.toString());
+				
+				newTd.html(
+						'<input type="text" id="' + i.toString()+'_'+j.toString() + '" value=""/>'
+				);
+				newTr.append(newTd);
+			}
+			
+			// Добавляем строку в таблицу
+			$(tableOfDefaults).append(newTr);
+		}
+		
+		// Повесим на все инпуты в табоице значений обработчик события изменения значений
+		
+		$(tableOfDefaults.find('input')).change(onDefaultValuesTableChanged);
+	}
+
+	// Обработчик изменения значений в таблице значений по умолчанию
+	function onDefaultValuesTableChanged(e)
+	{
+		readConfigFromInterface(this);
+		
+	}
 
     $("#editElement").click(editElement);
 
@@ -450,7 +552,27 @@ console.log(newTr);
             form.find("select#guideId").prop('disabled', false);
             form.find("select#allowAdd").prop('disabled', false);
             form.find("select#defaultValue").prop('disabled', false);
+            
+            form.find("#defaultValueText").parents('div.form-group').addClass('no-display');
+            form.find("#defaultValue").parents('div.form-group').removeClass('no-display');
+            
+            //form.find("select#defaultValueText")
+            //    .val('')
+            
         } else {
+            
+            if ($(this).val() == 0 || $(this).val() == 1) {
+                
+                form.find("#defaultValueText").parents('div.form-group').removeClass('no-display');
+                form.find("#defaultValue").parents('div.form-group').addClass('no-display');
+            
+            }
+            else
+            {
+                form.find("#defaultValueText").parents('div.form-group').addClass('no-display');
+                form.find("#defaultValue").parents('div.form-group').removeClass('no-display');
+            }
+            
             // Поставить на дефолт
             form.find("select#guideId")
                 .val(-1)
@@ -464,12 +586,21 @@ console.log(newTr);
             form.find("select#defaultValue")
                 .val(-1)
                 .prop('disabled', true);
+                
+            form.find("select#defaultValueText")
+                .val('')
         }
 
         if($(this).val() == 4) {
             $('.table-config-container').removeClass('no-display');
+            $('#numRows').parents('.form-group').removeClass('no-display');
+            $('#numCols').parents('.form-group').removeClass('no-display');
+           	$(this).parents().find('.defaultValuesTable').removeClass('no-display');
         } else {
             $('.table-config-container').addClass('no-display');
+            $('#numRows').parents('.form-group').addClass('no-display');
+            $('#numCols').parents('.form-group').addClass('no-display');
+            $(this).parents().find('.defaultValuesTable').addClass('no-display');
         }
     });
 
@@ -553,6 +684,41 @@ console.log(newTr);
         $('#controlDependencesList').val([]);
         $('#controlActions').val([]);
     });
+
+	function is_int( mixed_var ) {  
+		var result = false;
+		var integer = parseInt(mixed_var);
+		if (!isNaN(integer))
+			result = true;
+			
+		return result;
+	}  
+
+	$('#numCols, #numRows').on('change', function(e) {
+		// Проверим - являются ли значения цифрами
+		if (
+		(is_int($(e.currentTarget).parents('.modal-body').find('#numCols').val()))
+		&&
+		(is_int($(e.currentTarget).parents('.modal-body').find('#numRows').val()))
+		
+		)
+		{
+			    printDefaultValuesTable($(e.currentTarget).parents('.modal-body').find('#numCols').val(),$(e.currentTarget).parents('.modal-body').find('#numRows').val());
+                                if (config.values!=undefined && config.values!=null)
+                                {
+									writeDefValuesFromConfig(config.values);
+								}
+		}
+		else
+		{
+				    printDefaultValuesTable(0,0);
+		}
+		
+		
+	
+	});
+
+
 
     $('#controlDependencesList').on('change', function(e) {
         if($(this).val().length > 0) {
@@ -708,7 +874,8 @@ console.log(newTr);
     });
 
     $('.table-config-headers').on('change', 'input', function(e) {
-        var hiddenConfig = $(this).parents('.modal-body').find('#config');
+    	readConfigFromInterface(this);
+       /* var hiddenConfig = $(this).parents('.modal-body').find('#config');
         var configTable = $(this).parents('.table-config-headers');
         var rowsHeaders = $(configTable).find('tbody tr').find('td:eq(0) input');
         var colsHeaders = $(configTable).find('tbody tr').find('td:eq(1) input');
@@ -730,9 +897,67 @@ console.log(newTr);
             }
         }
 
-        $(hiddenConfig).val($.toJSON(tempConfig));
+        $(hiddenConfig).val($.toJSON(tempConfig));*/
     });
 
+
+	// Прочитать конфигурацию из интерфейса в контрол
+	function readConfigFromInterface(sender)
+	{
+		
+		var container = $(sender).parents('.modal-body');
+		
+		var hiddenConfig = $(container).find('#config');
+        var configTable = $(container).find('.table-config-headers');
+        var rowsHeaders = $(configTable).find('tbody tr').find('td:eq(0) input');
+        var colsHeaders = $(configTable).find('tbody tr').find('td:eq(1) input');
+        var tempConfig = {
+            cols: [],
+            rows: [],
+            values: [],
+            numCols : $(container).find('#numCols').val(),
+            numRows : $(container).find('#numRows').val()
+        };
+
+        for(var i = 0; i < rowsHeaders.length; i++) {
+            if($.trim($(rowsHeaders[i]).val()) != '') {
+                tempConfig.rows.push($(rowsHeaders[i]).val());
+            }
+        }
+        for(var i = 0; i < colsHeaders.length; i++) {
+            if($.trim($(colsHeaders[i]).val()) != '') {
+                tempConfig.cols.push($(colsHeaders[i]).val());
+            }
+        }
+
+
+		// Берём таблицу из соответствующего контейнера
+		var defaultInputs = $(container).find('div.defaultValuesTable table.controltable tbody input');
+		var defaultValues = [];
+		for (i=0;i<defaultInputs.length;i++)
+		{
+			// Берём id инпута, разделяем его на части, означающие строку и столбец
+			var rawId = $(defaultInputs[i]).attr('id');
+			//console.log (strIndexes)
+			if ($($(defaultInputs[i])[0]).val()!='')
+			{
+				//console.log (strIndexes);
+			//	defaultValues[rawId] = $($(defaultInputs[i])[0]).val();
+				var oneValue = 
+				{
+					indexes: rawId,
+					def_val: $($(defaultInputs[i])[0]).val()
+				};
+			
+				tempConfig.values.push(oneValue);
+				
+			
+			}
+		}
+
+        $(hiddenConfig).val($.toJSON(tempConfig));
+	}
+	
     $('select#guideId').on('change', function(e, currentValue) {
         var form = $(this).parents('form');
         var defaultSelect = $(form).find('select#defaultValue');

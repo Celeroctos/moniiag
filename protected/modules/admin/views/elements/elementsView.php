@@ -146,17 +146,28 @@
                                 <?php echo $form->error($model,'guideId'); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'defaultValue', array(
+                        <div class="form-group no-display">
+                            <?php  echo $form->labelEx($model,'defaultValue', array(
                                 'class' => 'col-xs-3 control-label'
-                            )); ?>
+                            ));  ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'defaultValue', $guideValuesList, array(
+                                <?php  echo $form->dropDownList($model, 'defaultValue', $guideValuesList, array(
                                     'id' => 'defaultValue',
                                     'class' => 'form-control',
                                     'disabled' => true,
                                     'options' => array('selected' => -1)
-                                )); ?>
+                                ));  ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        <?php  echo $form->labelEx($model,'defaultValueText', array(
+                                'class' => 'col-xs-3 control-label'
+                            ));  ?>
+                            <div class="col-xs-9">
+                                <?php  echo $form->textField($model, 'defaultValueText', array(
+                                    'id' => 'defaultValueText',
+                                    'class' => 'form-control',
+                                ));  ?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -232,7 +243,38 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                           
+                            
                         </div>
+                         <!-- Таблица для отображения значений по умолчанию -->
+                            <div class="form-group no-display  defaultValuesTable">
+	                            <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
+		                             <table class="controltable">
+		                                <thead>
+		                                </thead>
+		                                <tbody>
+		                                <tr>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                </tr>
+		                                <tr>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                </tr>
+		                                <tr>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                </tr>
+		                                </tbody>
+		                            </table>    
+	                            </div>
+                            
+                            
+                            
+                            </div>
                     </div>
                 </div>
             </div>
@@ -391,20 +433,30 @@
                                 <?php echo $form->error($model,'guideId'); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'defaultValue', array(
+                        <div class="form-group no-display">
+                            <?php  echo $form->labelEx($model,'defaultValue', array(
                                 'class' => 'col-xs-3 control-label'
-                            )); ?>
+                            ));  ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'defaultValue', $guideValuesList, array(
+                                <?php  echo $form->dropDownList($model, 'defaultValue', $guideValuesList, array(
                                     'id' => 'defaultValue',
                                     'class' => 'form-control',
                                     'disabled' => true,
                                     'options' => array('selected' => -1)
-                                )); ?>
+                                ));  ?>
                             </div>
                         </div>
-                        
+                        <div class="form-group">
+                            <?php  echo $form->labelEx($model,'defaultValueText', array(
+                                'class' => 'col-xs-3 control-label'
+                            ));  ?>
+                            <div class="col-xs-9">
+                                <?php  echo $form->textField($model, 'defaultValueText', array(
+                                    'id' => 'defaultValueText',
+                                    'class' => 'form-control',
+                                ));  ?>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'isRequired', array(
                                 'class' => 'col-xs-3 control-label'
@@ -479,7 +531,41 @@
                                 <tbody>
                                 </tbody>
                             </table>
+                           
+                            
                         </div>
+                          <!-- Таблица для отображения значений по умолчанию -->
+                            <div class="form-group  no-display defaultValuesTable">
+	                            <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
+		                             <table class="controltable">
+		                                <thead>
+		                                </thead>
+		                                <tbody>
+		                                <tr>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                </tr>
+		                                <tr>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                </tr>
+		                                <tr>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                	<td>Lorem Ipsum</td>
+		                                </tr>
+		                                </tbody>
+		                            </table>    
+	                            </div>
+                            
+                            
+                            
+                            </div>
+                        
+                        
+                        
                     </div>
                 </div>
             </div>

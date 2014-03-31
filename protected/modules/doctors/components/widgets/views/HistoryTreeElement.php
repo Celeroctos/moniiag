@@ -1,45 +1,66 @@
 <div id="accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>" class="accordion">
-    <div class="accordion-group">
+       <div class="accordion-group">
         <div class="accordion-heading">
-            <a href="#collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId;; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
-                <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
+            <a href="#collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId;; ?>" data-parent="#accordion<?php echo '_'.$prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['element']['name']; ?>
+                <?php 
+                 if ((count($categorie)==1) && ($categorie["element"]["element_id"]==-1)
+                 )         
+                 {
+                 ?>
                     (пустая категория)
                 <?php } ?>
             </a>
         </div>
-        <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
+                <?php if ((count($categorie)==1) && ($categorie["element"]["element_id"]==-1)
+                 )    
+                 { ?>
             <div class="accordion-body collapse" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>">
         <?php } else { ?>
             <div class="accordion-body in" id="collapse<?php echo $prefix.'_'.$templateKey.'_'.$categorie['path'].'_'.$cId; ?>">
         <?php } ?>
-            <div class="accordion-inner">
-                <?php // Подкатегории
-                if(isset($categorie['children']) && count($categorie['children']) > 0) {
-                    foreach($categorie['children'] as $key => $childCategorie) {
-                        $this->drawHistoryCategorie($childCategorie, $key, $form, $model, $prefix, $templateKey, $lettersInPixel);
-                    }
-                }
-
-                if(count($categorie['elements']) > 0) {
-                    foreach($categorie['elements'] as $element) {
-                        if(isset($element['dependences'])) {
-                        ?>
+        <div class="accordion-inner">
+        <?php
+//Перебираем элементы. Смотрим - если элемент 
+			//   в массиве - категория, то рекурсивно 
+			//    вызываем для него вывод категории
+			// Иначе выводим его как элемент
+                foreach($categorie as $key => $child) 
+				{	
+					if ($key=='element') continue;		
+					if ($child['element']['element_id']==-1)
+					{
+						 $this->drawHistoryCategorie(
+	                        		$child, 
+	                        		$key,
+	                        		$form, 
+	                        		$model, 
+	                        		$prefix, 
+	                        		$templateKey, 
+	                        		$lettersInPixel);			
+					}
+					else
+					{		
+						$element = $child['element'];
+                   		if(isset($element['dependences'])) {
+                        	?>
                         <script type="text/javascript">
                             elementsDependences.push({
                                 'dependences' : <?php echo CJSON::encode($element['dependences']); ?>,
                                 'elementId' : '<?php echo $element['id']; ?>'
                             });
                         </script>
-                        <?php } ?>
+                        <?php }
+						?>
                         <div class="form-group">
                             <div class="col-xs-3">
-                                <?php
+                                <?php 
                                 echo $form->labelEx($model,'f'.$element['id'], array(
                                     'class' => 'col-xs-12 control-label'
-                                )); ?>
+                                ));  ?>
                             </div>
                             <div class="col-xs-9">
-                                <?php
+                            <!-- -->
+                            <?php
                                 if($element['type'] == 0) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['id'],
@@ -118,7 +139,10 @@
                                         <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
-                                } elseif($element['type'] == 4) {
+                                }
+                                
+                                //----------------
+                                elseif($element['type'] == 4) {
                                     ?>
                                     <table class="controltable">
                                         <tbody>
@@ -172,12 +196,17 @@
                                     echo $form->hiddenField($model,'f'.$element['id'], $options);
                                     ?>
                                 <?php
-                                }?>
+                                }                        
+                                //----------------
+                                 ?>
+                            <!-- -->
                             </div>
                         </div>
-                    <?php  } ?>
-                <?php } ?>
-            </div>
+						<?php			
+					}
+				}
+        ?>
         </div>
-    </div>
+        </div>
+        </div>
 </div>
