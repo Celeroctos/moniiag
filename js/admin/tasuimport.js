@@ -63,7 +63,7 @@
 	$("#importHistory").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус'],
+        colNames:['Дата', 'Количество выгруженных записей', 'Дата создания', 'Статус'],
         colModel:[
             {
                 name:'id',
@@ -236,8 +236,7 @@
                             }
                         } else {
                             alert(data.error);
-                            $('.successImport').trigger('click');
-                            return false;
+
                         }
                     }
                 });
@@ -361,7 +360,6 @@
             }
 
             $('#errorPopup').modal({
-
             });
         }
     });

@@ -756,25 +756,39 @@ class CategorieViewWidget extends CWidget {
 				    $data['guide'] = $guideValues;
                             }*/
 			    
-                            if($data['type'] == 3) {
+                           if($data['type'] == 3) {
                                 $data['selected'] = array();
                                 $data['value'] = CJSON::decode($element['value']);
                                 if($data['value'] != null) {
-                                    foreach($data['value'] as $id) {
-                                        $data['selected'][$id] = array('selected' => true);
-					//$data['guide'][$id] = $medguideValues[$id];
-					// Перебираем массив $medguideValues и в случае, если выбранное значение
-					//   равно значению из $medguideValues, то добавляем в $data['guide']
-					//     значение из справочника
+				    if (is_array($data['value']))
+				    {
+					foreach($data['value'] as $id) {
+					    $data['selected'][$id] = array('selected' => true);
+					    //$data['guide'][$id] = $medguideValues[$id];
+					    // Перебираем массив $medguideValues и в случае, если выбранное значение
+					    //   равно значению из $medguideValues, то добавляем в $data['guide']
+					    //     значение из справочника
+					    foreach ($medguideValues as $value)
+					    {
+					        if ($value['id']==$id)
+					        {
+						    $data['guide'][$value['id']] = $value['value'];
+					        }
+					    }
+					
+					}
+				    }
+				    else
+				    {
+					$data['selected'][$data['value']] = array('selected' => true);
 					foreach ($medguideValues as $value)
 					{
-					    if ($value['id']==$id)
+					    if ($value['id']==$data['value'])
 					    {
 						$data['guide'][$value['id']] = $value['value'];
 					    }
 					}
-					
-                                    }
+				    }
                                 } else {
                                     $data['selected'] = array();
                                 }
