@@ -841,17 +841,6 @@ class CategorieViewWidget extends CWidget {
 			$this->formModel->$fieldName = null;
 			//------
 		}
-		
-		//if (!isset($nodeContent['path']))
-		//	{
-<<<<<<< HEAD
-		//var_dump($historyElement);
-		//exit();
-=======
-				//var_dump($historyElement);
-				//exit();
->>>>>>> 1cf89e21b0e6aa7251e6d50d3c93fb09a8ca6c22
-		//	}
 		return $nodeContent;
 	}
 
