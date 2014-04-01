@@ -653,11 +653,15 @@ class PatientController extends Controller {
 
             // Обрабатываем результат
             foreach($items as $index => &$item) {
-                $parts = explode('-', $item['reg_date']);
-                $item['reg_date'] = $parts[0];
+                if($item['reg_date'] != null) {
+                    $parts = explode('-', $item['reg_date']);
+                    $item['reg_date'] = $parts[0];
+                }
 
-                $parts = explode('-', $item['birthday']);
-                $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+                if($item['birthday'] != null) {
+                    $parts = explode('-', $item['birthday']);
+                    $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
+                }
             }
         } else {
             // Забираем фильтры только те, которые нужны: ФИО

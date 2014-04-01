@@ -158,7 +158,7 @@
                                 )); ?>
                             </div>
                         </div>
-                        <div class="form-group chooser" id="regionChooser">
+                        <div class="form-group chooser" id="regionChooser2">
                             <?php echo $form->labelEx($model,'codeRegion', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>

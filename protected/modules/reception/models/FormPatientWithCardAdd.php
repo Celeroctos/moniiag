@@ -8,7 +8,9 @@ class FormPatientWithCardAdd extends FormMisDefault
     public $whoGived;
     public $documentGivedate;
     public $addressReg;
+    public $addressRegHidden;
     public $address;
+    public $addressHidden;
     public $workPlace;
     public $workAddress;
     public $post;
@@ -34,7 +36,7 @@ class FormPatientWithCardAdd extends FormMisDefault
                 'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, privilege', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId, addressRegHidden, addressHidden', 'safe'
             ),
             array(
                 'snils', 'SNILSValidator'

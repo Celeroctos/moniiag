@@ -20,7 +20,7 @@ class CladrSettlement extends MisActiveRecord {
         if($filters !== false) {
             $this->getSearchConditions($settlements, $filters, array(
             ), array(
-                'cs' => array('name')
+                'cs' => array('name', 'code_region', 'code_district')
             ), array(
             ));
         }

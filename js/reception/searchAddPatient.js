@@ -574,8 +574,104 @@ $(document).ready(function() {
         return false;
     });
 
+    var clickedRow = null;
     $('.editAddress').on('click', function(e) {
-        $('#editAddressPopup').modal('show');
+        clickedRow = $(this).parents('.form-group');
+        var hiddenData = $(clickedRow).find('input[type="hidden"]').val();
+        if($.trim(hiddenData) != '') {
+            $.ajax({
+                'url' : '/index.php/guides/cladr/getcladrdata',
+                'data' : {
+                    'data' : hiddenData
+                },
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success) {
+                        var data = data.data;
+                        if(data.region != null) {
+                            $.fn['regionChooser'].addChoosed($('<li>').prop('id', 'r' + data.region[0].id).text(data.region[0].name), data.region[0]);
+                        }
+                        if(data.district != null) {
+                            $.fn['districtChooser'].addChoosed($('<li>').prop('id', 'r' + data.district[0].id).text(data.district[0].name), data.district[0]);
+                        }
+                        if(data.settlement != null) {
+                            $.fn['settlementChooser'].addChoosed($('<li>').prop('id', 'r' + data.settlement[0].id).text(data.settlement[0].name), data.settlement[0]);
+                        }
+                        if(data.street != null) {
+                            $.fn['streetChooser'].addChoosed($('<li>').prop('id', 'r' + data.street[0].id).text(data.street[0].name), data.street[0]);
+                        }
+                    }
+                    $('#editAddressPopup').modal('show');
+                }
+            });
+        } else {
+            $('#editAddressPopup').modal('show');
+        }
+
         return false;
+    });
+
+    $('#editAddressPopup .editSubmit').on('click', function(e) {
+        if($.fn['regionChooser'].getChoosed().length > 0) {
+            var region = $.fn['regionChooser'].getChoosed()[0].name;
+            var regionId = $.fn['regionChooser'].getChoosed()[0].id;
+        } else {
+            var region = 'Регион неизвестен';
+            var regionId = null;
+        }
+
+        if($.fn['districtChooser'].getChoosed().length > 0) {
+            var district = $.fn['districtChooser'].getChoosed()[0].name;
+            var districtId = $.fn['districtChooser'].getChoosed()[0].id;
+        } else {
+            var district = 'район неизвестен'
+            var districtId = null;
+        }
+
+        if($.fn['settlementChooser'].getChoosed().length > 0) {
+            var settlement = $.fn['settlementChooser'].getChoosed()[0].name;
+            var settlementId = $.fn['settlementChooser'].getChoosed()[0].id;
+        } else {
+            var settlement = 'населённый пункт неизвестен';
+            var settlementId = null;
+        }
+
+        if($.fn['streetChooser'].getChoosed().length > 0) {
+            var street = $.fn['streetChooser'].getChoosed()[0].name;
+            var streetId = $.fn['streetChooser'].getChoosed()[0].id;
+        } else {
+            var street = 'улица неизвестна';
+            var streetId = null;
+        }
+
+        var building = $('#building').val();
+        if($.trim(building) == '') {
+            building = 'данных дома-квартиры нет';
+        }
+
+        $(clickedRow).find('input[type="text"]').val(region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + building);
+        $(clickedRow).find('input[type="hidden"]').val($.toJSON({
+            'regionId' : regionId,
+            'districtId' : districtId,
+            'settlementId' : settlementId,
+            'streetId' : streetId
+        }));
+
+        $('#building').val('');
+
+        $('#editAddressPopup').modal('hide');
+    });
+
+    $('#editAddressPopup').on('hidden.bs.modal', function(e) {
+        $.fn['regionChooser'].clearAll();
+        $.fn['regionChooser'].enable();
+        $.fn['districtChooser'].clearAll();
+        $.fn['districtChooser'].enable();
+        $.fn['settlementChooser'].clearAll();
+        $.fn['settlementChooser'].enable();
+        $.fn['streetChooser'].clearAll();
+        $.fn['streetChooser'].enable();
     });
 });

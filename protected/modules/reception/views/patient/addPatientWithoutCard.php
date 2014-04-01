@@ -30,7 +30,8 @@
             <?php $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
                 'form' => $form,
                 'model' => $model,
-                'privilegesList' => $privilegesList
+                'privilegesList' => $privilegesList,
+                'showEditIcon' => 1
             )); ?>
             <div class="form-group">
                 <div class="add-patient-submit">

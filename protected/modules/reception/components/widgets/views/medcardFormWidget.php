@@ -1,6 +1,6 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
+<!--<script type="text/javascript" src="<?php /*echo Yii::app()->request->baseUrl; */ ?>/js/chooser.js"></script>-->
 <div class="form-group">
     <?php echo $form->labelEx($model,'doctype', array(
         'class' => 'col-xs-3 control-label'
@@ -88,11 +88,18 @@
         <?php echo $form->textField($model,'addressReg', array(
             'id' => 'addressReg',
             'class' => 'form-control',
-            'placeholder' => 'Адрес регистрации'
+            'placeholder' => 'Адрес регистрации',
+            'disabled' => true
         )); ?>
+        <?php echo $form->hiddenField($model,'addressRegHidden', array(
+            'id' => 'addressRegHidden',
+            'class' => 'form-control',
+        )); ?>
+        <?php if(isset($showEditIcon) && $showEditIcon == 1) { ?>
         <a href="#" class="editAddress" title="Редактировать адрес регистрации">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
+        <?php } ?>
     </div>
 </div>
 <div class="form-group">
@@ -103,11 +110,19 @@
         <?php echo $form->textField($model,'address', array(
             'id' => 'address',
             'class' => 'form-control',
+            'placeholder' => 'Адрес проживания',
+            'disabled' => true
+        )); ?>
+        <?php echo $form->hiddenField($model,'addressHidden', array(
+            'id' => 'addressHidden',
+            'class' => 'form-control',
             'placeholder' => 'Адрес проживания'
         )); ?>
+        <?php if(isset($showEditIcon) && $showEditIcon == 1) { ?>
         <a href="#" class="editAddress" title="Редактировать адрес проживания">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
+        <?php } ?>
     </div>
 </div>
 <div class="form-group">
@@ -315,7 +330,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="districtChooser">
                     <label for="district" class="col-xs-4 control-label">Район (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="district" placeholder="Район" disabled="disabled">
+                        <input type="text" class="form-control" id="district" placeholder="Район" >
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">
@@ -325,7 +340,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="settlementChooser">
                     <label for="settlement" class="col-xs-4 control-label">Населённый пункт (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="settlement" placeholder="Населённый пункт" disabled="disabled">
+                        <input type="text" class="form-control" id="settlement" placeholder="Населённый пункт">
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">
@@ -335,17 +350,23 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="streetChooser">
                     <label for="street" class="col-xs-4 control-label">Улица (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="street" placeholder="Улица" disabled="disabled">
+                        <input type="text" class="form-control" id="street" placeholder="Улица">
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="building" class="col-xs-4 control-label">Дом, корпус, квартира, подъезд...</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="building" placeholder="Введите информацию о доме, корпусе и.т.д.">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-success" class="editSubmit">Сохранить адрес</button>
+                <button type="button" class="btn btn-success editSubmit">Сохранить адрес</button>
             </div>
         </div>
     </div>

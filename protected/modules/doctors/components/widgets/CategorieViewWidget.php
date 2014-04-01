@@ -853,7 +853,8 @@ class CategorieViewWidget extends CWidget {
 	}
 
     public function makeTree() {
-
+	//var_dump($this->historyElements);
+	//exit();
     	foreach($this->historyElements as $element) {
     		// Делим путь 
     		$pathArr = explode('.', $element['path']);

@@ -20,7 +20,7 @@ class CladrStreet extends MisActiveRecord {
         if($filters !== false) {
             $this->getSearchConditions($streets, $filters, array(
             ), array(
-                'cst' => array('name')
+                'cst' => array('name', 'code_region', 'code_district', 'code_settlement')
             ), array(
             ));
         }

@@ -93,8 +93,7 @@
                                 <?php echo $form->textField($model,'codeDistrict', array(
                                     'id' => 'codeDistrict',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Район',
-                                    'disabled' => true
+                                    'placeholder' => 'Район'
                                 )); ?>
                                 <ul class="variants no-display">
                                 </ul>
@@ -110,8 +109,7 @@
                                 <?php echo $form->textField($model,'codeSettlement', array(
                                     'id' => 'codeSettlement',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Населённый пункт',
-                                    'disabled' => true
+                                    'placeholder' => 'Населённый пункт'
                                 )); ?>
                                 <ul class="variants no-display">
                                 </ul>
@@ -192,7 +190,7 @@
                                 )); ?>
                             </div>
                         </div>
-                        <div class="form-group chooser" id="regionChooser">
+                        <div class="form-group chooser" id="regionChooser2">
                             <?php echo $form->labelEx($model,'codeRegion', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -208,7 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group chooser" id="districtChooser">
+                        <div class="form-group chooser" id="districtChooser2">
                             <?php echo $form->labelEx($model,'codeDistrict', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -216,8 +214,7 @@
                                 <?php echo $form->textField($model,'codeDistrict', array(
                                     'id' => 'codeDistrict',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Район',
-                                    'disabled' => true
+                                    'placeholder' => 'Район'
                                 )); ?>
                                 <ul class="variants no-display">
                                 </ul>
@@ -225,7 +222,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group chooser" id="settlementChooser">
+                        <div class="form-group chooser" id="settlementChooser2">
                             <?php echo $form->labelEx($model,'codeSettlement', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -233,8 +230,7 @@
                                 <?php echo $form->textField($model,'codeSettlement', array(
                                     'id' => 'codeSettlement',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Населённый пункт',
-                                    'disabled' => true
+                                    'placeholder' => 'Населённый пункт'
                                 )); ?>
                                 <ul class="variants no-display">
                                 </ul>

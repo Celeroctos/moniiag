@@ -12,7 +12,10 @@ $(document).ready(function() {
                     return choosedElements;
                 },
                 addChoosed: function(li, rowData, withOutInsert) {
-                    currentElements = [];
+                    if(typeof currentElements == 'undefined') {
+                        console.log("!");
+                        currentElements = [];
+                    }
                     currentElements.push(rowData);
                     addVariantToChoosed(li, withOutInsert);
                 },
@@ -21,9 +24,21 @@ $(document).ready(function() {
                         choosersConfig[$(chooser).prop('id')].extraparams[key] = value;
                     }
                 },
+                deleteExtraParam: function(key) {
+                    if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams') && choosersConfig[$(chooser).prop('id')].extraparams.hasOwnProperty(key)) {
+                        console.log(key);
+                        delete choosersConfig[$(chooser).prop('id')].extraparams[key];
+                    }
+                },
                 clearAll: function() {
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
+                },
+                disable: function() {
+                    $(chooser).find('input').prop('disabled', true);
+                },
+                enable: function() {
+                    $(chooser).find('input').prop('disabled', false);
                 },
                 addConfigParam: function(param, value) {
                     choosersConfig[$(chooser).prop('id')][param] = value;
@@ -165,7 +180,7 @@ $(document).ready(function() {
                 }
             }
 
-            $(document).on('click', '.choosed span.item span.glyphicon-remove', function(e) {
+            $(chooser).on('click', '.choosed span.item span.glyphicon-remove', function(e) {
                 // Удаляем из массива предыдущих элементов
                 for(var i = 0; i < choosedElements.length; i++) {
                     if('r' + $(choosedElements[i]).prop('id') == $(this).parent().prop('id')) {
@@ -175,9 +190,12 @@ $(document).ready(function() {
                 }
                 $(this).parent().remove();
                 $(chooser).find('input').prop('disabled', false);
+                if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterRemove') && typeof choosersConfig[$(chooser).prop('id')].afterRemove == 'function') {
+                    choosersConfig[$(chooser).prop('id')].afterRemove();
+                }
             });
 
-            $(document).on('click', '.choosed span.item span.glyphicon-arrow-down', function(e) {
+            $(chooser).on('click', '.choosed span.item span.glyphicon-arrow-down', function(e) {
                 for(var i = 0; i < choosedElements.length; i++) {
                     if('r' + $(choosedElements[i]).prop('id') == $(this).parent().prop('id')) {
                         // Размножаем это на все контролы, которые описаны в moving
@@ -247,7 +265,7 @@ $(document).ready(function() {
                                 $(chooser).find('input').prop('disabled', true);
                             }
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterInsert') && typeof choosersConfig[$(chooser).prop('id')].afterInsert == 'function') {
-                                choosersConfig[$(chooser).prop('id')].afterInsert();
+                                choosersConfig[$(chooser).prop('id')].afterInsert(chooser);
                             }
                         } else {
                             // TODO: сделать анимацию на вариант, который уже есть в списке, чтобы показать, что он есть
@@ -389,12 +407,39 @@ $(document).ready(function() {
         'regionChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
-            'afterInsert' : function() {
+            'afterInsert' : function(chooser) {
                 if($.fn['regionChooser'].getChoosed().length > 0) {
-                    $('#districtChooser input').attr('disabled', false);
-                } else {
-                    $('#districtChooser input').attr('disabled', true);
+                    var param = $.fn['regionChooser'].getChoosed()[0].code_cladr;
+                    $.fn['districtChooser'].addExtraParam('region', param);
+                    $.fn['settlementChooser'].addExtraParam('region', param);
+                    $.fn['streetChooser'].addExtraParam('region', param);
                 }
+            },
+            'afterRemove' : function() {
+                if($('#districtChooser').length > 0) {
+                    $.fn['districtChooser'].clearAll();
+                    $.fn['districtChooser'].enable();
+                }
+
+                if($('#settlementChooser').length > 0) {
+                    $.fn['settlementChooser'].clearAll();
+                    $.fn['settlementChooser'].enable();
+                }
+
+                if($('#streetChooser').length > 0) {
+                    $.fn['streetChooser'].clearAll();
+                    $.fn['streetChooser'].enable();
+                }
+
+                $.fn['districtChooser'].deleteExtraParam('region');
+                $.fn['settlementChooser'].deleteExtraParam('region');
+                $.fn['streetChooser'].deleteExtraParam('region');
+
+                $.fn['settlementChooser'].deleteExtraParam('district');
+                $.fn['streetChooser'].deleteExtraParam('district');
+
+                $.fn['streetChooser'].deleteExtraParam('settlement');
+
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
@@ -414,15 +459,31 @@ $(document).ready(function() {
         'districtChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
-            'afterInsert' : function() {
+            'afterInsert' : function(chooser) {
                 if($.fn['districtChooser'].getChoosed().length > 0) {
-                    $('#settlementChooser input').attr('disabled', false);
-                } else {
-                    $('#settlementChooser input').attr('disabled', true);
+                    var param = $.fn['districtChooser'].getChoosed()[0].code_cladr;
+                    $.fn['settlementChooser'].addExtraParam('district', param);
+                    $.fn['streetChooser'].addExtraParam('district', param);
                 }
             },
-            'extraParams' : {
-                'region' : $.fn['regionChooser'].getChoosed()
+            'afterRemove' : function() {
+                if($('#settlementChooser').length > 0) {
+                    $.fn['settlementChooser'].clearAll();
+                    $.fn['settlementChooser'].enable();
+                }
+
+                if($('#streetChooser').length > 0) {
+                    $.fn['streetChooser'].clearAll();
+                    $.fn['streetChooser'].enable();
+                }
+
+                $.fn['settlementChooser'].deleteExtraParam('district');
+                $.fn['streetChooser'].deleteExtraParam('district');
+
+                $.fn['streetChooser'].deleteExtraParam('settlement');
+            },
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
@@ -442,25 +503,28 @@ $(document).ready(function() {
         'settlementChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
-            'extraParams' : {
-                'region' : $.fn['regionChooser'].getChoosed(),
-                'district' : $.fn['districtChooser'].getChoosed()
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed(),
+                //'district' : $.fn['districtChooser'].getChoosed()
             },
-            'afterInsert' : function() {
+            'afterInsert' : function(chooser) {
                 if($.fn['settlementChooser'].getChoosed().length > 0) {
-                    $('#streetChooser input').attr('disabled', false);
-                } else {
-                    $('#streetChooser input').attr('disabled', true);
+                    var param = $.fn['settlementChooser'].getChoosed()[0].code_cladr;
+                    $.fn['streetChooser'].addExtraParam('settlement', param);
                 }
+            },
+            'afterRemove' : function() {
+                if($('#streetChooser').length > 0) {
+                    $.fn['streetChooser'].clearAll();
+                    $.fn['streetChooser'].enable();
+                }
+
+                $.fn['streetChooser'].deleteExtraParam('settlement');
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
-            'extraparams' : {
-                // Здесь - специальность, но она даётся извне
-                'medworkerid' : null
-            },
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -481,11 +545,173 @@ $(document).ready(function() {
             'afterInsert': function() {
 
             },
+            'afterRemove' : function() {
+
+            },
             'url' : '/index.php/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
-            'extraParams' : {
-                'region' : $.fn['regionChooser'].getChoosed(),
-                'district' : $.fn['districtChooser'].getChoosed(),
-                'settlement' : $.fn['settlementChooser'].getChoosed()
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed(),
+               // 'district' : $.fn['districtChooser'].getChoosed(),
+               // 'settlement' : $.fn['settlementChooser'].getChoosed()
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'regionChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'afterInsert' : function(chooser) {
+                if($.fn['regionChooser2'].getChoosed().length > 0) {
+                    var param = $.fn['regionChooser2'].getChoosed()[0].code_cladr;
+                    $.fn['districtChooser2'].addExtraParam('region', param);
+                    $.fn['settlementChooser2'].addExtraParam('region', param);
+                    $.fn['streetChooser2'].addExtraParam('region', param);
+                }
+            },
+            'afterRemove' : function() {
+                if($('#districtChooser2').length > 0) {
+                    $.fn['districtChooser2'].clearAll();
+                    $.fn['districtChooser2'].enable();
+                }
+
+                if($('#settlementChooser2').length > 0) {
+                    $.fn['settlementChooser2'].clearAll();
+                    $.fn['settlementChooser2'].enable();
+                }
+
+                if($('#streetChooser2').length > 0) {
+                    $.fn['streetChooser2'].clearAll();
+                    $.fn['streetChooser2'].enable();
+                }
+
+                $.fn['districtChooser2'].deleteExtraParam('region');
+                $.fn['settlementChooser2'].deleteExtraParam('region');
+                $.fn['streetChooser2'].deleteExtraParam('region');
+
+                $.fn['settlementChooser2'].deleteExtraParam('district');
+                $.fn['streetChooser2'].deleteExtraParam('district');
+
+                $.fn['streetChooser2'].deleteExtraParam('settlement');
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'districtChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'afterInsert' : function(chooser) {
+                if($.fn['districtChooser2'].getChoosed().length > 0) {
+                    var param = $.fn['districtChooser2'].getChoosed()[0].code_cladr;
+                    $.fn['settlementChooser2'].addExtraParam('district', param);
+                    $.fn['streetChooser2'].addExtraParam('district', param);
+                }
+            },
+            'afterRemove' : function() {
+                if($('#settlementChooser2').length > 0) {
+                    $.fn['settlementChooser2'].clearAll();
+                    $.fn['settlementChooser2'].enable();
+                }
+
+                if($('#streetChooser2').length > 0) {
+                    $.fn['streetChooser2'].clearAll();
+                    $.fn['streetChooser2'].enable();
+                }
+
+                $.fn['settlementChooser2'].deleteExtraParam('district');
+                $.fn['streetChooser2'].deleteExtraParam('district');
+
+                $.fn['streetChooser2'].deleteExtraParam('settlement');
+            },
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed()
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'settlementChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed(),
+                //'district' : $.fn['districtChooser'].getChoosed()
+            },
+            'afterInsert' : function(chooser) {
+                if($.fn['settlementChooser2'].getChoosed().length > 0) {
+                    var param = $.fn['settlementChooser2'].getChoosed()[0].code_cladr;
+                    $.fn['streetChooser2'].addExtraParam('settlement', param);
+                }
+            },
+            'afterRemove' : function() {
+                if($('#streetChooser2').length > 0) {
+                    $.fn['streetChooser2'].clearAll();
+                    $.fn['streetChooser2'].enable();
+                }
+                $.fn['streetChooser2'].deleteExtraParam('settlement');
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'streetChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'afterInsert': function() {
+
+            },
+            'afterDelete' : function() {
+
+            },
+            'url' : '/index.php/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed(),
+                // 'district' : $.fn['districtChooser'].getChoosed(),
+                // 'settlement' : $.fn['settlementChooser'].getChoosed()
             },
             'filters' : {
                 'groupOp' : 'AND',

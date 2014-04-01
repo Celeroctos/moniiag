@@ -2,6 +2,47 @@
 class CladrController extends Controller {
     public $layout = 'application.modules.guides.views.layouts.index';
 
+    public function actionGetCladrData() {
+        if(!isset($_GET['data'])) {
+            echo CJSON::encode(
+                array(
+                    'success' => false,
+                    'error' => 'Не хватает данных для запроса!'
+                )
+            );
+        }
+
+        $data = CJSON::decode($_GET['data']);
+        $answer = array();
+
+        if(isset($data['regionId'])) {
+            $answer['region'] = CladrRegion::model()->findAll('id = :id', array(':id' => $data['regionId']));
+        } else {
+            $answer['region'] = null;
+        }
+        if(isset($data['districtId'])) {
+            $answer['district'] = CladrDistrict::model()->findAll('id = :id', array(':id' => $data['districtId']));
+        } else {
+            $answer['district'] = null;
+        }
+        if(isset($data['settlementId'])) {
+            $answer['settlement'] = CladrSettlement::model()->findAll('id = :id', array(':id' => $data['settlementId']));
+        } else {
+            $answer['settlement'] = null;
+        }
+        if(isset($data['streetId'])) {
+            $answer['street'] = CladrStreet::model()->findAll('id = :id', array(':id' => $data['streetId']));
+        } else {
+            $answer['street'] = null;
+        }
+        echo CJSON::encode(
+            array(
+                'success' => true,
+                'data' => $answer
+            )
+        );
+    }
+
     public function actionViewRegions() {
         $this->render('regionView', array(
             'model' => new FormCladrRegionAdd()
@@ -37,6 +78,13 @@ class CladrController extends Controller {
             // Фильтры поиска
             if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
                 $filters = CJSON::decode($_GET['filters']);
+                if(isset($_GET['region'])) {
+                    $filters['rules'][] = array(
+                        'field' => 'code_region',
+                        'op' => 'eq',
+                        'data' => $_GET['region']
+                    );
+                }
             } else {
                 $filters = false;
             }
@@ -106,6 +154,20 @@ class CladrController extends Controller {
             // Фильтры поиска
             if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
                 $filters = CJSON::decode($_GET['filters']);
+                if(isset($_GET['region'])) {
+                    $filters['rules'][] = array(
+                        'field' => 'code_region',
+                        'op' => 'eq',
+                        'data' => $_GET['region']
+                    );
+                }
+                if(isset($_GET['district'])) {
+                    $filters['rules'][] = array(
+                        'field' => 'code_district',
+                        'op' => 'eq',
+                        'data' => $_GET['district']
+                    );
+                }
             } else {
                 $filters = false;
             }
@@ -147,6 +209,27 @@ class CladrController extends Controller {
             // Фильтры поиска
             if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
                 $filters = CJSON::decode($_GET['filters']);
+                if(isset($_GET['region'])) {
+                    $filters['rules'][] = array(
+                        'field' => 'code_region',
+                        'op' => 'eq',
+                        'data' => $_GET['region']
+                    );
+                }
+                if(isset($_GET['district'])) {
+                    $filters['rules'][] = array(
+                        'field' => 'code_district',
+                        'op' => 'eq',
+                        'data' => $_GET['district']
+                    );
+                }
+                if(isset($_GET['settlement'])) {
+                    $filters['rules'][] = array(
+                        'field' => 'code_settlement',
+                        'op' => 'eq',
+                        'data' => $_GET['settlement']
+                    );
+                }
             } else {
                 $filters = false;
             }
@@ -211,6 +294,31 @@ class CladrController extends Controller {
         );
     }
 
+    public function actionStreetGetOne($id) {
+        $model = new CladrStreet();
+        $street = $model->getOne($id);
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => $street
+            )
+        );
+    }
+
+    public function actionStreetEdit() {
+        $model = new FormCladrSettlementAdd();
+        if(isset($_POST['FormCladrStreetAdd'])) {
+            $model->attributes = $_POST['FormCladrStreetAdd'];
+            if($model->validate()) {
+                $street = CladrSettlement::model()->findByPk($_POST['FormCladrStreetAdd']['id']);
+                $this->addEditStreetModel($street, $model, 'Улица успешно отредактирована.');
+            } else {
+                echo CJSON::encode(array(
+                    'success' => 'false',
+                    'errors' => $model->errors));
+            }
+        }
+    }
+
     public function actionSettlementEdit() {
         $model = new FormCladrSettlementAdd();
         if(isset($_POST['FormCladrSettlementAdd'])) {
@@ -248,6 +356,21 @@ class CladrController extends Controller {
             if($model->validate()) {
                 $region = CladrRegion::model()->findByPk($_POST['FormCladrRegionAdd']['id']);
                 $this->addEditRegionModel($region, $model, 'Регион успешно отредактирован.');
+            } else {
+                echo CJSON::encode(array(
+                    'success' => 'false',
+                    'errors' => $model->errors));
+            }
+        }
+    }
+
+    public function actionStreetAdd() {
+        $model = new FormCladrStreetAdd();
+        if(isset($_POST['FormCladrStreetAdd'])) {
+            $model->attributes = $_POST['FormCladrStreetAdd'];
+            if($model->validate()) {
+                $street = new CladrStreet();
+                $this->addEditStreetModel($street, $model, 'Новая улица успешно добавлена.');
             } else {
                 echo CJSON::encode(array(
                     'success' => 'false',
@@ -301,6 +424,20 @@ class CladrController extends Controller {
         }
     }
 
+    public function actionStreetDelete($id) {
+        try {
+            $street = CladrStreet::model()->findByPk($id);
+            $street->delete();
+            echo CJSON::encode(array('success' => 'true',
+                                     'text' => 'Улица успешно удалена.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array(
+                'success' => 'false',
+                'error' => 'На данную запись есть ссылки!'));
+        }
+    }
+
     public function actionSettlementDelete($id) {
         try {
             $settlement = CladrSetllement::model()->findByPk($id);
@@ -338,6 +475,21 @@ class CladrController extends Controller {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'На данную запись есть ссылки!'));
+        }
+    }
+
+    private function addEditStreetModel($street, $model, $msg) {
+        $street->code_region = $model->codeRegion;
+        $street->code_district = $model->codeDistrict;
+        $street->code_cladr = $model->codeCladr;
+        $street->code_settlement = $model->codeSettlement;
+        $street->name = $model->name;
+
+        if($street->save()) {
+            echo CJSON::encode(array(
+                'success' => true,
+                'text' => $msg
+            ));
         }
     }
 
