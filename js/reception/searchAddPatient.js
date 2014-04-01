@@ -674,4 +674,9 @@ $(document).ready(function() {
         $.fn['streetChooser'].clearAll();
         $.fn['streetChooser'].enable();
     });
+
+    $('#address, #addressReg').on('focus', function(e) {
+        $(this).blur();
+        return false;
+    });
 });

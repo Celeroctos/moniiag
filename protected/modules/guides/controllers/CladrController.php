@@ -2,8 +2,8 @@
 class CladrController extends Controller {
     public $layout = 'application.modules.guides.views.layouts.index';
 
-    public function actionGetCladrData() {
-        if(!isset($_GET['data'])) {
+    public function actionGetCladrData($data = false) {
+        if(!isset($_GET['data']) && !$data) {
             echo CJSON::encode(
                 array(
                     'success' => false,
@@ -12,7 +12,7 @@ class CladrController extends Controller {
             );
         }
 
-        $data = CJSON::decode($_GET['data']);
+        $data = isset($_GET['data']) ? CJSON::decode($_GET['data']) : $data;
         $answer = array();
 
         if(isset($data['regionId'])) {
@@ -35,12 +35,17 @@ class CladrController extends Controller {
         } else {
             $answer['street'] = null;
         }
-        echo CJSON::encode(
-            array(
-                'success' => true,
-                'data' => $answer
-            )
-        );
+
+        if(Yii::app()->request->isAjaxRequest && (!isset($data['returnData']) || $data['returnData'] == 0)) {
+            echo CJSON::encode(
+                array(
+                    'success' => true,
+                    'data' => $answer
+                )
+            );
+        } else {
+            return $answer;
+        }
     }
 
     public function actionViewRegions() {

@@ -409,8 +409,18 @@ class PatientController extends Controller {
         // Заполняем модель
         $formModel->serie = $medcard->serie;
         $formModel->snils = $medcard->snils;
-        $formModel->address = $medcard->address;
-        $formModel->addressReg = $medcard->address_reg;
+        if(trim($medcard->address) != '') {
+            $address = $this->getAddressStr($medcard->address);
+            $formModel->addressHidden = $address['addressHidden'];
+            $formModel->address = $address['addressStr'];
+        }
+
+        if(trim($medcard->address_reg) != '') {
+            $address = $this->getAddressStr($medcard->address_reg);
+            $formModel->addressRegHidden = $address['addressHidden'];
+            $formModel->addressReg = $address['addressStr'];
+        }
+
         $formModel->doctype = $medcard->doctype;
         $formModel->docnumber = $medcard->docnumber;
         $formModel->whoGived = $medcard->who_gived;
@@ -422,6 +432,41 @@ class PatientController extends Controller {
         $formModel->contact = $medcard->contact;
         $formModel->cardNumber = $medcard->card_number;
         $formModel->profession = $medcard->profession;
+    }
+
+    private function getAddressStr($address) {
+        $data = CJSON::decode($address);
+        $cladrController = Yii::app()->createController('guides/cladr');
+        if(!is_array($data) && !is_object($data)) {
+            $data = array();
+        }
+        $data['returnData'] = 1;
+        $address = $cladrController[0]->actionGetCladrData($data);
+        $addressStr = '';
+        if($address['region'] != null) {
+            $addressStr = $address['region'][0]['name'].', ';
+        } else {
+            $addressStr = 'Регион неизвестен, ';
+        }
+        if($address['district'] != null) {
+            $addressStr .= $address['district'][0]['name'].', ';
+        } else {
+            $addressStr .= 'район неизвестен, ';
+        }
+        if($address['settlement'] != null) {
+            $addressStr .= $address['settlement'][0]['name'].', ';
+        } else {
+            $addressStr .= 'населённый пункт неизвестен, ';
+        }
+        if($address['street'] != null) {
+            $addressStr .= $address['street'][0]['name'];
+        } else {
+            $addressStr .= 'улица неизвестна';
+        }
+        return array(
+            'addressStr' => $addressStr,
+            'addressHidden' => CJSON::encode($address)
+        );
     }
 
     private function fillFormMedcardMediateModel($formModel, $oms = false, $mediate = false) {
@@ -564,8 +609,8 @@ class PatientController extends Controller {
             $medcard->card_number = $this->getCardNumber();
         }
         $medcard->snils = $model->snils;
-        $medcard->address = $model->address;
-        $medcard->address_reg = $model->addressReg;
+        $medcard->address = $model->addressHidden;
+        $medcard->address_reg = $model->addressRegHidden;
         $medcard->doctype = $model->doctype;
         $medcard->serie = $model->serie;
         $medcard->docnumber = $model->docnumber;

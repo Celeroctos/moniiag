@@ -88,8 +88,7 @@
         <?php echo $form->textField($model,'addressReg', array(
             'id' => 'addressReg',
             'class' => 'form-control',
-            'placeholder' => 'Адрес регистрации',
-            'disabled' => true
+            'placeholder' => 'Адрес регистрации'
         )); ?>
         <?php echo $form->hiddenField($model,'addressRegHidden', array(
             'id' => 'addressRegHidden',
@@ -110,8 +109,7 @@
         <?php echo $form->textField($model,'address', array(
             'id' => 'address',
             'class' => 'form-control',
-            'placeholder' => 'Адрес проживания',
-            'disabled' => true
+            'placeholder' => 'Адрес проживания'
         )); ?>
         <?php echo $form->hiddenField($model,'addressHidden', array(
             'id' => 'addressHidden',

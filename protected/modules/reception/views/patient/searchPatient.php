@@ -317,7 +317,8 @@ $form = $this->beginWidget('CActiveForm', array(
                     $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
                         'form' => $form,
                         'model' => $modelMedcard,
-                        'privilegesList' => $privilegesList
+                        'privilegesList' => $privilegesList,
+                        'showEditIcon' => 1
                     ));
                 ?>
             </div>
