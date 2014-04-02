@@ -645,6 +645,8 @@ class CategorieViewWidget extends CWidget {
     public function getFieldsHistoryByDate($date, $medcardId) {
         $this->formModel = new FormTemplateDefault();
         $this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId);
+		//var_dump($this->historyElements);
+		//exit();
         //var_dump($this->historyElements);
         //exit();
         // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
@@ -690,10 +692,28 @@ class CategorieViewWidget extends CWidget {
     	$templates = array();
     	// Перебираем верхний уровень дерева
     	
+		//var_dump($this->historyTree);
+		//exit();
+		$num = 0;
+		
     	foreach ($this->historyTree as $nodeTopLevel)
     	{
 			// Возьмём элемент массива element и прочитаем у 
 			//     него template_name и templateid
+			
+			//echo($nodeTopLevel['element']);
+			/*if (!isset($nodeTopLevel['element']))
+			{
+				var_dump($nodeTopLevel);
+				exit();
+			}
+			*/
+			/*
+			var_dump($nodeTopLevel);
+			var_dump("-----");
+			$num++;
+			continue;
+			*/
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
 			// Если в templates нет ИД шаблона - добавляем
@@ -707,6 +727,8 @@ class CategorieViewWidget extends CWidget {
 			// Теперь добавим категорию в соответвующий шаблон
 			$templates[$tId]['cats'][] = $nodeTopLevel;
 		}
+		//var_dump($num);
+		//exit();
     	// В dividedCats - добавляем собранные категории
     	$this->dividedCats = $templates;
     }
@@ -852,40 +874,78 @@ class CategorieViewWidget extends CWidget {
 		return $nodeContent;
 	}
 
-    public function makeTree() {
-	//var_dump($this->historyElements);
-	//exit();
-    	foreach($this->historyElements as $element) {
-    		// Делим путь 
-    		$pathArr = explode('.', $element['path']);
-    		$currentResultTree = &$this->historyTree;
-    		// Перебираем куски адреса  с каждым куском адреса 
-    		//     перемещаем указатель на текущий узел
-    		//var_dump($element['path']);
-    		for ($i=0;$i<count($pathArr)-1;$i++)
-    		{
-    			// Если в узле нет такого ключа - создаём его
-				if (!isset($currentResultTree[$pathArr[$i]]))
-				{
-					//var_dump("!");
-					$currentResultTree[$pathArr[$i]] = array();
-				}
-				//var_dump($currentResultTree);
-				$currentResultTree = &$currentResultTree[$pathArr[$i]];
-			}
-    		//var_dump($currentResultTree);
-    		// Нашли местечко для категории/элемента - вставили в текущий узел
-    		// Проверим - есть ли в узле путь к узлу, который мы добавляем
-    		if (!isset($currentResultTree[$pathArr[count($pathArr)-1]]))
-    		{
-				$currentResultTree[$pathArr[count($pathArr)-1]] = array();
-			}
-			$currentResultTree[$pathArr[count($pathArr)-1]]['element'] = 
-			array();
-    		$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->getTreeNode($element);
-    	}
-    }
+	// Возвращает конкатенирует части адреса из массива до позиции, указанной в pointer
+	private function getSubPath($pathArray, $pointer)
+	{
+		$result = '';
+		
+		for ($i=0;$i<$pointer;$i++)
+		{
+			$result .= $pathArray[$i];
+			if ($i!=($pointer-1))
+			{
+					$result .= '.';
+			}	
+		}
+		
+		return $result;
+	}
 
+	// Ищет в элементах истории тот, который находится по пути pathArray c ограничителем pointer
+	//     (максимальный индекс<pointer-а)
+	private function getTreeNodeCategory($pathArray, $pointer)
+	{
+		$result = false;
+		$pathToFind = $this->getSubPath($pathArray, $pointer);
+		//var_dump($pathToFind);
+		foreach($this->historyElements as $element) {
+			if ($element['path']==$pathToFind)
+			{
+				$result = 	$element;
+				break;
+			}
+		}
+		return $result;
+	}
+
+	public function makeTree() {
+		foreach($this->historyElements as $element) {
+			// Перебираем только элементы - категории добавляем, по требованию
+			if ($element['element_id']!=-1)
+			{
+				// Делим путь 
+				$pathArr = explode('.', $element['path']);
+				$currentResultTree = &$this->historyTree;
+				// Перебираем куски адреса  с каждым куском адреса 
+				//     перемещаем указатель на текущий узел
+				for ($i=0;$i<count($pathArr)-1;$i++)
+				{
+					// Если в узле нет такого ключа - создаём его
+					if (!isset($currentResultTree[$pathArr[$i]]))
+					{
+						$currentResultTree[$pathArr[$i]] = array();
+					}
+					$currentResultTree = &$currentResultTree[$pathArr[$i]];
+					
+					// Если в узле внутри нету ключа "element" - его нужно создать
+					if (!isset($currentResultTree['element']))
+					{
+						$currentResultTree['element'] = $this->getTreeNode($this->getTreeNodeCategory($pathArr , $i+1 ));
+					}
+				}
+				// Нашли местечко для элемента - вставили в текущий узел
+				// Проверим - есть ли в узле путь к узлу, который мы добавляем
+				if (!isset($currentResultTree[$pathArr[count($pathArr)-1]]))
+				{
+					$currentResultTree[$pathArr[count($pathArr)-1]] = array();
+				}
+				$currentResultTree[$pathArr[count($pathArr)-1]]['element'] = 
+					array();
+				$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->getTreeNode($element);
+			}
+		}
+	}
+	
     private function sortTree(&$node = false) {
         
         if(!$node) {

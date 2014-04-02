@@ -64,8 +64,11 @@ class PrintController extends Controller {
             $greetingId = $greetingIn !== false ? $greetingIn : $_GET['greetingid'];
         }
         // В противном случае, выбираем все элементы, изменённые во время приёма
+		
         $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
-        if(count($changedElements) == 0) {
+		//var_dump($changedElements );
+		//exit();
+			if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
                 exit('Во время этого приёма не было произведено никаких изменений!');
@@ -78,8 +81,17 @@ class PrintController extends Controller {
         $greetingInfo = array();
         $resultArr = array();
 
-        foreach($changedElements as $element) {
-            $elementInfo = MedcardElement::model()->getOne($element['element_id']);
+		//var_dump($changedElements );
+		//var_dump("||||||");
+		//exit();
+
+		//var_dump($changedElements);
+		//exit();
+		foreach($changedElements as $element)
+		{
+			$elementInfo = MedcardElement::model()->getOne($element['element_id']);
+			// Иногда выдаёт пустой элемент 
+			if (!$elementInfo) continue;
             // Не существует общей информации по приёму
             if(count($greetingInfo) == 0) {
                 $greeting = SheduleByDay::model()->findByPk($greetingId);
@@ -102,6 +114,7 @@ class PrintController extends Controller {
             if(!isset($resultArr[$id])) {
                 $resultArr[$id] = array();
             }
+			
             $num = count($resultArr[$id]);
             $resultArr[$id][$num]['element'] = $element;
             $resultArr[$id][$num]['info'] = $elementInfo;
@@ -111,6 +124,13 @@ class PrintController extends Controller {
                     $values = CJSON::decode($element['value']);
                     // Клепаем строку из значений
                     $counter = 0;
+					// Если values не array - делаем из него массив
+					if (!is_array($values))
+					{
+						$newArray = array();
+						$newArray[] = $values;
+						$values = $newArray;
+					}
                     foreach($values as $value) {
                         $valueSearched = MedcardGuideValue::model()->findByPk($value);
                         if($valueSearched != null) {
@@ -132,6 +152,9 @@ class PrintController extends Controller {
             }
         }
 
+		//var_dump($resultArr);
+		//exit();
+	
         // Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
         if($greetingIn === false) {
             $this->render('greeting', array(

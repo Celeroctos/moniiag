@@ -116,22 +116,31 @@ class MedcardElementForPatient extends MisActiveRecord {
         }
     }
 
-    public function getValuesByDate($date, $medcardId) {
-        try {
-            $connection = Yii::app()->db;
-            $values = $connection->createCommand()
-                ->select('mep.*, me.type')
-                ->from('mis.medcard_elements_patient mep')
-                ->leftJoin('mis.medcard_elements me', 'me.id = mep.element_id')
-                ->where('mep.medcard_id = :medcard_id AND mep.change_date <= :date', array(':medcard_id' => $medcardId,
-                                                                                           ':date' => $date))
-                ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
+	public function getValuesByDate($date, $medcardId) {
+		try {
+			$connection = Yii::app()->db;
+			$values = $connection->createCommand()
+				->select('mep.*, me.type')
+				->from('mis.medcard_elements_patient mep')
+				->leftJoin('mis.medcard_elements me', 'me.id = mep.element_id')
+				->where('mep.element_id>0 AND mep.medcard_id = :medcard_id AND mep.change_date <= :date
+						AND
+						mep.history_id = (SELECT MAX(mep2.history_id)
                                               FROM mis.medcard_elements_patient mep2
                                               WHERE mep2.element_id = mep.element_id
                                                     AND mep2.medcard_id = :medcard_id
-                                                    AND mep2.change_date <= :date)', array(':medcard_id' => $medcardId,
-                                                           ':date' => $date))
-                ->group('mep.element_id,
+                                                    AND mep2.change_date <= :date)	
+							', array(':medcard_id' => $medcardId,
+						':date' => $date))
+				->orWhere('mep.element_id<0 AND mep.medcard_id = :medcard_id 
+						AND
+						mep.greeting_id = (SELECT MAX(mep2.greeting_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id > 0
+                                                    AND mep2.medcard_id = :medcard_id
+                                                    AND mep2.change_date <= :date)	', array(':medcard_id' => $medcardId,
+						':date' => $date))
+				->group('mep.element_id,
                          mep.history_id,
                          mep.medcard_id,
                          me.type,
@@ -142,12 +151,12 @@ class MedcardElementForPatient extends MisActiveRecord {
                          mep.categorie_id,
                          mep.path,
                          ');
-            return $values->queryAll();
+			return $values->queryAll();
 
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
-    }
+		} catch(Exception $e) {
+			echo $e->getMessage();
+		}
+	}
 
     // Найти все конечные состояния полей, изменённых во время приёма
     public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq') {
