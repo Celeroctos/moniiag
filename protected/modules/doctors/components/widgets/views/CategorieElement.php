@@ -186,7 +186,8 @@ if(isset($categorie['id'])) {
                                     }
                                 } 
  									elseif($element['type'] == 4) {
-                                ?>
+								?>
+								
                                     <table class="controltable">
                                         <tbody>
                                             <?php if(isset($element['config']['cols']) && count($element['config']['cols']) > 0) {
@@ -219,14 +220,31 @@ if(isset($categorie['id'])) {
                                                 } ?>
                                                 <?php
                                                 for($j = 0; $j < $element['config']['numCols']; $j++) {
-                                                    if($canEditMedcard) {
-                                                ?>
-                                                <td class="content-<?php echo $i.'_'.$j; ?>">
-                                                </td>
-                                                 <?php } else { ?>
-                                                 <td>
-                                                 </td>
-                                                 <?php }
+													// Вывод значений по умолчанию
+													$cellDefaultVal = '';	
+                                                	if (isset($element['config']['values']))
+                                                	{
+                                                		if (isset($element['config']['values'][$i."_".$j]))
+                                                		{
+                                                			$cellDefaultVal = $element['config']['values'][(string)$i."_".(string)$j ];
+														}	
+                                                	}
+                                                    if($canEditMedcard)
+													{
+														?>
+														<td class="content-<?php echo $i.'_'.$j; ?>"><?php 
+														echo $cellDefaultVal; 
+														?></td>
+														<?php
+													} else 
+													{ 
+														?>
+														<td><?php
+														echo $cellDefaultVal; 
+
+														?></td>
+														<?php
+													}
                                                 } ?>
                                             </tr>
                                             <?php } ?>
