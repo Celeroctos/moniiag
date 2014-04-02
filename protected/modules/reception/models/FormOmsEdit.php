@@ -32,13 +32,13 @@ class FormOmsEdit extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'policy' => 'Номер ОМС',
+            'policy' => 'Номер полиса',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',
             'gender' => 'Пол',
             'birthday' => 'Дата рождения',
-            'omsType' => 'Тип ОМС',
+            'omsType' => 'Тип полиса',
             'policyGivedate' => 'Дата выдачи',
             'policyEnddate' => 'Дата окончания действия',
             'status' => 'Статус'

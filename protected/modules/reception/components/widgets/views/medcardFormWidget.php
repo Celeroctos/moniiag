@@ -1,5 +1,4 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
-<!--<script type="text/javascript" src="<?php /*echo Yii::app()->request->baseUrl; */?>/js/chooser.js"></script>-->
 <div class="form-group">
     <?php echo $form->labelEx($model,'doctype', array(
         'class' => 'col-xs-3 control-label'
@@ -89,9 +88,15 @@
             'class' => 'form-control',
             'placeholder' => 'Адрес регистрации'
         )); ?>
+        <?php echo $form->hiddenField($model,'addressRegHidden', array(
+            'id' => 'addressRegHidden',
+            'class' => 'form-control',
+        )); ?>
+        <?php if(isset($showEditIcon) && $showEditIcon == 1) { ?>
         <a href="#" class="editAddress" title="Редактировать адрес регистрации">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
+        <?php } ?>
     </div>
 </div>
 <div class="form-group">
@@ -104,9 +109,16 @@
             'class' => 'form-control',
             'placeholder' => 'Адрес проживания'
         )); ?>
+        <?php echo $form->hiddenField($model,'addressHidden', array(
+            'id' => 'addressHidden',
+            'class' => 'form-control',
+            'placeholder' => 'Адрес проживания'
+        )); ?>
+        <?php if(isset($showEditIcon) && $showEditIcon == 1) { ?>
         <a href="#" class="editAddress" title="Редактировать адрес проживания">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
+        <?php } ?>
     </div>
 </div>
 <div class="form-group">
@@ -301,16 +313,6 @@ $form = $this->beginWidget('CActiveForm', array(
                 <h4 class="modal-title">Редактирование адреса</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group chooser" id="landChooser">
-                    <label for="land" class="col-xs-4 control-label">Страна (Enter - добавить)</label>
-                    <div class="col-xs-7">
-                        <input type="text" class="form-control" autofocus id="land" placeholder="Страна">
-                        <ul class="variants no-display">
-                        </ul>
-                        <div class="choosed">
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group chooser" id="regionChooser">
                     <label for="region" class="col-xs-4 control-label">Регион (Enter - добавить)</label>
                     <div class="col-xs-7">
@@ -324,7 +326,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="districtChooser">
                     <label for="district" class="col-xs-4 control-label">Район (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="district" placeholder="Район">
+                        <input type="text" class="form-control" id="district" placeholder="Район" >
                         <ul class="variants no-display">
                         </ul>
                         <div class="choosed">
@@ -351,10 +353,16 @@ $form = $this->beginWidget('CActiveForm', array(
                         </div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="building" class="col-xs-4 control-label">Дом, корпус, квартира, подъезд...</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="building" placeholder="Введите информацию о доме, корпусе и.т.д.">
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-success" class="editSubmit">Сохранить адрес</button>
+                <button type="button" class="btn btn-success editSubmit">Сохранить адрес</button>
             </div>
         </div>
     </div>

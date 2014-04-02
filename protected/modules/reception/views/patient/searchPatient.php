@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/motionHistory.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
-<h4>Поиск пациента по ОМС</h4>
+<h4>Поиск пациента по полису ОМС</h4>
 <div class="row">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -19,7 +19,7 @@
     ?>
     <div class="col-xs-5">
         <div class="form-group">
-            <label for="omsNumber" class="col-xs-4 control-label">Номер ОМС</label>
+            <label for="omsNumber" class="col-xs-4 control-label">Номер полиса ОМС</label>
             <div class="col-xs-8">
                 <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС" data-toggle="tooltip" data-placement="right" title="Номер ОМС может состоять из цифр и пробелов">
             </div>
@@ -317,7 +317,8 @@ $form = $this->beginWidget('CActiveForm', array(
                     $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
                         'form' => $form,
                         'model' => $modelMedcard,
-                        'privilegesList' => $privilegesList
+                        'privilegesList' => $privilegesList,
+                        'showEditIcon' => 1
                     ));
                 ?>
             </div>

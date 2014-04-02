@@ -27,6 +27,6 @@
         <?php echo CHtml::link('Медуслуги', array('/guides/service/view')) ?>
     </li>
     <li <?php echo $controller == 'cladr' ? 'class="active"' : ''; ?>>
-        <?php echo CHtml::link('КЛАДР', array('/guides/cladr/view')) ?>
+        <?php echo CHtml::link('КЛАДР', array('/guides/cladr/viewregions')) ?>
     </li>
 </ul>

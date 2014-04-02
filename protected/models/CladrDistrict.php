@@ -20,6 +20,7 @@ class CladrDistrict extends MisActiveRecord {
         if($filters !== false) {
             $this->getSearchConditions($districts, $filters, array(
             ), array(
+                'cd' =>  array('name', 'code_region')
             ), array(
             ));
         }

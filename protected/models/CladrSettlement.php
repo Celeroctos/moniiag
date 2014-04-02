@@ -13,13 +13,14 @@ class CladrSettlement extends MisActiveRecord {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $settlements = $connection->createCommand()
-            ->select('cs.*, cr.id as region_id, cr.name as region')
+            ->select('cs.*, cr.id as region_id, cr.name as region, cs.name as district')
             ->from(CladrSettlement::tableName().' cs')
             ->leftJoin(CladrRegion::tableName(). ' cr', 'cs.code_region = cr.code_cladr');
 
         if($filters !== false) {
             $this->getSearchConditions($settlements, $filters, array(
             ), array(
+                'cs' => array('name', 'code_region', 'code_district')
             ), array(
             ));
         }
