@@ -675,7 +675,7 @@ $(document).ready(function() {
         $.fn['streetChooser'].enable();
     });
 
-    $('#address, #addressReg').on('focus', function(e) {
+    $('.blockEdit').on('focus', function(e) {
         $(this).blur();
         return false;
     });

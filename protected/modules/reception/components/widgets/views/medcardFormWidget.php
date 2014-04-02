@@ -87,7 +87,7 @@
     <div class="col-xs-9">
         <?php echo $form->textField($model,'addressReg', array(
             'id' => 'addressReg',
-            'class' => 'form-control',
+            'class' => 'form-control blockEdit',
             'placeholder' => 'Адрес регистрации'
         )); ?>
         <?php echo $form->hiddenField($model,'addressRegHidden', array(
@@ -108,7 +108,7 @@
     <div class="col-xs-9">
         <?php echo $form->textField($model,'address', array(
             'id' => 'address',
-            'class' => 'form-control',
+            'class' => 'form-control blockEdit',
             'placeholder' => 'Адрес проживания'
         )); ?>
         <?php echo $form->hiddenField($model,'addressHidden', array(
