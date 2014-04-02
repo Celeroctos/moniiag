@@ -20,13 +20,12 @@ $(document).ready(function() {
                     addVariantToChoosed(li, withOutInsert);
                 },
                 addExtraParam: function(key, value) {
-                    if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams')) {
+                    if($('#' + $(chooser).prop('id')).length > 0 && choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams')) {
                         choosersConfig[$(chooser).prop('id')].extraparams[key] = value;
                     }
                 },
                 deleteExtraParam: function(key) {
-                    if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams') && choosersConfig[$(chooser).prop('id')].extraparams.hasOwnProperty(key)) {
-                        console.log(key);
+                    if($('#' + $(chooser).prop('id')).length > 0 && choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams') && choosersConfig[$(chooser).prop('id')].extraparams.hasOwnProperty(key)) {
                         delete choosersConfig[$(chooser).prop('id')].extraparams[key];
                     }
                 },
@@ -410,36 +409,38 @@ $(document).ready(function() {
             'afterInsert' : function(chooser) {
                 if($.fn['regionChooser'].getChoosed().length > 0) {
                     var param = $.fn['regionChooser'].getChoosed()[0].code_cladr;
-                    $.fn['districtChooser'].addExtraParam('region', param);
-                    $.fn['settlementChooser'].addExtraParam('region', param);
-                    $.fn['streetChooser'].addExtraParam('region', param);
+                    if($('#districtChooser').length > 0) {
+                        $.fn['districtChooser'].addExtraParam('region', param);
+                    }
+                    if($('#settlementChooser').length > 0) {
+                        $.fn['settlementChooser'].addExtraParam('region', param);
+                    }
+                    if($('#streetChooser').length > 0) {
+                        $.fn['streetChooser'].addExtraParam('region', param);
+                    }
                 }
             },
             'afterRemove' : function() {
                 if($('#districtChooser').length > 0) {
                     $.fn['districtChooser'].clearAll();
                     $.fn['districtChooser'].enable();
+                    $.fn['districtChooser'].deleteExtraParam('region');
                 }
 
                 if($('#settlementChooser').length > 0) {
                     $.fn['settlementChooser'].clearAll();
                     $.fn['settlementChooser'].enable();
+                    $.fn['settlementChooser'].deleteExtraParam('region');
+                    $.fn['settlementChooser'].deleteExtraParam('district');
                 }
 
                 if($('#streetChooser').length > 0) {
                     $.fn['streetChooser'].clearAll();
                     $.fn['streetChooser'].enable();
+                    $.fn['streetChooser'].deleteExtraParam('region');
+                    $.fn['streetChooser'].deleteExtraParam('district');
+                    $.fn['streetChooser'].deleteExtraParam('settlement');
                 }
-
-                $.fn['districtChooser'].deleteExtraParam('region');
-                $.fn['settlementChooser'].deleteExtraParam('region');
-                $.fn['streetChooser'].deleteExtraParam('region');
-
-                $.fn['settlementChooser'].deleteExtraParam('district');
-                $.fn['streetChooser'].deleteExtraParam('district');
-
-                $.fn['streetChooser'].deleteExtraParam('settlement');
-
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
@@ -462,25 +463,27 @@ $(document).ready(function() {
             'afterInsert' : function(chooser) {
                 if($.fn['districtChooser'].getChoosed().length > 0) {
                     var param = $.fn['districtChooser'].getChoosed()[0].code_cladr;
-                    $.fn['settlementChooser'].addExtraParam('district', param);
-                    $.fn['streetChooser'].addExtraParam('district', param);
+                    if($('#settlementChooser').length > 0) {
+                        $.fn['settlementChooser'].addExtraParam('district', param);
+                    }
+                    if($('#streetChooser').length > 0) {
+                        $.fn['streetChooser'].addExtraParam('district', param);
+                    }
                 }
             },
             'afterRemove' : function() {
                 if($('#settlementChooser').length > 0) {
                     $.fn['settlementChooser'].clearAll();
                     $.fn['settlementChooser'].enable();
+                    $.fn['settlementChooser'].deleteExtraParam('district');
                 }
 
                 if($('#streetChooser').length > 0) {
                     $.fn['streetChooser'].clearAll();
                     $.fn['streetChooser'].enable();
+                    $.fn['streetChooser'].deleteExtraParam('district');
+                    $.fn['streetChooser'].deleteExtraParam('settlement');
                 }
-
-                $.fn['settlementChooser'].deleteExtraParam('district');
-                $.fn['streetChooser'].deleteExtraParam('district');
-
-                $.fn['streetChooser'].deleteExtraParam('settlement');
             },
             'extraparams' : {
                 //'region' : $.fn['regionChooser'].getChoosed()
@@ -510,16 +513,17 @@ $(document).ready(function() {
             'afterInsert' : function(chooser) {
                 if($.fn['settlementChooser'].getChoosed().length > 0) {
                     var param = $.fn['settlementChooser'].getChoosed()[0].code_cladr;
-                    $.fn['streetChooser'].addExtraParam('settlement', param);
+                    if($('#streetChooser').length > 0) {
+                        $.fn['streetChooser'].addExtraParam('settlement', param);
+                    }
                 }
             },
             'afterRemove' : function() {
                 if($('#streetChooser').length > 0) {
                     $.fn['streetChooser'].clearAll();
                     $.fn['streetChooser'].enable();
+                    $.fn['streetChooser'].deleteExtraParam('settlement');
                 }
-
-                $.fn['streetChooser'].deleteExtraParam('settlement');
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
@@ -571,35 +575,38 @@ $(document).ready(function() {
             'afterInsert' : function(chooser) {
                 if($.fn['regionChooser2'].getChoosed().length > 0) {
                     var param = $.fn['regionChooser2'].getChoosed()[0].code_cladr;
-                    $.fn['districtChooser2'].addExtraParam('region', param);
-                    $.fn['settlementChooser2'].addExtraParam('region', param);
-                    $.fn['streetChooser2'].addExtraParam('region', param);
+                    if($('#districtChooser2').length > 0) {
+                        $.fn['districtChooser2'].addExtraParam('region', param);
+                    }
+                    if($('#settlementChooser2').length > 0) {
+                        $.fn['settlementChooser2'].addExtraParam('region', param);
+                    }
+                    if($('#streetChooser2').length > 0) {
+                        $.fn['streetChooser2'].addExtraParam('region', param);
+                    }
                 }
             },
             'afterRemove' : function() {
                 if($('#districtChooser2').length > 0) {
                     $.fn['districtChooser2'].clearAll();
                     $.fn['districtChooser2'].enable();
+                    $.fn['districtChooser2'].deleteExtraParam('region');
                 }
 
                 if($('#settlementChooser2').length > 0) {
                     $.fn['settlementChooser2'].clearAll();
                     $.fn['settlementChooser2'].enable();
+                    $.fn['settlementChooser2'].deleteExtraParam('region');
+                    $.fn['settlementChooser2'].deleteExtraParam('district');
                 }
 
                 if($('#streetChooser2').length > 0) {
                     $.fn['streetChooser2'].clearAll();
                     $.fn['streetChooser2'].enable();
+                    $.fn['streetChooser2'].deleteExtraParam('region');
+                    $.fn['streetChooser2'].deleteExtraParam('district');
+                    $.fn['streetChooser2'].deleteExtraParam('settlement');
                 }
-
-                $.fn['districtChooser2'].deleteExtraParam('region');
-                $.fn['settlementChooser2'].deleteExtraParam('region');
-                $.fn['streetChooser2'].deleteExtraParam('region');
-
-                $.fn['settlementChooser2'].deleteExtraParam('district');
-                $.fn['streetChooser2'].deleteExtraParam('district');
-
-                $.fn['streetChooser2'].deleteExtraParam('settlement');
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
@@ -622,25 +629,27 @@ $(document).ready(function() {
             'afterInsert' : function(chooser) {
                 if($.fn['districtChooser2'].getChoosed().length > 0) {
                     var param = $.fn['districtChooser2'].getChoosed()[0].code_cladr;
-                    $.fn['settlementChooser2'].addExtraParam('district', param);
-                    $.fn['streetChooser2'].addExtraParam('district', param);
+                    if($('#settlementChooser2').length > 0) {
+                        $.fn['settlementChooser2'].addExtraParam('district', param);
+                    }
+                    if($('#streetChooser2').length > 0) {
+                        $.fn['streetChooser2'].addExtraParam('district', param);
+                    }
                 }
             },
             'afterRemove' : function() {
                 if($('#settlementChooser2').length > 0) {
                     $.fn['settlementChooser2'].clearAll();
                     $.fn['settlementChooser2'].enable();
+                    $.fn['settlementChooser2'].deleteExtraParam('district');
                 }
 
                 if($('#streetChooser2').length > 0) {
                     $.fn['streetChooser2'].clearAll();
                     $.fn['streetChooser2'].enable();
+                    $.fn['streetChooser2'].deleteExtraParam('district');
+                    $.fn['streetChooser2'].deleteExtraParam('settlement');
                 }
-
-                $.fn['settlementChooser2'].deleteExtraParam('district');
-                $.fn['streetChooser2'].deleteExtraParam('district');
-
-                $.fn['streetChooser2'].deleteExtraParam('settlement');
             },
             'extraparams' : {
                 //'region' : $.fn['regionChooser'].getChoosed()
@@ -670,15 +679,17 @@ $(document).ready(function() {
             'afterInsert' : function(chooser) {
                 if($.fn['settlementChooser2'].getChoosed().length > 0) {
                     var param = $.fn['settlementChooser2'].getChoosed()[0].code_cladr;
-                    $.fn['streetChooser2'].addExtraParam('settlement', param);
+                    if($('#streetChooser2').length > 0) {
+                        $.fn['streetChooser2'].addExtraParam('settlement', param);
+                    }
                 }
             },
             'afterRemove' : function() {
                 if($('#streetChooser2').length > 0) {
                     $.fn['streetChooser2'].clearAll();
                     $.fn['streetChooser2'].enable();
+                    $.fn['streetChooser2'].deleteExtraParam('settlement');
                 }
-                $.fn['streetChooser2'].deleteExtraParam('settlement');
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));

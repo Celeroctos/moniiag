@@ -35,6 +35,11 @@ class CladrController extends Controller {
         } else {
             $answer['street'] = null;
         }
+        if(!isset($data['building'])) {
+            $answer['building'] = '';
+        } else {
+            $answer['building'] = $data['building'];
+        }
 
         if(Yii::app()->request->isAjaxRequest && (!isset($data['returnData']) || $data['returnData'] == 0)) {
             echo CJSON::encode(
@@ -178,9 +183,9 @@ class CladrController extends Controller {
             }
 
             $model = new CladrSettlement();
-            $num = $model->getRows($filters);
+            $num = $model->getNumRows($filters);
 
-            $totalPages = ceil(count($num) / $rows);
+            $totalPages = ceil($num / $rows);
             $start = $page * $rows - $rows;
 
             $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows);
@@ -196,7 +201,7 @@ class CladrController extends Controller {
                     'success' => true,
                     'rows' => $settlements,
                     'total' => $totalPages,
-                    'records' => count($num))
+                    'records' => $num)
             );
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -240,9 +245,9 @@ class CladrController extends Controller {
             }
 
             $model = new CladrStreet();
-            $num = $model->getRows($filters);
+            $num = $model->getNumRows($filters);
 
-            $totalPages = ceil(count($num) / $rows);
+            $totalPages = ceil($num / $rows);
             $start = $page * $rows - $rows;
 
             $streets = $model->getRows($filters, $sidx, $sord, $start, $rows);
@@ -262,7 +267,7 @@ class CladrController extends Controller {
                     'success' => true,
                     'rows' => $streets,
                     'total' => $totalPages,
-                    'records' => count($num))
+                    'records' => $num)
             );
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -290,7 +295,7 @@ class CladrController extends Controller {
     }
 
     public function actionSettlementGetOne($id) {
-        $model = new CladrRegion();
+        $model = new CladrSettlement();
         $settlement = $model->getOne($id);
         echo CJSON::encode(array(
                 'success' => true,
@@ -310,11 +315,11 @@ class CladrController extends Controller {
     }
 
     public function actionStreetEdit() {
-        $model = new FormCladrSettlementAdd();
+        $model = new FormCladrStreetAdd();
         if(isset($_POST['FormCladrStreetAdd'])) {
             $model->attributes = $_POST['FormCladrStreetAdd'];
             if($model->validate()) {
-                $street = CladrSettlement::model()->findByPk($_POST['FormCladrStreetAdd']['id']);
+                $street = CladrStreet::model()->findByPk($_POST['FormCladrStreetAdd']['id']);
                 $this->addEditStreetModel($street, $model, 'Улица успешно отредактирована.');
             } else {
                 echo CJSON::encode(array(
@@ -329,8 +334,8 @@ class CladrController extends Controller {
         if(isset($_POST['FormCladrSettlementAdd'])) {
             $model->attributes = $_POST['FormCladrSettlementAdd'];
             if($model->validate()) {
-                $district = CladrSettlement::model()->findByPk($_POST['FormCladrDistrictAdd']['id']);
-                $this->addEditSettlementModel($district, $model, 'Населённый пункт успешно отредактирован.');
+                $settlement = CladrSettlement::model()->findByPk($_POST['FormCladrSettlementAdd']['id']);
+                $this->addEditSettlementModel($settlement, $model, 'Населённый пункт успешно отредактирован.');
             } else {
                 echo CJSON::encode(array(
                     'success' => 'false',
@@ -344,7 +349,7 @@ class CladrController extends Controller {
         if(isset($_POST['FormCladrDistrictAdd'])) {
             $model->attributes = $_POST['FormCladrDistrictAdd'];
             if($model->validate()) {
-                $district = CladrDistrict::model()->find('id=:id', $_POST['FormCladrDistrictAdd']['id']);
+                $district = CladrDistrict::model()->findByPk($_POST['FormCladrDistrictAdd']['id']);
                 $this->addEditDistrictModel($district, $model, 'Район успешно отредактирован.');
             } else {
                 echo CJSON::encode(array(
@@ -390,7 +395,7 @@ class CladrController extends Controller {
             $model->attributes = $_POST['FormCladrSettlementAdd'];
             if($model->validate()) {
                 $settlement = new CladrSettlement();
-                $this->addEditDistrictModel($settlement, $model, 'Новый населённый пункт успешно добавлен.');
+                $this->addEditSettlementModel($settlement, $model, 'Новый населённый пункт успешно добавлен.');
             } else {
                 echo CJSON::encode(array(
                     'success' => 'false',
@@ -445,7 +450,7 @@ class CladrController extends Controller {
 
     public function actionSettlementDelete($id) {
         try {
-            $settlement = CladrSetllement::model()->findByPk($id);
+            $settlement = CladrSettlement::model()->findByPk($id);
             $settlement->delete();
             echo CJSON::encode(array('success' => 'true',
                                      'text' => 'Населённый пункт успешно удалён.'));

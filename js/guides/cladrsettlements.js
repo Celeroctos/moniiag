@@ -73,6 +73,10 @@ $(document).ready(function() {
             $('#addSettlementPopup').modal('hide');
             // Перезагружаем таблицу
             $("#settlements").trigger("reloadGrid");
+            $.fn['regionChooser'].clearAll();
+            $.fn['regionChooser'].enable();
+            $.fn['districtChooser'].clearAll();
+            $.fn['districtChooser'].enable();
             $("#settlement-add-form")[0].reset(); // Сбрасываем форму
         } else {
             // Удаляем предыдущие ошибки
@@ -99,6 +103,10 @@ $(document).ready(function() {
             $('#editSettlementPopup').modal('hide');
             // Перезагружаем таблицу
             $("#settlements").trigger("reloadGrid");
+            $.fn['regionChooser2'].clearAll();
+            $.fn['regionChooser2'].enable();
+            $.fn['districtChooser2'].clearAll();
+            $.fn['districtChooser2'].enable();
             $("#settlement-edit-form")[0].reset(); // Сбрасываем форму
         } else {
             // Удаляем предыдущие ошибки
@@ -141,9 +149,35 @@ $(document).ready(function() {
                             {
                                 modelField: 'name',
                                 formField: 'name'
+                            },
+                            {
+                                modelField: 'code_region',
+                                formField: 'codeRegion'
+                            },
+                            {
+                                modelField: 'code_district',
+                                formField: 'codeDistrict'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
+                            if(fields[i].formField == 'codeRegion') {
+                                $.fn['regionChooser2'].clearAll();
+                                $.fn['regionChooser2'].addChoosed($('<li>').prop('id', 'r' + data.data['region_id']).text(data.data['region']), {
+                                    'id' : data.data['region_id'],
+                                    'code_cladr' : data.data['code_region'],
+                                    'name' : data.data['region']
+                                });
+                                continue;
+                            }
+                            if(fields[i].formField == 'codeDistrict') {
+                                $.fn['districtChooser2'].clearAll();
+                                $.fn['districtChooser2'].addChoosed($('<li>').prop('id', 'r' + data.data['district_id']).text(data.data['district']), {
+                                    'id' : data.data['district_id'],
+                                    'code_cladr' : data.data['code_district'],
+                                    'name' : data.data['district']
+                                });
+                                continue;
+                            }
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
                         $("#editSettlementPopup").modal({
@@ -181,5 +215,34 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    $("#settlement-add-form, #settlement-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
+        if($(this).prop('id') == 'settlement-add-form') {
+            if($.fn["regionChooser"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            if($.fn["districtChooser"].getChoosed().length == 0) {
+                alert('Не выбран район!');
+                return false;
+            }
+            var region = $.fn["regionChooser"].getChoosed()[0].code_cladr;
+            var district = $.fn["districtChooser"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrSettlementAdd[name]=' + $("#addSettlementPopup #name").val() + '&FormCladrSettlementAdd[codeCladr]=' + $("#addSettlementPopup #codeCladr").val() + '&FormCladrSettlementAdd[codeRegion]=' + region + '&FormCladrSettlementAdd[codeDistrict]=' + district + '&FormCladrSettlementAdd[id]=' + $("#addSettlementPopup #id").val();
+        } else {
+            if($.fn["regionChooser2"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            if($.fn["districtChooser2"].getChoosed().length == 0) {
+                alert('Не выбран район!');
+                return false;
+            }
+            var region = $.fn["regionChooser2"].getChoosed()[0].code_cladr;
+            var district = $.fn["districtChooser2"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrSettlementAdd[name]=' + $("#editSettlementPopup #name").val() + '&FormCladrSettlementAdd[codeCladr]=' + $("#editSettlementPopup #codeCladr").val() + '&FormCladrSettlementAdd[codeRegion]=' + region + '&FormCladrSettlementAdd[codeDistrict]=' + district + '&FormCladrSettlementAdd[id]=' + $("#editSettlementPopup #id").val();
+        }
+        settings.data = strData;
     });
 });

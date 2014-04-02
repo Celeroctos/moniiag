@@ -40,8 +40,9 @@ class CladrDistrict extends MisActiveRecord {
         try {
             $connection = Yii::app()->db;
             $district = $connection->createCommand()
-                ->select('cd.*')
+                ->select('cd.*, cr.name as region, cr.id as region_id')
                 ->from(CladrDistrict::tableName().' cd')
+                ->leftJoin(CladrRegion::tableName().' cr', 'cr.code_cladr = cd.code_region')
                 ->where('cd.id = :id', array(':id' => $id))
                 ->queryRow();
 

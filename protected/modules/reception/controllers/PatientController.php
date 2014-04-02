@@ -443,29 +443,47 @@ class PatientController extends Controller {
         $data['returnData'] = 1;
         $address = $cladrController[0]->actionGetCladrData($data);
         $addressStr = '';
+        $addressHidden = array();
         if($address['region'] != null) {
             $addressStr = $address['region'][0]['name'].', ';
+            $addressHidden['regionId'] = $address['region'][0]['id'];
         } else {
             $addressStr = 'Регион неизвестен, ';
+            $addressHidden['regionId'] = null;
         }
         if($address['district'] != null) {
             $addressStr .= $address['district'][0]['name'].', ';
+            $addressHidden['districtId'] =  $address['district'][0]['id'];
         } else {
             $addressStr .= 'район неизвестен, ';
+            $addressHidden['districtId'] = null;
         }
         if($address['settlement'] != null) {
             $addressStr .= $address['settlement'][0]['name'].', ';
+            $addressHidden['settlementId'] = $address['settlement'][0]['id'];
         } else {
             $addressStr .= 'населённый пункт неизвестен, ';
+            $addressHidden['settlementId'] = null;
         }
         if($address['street'] != null) {
             $addressStr .= $address['street'][0]['name'];
+            $addressHidden['streetId'] = $address['street'][0]['id'];
         } else {
             $addressStr .= 'улица неизвестна';
+            $addressHidden['streetId'] = null;
         }
+
+        if(trim($address['building']) != '') {
+            $addressStr .= $address['building'];
+            $addressHidden['building'] = $address['building'];
+        } else {
+            $addressStr .= 'улица неизвестна';
+            $addressHidden['building'] = '';
+        }
+
         return array(
             'addressStr' => $addressStr,
-            'addressHidden' => CJSON::encode($address)
+            'addressHidden' => CJSON::encode($addressHidden)
         );
     }
 

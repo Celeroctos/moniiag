@@ -1,1 +1,482 @@
-﻿
+﻿2014/04/02 12:18:59 [error] [php] Undefined index: building (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php:476)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php(368): PatientController->prepareMedcard()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionGetMedcardData()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/getmedcarddata?cardid=18%2F14&_=1396426674555
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (476)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (413)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\PatientController.php (388)
+2014/04/02 14:30:27 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 1: SELECT "cd".*, "cr"."name" AS "region", "cr"."id" AS "region...
+               ^. Выполнявшийся SQL-запрос: SELECT "cd".*, "cr"."name" AS "region", "cr"."id" AS "region_id"
+FROM "mis"."cladr_regions" "cr"
+WHERE cd.id = :id.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrDistrict.php (47)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (279)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 14:35:22 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:38:27 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:42:07 [error] [php] Undefined index: id (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php:352)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/districtedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (352)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:44:12 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:44:17 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:44:24 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:44:54 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:46:24 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:47:13 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:47:32 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:47:46 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:48:15 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:48:44 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:49:04 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:49:41 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:51:46 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:52:53 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:54:06 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 14:54:06 [error] [php] Creating default object from empty value (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php:521)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/districtedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (521)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (353)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 14:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrDistrictAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (350)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:13:57 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:13:57 [error] [php] Undefined index: FormCladrDistrictAdd (F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php:337)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/settlementedit
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (337)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:16:25 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:16:58 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (395)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:20:16 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:20:43 [error] [php] include(CladrSetllement.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:427)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php(453): spl_autoload_call()
+#1 unknown(0): CladrController->actionSettlementDelete()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/settlementdelete?id=149043&_=1396437000400
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (453)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:20:48 [error] [php] include(CladrSetllement.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:427)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php(453): spl_autoload_call()
+#1 unknown(0): CladrController->actionSettlementDelete()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/settlementdelete?id=149043&_=1396437000401
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (453)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:23:33 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (395)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:29:11 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (395)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:30:52 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (395)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:31:17 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:31:38 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:42:43 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка cd.code_district не существует
+LINE 5: ...OM mis.cladr_districts cd2 WHERE cd2.code_cladr = cd.code_di...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."name" AS "region", "cr"."id" AS "region_id", "cd"."id" AS "district_id", "cd"."name" AS "district", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cr.code_cladr = cs.code_region
+LEFT JOIN "mis"."cladr_districts" "cd" ON cd.code_cladr = cs.code_district
+WHERE cs.id = :id AND cd.id IN(SELECT cd2.id FROM mis.cladr_districts cd2 WHERE cd2.code_cladr = cd.code_district AND cd2.code_region = cr.id).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (48)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (299)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 15:44:21 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 15:45:40 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 6: ...                           WHERE cd2.code_cladr = cd.code_cl...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cs"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+WHERE cd.id IN(SELECT cd2.id
+                              FROM mis.cladr_districts cd2
+                              WHERE cd2.code_cladr = cd.code_cladr
+                                    AND cd2.code_region = cr.code_cladr).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (39)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 15:45:45 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 6: ...                           WHERE cd2.code_cladr = cd.code_cl...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cs"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+WHERE cd.id IN(SELECT cd2.id
+                              FROM mis.cladr_districts cd2
+                              WHERE cd2.code_cladr = cd.code_cladr
+                                    AND cd2.code_region = cr.code_cladr).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (39)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 15:57:55 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[57P01]: Admin shutdown: 7 ВАЖНО:  закрытие подключения по команде администратора
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cs"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+LEFT JOIN "mis"."cladr_districts" "cd" ON cs.code_cladr = cs.code_district.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (36)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:11:27 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[57P01]: Admin shutdown: 7 ВАЖНО:  закрытие подключения по команде администратора
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cd"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+LEFT JOIN "mis"."cladr_districts" "cd" ON cs.code_district = cd.code_cladr
+WHERE cd.id IN(SELECT cd2.id
+                              FROM mis.cladr_districts cd2
+                              WHERE cd2.code_cladr = cd.code_cladr
+                                    AND cd2.code_region = cs.code_cladr).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (39)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:12:04 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 1: ...cr"."id" AS "region_id", "cr"."name" AS "region", "cd"."name...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cd"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:12:06 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 1: ...cr"."id" AS "region_id", "cr"."name" AS "region", "cd"."name...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cd"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (35)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:16:28 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[08P01]: <<Unknown error>>: 7 ОШИБКА:  в сообщении Bind передано неверное число параметров (1, а подготовленный оператор "pdo_stmt_00000011" требует 2). Выполнявшийся SQL-запрос: SELECT * FROM "mis"."cladr_districts" "t" WHERE code_cladr = :code_cladr
+              AND code_region = :code_region.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (41)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (186)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:27:50 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (395)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 16:28:04 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 16:32:45 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[57P01]: Admin shutdown: 7 ВАЖНО:  закрытие подключения по команде администратора
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. Выполнявшийся SQL-запрос: SELECT DISTINCT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+LEFT JOIN "mis"."cladr_districts" "cd" ON cs.code_district = cd.code_cladr AND cs.code_region = cs.code_region
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (191)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:38:18 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[57P01]: Admin shutdown: 7 ВАЖНО:  закрытие подключения по команде администратора
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. Выполнявшийся SQL-запрос: SELECT DISTINCT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region", "cd"."id" AS "district_id", "cd"."name" AS "district"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+LEFT JOIN "mis"."cladr_districts" "cd" ON cs.code_district = cd.code_cladr AND cs.code_region = cs.code_region
+ORDER BY "id" DESC LIMIT 30.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (53)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (191)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 16:39:12 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (335)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 16:42:27 [error] [php] Trying to get property of non-object (F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php:46)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/settlementget?_search=false&nd=1396442538566&rows=30&page=1&sidx=id&sord=desc&filters=
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrSettlement.php (46)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (191)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 17:17:46 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrStreetAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (380)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:29:50 [error] [php] Missing argument 2 for CDbCommand::leftJoin(), called in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrStreet.php on line 47 and defined (F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:911)
+Stack trace:
+#0 unknown(0): CladrController->actionStreetGetOne()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CladrController->runAction()
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): CladrController->filterGetAccessHierarchy()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CladrController->runActionWithFilters()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CladrController->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/guides/cladr/streetgetone?id=2296&_=1396444751427
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrStreet.php (47)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (309)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 17:30:18 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cs" отсутствует в предложении FROM
+LINE 3: ...OIN "mis"."cladr_regions" "cr" ON cr.code_cladr = cs.code_re...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "cst".*, "cr"."name" AS "region", "cr"."id" AS "region_id", "cd"."id" AS "district_id", "cd"."name" AS "district", "cr"."name" AS "region"
+FROM "mis"."cladr_streets" "cst"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cr.code_cladr = cs.code_region
+LEFT JOIN "mis"."cladr_districts" "cd" ON cd.code_cladr = cs.code_district
+LEFT JOIN "mis"."cladr_settlements" "cs" ON cs.code_cladr = cs.code_settlement
+WHERE cst.id = :id
+                            AND cd.id IN(SELECT cd2.id
+                                     FROM mis.cladr_districts cd2
+                                     WHERE cd2.code_cladr = cd.code_cladr
+                                        AND cd2.code_region = cr.code_cladr)
+                            AND cs.id IN(SELECT cs2.id
+                                     FROM mis.cladr_settlements cs2
+                                     WHERE cs2.code_cladr = cs.code_cladr
+                                        AND cd2.code_region = cr.code_cladr
+                                        AND cd2.code_district = cd.code_cladr).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrStreet.php (58)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (309)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 17:30:51 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd2" отсутствует в предложении FROM
+LINE 14:                                         AND cd2.code_region ...
+                                                     ^. Выполнявшийся SQL-запрос: SELECT "cst".*, "cr"."name" AS "region", "cr"."id" AS "region_id", "cd"."id" AS "district_id", "cd"."name" AS "district", "cr"."name" AS "region"
+FROM "mis"."cladr_streets" "cst"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cr.code_cladr = cst.code_region
+LEFT JOIN "mis"."cladr_districts" "cd" ON cd.code_cladr = cst.code_district
+LEFT JOIN "mis"."cladr_settlements" "cs" ON cs.code_cladr = cst.code_settlement
+WHERE cst.id = :id
+                            AND cd.id IN(SELECT cd2.id
+                                     FROM mis.cladr_districts cd2
+                                     WHERE cd2.code_cladr = cd.code_cladr
+                                        AND cd2.code_region = cr.code_cladr)
+                            AND cs.id IN(SELECT cs2.id
+                                     FROM mis.cladr_settlements cs2
+                                     WHERE cs2.code_cladr = cs.code_cladr
+                                        AND cd2.code_region = cr.code_cladr
+                                        AND cd2.code_district = cd.code_cladr).
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrStreet.php (58)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (309)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 17:33:33 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (320)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:33:33 [warning] [application] Не удалось присвоить небезопасный атрибут "codeSettlement" класса "FormCladrSettlementAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (320)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:33:33 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormCladrSettlementAdd.codeSettlement".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php(495): CComponent->__get('codeSettlement')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php(323): CladrController->addEditStreetModel(Object(CladrSettlement), Object(FormCladrSettlementAdd), '?????????? ????...')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): CladrController->actionStreetEdit()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('streetedit')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/cladr/st...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/guides/cladr/streetedit
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/guides/cladr/viewstreets
+---
+2014/04/02 17:34:59 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrStreetAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (320)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:35:44 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrStreetAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (320)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:37:13 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrStreetAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (320)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:38:59 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormCladrStreetAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (320)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/02 17:45:59 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cst" отсутствует в предложении FROM
+LINE 1: SELECT COUNT(cst.*) as num
+                     ^. Выполнявшийся SQL-запрос: SELECT COUNT(cst.*) as num
+FROM "mis"."cladr_streets" "cs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrStreet.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/02 17:46:00 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cst" отсутствует в предложении FROM
+LINE 1: SELECT COUNT(cst.*) as num
+                     ^. Выполнявшийся SQL-запрос: SELECT COUNT(cst.*) as num
+FROM "mis"."cladr_streets" "cs".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\CladrStreet.php (82)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\guides\controllers\CladrController.php (248)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)

@@ -67,6 +67,8 @@ $(document).ready(function() {
             $('#addDistrictPopup').modal('hide');
             // Перезагружаем таблицу
             $("#districts").trigger("reloadGrid");
+            $.fn['regionChooser'].clearAll();
+            $.fn['regionChooser'].enable();
             $("#district-add-form")[0].reset(); // Сбрасываем форму
         } else {
             // Удаляем предыдущие ошибки
@@ -93,6 +95,8 @@ $(document).ready(function() {
             $('#editDistrictPopup').modal('hide');
             // Перезагружаем таблицу
             $("#districts").trigger("reloadGrid");
+            $.fn['regionChooser2'].clearAll();
+            $.fn['regionChooser2'].enable();
             $("#district-edit-form")[0].reset(); // Сбрасываем форму
         } else {
             // Удаляем предыдущие ошибки
@@ -135,9 +139,22 @@ $(document).ready(function() {
                             {
                                 modelField: 'name',
                                 formField: 'name'
+                            },
+                            {
+                                modelField: 'code_region',
+                                formField: 'codeRegion'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
+                            if(fields[i].formField == 'codeRegion') {
+                                $.fn['regionChooser2'].clearAll();
+                                $.fn['regionChooser2'].addChoosed($('<li>').prop('id', 'r' + data.data['region_id']).text(data.data['region']), {
+                                    'id' : data.data['region_id'],
+                                    'code_cladr' : data.data['code_region'],
+                                    'name' : data.data['region']
+                                });
+                                continue;
+                            }
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
                         $("#editDistrictPopup").modal({
@@ -175,5 +192,24 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    $("#district-add-form, #district-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
+        if($(this).prop('id') == 'district-add-form') {
+            if($.fn["regionChooser"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            var region = $.fn["regionChooser"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrDistrictAdd[name]=' + $("#addDistrictPopup #name").val() + '&FormCladrDistrictAdd[codeCladr]=' + $("#addDistrictPopup #codeCladr").val() + '&FormCladrDistrictAdd[codeRegion]=' + region;
+        } else {
+            if($.fn["regionChooser2"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            var region = $.fn["regionChooser2"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrDistrictAdd[name]=' + $("#editDistrictPopup #name").val() + '&FormCladrDistrictAdd[codeCladr]=' + $("#editDistrictPopup #codeCladr").val() + '&FormCladrDistrictAdd[codeRegion]=' + region + '&FormCladrDistrictAdd[id]=' + $("#editDistrictPopup #id").val();
+        }
+        settings.data = strData;
     });
 });

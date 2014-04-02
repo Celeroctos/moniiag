@@ -602,6 +602,9 @@ $(document).ready(function() {
                         if(data.street != null) {
                             $.fn['streetChooser'].addChoosed($('<li>').prop('id', 'r' + data.street[0].id).text(data.street[0].name), data.street[0]);
                         }
+                        if(data.building != null) {
+                            $('#editAddressPopup #building').val(data.building);
+                        }
                     }
                     $('#editAddressPopup').modal('show');
                 }
@@ -656,10 +659,9 @@ $(document).ready(function() {
             'regionId' : regionId,
             'districtId' : districtId,
             'settlementId' : settlementId,
-            'streetId' : streetId
+            'streetId' : streetId,
+            'building' : building
         }));
-
-        $('#building').val('');
 
         $('#editAddressPopup').modal('hide');
     });
@@ -673,6 +675,7 @@ $(document).ready(function() {
         $.fn['settlementChooser'].enable();
         $.fn['streetChooser'].clearAll();
         $.fn['streetChooser'].enable();
+        $('#building').val('');
     });
 
     $('.blockEdit').on('focus', function(e) {
