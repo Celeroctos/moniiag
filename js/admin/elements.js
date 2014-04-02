@@ -266,29 +266,6 @@ function writeDefValuesFromConfig(defValues) {
         }
 
     }
-
-    /*
-    for (j = 0; j < tableOfDefaults.length; j++) {
-    // Перебираем значения defValues
-    for (i = 0; i < defValues.length; i++) {
-    // Берём индексы
-    var Indexes = defValues[i].indexes.split('_');
-
-    // Проверяем - не больше ли индекс строки и столбца, чем индекс таблицы
-    if ((Indexes[0] < maxRowIndex) && (Indexes[1] < maxColIndex)) {
-    var strToSelect = 'tr:eq(' + Indexes[0] +
-    ') td:eq(' + Indexes[1] + ') input';
-
-    var cellToSelect =
-    $(tableOfDefaults[j]).find(strToSelect);
-
-    cellToSelect.val(defValues[i].def_val);
-    }
-
-    }
-    }
-    */
-
 }
 
 // Функция пробегает по строкам грида с зависимостями и проверяет,
@@ -884,29 +861,6 @@ $('.colsHeaders').on('click', function () {
 
 $('.table-config-headers').on('change', 'input', function (e) {
     readConfigFromInterface(this);
-    /* var hiddenConfig = $(this).parents('.modal-body').find('#config');
-    var configTable = $(this).parents('.table-config-headers');
-    var rowsHeaders = $(configTable).find('tbody tr').find('td:eq(0) input');
-    var colsHeaders = $(configTable).find('tbody tr').find('td:eq(1) input');
-    var tempConfig = {
-    cols: [],
-    rows: [],
-    numCols : $(this).parents('.modal-body').find('#numCols').val(),
-    numRows : $(this).parents('.modal-body').find('#numRows').val()
-    };
-
-    for(var i = 0; i < rowsHeaders.length; i++) {
-    if($.trim($(rowsHeaders[i]).val()) != '') {
-    tempConfig.rows.push($(rowsHeaders[i]).val());
-    }
-    }
-    for(var i = 0; i < colsHeaders.length; i++) {
-    if($.trim($(colsHeaders[i]).val()) != '') {
-    tempConfig.cols.push($(colsHeaders[i]).val());
-    }
-    }
-
-    $(hiddenConfig).val($.toJSON(tempConfig));*/
 });
 
 
@@ -947,20 +901,7 @@ function readConfigFromInterface(sender) {
         var rawId = $(defaultInputs[i]).attr('id');
         //console.log (strIndexes)
         if ($($(defaultInputs[i])[0]).val() != '') {
-            //console.log (strIndexes);
-            //	defaultValues[rawId] = $($(defaultInputs[i])[0]).val();
-            /*var oneValue = 
-            {
-            indexes: rawId,
-            def_val: $($(defaultInputs[i])[0]).val()
-            };
-			
-            tempConfig.values.push(oneValue);
-            */
-
             tempConfig.values[rawId] = $($(defaultInputs[i])[0]).val();
-
-
         }
     }
 
