@@ -35,10 +35,25 @@ class CladrController extends Controller {
         } else {
             $answer['street'] = null;
         }
+        if(!isset($data['house'])) {
+            $answer['house'] = '';
+        } else {
+            $answer['house'] = $data['house'];
+        }
         if(!isset($data['building'])) {
             $answer['building'] = '';
         } else {
             $answer['building'] = $data['building'];
+        }
+        if(!isset($data['flat'])) {
+            $answer['flat'] = '';
+        } else {
+            $answer['flat'] = $data['flat'];
+        }
+        if(!isset($data['postindex'])) {
+            $answer['postindex'] = '';
+        } else {
+            $answer['postindex'] = $data['postindex'];
         }
 
         if(Yii::app()->request->isAjaxRequest && (!isset($data['returnData']) || $data['returnData'] == 0)) {

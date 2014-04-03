@@ -248,7 +248,7 @@ $(document).ready(function() {
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a title="Редактировать ОМС" href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                        '<a href="#' + data[i].id + '" class="editOms" title="Редактировать ОМС">' +
                             '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
@@ -602,8 +602,18 @@ $(document).ready(function() {
                         if(data.street != null) {
                             $.fn['streetChooser'].addChoosed($('<li>').prop('id', 'r' + data.street[0].id).text(data.street[0].name), data.street[0]);
                         }
+
+                        if(data.house != null) {
+                            $('#editAddressPopup #house').val(data.house);
+                        }
                         if(data.building != null) {
                             $('#editAddressPopup #building').val(data.building);
+                        }
+                        if(data.flat != null) {
+                            $('#editAddressPopup #flat').val(data.flat);
+                        }
+                        if(data.postindex != null) {
+                            $('#editAddressPopup #postindex').val(data.building);
                         }
                     }
                     $('#editAddressPopup').modal('show');
@@ -649,18 +659,36 @@ $(document).ready(function() {
             var streetId = null;
         }
 
-        var building = $('#building').val();
-        if($.trim(building) == '') {
-            building = 'данных дома-квартиры нет';
+        var house = $('#house').val();
+        if($.trim(house) == '') {
+            house = 'номера дома нет';
         }
 
-        $(clickedRow).find('input[type="text"]').val(region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + building);
+        var building = $('#building').val();
+        if($.trim(building) == '') {
+            building = 'без корпуса / строения';
+        }
+
+        var flat = $('#flat').val();
+        if($.trim(flat) == '') {
+            flat = 'квартиры нет';
+        }
+
+        var postindex = $('#postindex').val();
+        if($.trim(postindex) == '') {
+            postindex = 'без почтового индекса';
+        }
+
+        $(clickedRow).find('input[type="text"]').val(region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + house + ', ' + building + ', ' + flat + ', ' + postindex);
         $(clickedRow).find('input[type="hidden"]').val($.toJSON({
             'regionId' : regionId,
             'districtId' : districtId,
             'settlementId' : settlementId,
             'streetId' : streetId,
-            'building' : building
+            'house' : $.trim(house),
+            'building' : $.trim(building),
+            'flat' : $.trim(flat),
+            'postindex' : $.trim(postindex)
         }));
 
         $('#editAddressPopup').modal('hide');
@@ -675,7 +703,10 @@ $(document).ready(function() {
         $.fn['settlementChooser'].enable();
         $.fn['streetChooser'].clearAll();
         $.fn['streetChooser'].enable();
+        $('#house').val('');
         $('#building').val('');
+        $('#flat').val('');
+        $('#postindex').val('');
     });
 
     $('.blockEdit').on('focus', function(e) {

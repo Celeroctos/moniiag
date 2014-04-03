@@ -915,10 +915,13 @@ class TasuController extends Controller {
         if(count($patients) == 0) {
             $oms = Oms::model()->findByPk($greeting['oms_id']);
             $medcard = Medcard::model()->findByPk($greeting['medcard']);
-            $this->addTasuPatient($medcard, $oms);
+            $result = $this->addTasuPatient($medcard, $oms);
+            if($result === false) {
+                return false;
+            }
             $patients = $this->searchTasuPatient($greeting);
         }
-        // Пациент такой должен быть всего один
+
         $patient = $patients[0];
         // Добавляем приём (талон, ТАП) к пациенту
         $this->addTasuTap($patient, $greeting);
@@ -976,6 +979,7 @@ class TasuController extends Controller {
                 throw new Exception();
             }
 
+            // Пациент такой должен быть всего один
             $sql = "EXEC PDPStdStorage.dbo.p_patset_20892
                         0,
                         '',
@@ -1104,32 +1108,90 @@ class TasuController extends Controller {
 
             $result = $conn->createCommand($sql)->execute();
 
-            // КВАДР пока не прикручен
-            /*$sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
-                        0,
-                        ".$patientRow->PatientUID.",
-                        '1',
-                        '643',
-                        '01',
-                        '002',
-                        '000020',
-                        '0010',
-                        'Адыгея Респ',
-                        'Кошехабльский р-н',
-                        'Хачемзий аул',
-                        'Пушкина ул',
-                        '31',
-                        '22',
-                        '121',
-                        '',
-                        0";
+            // Вынимаем данные об адресе из МИС-базы
 
-            $conn->createCommand($sql)->execute(); */
+            $addressData = $this->getAddressObjects(CJSON::decode($medcard->address));
+            $addressRegData = $this->getAddressObjects(CJSON::decode($medcard->address_reg));
+
+            // Запихнём адреса в ТАСУ
+            $sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
+                0,
+                ".$patientRow['PatientUID'].",
+                '1',
+                '643',
+                ".($addressData['region'] != null ? "'".$addressData['region']->code_cladr."'" : 'NULL').",
+                ".($addressData['district'] != null ? "'".$addressData['district']->code_cladr."'" : 'NULL').",
+                ".($addressData['settlement'] != null ? "'".$addressData['settlement']->code_cladr."'" : 'NULL').",
+                ".($addressData['street'] != null ? "'".$addressData['street']->code_cladr."'" : 'NULL').",
+                ".($addressData['region'] != null ? "'".$addressData['region']->name."'" : 'NULL').",
+                ".($addressData['district'] != null ? "'".$addressData['district']->name."'" : 'NULL').",
+                ".($addressData['settlement'] != null ? "'".$addressData['settlement']->name."'" : 'NULL').",
+                ".($addressData['street'] != null ? "'".$addressData['street']->name."'" : 'NULL').",
+                ".($addressData['house'] != null ? '"'.$addressData['house'].'"' : 'NULL').",
+                ".($addressData['building'] != null ? '"'.$addressData['building'].'"' : 'NULL').",
+                ".($addressData['flat'] != null ? '"'.$addressData['flat'].'"' : 'NULL').",
+                ".($addressData['postindex'] != null ? '"'.$addressData['postindex'].'"' : 'NULL').",
+                0";
+
+            $conn->createCommand($sql)->execute();
+
+            $sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
+                0,
+                ".$patientRow['PatientUID'].",
+                '2',
+                '643',
+                '".($addressRegData['region'] != null ? $addressRegData['region']->code_cladr : '')."',
+                '".($addressRegData['district'] != null ? $addressRegData['district']->code_cladr : '')."',
+                '".($addressRegData['settlement'] != null ? $addressRegData['settlement']->code_cladr : '')."',
+                '".($addressRegData['street'] != null ? $addressRegData['street']->code_cladr : '')."',
+                '".($addressRegData['region'] != null ? $addressRegData['region']->name : '')."',
+                '".($addressRegData['district'] != null ? $addressRegData['district']->name : '')."',
+                '".($addressRegData['settlement'] != null ? $addressRegData['settlement']->name : '')."',
+                '".($addressRegData['street'] != null ? $addressRegData['street']->name : '')."',
+                '".($addressRegData['house'] != null ? $addressRegData['house'] : '')."',
+                '".($addressRegData['building'] != null ? $addressRegData['building'] : '')."',
+                '".($addressRegData['flat'] != null ? $addressRegData['flat'] : '')."',
+                '".($addressRegData['postindex'] != null ? $addressRegData['postindex'] : '')."',
+                0";
+
+            $conn->createCommand($sql)->execute();
             $transaction->commit();
             return $result;
         } catch(Exception $e) {
             return false;
         }
+    }
+
+    /* Получить объекты, соотнесённые с адресом */
+    private function getAddressObjects($addressDataJson) {
+        $answer = array();
+        if(isset($addressDataJson['regionId']) && $addressDataJson['regionId'] != null) {
+            $answer['region'] = CladrRegion::model()->findByPk($addressDataJson['regionId']);
+        } else {
+            $answer['region'] = null;
+        }
+        if(isset($addressDataJson['districtId']) && $addressDataJson['districtId'] != null) {
+            $answer['district'] = CladrDistrict::model()->findByPk($addressDataJson['districtId']);
+        } else {
+            $answer['district'] = null;
+        }
+        if(isset($addressDataJson['settlementId']) && $addressDataJson['settlementId'] != null) {
+            $answer['settlement'] = CladrSettlement::model()->findByPk($addressDataJson['settlementId']);
+        } else {
+            $answer['settlement'] = null;
+        }
+        if(isset($addressDataJson['streetId']) && $addressDataJson['streetId'] != null) {
+            $answer['street'] = CladrSettlement::model()->findByPk($addressDataJson['streetId']);
+        } else {
+            $answer['street'] = null;
+        }
+
+        $answer['house'] = isset($addressDataJson['house']) ? $addressDataJson['house'] : '';
+        $answer['building'] = isset($addressDataJson['building']) ? $addressDataJson['building'] : '';
+        $answer['flat'] = isset($addressDataJson['flat']) ? $addressDataJson['flat'] : '';
+        $answer['postindex'] = isset($addressDataJson['postindex']) ? $addressDataJson['postindex'] : '';
+
+        return $answer;
     }
 
     private function addTasuTap($patient, $greeting) {
@@ -1150,6 +1212,107 @@ class TasuController extends Controller {
         $this->render('viewsync', array(
             'timestamps' => $toTempl
         ));
+    }
+
+    /* Синхронизация пациентов: ТАСУ в МИС */
+    public function actionSyncPatients() {
+        if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
+            echo CJSON::encode(array(
+                    'success' => false,
+                    'data' => array(
+                        'error' => 'Недостаточно информации о считывании данных!'
+                    ))
+            );
+            exit();
+        }
+
+        $processed = 0;
+        $numErrors = 0;
+        $numAdded = 0;
+
+        $log = array();
+
+        $patients = TasuPatient::model()->getRows(false, 'uid', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
+
+        if($_GET['totalRows'] == null) {
+            $totalRows = TasuCladrStreet::model()->getNumRows();
+            // Ставим отметку о дате синхронизации
+            $syncdateModel = Syncdate::model()->findByPk('patients');
+            if($syncdateModel == null) {
+                $syncdateModel = new Syncdate();
+            }
+            $syncdateModel->name = 'patients';
+            $syncdateModel->syncdate = date('Y-m-d h:i');
+            if(!$syncdateModel->save()) {
+                $log[] = 'Невозможно сохранить временную отметку о синронизации.';
+            }
+        } else {
+            $totalRows = $_GET['totalRows'];
+        }
+
+        foreach($patients as $patient) {
+            $processed++;
+            $tasuOms = TasuOms::model()->find('patientuid_09882 = :patient_uid AND version_end = :version_end AND t.state_19333 = :state', array(
+               ':patient_uid' => $patient['uid'],
+               ':version_end' => $patient['version_end'],
+               ':state' => 1 // Полис активен
+            ));
+            if($tasuOms == null) {
+                continue;
+            }
+
+            $issetPatient = Oms::model()->find('t.oms_number = :oms_number',
+                array(
+                    ':oms_number' => $tasuOms['series_14820'].' '.$tasuOms['number_12574'],
+                )
+            );
+
+            if($issetPatient != null) {
+                continue;
+            }
+
+            // Добавляем пациента, если его нет
+            try {
+                $newOms = new Oms();
+                $newOms->first_name = $patient['im_53316'];
+                $newOms->last_name = $patient['fam_18565'];
+                $newOms->type = 0; // Пока временно так
+                $newOms->middle_name = $patient['ot_48206'];
+                $newOms->oms_number = $tasuOms['series_14820'].' '.$tasuOms['number_12574'];
+                $newOms->gender = $patient['sex_40994'] == 1 ? 1 : 0;
+                $newOms->birthday = $patient['birthday_38523'];
+                $newOms->givedate = $tasuOms['issuedate_60296'];
+                $newOms->status = $tasuOms['state_19333'];
+                $newOms->enddate = $tasuOms['voiddate_10849'];
+                $newOms->tasu_id = $patient['uid'];
+                if(!$newOms->save()) {
+                    $log[] = 'Невозможно импортировать пациента с кодом '.$tasuOms['uid'];
+                    $numErrors++;
+                } else {
+                    $numAdded++;
+                }
+            } catch(Exception $e) {
+                var_dump($e);
+                exit();
+                $numErrors++;
+            }
+        }
+
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'log' => $log,
+                    'successMsg' => 'Успешно импортировано '.($_GET['totalRows'] + $processed).' пациентов.',
+                    'processed' => $processed,
+                    'totalRows' => $totalRows,
+                    'numErrors' => $numErrors,
+                    'numAdded' => $numAdded
+                ))
+        );
+    }
+    /* Синхронизация врачей: ТАСУ в МИС */
+    public function actionSyncDoctors() {
+
     }
 }
 ?>

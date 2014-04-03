@@ -354,9 +354,27 @@ $form = $this->beginWidget('CActiveForm', array(
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="building" class="col-xs-4 control-label">Дом, корпус, квартира, подъезд...</label>
+                    <label for="house" class="col-xs-4 control-label">Дом</label>
                     <div class="col-xs-7">
-                        <input type="text" class="form-control" id="building" placeholder="Введите информацию о доме, корпусе и.т.д.">
+                        <input type="text" class="form-control" id="house" placeholder="Дом">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="building" class="col-xs-4 control-label">Корпус</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="building" placeholder="Корпус">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="flat" class="col-xs-4 control-label">Квартира</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="flat" placeholder="Квартира">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postindex" class="col-xs-4 control-label">Почтовый индекс</label>
+                    <div class="col-xs-7">
+                        <input type="text" class="form-control" id="postindex" placeholder="Почтовый индекс">
                     </div>
                 </div>
             </div>
