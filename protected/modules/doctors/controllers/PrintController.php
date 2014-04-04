@@ -45,6 +45,15 @@ class PrintController extends Controller {
             $privModel = Privilege::model()->findByPk($priv->privilege_id);
             $priv['docname'] = '(Код '.$privModel->code.') '.$priv['docname'];
         }
+
+        // Превращаем адрес медкарты
+        $patientController = Yii::app()->createController('reception/patient');
+        $addressData = $patientController[0]->getAddressStr($medcard['address']);
+        $medcard['address'] = $addressData['addressStr'];
+
+        $addressRegData = $patientController[0]->getAddressStr($medcard['address_reg']);
+        $medcard['address_reg'] = $addressData['addressStr'];
+
         $this->render('index', array('medcard' => $medcard,
                                      'oms' => $oms,
                                      'enterprise' => $enterprise,

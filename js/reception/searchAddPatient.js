@@ -613,7 +613,7 @@ $(document).ready(function() {
                             $('#editAddressPopup #flat').val(data.flat);
                         }
                         if(data.postindex != null) {
-                            $('#editAddressPopup #postindex').val(data.building);
+                            $('#editAddressPopup #postindex').val(data.postindex);
                         }
                     }
                     $('#editAddressPopup').modal('show');
@@ -679,17 +679,26 @@ $(document).ready(function() {
             postindex = 'без почтового индекса';
         }
 
-        $(clickedRow).find('input[type="text"]').val(region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + house + ', ' + building + ', ' + flat + ', ' + postindex);
-        $(clickedRow).find('input[type="hidden"]').val($.toJSON({
+        var dataToJson = {
             'regionId' : regionId,
             'districtId' : districtId,
             'settlementId' : settlementId,
             'streetId' : streetId,
-            'house' : $.trim(house),
-            'building' : $.trim(building),
-            'flat' : $.trim(flat),
-            'postindex' : $.trim(postindex)
-        }));
+            'house' : $.trim($('#house').val()),
+            'building' : $.trim($('#building').val()),
+            'flat' : $.trim($('#flat').val()),
+            'postindex' : $.trim($('#postindex').val())
+        };
+        var textStr = region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + house + ', ' + building + ', ' + flat + ', ' + postindex;
+
+        $(clickedRow).find('input[type="text"]').val(textStr);
+        $(clickedRow).find('input[type="hidden"]').val($.toJSON(dataToJson));
+
+        // Повтор адреса регистрации в адресе проживания
+        if($(clickedRow).find('input[type="text"]').prop('id') == 'addressReg') {
+            $('#address').val(textStr);
+            $('#addressHidden').val($.toJSON(dataToJson));
+        }
 
         $('#editAddressPopup').modal('hide');
     });
@@ -707,6 +716,7 @@ $(document).ready(function() {
         $('#building').val('');
         $('#flat').val('');
         $('#postindex').val('');
+        e.stopPropagation();
     });
 
     $('.blockEdit').on('focus', function(e) {

@@ -3,6 +3,7 @@ class TasuController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
     public $answer = array();
     public $tableSchema = 'mis';
+	public $version_end = '9223372036854775807';
     // Просмотр страницы интеграции с ТАСУ
     public function actionView() {
         if(isset($_GET['iframe'])) {
@@ -1195,8 +1196,159 @@ class TasuController extends Controller {
     }
 
     private function addTasuTap($patient, $greeting) {
+        $conn = Yii::app()->db2;
+        $transaction = $conn->beginTransaction();
+        try {
+			$professional = $this->getTasuProfessional($greeting);
+			if($professional == false) {
+				throw new Exception('Сотрудника не удалось создать / найти');
+			}
+			$transaction->commit();
+            $sql = "EXEC PDPStdStorage.dbo.p_tapset_07615
+                    0,
+                    55959,
+                    200463,
+                    '2014-03-04',
+                    ".$professional->uid.",
+                    NULL,
+                    'ОМСМО',
+                    '1',
+                    NULL,
+                    NULL,
+                    NULL,
+                    NULL,
+                    '',
+                    NULL,
+                    NULL,
+                    NULL,
+                    '0',
+                    0,
+                    187763,
+                    199263,
+                    199863,
+                    NULL,
+                    '',
+                    ''";
+			
+			/* 
+			[addressuid_30547] = @arg_21, 
+			
+			EXEC PDPStdStorage.dbo.p_addressselect_52243 200463,NULL
+			
+	[policyuid_53853] = @arg_19, 
+	
+	SELECT
+	[_unmdtbl6510].[uid] AS [DULUID],
+	[_unmdtbl6510].[dultype_61616] AS [DULType],
+	[_unmdtbl6510].[dulseries_30145] AS [DULSeries],
+	[_unmdtbl6510].[dulnumber_50657] AS [DULNumber],
+	[_unmdtbl6510].[dulownerex_64833] AS [DULOwnerEx],
+	[_unmdtbl6510].[dulowner_fam_25160] AS [DULOwner_Fam],
+	[_unmdtbl6510].[dulowner_im_17872] AS [DULOwner_Im],
+	[_unmdtbl6510].[dulowner_ot_39466] AS [DULOwner_Ot],
+	[_unmdtbl6510].[disabled_19808] AS [Disabled],
+	[_unmdtbl6510].[dulowner_sex_57748] AS [DULOwner_Sex],
+	[_unmdtbl6510].[dulowner_birthday_40430] AS [DULOwner_Birthday],
+	[_unmdtbl6510].[issuedate_42162] AS [IssueDate],
+	[_unmdtbl6510].[voiddate_29235] AS [VoidDate],
+	[_unmdtbl6510].[issuer_42077] AS [Issuer],
+	[_unmdtbl6510].[issuestate_62503] AS [IssueState]
+FROM
+	PDPStdStorage.dbo.t_dul_44571 AS [_unmdtbl6510]
+WHERE
+	(([_unmdtbl6510].[patientuid_53984] = 200463)) AND [_unmdtbl6510].version_end = 9223372036854775807
 
+	
+	[bookuid_60769] = @arg_22, 
+	
+	
+	Три числа сверху
+			*/
+					
+            $result = $conn->createCommand($sql)->execute();
+            $transaction->commit();
+            return $result;
+        } catch(Exception $e) {
+            var_dump($e);
+            exit();
+            return false;
+        }
     }
+	
+	private function addTasuProfessional($doctor) {
+		// Получим последний ID для таблицы врачей
+		$conn = Yii::app()->db2;
+		$lastDoctorId = TasuEmployee::getLastUID();
+		$tasuEmployee = new TasuEmployee();
+		$tasuEmployee->uid = $lastDoctorId + 1;
+		$tasuEmployee->version_begin = '';
+		$tasuEmployee->version_end = $this->version_end;
+		$tasuEmployee->is_top = 1;
+		$tasuEmployee->created_by = 2;
+		$tasuEmployee->deleted_by = null;
+		$tasuEmployee->guid_61986 = null;
+		$tasuEmployee->lpuuid_64519 = 55959;
+		$tasuEmployee->code_47321 = $doctor->tabel_number;
+		$tasuEmployee->fam_45430 = $doctor->last_name;
+		$tasuEmployee->im_03922 = $doctor->first_name;
+		$tasuEmployee->ot_43242 = $doctor->middle_name;
+		$tasuEmployee->fio_24180 = $doctor->last_name.' '.$doctor->first_name.' '.$doctor->middle_name;
+		$tasuEmployee->shortfio_00269 = '';
+		$tasuEmployee->takeondate_51957 = $doctor->date_begin;
+		$tasuEmployee->discharged_46785 = 0;
+		$tasuEmployee->dischargedate_63406 = $doctor->date_end;
+		if(!$tasuEmployee->save()) {
+			throw new Exception();
+		}
+		
+		$lastServiceId = TasuServiceProfessional::getLastUID();
+		$tasuService = new TasuServiceProfessional();
+		$tasuService->uid = $lastServiceId + 1;
+		$tasuService->version_begin = '';
+		$tasuService->version_end = $this->version_end;
+		$tasuService->is_top = 1;
+		$tasuService->created_by = 2;
+		$tasuService->deleted_by = null;
+		$tasuService->lpuuid_10148 = 55959;
+		$tasuService->employeeuid_41855 = $tasuEmployee->uid;
+		$tasuService->provideruid_65300 = 54;
+		$tasuService->code_03423 = $doctor->tabel_number;
+		$tasuService->medicalservice_24160 = 32;
+		$tasuService->name_38209 = $doctor->last_name.' '.$doctor->first_name.' '.$doctor->middle_name;
+		$tasuService->positionuid_31250 = null;
+		$tasuService->fromdate_04636 = null;
+		$tasuService->todate_02649 = null;
+		if(!$tasuService->save()) {
+			throw new Exception();
+		}
+		
+		return $tasuEmployee;
+	}
+	
+	private function getTasuProfessional($greeting) {
+		$conn = Yii::app()->db2;
+		$doctor = Doctor::model()->findByPk($greeting['doctor_id']);
+		if($doctor == null) {
+			return false;
+		}
+		$sql = "SELECT
+					[sp].[uid] AS [ProfessionalUID]
+				FROM
+					PDPStdStorage.dbo.t_serviceprofessional_43322 AS [sp] 
+				INNER JOIN PDPStdStorage.dbo.t_employee_22089 AS [e] ON 
+					[sp].[employeeuid_41855] = [e].[uid] 
+					AND [e].version_end = ".$this->version_end."
+				WHERE
+					[sp].[code_03423] = '".$doctor->tabel_number."' 
+					AND [e].[lpuuid_64519] = 55959 
+					AND [e].[discharged_46785] = 0 
+					AND [sp].version_end = ".$this->version_end;
+		$professional = $conn->createCommand($sql)->queryRow();
+		if($professional == null) {
+			$professional = $this->addTasuProfessional($doctor);
+		}
+		return $professional;
+	}
 
     /* Посмотреть страницу синхронизации с ТАСУ */
     public function actionViewSync() {

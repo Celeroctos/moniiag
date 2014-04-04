@@ -14,7 +14,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
         try {
             $connection = Yii::app()->db;
             $buffer = $connection->createCommand()
-                ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted, o.oms_number, o.id as oms_id')
+                ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted, o.oms_number, o.id as oms_id, dsbd.doctor_id')
                 ->from(TasuGreetingsBuffer::tableName().' tgb')
                 ->join(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
                 ->join(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
@@ -82,7 +82,8 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ->join(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
                 ->where('NOT EXISTS (SELECT *
                                      FROM '.TasuGreetingsBuffer::tableName().' tgb
-                                     WHERE tgb.greeting_id = dsbd.id)');
+                                     WHERE tgb.greeting_id = dsbd.id)')
+				->andWhere('dsbd.is_accepted = 1');
 
             return $notBuffered->queryAll();
         } catch(Exception $e) {

@@ -483,7 +483,8 @@ $form= $this->beginWidget('CActiveForm', array(
                 $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
                     'form' => $form,
                     'model' => $modelMedcard,
-                    'privilegesList' => $privilegesList
+                    'privilegesList' => $privilegesList,
+                    'template' => 'application.modules.reception.components.widgets.views.MedcardFormWidget'
                 ));
                 ?>
             </div>
@@ -494,3 +495,11 @@ $form= $this->beginWidget('CActiveForm', array(
     </div>
 </div>
 <?php $this->endWidget(); ?>
+<?php
+$this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
+    'form' => $form,
+    'model' => $modelMedcard,
+    'privilegesList' => $privilegesList,
+    'template' => 'application.modules.reception.components.widgets.views.addressEditPopup'
+));
+?>

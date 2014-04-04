@@ -123,7 +123,8 @@ class PatientController extends Controller {
                     'regPoint' => date('Y'),
                     'privilegesList' => $privilegesList,
                     'foundPriv' => count($privileges) > 0,
-                    'id' => -1
+                    'id' => -1,
+                    'actionAdd' => 'addcard'
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -134,6 +135,7 @@ class PatientController extends Controller {
                     'foundPriv' => false,
                     'policy_number' => -1,
                     'policy_id' => -1,
+                    'actionAdd' => 'add'
                 ));
             }
         } else {
@@ -162,7 +164,8 @@ class PatientController extends Controller {
                     'privilegesList' => $privilegesList,
                     'foundPriv' => false,
                     'fio' => $oms->first_name.' '.$oms->last_name.' '.$oms->middle_name,
-                    'policy_number' => $oms->oms_number
+                    'policy_number' => $oms->oms_number,
+                    'actionAdd' => 'addcard'
                 ));
                 exit();
             }
@@ -172,7 +175,8 @@ class PatientController extends Controller {
                 'model' => $model,
                 'regPoint' => date('Y'),
                 'privilegesList' => $privilegesList,
-                'foundPriv' => false
+                'foundPriv' => false,
+                'actioadd' => 'add'
             ));
         }
     }
@@ -466,7 +470,7 @@ class PatientController extends Controller {
             $addressHidden['settlementId'] = null;
         }
         if(isset($address['street']) && $address['street'] != null) {
-            $addressStr .= $address['street'][0]['name'];
+            $addressStr .= $address['street'][0]['name'].', ';
             $addressHidden['streetId'] = $address['street'][0]['id'];
         } else {
             $addressStr .= 'улица неизвестна, ';
@@ -474,7 +478,7 @@ class PatientController extends Controller {
         }
 
         if(isset($address['house']) && trim($address['house']) != '') {
-            $addressStr .= $address['house'];
+            $addressStr .= $address['house'].', ';
             $addressHidden['house'] = $address['house'];
         } else {
             $addressStr .= 'номера дома нет, ';
@@ -482,7 +486,7 @@ class PatientController extends Controller {
         }
 
         if(isset($address['building']) && trim($address['building']) != '') {
-            $addressStr .= $address['building'];
+            $addressStr .= $address['building'].', ';
             $addressHidden['building'] = $address['building'];
         } else {
             $addressStr .= 'без корпуса / строения, ';
@@ -490,7 +494,7 @@ class PatientController extends Controller {
         }
 
         if(isset($address['flat']) && trim($address['flat']) != '') {
-            $addressStr .= $address['flat'];
+            $addressStr .= $address['flat'].', ';
             $addressHidden['flat'] = $address['flat'];
         } else {
             $addressStr .= 'квартиры нет, ';

@@ -344,6 +344,7 @@ $(document).ready(function() {
         },
         'primaryDiagnosisChooser' : {
             'primary' : 'id',
+            'maxChoosed' : 1,
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
