@@ -248,7 +248,7 @@ $(document).ready(function() {
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a title="Редактировать ОМС" href="http://' + location.host + '/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                        '<a href="#' + data[i].id + '" class="editOms" title="Редактировать ОМС">' +
                             '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
@@ -602,6 +602,19 @@ $(document).ready(function() {
                         if(data.street != null) {
                             $.fn['streetChooser'].addChoosed($('<li>').prop('id', 'r' + data.street[0].id).text(data.street[0].name), data.street[0]);
                         }
+
+                        if(data.house != null) {
+                            $('#editAddressPopup #house').val(data.house);
+                        }
+                        if(data.building != null) {
+                            $('#editAddressPopup #building').val(data.building);
+                        }
+                        if(data.flat != null) {
+                            $('#editAddressPopup #flat').val(data.flat);
+                        }
+                        if(data.postindex != null) {
+                            $('#editAddressPopup #postindex').val(data.postindex);
+                        }
                     }
                     $('#editAddressPopup').modal('show');
                 }
@@ -646,20 +659,46 @@ $(document).ready(function() {
             var streetId = null;
         }
 
-        var building = $('#building').val();
-        if($.trim(building) == '') {
-            building = 'данных дома-квартиры нет';
+        var house = $('#house').val();
+        if($.trim(house) == '') {
+            house = 'номера дома нет';
         }
 
-        $(clickedRow).find('input[type="text"]').val(region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + building);
-        $(clickedRow).find('input[type="hidden"]').val($.toJSON({
+        var building = $('#building').val();
+        if($.trim(building) == '') {
+            building = 'без корпуса / строения';
+        }
+
+        var flat = $('#flat').val();
+        if($.trim(flat) == '') {
+            flat = 'квартиры нет';
+        }
+
+        var postindex = $('#postindex').val();
+        if($.trim(postindex) == '') {
+            postindex = 'без почтового индекса';
+        }
+
+        var dataToJson = {
             'regionId' : regionId,
             'districtId' : districtId,
             'settlementId' : settlementId,
-            'streetId' : streetId
-        }));
+            'streetId' : streetId,
+            'house' : $.trim($('#house').val()),
+            'building' : $.trim($('#building').val()),
+            'flat' : $.trim($('#flat').val()),
+            'postindex' : $.trim($('#postindex').val())
+        };
+        var textStr = region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + house + ', ' + building + ', ' + flat + ', ' + postindex;
 
-        $('#building').val('');
+        $(clickedRow).find('input[type="text"]').val(textStr);
+        $(clickedRow).find('input[type="hidden"]').val($.toJSON(dataToJson));
+
+        // Повтор адреса регистрации в адресе проживания
+        if($(clickedRow).find('input[type="text"]').prop('id') == 'addressReg') {
+            $('#address').val(textStr);
+            $('#addressHidden').val($.toJSON(dataToJson));
+        }
 
         $('#editAddressPopup').modal('hide');
     });
@@ -673,9 +712,14 @@ $(document).ready(function() {
         $.fn['settlementChooser'].enable();
         $.fn['streetChooser'].clearAll();
         $.fn['streetChooser'].enable();
+        $('#house').val('');
+        $('#building').val('');
+        $('#flat').val('');
+        $('#postindex').val('');
+        e.stopPropagation();
     });
 
-    $('#address, #addressReg').on('focus', function(e) {
+    $('.blockEdit').on('focus', function(e) {
         $(this).blur();
         return false;
     });

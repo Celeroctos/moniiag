@@ -2,7 +2,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/medcardView.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
-<h4>Просмотр медкарт</h4>
+<h4>Просмотр медицинских карт</h4>
 <div class="row">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -18,9 +18,9 @@
     ?>
     <div class="col-xs-5">
         <div class="form-group">
-            <label for="omsNumber" class="col-xs-4 control-label">Номер ОМС</label>
+            <label for="omsNumber" class="col-xs-4 control-label">Номер полиса</label>
             <div class="col-xs-8">
-                <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС" title="Номер ОМС может состоять из цифр и пробелов">
+                <input type="text" class="form-control" autofocus id="omsNumber" placeholder="Номер полиса" title="Номер полиса может состоять из цифр и пробелов">
             </div>
         </div>
         <div class="form-group">

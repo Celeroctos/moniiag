@@ -180,6 +180,20 @@ $(document).ready(function(e) {
                 'successFunc' : function() {
 
                 }
+            },
+            '#syncPatients' : {
+                'url' : '/index.php/admin/tasu/syncpatients',
+                'successMsg' : 'Синхронизация с ТАСУ завершена!',
+                'successFunc' : function() {
+
+                }
+            },
+            '#syncDoctors' : {
+                'url' : '/index.php/admin/tasu/syncdoctors',
+                'successMsg' : 'Синхронизация с ТАСУ завершена!',
+                'successFunc' : function() {
+
+                }
             }
         };
         return config;

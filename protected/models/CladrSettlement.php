@@ -13,7 +13,7 @@ class CladrSettlement extends MisActiveRecord {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $settlements = $connection->createCommand()
-            ->select('cs.*, cr.id as region_id, cr.name as region, cs.name as district')
+            ->select('cs.*, cr.id as region_id, cr.name as region')
             ->from(CladrSettlement::tableName().' cs')
             ->leftJoin(CladrRegion::tableName(). ' cr', 'cs.code_region = cr.code_cladr');
 
@@ -32,20 +32,61 @@ class CladrSettlement extends MisActiveRecord {
             $settlements->limit($limit, $start);
         }
 
-        return $settlements->queryAll();
+        $result = $settlements->queryAll();
+        foreach($result as &$element) {
+            $district = CladrDistrict::model()->find(
+              'code_cladr = :code_cladr
+              AND code_region = :code_region',
+              array(':code_cladr' => $element['code_district'],
+                    ':code_region' => $element['code_region'])
+            );
 
+            if($district != null) {
+                $element['district_id'] = $district->id;
+                $element['district'] = $district->name;
+            } else {
+                $element['district_id'] = null;
+                $element['district'] = null;
+            }
+        }
+        return $result;
     }
 
     public function getOne($id) {
         try {
             $connection = Yii::app()->db;
             $settlement = $connection->createCommand()
-                ->select('cs.*')
+                ->select('cs.*, cr.name as region, cr.id as region_id, cd.id as district_id, cd.name as district, cr.name as region')
                 ->from(CladrSettlement::tableName().' cs')
-                ->where('cs.id = :id', array(':id' => $id))
+                ->leftJoin(CladrRegion::tableName().' cr', 'cr.code_cladr = cs.code_region')
+                ->leftJoin(CladrDistrict::tableName().' cd', 'cd.code_cladr = cs.code_district')
+                ->where('cs.id = :id AND cd.id IN(SELECT cd2.id FROM '.CladrDistrict::tableName().' cd2 WHERE cd2.code_cladr = cd.code_cladr AND cd2.code_region = cr.code_cladr)', array(':id' => $id))
                 ->queryRow();
 
             return $settlement;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function getNumRows($filters) {
+        try {
+            $connection = Yii::app()->db;
+            $num = $connection->createCommand()
+                ->select('COUNT(cs.*) as num')
+                ->from(CladrSettlement::tableName().' cs');
+
+            if($filters !== false) {
+                $this->getSearchConditions($num, $filters, array(
+                ), array(
+                    'cs' => array('name', 'code_region', 'code_district')
+                ), array(
+                ));
+            }
+
+            $row = $num->queryRow();
+            return $row['num'];
 
         } catch(Exception $e) {
             echo $e->getMessage();

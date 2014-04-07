@@ -31,7 +31,8 @@
                 'form' => $form,
                 'model' => $model,
                 'privilegesList' => $privilegesList,
-                'showEditIcon' => 1
+                'showEditIcon' => 1,
+                'template' => 'application.modules.reception.components.widgets.views.MedcardFormWidget'
             )); ?>
             <div class="form-group">
                 <div class="add-patient-submit">
@@ -89,3 +90,10 @@
         </div>
     </div>
 </div>
+<?php $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
+    'form' => $form,
+    'model' => $model,
+    'privilegesList' => $privilegesList,
+    'showEditIcon' => 1,
+    'template' => 'application.modules.reception.components.widgets.views.addressEditPopup'
+)); ?>

@@ -4,13 +4,18 @@ class MedcardFormWidget extends CWidget {
     public $form;
     public $privilegesList;
     public $showEditIcon = false;
+    public $template = null;
     public function run() {
-        $this->render('application.modules.reception.components.widgets.views.MedcardFormWidget', array(
-            'form' => $this->form,
-            'model' => $this->model,
-            'privilegesList' => $this->privilegesList,
-            'showEditIcon' => $this->showEditIcon
-        ));
+        if($this->template != null) {
+            $this->render($this->template, array(
+                'form' => $this->form,
+                'model' => $this->model,
+                'privilegesList' => $this->privilegesList,
+                'showEditIcon' => $this->showEditIcon
+            ));
+        } else {
+
+        }
     }
 }
 

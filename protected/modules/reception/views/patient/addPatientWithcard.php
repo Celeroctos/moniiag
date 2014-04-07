@@ -19,33 +19,34 @@
         )
     ));
     ?>
-        <div class="row">
-            <div class="col-xs-6">
-                <?php echo $form->hiddenField($model,'mediateId', array(
-                    'id' => 'mediateId'
-                )); ?>
-                <?php echo $form->hiddenField($model,'policy', array(
-                    'id' => 'policy',
-                    'class' => 'form-control'
-                )); ?>
-                <p>Данные медицинской карты:</p>
-                <?php $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
-                    'form' => $form,
-                    'model' => $model,
-                    'privilegesList' => $privilegesList,
-                    'showEditIcon' => 1
-                )); ?>
-            </div>
+    <div class="row">
+        <div class="col-xs-6">
+            <?php echo $form->hiddenField($model,'mediateId', array(
+                'id' => 'mediateId'
+            )); ?>
+            <?php echo $form->hiddenField($model,'policy', array(
+                'id' => 'policy',
+                'class' => 'form-control'
+            )); ?>
+            <p>Данные медицинской карты:</p>
+            <?php $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
+                'form' => $form,
+                'model' => $model,
+                'privilegesList' => $privilegesList,
+                'showEditIcon' => 1,
+                'template' => 'application.modules.reception.components.widgets.views.MedcardFormWidget'
+            )); ?>
         </div>
+    </div>
     <div class="form-group">
         <div class="add-patient-submit">
             <?php echo CHtml::ajaxSubmitButton(
                 'Добавить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addcard'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
-$("#patient-withoutcard-form").trigger("success", [data, textStatus, jqXHR])
-}'
+                        $("#patient-withcard-form").trigger("success", [data, textStatus, jqXHR])
+                    }'
                 ),
                 array(
                     'class' => 'btn btn-success'
@@ -92,3 +93,10 @@ $("#patient-withoutcard-form").trigger("success", [data, textStatus, jqXHR])
         </div>
     </div>
 </div>
+<?php $this->widget('application.modules.reception.components.widgets.MedcardFormWidget', array(
+    'form' => $form,
+    'model' => $model,
+    'privilegesList' => $privilegesList,
+    'showEditIcon' => 1,
+    'template' => 'application.modules.reception.components.widgets.views.addressEditPopup'
+)); ?>

@@ -123,7 +123,8 @@ class PatientController extends Controller {
                     'regPoint' => date('Y'),
                     'privilegesList' => $privilegesList,
                     'foundPriv' => count($privileges) > 0,
-                    'id' => -1
+                    'id' => -1,
+                    'actionAdd' => 'addcard'
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -134,6 +135,7 @@ class PatientController extends Controller {
                     'foundPriv' => false,
                     'policy_number' => -1,
                     'policy_id' => -1,
+                    'actionAdd' => 'add'
                 ));
             }
         } else {
@@ -162,7 +164,8 @@ class PatientController extends Controller {
                     'privilegesList' => $privilegesList,
                     'foundPriv' => false,
                     'fio' => $oms->first_name.' '.$oms->last_name.' '.$oms->middle_name,
-                    'policy_number' => $oms->oms_number
+                    'policy_number' => $oms->oms_number,
+                    'actionAdd' => 'addcard'
                 ));
                 exit();
             }
@@ -172,7 +175,8 @@ class PatientController extends Controller {
                 'model' => $model,
                 'regPoint' => date('Y'),
                 'privilegesList' => $privilegesList,
-                'foundPriv' => false
+                'foundPriv' => false,
+                'actioadd' => 'add'
             ));
         }
     }
@@ -434,7 +438,7 @@ class PatientController extends Controller {
         $formModel->profession = $medcard->profession;
     }
 
-    private function getAddressStr($address) {
+    public function getAddressStr($address) {
         $data = CJSON::decode($address);
         $cladrController = Yii::app()->createController('guides/cladr');
         if(!is_array($data) && !is_object($data)) {
@@ -443,29 +447,71 @@ class PatientController extends Controller {
         $data['returnData'] = 1;
         $address = $cladrController[0]->actionGetCladrData($data);
         $addressStr = '';
-        if($address['region'] != null) {
+        $addressHidden = array();
+        if(isset($address['region']) && $address['region'] != null) {
             $addressStr = $address['region'][0]['name'].', ';
+            $addressHidden['regionId'] = $address['region'][0]['id'];
         } else {
             $addressStr = 'Регион неизвестен, ';
+            $addressHidden['regionId'] = null;
         }
-        if($address['district'] != null) {
+        if(isset($address['district']) && $address['district'] != null) {
             $addressStr .= $address['district'][0]['name'].', ';
+            $addressHidden['districtId'] =  $address['district'][0]['id'];
         } else {
             $addressStr .= 'район неизвестен, ';
+            $addressHidden['districtId'] = null;
         }
-        if($address['settlement'] != null) {
+        if(isset($address['settlement']) && $address['settlement'] != null) {
             $addressStr .= $address['settlement'][0]['name'].', ';
+            $addressHidden['settlementId'] = $address['settlement'][0]['id'];
         } else {
             $addressStr .= 'населённый пункт неизвестен, ';
+            $addressHidden['settlementId'] = null;
         }
-        if($address['street'] != null) {
-            $addressStr .= $address['street'][0]['name'];
+        if(isset($address['street']) && $address['street'] != null) {
+            $addressStr .= $address['street'][0]['name'].', ';
+            $addressHidden['streetId'] = $address['street'][0]['id'];
         } else {
-            $addressStr .= 'улица неизвестна';
+            $addressStr .= 'улица неизвестна, ';
+            $addressHidden['streetId'] = null;
         }
+
+        if(isset($address['house']) && trim($address['house']) != '') {
+            $addressStr .= $address['house'].', ';
+            $addressHidden['house'] = $address['house'];
+        } else {
+            $addressStr .= 'номера дома нет, ';
+            $addressHidden['house'] = '';
+        }
+
+        if(isset($address['building']) && trim($address['building']) != '') {
+            $addressStr .= $address['building'].', ';
+            $addressHidden['building'] = $address['building'];
+        } else {
+            $addressStr .= 'без корпуса / строения, ';
+            $addressHidden['building'] = '';
+        }
+
+        if(isset($address['flat']) && trim($address['flat']) != '') {
+            $addressStr .= $address['flat'].', ';
+            $addressHidden['flat'] = $address['flat'];
+        } else {
+            $addressStr .= 'квартиры нет, ';
+            $addressHidden['flat'] = '';
+        }
+
+        if(isset($address['postindex']) && trim($address['postindex']) != '') {
+            $addressStr .= 'почтовый индекс '.$address['postindex'];
+            $addressHidden['flat'] = $address['postindex'];
+        } else {
+            $addressStr .= 'без почтового индекса';
+            $addressHidden['postindex'] = '';
+        }
+
         return array(
             'addressStr' => $addressStr,
-            'addressHidden' => CJSON::encode($address)
+            'addressHidden' => CJSON::encode($addressHidden)
         );
     }
 

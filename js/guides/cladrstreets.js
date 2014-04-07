@@ -147,9 +147,48 @@ $(document).ready(function() {
                             {
                                 modelField: 'name',
                                 formField: 'name'
+                            },
+                            {
+                                modelField: 'code_region',
+                                formField: 'codeRegion'
+                            },
+                            {
+                                modelField: 'code_district',
+                                formField: 'codeDistrict'
+                            },
+                            {
+                                modelField: 'code_settlement',
+                                formField: 'codeSettlement'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
+                            if(fields[i].formField == 'codeRegion') {
+                                $.fn['regionChooser2'].clearAll();
+                                $.fn['regionChooser2'].addChoosed($('<li>').prop('id', 'r' + data.data['region_id']).text(data.data['region']), {
+                                    'id' : data.data['region_id'],
+                                    'code_cladr' : data.data['code_region'],
+                                    'name' : data.data['region']
+                                });
+                                continue;
+                            }
+                            if(fields[i].formField == 'codeDistrict') {
+                                $.fn['districtChooser2'].clearAll();
+                                $.fn['districtChooser2'].addChoosed($('<li>').prop('id', 'r' + data.data['district_id']).text(data.data['district']), {
+                                    'id' : data.data['district_id'],
+                                    'code_cladr' : data.data['code_district'],
+                                    'name' : data.data['district']
+                                });
+                                continue;
+                            }
+                            if(fields[i].formField == 'codeSettlement') {
+                                $.fn['settlementChooser2'].clearAll();
+                                $.fn['settlementChooser2'].addChoosed($('<li>').prop('id', 'r' + data.data['settlement_id']).text(data.data['settlement']), {
+                                    'id' : data.data['settlement_id'],
+                                    'code_cladr' : data.data['code_settlement'],
+                                    'name' : data.data['settlement']
+                                });
+                                continue;
+                            }
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
                         $("#editStreetPopup").modal({
@@ -187,5 +226,44 @@ $(document).ready(function() {
                 }
             });
         }
+    });
+
+    $("#street-add-form, #street-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
+        if($(this).prop('id') == 'street-add-form') {
+            if($.fn["regionChooser"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            if($.fn["districtChooser"].getChoosed().length == 0) {
+                alert('Не выбран район!');
+                return false;
+            }
+            if($.fn["settlementChooser"].getChoosed().length == 0) {
+                alert('Не выбран населённый пункт!');
+                return false;
+            }
+            var region = $.fn["regionChooser"].getChoosed()[0].code_cladr;
+            var district = $.fn["districtChooser"].getChoosed()[0].code_cladr;
+            var settlement = $.fn["settlementChooser"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrStreetAdd[name]=' + $("#addStreetPopup #name").val() + '&FormCladrStreetAdd[codeCladr]=' + $("#addStreetPopup #codeCladr").val() + '&FormCladrStreetAdd[codeRegion]=' + region + '&FormCladrStreetAdd[codeDistrict]=' + district + '&FormCladrStreetAdd[id]=' + $("#addStreetPopup #id").val() + '&FormCladrStreetAdd[codeSettlement]=' + settlement;
+        } else {
+            if($.fn["regionChooser2"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            if($.fn["districtChooser2"].getChoosed().length == 0) {
+                alert('Не выбран район!');
+                return false;
+            }
+            if($.fn["settlementChooser2"].getChoosed().length == 0) {
+                alert('Не выбран населённый пункт!');
+                return false;
+            }
+            var region = $.fn["regionChooser2"].getChoosed()[0].code_cladr;
+            var district = $.fn["districtChooser2"].getChoosed()[0].code_cladr;
+            var settlement = $.fn["settlementChooser2"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrStreetAdd[name]=' + $("#editStreetPopup #name").val() + '&FormCladrStreetAdd[codeCladr]=' + $("#editStreetPopup #codeCladr").val() + '&FormCladrStreetAdd[codeRegion]=' + region + '&FormCladrStreetAdd[codeDistrict]=' + district + '&FormCladrStreetAdd[id]=' + $("#editStreetPopup #id").val() + '&FormCladrStreetAdd[codeSettlement]=' + settlement;
+        }
+        settings.data = strData;
     });
 });

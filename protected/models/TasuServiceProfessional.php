@@ -1,5 +1,5 @@
 <?php
-class TasuTap extends MisActiveRecord {
+class TasuServiceProfessional extends MisActiveRecord {
     public function getDbConnection(){
         return Yii::app()->db2;
     }
@@ -11,15 +11,15 @@ class TasuTap extends MisActiveRecord {
 
     public function tableName()
     {
-        return 'PDPStdStorage.dbo.t_tap_10874';
+        return 'dbo.t_serviceprofessional_43322';
     }
-
+	
 	public function getLastUID() {
 		try {
-			$connection = TasuTap::getDbConnection();
+			$connection = TasuServiceProfessional::getDbConnection();
 			$max = $connection->createCommand()
-				->select('MAX(tt.uid) as num')
-				->from(TasuTap::tableName().' tt');
+				->select('MAX(ts.uid) as num')
+				->from(TasuServiceProfessional::tableName().' ts');
 			$row = $max->queryRow();
 			return $row['num'];
         } catch(Exception $e) {
@@ -27,5 +27,4 @@ class TasuTap extends MisActiveRecord {
         }
 	}
 }
-
 ?>

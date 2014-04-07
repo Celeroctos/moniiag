@@ -96,7 +96,10 @@
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#district-add-form").trigger("success", [data, textStatus, jqXHR])
-                            }'
+                            }',
+                        'beforeSend' => 'function(jqXHR, settings) {
+                             $("#district-add-form").trigger("beforesend", [settings, jqXHR])
+                        }'
                     ),
                     array(
                         'class' => 'btn btn-primary'
@@ -185,7 +188,10 @@
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#district-edit-form").trigger("success", [data, textStatus, jqXHR])
-                            }'
+                        }',
+                        'beforeSend' => 'function(jqXHR, settings) {
+                             $("#district-edit-form").trigger("beforesend", [settings, jqXHR])
+                        }'
                     ),
                     array(
                         'class' => 'btn btn-primary'
