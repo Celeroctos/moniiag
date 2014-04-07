@@ -6,20 +6,38 @@
         "#edit-timeEnd-cont",
         "#add-timeBegin-cont",
         "#add-timeEnd-cont",
-        "#timeBegin0-cont",
-        "#timeBegin1-cont",
-        "#timeBegin2-cont",
-        "#timeBegin3-cont",
-        "#timeBegin4-cont",
-        "#timeBegin5-cont",
-        "#timeBegin6-cont",
-        "#timeEnd0-cont",
-        "#timeEnd1-cont",
-        "#timeEnd2-cont",
-        "#timeEnd3-cont",
-        "#timeEnd4-cont",
-        "#timeEnd5-cont",
-        "#timeEnd6-cont",
+
+
+        "#addShedulePopup #timeBegin0-cont",
+        "#addShedulePopup #timeBegin1-cont",
+        "#addShedulePopup #timeBegin2-cont",
+        "#addShedulePopup #timeBegin3-cont",
+        "#addShedulePopup #timeBegin4-cont",
+        "#addShedulePopup #timeBegin5-cont",
+        "#addShedulePopup #timeBegin6-cont",
+        "#addShedulePopup #timeEnd0-cont",
+        "#addShedulePopup #timeEnd1-cont",
+        "#addShedulePopup #timeEnd2-cont",
+        "#addShedulePopup #timeEnd3-cont",
+        "#addShedulePopup #timeEnd4-cont",
+        "#addShedulePopup #timeEnd5-cont",
+        "#addShedulePopup #timeEnd6-cont",
+
+        "#editSheduleEmployeePopup #timeBegin0-cont",
+        "#editSheduleEmployeePopup #timeBegin1-cont",
+        "#editSheduleEmployeePopup #timeBegin2-cont",
+        "#editSheduleEmployeePopup #timeBegin3-cont",
+        "#editSheduleEmployeePopup #timeBegin4-cont",
+        "#editSheduleEmployeePopup #timeBegin5-cont",
+        "#editSheduleEmployeePopup #timeBegin6-cont",
+        "#editSheduleEmployeePopup #timeEnd0-cont",
+        "#editSheduleEmployeePopup #timeEnd1-cont",
+        "#editSheduleEmployeePopup #timeEnd2-cont",
+        "#editSheduleEmployeePopup #timeEnd3-cont",
+        "#editSheduleEmployeePopup #timeEnd4-cont",
+        "#editSheduleEmployeePopup #timeEnd5-cont",
+        "#editSheduleEmployeePopup #timeEnd6-cont",
+
         
         ];
         
@@ -96,25 +114,30 @@
                 });
                 // ќбработчик на субконтролы, если оные есть
                 var subcontrol = $(Control).find('.subcontrol');
-                $(subcontrol).find('input').on('change', function(e) {
-                     var container = $(this).parents('.subfields');
-                     var hour = $(container).find('input.hour');
+                $(subcontrol).find('input').on('change', function (e) {
+                    var container = $(this).parents('.subfields');
+                    var hour = $(container).find('input.hour');
 
-                     var allowChange = true;
-                     if($.trim($(hour).val()) == '') {
+                    var allowChange = true;
+                    if ($.trim($(hour).val()) == '') {
                         allowChange = false;
-                     }
+                    }
 
-                     var minute = $(container).find('input.minute');
-                     if($.trim($(minute).val()) == '') {
+                    var minute = $(container).find('input.minute');
+                    if ($.trim($(minute).val()) == '') {
                         allowChange = false;
-                     }
+                    }
 
 
-                     // “олько если все три контрола установлены, дату в нормальном контроле можно мен€ть
-                     if(allowChange) {
-                         $($(this).parents('div.input-group')[0]).find('input.form-control:first').trigger('change', [1]);
-                     }
+                    // “олько если все три контрола установлены, дату в нормальном контроле можно мен€ть
+                    if (allowChange) {
+                        $($(this).parents('div.input-group')[0]).find('input.form-control:first').trigger('change', [1]);
+                    }
+                    else {
+                    // ¬ противном случае - обнул€ем значение контрола, так как введена неправильна€ дата.
+                    //   ¬ случае неопределЄнных состо€ний составл€ющих контролов - значение будет нулевое у общего контрола
+                        $($(this).parents('div.input-group')[0]).find('input.form-control:first').val('');
+                    }
                 });
                 $(subcontrol).find('input.hour').on('keyup', function(e) {
                     // ≈сли есть выделение, не переводить контрол автоматом

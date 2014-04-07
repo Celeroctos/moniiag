@@ -117,6 +117,8 @@ class ModulesController extends Controller {
         }
     }
 
+	
+
     // Добавление смены
     public function actionAddShift() {
         $model = new FormShiftAdd();

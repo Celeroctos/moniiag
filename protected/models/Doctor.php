@@ -37,6 +37,7 @@ class Doctor extends MisActiveRecord  {
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
                             $limit = false, $choosedDiagnosis = array(), $greetingDate = false) {
+
         $connection = Yii::app()->db;
         $doctor = $connection->createCommand()
             ->selectDistinct('d.*, w.name as ward, m.name as post')
@@ -79,21 +80,6 @@ class Doctor extends MisActiveRecord  {
         }
 
         $doctors = $doctor->queryAll();
-       /* foreach($doctors as $key => &$doctor) {
-            $doctor['cabinets'] = array();
-            $cabinets = DoctorCabinet::model()->findAll('doctor_id = :doctor_id', array(':doctor_id' => $doctor['id']));
-            foreach($cabinets as $cabinet) {
-                $cab = Cabinet::model()->findByPk($cabinet->cabinet_id);
-                if($cab == null) {
-                    continue;
-                }
-                $doctor['cabinets'][] = array(
-                    'id' => $cabinet->cabinet_id,
-                    'number' => $cab->cab_number,
-                    'description' => $cab->description
-                );
-            }
-        }*/
         return $doctors;
     }
 }

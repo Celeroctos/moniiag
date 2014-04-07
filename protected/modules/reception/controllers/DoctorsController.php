@@ -14,12 +14,16 @@ class DoctorsController extends Controller {
 
         $model = new Doctor();
 
+	
         // Вычислим общее количество записей
 	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
         $totalPages = ceil(count($num) / $rows);
         $start = $page * $rows - $rows;
-
+		
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
+		//var_dump($doctors);
+		//exit();
+	
         // Теперь обработаем врачей: ближайшую свободную дату можно взять из календаря
         foreach($doctors as &$doctor) {
             $nearFree = $this->getNearFreeDay($doctor['id']);
@@ -131,7 +135,7 @@ class DoctorsController extends Controller {
     }
 
     private function getNearFreeDay($doctorId) {
-        $shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+		$shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
         $numSheduleElements = count($shedule);
         if($numSheduleElements > 0) {
             $currentYear = date('Y');

@@ -31,6 +31,20 @@ class SheduleController extends Controller {
 
         $daysExp = $this->getExpDays(true);
 
+		/*Получим список выходных дней по поликилинике*/
+		$restDaysDb = SheduleRest::model()->findAll();
+		$restDays = array();
+		
+		foreach ($restDaysDb as $oneDay)
+		{
+			$restDays[] = $oneDay['day'];
+		}
+		
+		$formModel->weekEnds = CJSON::encode($restDays);
+		
+		// var_dump($restDays );
+		// exit();
+
         $this->render('index', array(
             'wardsList' => $wardsList,
             'postsList' => $postsList,
@@ -39,6 +53,60 @@ class SheduleController extends Controller {
             'cabinetList' => $cabinetList
         ));
     }
+
+	// Получение смен врачей
+	public function actionGetShiftsEmployee() {
+		try {
+			$rows = $_GET['rows'];
+			$page = $_GET['page'];
+			$sidx = $_GET['sidx'];
+			$sord = $_GET['sord'];
+			/*var_dump($_POST);
+			var_dump($_GET);
+			exit();
+			*/
+			if (isset($_GET['doctorId']))
+			{
+				$doctorId = $_GET['doctorId'];
+				//var_dump($doctorId );
+				//exit();
+				// Фильтры поиска
+				if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+					$filters = CJSON::decode($_GET['filters']);
+				} else {
+					$filters = false;
+				}
+				
+				$model = new SheduleSettedBe();
+				$num = $model->getRows($filters, $doctorId);
+
+				$totalPages = ceil(count($num) / $rows);
+				$start = $page * $rows - $rows;
+
+				$shifts = $model->getRows($filters, $doctorId, $sidx, $sord, $start, $rows);
+				
+				// Приведём дату в приличный вид
+				foreach($shifts as &$element) {
+					$beginArr = explode('-', $element['date_begin']);
+					$endArr = explode('-', $element['date_end']);
+					$element['date_begin'] = $beginArr[2].'.'.$beginArr[1].'.'.$beginArr[0];
+					$element['date_end'] = $endArr[2].'.'.$endArr[1].'.'.$endArr[0];
+				}
+				echo CJSON::encode(
+					array('rows' => $shifts,
+							'total' => $totalPages,
+							'records' => count($num))
+						);
+			}
+			else
+			{
+				echo CJSON::encode(array('success' => 'false',
+					'msg' => 'Ошибка - не задан сотрудник'));
+			}
+		} catch(Exception $e) {
+			echo $e->getMessage();
+		}
+	}
 
     // Дни-исключения
     public function getExpDays($createFirst = false) {
@@ -51,6 +119,34 @@ class SheduleController extends Controller {
         return $result;
     }
 
+	// Возвращает смену для сотрудна по id
+	public function actionGetOne() {		
+		$result = array();
+		if (isset($_GET['id']))
+		{
+			
+			$shedule = SheduleSettedBe::model()->findByPk($_GET['id']);
+			$result['date_begin'] = $shedule['date_begin'];
+			$result['date_end'] = $shedule['date_end'];
+			$result['employee_id'] = $shedule['employee_id'];
+			$result['id'] = $shedule['id'];
+			
+			// Достаём все дни для смены
+			$days = SheduleSetted::model()->findAll('date_id = :date_id', array(':date_id' => $shedule->id));
+			foreach($days as $oneDay)
+			{
+				$result['timeBegin'.$oneDay['weekday']] = $oneDay['time_begin'];
+				$result['timeEnd'.$oneDay['weekday']] = $oneDay['time_end'];
+				$result['cabinet'.$oneDay['weekday']] = $oneDay['cabinet_id'];
+			}
+		
+		}
+		
+		echo CJSON::encode(array('success' => true,
+			'data' => $result ));
+		
+	}
+
     public function actionAddEdit() {
         $model = new FormSheduleAdd();
         if(isset($_POST['FormSheduleAdd'])) {
@@ -62,90 +158,204 @@ class SheduleController extends Controller {
     }
 
     public function addEditModelShedule($model) {
-        if(!$model->validate(array('dateBegin', 'dateEnd', 'doctorId'))) {
-            echo CJSON::encode(array('success' => 'false',
-                                     'errors' => $model->errors));
-            exit();
-        }
-        $allClean = true; // Флаг, который говорит о том, новое ли совсем расписание или нет. Если хотя бы одно строка в расписании есть, этот флаг примет $i первой найденной непустой строки
-        if($model->doctorId != null) {
-            $dayModels = SheduleSetted::model()->findAll('employee_id = :employee_id AND date_id IS NOT NULL', array(':employee_id' => $model->doctorId));
-            $num = count($dayModels);
-            $days = array();
-            for($i = 0; $i < 7; $i++) {
-                // Ищем среди выбранных записей строку с таким днём в расписании
-                for($j = 0; $j < $num; $j++) {
-                    if($dayModels[$j]->weekday == $i) {
-                        $days[$i] = $dayModels[$j];
-                        $allClean = $j;
-                        break;
-                    }
-                }
-                if(empty($days[$i])) {
-                    $days[$i] = new SheduleSetted();
-                }
-            }
-        } else {
-            echo CJSON::encode(array('success' => 'false',
-                                     'errors' => 'Не cмогу добавить элемент расписания в базу!'));
-            exit();
-        }
-
-        // Создаём основную запись для расписания, если её нет
-        // Если есть расписание, значит можно вынуть ключ
-        if($allClean !== true && $days[$allClean]->date_id != null) {
-            $sheduleSettedBeModel = SheduleSettedBe::model()->find('id = :id', array(':id' => $days[$allClean]->date_id));
-
-        } else {
-            $sheduleSettedBeModel = new SheduleSettedBe();
-        }
-
-        $sheduleSettedBeModel->date_begin = $model->dateBegin;
+		// Проверяем, правильно ли введена дата начала и дата конца
+		if (!($model->validate(array('dateBegin')))||!($model->validate(array('dateEnd'))) ){
+				echo CJSON::encode(array('success' => 'false',
+						'errors' => 'Не заполнена дата начала или дата конца действия расписания' ));
+				exit();
+			}
+		
+		// Сохраняем сначала смену
+		$sheduleSettedBeModel = new SheduleSettedBe();
+		// Найдём смену, если задан её id
+		//var_dump($model->sheduleEmployeeId);
+		if ($model->sheduleEmployeeId != '' &&$model->sheduleEmployeeId !=  null)
+		{
+			$sheduleSettedBeModel  = SheduleSettedBe::model()->find('id = :id', array(':id' => $model->sheduleEmployeeId));
+			//$sheduleSettedBeModel = $shedulesFromBase [0];
+		}
+		$sheduleSettedBeModel->date_begin = $model->dateBegin;
         $sheduleSettedBeModel->date_end = $model->dateEnd;
-        if(!$sheduleSettedBeModel->save()) {
-            echo CJSON::encode(array('success' => 'false',
-                                     'errors' => 'Не cмогу добавить элемент расписания в базу!'));
-            exit();
-        }
-
-        for($i = 0; $i < 7; $i++) {
-            // Валидируем по отдельности. Если один из атрибутов валидный, а другой - нет, это ошибка. Если оба атрибуты времени пустые, то это значит, что время просто не задано на данный день, и он выходной. Если такой день уже есть, то его надо удалить из базы.
-            if(!$model->validate(array('timeBegin'.$i, 'timeEnd'.$i, 'cabinet'.$i))) {
-                if(($model->validate(array('timeBegin'.$i)) && !$model->validate(array('timeEnd'.$i))) ||
-                   (!$model->validate(array('timeBegin'.$i)) && $model->validate(array('timeEnd'.$i)))) {
-                    echo CJSON::encode(array('success' => 'false',
-                                             'errors' => $model->errors));
-                    exit();
-                } else {
-                    // Удаляем из базы
-                    $m = SheduleSetted::model()->deleteAll('employee_id = :employee_id AND weekday = :weekday', array(
-                        ':employee_id' => $model->doctorId,
-                        ':weekday' => $i
-                    ));
-                    continue;
-                }
-            }
-
-            $cabinet = 'cabinet'.$i;
-            $days[$i]->cabinet_id = $model->$cabinet;
-            if($days[$i]->employee_id == null) {
-                $days[$i]->employee_id = $model->doctorId;
-            }
-            $days[$i]->weekday = $i;
-            $timeBegin = 'timeBegin'.$i;
-            $days[$i]->time_begin = $model->$timeBegin;
-            $timeEnd = 'timeEnd'.$i;
-            $days[$i]->time_end = $model->$timeEnd;
-            $days[$i]->type = 0; // Обычное расписание
-            $days[$i]->date_id = $sheduleSettedBeModel->id;
-            if(!$days[$i]->save()) {
-                echo CJSON::encode(array('success' => 'false',
-                                         'errors' => 'Не могу добавить элемент расписания в базу!'));
-                exit();
-            }
-        }
+		
+		
+		$sheduleSettedBeModel->employee_id = $model->doctorId;
+		if(!$sheduleSettedBeModel->save()) {
+			echo CJSON::encode(array('success' => 'false',
+				'errors' => 'Не cмогу добавить элемент расписания в базу!'));
+			exit();
+		}
+		
+		// Вот тут делаем следующее: 
+		//  1. Перебираем расписания
+		//  2. Определяем - нужно ли изменить их дату начала и дату конца
+		//  (попадает дата начала и дата конца на даты нового расписания)
+		$existingShedules = SheduleSettedBe::model()->findAll('employee_id = :doctor_id', array(':doctor_id' => $model->doctorId));
+		
+		// Переберём смены
+		foreach ($existingShedules as $oneShedule)
+		{
+			// Если смена не та, которую мы только что сохранили
+			if ($oneShedule['id']!=$sheduleSettedBeModel['id'])
+			{
+				if ((strtotime($oneShedule['date_begin'])>strtotime($sheduleSettedBeModel->date_begin))
+					&&(strtotime($oneShedule['date_end'])<strtotime($sheduleSettedBeModel->date_end)))
+				{
+					// Новое расписание полностью перекрывает старое. Старое поидее надо удалить
+					$dateId =  $oneShedule['id'];
+					$oneShedule->delete();
+					// УБиваем старое расписание для данной смены
+					SheduleSetted::model()->deleteAll('date_id = :date_id', array(
+						':date_id' => $dateId
+						));
+					continue;	
+				}
+				
+				if ((strtotime($oneShedule['date_begin'])<strtotime($sheduleSettedBeModel->date_begin))
+					&&(strtotime($oneShedule['date_end'])>strtotime($sheduleSettedBeModel->date_begin))
+					&&(strtotime($oneShedule['date_end'])<strtotime($sheduleSettedBeModel->date_end)))
+				{
+					
+					// Новое расписание залезает на хвост старого. У старого надо изменить дату конца на дату, предшествующую
+					//   началу нового
+					$oneShedule['date_end'] = date("Y-m-d",strtotime($sheduleSettedBeModel->date_begin)-86400);
+					$result = $oneShedule->save();
+					continue;	
+				}
+				
+				if ((strtotime($oneShedule['date_end'])>strtotime($sheduleSettedBeModel->date_end))
+					&&(strtotime($oneShedule['date_begin'])>strtotime($sheduleSettedBeModel->date_begin))
+					&&(strtotime($oneShedule['date_begin'])<strtotime($sheduleSettedBeModel->date_end)))
+				{
+					// Новое расписание залезает на голову старого. У старого надо изменить дату начала на дату после 
+					//   конца нового
+					$oneShedule['date_begin'] = date("Y-m-d",strtotime($sheduleSettedBeModel->date_end)+86400);
+					$result = $oneShedule->save();
+					continue;
+				}
+				
+				if ((strtotime($oneShedule['date_begin'])<strtotime($sheduleSettedBeModel->date_begin))
+					&&(strtotime($oneShedule['date_end'])>strtotime($sheduleSettedBeModel->date_end)))
+				{
+					// Новое раписание находится посередине старого. Старое расписание надо разбить на две части
+					// Алгоритм такой.
+					// 1. Сохраняем дату конца старого расписания
+					// 2. Дату конца старого расписания меняем как дата начала нового - 1 день
+					// 3. Вставляем новое расписание, которое ничем не будет отличаться 
+					//   от старого кроме того, что у него дата начала будет равняться дате конца нового расписания + 1 день
+					
+					// 1
+					$oldEndDate = $oneShedule['date_end'];
+					
+					// 2
+					$oneShedule['date_end'] = date("Y-m-d",strtotime($sheduleSettedBeModel->date_begin)-86400);
+					$result = $oneShedule->save();
+					
+					// 3
+					$addingShedule = new SheduleSettedBe();
+					$addingShedule->date_begin = date("Y-m-d",strtotime($sheduleSettedBeModel->date_end)+86400);
+					$addingShedule->date_end = 	$oldEndDate;
+					$addingShedule->employee_id = $model->doctorId;
+					
+					$addingShedule->save();
+					
+					// Теперь копируем дни недели
+					$days = SheduleSetted::model()->findAll('date_id = :date_id', array(
+						':date_id' => $oneShedule['id']
+						));
+					foreach($days as $oneDay)
+					{
+						$cloneDay = new SheduleSetted();
+						$cloneDay ->cabinet_id = $oneDay['cabinet_id'];
+						$cloneDay ->employee_id = $oneDay['employee_id'];
+						$cloneDay ->weekday = $oneDay['weekday'];
+						$cloneDay ->time_begin = $oneDay['time_begin'];
+						$cloneDay ->time_end = $oneDay['time_end'];
+						$cloneDay ->type = 0; // Обычное расписание
+						$cloneDay ->date_id = $addingShedule['id'];
+						$cloneDay ->save();
+						
+					}
+					
+					
+					continue;	
+				}
+				
+			}
+		}
+		
+		
+		// УБиваем старое расписание для данной смены
+		SheduleSetted::model()->deleteAll('date_id = :date_id', array(
+			':date_id' => $sheduleSettedBeModel->id
+			));
+	
+		// Провалидируем время для каждого дня
+		for($i = 0; $i < 7; $i++)
+		{
+			if(($model->validate(array('timeBegin'.$i)) && !$model->validate(array('timeEnd'.$i))) ||
+				(!$model->validate(array('timeBegin'.$i)) && $model->validate(array('timeEnd'.$i)))) {
+					echo CJSON::encode(array('success' => 'false',
+							'errors' => $model->errors));
+					exit();
+				}
+		}
+		
+		// Запишем в базу данных
+		for($i = 0; $i < 7; $i++)
+		{
+				$timeBegin = 'timeBegin'.$i;
+				$timeEnd = 'timeEnd'.$i;
+				
+				// Если время начала или время конца - пусто, то значит, день для врача об'явлен выходным
+				if ((($model->$timeBegin=='')||($model->$timeBegin==null) )
+					|| (($model->$timeEnd=='')||($model->$timeEnd==null) ))
+						continue;
+				
+				$day = new SheduleSetted();
+				$cabinet = 'cabinet'.$i;
+				$day->cabinet_id = $model->$cabinet;
+				$day->employee_id = $model->doctorId;
+				$day->weekday = $i;
+				$timeBegin = 'timeBegin'.$i;
+				$day->time_begin = $model->$timeBegin;
+				$timeEnd = 'timeEnd'.$i;
+				$day->time_end = $model->$timeEnd;
+				$day->type = 0; // Обычное расписание
+				$day->date_id = $sheduleSettedBeModel->id;
+				
+				
+				if(!$day->save()) {
+					echo CJSON::encode(array('success' => 'false',
+							'errors' => 'Не могу добавить элемент расписания в базу!'));
+					exit();
+				}				
+		}
     }
 
+	// Поидее нужно будет переписать
+	public function actionDelete() {
+			if (isset($_GET['id']))
+			{
+				 try {
+					// Сначала удаляем расписание по дням для дней недели
+					SheduleSetted::model()->deleteAll('date_id = :date_id', array(
+							':date_id' => $_GET['id']
+							));
+				
+					// Удаляем смену
+					SheduleSettedBe::model()->deleteAll('id = :id', array(
+							':id' => $_GET['id']
+							));
+					echo CJSON::encode(array('success' => 'true',
+							'text' => 'Расписание успешно удалено'));
+				}
+				catch (Exception $e)
+				{
+					
+				}
+					
+			}
+	}
 
     public function addEditModelSheduleExp($model) {
         if($model->id != null) {
