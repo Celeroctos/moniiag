@@ -1099,3 +1099,369 @@ in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuContr
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1264)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1289)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1202)
+2014/04/07 11:50:26 [error] [php] Undefined index: date (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\print\greeting.php:2)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(869): PrintController->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(782): PrintController->renderPartial()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PrintController.php(172): PrintController->render()
+#3 unknown(0): PrintController->actionPrintGreeting()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PrintController->runAction()
+#8 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PrintController->filterGetAccessHierarchy()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PrintController->runActionWithFilters()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PrintController->run()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#15 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/print/printgreeting/?greetingid=484
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\views\print\greeting.php (2)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PrintController.php (172)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/07 12:14:28 [error] [php] Undefined variable: categorieResult (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\views\HistoryTreeElement.php:5)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(979): CategorieViewWidget->render()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\views\HistoryTree.php(58): CategorieViewWidget->drawHistoryCategorie()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(126): require()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CBaseController.php(95): CategorieViewWidget->renderInternal()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\widgets\CWidget.php(244): CategorieViewWidget->renderFile()
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(686): CategorieViewWidget->render()
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\PatientController.php(21): CategorieViewWidget->getFieldsHistoryByDate()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#11 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#15 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#16 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): PatientController->run()
+#17 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=18%2F14&date=2014-03-25+01%3A50&_=1396858565058
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\views\HistoryTreeElement.php (5)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (979)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\views\HistoryTree.php (58)
+2014/04/07 12:43:00 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Incorrect syntax near the keyword 'AND'.. Выполнявшийся SQL-запрос: SELECT
+						[_unmdtbl6510].[uid] AS [DULUID]
+					FROM
+						PDPStdStorage.dbo.t_dul_44571 AS [_unmdtbl6510]
+					WHERE
+						[_unmdtbl6510].[patientuid_53984] = 
+						AND [_unmdtbl6510].version_end = 9223372036854775807.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1215)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 12:43:33 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Incorrect syntax near the keyword 'AND'.. Выполнявшийся SQL-запрос: SELECT
+						[_unmdtbl6510].[uid] AS [DULUID]
+					FROM
+						PDPStdStorage.dbo.t_dul_44571 AS [_unmdtbl6510]
+					WHERE
+						[_unmdtbl6510].[patientuid_53984] = 
+						AND [_unmdtbl6510].version_end = 9223372036854775807.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1215)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 12:55:41 [error] [php] Undefined variable: patientRow (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1220)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396860880467
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1220)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 12:56:03 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[IMSSP]: The active result for the query contains no fields.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_addressselect_52243 200463,NULL.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1221)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 12:56:55 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[IMSSP]: The active result for the query contains no fields.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_addressselect_52243 200463,NULL.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1221)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 12:58:34 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[IMSSP]: The active result for the query contains no fields.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_addressselect_52243 200463,NULL.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1221)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 13:00:24 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[IMSSP]: The active result for the query contains no fields.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_addressselect_52243 200463,NULL.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1221)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 13:12:22 [error] [php] Undefined index: uid (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1252)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396860880478
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1252)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 13:12:56 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1266)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396860880480
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1266)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 13:53:33 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:926)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396864258530
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (926)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/07 13:54:00 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:926)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396864258531
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (926)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/07 13:56:36 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:926)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396864258534
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (926)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/07 13:57:04 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:926)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396864258535
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (926)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/07 13:58:49 [error] [php] Undefined offset: 0 (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:926)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396864258541
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (926)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+2014/04/07 14:05:15 [warning] [application] Не удалось присвоить небезопасный атрибут "controlId" класса "FormValueAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\GuidesController.php (176)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/07 14:49:56 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Incorrect syntax near '-'.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_tapset_07615
+                    1,
+                    55959,
+                    409659,
+                    2014-04-14,
+                    1753,
+                    NULL,
+                    'ОМСМО',
+                    '1',
+                    NULL,
+                    NULL,
+                    NULL,
+                    NULL,
+                    '',
+                    NULL,
+                    NULL,
+                    NULL,
+                    '0',
+                    0,
+                    407459,
+                    409959,
+                    199863,
+                    NULL,
+                    '',
+                    ''.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1271)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 15:28:37 [error] [php] Undefined variable: transaction (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1274)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396866022238
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1274)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 15:53:33 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Incorrect syntax near 'a'.. Выполнявшийся SQL-запрос: SELECT
+						[a].[uid] AS [DULUID]
+					FROM
+						PDPStdStorage.dbo.t_policy_43176 AS [a]
+					WHERE
+						[a].[series_14820] = 760001
+						[a].[number_12574] = 55660068
+						AND [a].version_end = 9223372036854775807.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1223)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 15:53:58 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[22018]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Conversion failed when converting the varchar value '46-19' to data type int.. Выполнявшийся SQL-запрос: SELECT
+						[a].[uid] AS [DULUID]
+					FROM
+						PDPStdStorage.dbo.t_policy_43176 AS [a]
+					WHERE
+						[a].[series_14820] = 760001
+						AND [a].[number_12574] = 55660068
+						AND [a].version_end = 9223372036854775807.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1223)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:04:14 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Cannot insert the value NULL into column 'version_begin', table 'PDPStdStorage.dbo.t_tap_10874'; column does not allow nulls. INSERT fails.. Выполнявшийся SQL-запрос: INSERT INTO [PDPStdStorage].[dbo].[t_tap_10874] ([number_55695], [dvnseries_45145], [dvnnumber_55059], [uid], [lpuuid_25856], [patientuid_40511], [fillingdate_36966], [doctoruid_47963], [medicalprogramm_28647], [serviceplace_59680], [dvnaction_51723], [dvnsex_24796], [dvnage_00771], [policyuid_53853], [duluid_44636], [addressuid_30547], [bookuid_60769]) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1342)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:05:10 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Cannot insert the value NULL into column 'is_top', table 'PDPStdStorage.dbo.t_tap_10874'; column does not allow nulls. INSERT fails.. Выполнявшийся SQL-запрос: INSERT INTO [PDPStdStorage].[dbo].[t_tap_10874] ([number_55695], [dvnseries_45145], [dvnnumber_55059], [uid], [version_begin], [version_end], [lpuuid_25856], [patientuid_40511], [fillingdate_36966], [doctoruid_47963], [medicalprogramm_28647], [serviceplace_59680], [dvnaction_51723], [dvnsex_24796], [dvnage_00771], [policyuid_53853], [duluid_44636], [addressuid_30547], [bookuid_60769]) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16, :yp17, :yp18).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1344)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:05:30 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Cannot insert the value NULL into column 'created_by', table 'PDPStdStorage.dbo.t_tap_10874'; column does not allow nulls. INSERT fails.. Выполнявшийся SQL-запрос: INSERT INTO [PDPStdStorage].[dbo].[t_tap_10874] ([number_55695], [dvnseries_45145], [dvnnumber_55059], [uid], [version_begin], [version_end], [is_top], [lpuuid_25856], [patientuid_40511], [fillingdate_36966], [doctoruid_47963], [medicalprogramm_28647], [serviceplace_59680], [dvnaction_51723], [dvnsex_24796], [dvnage_00771], [policyuid_53853], [duluid_44636], [addressuid_30547], [bookuid_60769]) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16, :yp17, :yp18, :yp19).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1345)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:05:49 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Violation of PRIMARY KEY constraint 'pk__ce269901726f40b1bfe57c44f97093af'. Cannot insert duplicate key in object 'dbo.t_tap_10874'.. Выполнявшийся SQL-запрос: INSERT INTO [PDPStdStorage].[dbo].[t_tap_10874] ([number_55695], [dvnseries_45145], [dvnnumber_55059], [uid], [version_begin], [version_end], [is_top], [created_by], [lpuuid_25856], [patientuid_40511], [fillingdate_36966], [doctoruid_47963], [medicalprogramm_28647], [serviceplace_59680], [dvnaction_51723], [dvnsex_24796], [dvnage_00771], [policyuid_53853], [duluid_44636], [addressuid_30547], [bookuid_60769]) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16, :yp17, :yp18, :yp19, :yp20).
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1346)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:28:11 [error] [php] Undefined variable: result (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1293)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396866022254
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1293)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:30:02 [error] [php] Undefined variable: result (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1293)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=&_=1396866022255
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1293)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (928)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 16:51:54 [error] [php] Undefined variable: conn (F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php:1319)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=1&_=1396866022270
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1319)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (930)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)

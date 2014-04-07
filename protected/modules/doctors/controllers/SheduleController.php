@@ -677,8 +677,18 @@ AND (weekday = :weekday OR day = :day)',
                 'data' => 'Не могу записать пациента!'));
             exit();
         }
+		
+		$writedMedcard = Medcard::model()->findByPk($_GET['card_number']);
+		if($writedMedcard != null) {
+			$writedOms = Oms::model()->findByPk($writedMedcard->policy_id);
+		}
+		$writedDoctor = Doctor::model()->findByPk($_GET['doctor_id']);
+		if($writedDoctor != null) {
+			
+		}		
+		
         echo CJSON::encode(array('success' => 'true',
-                                              'data' => 'Пациент успешно записан!'));
+                                              'data' => 'Пациент '.$writedOms->last_name.' '.$writedOms->first_name.' '.$writedOms->middle_name.' записан на приём к специалисту '.$writedDoctor->last_name.' '.$writedDoctor->first_name.' '.$writedDoctor->middle_name.' на '.$_GET['day'].'.'.$_GET['month'].' '.$_GET['year'].' '.$_GET['time'].'.'));
     }
     // Отписать пациента от приёма
     public function actionUnwritePatient() {

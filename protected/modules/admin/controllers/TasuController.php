@@ -912,9 +912,9 @@ class TasuController extends Controller {
 
     private function moveGreetingToTasuDb($greeting) {
         $patients = $this->searchTasuPatient($greeting);
+		$oms = Oms::model()->findByPk($greeting['oms_id']);
         // Добавление пациента, если такой не найден
         if(count($patients) == 0) {
-            $oms = Oms::model()->findByPk($greeting['oms_id']);
             $medcard = Medcard::model()->findByPk($greeting['medcard']);
             $result = $this->addTasuPatient($medcard, $oms);
             if($result === false) {
@@ -925,7 +925,9 @@ class TasuController extends Controller {
 
         $patient = $patients[0];
         // Добавляем приём (талон, ТАП) к пациенту
-        $this->addTasuTap($patient, $greeting);
+        $tap = $this->addTasuTap($patient, $greeting, $oms);
+		// Добавляем MKБ-10 диагнозы к приёму
+		$this->setMKB10ByTap($tap, $greeting, $oms);
     }
 
     private function searchTasuPatient($greeting) {
@@ -953,13 +955,13 @@ class TasuController extends Controller {
                     FROM
 	                  PDPStdStorage.dbo.t_patient_10905 AS [pat]
 	                INNER JOIN PDPStdStorage.dbo.t_policy_43176 AS [p] ON (([p].[patientuid_09882] =
-[pat].[uid])) AND ([p].version_end = 9223372036854775807)
+[pat].[uid])) AND ([p].version_end = ".$this->version_end.")
                     INNER JOIN PDPStdStorage.dbo.t_smo_30821 AS [s] ON (([p].[smouid_25976] =
-[s].[uid])) AND ([s].version_end = 9223372036854775807)
+[s].[uid])) AND ([s].version_end = ".$this->version_end.")
                     WHERE
 	                  ((([p].[series_14820] = '".trim($policyParts[0])."') AND ([p].[number_12574] = '".trim($policyParts[1])."')
 	                  AND ([pat].[closeregistrationcause_59292] IS NULL)))
-	                  AND [pat].version_end = 9223372036854775807";
+	                  AND [pat].version_end = ".$this->version_end;
 
             $resultPatient = $conn->createCommand($sql)->queryAll();
             return $resultPatient;
@@ -973,7 +975,6 @@ class TasuController extends Controller {
         $transaction = $conn->beginTransaction();
         try {
             // Номер полиса состоит из двух частей: серия (пробел) номер
-            $version = '9223372036854775807';
             $policyParts = explode(' ', $oms->oms_number);
             // Неправильный номер полиса по формату
             if(count($policyParts) != 2) {
@@ -1029,7 +1030,7 @@ class TasuController extends Controller {
 	                      AND (DATEPART(month,[_unmdtbl2636].[birthday_38523]) = ".(int)$birthdayParts[1].")
 	                      AND (DATEPART(day,[_unmdtbl2636].[birthday_38523]) = ".(int)$birthdayParts[2].")
                           AND ([_unmdtbl2636].[uid] <> 0)))
-                          AND [_unmdtbl2636].version_end = ".$version;
+                          AND [_unmdtbl2636].version_end = ".$this->version_end;
 
             $patientRow = $conn->createCommand($sql)->queryRow();
 
@@ -1045,7 +1046,7 @@ class TasuController extends Controller {
                     WHERE
                         ((([_unmdtbl2635].[coderegion_54021] = '".$regionCode."')
                         AND ([_unmdtbl2635].[codesmo_46978] = '".$smoCode."')))
-                        AND [_unmdtbl2635].version_end = ".$version;
+                        AND [_unmdtbl2635].version_end = ".$this->version_end;
 
             $smoRow = $conn->createCommand($sql)->queryRow();
             if($smoRow == null) {
@@ -1059,7 +1060,7 @@ class TasuController extends Controller {
                     WHERE
                     ((([_unmdtbl2638].[coderegion_54021] = '".$regionCode."')
                     AND ([_unmdtbl2638].[codesmo_46978] = '".$smoCode."')))
-                    AND [_unmdtbl2638].version_end = ".$version."
+                    AND [_unmdtbl2638].version_end = ".$this->version_end."
                     ORDER BY
                         [_unmdtbl2638].[enabled_56485] DESC";
 
@@ -1108,7 +1109,6 @@ class TasuController extends Controller {
                         NULL";
 
             $result = $conn->createCommand($sql)->execute();
-
             // Вынимаем данные об адресе из МИС-базы
 
             $addressData = $this->getAddressObjects(CJSON::decode($medcard->address));
@@ -1195,85 +1195,143 @@ class TasuController extends Controller {
         return $answer;
     }
 
-    private function addTasuTap($patient, $greeting) {
+    private function addTasuTap($patient, $greeting, $oms) {
         $conn = Yii::app()->db2;
-        $transaction = $conn->beginTransaction();
         try {
 			$professional = $this->getTasuProfessional($greeting);
 			if($professional == false) {
 				throw new Exception('Сотрудника не удалось создать / найти');
 			}
-			$transaction->commit();
-            $sql = "EXEC PDPStdStorage.dbo.p_tapset_07615
-                    0,
-                    55959,
-                    200463,
-                    '2014-03-04',
-                    ".$professional->uid.",
-                    NULL,
-                    'ОМСМО',
-                    '1',
-                    NULL,
-                    NULL,
-                    NULL,
-                    NULL,
-                    '',
-                    NULL,
-                    NULL,
-                    NULL,
-                    '0',
-                    0,
-                    187763,
-                    199263,
-                    199863,
-                    NULL,
-                    '',
-                    ''";
 			
-			/* 
-			[addressuid_30547] = @arg_21, 
+			// Номер полиса состоит из двух частей: серия (пробел) номер
+            $policyParts = explode(' ', $oms->oms_number);
+            // Неправильный номер полиса по формату
+            if(count($policyParts) != 2) {
+                throw new Exception();
+            }
 			
-			EXEC PDPStdStorage.dbo.p_addressselect_52243 200463,NULL
+			$omsRow = $sql = "SELECT
+						[a].[uid]
+					FROM
+						PDPStdStorage.dbo.t_policy_43176 AS [a]
+					WHERE
+						[a].[series_14820] = '".$policyParts[0]."'
+						AND [a].[number_12574] = '".$policyParts[1]."'
+						AND [a].version_end = ".$this->version_end;
 			
-	[policyuid_53853] = @arg_19, 
-	
-	SELECT
-	[_unmdtbl6510].[uid] AS [DULUID],
-	[_unmdtbl6510].[dultype_61616] AS [DULType],
-	[_unmdtbl6510].[dulseries_30145] AS [DULSeries],
-	[_unmdtbl6510].[dulnumber_50657] AS [DULNumber],
-	[_unmdtbl6510].[dulownerex_64833] AS [DULOwnerEx],
-	[_unmdtbl6510].[dulowner_fam_25160] AS [DULOwner_Fam],
-	[_unmdtbl6510].[dulowner_im_17872] AS [DULOwner_Im],
-	[_unmdtbl6510].[dulowner_ot_39466] AS [DULOwner_Ot],
-	[_unmdtbl6510].[disabled_19808] AS [Disabled],
-	[_unmdtbl6510].[dulowner_sex_57748] AS [DULOwner_Sex],
-	[_unmdtbl6510].[dulowner_birthday_40430] AS [DULOwner_Birthday],
-	[_unmdtbl6510].[issuedate_42162] AS [IssueDate],
-	[_unmdtbl6510].[voiddate_29235] AS [VoidDate],
-	[_unmdtbl6510].[issuer_42077] AS [Issuer],
-	[_unmdtbl6510].[issuestate_62503] AS [IssueState]
-FROM
-	PDPStdStorage.dbo.t_dul_44571 AS [_unmdtbl6510]
-WHERE
-	(([_unmdtbl6510].[patientuid_53984] = 200463)) AND [_unmdtbl6510].version_end = 9223372036854775807
+			$omsRow = $conn->createCommand($sql)->queryRow();
+			if($omsRow == null) {
+				return false;
+			}
+		
+			$sql = "SELECT
+						[_unmdtbl6510].[uid] AS [DULUID]
+					FROM
+						PDPStdStorage.dbo.t_dul_44571 AS [_unmdtbl6510]
+					WHERE
+						[_unmdtbl6510].[patientuid_53984] = ".$patient['PatientUID']."
+						AND [_unmdtbl6510].version_end = ".$this->version_end;
+			
+			$policyRow = $conn->createCommand($sql)->queryRow();
+			if($policyRow == null) {
+				return false;
+			}
+		
+			$sql = 'SELECT
+						[_unmdtbl13955].[uid] AS [AddressUID]
+					FROM
+						PDPStdStorage.dbo.t_address_47256 AS [_unmdtbl13955]
+					WHERE
+						[_unmdtbl13955].[patientuid_32736] = '.$patient['PatientUID'].'
+						AND [_unmdtbl13955].addresstype_31280 = 2
+						AND [_unmdtbl13955].version_end = '.$this->version_end;
+			
+			$addressRow = $conn->createCommand($sql)->queryAll();
 
-	
-	[bookuid_60769] = @arg_22, 
-	
-	
-	Три числа сверху
-			*/
-					
-            $result = $conn->createCommand($sql)->execute();
-            $transaction->commit();
-            return $result;
+			if($addressRow == null) {
+				// Пробуем найти по адресу регистрации
+				$sql = 'SELECT
+						[_unmdtbl13955].[uid] AS [AddressUID]
+					FROM
+						PDPStdStorage.dbo.t_address_47256 AS [_unmdtbl13955]
+					WHERE
+						[_unmdtbl13955].[patientuid_32736] = '.$patient['PatientUID'].'
+						AND [_unmdtbl13955].addresstype_31280 = 1
+						AND [_unmdtbl13955].version_end = '.$this->version_end;
+				$addressRow = $conn->createCommand($sql)->queryAll();
+				if($addressRow == null) {
+					return false;
+				}
+			}
+
+			$tasuTap = new TasuTap();
+			$tasuTap->uid = TasuTap::getLastUID() + 1;
+			$tasuTap->version_begin = '';
+			$tasuTap->version_end = $this->version_end;
+			$tasuTap->is_top = 1;
+			$tasuTap->created_by = 2;
+			$tasuTap->lpuuid_25856 = 55959;
+			$tasuTap->patientuid_40511 = $patient['PatientUID'];
+			$tasuTap->fillingdate_36966 = $greeting['patient_day'];
+			$tasuTap->doctoruid_47963 = $professional['ProfessionalUID'];
+			$tasuTap->medicalprogramm_28647 = 'ОМСМО';
+			$tasuTap->serviceplace_59680 = '1';
+			$tasuTap->dvnaction_51723 = '';
+			$tasuTap->dvnsex_24796 = '0';
+			$tasuTap->dvnage_00771 = 0;
+			$tasuTap->policyuid_53853 = $omsRow['uid'];
+			$tasuTap->duluid_44636 = $policyRow['DULUID'];
+			$tasuTap->addressuid_30547 = $addressRow[0]['AddressUID'];
+			$tasuTap->bookuid_60769 = null;
+			$tasuTap->dvnseries_45145 = '';
+			$tasuTap->dvnnumber_55059 = '';
+			
+			if(!$tasuTap->save()) {
+				throw new Exception();
+			}
+
+            return $tasuTap;
         } catch(Exception $e) {
             var_dump($e);
             exit();
             return false;
         }
     }
+	
+	private function setMKB10ByTap($tap, $greeting) {
+		$diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
+		$conn = Yii::app()->db2;
+		foreach($diagnosises as $diagnosis) {
+			$mkb10Diag = Mkb10::model()->findByPk($diagnosis['mkb10_id']);
+			if($mkb10Diag == null) {
+				continue;
+			}
+			$parts = explode(' ', $mkb10Diag['description']);
+			$parts[0] = trim($parts[0]);
+			try {
+				$tapDiagnosis = new TasuTapDiagnosis();
+				$tapDiagnosis->uid = TasuTapDiagnosis::getLastUID() + 1;
+				$tapDiagnosis->version_begin = '';
+				$tapDiagnosis->version_end = $this->version_end;
+				$tapDiagnosis->is_top = 1;
+				$tapDiagnosis->created_by = 2;
+				$tapDiagnosis->tapuid_30432 = $tap->uid;
+				$tapDiagnosis->ismain_36277 = $diagnosis['type'];
+				$tapDiagnosis->icdcode_39884 = $parts[0];
+				$tapDiagnosis->deseasenature_42940 = 1;
+				$tapDiagnosis->monitoringstate_54640 = null;
+				$tapDiagnosis->trauma_34421 = '';
+				
+				if(!$tapDiagnosis->save()) {
+					throw new Exception();
+				}	
+			} catch(Exception $e) {
+				var_dump($e);
+				exit();
+			}			
+		}
+		exit("!!!!");
+	}
 	
 	private function addTasuProfessional($doctor) {
 		// Получим последний ID для таблицы врачей
@@ -1406,7 +1464,7 @@ WHERE
             $processed++;
             $tasuOms = TasuOms::model()->find('patientuid_09882 = :patient_uid AND version_end = :version_end AND t.state_19333 = :state', array(
                ':patient_uid' => $patient['uid'],
-               ':version_end' => $patient['version_end'],
+               ':version_end' => $this->version_end,
                ':state' => 1 // Полис активен
             ));
             if($tasuOms == null) {

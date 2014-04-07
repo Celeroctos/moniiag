@@ -212,6 +212,24 @@
         });
     });
 
+	
+	$(this).on('hidden.bs.collapse','.accordion', function()
+	{
+	//	console.log(this);
+	//	alert('я закрылся');
+	
+	
+	});
+	
+	$(this).on('show.bs.collapse','.accordion', function()
+	{
+	//	console.log(this);
+	//	alert('я открылся');
+	
+	
+	});
+	
+	
     function panelDragInit(index, element) {
         var dragMode = false;
         var animateToBig = function() {
