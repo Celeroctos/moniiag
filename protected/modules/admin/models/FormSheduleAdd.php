@@ -29,14 +29,15 @@ class FormSheduleAdd extends CFormModel
     public $dateBegin;
     public $dateEnd;
     public $doctorId;
+	public $weekEnds;
+	public $sheduleEmployeeId;
 
     public function rules()
     {
         return array(
-            array(
-                'cabinet0, cabinet1, cabinet2, cabinet3, cabinet4, cabinet5, cabinet6, timeBegin0, timeBegin1, timeBegin2, timeBegin3, timeBegin4, timeBegin5, timeBegin6, timeEnd0, timeEnd1, timeEnd2, timeEnd3, timeEnd4, timeEnd5, timeEnd6, dateBegin, dateEnd, doctorId', 'required'
-            ),
-        );
+         //   array('cabinet0, cabinet1, cabinet2, cabinet3, cabinet4, cabinet5, cabinet6, timeBegin0, timeBegin1, timeBegin2, timeBegin3, timeBegin4, timeBegin5, timeBegin6, timeEnd0, timeEnd1, timeEnd2, timeEnd3, timeEnd4, timeEnd5, timeEnd6, dateBegin, dateEnd, doctorId, weekEnds, sheduleEmployeeId', 'required'),
+			array('cabinet0, cabinet1, cabinet2, cabinet3, cabinet4, cabinet5, cabinet6, timeBegin0, timeBegin1, timeBegin2, timeBegin3, timeBegin4, timeBegin5, timeBegin6, timeEnd0, timeEnd1, timeEnd2, timeEnd3, timeEnd4, timeEnd5, timeEnd6, dateBegin, dateEnd, doctorId, weekEnds, sheduleEmployeeId', 'required'),    
+		);
     }
 
     public function attributeLabels()

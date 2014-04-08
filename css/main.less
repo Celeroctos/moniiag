@@ -398,6 +398,22 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
 #onlyLikeDiagnosis {
   margin-top: 25px;
 }
+
+#shedule-exp-table td
+{
+	vertical-align: middle;
+}
+
+#addingTimeTable td
+{
+	vertical-align: middle;
+}
+
+#editingTimeTable td
+{
+	vertical-align: middle;
+}
+
 // Кастомный контрол даты
 .date {
   height: 50px;
@@ -425,12 +441,12 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
  }
  .time-ctrl-up-buttons {
     .btn-group {
-      top: 0px;
+      top: 2px;
     }
   }
  .time-ctrl-down-buttons {
    .btn-group {
-      top: 5px;
+      top: 1px;
    }
  }
 .date-ctrl-up-buttons, .date-ctrl-down-buttons {
@@ -450,17 +466,18 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
   }
   .time-ctrl-up-buttons, .time-ctrl-down-buttons {
     button {
-      margin-left: 5px !important;
-      top: 2px;
+      top: -2px;
+      width: 32px;
     }
     button + button {
-      margin-left: 20px !important;
+      width: 32px;
+      margin-left: 0 !important;
     }
 
   }
   .subfields {
     min-width: 133px;
-    .day, .month, .year {
+    .day, .month, .year, .hour, .minute {
       text-align: center;
     }
     .day {
@@ -482,11 +499,16 @@ button[class*=year-button], button[class*=month-button], button[class*=day-butto
 
     }
     .hour {
-      width: 35px;
+      width: 32px;
     }
     .minute {
-      width: 35px;
+      width: 32px;
+    }
+	html*.hour {
       margin-left: 0px;
+    }
+    html*.minute {
+
     }
   }
 }
@@ -504,6 +526,23 @@ div.date-control {
       top: -5px;
       padding: 0;
       font-size: 22px;
+    }
+  }
+}
+
+div.time-control {
+  span {
+    display: block;
+    position: relative;
+    top: 2px;
+    left: 70px;
+    z-index: 99;
+    padding: 12px 24px;
+    span.glyphicon-time {
+      left: -10px;
+      top: -5px;
+      padding: 0;
+      font-size: 14px;
     }
   }
 }
@@ -756,6 +795,32 @@ body #editPopup {
   display: none;
 }
 
+#editSheduleEmployeePopup .modal-content
+{
+	width: 800px;
+	margin-left: -100px;
+} 
+
+
+#editSheduleEmployeePopup .modal-body
+{
+	width: 800px;
+	margin-left: -10px;
+}
+
+#addShedulePopup .modal-content
+{
+	width: 800px;
+	margin-left: -100px;
+} 
+
+
+#addShedulePopup .modal-body
+{
+	width: 800px;
+	margin-left: -10px;
+}
+
 /*Подсказка для расписания врачей*/
 .busy-shedule-hint { 
 position:absolute; 
@@ -892,6 +957,9 @@ select#restDays {
         margin-left: -3px;
       }
       .year {
+        margin-left: -3px;
+      }
+	  .minute {
         margin-left: -3px;
       }
     }
@@ -1066,3 +1134,15 @@ div.tab-list
 .font-panel {
   margin-top: 9px;
 }
+.accordeonToggleAlt
+{
+	display:inline;
+}
+/*
+a.accordion-toggle
+{
+	border-bottom: 1px dotted blue;
+}
+a.accordion-toggle:hover {
+    border-bottom-style:none;
+}*/

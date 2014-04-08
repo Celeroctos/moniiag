@@ -15,8 +15,12 @@
         '#dateBeginEdit-cont',
         '#dateEndEdit-cont',
         '#greetingDate-cont',
-	    '#shift-date-begin-cont',
-	    '#shift-date-end-cont',
+
+        '#addShedulePopup #shift-date-begin-cont',
+	    '#addShedulePopup #shift-date-end-cont',
+
+        '#editSheduleEmployeePopup #shift-date-begin-cont',
+	    '#editSheduleEmployeePopup #shift-date-end-cont',
     ];
     
   //   $('.subcontrol input').val('');
@@ -212,6 +216,11 @@
                      // Только если все три контрола установлены, дату в нормальном контроле можно менять
                      if(allowChange) {
                          $($(this).parents('div.input-group')[0]).find('input.form-control:first').trigger('change', [1]);
+                     }
+                     else {
+                         // В противном случае - обнуляем значение контрола, так как введена неправильная дата.
+                         //   В случае неопределённых состояний составляющих контролов - значение будет нулевое у общего контрола
+                         $($(this).parents('div.input-group')[0]).find('input.form-control:first').val('');
                      }
 
                      if($.trim($(day).val()) == '' && $.trim($(month).val()) == '' && $.trim($(year).val()) == '') {
