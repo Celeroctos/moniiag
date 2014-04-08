@@ -58,18 +58,22 @@ class Employee extends MisActiveRecord  {
                       ep.shortname as enterprise
                       ')
             ->from('mis.doctors as d')
-            ->join('mis.medpersonal m', 'd.post_id = m.id')
+            ->leftJoin('mis.medpersonal m', 'd.post_id = m.id')
             ->leftJoin('mis.degrees de', 'd.degree_id = de.id')
             ->leftJoin('mis.tituls t', 'd.titul_id = t.id')
-            ->join('mis.wards w', 'd.ward_code = w.id')
-            ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id');
+            ->leftJoin('mis.wards w', 'd.ward_code = w.id')
+            ->leftJoin('mis.enterprise_params ep', 'w.enterprise_id = ep.id');
 
-        if(isset($_GET['wardid']) && $_GET['wardid'] != -1) {
+        if($wardId != -1) {
             $employees->where('d.ward_code=:ward_code', array(':ward_code' => $wardId));
         }
-        if(isset($_GET['enterpriseid']) && $_GET['enterpriseid'] != -1) {
-            $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $enterpriseId));
-        }
+        if($enterpriseId != -1) {
+			if($enterpriseId == -2) {
+				$employees->andWhere('w.enterprise_id IS NULL', array(':enterprise_id' => $enterpriseId));
+			} else {
+				$employees->andWhere('w.enterprise_id = :enterprise_id', array(':enterprise_id' => $enterpriseId));
+			}
+		}
         if($onlyFree) {
             $employees->andWhere('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)');
         }

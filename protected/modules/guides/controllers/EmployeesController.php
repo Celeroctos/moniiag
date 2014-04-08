@@ -17,7 +17,8 @@ class EmployeesController extends Controller {
                 ->from('mis.enterprise_params ep')
                 ->queryAll();
 
-            $enterprisesList = array('-1' => 'Нет');
+            $enterprisesList = array('-1' => 'Нет',
+									 '-2' => 'Без учреждения');
             foreach($enterprisesListDb as $value) {
                 $enterprisesList[(string)$value['id']] = $value['shortname'];
             }

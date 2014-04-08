@@ -37,6 +37,15 @@ class TasuPatient extends MisActiveRecord {
 
         return $patients->queryAll();
     }
+	
+	public function getNumRows() {
+        $connection = $this->getDbConnection();
+        $numPatients = $connection->createCommand()
+            ->select('COUNT(*) as num')
+            ->from(TasuPatient::tableName().' tp')
+            ->queryRow();
+        return $numPatients['num'];
+    }
 }
 
 ?>

@@ -27,7 +27,7 @@
         <p class="text-success">Добавлено (строк): <span class="numStringsAdded">0</span></p>
         <p class="text-danger">Отклонено (строк): <span class="numStringsDiscarded">0</span></p>
         <p class="text-danger"><strong>Ошибок (строк): <span class="numStringsError">0</span></strong></p>
-        <p class="text-success"><strong>Добавлено (медкарт): <span class="numMedcardsAdded">0</span></strong></p>
+        <p class="text-success"><strong>Добавлено (врачей): <span class="numDoctorsAdded">0</span></strong></p>
         <p class="text-success"><strong>Добавлено (пациентов): <span class="numPatientsAdded">0</span></strong></p>
         <div class="form-group clear">
             <input type="button" class="btn btn-success successImport no-display" value="Закончить импорт">

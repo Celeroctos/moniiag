@@ -83,7 +83,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ->where('NOT EXISTS (SELECT *
                                      FROM '.TasuGreetingsBuffer::tableName().' tgb
                                      WHERE tgb.greeting_id = dsbd.id)')
-				->andWhere('dsbd.is_accepted = 1 AND dsbd.id = 457');
+				->andWhere('dsbd.is_accepted = 1');
 
             return $notBuffered->queryAll();
         } catch(Exception $e) {
