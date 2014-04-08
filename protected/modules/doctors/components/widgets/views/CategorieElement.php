@@ -7,7 +7,13 @@ if(isset($categorie['id'])) {
             <a href="#collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
                 <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
                     (пустая категория)
-                <?php } ?>
+                <?php }
+                else
+                {
+                	?> <div class ="accordeonToggleAlt"> (Свернуть)</div> <?php	
+                }	
+				
+			 ?>
             </a>
             <?php if(($categorie['is_dynamic'] == 1 || isset($categorie['pr_key'])) && false ) { ?>
             <button class="btn btn-default btn-sm accordion-clone-btn" type="button">

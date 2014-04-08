@@ -21,11 +21,11 @@
                  ?>
                     (пустая категория)
                 <?php }
-				else
-				{
+                else
+                {
+                	?> <div class ="accordeonToggleAlt"> (Свернуть)</div> <?php	
+                }
 				?>
-						<!--<div>Свернуть</div>-->
-				<?php } ?>
 			</a>
         </div>
                 <?php if ((count($categorie)==1) && ($categorie["element"]["element_id"]==-1)
