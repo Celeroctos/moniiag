@@ -1465,3 +1465,24 @@ REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1319)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (930)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (874)
+2014/04/07 17:53:15 [error] [exception.CException] exception 'CException' with message 'В классе TasuController и его поведениях не найден метод или замыкание с именем "setTapServices".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:267
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(932): CComponent->__call('setTapServices', Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(932): TasuController->setTapServices(Object(TasuTap), Array)
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(874): TasuController->moveGreetingToTasuDb(Array)
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionImportGreetings()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('importgreetings')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/impo...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/tasu/importgreetings?currentGreeting=0&rowsPerQuery=10&totalMaked=0&totalRows=1&_=1396866022280
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewin
+---

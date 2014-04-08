@@ -928,6 +928,8 @@ class TasuController extends Controller {
         $tap = $this->addTasuTap($patient, $greeting, $oms);
 		// Добавляем MKБ-10 диагнозы к приёму
 		$this->setMKB10ByTap($tap, $greeting, $oms);
+		// Добавляем услуги
+		$this->setTapServices($tap, $greeting);
     }
 
     private function searchTasuPatient($greeting) {
@@ -1292,15 +1294,12 @@ class TasuController extends Controller {
 
             return $tasuTap;
         } catch(Exception $e) {
-            var_dump($e);
-            exit();
             return false;
         }
     }
 	
 	private function setMKB10ByTap($tap, $greeting) {
 		$diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
-		$conn = Yii::app()->db2;
 		foreach($diagnosises as $diagnosis) {
 			$mkb10Diag = Mkb10::model()->findByPk($diagnosis['mkb10_id']);
 			if($mkb10Diag == null) {
@@ -1316,11 +1315,13 @@ class TasuController extends Controller {
 				$tapDiagnosis->is_top = 1;
 				$tapDiagnosis->created_by = 2;
 				$tapDiagnosis->tapuid_30432 = $tap->uid;
-				$tapDiagnosis->ismain_36277 = $diagnosis['type'];
+				$tapDiagnosis->ismain_36277 = ($diagnosis['type'] == 0) ? 1 : 0;
 				$tapDiagnosis->icdcode_39884 = $parts[0];
 				$tapDiagnosis->deseasenature_42940 = 1;
 				$tapDiagnosis->monitoringstate_54640 = null;
 				$tapDiagnosis->trauma_34421 = '';
+				
+				/*EXEC PDPStdStorage.dbo.p_tapsetservice_44264 5559456,'010102',1*/
 				
 				if(!$tapDiagnosis->save()) {
 					throw new Exception();
@@ -1330,7 +1331,22 @@ class TasuController extends Controller {
 				exit();
 			}			
 		}
-		exit("!!!!");
+	}
+	
+	private function setTapServices($tap, $greeting) {
+		// Пока зашиваем жёстко
+		$conn = Yii::app()->db2;
+		try {
+			$sql = "EXEC PDPStdStorage.dbo.p_tapsetservice_44264 
+									".$tap->uid.",
+									'010101',
+									1";
+			$result = $conn->createCommand($sql)->execute();
+			return $result;
+		} catch(Exception $e) {
+			return false;
+		}
+		
 	}
 	
 	private function addTasuProfessional($doctor) {
@@ -1423,6 +1439,7 @@ class TasuController extends Controller {
             'timestamps' => $toTempl
         ));
     }
+	
 
     /* Синхронизация пациентов: ТАСУ в МИС */
     public function actionSyncPatients() {
