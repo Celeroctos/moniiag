@@ -64,7 +64,7 @@
             <?php $this->endWidget(); ?>
             <div class="navbar-right font-panel">
                 <button id="fontPlus" class="btn btn-success" title="Увеличить размер шрифта">+</button>
-                <span class="sampleLetterSize">Размер шрифта - <?php echo Yii::app()->user->fontSize; ?> пикселей</span>
+                <span class="sampleLetterSize">Шрифт - <?php echo Yii::app()->user->fontSize; ?></span>
                 <button id="fontMinus" class="btn btn-success" title="Уменьшить размер шрифта">-</button>
             </div>
         </div>

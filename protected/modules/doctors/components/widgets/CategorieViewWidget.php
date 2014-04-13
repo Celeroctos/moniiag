@@ -695,7 +695,6 @@ class CategorieViewWidget extends CWidget {
 		//var_dump($this->historyTree);
 		//exit();
 		$num = 0;
-		
     	foreach ($this->historyTree as $nodeTopLevel)
     	{
 			// Возьмём элемент массива element и прочитаем у 
@@ -714,6 +713,10 @@ class CategorieViewWidget extends CWidget {
 			$num++;
 			continue;
 			*/
+			// Fx 13.04.2014
+			if (!isset($nodeTopLevel['element']['template_name'])) {
+				continue;
+			}
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
 			// Если в templates нет ИД шаблона - добавляем

@@ -102,6 +102,12 @@
                     var numRows = 1; // Для rowspan
                     var firstTd = null;
                     var added = false; // Добавлена или нет первая ячейка
+					$('#sheduleInfoH4').html('Расписание на ' + greetingDate.split('-').reverse().join('.') + ' года ');
+					if(shedule.length > 0) {
+						$('#print-submit').prop('disabled', false);
+					} else {
+						$('#print-submit').prop('disabled', true);
+					}
                     for(var i = 0; i < shedule.length; i++) {
                         var tr = $('<tr>');
                         var content = '';
@@ -119,8 +125,9 @@
                                 added = false;
                             }
                         }
-			if (shedule[i].motion==null)
-				shedule[i].motion=0;
+						if (shedule[i].motion==null) {
+							shedule[i].motion=0;
+						}
 
                         if(shedule[i].medcard_id != null  && shedule[i].motion == 0 && shedule[i].is_accepted!=1) {
 
@@ -211,6 +218,9 @@
             }
         });
     });
+	
+	// Раписание на текущую дату
+	$('#sheduleViewSubmit').trigger('click'); 
 
     $('#sheduleTable').on('click', 'td button', function() {
         // Логика следующая: опосредованный пациент может быть на самом деле пустым, с ОМС или с медкартой. Ищем по ОМС, т.к. пациент всегда предъявляет ОМС и даём сопоставить, как в случае поиска

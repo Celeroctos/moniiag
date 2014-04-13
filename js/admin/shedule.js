@@ -329,7 +329,7 @@ function updateDoctorList() {
     }
     // Делаем поиск
     $.ajax({
-        'url': '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
+        'url': '/index.php/reception/doctors/searchcommon/?filters=' + $.toJSON(filters) + PaginationData,
         'cache': false,
         'dataType': 'json',
         'type': 'GET',

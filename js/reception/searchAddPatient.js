@@ -6,6 +6,7 @@ $(document).ready(function() {
     
     // Поиск по ОМС
     $('#patient-search-submit').click(function(e) {
+		$(this).trigger('begin');
         $('#mediateSubmit-cont').addClass('no-display');
         $('#mediate-attach-submit').addClass('disabled');
         mediateClicked = false;
@@ -44,12 +45,12 @@ $(document).ready(function() {
                     'data' : $('#lastName').val()
                 },
                 {
-                    'field' : 'address_reg',
+                    'field' : 'address_reg_str',
                     'op' : 'cn',
                     'data' : $('#addressReg').val()
                 },
                 {
-                    'field' : 'address',
+                    'field' : 'address_str',
                     'op': 'cn',
                     'data' : $('#address').val()
                 },
@@ -87,12 +88,14 @@ $(document).ready(function() {
         for(var i = 0; i < searchStatus.length; i++) {
             if(searchStatus[i] == 1) {
                 $('#mediateSubmit-cont').removeClass('no-display'); // Положительный результат, кнопку раскомментировать
-                searchStatus = [];
+                $('#patient-search-submit').trigger('end');
+				searchStatus = [];
                 return;
             }
         }
         // Если все "не найдено", показывать модалку
         searchStatus = [];
+		$('#patient-search-submit').trigger('end');
         $('#notFoundPopup').modal({
         });
     }
@@ -126,6 +129,7 @@ $(document).ready(function() {
                             if(searchStatus.length == 3) {
                                 searchStatus = []; // Обнуляем количество статусов: поиск окончен
                                 $('#mediateSubmit-cont').removeClass('no-display');
+								$('#patient-search-submit').trigger('end');
                             }
                         }
                     }
@@ -134,6 +138,7 @@ $(document).ready(function() {
                     $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
                     });
+					$('#patient-search-submit').trigger('end');
                 }
                 return;
             }
@@ -169,6 +174,7 @@ $(document).ready(function() {
                             if(searchStatus.length == 3) {
                                 searchStatus = []; // Обнуляем количество статусов: поиск окончен
                                 $('#mediateSubmit-cont').removeClass('no-display');
+								$('#patient-search-submit').trigger('end');
                             }
                         }
                     }
@@ -176,8 +182,8 @@ $(document).ready(function() {
                     $('#errorSearchPopup .modal-body .row p').remove();
                     $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
-
                     });
+					$('#patient-search-submit').trigger('end');
                 }
                 return;
             }
@@ -213,6 +219,7 @@ $(document).ready(function() {
                             if(searchStatus.length == 3) {
                                 searchStatus = []; // Обнуляем количество статусов: поиск окончен
                                 $('#mediateSubmit-cont').removeClass('no-display');
+								$('#patient-search-submit').trigger('end');
                             }
                         }
                     }
@@ -220,14 +227,17 @@ $(document).ready(function() {
                     $('#errorSearchPopup .modal-body .row p').remove();
                     $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
                     $('#errorSearchPopup').modal({
-
                     });
                 }
                 return;
             }
         });
     }
-    
+	
+	$('#errorSearchPopup').on('hidden.bs.modal', function(e) {
+		console.log("!");
+		$('#patient-search-submit').trigger('end');
+	});
     
     // Отобазить таблицу тех, кто без карт
     function displayAllWithoutCard(data) {
@@ -696,8 +706,8 @@ $(document).ready(function() {
 
         // Повтор адреса регистрации в адресе проживания
         if($(clickedRow).find('input[type="text"]').prop('id') == 'addressReg') {
-            $('#address').val(textStr);
-            $('#addressHidden').val($.toJSON(dataToJson));
+            $(clickedRow).find('#address').val(textStr);
+            $(clickedRow).find('#addressHidden').val($.toJSON(dataToJson));
         }
 
         $('#editAddressPopup').modal('hide');

@@ -146,6 +146,12 @@ $(document).ready(function() {
                    // Перезагружаем страницу
                    location.reload();
                 } else {
+					if (data.needMainDiagnosis != undefined)
+					{
+						$('#errorPopup').one('hidden.bs.modal', function () {
+							$('#primaryDiagnosisChooser #doctor').focus();
+						});
+					}
                     // Выводим сообщение об ошибке
                      $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
                         $('#errorPopup').modal({

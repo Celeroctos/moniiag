@@ -253,7 +253,7 @@
                                 <div class="form-group chooser" id="primaryDiagnosisChooser">
                                     <label for="doctor" class="col-xs-3 control-label">Основной диагноз:</label>
                                     <div class="col-xs-9">
-                                        <input type="text" class="form-control" autofocus id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                        <input type="text" class="form-control" id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
                                         <ul class="variants no-display">
                                         </ul>
                                         <div class="choosed">
@@ -266,7 +266,7 @@
                                 <div class="form-group chooser" id="secondaryDiagnosisChooser">
                                     <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
                                     <div class="col-xs-9">
-                                        <input type="text" class="form-control" autofocus id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                        <input type="text" class="form-control" id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
                                         <ul class="variants no-display">
                                         </ul>
                                         <div class="choosed">

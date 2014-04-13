@@ -194,9 +194,6 @@ $(document).ready(function() {
     $("#enterpriseCode").on('change', function(e) {
         var enterpriseCode = $(this).val();
         if(enterpriseCode != -1 && enterpriseCode != -2) { // В том случае, если это не "Нет учреждения" или не "Без учреждения", подгрузим отделения его..
-			if(enterpriseCode == -2) {
-				$('#wardCodeFilter').val(-1).parents('.form-group').addClass('no-display');;
-			}
             $.ajax({
                 'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
                 'cache' : false,
@@ -216,6 +213,10 @@ $(document).ready(function() {
             });
         } else if(enterpriseCode == -1) {
 			$('#wardCodeFilter').val(-1).parents('.form-group').addClass('no-display');
+		} else {
+			if(enterpriseCode == -2) {
+				$('#wardCodeFilter').val(-1).parents('.form-group').addClass('no-display');
+			}
 		}
     });
 
@@ -280,7 +281,7 @@ $(document).ready(function() {
                             {
                                 modelField: 'ward_code',
                                 formField: 'wardCode'
-                            },
+                            }
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             if(fields[i].modelField == 'date_end') {

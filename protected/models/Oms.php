@@ -27,7 +27,7 @@ class Oms extends MisActiveRecord {
                 )
             ), array(
                 'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio'),
-                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie')
+                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
             ), array(
 
             ));

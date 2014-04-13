@@ -692,7 +692,7 @@ class TasuController extends Controller {
 
     /* Очистка всего буфера */
     public function actionClearBuffer() {
-        TasuGreetingsBuffer::model()->deleteAll(); // TODO
+        TasuGreetingsBuffer::model()->deleteAll('status != 1');
         echo CJSON::encode(array(
             'success' => true,
             'data' => 'Буфер успешно очищен.'

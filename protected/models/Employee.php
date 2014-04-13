@@ -16,8 +16,8 @@ class Employee extends MisActiveRecord  {
             $employee = $connection->createCommand()
                 ->select('d.*, LOWER(w.name) as ward, ep.shortname as enterprise')
                 ->from('mis.doctors d')
-                ->join('mis.wards w', 'd.ward_code = w.id')
-                ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
+                ->leftJoin('mis.wards w', 'd.ward_code = w.id')
+                ->leftJoin('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
                 ->where('d.id = :id', array(':id' => $id))
                 ->queryRow();
 
@@ -69,7 +69,7 @@ class Employee extends MisActiveRecord  {
         }
         if($enterpriseId != -1) {
 			if($enterpriseId == -2) {
-				$employees->andWhere('w.enterprise_id IS NULL', array(':enterprise_id' => $enterpriseId));
+				$employees->andWhere('w.enterprise_id IS NULL');
 			} else {
 				$employees->andWhere('w.enterprise_id = :enterprise_id', array(':enterprise_id' => $enterpriseId));
 			}
