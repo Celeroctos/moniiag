@@ -1,0 +1,1048 @@
+2014/04/08 12:16:13 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". Выполнявшийся SQL-запрос: SELECT count(m.*) as num
+FROM "mis"."mkb10" "m"
+JOIN "mis"."mkb10_likes" "ml" ON m.id = ml.mkb10_id
+WHERE ml.medworker_id = :medworker_id.
+in Z:\home\mis.my\www\protected\models\Mkb10.php (88)
+in Z:\home\mis.my\www\protected\modules\guides\controllers\Mkb10Controller.php (39)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/08 12:16:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT count(m.*) as num
+FROM "mis"."mkb10" "m"
+JOIN "mis"."mkb10_likes" "ml" ON m.id = ml.mkb10_id
+WHERE ml.medworker_id = :medworker_id' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(415): CDbCommand->queryInternal('fetch', Array, Array)
+#1 Z:\home\mis.my\www\protected\models\Mkb10.php(88): CDbCommand->queryRow()
+#2 Z:\home\mis.my\www\protected\modules\guides\controllers\Mkb10Controller.php(39): Mkb10->getNumRows('1', '')
+#3 [internal function]: Mkb10Controller->actionGet('0')
+#4 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(Mkb10Controller), Array)
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(Mkb10Controller), Object(ReflectionMethod), Array)
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('get')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/mkb10/ge...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22description%22,%22op%22:%22cn%22,%22data%22:%2234%22}]}&medworkerid=&_=1396944447151
+HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientsteptwo/?cardid=23/14
+---
+2014/04/08 18:41:43 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". Выполнявшийся SQL-запрос: SELECT * FROM "mis"."doctor_shedule_setted" "t" WHERE id = :id LIMIT 1.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (84)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/08 18:41:43 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_setted" "t" WHERE id = :id LIMIT 1' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(415): CDbCommand->queryInternal('fetch', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryRow()
+#2 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1456): CActiveRecord->query(Object(CDbCriteria))
+#3 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(84): CActiveRecord->find('id = :id', Array)
+#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionIntersectionGreeting()
+#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('intersectiongre...')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/shedule/intersectiongreeting?begin=2014-6-15&end=2014-8-15&doctor_id=197&shedule_id=&_=1396968063572
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view
+---
+2014/04/08 18:54:49 [error] [php] Undefined variable: oneOldGreeting (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:109)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/intersectiongreeting?begin=2014-6-25&end=2014-8-3&doctor_id=15&shedule_id=197&_=1396968166662
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (109)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:33:34 [error] [php] Undefined index: day_begin (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:74)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397039614795&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (74)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:37:57 [error] [php] Undefined index: day_begin (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:74)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397039877533&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (74)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:39:43 [error] [php] Undefined index: day_begin (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:74)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397039983598&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (74)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:40:51 [error] [php] Undefined index: day_begin (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:74)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397040051285&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (74)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:42:33 [error] [php] Undefined variable: dateEnd (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:79)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397040153646&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (79)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:43:15 [error] [php] Undefined variable: beginDate (Z:\home\mis.my\www\protected\models\SheduleByDay.php:58)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397040195236&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (58)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (79)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/09 14:44:12 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:89)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397040251903&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (89)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 14:47:25 [error] [php] Undefined variable: greetings (Z:\home\mis.my\www\protected\models\SheduleByDay.php:76)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#1 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#2 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#3 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#5 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#9 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatients?doctor_id=15&date_begin=2014-08-01&date_end=2014-08-31&_search=false&nd=1397040444904&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (76)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (79)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/09 14:48:19 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "AND")
+LINE 14:      AND dsbd.patient_day >= $2
+              ^. Выполнявшийся SQL-запрос: SELECT dsbd.*, 
+					CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, 
+					m.card_number AS card_number,
+					SUBSTR(
+						CAST(dsbd.patient_time AS text),
+						0, 
+						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+					) AS patient_time,
+					m.contact
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+WHERE dsbd.doctor_id = :doctor_id AND
+					AND dsbd.patient_day >= :beginDate
+					AND dsbd.patient_day <= :endDate
+					.
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (76)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (79)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/09 14:49:47 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "AND")
+LINE 14:      AND dsbd.patient_day >= $2
+              ^. Выполнявшийся SQL-запрос: SELECT dsbd.*, 
+					CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, 
+					m.card_number AS card_number,
+					SUBSTR(
+						CAST(dsbd.patient_time AS text),
+						0, 
+						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+					) AS patient_time,
+					m.contact
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+WHERE dsbd.doctor_id = :doctor_id AND
+					AND dsbd.patient_day >= :beginDate
+					AND dsbd.patient_day <= :endDate
+					.
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (76)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (79)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/09 15:59:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "[object Object]".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('[object Object]')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('[object Object]')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/[...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/[object%20Object]
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/09 16:01:17 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "[object Object]".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('[object Object]')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('[object Object]')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/[...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/[object%20Object]
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/09 16:05:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "[object Object]".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('[object Object]')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('[object Object]')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/[...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/[object%20Object]
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/09 16:50:12 [error] [php] Undefined variable: times (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:206)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/intersectiongreeting?begin=2014-6-26&end=2014-8-6&doctor_id=15&shedule_id=201&times={%22timesBegin%22:[%22%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_=1397047586192
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (206)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 18:22:36 [error] [php] Undefined index: times (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:79)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatientsedit?doctor_id=15&date_begin=2014-6-15&date_end=2014-8-15$times={%22timesBegin%22:[%22%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_search=false&nd=1397053355899&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (79)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 18:24:51 [error] [php] Undefined variable: sheduleId (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:84)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatientsedit?doctor_id=15&date_begin=2014-6-15&date_end=2014-8-15&times={%22timesBegin%22:[%22%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_search=false&nd=1397053491012&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (84)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 18:29:34 [error] [php] Undefined variable: dateBegin (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:95)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatientsedit?doctor_id=15&date_begin=2014-6-15&date_end=2014-8-15&shedule_id=201&times={%22timesBegin%22:[%22%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_search=false&nd=1397053774623&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (95)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 18:30:30 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:185)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatientsedit?doctor_id=15&date_begin=2014-6-15&date_end=2014-8-15&shedule_id=201&times={%22timesBegin%22:[%22%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_search=false&nd=1397053830008&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (185)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 18:31:06 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "496,499". Выполнявшийся SQL-запрос: SELECT dsbd.*, 
+					CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, 
+					m.card_number AS card_number,
+					SUBSTR(
+						CAST(dsbd.patient_time AS text),
+						0, 
+						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+					) AS patient_time,
+					m.contact
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+WHERE dsbd.id in (:ids)
+					.
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (71)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (196)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/09 18:57:02 [error] [php] Undefined variable: idGreetingToCancel (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:151)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatientsedit?doctor_id=15&date_begin=2014-7-1&date_end=2014-7-30&shedule_id=201&times={%22timesBegin%22:[%22%22,%2213:0%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2219:30%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_search=false&nd=1397055422809&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (151)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/09 19:03:45 [error] [php] Undefined variable: idGreetingToCancel (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:151)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/getwrittenpatientsedit?doctor_id=15&date_begin=2014-7-1&date_end=2014-7-30&shedule_id=201&times={%22timesBegin%22:[%22%22,%2213:0%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%2208:00:00%22,%22%22],%22timesEnd%22:[%22%22,%2219:30%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%2212:30:00%22,%22%22]}&_search=false&nd=1397055825039&rows=10&page=1&sidx=id&sord=desc
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (151)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/10 14:40:46 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index.php".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('index.php')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('index.php')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/index.php/reception/patient/writepatientsteptwo/?cardid=9/14
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/10 14:41:41 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index.php".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('index.php')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('index.php')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/index.php/reception/patient/writepatientsteptwo/?cardid=9/14
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/10 14:42:14 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index.php".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('index.php')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('index.php')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/index.php/reception/patient/writepatientsteptwo/?cardid=9/14
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/10 14:43:30 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index.php".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('index.php')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('index.php')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/index.php/reception/patient/writepatientsteptwo/?cardid=9/14
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/10 14:45:28 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index.php".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('index.php')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('index.php')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/index.php/reception/patient/writepatientsteptwo/?cardid=9/14
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view?
+---
+2014/04/11 11:35:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/admin/shedule/
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/view
+---
+2014/04/14 12:40:25 [error] [php] Array to string conversion (Z:\home\mis.my\yii\db\CDbCommand.php:510)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php(173): CDbCommand->queryAll()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(61): getMaxRecordId()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(222): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(109): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=23/14&date=2014-6-18&rowid=512
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (173)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (61)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (222)
+2014/04/14 12:44:25 [error] [php] Undefined index: max_val (Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php:181)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(222): SheduleController->widget()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#3 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#4 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#5 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(109): SheduleController->render()
+#6 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#7 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#9 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#12 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#15 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#16 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=23/14&date=2014-6-18&rowid=512
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (181)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (63)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (222)
+2014/04/14 12:44:57 [error] [php] Undefined index: max_val (Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php:181)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(222): SheduleController->widget()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#3 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#4 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#5 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(109): SheduleController->render()
+#6 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#7 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#9 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#12 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#15 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#16 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=23/14&date=2014-6-18&rowid=512
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (181)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (63)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (222)
+2014/04/14 12:45:10 [error] [php] Undefined index: max_val (Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php:181)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(222): SheduleController->widget()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#3 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#4 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#5 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(109): SheduleController->render()
+#6 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#7 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#9 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#12 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#15 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#16 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#17 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=23/14&date=2014-6-18&rowid=512
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (181)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (63)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (222)
+2014/04/14 12:45:54 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:263)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(64): CategorieViewWidget->getCategories()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#2 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(222): SheduleController->widget()
+#3 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#5 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#6 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#7 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(109): SheduleController->render()
+#8 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#11 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#13 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#15 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#16 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=23/14&date=2014-6-18&rowid=512
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (263)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (530)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (198)
+2014/04/14 12:46:08 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:263)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(64): CategorieViewWidget->getCategories()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#2 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(222): SheduleController->widget()
+#3 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#5 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#6 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#7 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(109): SheduleController->render()
+#8 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#11 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#13 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#15 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#16 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=23/14&date=2014-6-18&rowid=512
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (263)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (530)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (198)
+2014/04/14 13:01:13 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "CategorieViewWidget.medcardRecordId".' in Z:\home\mis.my\yii\base\CComponent.php:173
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CWidgetFactory.php(161): CComponent->__set('medcardRecordId', 1)
+#1 Z:\home\mis.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(SheduleController), 'application.mod...', Array)
+#2 Z:\home\mis.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(223): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
+#6 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
+#7 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): CController->render('index', Array)
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+---
+2014/04/14 13:03:02 [error] [php] Undefined variable: medcardRecordId (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:60)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#3 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#8 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (60)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (223)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (117)
+2014/04/14 13:04:27 [error] [php] Undefined variable: medcardRecordId (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:60)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#3 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#8 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (60)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (223)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (117)
+2014/04/14 13:07:25 [error] [php] Undefined variable: medcardRecordId (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:60)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#3 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#8 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (60)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (224)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (117)
+2014/04/14 13:07:54 [error] [php] Undefined variable: medcardRecordId (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:257)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#1 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(224): SheduleController->widget()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#3 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#4 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#5 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#6 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#7 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#8 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#10 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#12 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#13 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#14 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#15 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#16 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#17 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#18 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (257)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (192)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (60)
+2014/04/14 13:08:26 [error] [php] Undefined variable: maxRecordId (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:82)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#3 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#4 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#8 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (82)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (224)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (117)
+2014/04/14 13:08:57 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "CategorieViewWidget.maxRecordId".' in Z:\home\mis.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(81): CComponent->__get('maxRecordId')
+#1 Z:\home\mis.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#2 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(224): CBaseController->widget('application.mod...', Array)
+#3 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
+#4 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
+#5 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
+#6 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#7 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): CController->render('index', Array)
+#8 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#11 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#13 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#14 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#15 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#16 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#18 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#20 {main}
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+---
+2014/04/14 13:09:42 [error] [php] Undefined variable: medcardRecordId (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:366)
+Stack trace:
+#0 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php(60): CategorieViewWidget->getCategories()
+#1 Z:\home\mis.my\yii\web\CBaseController.php(173): CategorieViewWidget->run()
+#2 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(224): SheduleController->widget()
+#3 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#5 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#6 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#7 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#8 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#9 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#11 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#13 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#14 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#15 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#16 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#18 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#19 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (366)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (524)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (192)
+2014/04/14 13:15:22 [error] [php] Undefined variable: currentRecordId (Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php:207)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#1 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=34/14&date=2014-6-4&rowid=515
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (207)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (117)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/14 13:15:23 [error] [php] Undefined variable: currentRecordId (Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php:207)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#1 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#2 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#6 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (207)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (117)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/14 15:40:45 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:711)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&historyPointId=1&date=2014-04-14+15%3A40&_=1397475635484
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (711)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (660)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 15:40:57 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:711)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&historyPointId=1&date=2014-04-14+15%3A40&_=1397475635485
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (711)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (660)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 15:41:18 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:711)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&historyPointId=2&date=2014-04-14+15%3A40&_=1397475635486
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (711)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (660)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 15:42:29 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:711)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&historyPointId=2&date=2014-04-14+15%3A40&_=1397475635487
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (711)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (660)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 15:58:16 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:715)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionGetHistoryMedcard()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&historyPointId=2&date=2014-04-14+15%3A40&_=1397475635493
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (715)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (660)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 16:16:00 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mep2.real_category_id не существует
+LINE 8: ...                                            WHERE mep2.real_...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "mep".*, "me"."type"
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements" "me" ON me.id = mep.element_id
+WHERE ((mep.medcard_id = :medcard_id AND record_id = :record_id AND NOT(element_id=-1))) OR (
+							((element_id=-1) AND
+					mep.record_id = (SELECT MAX(mep2.record_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.real_category_id = real_category_id
+                                                    AND mep2.medcard_id = :medcard_id)))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id", "me"."type", "mep"."value", "mep"."change_date", "mep"."greeting_id", "mep"."categorie_name", "mep"."categorie_id", "mep"."path".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (187)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (655)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 16:16:33 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mep2.real_category_id не существует
+LINE 8: ...                                            WHERE mep2.real_...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "mep".*, "me"."type"
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements" "me" ON me.id = mep.element_id
+WHERE ((mep.medcard_id = :medcard_id AND record_id = :record_id AND NOT(element_id=-1))) OR (
+							((element_id=-1) AND
+					mep.record_id = (SELECT MAX(mep2.record_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.real_category_id = mep.real_category_id
+                                                    AND mep2.medcard_id = :medcard_id)))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id", "me"."type", "mep"."value", "mep"."change_date", "mep"."greeting_id", "mep"."categorie_name", "mep"."categorie_id", "mep"."path".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (187)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (655)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+2014/04/14 16:35:51 [error] [php] Undefined index: historyPointId (Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php:21)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&date=2014-04-14+16%3A35&_=1397475635513
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/14 16:36:01 [error] [php] Undefined index: historyPointId (Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php:21)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&date=2014-04-14+16%3A35&_=1397475635514
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/14 16:39:54 [error] [php] Undefined index: historyPointId (Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php:21)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&date=2014-04-14+16%3A39&_=1397479085485
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/04/14 17:00:34 [error] [php] Undefined index: historyPointId (Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php:21)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=19%2F14&date=2014-04-14+17%3A00&_=1397479206228
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (21)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)

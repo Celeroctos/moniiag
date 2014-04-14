@@ -198,13 +198,14 @@
                                 <?php } ?>
                             </tr>
                         <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <?php if($currentPatient !== false) {
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+    <?php 
+		if($currentPatient !== false) {
         if($templatesChoose == 0) {
             foreach($templatesList as $key => $id) {
                 ?>
@@ -218,7 +219,8 @@
                     'canEditMedcard' => $canEditMedcard,
                     'medcard' => $medcard,
                     'currentDate' => $currentDate,
-                    'templatePrefix' => 'a'.$id
+                    'templatePrefix' => 'a'.$id,
+					'medcardRecordId' => $medcardRecordId
                 )); ?>
             <?php } ?>
             </div>
@@ -253,7 +255,7 @@
                                 <div class="form-group chooser" id="primaryDiagnosisChooser">
                                     <label for="doctor" class="col-xs-3 control-label">Основной диагноз:</label>
                                     <div class="col-xs-9">
-                                        <input type="text" class="form-control" autofocus id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                        <input type="text" class="form-control" id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
                                         <ul class="variants no-display">
                                         </ul>
                                         <div class="choosed">
@@ -266,7 +268,7 @@
                                 <div class="form-group chooser" id="secondaryDiagnosisChooser">
                                     <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
                                     <div class="col-xs-9">
-                                        <input type="text" class="form-control" autofocus id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                        <input type="text" class="form-control" id="doctor" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
                                         <ul class="variants no-display">
                                         </ul>
                                         <div class="choosed">
@@ -283,9 +285,12 @@
                                     </div>
                                 </div>
                                 <?php if($canEditMedcard) { ?>
-                                    <div class="form-group">
-                                        <input type="button" id="submitDiagnosis" value="Сохранить выбранные диагнозы" class="btn btn-primary">
+									<div class="form-group" id="submitDiagnosisContainer">
+										<input type="button" id="submitDiagnosis" value="Сохранить выбранные диагнозы" class="templateContentSave">
                                     </div>
+									<div class="form-group">
+										<input type="button" id="medcardContentSave" value="Сохранить" class="btn btn-primary">
+									</div>
                                 <?php } ?>
                                 <?php $this->endWidget(); ?>
                             </div>
@@ -437,6 +442,7 @@
         </div>
     </div>
 </div>
+<!--
 <div class="modal fade error-popup" id="successDiagnosisPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -455,6 +461,7 @@
         </div>
     </div>
 </div>
+-->
 <?php
 $form= $this->beginWidget('CActiveForm', array(
     'id' => 'patient-medcard-edit-form',
