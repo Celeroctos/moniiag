@@ -15,6 +15,7 @@ class CategorieViewWidget extends CWidget {
     public $dividedCats = array(); // Поделённые категории
     public $templatePrefix = null;
     public $templateId = null; // Это айдишник шаблона
+	public $medcardRecordId = null;
 
     public function run() {
        /* $deps = MedcardElementPatientDependence::model()->getDistinctDependences();
@@ -55,8 +56,8 @@ class CategorieViewWidget extends CWidget {
         // Т.е. в приём не вносили изменений, шаблона истории нет
         if($this->greetingId == null || $this->medcard == null) {
             $categories = array();
-        } else {
-            $categories = $this->getCategories($this->templateType, $this->templateId);
+        } else {		
+			$categories = $this->getCategories($this->templateType, $this->medcardRecordId,$this->templateId);
         }
 
 		// 
@@ -76,7 +77,8 @@ class CategorieViewWidget extends CWidget {
             'withoutSave' => $this->withoutSave,
             'lettersInPixel' => Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'lettersInPixel'))->value,
             'canEditMedcard' => $this->canEditMedcard,
-            'templatePrefix' => $this->templatePrefix
+            'templatePrefix' => $this->templatePrefix,
+			'currentRecordId' => $this->medcardRecordId
         ));
     }
 
@@ -148,7 +150,7 @@ class CategorieViewWidget extends CWidget {
     }
 
     // Получить иерархию категорий на странице
-    public function getCategories($pageId, $templateId = null) {
+	public function getCategories($pageId, $recordId, $templateId = null) {
         $templateModel = new MedcardTemplate();
         if($templateId == null) {
             $templates = $templateModel->getTemplatesByPageId($pageId);
@@ -187,9 +189,9 @@ class CategorieViewWidget extends CWidget {
                 ));
 
                 if($historyCategorie == null) {
-                    $categorieResult = $this->getCategorie($id, $template['id'], $template['name']);
+					$categorieResult = $this->getCategorie($id, $recordId, $template['id'], $template['name']);
                 } else {
-                    $categorieResult = $this->getCategorie(false, $template['id'], $template['name'], $historyCategorie->path);
+					$categorieResult = $this->getCategorie(false, $recordId, $template['id'], $template['name'], $historyCategorie->path);
                 }
                 $categorieTemplateFill[] = $categorieResult;
             }
@@ -214,7 +216,7 @@ class CategorieViewWidget extends CWidget {
         return $categoriesResult;
     }
 
-	public function getCategorie($id = false, $templateId, $templateName, $path = false) {
+	public function getCategorie($id = false, $recordId, $templateId, $templateName, $path = false) {
 		// Выбираем категорию
         if($id && !$path) { // Категории, для которых делается выборка по-первому
             $categorie = MedcardCategorie::model()->findByPk($id);
@@ -246,10 +248,13 @@ class CategorieViewWidget extends CWidget {
             if(isset($categorie) && $categorie->path == null) {
                 exit('Ошибка: категории c ID '.$categorie['id'].' не имеет пути в шаблоне!');
             }
-
+			// В этой точке 
+			//var_dump($this->currentDate);
+			//exit();
             $medcardCategorie = new MedcardElementForPatient();
             $medcardCategorie->medcard_id = $this->medcard['card_number'];
             $medcardCategorie->history_id = 1;
+			$medcardCategorie->record_id = $recordId;
             $medcardCategorie->greeting_id = $this->greetingId;
             $medcardCategorie->categorie_name = $categorie->name;
 	   // $medcardCategorie->is_required = $categorie->is_required;
@@ -257,8 +262,9 @@ class CategorieViewWidget extends CWidget {
             $medcardCategorie->is_wrapped = 0;
             $medcardCategorie->categorie_id = $categorie->parent_id;
             $medcardCategorie->element_id = -1;
-            $medcardCategorie->change_date = $this->currentDate;
-            $medcardCategorie->type = -1; // У категории нет типа контрола
+            //$medcardCategorie->change_date = $this->currentDate;
+			$medcardCategorie->change_date = date('Y-m-d H:i');
+			$medcardCategorie->type = -1; // У категории нет типа контрола
             $medcardCategorie->template_id = $templateId;
             $medcardCategorie->template_name = $templateName;
             $medcardCategorie->is_dynamic = $categorie->is_dynamic;
@@ -357,18 +363,20 @@ class CategorieViewWidget extends CWidget {
                             $medcardCategorieElement = new MedcardElementForPatient();
                             $medcardCategorieElement->medcard_id = $this->medcard['card_number'];
                             $medcardCategorieElement->history_id = 1;
+							$medcardCategorieElement->record_id = $recordId; 
                             $medcardCategorieElement->greeting_id = $this->greetingId;
                             $medcardCategorieElement->categorie_name = '';
                             $medcardCategorieElement->path = $element['path'];
                             $medcardCategorieElement->is_wrapped = $element['is_wrapped'];
-			    $medcardCategorieElement->is_required = $element['is_required'];
+							$medcardCategorieElement->is_required = $element['is_required'];
                             $medcardCategorieElement->categorie_id = $categorieResult['id'];
                             $medcardCategorieElement->element_id = $element['id'];
                             $medcardCategorieElement->label_before = $element['label'];
                             $medcardCategorieElement->label_after = $element['label_after'];
                             $medcardCategorieElement->size = $element['size'];
-                            $medcardCategorieElement->change_date = $this->currentDate;
-                            $medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
+                            //$medcardCategorieElement->change_date = $this->currentDate;
+							$medcardCategorieElement->change_date = date('Y-m-d H:i');
+							$medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
                             $medcardCategorieElement->guide_id = $element['guide_id'];
 							$medcardCategorieElement->allow_add = $element['allow_add'];
                             $medcardCategorieElement->config = $element['config'];
@@ -513,9 +521,9 @@ class CategorieViewWidget extends CWidget {
                     foreach($categoriesChildren as $child) {
                         // Обычная категория
                         if(isset($child->id)) {
-                            $categorieResult['children'][] = $this->getCategorie($child->id, $templateId, $templateName);
+							$categorieResult['children'][] = $this->getCategorie($child->id, $recordId, $templateId, $templateName);
                         } else { // Категория-клон
-                            $categorieResult['children'][] = $this->getCategorie(false, $templateId, $templateName, $child->path);
+							$categorieResult['children'][] = $this->getCategorie(false, $recordId, $templateId, $templateName, $child->path);
                         }
                     }
                 }
@@ -642,38 +650,27 @@ class CategorieViewWidget extends CWidget {
         ));
     }
 
-    public function getFieldsHistoryByDate($date, $medcardId) {
+	public function getFieldsHistoryByDate($date, $medcardId,$recordId) {
         $this->formModel = new FormTemplateDefault();
-        $this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId);
+		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId,$recordId);
+        // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
 		//var_dump($this->historyElements);
 		//exit();
-        //var_dump($this->historyElements);
-        //exit();
-        // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
+		
         $this->makeTree();
         $this->sortTree();
         // Теперь поделим категории
         $this->divideTreebyCats();
         // Рассортируем
-        
-        //exit();
-	//var_dump($this->dividedCats);
-	//var_dump($this->dividedCats);
-	//exit();
-		
 		// Вытащим приёмы
 		// Берём элементы истории и прочитываем id приёма
 		if (count($this->historyElements)>0)
 		$greeting = $this->historyElements[0]['greeting_id'];
 		
+		//var_dump($this->historyElements);
+		//exit();
 		$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
 		$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
-		/*
-		var_dump($pd);
-		var_dump("------");
-		var_dump($sd);	
-		exit();
-	*/
 	
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
@@ -713,10 +710,6 @@ class CategorieViewWidget extends CWidget {
 			$num++;
 			continue;
 			*/
-			// Fx 13.04.2014
-			if (!isset($nodeTopLevel['element']['template_name'])) {
-				continue;
-			}
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
 			// Если в templates нет ИД шаблона - добавляем

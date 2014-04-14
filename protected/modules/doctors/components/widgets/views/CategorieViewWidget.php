@@ -45,7 +45,7 @@ echo $form->hiddenField($model,'greetingId', array(
                             }'
             ),
             array(
-                'class' => 'btn btn-primary'
+        			'class' => 'templateContentSave'
             )
         ); ?>
     </div>

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class SheduleController extends Controller {
     public $layout = 'index';
     public $filterModel = null;
@@ -8,13 +8,17 @@ class SheduleController extends Controller {
     public $currentDay = null;
     public $currentYear = null;
     public $currentMonth = null;
+	
 
     public function actionView() {
+		$medcardRecordId = 0;
         if(isset($_GET['cardid']) && trim($_GET['cardid']) != '') {
-            // Проверим, есть ли такая медкарта вообще
+            
+			// Проверим, есть ли такая медкарта вообще
             $medcardFinded = Medcard::model()->findByPk($_GET['cardid']);
             if($medcardFinded != null) {
-                $this->currentPatient = trim($_GET['cardid']);
+				$medcardRecordId = MedcardElementForPatient::getMaxRecordId($_GET['cardid'])+1;
+				$this->currentPatient = trim($_GET['cardid']);
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getOne($this->currentPatient);
                 // Вычисляем количество лет
@@ -84,7 +88,10 @@ class SheduleController extends Controller {
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
 
-        $this->render('index', array(
+		// Ищем номер текущую запись для данной медкарты, прибавляем единицу
+		
+
+		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
             'currentPatient' => $this->currentPatient,
@@ -106,6 +113,7 @@ class SheduleController extends Controller {
             'templatesChoose' => $templatesChoose,
             'templatesList' => isset($templatesList) ? $templatesList : array(),
             'greeting' => (isset($greeting)) ? $greeting : null,
+			'medcardRecordId' => $medcardRecordId
         ));
     }
 
@@ -173,6 +181,11 @@ class SheduleController extends Controller {
     // Редактирование данных пациента
     public function actionPatientEdit() {
         if(isset($_POST['FormTemplateDefault'])) {
+			// Ищем recordId 
+			$recordId = MedcardElementForPatient::getMaxRecordId(
+				$_POST['FormTemplateDefault']['medcardId']	
+			);
+		
             // Перебираем весь входной массив, чтобы записать изменения в базу
             $currentDate = date('Y-m-d H:i');
             $answerCurrentDate = false;
@@ -224,7 +237,7 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext = new MedcardElementForPatient();
                 $historyCategorieElementNext->value = $value;
                 $historyCategorieElementNext->history_id = $historyCategorieElement->history_id + 1;
-				$historyCategorieElementNext->is_record=1;
+		$historyCategorieElementNext->record_id = $recordId + 1;
                 $historyCategorieElementNext->medcard_id = $historyCategorieElement->medcard_id;
                 $historyCategorieElementNext->greeting_id = $historyCategorieElement->greeting_id;
                 $historyCategorieElementNext->categorie_name = $historyCategorieElement->categorie_name;
@@ -235,7 +248,9 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext->label_before = $historyCategorieElement->label_before;
                 $historyCategorieElementNext->label_after = $historyCategorieElement->label_after;
                 $historyCategorieElementNext->size = $historyCategorieElement->size;
-                $historyCategorieElementNext->change_date = $currentDate;
+                //$historyCategorieElementNext->change_date = $currentDate;
+				$historyCategorieElementNext->change_date = date('Y-m-d H:i');
+				
                 $historyCategorieElementNext->type = $historyCategorieElement->type;
 				$historyCategorieElementNext->allow_add = $historyCategorieElement->allow_add;
                 $historyCategorieElementNext->guide_id = $historyCategorieElement->guide_id;
@@ -256,6 +271,7 @@ class SheduleController extends Controller {
 
             if($answerCurrentDate) {
                 $response['historyDate'] = $currentDate;
+				$response['lastRecordId'] = $recordId+1;
             }
 
             echo CJSON::encode($response);

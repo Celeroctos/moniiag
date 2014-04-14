@@ -48,6 +48,86 @@ $(document).ready(function () {
     });
 });
 
+$("#writtenPatients").jqGrid({
+    datatype: "json",
+    colNames: ['Дата', 'ФИО', 'Контактные данные', 'Отписать', '', ''],
+    colModel: [
+            {
+                name: 'patient_date',
+                index: 'patient_date',
+                width: 150
+            },
+            {
+                name: 'fio',
+                index: 'fio',
+                width: 200
+            },
+            {
+                name: 'contact',
+                index: 'contact',
+                width: 200
+            },
+
+            {
+                name: 'unwrite',
+                index: 'unwrite',
+                width: 80,
+              //  formatter: unwriteLinkFormatter,
+                align: "center"
+            },
+            {
+                name: 'id',
+                width: 150,
+                hidden: true
+            },
+            {
+                name: 'medcard_id',
+                index: 'medcard_id',
+                hidden: true
+            },
+
+
+        ],
+    rowNum: 10,
+    rowList: [10, 20, 30],
+    pager: '#writtenPatientsPager',
+    sortname: 'id',
+    viewrecords: true,
+    sortorder: "desc",
+    caption: "Записанные пациенты",
+    height: 100
+});
+
+$(document).on('click', '#writtenPatientsTimetable .unwrite-link', function (e) {
+    var params = {
+        id: $(this).attr('href').substr(1)
+    };
+    $.ajax({
+        'url': '/index.php/doctors/shedule/unwritepatient',
+        'data': params,
+        'cache': false,
+        'dataType': 'json',
+        'type': 'GET',
+        //'scope': this,
+        'success': function (data, textStatus, jqXHR) {
+
+            if (data.success == 'true') {
+                var currentRow = $('#writtenPatients').jqGrid('getGridParam', 'selrow');
+                var rowData = $('#writtenPatients').getRowData(currentRow);
+                var medcardId = rowData['medcard_id'];
+                var newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
+                rowData.unwrite = newLink;
+                $('#writtenPatients').jqGrid('setRowData', currentRow, rowData);
+
+
+            }
+
+            return;
+        }
+    });
+    return false;
+});
+
 // Отобразить ошибки формы добавления пациента
 $("#add-shedule-employee").on('success', function (eventObj, ajaxData, status, jqXHR) {
     $('#addShedulePopup').modal('hide');
@@ -106,31 +186,227 @@ $("#edit-shedule-employee").on('success', function (eventObj, ajaxData, status, 
 }
 });
 
+$("#doctor-shedule-add-submit").on('click',
+    function () {
+
+        var cancelation;
+        cancelation = false;
+        var begin = '';
+        if ($("#addShedulePopup #dateBegin").val() != '' && $("#addShedulePopup #dateBegin").val() != undefined) {
+            begin = $("#addShedulePopup #dateBegin").val();
+        }
+
+        var end = '';
+        if ($("#addShedulePopup #dateEnd").val() != '' && $("#addShedulePopup #dateEnd").val() != undefined) {
+            end = $("#addShedulePopup #dateEnd").val();
+        }
+        var doctorId = '';
+        if ($("#addShedulePopup #doctorId").val() != '' && $("#addShedulePopup #doctorId").val() != undefined) {
+            doctorId = $("#addShedulePopup #doctorId").val();
+        }
+
+        if (begin != '' && end != '') {
+            $.ajax({
+                'url': '/index.php/admin/shedule/isgreeting?begin=' + begin + '&end=' + end + '&doctor_id=' + doctorId,
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET',
+                'async': false,
+                'success': function (data, textStatus, jqXHR) {
+
+                    if (data.success == true) {
+                        if (data.data > 0) {
+                            console.log(data.data);
+                            // Выводим список пациентов
+                            // alert('Есть записанные паценты');
+                            cancelation = true;
+                        }
+
+                    }
+                }
+            });
+        }
+
+        if (cancelation) {
+            // Открываем модалку
+            openViewWritedPatient($('#doctorId').val(), begin, end);
+        }
+        return !cancelation;
+
+    }
+);
+
+// Возвращает JSON c временами режима работы
+function getTimesObject(parentContainer) {
+    var modeTimes =
+    {
+        timesBegin: Array(),
+        timesEnd: Array()
+    }
+    for (i = 0; i < 7; i++) {
+        modeTimes.timesBegin[i] = $(parentContainer).find('#timeBegin' + i.toString()).val();
+        modeTimes.timesEnd[i] = $(parentContainer).find('#timeEnd' + i.toString()).val();
+    }
+
+    return modeTimes;
+}
+
+$("#doctor-shedule-edit-submit").on('click',
+    function () {
+        var cancelation;
+        cancelation = false;
+        var begin = '';
+        if ($("#editSheduleEmployeePopup #dateBegin").val() != '' && $("#editSheduleEmployeePopup #dateBegin").val() != undefined) {
+            begin = $("#editSheduleEmployeePopup #dateBegin").val();
+        }
+
+        var end = '';
+        if ($("#editSheduleEmployeePopup #dateEnd").val() != '' && $("#editSheduleEmployeePopup #dateEnd").val() != undefined) {
+            end = $("#editSheduleEmployeePopup #dateEnd").val();
+        }
+        var doctorId = '';
+        if ($("#editSheduleEmployeePopup #doctorId").val() != '' && $("#editSheduleEmployeePopup #doctorId").val() != undefined) {
+            doctorId = $("#editSheduleEmployeePopup #doctorId").val();
+        }
+
+        var employeeId = '';
+        if ($("#editSheduleEmployeePopup #sheduleEmployeeId").val() != '' && $("#editSheduleEmployeePopup #sheduleEmployeeId").val() != undefined) {
+            employeeId = $("#editSheduleEmployeePopup #sheduleEmployeeId").val();
+        }
+
+        if (begin != '' && end != '') {
+
+            urlStr = '/index.php/admin/shedule/intersectiongreeting' +
+                    '?begin=' + begin +
+                    '&end=' + end +
+                    '&doctor_id=' + doctorId +
+                    '&shedule_id=' + employeeId +
+                     '&times=' + $.toJSON(getTimesObject($("#editSheduleEmployeePopup")));
+
+            $.ajax({
+                'url': urlStr,
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET',
+                'async': false,
+                'success': function (data, textStatus, jqXHR) {
+
+                    if (data.success == true) {
+                        if (data.data > 0) {
+                            console.log(data.data);
+                            // Выводим список пациентов
+                            //     alert('Есть записанные паценты');
+                            openViewWritedPatientEdit(doctorId, employeeId, begin, end, $.toJSON(getTimesObject($("#editSheduleEmployeePopup"))));
+                            cancelation = true;
+                        }
+                        else {
+                            alert("Сохраняем новое расписание");
+                        }
+
+                    }
+                }
+            });
+        }
+
+        return !cancelation;
+        
+    }
+);
+
+
+
+
 $("#deleteSheduleEmployee").click(function () {
     var currentRow = $('#shiftsEmployee').jqGrid('getGridParam', 'selrow');
     if (currentRow != null) {
-        // Надо вынуть данные для редактирования
+        var beginArr = $('#shiftsEmployee').jqGrid('getCell', currentRow, 'date_begin').split('.');
+        var begin = beginArr[2] + '-' + beginArr[1] + '-' + beginArr[0];
+
+        var endArr = $('#shiftsEmployee').jqGrid('getCell', currentRow, 'date_end').split('.');
+        var end = endArr[2] + '-' + endArr[1] + '-' + endArr[0];
         $.ajax({
-            'url': '/index.php/admin/shedule/delete?id=' + currentRow,
+            'url': '/index.php/admin/shedule/isgreeting?begin=' + begin + '&end=' + end + '&doctor_id=' + $('#doctorId').val(),
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
             'success': function (data, textStatus, jqXHR) {
-                if (data.success == 'true') {
-                    $('#shiftsEmployee').trigger("reloadGrid");
-                } else {
-                    // Удаляем предыдущие ошибки
-                    $('#errorPopup .modal-body .row p').remove();
-                    $('#errorPopup .modal-body .row').append("<p>" + data.error + "</p>")
 
-                    $('#errorPopup').modal({
+                if (data.success == true) {
+                    if (data.data > 0) {
+                        console.log(data.data);
+                        // Выводим список пациентов
+                        //alert('Есть записанные паценты');
+                        // Открываем модалку
+                        openViewWritedPatient($('#doctorId').val(), begin, end);
 
-                });
+                    }
+                    else {
+                        // Удаляем расписание
+                        // Надо вынуть данные для редактирования
+                        $.ajax({
+                            'url': '/index.php/admin/shedule/delete?id=' + currentRow,
+                            'cache': false,
+                            'dataType': 'json',
+                            'type': 'GET',
+                            'success': function (data, textStatus, jqXHR) {
+                                if (data.success == 'true') {
+                                    $('#shiftsEmployee').trigger("reloadGrid");
+                                } else {
+                                    // Удаляем предыдущие ошибки
+                                    $('#errorPopup .modal-body .row p').remove();
+                                    $('#errorPopup .modal-body .row').append("<p>" + data.error + "</p>")
+
+                                    $('#errorPopup').modal({});
+                                }
+                            }
+                        });
+                    }
+                }
+
             }
-        }
-    })
-}
+
+        });
+
+    }
 });
+
+function openViewWritedPatientEdit(doctor, shedule, beginDate, endDate, times) {
+    // Сначала инициализируем jqGrid
+    jQuery("#writtenPatients").jqGrid(
+            'setGridParam',
+            {
+                url: globalVariables.baseUrl +
+                    '/index.php/admin/shedule/getwrittenpatientsedit?' +
+                        'doctor_id=' + doctor +
+                        '&date_begin=' + beginDate +
+                        '&date_end=' + endDate +
+                        '&shedule_id=' + shedule +
+                        '&times=' + $.toJSON(getTimesObject($("#editSheduleEmployeePopup"))),
+                page: 1
+            }
+        );
+    jQuery("#writtenPatients").trigger('reloadGrid');
+    $('#viewWritedPatient').modal({});
+}
+
+// Открыть модалку с 
+function openViewWritedPatient(doctor, beginDate, endDate) {
+    // Сначала инициализируем jqGrid
+    jQuery("#writtenPatients").jqGrid(
+            'setGridParam',
+            {
+                url: globalVariables.baseUrl +
+                    '/index.php/admin/shedule/getwrittenpatients?' +
+                        'doctor_id=' + doctor +
+                        '&date_begin=' + beginDate +
+                        '&date_end=' + endDate,
+                page: 1
+            }
+        );
+    jQuery("#writtenPatients").trigger('reloadGrid');
+    $('#viewWritedPatient').modal({});
+
+}
 
 function editSheduleEmployee() {
     var currentRow = $('#shiftsEmployee').jqGrid('getGridParam', 'selrow');
@@ -367,7 +643,7 @@ $('#errorAddShedulePopup').on('hide.bs.modal', function (e) {
     // По закрытию ошибки - открываем снова поп-ап
     $('#addShedulePopup').modal({
 
-    });
+});
 });
 
 $('#errorEditShedulePopup').on('hide.bs.modal', function (e) {

@@ -104,10 +104,12 @@ class MedcardElementForPatient extends MisActiveRecord {
     }
 
     public function getHistoryPoints($medcard) {
-        try {
+        
+			
+		try {
             $connection = Yii::app()->db;
             $points = $connection->createCommand()
-                ->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.medcard_id')
+				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id')
                 ->from('mis.medcard_elements_patient mep')
                 ->where('mep.medcard_id = :medcard_id AND mep.is_record=1', array(':medcard_id' => $medcard['card_number']))
                 ->order('change_date DESC')
@@ -117,11 +119,14 @@ class MedcardElementForPatient extends MisActiveRecord {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+		
+		
     }
 
-	public function getValuesByDate($date, $medcardId) {
+	public function getValuesByDate($date, $medcardId, $historyId) {
 		try {
 			$connection = Yii::app()->db;
+			/*
 			$values = $connection->createCommand()
 				->select('mep.*, me.type')
 				->from('mis.medcard_elements_patient mep')
@@ -154,8 +159,58 @@ class MedcardElementForPatient extends MisActiveRecord {
                          mep.categorie_id,
                          mep.path,
                          ');
+						*/
+						
+						
+			$values = $connection->createCommand()
+				->select('mep.*, me.type')
+				->from('mis.medcard_elements_patient mep')
+				->leftJoin('mis.medcard_elements me', 'me.id = mep.element_id')
+				->where('(mep.medcard_id = :medcard_id AND mep.record_id = :record_id)', 
+					array(':medcard_id' => $medcardId,
+						':record_id' => $historyId)
+					)
+					->orWhere('(
+							(mep.element_id=-1)
+							
+												AND (mep.record_id = (SELECT MAX(mep2.record_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.real_categorie_id = mep.real_categorie_id
+                                                    AND mep2.medcard_id = :medcard_id))
+						
+							
+				)', array(':medcard_id' => $medcardId));
 			return $values->queryAll();
 
+		} catch(Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+
+	// Метод возвращает максимальную record id в таблице записей медкарты для данной медкарты
+	public static function getMaxRecordId($medcardId)
+	{
+		try {
+			$connection = Yii::app()->db;
+			$values = $connection->createCommand()
+				->select('MAX(mep.record_id) AS max_val')
+				->from('mis.medcard_elements_patient mep')
+				->where('mep.medcard_id = :medcard_id', 
+					array(':medcard_id' => $medcardId)
+					);
+			
+			$result = $values->queryAll();
+			
+			if (count($result)==0)
+			{
+				return 0;
+			}
+			else
+			{
+				return $result[0]['max_val'];
+			}
+			return 0;
+			
 		} catch(Exception $e) {
 			echo $e->getMessage();
 		}

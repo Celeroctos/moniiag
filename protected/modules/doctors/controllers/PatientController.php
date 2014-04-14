@@ -18,7 +18,7 @@ class PatientController extends Controller {
         //exit();
         
         $categorieWidget->createFormModel();
-        $historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid']); // Получаем поля для всех полей относительно хистори
+		$historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid'],$_GET['historyPointId']); // Получаем поля для всех полей относительно хистори
 
 		ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
@@ -79,7 +79,7 @@ class PatientController extends Controller {
     }
 
     // Клонирование элемента (категории)
-    public function actionCloneElement($pr_key, $level = 0, $levelParts = array()) {
+	public function actionCloneElement($pr_key, $recordId, $level = 0, $levelParts = array()) {
         $keyParts = explode('|', $pr_key);
         /* Порядок полей в ключе:
          * - Номер карты
@@ -101,19 +101,23 @@ class PatientController extends Controller {
             exit();
         }
 
+		$recordId = MedcardElementForPatient::getMaxRecordId($keyParts[0]);
+
         $currentDate = date('Y-m-d h:i');
 
         // Создаём новую категорию, путь делаем + 1 у конечного элемента
         $medcardCategorieClone = new MedcardElementForPatient();
         $medcardCategorieClone->medcard_id = $keyParts[0];
         $medcardCategorieClone->history_id = 1;
+		$medcardCategorieClone->record_id = $recordId;
         $medcardCategorieClone->greeting_id = $keyParts[1];
         $medcardCategorieClone->categorie_name = $historyCategorie->categorie_name;
         $medcardCategorieClone->is_wrapped = 0;
         $medcardCategorieClone->categorie_id = $historyCategorie->categorie_id;
         $medcardCategorieClone->element_id = -1;
-        $medcardCategorieClone->change_date = $currentDate;
-        $medcardCategorieClone->type = -1;
+        //$medcardCategorieClone->change_date = $currentDate;
+		$medcardCategorieClone->change_date = date('Y-m-d H:i');
+		$medcardCategorieClone->type = -1;
         $medcardCategorieClone->template_id = $historyCategorie->template_id; // TODO : вынуть идентификаторы шаблона
         $medcardCategorieClone->template_name = $historyCategorie->template_name; // TODO : вынуть имя шаблона
         $medcardCategorieClone->is_dynamic = 0; // Клонированные категории не должны быть динамичными
@@ -157,6 +161,7 @@ class PatientController extends Controller {
 
             $historyCategorieElementNext = new MedcardElementForPatient();
             $historyCategorieElementNext->history_id = 1;
+			$historyCategorieElementNext->record_id = $recordId;
             $historyCategorieElementNext->medcard_id = $element['medcard_id'];
             $historyCategorieElementNext->greeting_id = $element['greeting_id'];
             $historyCategorieElementNext->path = implode('.', $pathParts2);
@@ -167,7 +172,8 @@ class PatientController extends Controller {
             $historyCategorieElementNext->label_before = $element['label_before'];
             $historyCategorieElementNext->label_after = $element['label_after'];
             $historyCategorieElementNext->size = $element['size'];
-            $historyCategorieElementNext->change_date = $currentDate;
+            //$historyCategorieElementNext->change_date = $currentDate;
+			$historyCategorieElementNext->change_date = date('Y-m-d H:i');
             $historyCategorieElementNext->type = $element['type'];
             $historyCategorieElementNext->guide_id = $element['guide_id'];
 			$historyCategorieElementNext->allow_add = $element['allow_add'];
@@ -271,7 +277,7 @@ class PatientController extends Controller {
     }
 
     // UnКлонирование элемента (категории)
-    public function actionUnCloneElement($pr_key) {
+	public function actionUnCloneElement($pr_key) {
         $keyParts = explode('|', $pr_key);
         /* Порядок полей в ключе:
          * - Номер карты
