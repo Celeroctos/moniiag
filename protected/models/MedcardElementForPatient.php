@@ -108,12 +108,11 @@ class MedcardElementForPatient extends MisActiveRecord {
 			
 		try {
             $connection = Yii::app()->db;
-            $points = $connection->createCommand()
+			$points = $connection->createCommand()
 				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id')
-                ->from('mis.medcard_elements_patient mep')
-                ->where('mep.medcard_id = :medcard_id AND mep.is_record=1', array(':medcard_id' => $medcard['card_number']))
-                ->order('change_date DESC')
-				->limit(1,0);
+				->from('mis.medcard_elements_patient mep')
+				->where('mep.medcard_id = :medcard_id', array(':medcard_id' => $medcard['card_number']))
+				->order('change_date DESC');
             return $points->queryAll();
 
         } catch(Exception $e) {
