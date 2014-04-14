@@ -19,6 +19,9 @@ class FormElementAdd extends CFormModel
     public $labelDisplay;
     public $defaultValue;
     public $defaultValueText;
+    public $numberFieldMinValue;
+    public $numberFieldMaxValue;
+    public $numberStep;
 
     public function rules()
     {
@@ -28,6 +31,9 @@ class FormElementAdd extends CFormModel
             ),
             array(
                 'id, guideId, allowAdd, isRequired, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue, defaultValueText', 'safe'
+            ),
+            array(
+                'numberFieldMinValue, numberFieldMaxValue, numberStep', 'numerical'
             )
         );
     }
@@ -50,6 +56,9 @@ class FormElementAdd extends CFormModel
             'labelDisplay' => 'Метка для отображения в администрировании',
             'defaultValue' => 'Значение по умолчанию',
             'defaultValueText' => 'Значение по умолчанию',
+            'numberFieldMinValue' => 'Минимальное значение',
+            'numberFieldMaxValue' => 'Максимальное значение',
+            'numberStep' => 'Шаг'
         );
     }
 }

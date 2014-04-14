@@ -79,7 +79,7 @@ if(isset($categorie['id'])) {
                             <div class="col-xs-9">
                         
                         	<?php
-                       	 if($element['type'] == 0) {
+                       	        if($element['type'] == 0) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -190,8 +190,7 @@ if(isset($categorie['id'])) {
                                         </button>
                                     <?php
                                     }
-                                } 
- 									elseif($element['type'] == 4) {
+                                } elseif($element['type'] == 4) {
 								?>
 								
                                     <table class="controltable">
@@ -263,9 +262,88 @@ if(isset($categorie['id'])) {
                                     echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
                                     ?>
                                 <?php
+                                }  if($element['type'] == 5) { // numberField
+                                    $options = array(
+                                        'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
+                                        'class' => 'form-control',
+                                        'placeholder' => ''
+                                    );
+                                    if(isset($element['config'])) {
+                                        if(trim($element['config']['maxValue']) != '') {
+                                            $options['max'] = $element['config']['maxValue'];
+                                        }
+                                        if(trim($element['config']['minValue']) != '') {
+                                            $options['min'] = $element['config']['minValue'];
+                                        }
+                                        if(trim($element['config']['step']) != '') {
+                                            $options['step'] = $element['config']['step'];
+                                        }
+                                    }
+                                    if(isset($element['size']) && $element['size'] != null) {
+                                        $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
+                                    }
+                                    if(!$canEditMedcard) {
+                                        $options['disabled'] = 'disabled';
+                                    }
+                                    echo $form->numberField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+                                    if($element['label_after'] != null) {
+                                        ?>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                    <?php
+                                    }
+                                } if($element['type'] == 6) { // dateField
+                                    $options = array(
+                                        'id' => 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id'],
+                                        'class' => 'form-control',
+                                        'placeholder' => ''
+                                    );
+                                    if(isset($element['size']) && $element['size'] != null) {
+                                        $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
+                                    }
+                                    if(!$canEditMedcard) {
+                                        $options['disabled'] = 'disabled';
+                                    }
+                                    ?>
+                                    <div id="<?php echo 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id']; ?>-cont" class="col-xs-3 input-group date null-padding-left">
+                                        <?php
+                                        echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+                                        ?>
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon-calendar glyphicon">
+                                            </span>
+                                        </span>
+                                        <div class="subcontrol">
+                                            <div class="date-ctrl-up-buttons">
+                                                <div class="btn-group">
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                                                </div>
+                                            </div>
+                                            <div class="form-inline subfields">
+                                                <input type="text" name="day" placeholder="ДД" class="form-control day">
+                                                <input type="text" name="month" placeholder="ММ" class="form-control month">
+                                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                                            </div>
+                                            <div class="date-ctrl-down-buttons">
+                                                <div class="btn-group">
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript">
+                                        DateControlContainers.push('#<?php echo $options['id']; ?>-cont');
+                                    </script>
+                                    <?php
+                                    if($element['label_after'] != null) {
+                                        ?>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                    <?php
+                                    }
                                 }?>
-                   
-                       
                        		</div>
                        	</div>
                        	<? 

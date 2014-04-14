@@ -158,6 +158,26 @@ class ElementsController extends Controller {
             $element->config = $model->config;
         }
 
+        if($model->type == 5) {
+            if($model->numberFieldMaxValue != null && $model->numberFieldMinValue != null && $model->numberFieldMaxValue < $model->numberFieldMinValue) {
+                echo CJSON::encode(array('success' => false,
+                        'errors' => array(
+                            'maxminvalue' => array(
+                                'Максимальное значение поля меньше, чем минимальное!'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+            $config = array(
+                'maxValue' => $model->numberFieldMaxValue,
+                'minValue' => $model->numberFieldMinValue,
+                'step' => $model->numberStep
+            );
+            $element->config = CJSON::encode($config);
+        }
+
         // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
         $partOfPath = $this->getElementPath($element->categorie_id);
         $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
