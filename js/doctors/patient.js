@@ -428,41 +428,41 @@ $(document).on('click', '.editMedcard', function (e) {
 return false;
 });
 
-// Запрет редактирования карты
-$('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
-$('.date-control .input-group-addon').remove();
+    // Запрет редактирования карты
+    $('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
+    $('#patient-medcard-edit-form .date-control .input-group-addon').remove();
 
-// Здесь будут храниться ID клонов элементов
-var clones = {
+    // Здесь будут храниться ID клонов элементов
+    var clones = {
 
-};
+    };
 
-// Клонирование элементов
-/* Клоны считаются, как clone_xx_yy, где xx - ID аккордеона, yy - порядковый номер клона */
-$(document).on('click', '.accordion-clone-btn', function (e) {
-    var prKey = $(this).find('span.pr-key').text();
-    var accParent = $(this).parents('.accordion')[0];
-    var accClone = $(accParent).clone();
-    var recordId = $(this).find('span#currentRecordId').text();
-    // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
-    $.ajax({
-        'url': '/index.php/doctors/patient/cloneelement',
-        'data': {
-            'pr_key': prKey
-        },
-        'cache': false,
-        'dataType': 'json',
-        'type': 'GET',
-        'success': function (data, textStatus, jqXHR) {
-            if (data.success == true) {
-                var toggle = $(accParent).find('.accordion-toggle');
-                var body = $(accParent).find('.accordion-body');
+    // Клонирование элементов
+    /* Клоны считаются, как clone_xx_yy, где xx - ID аккордеона, yy - порядковый номер клона */
+    $(document).on('click', '.accordion-clone-btn', function(e) {
+        var prKey = $(this).find('span.pr-key').text();
+        var accParent = $(this).parents('.accordion')[0];
+        var accClone = $(accParent).clone();
 
-                if (!clones.hasOwnProperty($(accParent).prop('id'))) {
-                    clones[$(accParent).prop('id')] = 1;
-                } else {
-                    clones[$(accParent).prop('id')]++;
-                }
+        // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
+        $.ajax({
+            'url' : '/index.php/doctors/patient/cloneelement',
+            'data' : {
+                'pr_key' : prKey
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var toggle = $(accParent).find('.accordion-toggle');
+                    var body = $(accParent).find('.accordion-body');
+
+                    if(!clones.hasOwnProperty($(accParent).prop('id'))) {
+                        clones[$(accParent).prop('id')] = 1;
+                    } else {
+                        clones[$(accParent).prop('id')]++;
+                    }
 
                 var accId = $(accParent).prop('id');
                 var accNumberId = accId.substr(accId.lastIndexOf('_') + 1);

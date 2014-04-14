@@ -345,7 +345,7 @@ $(document).ready(function() {
 
     // Запрет редактирования карты
     $('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
-    $('.date-control .input-group-addon').remove();
+    $('#patient-medcard-edit-form .date-control .input-group-addon').remove();
 
     // Здесь будут храниться ID клонов элементов
     var clones = {

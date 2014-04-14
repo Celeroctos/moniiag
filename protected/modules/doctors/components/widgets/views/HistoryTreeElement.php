@@ -84,14 +84,19 @@
                             <div class="col-xs-9">
                             <!-- -->
                             <?php
-                                if($element['type'] == 0) {
+                                if($element['type'] == 0 || $element['type'] == 5 || $element['type'] == 6) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'value' => $element['value'],
                                         'disabled' => 'disabled'
                                     );
+                                    if($element['type'] == 6 && trim($element['value']) != '') {
+                                        $options['value'] = implode('.', array_reverse(explode('-', $element['value'])));
+                                    } else {
+                                        $options['value'] = $element['value'];
+                                    }
+
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     }
@@ -238,7 +243,7 @@
                                     echo $form->hiddenField($model,'f'.$element['id'], $options);
                                     ?>
                                 <?php
-                                }                        
+                                }
                                 //----------------
                                  ?>
                             <!-- -->

@@ -15,10 +15,8 @@
         '#dateBeginEdit-cont',
         '#dateEndEdit-cont',
         '#greetingDate-cont',
-
         '#addShedulePopup #shift-date-begin-cont',
 	    '#addShedulePopup #shift-date-end-cont',
-
         '#editSheduleEmployeePopup #shift-date-begin-cont',
 	    '#editSheduleEmployeePopup #shift-date-end-cont',
     ];
@@ -127,7 +125,7 @@
    function initDateField(DateField) {
 	    var format = 'yyyy-mm-dd';
 	    if(DateField.length == 0) {
-                return;
+            return;
         }
         DateField.datetimepicker({
             language: 'ru',
@@ -140,7 +138,7 @@
             minView: 2,
             forceParse: 0
         });
-       $(DateField).parent().find('label').css({'padding-top' : '25px'});
+       $(DateField).parents('.form-group').find('label').css({'padding-top' : '25px'});
         var ctrl = DateField.find('input.form-control:first');
         $(ctrl).on('change', function(e, type){
             console.log(e.target);
@@ -183,13 +181,12 @@
         }
     }
     
-    function initDateControlEventHandlers(Control)
-    {
-	                // Подвязываем обработчик события нажатия на верхние кнопки для контрола
-                var btnPrevNext = $(Control).find('.date-ctrl-up-buttons .btn-group button, .date-ctrl-down-buttons .btn-group button');
-                var lastNullEntered = false; // Чтобы считывать 01, 02...
+   function initDateControlEventHandlers(Control) {
+       // Подвязываем обработчик события нажатия на верхние кнопки для контрола
+       var btnPrevNext = $(Control).find('.date-ctrl-up-buttons .btn-group button, .date-ctrl-down-buttons .btn-group button');
+       var lastNullEntered = false; // Чтобы считывать 01, 02...
 				
-		$(btnPrevNext).on('click',function (e) {
+	   $(btnPrevNext).on('click',function (e) {
                     ArrowCalendarClickHandler(e, Control);
                 });
                 // Обработчик на субконтролы, если оные есть

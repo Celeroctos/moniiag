@@ -196,4 +196,30 @@ $(document).ready(function() {
             })
         }
     });
+
+    $('#showTemplate').on('click', function(e) {
+        var currentRow = $('#templates').jqGrid('getGridParam','selrow');
+        if(currentRow != null) {
+            // Надо вынуть данные для редактирования
+            $.ajax({
+                'url' : '/index.php/admin/templates/show?id=' + currentRow,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
+                        $("#templates").trigger("reloadGrid");
+                    } else {
+                        // Удаляем предыдущие ошибки
+                        $('#errorAddTemplatePopup .modal-body .row p').remove();
+                        $('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
+
+                        $('#errorAddTemplatePopup').modal({
+
+                        });
+                    }
+                }
+            })
+        }
+    });
 });

@@ -148,6 +148,17 @@ class TemplatesController extends Controller {
                                  'data' => $template)
         );
     }
+
+    // Просмотр шаблона
+    public function actionShow() {
+
+        echo CJSON::encode(
+            array(
+                'success' => true,
+                'data' => "!"
+            )
+        );
+    }
 }
 
 ?>

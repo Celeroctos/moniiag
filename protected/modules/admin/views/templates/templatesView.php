@@ -10,6 +10,7 @@
     <button type="button" class="btn btn-default" id="addTemplate">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editTemplate">Редактировать выбранную запись</button>
     <button type="button" class="btn btn-default" id="deleteTemplate">Удалить выбранные</button>
+    <button type="button" class="btn btn-success" id="showTemplate">Просмотр шаблона</button>
 </div>
 <div class="modal fade" id="addTemplatePopup">
     <div class="modal-dialog">

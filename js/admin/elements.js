@@ -209,6 +209,7 @@ $("#element-add-form").on('success', function (eventObj, ajaxData, status, jqXHR
         $("#element-add-form").find("#guideId, #allowAdd, #defaultValue").prop('disabled', true);
         $("#element-add-form")[0].reset(); // Сбрасываем форму
         $('.table-config-container').addClass('no-display').find('#numCols, #numRows').attr('disabled', false);
+        $('#addElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').val('').parents('.form-group').addClass('no-display');
         $('.table-config-headers tbody tr').remove();
     } else {
         // Удаляем предыдущие ошибки
@@ -400,61 +401,69 @@ function editElement() {
                         }
                         form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         // Таблица
-                        if (fields[i].formField == 'config' && data.data['type'] == 4) {
+                        if (fields[i].formField == 'config') {
                             var config = $.parseJSON(data.data['config']);
-                            if (config.cols.length > 0) {
-                                $('#editElementPopup .colsHeaders').prop('checked', true);
-                            }
-                            if (config.rows.length > 0) {
-                                $('#editElementPopup .rowsHeaders').prop('checked', true);
-                            }
-                            var max = config.cols.length > config.rows.length ? config.cols.length : config.rows.length;
-                            var tbody = $('#editElementPopup .table-config-headers tbody');
-                            $('#editElementPopup #numRows').val(config.numRows);
-                            $('#editElementPopup #numCols').val(config.numCols);
-                            if (config.rows.length > 0) {
-                                $('#editElementPopup #numRows').prop('disabled', true);
-                            }
-                            if (config.cols.length > 0) {
-                                $('#editElementPopup #numCols').prop('disabled', true);
-                            }
-                            $(tbody).find('tr').remove();
-                            console.log(config);
-                            for (var j = 0; j < max; j++) {
-                                if (j < config.rows.length) {
-                                    var newInput1 = $('<input>').prop({
-                                        'id': 'r' + j,
-                                        'type': 'text',
-                                        'class': 'form-control',
-                                        'value': config.rows[j]
-                                    });
-                                } else {
-                                    var newInput1 = null;
+                            if(data.data['type'] == 4) {
+                                if (config.cols.length > 0) {
+                                    $('#editElementPopup .colsHeaders').prop('checked', true);
                                 }
-                                if (j < config.cols.length) {
-                                    var newInput2 = $('<input>').prop({
-                                        'id': 'c' + j,
-                                        'type': 'text',
-                                        'class': 'form-control',
-                                        'value': config.cols[j]
-                                    });
-                                } else {
-                                    var newInput2 = null;
+                                if (config.rows.length > 0) {
+                                    $('#editElementPopup .rowsHeaders').prop('checked', true);
                                 }
+                                var max = config.cols.length > config.rows.length ? config.cols.length : config.rows.length;
+                                var tbody = $('#editElementPopup .table-config-headers tbody');
+                                $('#editElementPopup #numRows').val(config.numRows);
+                                $('#editElementPopup #numCols').val(config.numCols);
+                                if (config.rows.length > 0) {
+                                    $('#editElementPopup #numRows').prop('disabled', true);
+                                }
+                                if (config.cols.length > 0) {
+                                    $('#editElementPopup #numCols').prop('disabled', true);
+                                }
+                                $(tbody).find('tr').remove();
+                                console.log(config);
+                                for (var j = 0; j < max; j++) {
+                                    if (j < config.rows.length) {
+                                        var newInput1 = $('<input>').prop({
+                                            'id': 'r' + j,
+                                            'type': 'text',
+                                            'class': 'form-control',
+                                            'value': config.rows[j]
+                                        });
+                                    } else {
+                                        var newInput1 = null;
+                                    }
+                                    if (j < config.cols.length) {
+                                        var newInput2 = $('<input>').prop({
+                                            'id': 'c' + j,
+                                            'type': 'text',
+                                            'class': 'form-control',
+                                            'value': config.cols[j]
+                                        });
+                                    } else {
+                                        var newInput2 = null;
+                                    }
 
-                                var newTr = $('<tr>');
-                                var newTdOne = $('<td>');
-                                $(newTdOne).append(newInput1);
-                                var newTdTwo = $('<td>');
-                                $(newTdTwo).append(newInput2);
+                                    var newTr = $('<tr>');
+                                    var newTdOne = $('<td>');
+                                    $(newTdOne).append(newInput1);
+                                    var newTdTwo = $('<td>');
+                                    $(newTdTwo).append(newInput2);
 
-                                $(newTr).append(newTdOne, newTdTwo);
-                                console.log(newTr);
-                                $(tbody).append(newTr);
+                                    $(newTr).append(newTdOne, newTdTwo);
+                                    console.log(newTr);
+                                    $(tbody).append(newTr);
+                                }
+                                printDefaultValuesTable(config.numCols, config.numRows);
+                                if (config.values != undefined && config.values != null) {
+                                    writeDefValuesFromConfig(config.values);
+                                }
                             }
-                            printDefaultValuesTable(config.numCols, config.numRows);
-                            if (config.values != undefined && config.values != null) {
-                                writeDefValuesFromConfig(config.values);
+                            if(data.data['type'] == 5) {
+                                $('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
+                                $('#editElementPopup #numberFieldMaxValue').val(config.maxValue);
+                                $('#editElementPopup #numberFieldMinValue').val(config.minValue);
+                                $('#editElementPopup #numberStep').val(config.step);
                             }
                         }
                     }
@@ -590,6 +599,12 @@ $("select#type").on('change', function (e) {
         $('#numCols').parents('.form-group').addClass('no-display');
         $(this).parents().find('.defaultValuesTable').addClass('no-display');
     }
+
+    if($(this).val() == 5) {
+        $('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
+    } else {
+        $('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').val('').parents('.form-group').addClass('no-display');
+    }
 });
 
 var currentRow = null;
@@ -699,9 +714,6 @@ $('#numCols, #numRows').on('change', function (e) {
     else {
         printDefaultValuesTable(0, 0);
     }
-
-
-
 });
 
 
@@ -940,5 +952,6 @@ $('select#guideId').on('change', function (e, currentValue) {
             }
         }
     });
-})
+});
+
 });

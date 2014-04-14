@@ -243,38 +243,69 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                           
-                            
                         </div>
-                         <!-- Таблица для отображения значений по умолчанию -->
-                            <div class="form-group no-display  defaultValuesTable">
-	                            <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
-		                             <table class="controltable">
-		                                <thead>
-		                                </thead>
-		                                <tbody>
-		                                <tr>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                </tr>
-		                                <tr>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                </tr>
-		                                <tr>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                </tr>
-		                                </tbody>
-		                            </table>    
-	                            </div>
-                            
-                            
-                            
+                        <!-- Таблица для отображения значений по умолчанию -->
+                        <div class="form-group no-display defaultValuesTable">
+                            <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
+                                 <table class="controltable">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
+                        </div>
+                        <div class="form-group no-display">
+                            <?php echo $form->labelEx($model,'numberFieldMaxValue', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'numberFieldMaxValue', array(
+                                    'id' => 'numberFieldMaxValue',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Максимальное значение'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-display">
+                            <?php echo $form->labelEx($model,'numberFieldMinValue', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'numberFieldMinValue', array(
+                                    'id' => 'numberFieldMinValue',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Минимальное значение'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-display">
+                            <?php echo $form->labelEx($model,'numberStep', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'numberStep', array(
+                                    'id' => 'numberStep',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Шаг'
+                                )); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -531,41 +562,69 @@
                                 <tbody>
                                 </tbody>
                             </table>
-                           
-                            
                         </div>
-                          <!-- Таблица для отображения значений по умолчанию -->
-                            <div class="form-group  no-display defaultValuesTable">
-	                            <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
-		                             <table class="controltable">
-		                                <thead>
-		                                </thead>
-		                                <tbody>
-		                                <tr>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                </tr>
-		                                <tr>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                </tr>
-		                                <tr>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                	<td>Lorem Ipsum</td>
-		                                </tr>
-		                                </tbody>
-		                            </table>    
-	                            </div>
-                            
-                            
-                            
+                        <!-- Таблица для отображения значений по умолчанию -->
+                        <div class="form-group  no-display defaultValuesTable">
+                            <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
+                                 <table class="controltable">
+                                    <thead>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        
-                        
-                        
+                        </div>
+                        <div class="form-group no-display">
+                            <?php echo $form->labelEx($model,'numberFieldMaxValue', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'numberFieldMaxValue', array(
+                                    'id' => 'numberFieldMaxValue',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Максимальное значение'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-display">
+                            <?php echo $form->labelEx($model,'numberFieldMinValue', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'numberFieldMinValue', array(
+                                    'id' => 'numberFieldMinValue',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Минимальное значение'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group no-display">
+                            <?php echo $form->labelEx($model,'numberStep', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'numberStep', array(
+                                    'id' => 'numberStep',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Шаг'
+                                )); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
