@@ -1,1 +1,12 @@
-﻿
+﻿2014/04/14 18:06:43 [error] [exception.CException] exception 'CException' with message 'Псевдоним "application.modules.doctors.DoctorsModule" неверен. Убедитесь, что он указывает на существующий PHP файл.' in F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:322
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php(196): YiiBase::import('application.mod...', true)
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModule.php(282): YiiBase::createComponent('application.mod...', 'doctors', NULL, Array)
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(337): CModule->getModule('doctors')
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(276): CWebApplication->createController('doctors/shedule...')
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#5 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#6 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+---
