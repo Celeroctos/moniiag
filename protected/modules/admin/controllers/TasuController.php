@@ -4,6 +4,14 @@ class TasuController extends Controller {
     public $answer = array();
     public $tableSchema = 'mis';
 	public $version_end = '9223372036854775807';
+	public $processed = 0;
+	public $totalRows = 0;
+	public $lastId = 1;
+	public $numErrors = 0;
+	public $numAddedPatients = 0;
+	public $numAddedDoctors = 0;
+	public $numAdded = 0;
+	public $log = array();
     // Просмотр страницы интеграции с ТАСУ
     public function actionView() {
         if(isset($_GET['iframe'])) {
@@ -412,117 +420,6 @@ class TasuController extends Controller {
         return $result;
     }
     
-    /*
-    public function actionImport($table, $fields, $key, $file, $per_query, $rows_num, $rows_numall, $rows_accepted, $rows_discarded, $rows_error, $processed) {
-        
-         
-        // Вынимаем файл из базы
-        $fileFromDb = FileModel::model()->findByPk($file);
-        // Проверим наличие файла на диске и в базе
-        $this->checkDbFile($fileFromDb);
-
-        $csvHeaders = $this->getTasuCsvFileHeaders($fileFromDb->path);
-
-        $filesize = filesize(getcwd().$fileFromDb->path);
-        $file = fopen(getcwd().$fileFromDb->path, 'r');
-
-        // Если кол-во строк нулевое - посчитаем общее количество строк
-        if($rows_numall == 0) {
-          $this->countRowFile($file);
-        }
-
-        fseek($file, $processed); // Это позволяет читать файл с того места, где закончили
-
-        // Расписываем фильтры: формировать sql-запрос можно один раз
-        $fields = CJSON::decode($fields);
-        $key = CJSON::decode($key);
-        // Формирование происходит в два этапа. Сначала расписывается ключ
-      
-        $Context = new TasuImportContext($fields,$table,$key);
-       
-    
-        $count = 0;
-        $headerFlag = false; // Флаг о том, что заголовки прочитаны
-        while(!feof($file)) {
-            if($rows_num == 0 && $headerFlag === false) {
-                $currentRow = fgets($file); // Это строка заголовков
-                $headerFlag = true;
-                continue;
-            }
-            if($count < $per_query) {
-                $currentRow = fgets($file);
-                $processed += mb_strlen($currentRow);
-                
-                $Context->onBeforeRowTreating($currentRow);
-                // Делим строку в CSV в массив
-                
-                
-                $command = Yii::app()->db->createCommand($Context->getSqlCopy());
-                var_dump($Context->getSqlCopy());
-               // $elements = @$command->queryAll(true, array(), true);
-                //var_dump($elements);
-                //exit();
-                if($elements === false) { // Строка с ошибкой
-                    $rows_error++;
-                } elseif(count($elements) > 0) {
-                    // Строка есть, пропускать-не импортировать
-                    //   TODO: Сделать обновление строки
-                    //  Перебираем обновляемые поля текущей записи и добавляемой строки и сравниваем.
-                    //  Если хотя бы значение одного поля в файле не равно хотя бы одному полю в базе -
-                    //    выполняем update
-                    
-                    
-                    
-                    $rows_discarded++;
-                } else {
-                    $rows_accepted++;
-                    // TODO: здесь сделать вставку в таблицу новых данных
-                    //$query = $sqlInsert.' '.$sqlInsertFields.' '.$sqlInsertPlaceholdersCopy;
-                    $query = $Context->getInsertSql();
-                    var_dump($Context->getInsertSql());
-                  //  $command = Yii::app()->db->createCommand($query);
-                    // Пытаемся выполнить команду
-                    try
-                    {
-                       // $result = @$command->execute(array(), true);
-                        if($result === false)
-                        {
-                            // Запрос не выполнен, т.к. строка не вставлена. Это ошибка
-                            $rows_error++;
-                        }
-                    }
-                    catch (Exception $e)
-                    {
-                        // Если произошло исключение - значит строка не вставлена
-                        $rows_error++;
-                    }
-                    
-                
-                    
-                    
-                }
-                // После того, как запрос прошёл, сбросить аргументы на то, что было
-                $data = $tempArr;
-                $rows_num++;
-                $count++;
-                $command = Yii::app()->db->createCommand($sql, $data);
-            } else {
-                break;
-            }
-        }
-        fclose($file);
-        echo CJSON::encode(array('success' => true,
-                                 'data' => array(
-                                     'rowsNumAll' => $rows_numall,
-                                     'rowsNum' => $rows_num,
-                                     'rowsError' => $rows_error,
-                                     'rowsAccepted' => $rows_accepted,
-                                     'rowsDiscarded' => $rows_discarded,
-                                     'filesize' => $filesize,
-                                     'processed' => $processed // Кол-во обработанных байт
-                                 )));
-    }*/
-    
     // Сама процедура импорта
     public function actionImport($table, $fields, $key, $file, $per_query, $rows_num, $rows_numall, $rows_accepted, $rows_discarded, $rows_error, $processed) {
         // Вынимаем файл из базы
@@ -795,7 +692,7 @@ class TasuController extends Controller {
 
     /* Очистка всего буфера */
     public function actionClearBuffer() {
-        TasuGreetingsBuffer::model()->deleteAll(); // TODO
+        TasuGreetingsBuffer::model()->deleteAll('status != 1');
         echo CJSON::encode(array(
             'success' => true,
             'data' => 'Буфер успешно очищен.'
@@ -838,14 +735,14 @@ class TasuController extends Controller {
 
         $buffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $currentGreeting);
 
-        $logs = array();
-        $lastGreetingId = null;
+        $this->log = array();
+        $this->lastId = null;
         $importId = null;
         if(isset($_GET['totalRows']) && $_GET['totalRows'] == null) {
             $rows = TasuGreetingsBuffer::model()->getLastBuffer(false);
-            $totalRows = count($rows);
+            $this->totalRows = count($rows);
             // Это прогон в первый раз. Если totalRows = 0, то заданий нет, это ошибка
-            if($totalRows == 0) {
+            if($this->totalRows == 0) {
                 echo CJSON::encode(array(
                     'success' => false,
                     'error' => 'Нет приёмов для выгрузки!'
@@ -853,9 +750,9 @@ class TasuController extends Controller {
                 exit();
             }
         } elseif(isset($_GET['totalRows'])) {
-            $totalRows = $_GET['totalRows'];
+            $this->totalRows = $_GET['totalRows'];
         } else {
-            $totalRows = null;
+            $this->totalRows = null;
         }
         // Смотрим буфер
         foreach($buffer as $element) {
@@ -865,37 +762,38 @@ class TasuController extends Controller {
             }
             /* --------------- Интеграция с удалённой базой ------------- */
             if(Yii::app()->db2 != null) {
-                $logs[] = '<strong class="text-sucess">[ТАСУ OK]</strong> Соединились с базой ТАСУ...';
+                $this->log[] = '<strong class="text-sucess">[ТАСУ OK]</strong> Соединились с базой ТАСУ...';
             } else {
-                $logs[] = '<strong class="text-danger">[ТАСУ Ошибка]</strong> Потеряно соединение с базой ТАСУ';
+                $this->log[] = '<strong class="text-danger">[ТАСУ Ошибка]</strong> Потеряно соединение с базой ТАСУ';
                 continue;
             }
 
             $this->moveGreetingToTasuDb($element);
+			
             /* --------------- */
             if($bufferGreetingModel != null) {
                 $bufferGreetingModel->status = 1;
                 if(!$bufferGreetingModel->save()) {
-                    $logs[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id;
+                    $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id;
                 } else {
-                    $logs[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id.' успешно изменён.';
+                    $this->log[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id.' успешно изменён.';
                 }
             }
-            $lastGreetingId = $bufferGreetingModel->id;
+            $this->lastId = $bufferGreetingModel->id;
         }
 
         // Делаем контрольный запрос. Если на выборку контрольного запроса выбирается 0 строк, то, значит, это окончание выгрузки. Надо перенести выгрузку в историю
-        $moreBuffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $lastGreetingId);
+        $moreBuffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $this->lastId);
         if(count($moreBuffer) == 0) {
             $historyBuffer = new TasuGreetingsBufferHistory();
-            $historyBuffer->num_rows = $totalRows;
+            $historyBuffer->num_rows = $this->totalRows;
             $historyBuffer->create_date = date('Y-m-d h:i');
             $historyBuffer->status = 1; // Выгружено
             $historyBuffer->import_id = $importId;
             if(!$historyBuffer->save()) {
-                $logs[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно занести выгрузку c ID'.$importId.' в историю выгрузок.';
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно занести выгрузку c ID'.$importId.' в историю выгрузок.';
             } else {
-                $logs[] = '<strong class="text-success">[OK]</strong> Выгрузка с ID'.$importId.' успешно сохранена в истории выгрузок.';
+                $this->log[] = '<strong class="text-success">[OK]</strong> Выгрузка с ID'.$importId.' успешно сохранена в истории выгрузок.';
             }
         }
 
@@ -903,9 +801,13 @@ class TasuController extends Controller {
             'success' => true,
             'data' => array(
                 'processed' => count($buffer),
-                'lastGreetingId' => $lastGreetingId,
-                'totalRows' => $totalRows,
-                'logs' => $logs
+                'lastGreetingId' => $this->lastId,
+                'totalRows' => $this->totalRows,
+                'logs' => $this->log,
+				'numAddedPatients' => $this->numAddedPatients,
+				'numAddedDoctors' => $this->numAddedDoctors,
+				'numAdded' => $this->numAdded,
+				'numErrors' => $this->numErrors
             )
         ));
     }
@@ -918,16 +820,24 @@ class TasuController extends Controller {
             $medcard = Medcard::model()->findByPk($greeting['medcard']);
             $result = $this->addTasuPatient($medcard, $oms);
             if($result === false) {
-                return false;
-            }
+                $this->numErrors++;
+				return false;
+            } else {
+				$this->numAddedPatients++;
+			}
             $patients = $this->searchTasuPatient($greeting);
         }
 
         $patient = $patients[0];
         // Добавляем приём (талон, ТАП) к пациенту
         $tap = $this->addTasuTap($patient, $greeting, $oms);
-		// Добавляем MKБ-10 диагнозы к приёму
-		$this->setMKB10ByTap($tap, $greeting, $oms);
+		if($tap !== false) {
+			$this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' добавлен в базу ТАСУ.';
+			// Добавляем MKБ-10 диагнозы к приёму
+			$this->setMKB10ByTap($tap, $greeting, $oms);
+		} else {
+			$this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' в базу: возможно, полис пациента записан в неправильном формате...?.';
+		}
     }
 
     private function searchTasuPatient($greeting) {
@@ -966,6 +876,7 @@ class TasuController extends Controller {
             $resultPatient = $conn->createCommand($sql)->queryAll();
             return $resultPatient;
         } catch(Exception $e) {
+			$this->numErrors++;
             return false;
         }
     }
@@ -1159,6 +1070,7 @@ class TasuController extends Controller {
             $transaction->commit();
             return $result;
         } catch(Exception $e) {
+			$this->numErrors++;
             return false;
         }
     }
@@ -1206,10 +1118,11 @@ class TasuController extends Controller {
 			// Номер полиса состоит из двух частей: серия (пробел) номер
             $policyParts = explode(' ', $oms->oms_number);
             // Неправильный номер полиса по формату
-            if(count($policyParts) != 2) {
+
+			if(count($policyParts) != 2) {
                 throw new Exception();
             }
-			
+
 			$omsRow = $sql = "SELECT
 						[a].[uid]
 					FROM
@@ -1292,15 +1205,13 @@ class TasuController extends Controller {
 
             return $tasuTap;
         } catch(Exception $e) {
-            var_dump($e);
-            exit();
+			$this->numErrors++;
             return false;
         }
     }
 	
 	private function setMKB10ByTap($tap, $greeting) {
 		$diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
-		$conn = Yii::app()->db2;
 		foreach($diagnosises as $diagnosis) {
 			$mkb10Diag = Mkb10::model()->findByPk($diagnosis['mkb10_id']);
 			if($mkb10Diag == null) {
@@ -1316,7 +1227,7 @@ class TasuController extends Controller {
 				$tapDiagnosis->is_top = 1;
 				$tapDiagnosis->created_by = 2;
 				$tapDiagnosis->tapuid_30432 = $tap->uid;
-				$tapDiagnosis->ismain_36277 = $diagnosis['type'];
+				$tapDiagnosis->ismain_36277 = ($diagnosis['type'] == 0) ? 1 : 0;
 				$tapDiagnosis->icdcode_39884 = $parts[0];
 				$tapDiagnosis->deseasenature_42940 = 1;
 				$tapDiagnosis->monitoringstate_54640 = null;
@@ -1325,12 +1236,38 @@ class TasuController extends Controller {
 				if(!$tapDiagnosis->save()) {
 					throw new Exception();
 				}	
+				
+				// Добавляем услуги
+				$this->setTapServices($tapDiagnosis, $greeting);
 			} catch(Exception $e) {
-				var_dump($e);
-				exit();
+				$this->numErrors++;
+				return false;
 			}			
 		}
-		exit("!!!!");
+	}
+	
+	private function setTapServices($tapDiagnosis, $greeting) {
+		// Пока зашиваем жёстко
+		$conn = Yii::app()->db2;
+		try {
+			$tasuTapService = new TasuTapService();
+			$tasuTapService->version_begin = '';
+			$tasuTapService->version_end = $this->version_end;
+			$tasuTapService->is_top = 1;
+			$tasuTapService->created_by = 2;
+			$tasuTapService->diagnosisuid_34765 = $tapDiagnosis->uid; 
+			$tasuTapService->servicecode_20924 = '010106';
+			$tasuTapService->count_23546 = 1;
+			
+			if(!$tasuTapService->save()) {
+				throw new Exception();
+			}	
+			return $tasuTapService;
+		} catch(Exception $e) {
+			$this->numErrors++;
+			return false;
+		}
+		
 	}
 	
 	private function addTasuProfessional($doctor) {
@@ -1404,6 +1341,7 @@ class TasuController extends Controller {
 		$professional = $conn->createCommand($sql)->queryRow();
 		if($professional == null) {
 			$professional = $this->addTasuProfessional($doctor);
+			$this->numAddedDoctors++;
 		}
 		return $professional;
 	}
@@ -1423,6 +1361,7 @@ class TasuController extends Controller {
             'timestamps' => $toTempl
         ));
     }
+	
 
     /* Синхронизация пациентов: ТАСУ в МИС */
     public function actionSyncPatients() {
@@ -1436,16 +1375,16 @@ class TasuController extends Controller {
             exit();
         }
 
-        $processed = 0;
-        $numErrors = 0;
-        $numAdded = 0;
+        $this->processed = 0;
+        $this->numErrors = 0;
+        $this->numAdded = 0;
 
-        $log = array();
+        $this->log = array();
 
         $patients = TasuPatient::model()->getRows(false, 'uid', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
 
         if($_GET['totalRows'] == null) {
-            $totalRows = TasuCladrStreet::model()->getNumRows();
+            $this->totalRows = TasuPatient::model()->getNumRows();
             // Ставим отметку о дате синхронизации
             $syncdateModel = Syncdate::model()->findByPk('patients');
             if($syncdateModel == null) {
@@ -1454,14 +1393,14 @@ class TasuController extends Controller {
             $syncdateModel->name = 'patients';
             $syncdateModel->syncdate = date('Y-m-d h:i');
             if(!$syncdateModel->save()) {
-                $log[] = 'Невозможно сохранить временную отметку о синронизации.';
+                $this->log[] = 'Невозможно сохранить временную отметку о синронизации.';
             }
         } else {
-            $totalRows = $_GET['totalRows'];
+            $this->totalRows = $_GET['totalRows'];
         }
 
         foreach($patients as $patient) {
-            $processed++;
+            $this->processed++;
             $tasuOms = TasuOms::model()->find('patientuid_09882 = :patient_uid AND version_end = :version_end AND t.state_19333 = :state', array(
                ':patient_uid' => $patient['uid'],
                ':version_end' => $this->version_end,
@@ -1496,33 +1435,111 @@ class TasuController extends Controller {
                 $newOms->enddate = $tasuOms['voiddate_10849'];
                 $newOms->tasu_id = $patient['uid'];
                 if(!$newOms->save()) {
-                    $log[] = 'Невозможно импортировать пациента с кодом '.$tasuOms['uid'];
-                    $numErrors++;
+                    $this->log[] = 'Невозможно импортировать пациента с кодом '.$tasuOms['uid'];
+                    $this->numErrors++;
                 } else {
-                    $numAdded++;
+                    $this->numAdded++;
                 }
             } catch(Exception $e) {
-                var_dump($e);
-                exit();
-                $numErrors++;
+                $this->numErrors++;
             }
         }
 
         echo CJSON::encode(array(
                 'success' => true,
                 'data' => array(
-                    'log' => $log,
-                    'successMsg' => 'Успешно импортировано '.($_GET['totalRows'] + $processed).' пациентов.',
-                    'processed' => $processed,
-                    'totalRows' => $totalRows,
-                    'numErrors' => $numErrors,
-                    'numAdded' => $numAdded
+                    'log' => $this->log,
+                    'successMsg' => 'Успешно импортировано '.($_GET['totalRows'] + $this->processed).' пациентов.',
+                    'processed' => $this->processed,
+                    'totalRows' => $this->totalRows,
+                    'numErrors' => $this->numErrors,
+                    'numAdded' => $this->numAdded
                 ))
         );
     }
     /* Синхронизация врачей: ТАСУ в МИС */
     public function actionSyncDoctors() {
+		if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
+            echo CJSON::encode(array(
+                    'success' => false,
+                    'data' => array(
+                        'error' => 'Недостаточно информации о считывании данных!'
+                    ))
+            );
+            exit();
+        }
 
+        $this->processed = 0;
+        $this->numErrors = 0;
+        $this->numAdded = 0;
+
+        $this->log = array();
+
+        $doctors = TasuEmployee::model()->getRows(false, 'uid', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
+
+        if($_GET['totalRows'] == null) {
+            $this->totalRows = TasuEmployee::model()->getNumRows();
+            // Ставим отметку о дате синхронизации
+            $syncdateModel = Syncdate::model()->findByPk('doctors');
+            if($syncdateModel == null) {
+                $syncdateModel = new Syncdate();
+            }
+            $syncdateModel->name = 'doctors';
+            $syncdateModel->syncdate = date('Y-m-d h:i');
+            if(!$syncdateModel->save()) {
+                $this->log[] = 'Невозможно сохранить временную отметку о синронизации.';
+            }
+        } else {
+            $this->totalRows = $_GET['totalRows'];
+        }
+
+        foreach($doctors as $doctor) {
+            $this->processed++;
+
+            $issetDoctor = Doctor::model()->find('t.tasu_id = :tasu_id',
+                array(
+                    ':tasu_id' => $doctor['uid'],
+                )
+            );
+
+            if($issetDoctor != null) {
+                continue;
+            }
+
+            // Добавляем пациента, если его нет
+            try {
+                $newDoctor = new Doctor();
+                $newDoctor->first_name =  $doctor['im_03922'];
+                $newDoctor->last_name =  $doctor['fam_45430'];
+                $newDoctor->middle_name = $doctor['ot_43242'];
+				$newDoctor->tabel_number = $doctor['code_47321'];
+				$newDoctor->degree_id = -1;
+				$newDoctor->titul_id = -1;
+				$newDoctor->date_begin = $doctor['takeondate_51957'];
+				$newDoctor->date_end = $doctor['dischargedate_63406'];
+                $newDoctor->tasu_id = $doctor['uid'];
+                if(!$newDoctor->save()) {
+                    $this->log[] = 'Невозможно импортировать врача с кодом '.$doctor['uid'];
+                    $this->numErrors++;
+                } else {
+                    $this->numAdded++;
+                }
+            } catch(Exception $e) {
+                $this->numErrors++;
+            }
+        }
+
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'log' => $this->log,
+                    'successMsg' => 'Успешно импортировано '.($_GET['totalRows'] + $this->processed).' врачей.',
+                    'processed' => $this->processed,
+                    'totalRows' => $this->totalRows,
+                    'numErrors' => $this->numErrors,
+                    'numAdded' => $this->numAdded
+                ))
+        );
     }
 }
 ?>

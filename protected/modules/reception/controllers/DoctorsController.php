@@ -21,8 +21,6 @@ class DoctorsController extends Controller {
         $start = $page * $rows - $rows;
 		
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
-		//var_dump($doctors);
-		//exit();
 	
         // Теперь обработаем врачей: ближайшую свободную дату можно взять из календаря
         foreach($doctors as &$doctor) {
@@ -46,6 +44,31 @@ class DoctorsController extends Controller {
         
     }
     
+	    // Экшн поиска врача без расписания (по-хорошему надо перенести это в другой контроллер)
+    public function actionSearchCommon() {
+        $filters = $this->checkFilters();
+        $rows = $_GET['rows'];
+	    $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $model = new Doctor();
+
+	
+        // Вычислим общее количество записей
+	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
+        $totalPages = ceil(count($num) / $rows);
+        $start = $page * $rows - $rows;
+		
+        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
+		
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $doctors,
+                                 'total' => $totalPages,
+				                 'records' => count($num)));
+        
+    }
+	
     private function checkFilters($filters = false) {
         if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool)$filters === false) {
             echo CJSON::encode(array('success' => false,

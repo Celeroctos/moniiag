@@ -323,4 +323,36 @@ $('#fontMinus').on('click', function (e) {
         }
     });
 });
+
+$('select[multiple="multiple"]').each(function(index, combo) {
+	var beforeClicked = $(combo).val() != null ? $(combo).val() : [];
+	$(combo).find('option').each(function(index2, option) {
+		$(option).on('click', function(e) {
+			var optionValue = $(option).prop('value');
+			for(var i = 0; i < beforeClicked.length; i++) {
+				if(optionValue == beforeClicked[i]) {
+					beforeClicked.splice(i, 1);
+					$(combo).val(beforeClicked);
+					return false;
+				}
+			}
+			beforeClicked.push(optionValue);
+			$(combo).val(beforeClicked);
+			return false;
+		});
+		$(option).on('mousedown', function(e) {
+			var toVal = beforeClicked.concat([$(this).val()]);
+			$(combo).val(toVal);
+		});
+	});
+});
+
+$('select[multiple="multiple"]').each(function(index, select) {
+	/*$(select).on('scroll', function(e) {
+		console.log(select);
+		e.stopPropagation();
+		return false;
+	});*/ 
+}); 
+
 });

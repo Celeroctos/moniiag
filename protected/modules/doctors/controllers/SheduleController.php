@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 class SheduleController extends Controller {
     public $layout = 'index';
     public $filterModel = null;
@@ -237,8 +237,7 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext = new MedcardElementForPatient();
                 $historyCategorieElementNext->value = $value;
                 $historyCategorieElementNext->history_id = $historyCategorieElement->history_id + 1;
-				$historyCategorieElementNext->record_id = $recordId + 1;
-				
+		$historyCategorieElementNext->record_id = $recordId + 1;
                 $historyCategorieElementNext->medcard_id = $historyCategorieElement->medcard_id;
                 $historyCategorieElementNext->greeting_id = $historyCategorieElement->greeting_id;
                 $historyCategorieElementNext->categorie_name = $historyCategorieElement->categorie_name;
@@ -334,7 +333,7 @@ class SheduleController extends Controller {
                     echo CJSON::encode(array('success' => false,
 											'needMainDiagnosis' => '1',
                                              'text' => 'Введите основной диагноз!'));
-                    return;
+					return;
                 }
                 else
                 {

@@ -100,8 +100,8 @@ $(document).ready(function() {
                 width: 110
             }
         ],
-        rowNum: 10,
-        rowList:[10,20,30],
+        rowNum: 15,
+        rowList:[15,30,50],
         pager: '#employeesPager',
         sortname: 'id',
         viewrecords: true,
@@ -193,7 +193,7 @@ $(document).ready(function() {
     // Форма фильтрации сотрудника: подгрузка отделений учреждения
     $("#enterpriseCode").on('change', function(e) {
         var enterpriseCode = $(this).val();
-        if(enterpriseCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
+        if(enterpriseCode != -1 && enterpriseCode != -2) { // В том случае, если это не "Нет учреждения" или не "Без учреждения", подгрузим отделения его..
             $.ajax({
                 'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
                 'cache' : false,
@@ -211,7 +211,13 @@ $(document).ready(function() {
                     }
                 }
             });
-        }
+        } else if(enterpriseCode == -1) {
+			$('#wardCodeFilter').val(-1).parents('.form-group').addClass('no-display');
+		} else {
+			if(enterpriseCode == -2) {
+				$('#wardCodeFilter').val(-1).parents('.form-group').addClass('no-display');
+			}
+		}
     });
 
     function editEmployee() {
@@ -275,7 +281,7 @@ $(document).ready(function() {
                             {
                                 modelField: 'ward_code',
                                 formField: 'wardCode'
-                            },
+                            }
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             if(fields[i].modelField == 'date_end') {

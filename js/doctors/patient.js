@@ -1,4 +1,4 @@
-$(document).ready(function () {
+﻿$(document).ready(function () {
 
 
 
@@ -166,32 +166,31 @@ $("#date-cont").on('changeDate', function (e) {
     $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
     $('#change-date-form').submit();
 });
+    $("#date-cont").trigger("refresh");
 
-$("#date-cont").trigger("refresh");
-
-$("#date-cont").on('changeMonth', function (e) {
-    $("#date-cont").trigger("refresh", [e.date]);
-});
+    $("#date-cont").on('changeMonth', function(e) {
+        $("#date-cont").trigger("refresh", [e.date]);
+    });
 
 
-$("#date-cont").on('refresh', function (e, date) {
-    if (typeof date == 'undefined') {
-        var currentDate = $('#filterDate').val();
-        var currentDateParts = currentDate.split('-');
-    } else {
-        var dateObj = new Date(date);
-        var currentDateParts = [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDay() + 1];
-    }
-
-    var daysWithPatients = globalVariables.patientsInCalendar;
-    for (var i in daysWithPatients) {
-        var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
-        if (parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
-            $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
+    $("#date-cont").on('refresh', function(e, date) {
+        if(typeof date == 'undefined') {
+            var currentDate = $('#filterDate').val();
+            var currentDateParts = currentDate.split('-');
+        } else {
+            var dateObj = new Date(date);
+            var currentDateParts = [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDay() + 1];
         }
-    }
-});
-$('#date-cont').trigger('refresh');
+
+        var daysWithPatients = globalVariables.patientsInCalendar;
+        for(var i in daysWithPatients) {
+            var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
+            if(parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
+                $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
+            }
+        }
+    });
+    $('#date-cont').trigger('refresh');
 
 // Закрытие приёма
 $(document).on('click', '.accept-greeting-link', function (e) {
@@ -213,11 +212,12 @@ $(document).on('click', '.accept-greeting-link', function (e) {
                 location.reload();
             } else {
                 // Если не установлен диагноз - надо сфокусировать на поле диагноза
-                if (data.needMainDiagnosis != undefined) {
-                    $('#errorPopup').one('hidden.bs.modal', function () {
-                        $('#primaryDiagnosisChooser #doctor').focus();
-                    });
-                }
+		if (data.needMainDiagnosis != undefined)
+		{
+			$('#errorPopup').one('hidden.bs.modal', function () {
+				$('#primaryDiagnosisChooser #doctor').focus();
+			});
+		}
 
                 // Выводим сообщение об ошибке
                 $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");

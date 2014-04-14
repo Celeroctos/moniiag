@@ -656,7 +656,9 @@ class PatientController extends Controller {
         }
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
-        $medcard->address_reg = $model->addressRegHidden;
+		$medcard->address_str = $model->address;
+		$medcard->address_reg = $model->addressRegHidden;
+		$medcard->address_reg_str = $model->addressReg;
         $medcard->doctype = $model->doctype;
         $medcard->serie = $model->serie;
         $medcard->docnumber = $model->docnumber;
@@ -680,7 +682,6 @@ class PatientController extends Controller {
                                      'error' => 'Произошла ошибка записи новой медкарты.'));
             exit();
         }
-
         return $medcard;
     }
 

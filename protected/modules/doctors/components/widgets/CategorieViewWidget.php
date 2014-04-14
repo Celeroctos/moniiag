@@ -710,9 +710,6 @@ class CategorieViewWidget extends CWidget {
 			$num++;
 			continue;
 			*/
-			
-			//var_dump($nodeTopLevel['element']);continue;
-			
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
 			// Если в templates нет ИД шаблона - добавляем

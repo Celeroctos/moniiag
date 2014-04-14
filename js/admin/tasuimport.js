@@ -176,6 +176,10 @@
             var totalMaked = 0; // Сколько уже обработано строк
             var totalRows = null;
             var isPaused = false;
+			var numPatientsAdded = 0;
+			var numDoctorsAdded = 0;
+			var numAdded = 0;
+			var numErrors = 0;
             function makeImport() {
                 $.ajax({
                     'url' : '/index.php/admin/tasu/importgreetings',
@@ -200,43 +204,71 @@
                             }
                             // Выполнение такого условия означает, что количество строки подошли к концу
                             if(data.processed < rowsPerQuery) {
-                                if(totalRows == null) {
-                                    totalRows = data.totalRows;
-                                }
                                 $('#importProgressbarP').prop({
-                                    'style' : '100%',
                                     'aria-valuenow' : '100'
-                                });
+                                }).css('width', '100%');
+								
                             } else {
-                                currentGreeting = data.lastGreetingId;
-                                totalMaked += data.processed;
-                                $('.numStrings').text(totalMaked);
-                                if(totalRows == null) {
-                                    totalRows = data.totalRows;
-                                    $('.numStringsAll').text(totalRows);
-                                }
-
                                 var currentProzent = Math.floor((totalMaked / totalRows) * 100);
                                 $('#importProgressbarP').prop({
                                     'style' : 'width: ' + currentProzent + '%',
                                     'aria-valuenow' : currentProzent
                                 });
-
-                                if(totalRows > totalMaked) {
-                                    if(!isPaused) {
-                                        makeImport();
-                                    } else {
-                                        return;
-                                    }
-                                } else {
-                                    alert('Импорт в ТАСУ завершён!');
-                                    $('.continueImport, .pauseImport').addClass('no-display');
-                                    $('.successImport').removeClass('no-display');
-                                }
                             }
+							
+							currentGreeting = data.lastGreetingId;
+							totalMaked += data.processed;
+
+							$('.numStrings').text(totalMaked);
+							if(totalRows == null) {
+								totalRows = data.totalRows;
+								$('.numStringsAll').text(totalRows);
+							}
+
+							if(data.hasOwnProperty('numAdded')) {
+                                numAdded += parseInt(data.numAdded);
+                                $('.numStringsAdded').text(numAdded);
+                            }
+							
+							if(data.hasOwnProperty('numAddedPatients')) {
+                                numPatientsAdded += parseInt(data.numAddedPatients);
+                                $('.numPatientsAdded').text(numPatientsAdded);
+                            }
+							
+							if(data.hasOwnProperty('numAddedDoctors')) {
+                                numDoctorsAdded += parseInt(data.numAddedDoctors);
+                                $('.numDoctorsAdded').text(numDoctorsAdded);
+                            }
+
+                            if(data.hasOwnProperty('numErrors')) {
+                                numErrors += parseInt(data.numErrors);
+                                $('.numStringsError').text(numErrors);
+                            }
+							
+							if(totalRows > totalMaked) {
+								if(!isPaused) {
+									makeImport();
+								} else {
+									return;
+								}
+							} else {
+								alert('Импорт в ТАСУ завершён!');
+								$('.continueImport, .pauseImport').addClass('no-display');
+								$('.successImport').removeClass('no-display');
+							}
                         } else {
                             alert(data.error);
-
+							$('#importContainer').slideUp(500, function(e) {
+								$('#importGreetings').attr({
+									'disabled' : false
+								}).text('Выгрузить');
+								$('#clearGreetings').attr({
+									'disabled' : false
+								});
+								 $('#importProgressbarP').prop({
+                                    'aria-valuenow' : '0'
+                                }).css('width', '0%');
+							});
                         }
                     }
                 });

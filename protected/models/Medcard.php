@@ -43,7 +43,7 @@ class Medcard extends MisActiveRecord  {
             ->join('mis.doctors d', 'd.id = dsd.doctor_id')
             ->join('mis.doctor_cabinet cd', 'cd.doctor_id = d.id')
             ->join('mis.cabinets c', 'cd.cabinet_id = c.id')
-            ->Where('policy.id = :oms_id', array(':oms_id' => $omsId))
+            ->where('policy.id = :oms_id', array(':oms_id' => $omsId))
             ->group(array('dsd.id','greeting_timestamp','dsd.medcard_id','doctor_name', 'c.cab_number'));
 
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false)
