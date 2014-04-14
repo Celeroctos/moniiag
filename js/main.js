@@ -324,44 +324,27 @@ $('#fontMinus').on('click', function (e) {
     });
 });
 
-$('select[multiple="multiple"] option').each(function(index, option) {
-	/*$(option).on('click', function(e) {
-		var optionValue = $(option).prop('value');
-		var select = $(option).parents('select');
-		var selectValue = $(select).val();
-		for(var i = 0; i < selectValue.length; i++) {
-			if(optionValue == selectValue[i]) {
-							console.log(selectValue);
-				selectValue = selectValue.splice(i, 1);
-				console.log(selectValue);
-				$(select).val(selectValue);
-				return false;
+$('select[multiple="multiple"]').each(function(index, combo) {
+	var beforeClicked = $(combo).val() != null ? $(combo).val() : [];
+	$(combo).find('option').each(function(index2, option) {
+		$(option).on('click', function(e) {
+			var optionValue = $(option).prop('value');
+			for(var i = 0; i < beforeClicked.length; i++) {
+				if(optionValue == beforeClicked[i]) {
+					beforeClicked.splice(i, 1);
+					$(combo).val(beforeClicked);
+					return false;
+				}
 			}
-		}
-		selectValue.push(optionValue);
-		$(select).val(selectValue);
-		return false;
-	});*/
-	//var currentValues = [];
-	/* $(combo).on('change', function() {
-		// Если то, что выбрано, уже присутствует, значит это надо удалить
-		console.log("!");
-		var value = $(this).val();
-		var isFinded = false;
-		for(var i = 0; i < currentValues.length; i++) {
-			if(currentValues[i] == value) {
-				isFinded = i;
-				break;
-			}
-		}
-		if(isFinded !== false || currentValues.length == 0) {
-			currentValues.push(value);
-		} else {
-			currentValues = currentValues.splice(index, 1);
-		}
-		$(this).val(currentValues);
-		return false;
-	}); */
+			beforeClicked.push(optionValue);
+			$(combo).val(beforeClicked);
+			return false;
+		});
+		$(option).on('mousedown', function(e) {
+			var toVal = beforeClicked.concat([$(this).val()]);
+			$(combo).val(toVal);
+		});
+	});
 });
 
 $('select[multiple="multiple"]').each(function(index, select) {
