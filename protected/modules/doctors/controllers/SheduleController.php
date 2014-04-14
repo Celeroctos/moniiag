@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class SheduleController extends Controller {
     public $layout = 'index';
     public $filterModel = null;
@@ -273,7 +273,7 @@ class SheduleController extends Controller {
                 $response['historyDate'] = $currentDate;
 				$response['lastRecordId'] = $recordId+1;
             }
-
+			ob_end_clean();
             echo CJSON::encode($response);
         } else {
             echo CJSON::encode(array('success' => false,

@@ -38,10 +38,12 @@
             </div>
             <div class="accordion-body collapse in" id="collapseH">
                 <div class="accordion-inner">
-                    <?php foreach ($historyPoints as $key => $point) { ?>
-	<div>
-                       <a href="#<?php echo $point['medcard_id']; ?>_<?php echo $point['record_id']; ?>" class="medcard-history-showlink"><?php echo $point['change_date']; ?></a>
-                   </div>
+
+                    <?php
+                    foreach ($historyPoints as $key => $point) { ?>
+						<div>
+						<a href="#<?php echo $point['medcard_id']; ?>_<?php echo $point['record_id']; ?>" class="medcard-history-showlink"><?php echo $point['change_date']; ?></a>
+						</div>
                     <?php } ?>
                 </div>
             </div>

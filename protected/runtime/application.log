@@ -1,1 +1,81 @@
-﻿
+﻿2014/04/14 18:28:23 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mep.is_record не существует
+LINE 3: WHERE mep.medcard_id = $1 AND mep.is_record=1
+                                      ^. Выполнявшийся SQL-запрос: SELECT DISTINCT SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id AND mep.is_record=1
+ORDER BY "change_date" DESC LIMIT 1.
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (115)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (151)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (104)
+2014/04/14 18:28:23 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:41)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(26): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(21): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=19/14&date=2014-6-20&rowid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (41)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (26)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (21)
+2014/04/14 18:30:40 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mep.is_record не существует
+LINE 3: WHERE mep.medcard_id = $1 AND mep.is_record=1
+                                      ^. Выполнявшийся SQL-запрос: SELECT DISTINCT SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id AND mep.is_record=1
+ORDER BY "change_date" DESC LIMIT 1.
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (115)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (151)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (104)
+2014/04/14 18:30:40 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:41)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(26): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(21): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(117): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=19/14&date=2014-6-20&rowid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (41)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (26)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (21)
+2014/04/14 18:31:30 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mep.is_record не существует
+LINE 3: WHERE mep.medcard_id = $1 AND mep.is_record=1
+                                      ^. Выполнявшийся SQL-запрос: SELECT DISTINCT SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE mep.medcard_id = :medcard_id AND mep.is_record=1
+ORDER BY "change_date" DESC LIMIT 1.
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (115)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (151)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (104)
