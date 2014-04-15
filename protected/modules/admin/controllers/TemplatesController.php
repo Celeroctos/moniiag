@@ -151,11 +151,24 @@ class TemplatesController extends Controller {
 
     // Просмотр шаблона
     public function actionShow() {
+        $categorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
+            'currentPatient' => null,
+            'templateType' => 0,
+            'templateId' => $_GET['id'],
+            'withoutSave' => 0,
+            'greetingId' => null,
+            'canEditMedcard' => 1,
+            'medcard' => null,
+            'currentDate' => null,
+            'templatePrefix' => 'a'.$_GET['id'],
+            'previewMode' => true
+        ));
 
-        echo CJSON::encode(
-            array(
+        $templateView = $categorieWidget->run();
+        ob_end_clean();
+        echo CJSON::encode(array(
                 'success' => true,
-                'data' => "!"
+                'data' => $templateView
             )
         );
     }

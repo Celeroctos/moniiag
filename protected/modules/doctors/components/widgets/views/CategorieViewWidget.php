@@ -30,11 +30,15 @@ echo $form->hiddenField($model,'greetingId', array(
     ?>
     <h5><strong><?php echo $template['templateName']; ?></strong></h5>
     <?php
+    if($this->previewMode) {
+    ?>
+    <p>Выделенная красным цветом цифра в конце пути элемента означает позицию.</p>
+    <?php }
     foreach($template['cats']  as $key => $categorie) {
 			$this->drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix);
 		} ?>
 <?php } ?>
-    <?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement')) { ?>
+    <?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement') && !$this->previewMode) { ?>
     <div class="form-group submitEditPatient">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить',

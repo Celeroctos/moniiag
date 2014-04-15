@@ -273,6 +273,7 @@ function writeDefValuesFromConfig(defValues) {
 //    какое направление было задано для зависимостей - скрывать, или показывать.
 //   Если скрывать - то нельзя указывать "Показывать" при выборе действия - и наоборот
 function testDirection() {
+	return;
     $("#controlActions option[value='1']").removeClass('no-display');
     $("#controlActions option[value='2']").removeClass('no-display');
     var idsList = jQuery("#dependences").getDataIDs();
@@ -635,7 +636,7 @@ $('#editElementDependences').on('click', function () {
                     for (var i = 0; i < data.comboValues.length; i++) {
                         var option = $('<option>').prop({
                             'value': data.comboValues[i].id
-                        }).text(data.comboValues[i].value);
+                        }).text('[ID ' + data.comboValues[i].id + '] ' + data.comboValues[i].value);
                         $('#controlValues').append(option);
                     }
 

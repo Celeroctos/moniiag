@@ -27,8 +27,6 @@ class SheduleByDay extends MisActiveRecord {
     }
 
 
-	
-
     public function getRows($date, $doctorId) {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
@@ -52,99 +50,6 @@ class SheduleByDay extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
-
-public function getGreetingsByIds(
-		$filters,
-		$idsString, 
-		$sidx = false, 
-		$sord = false, 
-		$start = false, 
-		$limit = false
-	) {
-	
-		$connection = Yii::app()->db;
-		$patients = $connection->createCommand()
-			->select('dsbd.*, 
-					CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, 
-					m.card_number AS card_number,
-					SUBSTR(
-						CAST(dsbd.patient_time AS text),
-						0, 
-						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
-					) AS patient_time,
-					m.contact')
-			->from('mis.doctor_shedule_by_day dsbd')
-			->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
-			->Join('mis.oms o', 'm.policy_id = o.id')
-			->where('dsbd.id in ('.$idsString.')
-					'
-				);
-		
-	
-	
-		if($sidx !== false && $sord !== false)
-		{
-			$patients->order($sidx.' '.$sord);
-		}
-		
-		if ($start !== false && $limit !== false)
-		{	
-			$patients->limit($limit, $start);
-		}
-		
-		return $patients->queryAll();
-	}
-
-public function getRangePatientsRows(
-		$filters,
-		$dateBegin,
-		$dateEnd, 
-		$doctorId, 
-		$sidx = false, 
-		$sord = false, 
-		$start = false, 
-		$limit = false
-	) {
-	
-		$connection = Yii::app()->db;
-		$patients = $connection->createCommand()
-			->select('dsbd.*, 
-					CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, 
-					m.card_number AS card_number,
-					SUBSTR(
-						CAST(dsbd.patient_time AS text),
-						0, 
-						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
-					) AS patient_time,
-					m.contact')
-			->from('mis.doctor_shedule_by_day dsbd')
-			->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
-			->Join('mis.oms o', 'm.policy_id = o.id')
-			->where('dsbd.doctor_id = :doctor_id
-					AND dsbd.patient_day >= :beginDate
-					AND dsbd.patient_day <= :endDate
-					', array(
-						':beginDate' => $beginDate,
-						':endDate' => $endDate, 
-						':doctor_id' => $doctorId
-					)
-			);
-		
-	
-	
-		if($sidx !== false && $sord !== false)
-		{
-			$patients->order($sidx.' '.$sord);
-		}
-		
-		if ($start !== false && $limit !== false)
-		{	
-			$patients->limit($limit, $start);
-		}
-		
-		return $patients->queryAll();
-	}
-
 
     public function getDaysWithPatients($userId) {
         $connection = Yii::app()->db;

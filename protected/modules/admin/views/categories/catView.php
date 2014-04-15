@@ -81,6 +81,17 @@
                                 )); ?>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isWrapped', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model,'isWrapped', array('Нет', 'Да'), array(
+                                    'id' => 'isWrapped',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,6 +185,17 @@
                             <div class="col-xs-9">
                                 <?php echo $form->textField($model,'position', array(
                                     'id' => 'position',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isWrapped', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model,'isWrapped', array('Нет', 'Да'), array(
+                                    'id' => 'isWrapped',
                                     'class' => 'form-control'
                                 )); ?>
                             </div>
