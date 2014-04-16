@@ -15,6 +15,8 @@
                 'historyPoints' => $historyPoints,
                 'primaryDiagnosis' => $primaryDiagnosis,
                 'secondaryDiagnosis' => $secondaryDiagnosis,
+            	'primaryClinicalDiagnosis' => $primaryClinicalDiagnosis,
+            	'secondaryClinicalDiagnosis' => $secondaryClinicalDiagnosis,
                 'currentPatient' => $currentPatient,
                 'currentSheduleId' => $currentSheduleId,
                 'canEditMedcard' => $canEditMedcard
@@ -265,6 +267,22 @@
                                         </div>
                                     </div>
                                 </div>
+								
+
+							<div class="form-group chooser" id="primaryClinicalDiagnosisChooser">
+							<label for="doctor" class="col-xs-3 control-label">Клинический основной диагноз:</label>
+							<div class="col-xs-9">
+                                        <input type="text" class="form-control" id="clinicalPrimaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                        <ul class="variants no-display">
+                                        </ul>
+                                        <div class="choosed">
+                                        <?php /*if (false)*/ foreach($primaryClinicalDiagnosis as $dia) { ?>
+                                                <span class="item" id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?><span class="glyphicon glyphicon-remove"></span></span>
+                                            <?php } ?>
+								</div>
+								</div>
+								</div>
+								
                                 <div class="form-group chooser" id="secondaryDiagnosisChooser">
                                     <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
                                     <div class="col-xs-9">
@@ -275,9 +293,26 @@
                                             <?php foreach($secondaryDiagnosis as $dia) { ?>
                                                 <span class="item" id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?><span class="glyphicon glyphicon-remove"></span></span>
                                             <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
+								</div>
+								</div>
+								</div>
+
+
+								<div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
+								<label for="doctor" class="col-xs-3 control-label">Сопутствующие клинические диагнозы:</label>
+								<div class="col-xs-9">
+																		<input type="text" class="form-control" id="clinicalSecondaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+																		<ul class="variants no-display">
+																		</ul>
+																		<div class="choosed">
+																		<?php /* if (false) */ foreach($secondaryClinicalDiagnosis as $dia) { ?>
+																				<span class="item" id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?><span class="glyphicon glyphicon-remove"></span></span>
+																			<?php } ?>
+								</div>
+								</div>
+								</div>
+
+								
                                 <div class="form-group">
                                     <label for="doctor" class="col-xs-3 control-label">Примечание:</label>
                                     <div class="col-xs-9">

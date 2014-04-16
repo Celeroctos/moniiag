@@ -49,6 +49,52 @@ class DiagnosisController extends Controller {
     }
 
 
+	public function actionGetClinical() {
+		$rows = $_GET['rows'];
+		$page = $_GET['page'];
+		$sidx = $_GET['sidx'];
+		$sord = $_GET['sord'];
+		
+		
+		// Фильтры поиска
+		if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+			$filters = CJSON::decode($_GET['filters']);
+		} else {
+			$filters = false;
+		}
+		$modelClinical = new ClinicalDiagnosis();
+		$num = $modelClinical->getRows($filters, false);
+
+		$totalPages = ceil(count($num) / $rows);
+		$start = $page * $rows - $rows;
+
+		$diagnosisClinicalsRows = $modelClinical->getRows($filters, false, $sidx, $sord, $start, $rows);
+		echo CJSON::encode(array(
+			'success' => true,
+			'total' => $totalPages,
+			'records' => count($num),
+			'rows' => $diagnosisClinicalsRows
+			)
+				);
+	}
+
+	public function actionDeleteClinical()
+	{
+		if (isset($_GET['id']))
+		{
+			$diag = ClinicalDiagnosis::model()->findByPk($_GET['id']);
+			// Помечаем, что старый клинический диагноз удалён
+			if ($diag!=NULL)
+			{
+				$diag->is_deleted = 1;
+				$diag->save();
+				// Сообщаем, что успешно удалили
+				echo CJSON::encode(array('success' => true,
+					'msg' => 'Диагноз успешно удалён'));
+			}
+		}
+	}
+
     public function actionSetLikes() {
         if(!isset($_GET['medworker_id'], $_GET['diagnosis_ids'])) {
             echo CJSON::encode(array('success' => false,
@@ -113,6 +159,90 @@ class DiagnosisController extends Controller {
 
         ));
     }
+
+	public function actionClinicalView() {
+		$this->render('clinical', array(
+			'model' => new FormClinicalDiagnosisAdd()
+        ));
+	}
+
+	public function actionAddClinic()
+	{
+		$model = new ClinicalDiagnosis();
+		$model->description = $_POST['FormClinicalDiagnosisAdd']['description'];
+		
+		if ($model->save())
+		{
+			echo CJSON::encode(array('success' => true,
+				'data' => array()));
+		}
+		else
+		{
+			echo CJSON::encode(array('success' => false,
+				'error' => 'Очень извиняюсь, но не могу сохранить диагноз :(((')
+					);
+		}
+	}
+
+	public function actionEditClinic()
+	{
+		$model = new FormClinicalDiagnosisAdd();
+		if(isset($_POST['FormClinicalDiagnosisAdd']))
+		{
+			$model->attributes = $_POST['FormClinicalDiagnosisAdd'];
+			if($model->validate()) {
+				$diag = ClinicalDiagnosis::model()->findByPk($_POST['FormClinicalDiagnosisAdd']['id']);
+				// Помечаем, что старый клинический диагноз удалён
+				if ($diag->description != $model->description)
+				{
+					$diag->is_deleted = 1;
+					$diag->save();
+				}
+				else
+				{
+					// Названия диагнозов совпадают - выходим
+					echo CJSON::encode(array('success' => true,
+						'data' => array()));
+					return;
+				}
+				// Создаём новый диагноз
+				$newDiag = new ClinicalDiagnosis();
+				$newDiag->description = $model->description;
+				
+				//$diag->is_deleted = $model->description;
+				//$diag->description = $model->description;
+				if($newDiag->save()) {
+					echo CJSON::encode(array('success' => true,
+						'data' => array()));
+				}
+				else
+				{
+					echo CJSON::encode(array('success' => false,
+						'error' => 'Очень извиняюсь, но не могу сохранить диагноз :(((')
+							);
+				}
+			} else {
+				echo CJSON::encode(array('success' => 'false',
+					'errors' => $model->errors));
+			}
+		}
+	}
+
+	public function actionGetOneClinical() {
+		
+		$model = new ClinicalDiagnosis();
+		$id = $_GET['id'];
+		//var_dump($id );
+		//exit();
+		//echo('<pre>');
+		//var_dump($model);
+		//exit();
+		$value = $model->getOne($id );
+		
+		echo CJSON::encode(array('success' => true,
+			'data' => $value)
+				);
+	}
 
     public function actionMkb10View() {
         $this->render('mkb10', array());

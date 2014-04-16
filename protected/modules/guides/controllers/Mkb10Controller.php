@@ -7,6 +7,36 @@ class Mkb10Controller extends Controller {
         $this->render('view', array());
     }
 
+	public function actionGetClinical()
+	{
+		$rows = $_GET['rows'];
+		$page = $_GET['page'];
+		$sidx = $_GET['sidx'];
+		$sord = $_GET['sord'];
+		
+		
+		// Фильтры поиска
+		if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+			$filters = CJSON::decode($_GET['filters']);
+		} else {
+			$filters = false;
+		}
+		$modelClinical = new ClinicalDiagnosis();
+		$num = $modelClinical->getRows($filters, false);
+
+		$totalPages = ceil(count($num) / $rows);
+		$start = $page * $rows - $rows;
+
+		$diagnosisClinicalsRows = $modelClinical->getRows($filters, false, $sidx, $sord, $start, $rows);
+		echo CJSON::encode(array(
+			'success' => true,
+			'total' => $totalPages,
+			'records' => count($num),
+			'rows' => $diagnosisClinicalsRows
+			)
+				);
+	}
+
     public function actionGet($nodeid) {
         if(trim($nodeid) == '') {
             $nodeid = 0;

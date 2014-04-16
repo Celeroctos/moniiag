@@ -142,7 +142,15 @@
                                 <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'distribview' ? 'class="active"' : ''; ?>>
                                     <?php echo CHtml::link('Диагнозы для распределения пациентов', array('/admin/diagnosis/distribview')) ?>
                                 </li>
+                                    <?php } ?>
+								  <?php if(Yii::app()->user->checkAccess('menuClinicalDiagnosis')) { ?>
+                                <li <?php echo $controller == 'diagnosis' && $module == 'admin' && $action == 'clinicalview' ? 'class="active"' : ''; ?>>
+                                    <?php echo CHtml::link('Клинические диагнозы', array('/admin/diagnosis/clinicalview')) ?>
+                                    </li>
                                 <?php } ?>
+								
+								
+								
                             </ul>
                         </li>
                         <?php } ?>

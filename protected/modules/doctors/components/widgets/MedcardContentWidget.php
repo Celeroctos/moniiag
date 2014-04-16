@@ -5,6 +5,8 @@ class MedcardContentWidget extends CWidget {
     public $historyPoints=null;
     public $primaryDiagnosis=null;
     public $secondaryDiagnosis=null;
+	public $primaryClinicalDiagnosis=null;
+	public $secondaryClinicalDiagnosis=null;
     public $currentPatient = '';
     public $currentSheduleId = '';
     public $note = '';

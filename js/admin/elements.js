@@ -273,6 +273,7 @@ function writeDefValuesFromConfig(defValues) {
 //    какое направление было задано для зависимостей - скрывать, или показывать.
 //   Если скрывать - то нельзя указывать "Показывать" при выборе действия - и наоборот
 function testDirection() {
+    return;
     $("#controlActions option[value='1']").removeClass('no-display');
     $("#controlActions option[value='2']").removeClass('no-display');
     var idsList = jQuery("#dependences").getDataIDs();

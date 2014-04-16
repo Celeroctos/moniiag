@@ -15,7 +15,7 @@ if(isset($categorie['id'])) {
 				
 			 ?>
             </a>
-            <?php if(($categorie['is_dynamic'] == 1 || isset($categorie['pr_key'])) && false ) { ?>
+            <?php if($categorie['is_dynamic'] == 1 || isset($categorie['pr_key']))  { ?>
             <button class="btn btn-default btn-sm accordion-clone-btn" type="button">
                 <span class="glyphicon glyphicon-plus"></span>
                 <span class="no-display pr-key"><?php echo $categorie['pr_key']; ?></span>

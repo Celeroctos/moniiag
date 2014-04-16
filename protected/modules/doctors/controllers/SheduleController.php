@@ -36,6 +36,8 @@ class SheduleController extends Controller {
                     // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
                     $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
                     $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
+					$primaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);					
+					$secondaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
                     // Если приём был, то можно вынуть примечание к диагнозам
                     if($greeting != null) {
                         $note = $greeting->note;
@@ -73,9 +75,11 @@ class SheduleController extends Controller {
         }
 
         // Если они не создались, это значит, что диагнозы пустые
-        if(!isset($primaryDiagnosis, $secondaryDiagnosis)) {
+        if(!isset($primaryDiagnosis, $secondaryDiagnosis,$primaryClinicalDiagnosis, $secondaryClinicalDiagnosis)) {
             $primaryDiagnosis = array();
             $secondaryDiagnosis = array();
+			$primaryClinicalDiagnosis = array();
+            $secondaryClinicalDiagnosis = array();
         }
 
         $this->filterModel = new FormSheduleFilter();
@@ -104,6 +108,8 @@ class SheduleController extends Controller {
             'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null),
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
+			'primaryClinicalDiagnosis' => $primaryClinicalDiagnosis,
+			'secondaryClinicalDiagnosis' => $secondaryClinicalDiagnosis,
             'note' => isset($note) ? $note : '',
             'canEditMedcard' => isset($canEditMedcard) ? $canEditMedcard : 0,
             'privilegesList' => $this->getPrivileges(),
@@ -258,6 +264,7 @@ class SheduleController extends Controller {
 
                 $answerCurrentDate = true;
                 if(!$historyCategorieElementNext->save()) {
+					ob_end_clean();
                     echo CJSON::encode(array('success' => true,
                                              'text' => 'Ошибка сохранения записи.'));
                     exit();
@@ -270,12 +277,15 @@ class SheduleController extends Controller {
             );
 
             if($answerCurrentDate) {
+				$templateName = MedcardElementForPatient::getTemplateName($recordId+1,$_POST['FormTemplateDefault']['medcardId']);
                 $response['historyDate'] = $currentDate;
 				$response['lastRecordId'] = $recordId+1;
+				$response['templateName'] = $templateName ;
             }
 			ob_end_clean();
             echo CJSON::encode($response);
         } else {
+			ob_end_clean();
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
         }
