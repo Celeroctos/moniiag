@@ -124,8 +124,10 @@
                                     <?php
                                     }
                                 } elseif($element['type'] == 2) {
-                                    //var_dump($element['selected']);
-                                    //exit();
+									/*if(!isset($element['selected'])) {
+										var_dump($element);
+										exit();
+									}*/
                                     if (isset($element['selected']['']))
                                     {
                                         $element['guide'][''] = 'Не выбрано';

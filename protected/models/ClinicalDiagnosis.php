@@ -29,7 +29,7 @@ class ClinicalDiagnosis extends MisActiveRecord  {
 		// Если нужно только неудалённые
 		if (!$needAll)
 		{
-			$diagnosises=$diagnosises->where('cd.is_deleted=0');
+			$diagnosises=$diagnosises->where('cd.is_deleted IS NULL OR cd.is_deleted = 0');
 			
 		}
 		

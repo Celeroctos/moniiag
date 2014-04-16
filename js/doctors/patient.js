@@ -723,8 +723,9 @@ if ($('#medcardContentSave').length > 0) {
         }
     }
 }
-});
 */
+});
+
 
 function getOnlyLikes() {
     return globalVariables.onlyLikes;

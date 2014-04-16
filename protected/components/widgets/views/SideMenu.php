@@ -148,9 +148,6 @@
                                     <?php echo CHtml::link('Клинические диагнозы', array('/admin/diagnosis/clinicalview')) ?>
                                     </li>
                                 <?php } ?>
-								
-								
-								
                             </ul>
                         </li>
                         <?php } ?>

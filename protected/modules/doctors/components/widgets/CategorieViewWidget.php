@@ -856,8 +856,11 @@ class CategorieViewWidget extends CWidget {
                             // Простой выпадающий список
                             if($nodeContent['type'] == 2)
                             {
-                                $nodeContent['selected'] = 
-                                	array($nodeContent['value'] => array('selected' => 										true));
+								if(!isset($nodeContent['value']) || $nodeContent['value'] == null) {
+									$nodeContent['selected'] = array();
+								} else {
+									$nodeContent['selected'] = array($nodeContent['value'] => array('selected' => true));
+								}
                             }
                         }
                         
