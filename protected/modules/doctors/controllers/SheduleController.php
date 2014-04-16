@@ -94,7 +94,6 @@ class SheduleController extends Controller {
 
 		// Ищем номер текущую запись для данной медкарты, прибавляем единицу
 		
-
 		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,

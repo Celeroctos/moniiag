@@ -111,7 +111,7 @@ class PatientController extends Controller {
     }
 
     // Клонирование элемента (категории)
-	public function actionCloneElement($pr_key, $recordId, $level = 0, $levelParts = array()) {
+	public function actionCloneElement($pr_key, $recordId = false, $level = 0, $levelParts = array()) {
         $keyParts = explode('|', $pr_key);
         /* Порядок полей в ключе:
          * - Номер карты
@@ -154,6 +154,7 @@ class PatientController extends Controller {
         $medcardCategorieClone->template_name = $historyCategorie->template_name; // TODO : вынуть имя шаблона
         $medcardCategorieClone->is_dynamic = 0; // Клонированные категории не должны быть динамичными
         $medcardCategorieClone->real_categorie_id = $historyCategorie->real_categorie_id;
+		$medcardCategorieClone->config = $historyCategorie->config;
         // Путь: бьём на составляющие и прибавляем к последнему элементу в позиции + 1 к максимальному номеру в иерархии в данной категории
         $pathParts = explode('.', $historyCategorie->path);
         // Ищем все элементы в иерархии, которые по позиции больше, чем текущий. Составим путь категории-родителя

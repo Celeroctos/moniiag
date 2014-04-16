@@ -7,12 +7,13 @@ class FormCategorieAdd extends CFormModel
 	public $parentId;
     public $position;
     public $isDynamic;
+    public $isWrapped;
 
     public function rules()
     {
         return array(
             array(
-                'name, parentId, isDynamic, position', 'required'
+                'name, parentId, isDynamic, position, isWrapped', 'required'
             ),
 			array(
 				'parentId', 'numerical'
@@ -26,7 +27,8 @@ class FormCategorieAdd extends CFormModel
             'name' => 'Название категории',
 			'parentId' => 'Категория-родитель',
             'position' => 'Позиция среди сестринских категорий и элементов',
-            'isDynamic' => 'Возможность динамического добавления в медкарту'
+            'isDynamic' => 'Возможность динамического добавления в медкарту',
+            'isWrapped' => 'Развёрнута'
         );
     }
 }

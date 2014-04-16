@@ -51,6 +51,11 @@ class CategoriesController extends Controller {
                 } else {
                     $categorie['is_dynamic_name'] = 'Нет';
                 }
+                if($categorie['is_wrapped'] == 1) {
+                    $categorie['wrapped'] = 'Да';
+                } else {
+                    $categorie['wrapped'] = 'Нет';
+                }
 			}
             echo CJSON::encode(
                 array('rows' => $categories,
@@ -120,7 +125,7 @@ class CategoriesController extends Controller {
         } else {
             $categorie->path = $categorie->position; // Корневой элемент в графе
         }
-
+        $categorie->is_wrapped = $model->isWrapped;
         $isOk = $categorie->save();
 
         // Теперь считаем путь элемента. В том случае, если позиции до изменения категории не совпадают с позициями после изменения, нужно пересчитать все зависимые элементы, которыми могут быть категории и элементы

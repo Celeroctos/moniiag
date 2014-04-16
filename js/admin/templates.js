@@ -200,15 +200,25 @@ $(document).ready(function() {
     $('#showTemplate').on('click', function(e) {
         var currentRow = $('#templates').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
+            $(this).prop({
+                'disabled' : true
+            }).text('Подождите, шаблон вызывается...');
             // Надо вынуть данные для редактирования
             $.ajax({
                 'url' : '/index.php/admin/templates/show?id=' + currentRow,
                 'cache' : false,
-                'dataType' : 'json',
                 'type' : 'GET',
+                'dataType' : 'json',
                 'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == 'true') {
+                    if(data.success) {
+                        $('#showTemplatePopup .modal-body .row').html(data.data);
+                        $('#showTemplatePopup .btn-sm').prop('disabled', true);
+
+                        $('#showTemplatePopup').modal({});
                         $("#templates").trigger("reloadGrid");
+                        $('#showTemplate').attr({
+                            'disabled' : false
+                        }).text('Просмотр шаблона');
                     } else {
                         // Удаляем предыдущие ошибки
                         $('#errorAddTemplatePopup .modal-body .row p').remove();

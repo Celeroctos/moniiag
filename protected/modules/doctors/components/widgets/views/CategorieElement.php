@@ -10,7 +10,7 @@ if(isset($categorie['id'])) {
                 <?php }
                 else
                 {
-                	?> <div class ="accordeonToggleAlt"> (Свернуть)</div> <?php	
+                	?> <div class ="accordeonToggleAlt"> <?php echo $categorie['config']['isWrapped'] == 1 ? '(Свернуть)' : '(Раскрыть)'; ?></div> <?php
                 }	
 				
 			 ?>
@@ -24,8 +24,9 @@ if(isset($categorie['id'])) {
         </div>
          <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
             <div class="accordion-body collapse" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
-        <?php } else { ?>
-            <div class="accordion-body in" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
+        <?php } else {
+            ?>
+            <div class="accordion-body <?php echo isset($categorie['config']) && $categorie['config']['isWrapped'] == 1 ? 'in' : 'collapse'; ?>" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
         <?php } ?>
         <!--<div class="accordion-body collapse" id="collapse--><?php /* echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; */?><!--">-->
             <div class="accordion-inner">
