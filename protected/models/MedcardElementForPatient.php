@@ -85,6 +85,33 @@ class MedcardElementForPatient extends MisActiveRecord {
         }
     }
 
+	public static function getTemplateName($recordId, $medcardId)
+	{
+		
+		try {
+			$connection = Yii::app()->db;
+			$values = $connection->createCommand()
+				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id, mep2.template_name')
+				->from('mis.medcard_elements_patient mep')
+				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
+				->where('mep.medcard_id = :medcard_id AND mep.record_id=:ri', array(':medcard_id' => $medcardId, ':ri'=>$recordId));
+			
+			$result = $values->queryAll();
+			if (count($result)==0)
+			{
+				return "";
+			}
+			else
+			{
+				return $result[0]['template_name'];
+			}
+			return 0;
+			
+		} catch(Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+
     public function getMaxHistoryPointId($element, $medcardId, $greetingId) {
         try {
             $connection = Yii::app()->db;
@@ -104,22 +131,19 @@ class MedcardElementForPatient extends MisActiveRecord {
     }
 
     public function getHistoryPoints($medcard) {
-        
-			
 		try {
-            $connection = Yii::app()->db;
+			$connection = Yii::app()->db;
 			$points = $connection->createCommand()
-				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id')
+				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id, mep2.template_name')
 				->from('mis.medcard_elements_patient mep')
+				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
 				->where('mep.medcard_id = :medcard_id', array(':medcard_id' => $medcard['card_number']))
 				->order('change_date DESC');
-            return $points->queryAll();
+			return $points->queryAll();
 
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
-		
-		
+		} catch(Exception $e) {
+			echo $e->getMessage();
+		}
     }
 
 	public function getValuesByDate($date, $medcardId, $historyId) {

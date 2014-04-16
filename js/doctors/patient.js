@@ -23,8 +23,14 @@
         // Вставляем новую запись в список истории
         if (ajaxData.hasOwnProperty('historyDate')) {
             var newDiv = $('<div>');
-            $(newDiv).append($('<a>').prop('href', '#' + globalVariables.medcardNumber + '_' + ajaxData.lastRecordId).attr('class', 'medcard-history-showlink').text(ajaxData.historyDate));
-            $('#accordionH .accordion-inner div:first').before(newDiv);
+            $(newDiv).append($('<a>').prop('href', '#' + globalVariables.medcardNumber + '_' + ajaxData.lastRecordId).attr('class', 'medcard-history-showlink').text(ajaxData.historyDate + ' - ' + ajaxData.templateName));
+            var historyContainer = $('#accordionH .accordion-inner div:first');
+            if (historyContainer.length == 0) {
+                $('#accordionH .accordion-inner').append(newDiv);
+            }
+            else {
+                $('#accordionH .accordion-inner div:first').before(newDiv);
+            }
         }
     } else {
 
@@ -93,6 +99,10 @@ return false;
 }
 });
 */
+
+// Выбираем все ссылки на странице, у которых нет в аттрибуте href решётки #
+
+
 $('#medcardContentSave').on('click', function (e) {
 
     // Берём кнопки с классом 
@@ -166,31 +176,31 @@ $("#date-cont").on('changeDate', function (e) {
     $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
     $('#change-date-form').submit();
 });
-    $("#date-cont").trigger("refresh");
+$("#date-cont").trigger("refresh");
 
-    $("#date-cont").on('changeMonth', function(e) {
-        $("#date-cont").trigger("refresh", [e.date]);
-    });
+$("#date-cont").on('changeMonth', function (e) {
+    $("#date-cont").trigger("refresh", [e.date]);
+});
 
 
-    $("#date-cont").on('refresh', function(e, date) {
-        if(typeof date == 'undefined') {
-            var currentDate = $('#filterDate').val();
-            var currentDateParts = currentDate.split('-');
-        } else {
-            var dateObj = new Date(date);
-            var currentDateParts = [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDay() + 1];
+$("#date-cont").on('refresh', function (e, date) {
+    if (typeof date == 'undefined') {
+        var currentDate = $('#filterDate').val();
+        var currentDateParts = currentDate.split('-');
+    } else {
+        var dateObj = new Date(date);
+        var currentDateParts = [dateObj.getFullYear(), dateObj.getMonth() + 1, dateObj.getDay() + 1];
+    }
+
+    var daysWithPatients = globalVariables.patientsInCalendar;
+    for (var i in daysWithPatients) {
+        var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
+        if (parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
+            $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
         }
-
-        var daysWithPatients = globalVariables.patientsInCalendar;
-        for(var i in daysWithPatients) {
-            var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
-            if(parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
-                $(".day" + parseInt(parts[2])).filter(':not(.new)').filter(':not(.old)').addClass('day-with');
-            }
-        }
-    });
-    $('#date-cont').trigger('refresh');
+    }
+});
+$('#date-cont').trigger('refresh');
 
 // Закрытие приёма
 $(document).on('click', '.accept-greeting-link', function (e) {
@@ -212,12 +222,11 @@ $(document).on('click', '.accept-greeting-link', function (e) {
                 location.reload();
             } else {
                 // Если не установлен диагноз - надо сфокусировать на поле диагноза
-		if (data.needMainDiagnosis != undefined)
-		{
-			$('#errorPopup').one('hidden.bs.modal', function () {
-				$('#primaryDiagnosisChooser #doctor').focus();
-			});
-		}
+                if (data.needMainDiagnosis != undefined) {
+                    $('#errorPopup').one('hidden.bs.modal', function () {
+                        $('#primaryDiagnosisChooser #doctor').focus();
+                    });
+                }
 
                 // Выводим сообщение об ошибке
                 $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
@@ -243,7 +252,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
     var historyPointCoordinate = $(this).attr('href').substr(1);
     var coordinateStrings = historyPointCoordinate.split('_');
 
-    var medcardId = coordinateStrings [0];
+    var medcardId = coordinateStrings[0];
     var pointId = coordinateStrings[1];
     var date = $(this).text();
     $('#historyPopup .medcardNumber').text('№ ' + medcardId);
@@ -252,7 +261,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
         'url': '/index.php/doctors/patient/gethistorymedcard',
         'data': {
             medcardid: medcardId,
-            historyPointId:pointId, 
+            historyPointId: pointId,
             date: date
         },
         'cache': false,
@@ -336,6 +345,9 @@ $('#submitDiagnosis').on('click', function (e) {
     var choosedPrimary = $.fn['primaryDiagnosisChooser'].getChoosed();
     var choosedSecondary = $.fn['secondaryDiagnosisChooser'].getChoosed();
 
+    var choosedClinPrimary = $.fn['primaryClinicalDiagnosisChooser'].getChoosed();
+    var choosedClinSecondary = $.fn['secondaryClinicalDiagnosisChooser'].getChoosed();
+
     var primaryIds = [];
     var secondaryIds = [];
     for (var i = 0; i < choosedPrimary.length; i++) {
@@ -345,11 +357,23 @@ $('#submitDiagnosis').on('click', function (e) {
         secondaryIds.push(choosedSecondary[i].id);
     }
 
+
+    var clinPrimaryIds = [];
+    var clinSecondaryIds = [];
+    for (var i = 0; i < choosedClinPrimary.length; i++) {
+        clinPrimaryIds.push(choosedClinPrimary[i].id);
+    }
+    for (var i = 0; i < choosedClinSecondary.length; i++) {
+        clinSecondaryIds.push(choosedClinSecondary[i].id);
+    }
+
     $.ajax({
         'url': '/index.php/doctors/patient/savediagnosis',
         'data': {
             'primary': $.toJSON(primaryIds),
             'secondary': $.toJSON(secondaryIds),
+            'clinPrimary': $.toJSON(clinPrimaryIds),
+            'clinSecondary': $.toJSON(clinSecondaryIds),
             'note': $('#diagnosisNote').val(),
             'greeting_id': $('#greetingId').val()
         },
@@ -360,6 +384,8 @@ $('#submitDiagnosis').on('click', function (e) {
             if (data.success == true) {
                 //   $('#successDiagnosisPopup').modal({});
             }
+            else
+                console.log(data);
         }
     });
 });
@@ -428,41 +454,41 @@ $(document).on('click', '.editMedcard', function (e) {
 return false;
 });
 
-    // Запрет редактирования карты
-    $('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
-    $('#patient-medcard-edit-form .date-control .input-group-addon').remove();
+// Запрет редактирования карты
+$('#patient-medcard-edit-form .modal-body').find('input, select, button').prop('disabled', true);
+$('#patient-medcard-edit-form .date-control .input-group-addon').remove();
 
-    // Здесь будут храниться ID клонов элементов
-    var clones = {
+// Здесь будут храниться ID клонов элементов
+var clones = {
 
-    };
+};
 
-    // Клонирование элементов
-    /* Клоны считаются, как clone_xx_yy, где xx - ID аккордеона, yy - порядковый номер клона */
-    $(document).on('click', '.accordion-clone-btn', function(e) {
-        var prKey = $(this).find('span.pr-key').text();
-        var accParent = $(this).parents('.accordion')[0];
-        var accClone = $(accParent).clone();
+// Клонирование элементов
+/* Клоны считаются, как clone_xx_yy, где xx - ID аккордеона, yy - порядковый номер клона */
+$(document).on('click', '.accordion-clone-btn', function (e) {
+    var prKey = $(this).find('span.pr-key').text();
+    var accParent = $(this).parents('.accordion')[0];
+    var accClone = $(accParent).clone();
 
-        // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
-        $.ajax({
-            'url' : '/index.php/doctors/patient/cloneelement',
-            'data' : {
-                'pr_key' : prKey
-            },
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == true) {
-                    var toggle = $(accParent).find('.accordion-toggle');
-                    var body = $(accParent).find('.accordion-body');
+    // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
+    $.ajax({
+        'url': '/index.php/doctors/patient/cloneelement',
+        'data': {
+            'pr_key': prKey
+        },
+        'cache': false,
+        'dataType': 'json',
+        'type': 'GET',
+        'success': function (data, textStatus, jqXHR) {
+            if (data.success == true) {
+                var toggle = $(accParent).find('.accordion-toggle');
+                var body = $(accParent).find('.accordion-body');
 
-                    if(!clones.hasOwnProperty($(accParent).prop('id'))) {
-                        clones[$(accParent).prop('id')] = 1;
-                    } else {
-                        clones[$(accParent).prop('id')]++;
-                    }
+                if (!clones.hasOwnProperty($(accParent).prop('id'))) {
+                    clones[$(accParent).prop('id')] = 1;
+                } else {
+                    clones[$(accParent).prop('id')]++;
+                }
 
                 var accId = $(accParent).prop('id');
                 var accNumberId = accId.substr(accId.lastIndexOf('_') + 1);
@@ -674,7 +700,31 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     $(this).attr('disabled', false);
     return false;
 });
+
+
+/*
+// Если есть кнопка "Сохранить"
+if ($('#medcardContentSave').length > 0) {
+    // Выбираем все ссылки на странице
+    var pageLinks = $('a');
+    // Перебираем эти ссылки
+    for (i = 0; i < pageLinks.length; i++) {
+        // Если у неё есть адрес
+        if ((pageLinks[i]).hasOwnProperty('href')) {
+            // Если в адресе у ссылки нет решётки
+            if ($(pageLinks[i]).attr('href').indexOf('#') < 0) {
+                // В этом случае привязываем к событию "click" ссылки событие, которое 
+                // 0. Сохранит значение href у ссылки, на которую мы нажали
+                // 1. Во-первых прервёт выполнение события "click"
+                // 2. Вызовет сохранение приёма
+                // 3. После сохранения приёма - вызовет переход по ссылке
+
+            }
+        }
+    }
+}
 });
+*/
 
 function getOnlyLikes() {
     return globalVariables.onlyLikes;
