@@ -235,9 +235,6 @@ class CategorieViewWidget extends CWidget {
             if(isset($categorie) && $categorie->path == null) {
                 exit('Ошибка: категории c ID '.$categorie['id'].' не имеет пути в шаблоне!');
             }
-			// В этой точке 
-			//var_dump($this->currentDate);
-			//exit();
             $medcardCategorie = new MedcardElementForPatient();
             if(!$this->previewMode) {
                 $medcardCategorie->medcard_id = $this->medcard['card_number'];

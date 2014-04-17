@@ -1785,3 +1785,24 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade error-popup" id="viewWritedPatient">
+     <div class="modal-dialog">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                 <h4 class="modal-title">Для врача на эти даты уже записаны пациенты по старому расписанию</h4>
+ 				 <p>Пожалуйста, отпишите данных пацентов у этого врача прежде, чем расписание будет изменено</p>
+             </div>
+             <div class="modal-body">
+                 <div id="writtenPatientsTimetable" class="row">
+                     <table id="writtenPatients"></table>
+                     <div id="writtenPatientsPager"></div>
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+             </div>
+         </div>
+     </div>
+  </div>

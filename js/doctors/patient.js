@@ -1,6 +1,14 @@
 ﻿$(document).ready(function () {
-
-
+// Недоделано
+/*
+    $(window).on(
+    'beforeunload',
+    function () {
+      //  alert('Не уходи, пожалуйста!!!')
+        return '';
+    }
+    );
+    */
 
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
@@ -36,72 +44,6 @@
 
     }
 });
-
-// Потом убрать
-/*
-$(".submitEditPatient input").on('click', function () {
-//alert("!");
-//return false;
-
-// Метод ищет контролы, в которых есть признак обязательного поля
-//Для каждого такого контрола 
-//1. Проверяем, пустое ли у него значение
-//2. Если да
-//3. Добавляем ошибку в поп-ап с ошибками
-//4. Подкрашиваем данный контрол с ошибкой
-    
-var isError = false;
-// Очищаем поп-ап с ошибками
-$('#errorPopup .modal-body .row').html("");
-var controlElements = $($(this).parents('form')[0]).find('div.form-group:not(.submitEditPatient)').has('label span.required');
-for (i = 0; i < controlElements.length; i++) {
-// Внутри контейнера с контролом ищу сам контрол
-var oneControlElement = $(controlElements[i]).find('input[type=text],textarea,select');
-//console.log(oneControlElement);
-// Проверим - есть ли данного контрола значение
-if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
-isError = true;
-$(oneControlElement[0]).animate({
-backgroundColor: "rgb(255, 196, 196)"
-});
-// В следующий раз, когда значение у контрола поменяется - надо сбросить css-совйсто
-$(oneControlElement[0]).one('change', function () {
-$(this).css('background-color', '');
-});
-// И на keydown тоже самое поставим
-$(oneControlElement[0]).one('keydown', function () {
-$(this).css('background-color', '');
-});
-// Вытащим метку данного элемента
-var labelOfControl = ($(controlElements[i]).find('label').text())
-.trim();
-// Если последний символ в строке звёздочка - обрезаем её
-if (labelOfControl[labelOfControl.length - 1] == '*') {
-labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
-}
-labelOfControl = labelOfControl.trim();
-// Если последний символ в строке двоеточие - обрезаем его
-if (labelOfControl[labelOfControl.length - 1] == ':') {
-labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
-}
-// Добавим в поп-ап сообщение из ошибки
-$('#errorPopup .modal-body .row').append("<p>" +
-'Поле \"' + labelOfControl + '\" должно быть заполнено'
-+ "</p>")
-}
-}
-// Если есть ошибки
-if (isError) {
-// Показываем поп-ап с ошибками
-$('#errorPopup').modal({});
-// Давим событие нажатия клавиши
-return false;
-}
-});
-*/
-
-// Выбираем все ссылки на странице, у которых нет в аттрибуте href решётки #
-
 
 $('#medcardContentSave').on('click', function (e) {
 
@@ -701,27 +643,27 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     return false;
 });
 
-
+// Недоделано
 /*
 // Если есть кнопка "Сохранить"
 if ($('#medcardContentSave').length > 0) {
-    // Выбираем все ссылки на странице
-    var pageLinks = $('a');
-    // Перебираем эти ссылки
-    for (i = 0; i < pageLinks.length; i++) {
-        // Если у неё есть адрес
-        if ((pageLinks[i]).hasOwnProperty('href')) {
-            // Если в адресе у ссылки нет решётки
-            if ($(pageLinks[i]).attr('href').indexOf('#') < 0) {
-                // В этом случае привязываем к событию "click" ссылки событие, которое 
-                // 0. Сохранит значение href у ссылки, на которую мы нажали
-                // 1. Во-первых прервёт выполнение события "click"
-                // 2. Вызовет сохранение приёма
-                // 3. После сохранения приёма - вызовет переход по ссылке
+// Выбираем все ссылки на странице
+var pageLinks = $('a');
+// Перебираем эти ссылки
+for (i = 0; i < pageLinks.length; i++) {
+// Если у неё есть адрес
+if ((pageLinks[i]).hasOwnProperty('href')) {
+// Если в адресе у ссылки нет решётки
+if ($(pageLinks[i]).attr('href').indexOf('#') < 0) {
+// В этом случае привязываем к событию "click" ссылки событие, которое 
+// 0. Сохранит значение href у ссылки, на которую мы нажали
+// 1. Во-первых прервёт выполнение события "click"
+// 2. Вызовет сохранение приёма
+// 3. После сохранения приёма - вызовет переход по ссылке
 
-            }
-        }
-    }
+}
+}
+}
 }
 */
 });
