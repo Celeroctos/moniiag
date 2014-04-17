@@ -53,7 +53,15 @@ class MedcardGuideValue extends MisActiveRecord {
             $guideValues->order('mgv.id DESC');
         }
 
-        return $guideValues->queryAll();
+        $values = $guideValues->queryAll();
+        $values['-3'] = array(
+            'id' => -3,
+            'guide_id' => null,
+            'value' => '...'
+        );
+        //var_dump($values);
+       // exit();
+        return $values;
     }
 }
 

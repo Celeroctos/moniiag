@@ -128,3 +128,14 @@ REQUEST_URI=/index.php/doctors/patient/gethistorymedcard?medcardid=9%2F14&histor
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\views\HistoryTreeElement.php (137)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (986)
 in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\components\widgets\views\HistoryTree.php (58)
+2014/04/16 23:57:00 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "addvalueinguide".' in F:\Hosts\Celeroctos\moniiag\yii\web\CController.php:483
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(270): CController->missingAction('addvalueinguide')
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('addvalueinguide')
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#3 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/patient/addvalueinguide
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/doctors/shedule/view?cardid=32/14&date=2014-4-25&rowid=506
+---
