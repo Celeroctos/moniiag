@@ -27,7 +27,7 @@ class MedcardGuideValue extends MisActiveRecord {
     }
 
 
-    public function getRows($filters, $guideId, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($filters, $guideId, $sidx = false, $sord = false, $start = false, $limit = false, $elementPath = false, $greetingId = false) {
         $connection = Yii::app()->db;
         $guideValues = $connection->createCommand()
             ->select('mgv.*')
@@ -41,6 +41,11 @@ class MedcardGuideValue extends MisActiveRecord {
                 'mgv' => array('id', 'value'),
             ), array(
             ));
+        }
+
+        if($elementPath !== false && $greetingId !== false) {
+
+            $guideValues->orWhere('mgv.element_path = :element_path AND greeting_id = :greeting_id', array(':element_path' => $elementPath, ':greeting_id' => $greetingId));
         }
 
         if($start !== false && $limit !== false) {
@@ -59,8 +64,7 @@ class MedcardGuideValue extends MisActiveRecord {
             'guide_id' => null,
             'value' => '...'
         );
-        //var_dump($values);
-       // exit();
+
         return $values;
     }
 }

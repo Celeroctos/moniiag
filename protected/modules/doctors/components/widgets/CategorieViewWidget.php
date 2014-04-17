@@ -415,7 +415,7 @@ class CategorieViewWidget extends CWidget {
                     // Для выпадающих списков есть справочник
                     if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null) {
                         $medguideValuesModel = new MedcardGuideValue();
-                        $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id'], 'value', 'asc');
+                        $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id'], 'value', 'asc',  false, false, $elementResult['path'], $this->greetingId);
                         $guideValues = array();
 						if(count($medguideValues) > 0) {
                             $guideValues = array();
@@ -787,7 +787,7 @@ class CategorieViewWidget extends CWidget {
 			    if($nodeContent['guide_id'] != null)
                         {
                             $medguideValuesModel = new MedcardGuideValue();
-                            $medguideValues = $medguideValuesModel->getRows(false, $nodeContent['guide_id'], 'value', 'asc');
+                            $medguideValues = $medguideValuesModel->getRows(false, $nodeContent['guide_id'], 'value', 'asc', false, false, $nodeContent['path'], $historyElement['greeting_id']);
                             // Проинициализируем пустым массивом массив значений
 			    			$nodeContent['guide'] = array();
 			    			if(count($medguideValues) > 0)

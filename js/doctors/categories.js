@@ -23,9 +23,10 @@ $(document).ready(function() {
     $("#add-greeting-value-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
-            $('#addValuePopup').modal('hide');
+            $('#addGreetingComboValuePopup').modal('hide');
             $("#add-greeting-value-form")[0].reset(); // Сбрасываем форму
             $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+            $(globalVariables.domElement).val(ajaxData.id);
         } else {
             showErrors(ajaxData);
         }
@@ -50,12 +51,19 @@ $(document).ready(function() {
         });
     }
 
-
-    $('option[value="-3"]').on('click', function(e) {
-        globalVariables.domElement = $(this).parents('select').attr('id');
-        var elementId =  globalVariables.domElement.substr(globalVariables.domElement.lastIndexOf('_') + 1);
-        $('#addGreetingComboValuePopup #controlId').val(elementId);
-        $('#addGreetingComboValuePopup').modal({});
-        return false;
+    $('.accordion-inner select').each(function(index, element) {
+        var currentValue = $(element).val();
+        $(element).on('change', function(e) {
+            if($(this).val() == '-3') {
+                globalVariables.domElement = element;
+                var elementId =  $(element).attr('id').substr($(element).attr('id').lastIndexOf('_') + 1);
+                $('#addGreetingComboValuePopup #controlId').val(elementId);
+                $('#addGreetingComboValuePopup').modal({});
+                $(element).val(currentValue);
+                return false;
+            } else {
+                currentValue = $(this).val();
+            }
+        });
     });
 });
