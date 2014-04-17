@@ -58,18 +58,6 @@ class SheduleSetted extends MisActiveRecord {
 		} catch(Exception $e) {
 			echo $e->getMessage();
 		}
-	
-	
-		
-	/*
-		return model()->findAll('employee_id = :employee_id
-			AND (weekday = :weekday OR day = :day)',
-		array(
-			':employee_id' => $doctorId,
-			':weekday' => $weekday,
-			':day' => $formatDate
-			));
-			*/
 	}
 
     // Получить всех id врачей, которые могут принмать по этой дате

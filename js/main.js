@@ -13,7 +13,7 @@
         });
     };
 
-    $('#omsNumber, #policy').keyfilter(/^[\s\d]*$/);
+    $('#omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
     $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁёa-zA-Z\-]*$/);
 
     $('#snils').on('keyup', function (e) {
