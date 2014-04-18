@@ -207,7 +207,7 @@
 </div>
 </div>
     <?php 
-		if($currentPatient !== false) {
+	if($currentPatient !== false) {
         if($templatesChoose == 0) {
             foreach($templatesList as $key => $id) {
                 ?>
@@ -224,8 +224,8 @@
                     'templatePrefix' => 'a'.$id,
 					'medcardRecordId' => $medcardRecordId
                 )); ?>
-            <?php } ?>
-            </div>
+                </div>
+        <?php } ?>
             <div class="col-xs-12">
                 <div id="accordionD" class="accordion">
                     <div class="accordion-group">
@@ -333,6 +333,24 @@
                     </div>
                 </div>
             </div>
+            <?php
+            foreach($referenceTemplatesList as $key => $template) {
+                ?>
+                <div class="default-margin-top">
+                    <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
+                        'currentPatient' => $currentPatient,
+                        'templateType' => 1,
+                        'templateId' => $template['id'],
+                        'withoutSave' => 0,
+                        'greetingId' => $currentSheduleId,
+                        'canEditMedcard' => $canEditMedcard,
+                        'medcard' => $medcard,
+                        'currentDate' => $currentDate,
+                        'templatePrefix' => 'r'.$id,
+                        'medcardRecordId' => $medcardRecordId
+                    )); ?>
+                </div>
+            <?php } ?>
         <?php } ?>
     <?php } ?>
 <?php } ?>
@@ -455,6 +473,74 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="addGreetingComboValuePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Добавление значения в справочник приёма</h4>
+            </div>
+            <?php
+            $addForm = $this->beginWidget('CActiveForm', array(
+                'id' => 'add-greeting-value-form',
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/patient/addvalueinguide'),
+                'htmlOptions' => array(
+                    'class' => 'form-horizontal col-xs-12',
+                    'role' => 'form',
+                    'name' => 'add-greeting-value-form'
+                )
+            ));
+            ?>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="form-group col-xs-3">
+                        <?php
+                        echo $addForm->labelEx($addModel,'value', array(
+                            'class' => 'control-label'
+                        ));
+                        ?>
+                    </div>
+                    <div class="form-group col-xs-7">
+                        <?php
+                        echo $addForm->hiddenField($addModel,'controlId', array(
+                            'id' => 'controlId',
+                            'class' => 'form-control',
+                        ));
+                        echo $addForm->hiddenField($addModel,'greetingId', array(
+                            'id' => 'greetingId',
+                            'class' => 'form-control',
+                            'value' => $currentSheduleId
+                        ));
+                        echo $addForm->textField($addModel,'value', array(
+                            'id' => 'addGreetingGuideValue',
+                            'class' => 'form-control',
+                            'placeholder' => ''
+                        ));
+                        ?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <?php echo CHtml::ajaxSubmitButton(
+                    'Добавить',
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/patient/addvalueinguide'),
+                    array(
+                        'success' => 'function(data, textStatus, jqXHR) {
+                            $("#add-greeting-value-form").trigger("success", [data, textStatus, jqXHR])
+                        }'
+                    ),
+                    array(
+                        'class' => 'btn btn-primary'
+                    )
+                ); ?>
+            </div>
+            <?php $this->endWidget(); ?>
         </div>
     </div>
 </div>

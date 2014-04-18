@@ -142,6 +142,7 @@ class GuidesController extends Controller {
             }
 
             $values = $model->getRows($filters, $id, $sidx, $sord, $start, $rows);
+            unset($values['-3']);
 
             echo CJSON::encode(
                 array('rows' => $values,

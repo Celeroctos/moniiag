@@ -2,8 +2,8 @@
 class TemplatesController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
     private $pagesList = array( // Страницы
-        'Приём больных',
-        'Ведение беременности'
+        'Основная медкарта',
+        'Раздел рекомендаций'
     );
 
     public function actionView() {

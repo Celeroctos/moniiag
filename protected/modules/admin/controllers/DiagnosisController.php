@@ -75,7 +75,7 @@ class DiagnosisController extends Controller {
 			'records' => count($num),
 			'rows' => $diagnosisClinicalsRows
 			)
-				);
+        );
 	}
 
 	public function actionDeleteClinical()

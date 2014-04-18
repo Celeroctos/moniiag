@@ -26,7 +26,7 @@ class MedcardTemplate extends MisActiveRecord {
         }
     }
 
-    public function getTemplatesByEmployee($id)
+    public function getTemplatesByEmployee($id, $pageId = 0)
     {
          try {
             $connection = Yii::app()->db;
@@ -34,7 +34,7 @@ class MedcardTemplate extends MisActiveRecord {
             ->select('mt.*')
             ->from('mis.medcard_templates mt')
             ->join('mis.medpersonal_templates mpt', 'mpt.id_template = mt.id')
-            ->where('mpt.id_medpersonal = :medpersonal_id', array(':medpersonal_id' => $id));                
+            ->where('mpt.id_medpersonal = :medpersonal_id AND mt.page_id = :page_id', array(':medpersonal_id' => $id, ':page_id' => $pageId));
             return $templates->queryAll();
 
         } catch(Exception $e) {

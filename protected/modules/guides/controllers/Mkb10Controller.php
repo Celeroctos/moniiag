@@ -34,7 +34,7 @@ class Mkb10Controller extends Controller {
 			'records' => count($num),
 			'rows' => $diagnosisClinicalsRows
 			)
-				);
+        );
 	}
 
     public function actionGet($nodeid) {
@@ -81,8 +81,17 @@ class Mkb10Controller extends Controller {
             } else {
                 $filters = false;
             }
+
             $limit = $_GET['limit'];
-            $mkb10 = $model->getRows($onlylikes, $filters, $medworkerId, $sidx, $sord, $start, $limit);
+            if(isset($_GET['is_chooser']) && $_GET['is_chooser'] == 1) {
+                if(!isset($_GET['onlylevel'])) {
+                    $mkb10 = $model->getRows($onlylikes, $filters, $medworkerId, $sidx, $sord, $start, $limit, 1);
+                } else {
+                    $mkb10 = $model->getRows($onlylikes, $filters, $medworkerId, $sidx, $sord, $start, $limit, $_GET['onlylevel'], 'eq');
+                }
+            } else {
+                $mkb10 = $model->getRows($onlylikes, $filters, $medworkerId, $sidx, $sord, $start, $limit);
+            }
         } else {
             $mkb10 = $model->getRowsByLevel($onlylikes, $nodeid, $sidx, $sord, $start, $rows);
         }
@@ -95,6 +104,15 @@ class Mkb10Controller extends Controller {
             $node['loaded'] = false;
             $node['expanded'] = false;
             $node['parent'] = $node['parent_id']; // Суррогат для схлопывания таблицы
+            if(isset($_GET['is_chooser']) && $_GET['is_chooser'] == 1 && !isset($_GET['onlylevel']) && (/*$node['level'] == 5 || */$node['level'] == 4)) {
+                $parentNode = $model->findByPk($node['parent_id']);
+                if($parentNode != null) {
+                    $parts = explode(' ', $parentNode['description']);
+                    if(strpos($parts[0], '-') === false) {
+                        $node['description'] = $parentNode['description'].' / '.$node['description'];
+                    }
+                }
+            }
         }
         //var_dump($mkb10);
         echo CJSON::encode(

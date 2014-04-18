@@ -10,7 +10,7 @@ class Mkb10 extends MisActiveRecord {
         return 'mis.mkb10';
     }
 
-    public function getRowsByLevel($onlylikes, $parentId = 0, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRowsByLevel($onlylikes, $parentId = 0, $sidx = false, $sord = false, $start = false, $limit = false, $higherWhenLevel = false) {
         $connection = Yii::app()->db;
 
         $mkb10 = $connection->createCommand()
@@ -22,13 +22,19 @@ class Mkb10 extends MisActiveRecord {
             $mkb10->where('ml.medworker_id = :medworker_id', array(':medworker_id' => Yii::app()->user->medworkerId));
         }
 
+        if($higherWhenLevel !== false) {
+            $mkb10->andWhere('m.level > :level', array(':level' => $higherWhenLevel));
+        }
+
         // Если не задан уровень, вынимаем все записи
         if($parentId !== false) {
             $mkb10->andWhere('m.parent_id = :parent_id', array(':parent_id' => $parentId));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $mkb10->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
             $mkb10->limit($limit, $start);
         }
 
@@ -36,7 +42,7 @@ class Mkb10 extends MisActiveRecord {
         return $result;
     }
 
-	public function getRows($onlylikes, $filters, $medworkerId, $sidx = false, $sord = false, $start = false, $limit = false) {
+	public function getRows($onlylikes, $filters, $medworkerId, $sidx = false, $sord = false, $start = false, $limit = false, $higherWhenLevel = false, $operator = 'gt') {
         $connection = Yii::app()->db;
 		$mkb10 = $connection->createCommand()
             ->selectDistinct('m.*')
@@ -59,6 +65,17 @@ class Mkb10 extends MisActiveRecord {
             ), array(
                 
             ));
+        }
+
+        if($higherWhenLevel !== false) {
+            if($operator == 'gt') {
+                $mkb10->andWhere("m.level > :level
+                                 AND substring(m.description from 4 for 1) != '-'",
+                                array(':level' => $higherWhenLevel));
+            }
+            if($operator == 'eq') {
+                $mkb10->andWhere('m.level = :level', array(':level' => $higherWhenLevel));
+            }
         }
 
         if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {

@@ -16,22 +16,54 @@ $(document).ready(function() {
             $("#add-value-form")[0].reset(); // Сбрасываем форму
             $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
         } else {
-            // Удаляем предыдущие ошибки
-            $('#errorPopup .modal-body .row p').remove();
-            // Вставляем новые
-            // Только одна ошибка...
-            if(ajaxData.hasOwnProperty('error')) {
-                $('#errorPopup .modal-body .row').append("<p>" + ajaxData.error + "</p>")
-            } else {
-                for(var i in ajaxData.errors) {
-                    for(var j = 0; j < ajaxData.errors[i].length; j++) {
-                        $('#errorPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
-                    }
+           showErrors(ajaxData);
+        }
+    });
+
+    $("#add-greeting-value-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
+        var ajaxData = $.parseJSON(ajaxData);
+        if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+            $('#addGreetingComboValuePopup').modal('hide');
+            $("#add-greeting-value-form")[0].reset(); // Сбрасываем форму
+            $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+            $(globalVariables.domElement).val(ajaxData.id);
+        } else {
+            showErrors(ajaxData);
+        }
+    });
+
+    function showErrors(ajaxData) {
+        // Удаляем предыдущие ошибки
+        $('#errorPopup .modal-body .row p').remove();
+        // Вставляем новые
+        // Только одна ошибка...
+        if(ajaxData.hasOwnProperty('error')) {
+            $('#errorPopup .modal-body .row').append("<p>" + ajaxData.error + "</p>")
+        } else {
+            for(var i in ajaxData.errors) {
+                for(var j = 0; j < ajaxData.errors[i].length; j++) {
+                    $('#errorPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-
-            $('#errorPopup').modal({
-            });
         }
+
+        $('#errorPopup').modal({
+        });
+    }
+
+    $('.accordion-inner select').each(function(index, element) {
+        var currentValue = $(element).val();
+        $(element).on('change', function(e) {
+            if($(this).val() == '-3') {
+                globalVariables.domElement = element;
+                var elementId =  $(element).attr('id').substr($(element).attr('id').lastIndexOf('_') + 1);
+                $('#addGreetingComboValuePopup #controlId').val(elementId);
+                $('#addGreetingComboValuePopup').modal({});
+                $(element).val(currentValue);
+                return false;
+            } else {
+                currentValue = $(this).val();
+            }
+        });
     });
 });

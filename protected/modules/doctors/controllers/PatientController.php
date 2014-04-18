@@ -350,5 +350,28 @@ class PatientController extends Controller {
     public function actionViewSearch() {
         $this->render('searchPatient', array());
     }
+
+    /* Добавить значение в конкретный элемент */
+    public function actionAddValueInGuide() {
+        $model = new FormValueAdd();
+        if(isset($_POST['FormValueAdd'])) {
+            $model->attributes = $_POST['FormValueAdd'];
+            if($model->validate()) {
+                $control = MedcardElementForPatient::model()->find('element_id = :element_id', array(':element_id' => $model->controlId));
+                $guideValue = new MedcardGuideValue();
+                $guideValue->element_path = $control->path;
+                $guideValue->greeting_id = $control->greeting_id;
+                $guideValue->value = $model->value;
+                if($guideValue->save()) {
+                    echo CJSON::encode(array('success' => 'true',
+                                             'id' => $guideValue->id,
+                                             'display' => $guideValue->value));
+                    exit();
+                }
+            }
+        }
+        echo CJSON::encode(array('success' => 'false',
+                                 'errors' => $model->errors));
+    }
 }
 ?>

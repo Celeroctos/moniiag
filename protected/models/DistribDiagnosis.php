@@ -13,9 +13,9 @@ class DistribDiagnosis extends MisActiveRecord  {
     public function getRows($filters, $employeeId, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $mkb10 = $connection->createCommand()
-            ->select('md.*, m.*')
-            ->from($this->tableName().' md')
-            ->join(Mkb10::tableName().' m', 'm.id = md.mkb10_id')
+            ->select('md.*, cd.*')
+            ->from(DistribDiagnosis::tableName().' md')
+            ->join(ClinicalDiagnosis::tableName().' cd', 'cd.id = md.mkb10_id')
             ->where('md.employee_id = :employee_id', array(':employee_id' => $employeeId));
 
         if($filters !== false) {
@@ -36,10 +36,10 @@ class DistribDiagnosis extends MisActiveRecord  {
     public function getOne($employeeId) {
         $connection = Yii::app()->db;
         $medworker = $connection->createCommand()
-            ->select('ld.*, m.*')
-            ->from($this->tableName().' ld')
-            ->join('mis.mkb10 m', 'm.id = ld.mkb_id')
-            ->where('ld.employee_id = :employee_id', array(':employee_id' => $employeeId));
+            ->select('md.*, cd.*')
+            ->from(DistribDiagnosis::tableName().' md')
+            ->join(ClinicalDiagnosis::tableName().' cd', 'cd.id = md.mkb_id')
+            ->where('md.employee_id = :employee_id', array(':employee_id' => $employeeId));
 
         return $medworker->queryAll();
     }
