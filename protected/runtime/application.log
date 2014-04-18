@@ -1,1 +1,20 @@
-﻿
+﻿2014/04/18 16:04:21 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Session object destruction failed (Z:\home\mis.my\yii\web\CHttpSession.php:181)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
+#1 Z:\home\mis.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
+#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): UsersController->run()
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/users/login
+in Z:\home\mis.my\www\protected\controllers\UsersController.php (11)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
