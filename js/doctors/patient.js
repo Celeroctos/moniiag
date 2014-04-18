@@ -1,11 +1,11 @@
 ﻿$(document).ready(function () {
-// Недоделано
-/*
+    // Недоделано
+    /*
     $(window).on(
     'beforeunload',
     function () {
-      //  alert('Не уходи, пожалуйста!!!')
-        return '';
+    //  alert('Не уходи, пожалуйста!!!')
+    return '';
     }
     );
     */
@@ -28,6 +28,28 @@
                 ++numCalls;
             }
         }
+        // Выводим заново историю
+        if (ajaxData.hasOwnProperty('history')) {
+            var hisArr = ajaxData.history;
+            var historyContainer = $('#accordionH .accordion-inner div:first');
+            $('#accordionH .accordion-inner').text('');
+            for (i = hisArr.length - 1; i >= 0; i--) { // (идём в обратном порядке)
+                var newDiv = $('<div>');
+                $(newDiv).append($('<a>').prop('href',
+                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].id_record).attr(
+                    'class', 'medcard-history-showlink').text(hisArr[i].date_change + ' - ' + hisArr[i].template_name));
+                var historyContainer = $('#accordionH .accordion-inner div:first');
+                if (historyContainer.length == 0) {
+                    $('#accordionH .accordion-inner').append(newDiv);
+                }
+                else {
+                    $('#accordionH .accordion-inner div:first').before(newDiv);
+                }
+
+
+            }
+        }
+
         // Вставляем новую запись в список истории
         if (ajaxData.hasOwnProperty('historyDate')) {
             var newDiv = $('<div>');
@@ -562,9 +584,14 @@ checkElementsDependences();
 function hideControl(container, elementId) {
     if (typeof container == 'undefined') {
         $('[id$="_' + elementId + '"]').parents('.form-group').hide();
+        // Убираем значение у элементов
+        $('[id$="_' + elementId + '"]').parents('.form-group').find('input, select, textarea').val('');
     }
     else {
         $(container).find('[id$="_' + elementId + '"]').parents('.form-group').hide();
+        // Убираем значение у элементов
+        $(container).find('[id$="_' + elementId + '"]').parents('.form-group').find('input, select, textarea').val('');
+
     }
 }
 

@@ -40,9 +40,10 @@
                 <div class="accordion-inner">
 
                     <?php
+
                     foreach ($historyPoints as $key => $point) { ?>
 	<div>
-						<a href="#<?php echo $point['medcard_id']; ?>_<?php echo $point['record_id']; ?>" class="medcard-history-showlink"><?php echo $point['change_date']; ?> - <?php echo $point['template_name']; ?></a>
+						<a href="#<?php echo $point['medcard_id']; ?>_<?php echo $point['id_record']; ?>" class="medcard-history-showlink"><?php echo $point['date_change']; ?> - <?php echo $point['template_name']; ?></a>
 						</div>
                     <?php } ?>
                 </div>

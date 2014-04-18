@@ -90,13 +90,41 @@ class MedcardElementForPatient extends MisActiveRecord {
 		
 		try {
 			$connection = Yii::app()->db;
+			
+			
 			$values = $connection->createCommand()
 				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id, mep2.template_name')
 				->from('mis.medcard_elements_patient mep')
 				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
 				->where('mep.medcard_id = :medcard_id AND mep.record_id=:ri', array(':medcard_id' => $medcardId, ':ri'=>$recordId));
 			
+			/*
+			$values = $connection->createCommand()
+				->select('
+					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, 
+					mep.greeting_id, 
+					mep.element_id, 
+				
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+
+
+					) as id_record,
+				
+			
+					mep2.template_name')
+				->from('mis.medcard_elements_patient mep')
+				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
+				->groupBy('greeting_id,element_id,id_record,template_name')
+				->where('mep.medcard_id = :medcard_id AND mep.record_id=:ri', array(':medcard_id' => $medcardId, ':ri'=>$recordId));
+		
+			*/
+			
 			$result = $values->queryAll();
+
 			if (count($result)==0)
 			{
 				return "";
@@ -130,66 +158,65 @@ class MedcardElementForPatient extends MisActiveRecord {
         }
     }
 
-    public function getHistoryPoints($medcard) {
+	
+	public function getHistoryPointsByCardId($medcard) {
 		try {
 			$connection = Yii::app()->db;
 			$points = $connection->createCommand()
-				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id, mep2.template_name')
+				->select('
+					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS date_change, 
+					mep.greeting_id, 
+				
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+
+
+					) as id_record,
+					mep.medcard_id,
+			
+					mep2.template_name')
 				->from('mis.medcard_elements_patient mep')
 				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
-				->where('mep.medcard_id = :medcard_id', array(':medcard_id' => $medcard['card_number']))
-				->order('change_date DESC');
-			return $points->queryAll();
+				->where('mep.medcard_id = :medcard_id and mep.is_record=1
+					AND mep.record_id = 
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+					)
+					 GROUP BY mep.medcard_id,id_record,mep.greeting_id,mep2.template_name, date_change', array(':medcard_id' => $medcard))
+				->order('date_change desc')
+			
+			;
+			
+			$result = $points->queryAll();
+			return $result;
+
 
 		} catch(Exception $e) {
+			var_dump($e);
+			exit();
 			echo $e->getMessage();
 		}
+	}
+
+    public function getHistoryPoints($medcard) {
+		return $this->getHistoryPointsByCardId($medcard['card_number']);
     }
 
 	public function getValuesByDate($date, $medcardId, $historyId) {
 		try {
-			$connection = Yii::app()->db;
-			/*
-			$values = $connection->createCommand()
-				->select('mep.*, me.type')
-				->from('mis.medcard_elements_patient mep')
-				->leftJoin('mis.medcard_elements me', 'me.id = mep.element_id')
-				->where('mep.element_id>0 AND mep.medcard_id = :medcard_id AND mep.change_date <= :date
-						AND
-						mep.history_id = (SELECT MAX(mep2.history_id)
-                                              FROM mis.medcard_elements_patient mep2
-                                              WHERE mep2.element_id = mep.element_id
-                                                    AND mep2.medcard_id = :medcard_id
-                                                    AND mep2.change_date <= :date)	
-							', array(':medcard_id' => $medcardId,
-						':date' => $date))
-				->orWhere('mep.element_id<0 AND mep.medcard_id = :medcard_id 
-						AND
-						mep.greeting_id = (SELECT MAX(mep2.greeting_id)
-                                              FROM mis.medcard_elements_patient mep2
-                                              WHERE mep2.element_id > 0
-                                                    AND mep2.medcard_id = :medcard_id
-                                                    AND mep2.change_date <= :date)	', array(':medcard_id' => $medcardId,
-						':date' => $date))
-				->group('mep.element_id,
-                         mep.history_id,
-                         mep.medcard_id,
-                         me.type,
-                         mep.value,
-                         mep.change_date,
-                         mep.greeting_id,
-                         mep.categorie_name,
-                         mep.categorie_id,
-                         mep.path,
-                         ');
-						*/
-						
+			$connection = Yii::app()->db;		
 						
 			$values = $connection->createCommand()
 				->select('mep.*, me.type')
 				->from('mis.medcard_elements_patient mep')
 				->leftJoin('mis.medcard_elements me', 'me.id = mep.element_id')
-				->where('(mep.medcard_id = :medcard_id AND mep.record_id = :record_id)', 
+				->where('(mep.medcard_id = :medcard_id AND mep.record_id = :record_id AND mep.element_id>0 AND mep.is_record=1)', 
 					array(':medcard_id' => $medcardId,
 						':record_id' => $historyId)
 					)

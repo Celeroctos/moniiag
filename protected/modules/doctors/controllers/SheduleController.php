@@ -195,8 +195,10 @@ class SheduleController extends Controller {
             $currentDate = date('Y-m-d H:i');
             $answerCurrentDate = false;
             //var_dump($_POST['FormTemplateDefault']);
-            //var_dump($_POST['FormTemplateDefault']['f__3|3|5_277']);
-            //exit();
+            var_dump($_POST['FormTemplateDefault']);
+            exit();
+			
+			
             foreach($_POST['FormTemplateDefault'] as $field => $value) {
                 if($field == 'medcardId' || $field == 'greetingId') {
                     continue;
@@ -242,7 +244,8 @@ class SheduleController extends Controller {
                 $historyCategorieElementNext = new MedcardElementForPatient();
                 $historyCategorieElementNext->value = $value;
                 $historyCategorieElementNext->history_id = $historyCategorieElement->history_id + 1;
-		$historyCategorieElementNext->record_id = $recordId + 1;
+				$historyCategorieElementNext->is_record = 1;
+				$historyCategorieElementNext->record_id = $recordId + 1;
                 $historyCategorieElementNext->medcard_id = $historyCategorieElement->medcard_id;
                 $historyCategorieElementNext->greeting_id = $historyCategorieElement->greeting_id;
                 $historyCategorieElementNext->categorie_name = $historyCategorieElement->categorie_name;
@@ -272,15 +275,22 @@ class SheduleController extends Controller {
 
             $response = array(
                 'success' => true,
-                'text' => 'Данные успешно сохранены.'
-            );
+                'text' => 'Данные успешно сохранены.',
+				'history' => array()
+			);
 
-            if($answerCurrentDate) {
-				$templateName = MedcardElementForPatient::getTemplateName($recordId+1,$_POST['FormTemplateDefault']['medcardId']);
-                $response['historyDate'] = $currentDate;
-				$response['lastRecordId'] = $recordId+1;
-				$response['templateName'] = $templateName ;
-            }
+            //if($answerCurrentDate) {
+				// Возвращаем назад полностью обновлённую историю
+				//var_dump(MedcardElementForPatient::model()->getHistoryPoints($_POST['FormTemplateDefault']['medcardId']));
+				//exit();
+				
+				$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);
+				
+				$response['history'] = $newHistory;
+            //}
+			//var_dump($response);
+			//exit();
+			
 			ob_end_clean();
             echo CJSON::encode($response);
         } else {

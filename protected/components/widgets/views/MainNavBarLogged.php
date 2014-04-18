@@ -70,6 +70,7 @@
         </div>
     </div>
 </div>
+
 <div class="pop-keyboard-help">
     <div class="pop-inner">
         <h5><strong>Управление с клавиатуры для текущего положения:</strong></h5>

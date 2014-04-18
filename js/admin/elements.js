@@ -273,24 +273,24 @@ function writeDefValuesFromConfig(defValues) {
 //    какое направление было задано для зависимостей - скрывать, или показывать.
 //   Если скрывать - то нельзя указывать "Показывать" при выборе действия - и наоборот
 function testDirection() {
-/*
+    /*
     $("#controlActions option[value='1']").removeClass('no-display');
     $("#controlActions option[value='2']").removeClass('no-display');
     var idsList = jQuery("#dependences").getDataIDs();
     for (i = 0; i < idsList.length; i++) {
-        var rowData = jQuery("#dependences").getRowData(idsList[i]);
-        //console.log(rowData.action);    
-        if (rowData.action == "Показать") {
-            // Прячем опцию "Скрыть"
-            $("#controlActions option[value='1']").addClass('no-display');
-        }
-        else {
-            // Прячем опцию "Показать"
-            $("#controlActions option[value='2']").addClass('no-display');
-        }
-        break;
+    var rowData = jQuery("#dependences").getRowData(idsList[i]);
+    //console.log(rowData.action);    
+    if (rowData.action == "Показать") {
+    // Прячем опцию "Скрыть"
+    $("#controlActions option[value='1']").addClass('no-display');
     }
-	*/
+    else {
+    // Прячем опцию "Показать"
+    $("#controlActions option[value='2']").addClass('no-display');
+    }
+    break;
+    }
+    */
 }
 
 $("#element-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
@@ -405,7 +405,7 @@ function editElement() {
                         // Таблица
                         if (fields[i].formField == 'config') {
                             var config = $.parseJSON(data.data['config']);
-                            if(data.data['type'] == 4) {
+                            if (data.data['type'] == 4) {
                                 if (config.cols.length > 0) {
                                     $('#editElementPopup .colsHeaders').prop('checked', true);
                                 }
@@ -461,7 +461,7 @@ function editElement() {
                                     writeDefValuesFromConfig(config.values);
                                 }
                             }
-                            if(data.data['type'] == 5) {
+                            if (data.data['type'] == 5) {
                                 $('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
                                 $('#editElementPopup #numberFieldMaxValue').val(config.maxValue);
                                 $('#editElementPopup #numberFieldMinValue').val(config.minValue);
@@ -602,7 +602,7 @@ $("select#type").on('change', function (e) {
         $(this).parents().find('.defaultValuesTable').addClass('no-display');
     }
 
-    if($(this).val() == 5) {
+    if ($(this).val() == 5) {
         $('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
     } else {
         $('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').val('').parents('.form-group').addClass('no-display');
@@ -698,20 +698,33 @@ function is_int(mixed_var) {
     return result;
 }
 
-$('#numCols, #numRows').on('change', function (e) {
+$('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').on('change', function (e) {
     // Проверим - являются ли значения цифрами
     if (
-		(is_int($(e.currentTarget).parents('.modal-body').find('#numCols').val()))
+		(is_int($($(e.currentTarget).parents('.modal-body')[0]).find('#numCols').val()))
 		&&
-		(is_int($(e.currentTarget).parents('.modal-body').find('#numRows').val()))
+		(is_int($($(e.currentTarget).parents('.modal-body')[0]).find('#numRows').val()))
 
 		) {
         printDefaultValuesTable($(e.currentTarget).parents('.modal-body').find('#numCols').val(), $(e.currentTarget).parents('.modal-body').find('#numRows').val());
         configStr = $($(e.currentTarget).parents('.modal-body').find('#config')[0]).val();
+
+        if (configStr == "") {
+            // Прочитаем конфигурацию
+            readConfigFromInterface(this);
+            // Читаем снова строку конфигурации
+            configStr = $($(e.currentTarget).parents('.modal-body').find('#config')[0]).val();
+        }
+
         config = $.parseJSON(configStr);
         if (config.values != undefined && config.values != null) {
             writeDefValuesFromConfig(config.values);
         }
+
+        // Нужно поменять значения в конфиге
+        config.numCols = $(e.currentTarget).parents('.modal-body').find('#numCols').val();
+        config.numRows = $(e.currentTarget).parents('.modal-body').find('#numRows').val();
+        $($(e.currentTarget).parents('.modal-body').find('#config')[0]).val($.toJSON(config));
     }
     else {
         printDefaultValuesTable(0, 0);

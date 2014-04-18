@@ -161,3 +161,367 @@ HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=19/14&date=2014
 in Z:\home\mis.my\www\protected\modules\admin\controllers\CategoriesController.php (74)
 in Z:\home\mis.my\www\protected\components\Controller.php (27)
 in Z:\home\mis.my\www\index.php (13)
+2014/04/18 12:49:21 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:43)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (43)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 12:49:48 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:43)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (43)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 12:50:05 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:43)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (43)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 12:59:07 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42803]: Grouping error: 7 ОШИБКА:  колонка "mep.change_date" должна фигурировать в предложении GROUP BY или использоваться в агрегатной функции
+LINE 2:      SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CA...
+                         ^. Выполнявшийся SQL-запрос: SELECT 
+					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, 
+					mep.greeting_id, 
+					mep.element_id, 
+				
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+
+
+					) as id_record,
+				
+			
+					mep2.template_name
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+WHERE mep.medcard_id = :medcard_id and mep.is_record=1
+					 GROUP BY mep.greeting_id,mep.element_id,id_record,mep2.template_name.
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (199)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (107)
+2014/04/18 13:08:27 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "date_change decs" не существует
+LINE 27: ORDER BY "date_change decs"
+                  ^. Выполнявшийся SQL-запрос: SELECT 
+					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS date_change, 
+					mep.greeting_id, 
+				
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+
+
+					) as id_record,
+				
+			
+					mep2.template_name
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+WHERE mep.medcard_id = :medcard_id and mep.is_record=1
+					AND mep.record_id = 
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+					)
+					 GROUP BY id_record,mep.greeting_id,mep2.template_name, date_change
+ORDER BY "date_change decs".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (208)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (107)
+2014/04/18 13:09:04 [error] [php] Undefined index: medcard_id (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:45)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (45)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 13:10:22 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ".")
+LINE 15:      mep2.template_name
+                  ^. Выполнявшийся SQL-запрос: SELECT 
+					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS date_change, 
+					mep.greeting_id, 
+				
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+
+
+					) as id_record,
+					mep.medcard_id
+			
+					mep2.template_name
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+WHERE mep.medcard_id = :medcard_id and mep.is_record=1
+					AND mep.record_id = 
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+					)
+					 GROUP BY mep.medcard_id,id_record,mep.greeting_id,mep2.template_name, date_change
+ORDER BY "date_change" DESC.
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (208)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (107)
+2014/04/18 13:10:22 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:43)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (43)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 13:11:05 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: ".")
+LINE 15:      mep2.template_name
+                  ^. Выполнявшийся SQL-запрос: SELECT 
+					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS date_change, 
+					mep.greeting_id, 
+				
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+
+
+					) as id_record,
+					mep.medcard_id
+			
+					mep2.template_name
+FROM "mis"."medcard_elements_patient" "mep"
+JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+WHERE mep.medcard_id = :medcard_id and mep.is_record=1
+					AND mep.record_id = 
+					(SELECT MAX(mep3.record_id)
+						FROM mis.medcard_elements_patient as mep3
+						WHERE
+							mep3.greeting_id=mep.greeting_id
+							AND mep3.element_id=mep.element_id
+					)
+					 GROUP BY mep.medcard_id,id_record,mep.greeting_id,mep2.template_name, date_change
+ORDER BY "date_change" DESC.
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (208)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (156)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (107)
+2014/04/18 13:11:24 [error] [php] Undefined index: record_id (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:45)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (45)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 13:12:01 [error] [php] Undefined index: change_date (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:45)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-23&rowid=522
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (45)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 13:53:18 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:43)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-24&rowid=523
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (43)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)
+2014/04/18 13:54:00 [error] [php] Invalid argument supplied for foreach() (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php:43)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): MedcardContentWidget->renderFile()
+#1 Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php(28): MedcardContentWidget->render()
+#2 Z:\home\mis.my\yii\web\CBaseController.php(173): MedcardContentWidget->run()
+#3 Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php(23): SheduleController->widget()
+#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
+#5 Z:\home\mis.my\yii\web\CBaseController.php(95): SheduleController->renderInternal()
+#6 Z:\home\mis.my\yii\web\CController.php(869): SheduleController->renderFile()
+#7 Z:\home\mis.my\yii\web\CController.php(782): SheduleController->renderPartial()
+#8 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(122): SheduleController->render()
+#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/view?cardid=33/14&date=2014-4-24&rowid=523
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\MedcardContentWidget.php (43)
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\MedcardContentWidget.php (28)
+in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (23)

@@ -39,7 +39,11 @@
         <div class="col-xs-9">
             <?php echo $content; ?>
         </div>
+
     </div>
+</div>
+<div class ="buttonUpContainer">
+		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span><nobr>
 </div>
 </body>
 </html>
