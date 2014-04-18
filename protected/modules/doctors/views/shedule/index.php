@@ -267,12 +267,13 @@
                                         </div>
                                     </div>
                                 </div>
-								
-
 							<div class="form-group chooser" id="primaryClinicalDiagnosisChooser">
 							<label for="doctor" class="col-xs-3 control-label">Клинический основной диагноз:</label>
 							<div class="col-xs-9">
-                                        <input type="text" class="form-control" id="clinicalPrimaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="clinicalPrimaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : ''?>>
+                                            <span class="input-group-addon glyphicon glyphicon-plus"></span>
+                                        </div>
                                         <ul class="variants no-display">
                                         </ul>
                                         <div class="choosed">
@@ -539,6 +540,42 @@
                         'class' => 'btn btn-primary'
                     )
                 ); ?>
+            </div>
+            <?php $this->endWidget(); ?>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="addClicnicalDiagnosisPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Добавление значения в клинические диагнозы</h4>
+            </div>
+            <?php
+            $addForm = $this->beginWidget('CActiveForm', array(
+                'id' => 'add-clinical-diagnosis-form',
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/patient/addvalueinguide'),
+                'htmlOptions' => array(
+                    'class' => 'form-horizontal col-xs-12',
+                    'role' => 'form',
+                    'name' => 'add-clinical-diagnosis-form'
+                )
+            ));
+            ?>
+            <div class="modal-body">
+                <div class="row">
+                    <label class="control-label col-xs-4" for="diagnosisName">Название диагноза</label>
+                    <div class="form-group col-xs-7">
+                        <input id="diagnosisName" name="diagnosisName" class="form-control" placeholder="Введите название диагноза" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-success" id="addClinicalDiagnosisSubmit">Добавить</button>
             </div>
             <?php $this->endWidget(); ?>
         </div>

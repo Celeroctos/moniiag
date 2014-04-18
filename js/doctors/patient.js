@@ -670,6 +670,29 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     return false;
 });
 
+
+    $('#addClinicalDiagnosisSubmit').on('click', function(e) {
+        var diagnosisName = $('#diagnosisName').val();
+        if($.trim(diagnosisName) == '') {
+            alert('Введите название диагноза!');
+            return false;
+        }
+
+        $.ajax({
+            'url' : '/index.php/admin/diagnosis/addclinic',
+            'data' : {
+                'FormClinicalDiagnosisAdd[description]' : diagnosisName
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'POST',
+            'success' : function(data, textStatus, jqXHR) {
+                $.fn['primaryClinicalDiagnosisChooser'].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
+                $('#addClicnicalDiagnosisPopup').modal('hide');
+            }
+        });
+    });
+
 // Недоделано
 /*
 // Если есть кнопка "Сохранить"
