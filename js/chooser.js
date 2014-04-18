@@ -330,7 +330,7 @@ $(document).ready(function() {
             'movingFunc' : function(data) {
                 return $('<li>').prop('id', 'r' + data.id).text(data.description);
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&onlylevel=3&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -348,7 +348,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
                 'onlylikes' : typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
@@ -362,31 +362,31 @@ $(document).ready(function() {
                     }
                 ]
             }
+        },
+        'primaryClinicalDiagnosisChooser': {
+            'primary': 'id',
+            'maxChoosed': 1,
+            'rowAddHandler': function (ul, row) {
+                $(ul).append($('<li>').text(row.description));
             },
-            'primaryClinicalDiagnosisChooser': {
-                'primary': 'id',
-                'maxChoosed': 1,
-                'rowAddHandler': function (ul, row) {
-                    $(ul).append($('<li>').text(row.description));
-                },
-                'url': '/index.php/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
-                'filters': {
-                    'groupOp': 'AND',
-                    'rules': [
-                    {
-                        'field': 'description',
-                        'op': 'cn',
-                        'data': ''
-                    }
-                ]
+            'url': '/index.php/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters': {
+                'groupOp': 'AND',
+                'rules': [
+                {
+                    'field': 'description',
+                    'op': 'cn',
+                    'data': ''
                 }
-            },
+            ]
+            }
+        },
         'secondaryDiagnosisChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&filters=',
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
                 'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
@@ -400,30 +400,31 @@ $(document).ready(function() {
                     }
                 ]
             }
+        },
+        'secondaryClinicalDiagnosisChooser': {
+            'primary': 'id',
+            'rowAddHandler': function (ul, row) {
+                $(ul).append($('<li>').text(row.description));
             },
-            'secondaryClinicalDiagnosisChooser': {
-                'primary': 'id',
-                'rowAddHandler': function (ul, row) {
-                    $(ul).append($('<li>').text(row.description));
-                },
-                'url': '/index.php/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
-                'filters': {
-                    'groupOp': 'AND',
-                    'rules': [
-                    {
-                        'field': 'description',
-                        'op': 'cn',
-                        'data': ''
-                    }
-                ]
+            'url': '/index.php/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters': {
+                'groupOp': 'AND',
+                'rules': [
+                {
+                    'field': 'description',
+                    'op': 'cn',
+                    'data': ''
                 }
-            },
+            ]
+            }
+        },
         'diagnosisDistribChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=',
+            /* 'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=', */
+            'url' : '/index.php/admin/diagnosis/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'extraparams' : {
                 // Здесь - специальность, но она даётся извне
                 'medworkerid' : null

@@ -207,7 +207,7 @@
 </div>
 </div>
     <?php 
-		if($currentPatient !== false) {
+	if($currentPatient !== false) {
         if($templatesChoose == 0) {
             foreach($templatesList as $key => $id) {
                 ?>
@@ -224,8 +224,8 @@
                     'templatePrefix' => 'a'.$id,
 					'medcardRecordId' => $medcardRecordId
                 )); ?>
-            <?php } ?>
-            </div>
+                </div>
+        <?php } ?>
             <div class="col-xs-12">
                 <div id="accordionD" class="accordion">
                     <div class="accordion-group">
@@ -333,6 +333,24 @@
                     </div>
                 </div>
             </div>
+            <?php
+            foreach($referenceTemplatesList as $key => $template) {
+                ?>
+                <div class="default-margin-top">
+                    <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
+                        'currentPatient' => $currentPatient,
+                        'templateType' => 1,
+                        'templateId' => $template['id'],
+                        'withoutSave' => 0,
+                        'greetingId' => $currentSheduleId,
+                        'canEditMedcard' => $canEditMedcard,
+                        'medcard' => $medcard,
+                        'currentDate' => $currentDate,
+                        'templatePrefix' => 'r'.$id,
+                        'medcardRecordId' => $medcardRecordId
+                    )); ?>
+                </div>
+            <?php } ?>
         <?php } ?>
     <?php } ?>
 <?php } ?>

@@ -38,6 +38,8 @@ class SheduleController extends Controller {
                     $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
 					$primaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);					
 					$secondaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
+                    $medcardTemplates = new MedcardTemplate();
+                    $referenceTemplatesList =  $medcardTemplates->getTemplatesByEmployee(Yii::app()->user->medworkerId, 1);
                     // Если приём был, то можно вынуть примечание к диагнозам
                     if($greeting != null) {
                         $note = $greeting->note;
@@ -92,8 +94,6 @@ class SheduleController extends Controller {
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
 
-		// Ищем номер текущую запись для данной медкарты, прибавляем единицу
-		
 		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
@@ -117,6 +117,7 @@ class SheduleController extends Controller {
             'currentTime' => date('Y-m-d h:m:s'),
             'templatesChoose' => $templatesChoose,
             'templatesList' => isset($templatesList) ? $templatesList : array(),
+            'referenceTemplatesList' => isset($referenceTemplatesList) ? $referenceTemplatesList : array(),
             'greeting' => (isset($greeting)) ? $greeting : null,
 			'medcardRecordId' => $medcardRecordId
         ));

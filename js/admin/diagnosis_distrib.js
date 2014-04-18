@@ -95,13 +95,13 @@ $(document).ready(function() {
                     if(data.success == true) {
                         var data = data.data;
                         var numRows = data.likes.length;
-                        $.fn['diagnosisChooser'].clearAll();
+                        //$.fn['diagnosisChooser'].clearAll();
                         $.fn['diagnosisDistribChooser'].clearAll();
                         $.fn['diagnosisDistribChooser'].addExtraParam('medworkerid', rowData.id);
 
-                        for(var i = 0; i < numRows; i++) {
+                        /*for(var i = 0; i < numRows; i++) {
                             $.fn['diagnosisChooser'].addChoosed($('<li>').prop('id', 'r' + data.likes[i].id).text(data.likes[i].description), data.likes[i]);
-                        }
+                        }*/
 
                         var select = $('select#employeeId');
                         $(select).find('option:not([value="-1"])').remove();
@@ -157,6 +157,7 @@ $(document).ready(function() {
 
     $('#distribDiagnosisSubmit').click(function(e) {
         var choosed = $.fn['diagnosisDistribChooser'].getChoosed();
+        console.log(choosed);
         var choosedIds = [];
         for(var i = 0; i < choosed.length; i++) {
             choosedIds.push(choosed[i].id)

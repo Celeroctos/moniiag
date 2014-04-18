@@ -6,7 +6,7 @@ class PrivilegesController extends Controller {
     public function actionView() {
         try {
             // Модель формы для добавления и редактирования записи
-            $formAddEdit = new FormPrivilegeAdd;
+            $formAddEdit = new FormPrivilegeAdd();
 
             $this->render('view', array(
                 'model' => $formAddEdit

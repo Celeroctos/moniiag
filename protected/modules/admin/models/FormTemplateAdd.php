@@ -22,7 +22,7 @@ class FormTemplateAdd extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'pageId' => 'Страница',
+            'pageId' => 'Тип шаблона',
             'categorieIds' => 'Категории',
             'name' => 'Названиие'
         );

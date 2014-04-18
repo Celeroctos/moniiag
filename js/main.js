@@ -353,6 +353,10 @@ $('select[multiple="multiple"]').each(function(index, select) {
 		e.stopPropagation();
 		return false;
 	});*/ 
-}); 
+});
+
+$('input[type="number"]').on('keydown', function(e) {
+
+});
 
 });
