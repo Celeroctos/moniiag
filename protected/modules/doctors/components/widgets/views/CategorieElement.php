@@ -287,10 +287,8 @@ if(isset($categorie['id'])) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->numberField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
-                                    if($element['label_after'] != null) {
-                                        ?>
-                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
-                                    <?php
+                                if($element['label_after'] != null) {
+										?><label class="control-label"><?php echo ' '.$element['label_after'] ?></label><?php
                                     }
                                 } if($element['type'] == 6) { // dateField
                                     $options = array(
