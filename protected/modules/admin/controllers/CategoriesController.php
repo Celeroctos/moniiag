@@ -249,6 +249,8 @@ class CategoriesController extends Controller {
     public function actionClearGreetingsData() {
         MedcardElementPatientDependence::model()->deleteAll();
         MedcardElementForPatient::model()->deleteAll();
+		PatientDiagnosis::model()->deleteAll();
+        ClinicalPatientDiagnosis::model()->deleteAll();
         echo CJSON::encode(array('success' => true,
                                  'data' => 'Таблицы данных приёмов успешно очищены.')
         );
