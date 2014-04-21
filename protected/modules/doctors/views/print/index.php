@@ -38,15 +38,15 @@
         </tr>
         <tr>
             <td class="first"><strong>5. Фамилия</strong></td>
-            <td colspan="5"><strong class="bigger"><?php echo $oms->last_name; ?></td>
+            <td colspan="5"><strong class="big"><?php echo $oms->last_name; ?></td>
         </tr>
         <tr>
             <td class="first">6. Имя</td>
-            <td colspan="5"><strong class="bigger"><?php echo $oms->first_name; ?></td>
+            <td colspan="5"><strong class="big"><?php echo $oms->first_name; ?></td>
         </tr>
         <tr>
             <td class="first">7. Отчество</td>
-            <td colspan="5"><strong class="bigger"><?php echo $oms->middle_name; ?></td>
+            <td colspan="5"><strong class="big"><?php echo $oms->middle_name; ?></td>
         </tr>
         <tr>
             <td class="first">8. Пол</td>

@@ -235,7 +235,6 @@ $(document).ready(function() {
     }
 	
 	$('#errorSearchPopup').on('hidden.bs.modal', function(e) {
-		console.log("!");
 		$('#patient-search-submit').trigger('end');
 	});
     
@@ -251,6 +250,7 @@ $(document).ready(function() {
                         '<input type="radio" name="existsPatient" value="o' + data[i].id + '"/>' +
                     '</td>' +
                     '<td><a href="#" title="Посмотреть информацию по пациенту">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
+                    '<td>' + data[i].birthday+ '</td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' +
                         '<a title="Регистрировать ЭМК" href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
@@ -306,7 +306,7 @@ $(document).ready(function() {
                     '<td><a href="#' + data[i].id + '" class="viewHistory" title="Посмотреть историю движения медкарты" target="_blank">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
                     '<td>' + data[i].birthday+ '</td>' +
                     '<td>' + data[i].oms_number + '</td>' +
-                    '<td>' + data[i].reg_date + '</td>' +
+                   /*  '<td>' + data[i].reg_date + '</td>' + */
                     '<td class="cardNumber">' + data[i].card_number + '</td>' +
                     '<td>' +
                         '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК" target="_blank">' +
@@ -354,6 +354,8 @@ $(document).ready(function() {
                     $(this)[0].reset();
                 }
                 $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
+                cardNumber = ajaxData.cardNumber;
+                console.log(cardNumber);
                 $('#successAddPopup').modal({
 
                 });
@@ -732,5 +734,12 @@ $(document).ready(function() {
     $('.blockEdit').on('focus', function(e) {
         $(this).blur();
         return false;
+    });
+
+    var cardNumber = false;
+    $('#writePatientBtn').on('click', function() {
+        if(cardNumber !== false) {
+            location.href = '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardNumber
+        }
     });
 });

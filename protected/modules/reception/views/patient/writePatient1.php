@@ -175,10 +175,11 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, перейдя по <?php echo CHtml::link('этой', array('/reception/patient/viewadd')) ?> ссылке.</p>
+                    <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, нажав на кнопку ниже.</p>
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="createCard">Создать карту</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </div>

@@ -1,1 +1,354 @@
-﻿
+﻿2014/04/21 17:43:22 [error] [php] Division by zero (Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php:757)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\moniiag.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withoutonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%22325581%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1398087788082
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (757)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/04/21 17:45:47 [error] [php] Division by zero (Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php:757)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\moniiag.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/search/?withoutonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22cn%22,%22data%22:%22325581%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_reg%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22serie%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&_=1398087788084
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (757)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (27)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/04/21 17:56:16 [error] [exception.Exception] exception 'Exception' with message 'Не найдена медкарта!' in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php:1049
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionWritePatientStepTwo()
+#1 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#2 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#3 Z:\home\moniiag.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#6 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#9 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#10 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#12 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientsteptwo/?cardid=undefined
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/viewadd/?patientid=17876
+---
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:19 [error] [php] Undefined index: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:734)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/writepatient?firstName=%D0%90%D0%BD%D0%BD%D0%B0&lastName=%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0&middleName=&phone=789643222&month=4&year=2014&day=22&doctor_id=80&mode=1&time=13%3A00&_=1398089806064
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (734)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:24 [error] [php] Undefined index: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:734)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/writepatient?firstName=%D0%90%D0%BD%D0%BD%D0%B0&lastName=%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0&middleName=&phone=789643222&month=4&year=2014&day=22&doctor_id=80&mode=1&time=13%3A00&_=1398089806065
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (734)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:09:55 [error] [php] Undefined index: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:734)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/writepatient?firstName=%D0%90%D0%BD%D0%BD%D0%B0&lastName=%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0&middleName=&phone=789643222&month=4&year=2014&day=22&doctor_id=80&mode=1&time=13%3A00&_=1398089806066
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (734)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:11:36 [error] [php] Undefined index: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:734)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/writepatient?firstName=%D0%90%D0%BD%D0%BD%D0%B0&lastName=%D0%A1%D0%BE%D0%BA%D0%BE%D0%BB%D0%BE%D0%B2%D0%B0&middleName=&phone=789643222&month=4&year=2014&day=22&doctor_id=80&mode=1&time=13%3A00&_=1398089806067
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (734)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:14:40 [error] [php] Undefined index: card_number (F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php:734)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/shedule/writepatient?firstName=%D0%BF&lastName=%D0%B0&middleName=%D0%BF&phone=%D0%BF&month=4&year=2014&day=24&doctor_id=80&mode=1&time=9%3A30&_=1398089655941
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (734)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:18:36 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:19:00 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/21 18:21:15 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (708)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

@@ -79,7 +79,7 @@ $('#medcardContentSave').on('click', function (e) {
 
     for (i = 0; i < buttonsContainers.length; i++) {
         // Имеем i-тую форму, контролы которой надо провалидировать
-        var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').has('label span.required').not('.no-display');
+        var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').has('label span.required');
         for (j = 0; j < controlElements.length; j++) {
 
             // Внутри контейнера с контролом ищу сам контрол
@@ -511,16 +511,6 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         var tempSubstr = controlId.substr(0, controlId.lastIndexOf('_'));
                         var substrSecond = tempSubstr.substr(0, tempSubstr.lastIndexOf('_') + 1);
                         $(control).prop('id', substrSecond + undottedPathAfter + substrFirst);
-                        // Перепишем имя у категории
-                        $(control).prop('name',
-                            'FormTemplateDefault['
-                            +
-                            tempSubstr.substr(0, tempSubstr.lastIndexOf('_') - 1)
-                            +
-                            undottedPathAfter
-                            +
-                            substrFirst+
-                            ']');
                     }
                 }
 

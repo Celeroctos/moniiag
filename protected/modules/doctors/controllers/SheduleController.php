@@ -93,11 +93,6 @@ class SheduleController extends Controller {
 
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
-		
-		/*
-		var_dump($this->getHistoryPoints($medcard));
-		exit();
-		*/
 
 		$this->render('index', array(
             'patients' => $patients,
@@ -238,7 +233,6 @@ class SheduleController extends Controller {
                 ));
 
                 // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать. Это позволит не сохранять неизменённые поля
-
                 /*
 				if($value == $historyCategorieElement->value) {
                     continue;
@@ -733,14 +727,22 @@ class SheduleController extends Controller {
         }
         if(!$sheduleElement->save()) {
             echo CJSON::encode(array('success' => 'false',
-                'data' => 'Не могу записать пациента!'));
+									 'data' => 'Не могу записать пациента!'));
             exit();
         }
 		
-		$writedMedcard = Medcard::model()->findByPk($_GET['card_number']);
-		if($writedMedcard != null) {
-			$writedOms = Oms::model()->findByPk($writedMedcard->policy_id);
+		if($_GET['mode'] == 0) {
+			$writedMedcard = Medcard::model()->findByPk($_GET['card_number']);
+			if($writedMedcard != null) {
+				$writedOms = Oms::model()->findByPk($writedMedcard->policy_id);
+			}
+		} else {
+			$writedOms = new Oms();
+			$writedOms->first_name = $mediateForm->firstName;
+			$writedOms->last_name = $mediateForm->lastName;
+			$writedOms->middle_name = $mediateForm->middleName;
 		}
+		
 		$writedDoctor = Doctor::model()->findByPk($_GET['doctor_id']);
 		if($writedDoctor != null) {
 			

@@ -48,10 +48,10 @@ class PrintController extends Controller {
 
         // Превращаем адрес медкарты
         $patientController = Yii::app()->createController('reception/patient');
-		$addressData = $patientController[0]->getAddressStr($medcard['address'],true);
+        $addressData = $patientController[0]->getAddressStr($medcard['address']);
         $medcard['address'] = $addressData['addressStr'];
 
-		$addressRegData = $patientController[0]->getAddressStr($medcard['address_reg'],true);
+        $addressRegData = $patientController[0]->getAddressStr($medcard['address_reg']);
         $medcard['address_reg'] = $addressData['addressStr'];
 
         $this->render('index', array('medcard' => $medcard,
