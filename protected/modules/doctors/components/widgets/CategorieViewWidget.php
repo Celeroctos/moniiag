@@ -668,19 +668,39 @@ class CategorieViewWidget extends CWidget {
         $this->sortTree();
         // Теперь поделим категории
         $this->divideTreebyCats();
+		$greeting  = null;
         // Рассортируем
 		// Вытащим приёмы
 		// Берём элементы истории и прочитываем id приёма
 		if (count($this->historyElements)>0)
-		$greeting = $this->historyElements[0]['greeting_id'];
-		
+		{
+			for ($i = 0;$i<count($this->historyElements);$i++)
+			{
+				if 	($this->historyElements[$i]['element_id']!=-1)
+				{
+					$greeting = $this->historyElements[$i]['greeting_id'];	
+					break;	
+				}
+			}
+			
+		}
 		//var_dump($this->historyElements);
 		//exit();
-		$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
-		$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
-		$cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
-		$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
-	
+		if ($greeting!=NULL)
+		{
+			$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
+			$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
+			$cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
+			$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
+		}
+		else
+		{
+			$pd = array();
+			$sd = array();
+			$cpd = array();
+			$csd = array();
+			
+		}
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
             'primaryDiagnosis' => $pd,
