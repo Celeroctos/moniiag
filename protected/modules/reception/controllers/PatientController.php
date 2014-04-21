@@ -438,7 +438,7 @@ class PatientController extends Controller {
         $formModel->profession = $medcard->profession;
     }
 
-    public function getAddressStr($address) {
+    public function getAddressStr($address, $showEmpty = false) {
         $data = CJSON::decode($address);
         $cladrController = Yii::app()->createController('guides/cladr');
         if(!is_array($data) && !is_object($data)) {
@@ -452,28 +452,36 @@ class PatientController extends Controller {
             $addressStr = $address['region'][0]['name'].', ';
             $addressHidden['regionId'] = $address['region'][0]['id'];
         } else {
-            $addressStr = 'Регион неизвестен, ';
+            if(!$showEmpty) {
+                $addressStr = 'Регион неизвестен, ';
+            }
             $addressHidden['regionId'] = null;
         }
 		if(isset($address['district']) && $address['district'] != null) {
             $addressStr .= $address['district'][0]['name'].', ';
             $addressHidden['districtId'] =  $address['district'][0]['id'];
         } else {
-            $addressStr .= 'район неизвестен, ';
+            if(!$showEmpty) {
+                $addressStr .= 'район неизвестен, ';
+            }
             $addressHidden['districtId'] = null;
         }
         if(isset($address['settlement']) && $address['settlement'] != null) {
             $addressStr .= $address['settlement'][0]['name'].', ';
             $addressHidden['settlementId'] = $address['settlement'][0]['id'];
         } else {
-            $addressStr .= 'населённый пункт неизвестен, ';
+            if(!$showEmpty) {
+                $addressStr .= 'населённый пункт неизвестен, ';
+            }
             $addressHidden['settlementId'] = null;
         }
         if(isset($address['street']) && $address['street'] != null) {
             $addressStr .= $address['street'][0]['name'].', ';
             $addressHidden['streetId'] = $address['street'][0]['id'];
         } else {
-            $addressStr .= 'улица неизвестна, ';
+            if(!$showEmpty) {
+                $addressStr .= 'улица неизвестна, ';
+            }
             $addressHidden['streetId'] = null;
         }
 
@@ -481,7 +489,9 @@ class PatientController extends Controller {
             $addressStr .= $address['house'].', ';
             $addressHidden['house'] = $address['house'];
         } else {
-            $addressStr .= 'номера дома нет, ';
+            if(!$showEmpty) {
+                $addressStr .= 'номера дома нет, ';
+            }
             $addressHidden['house'] = '';
         }
 
@@ -489,7 +499,9 @@ class PatientController extends Controller {
             $addressStr .= $address['building'].', ';
             $addressHidden['building'] = $address['building'];
         } else {
-            $addressStr .= 'без корпуса / строения, ';
+            if(!$showEmpty) {
+                $addressStr .= 'без корпуса / строения, ';
+            }
             $addressHidden['building'] = '';
         }
 
@@ -497,7 +509,9 @@ class PatientController extends Controller {
             $addressStr .= $address['flat'].', ';
             $addressHidden['flat'] = $address['flat'];
         } else {
-            $addressStr .= 'квартиры нет, ';
+            if(!$showEmpty) {
+                $addressStr .= 'квартиры нет, ';
+            }
             $addressHidden['flat'] = '';
         }
 
@@ -505,7 +519,9 @@ class PatientController extends Controller {
             $addressStr .= 'почтовый индекс '.$address['postindex'];
             $addressHidden['flat'] = $address['postindex'];
         } else {
-            $addressStr .= 'без почтового индекса';
+            if(!$showEmpty) {
+                $addressStr .= 'без почтового индекса';
+            }
             $addressHidden['postindex'] = '';
         }
 
@@ -1028,10 +1044,16 @@ class PatientController extends Controller {
             // Проверим, что такая карта реально есть
             $medcard = Medcard::model()->findByPk($_GET['cardid']);
             if($medcard != null) {
+                $oms = Oms::model()->findByPk($medcard['policy_id']);
+            } else {
+                throw new Exception('Не найдена медкарта!');
+            }
+            if($medcard != null) {
                 $this->render('writePatient2', array(
                     'wardsList' => $this->getWardsList(),
                     'postsList' => $this->getPostsList(),
-                    'medcard' => $medcard
+                    'medcard' => $medcard,
+                    'oms' => $oms
                 ));
                 exit();
             }

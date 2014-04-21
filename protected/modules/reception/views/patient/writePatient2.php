@@ -13,7 +13,7 @@
     <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu'); ?>
 </div>
 <h4>
-    Необходимо найти врача к которому следует записать пациента:
+    Необходимо найти врача к которому следует записать пациента <?php echo $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name; ?> :
 </h4>
 <div class="row">
     <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">

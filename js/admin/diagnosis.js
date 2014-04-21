@@ -111,9 +111,12 @@ $(document).ready(function() {
 
     $("#editDiagnosis").click(editDiagnosis);
 
-    $('#distribDiagnosisSubmit').click(function(e) {
+    $('#likeDiagnosisSubmit').click(function(e) {
         var choosed = $.fn['diagnosisChooser'].getChoosed();
-        var choosed = $.fn['diagnosisDistribChooser'].getChoosed();
+        var choosedArr = [];
+        for(var i = 0; i < choosed.length; i++) {
+            choosedArr.push(choosed[i].id);
+        }
         var currentRow = $('#diagnosiss').jqGrid('getGridParam','selrow');
         var rowData = $('#diagnosiss').jqGrid('getRowData',currentRow);
 
@@ -123,7 +126,7 @@ $(document).ready(function() {
                 'url' : '/index.php/admin/diagnosis/setlikes',
                 'data' : {
                    'medworker_id' : rowData.id,
-                   'diagnosis_ids' : $.toJSON(choosed)
+                   'diagnosis_ids' : $.toJSON(choosedArr)
                 },
                 'cache' : false,
                 'dataType' : 'json',

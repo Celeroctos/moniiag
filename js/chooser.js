@@ -46,6 +46,9 @@ $(document).ready(function() {
                         $(chooser).find('.input-group-addon').on('click', function() {
                             if(typeof choosersConfig[$(chooser).prop('id')].bindedWindowSelector != 'undefined' && $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).length > 0) {
                                 $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                                if(typeof choosersConfig[$(chooser).prop('id')].afterWindowShow != 'undefined') {
+                                    choosersConfig[$(chooser).prop('id')].afterWindowShow();
+                                }
                             }
                         });
                     }
@@ -133,6 +136,9 @@ $(document).ready(function() {
             $(chooser).find('.input-group-addon').on('click', function(e) {
                 if(typeof choosersConfig[$(chooser).prop('id')].bindedWindowSelector != 'undefined' && $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).length > 0) {
                     $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                    if(typeof choosersConfig[$(chooser).prop('id')].afterWindowShow != 'undefined') {
+                        choosersConfig[$(chooser).prop('id')].afterWindowShow();
+                    }
                 }
             });
 
@@ -383,6 +389,9 @@ $(document).ready(function() {
         'primaryClinicalDiagnosisChooser': {
             'primary': 'id',
             'bindedWindowSelector' : '#addClicnicalDiagnosisPopup',
+            'afterWindowShow' : function() {
+                $('#chooserId').val('primaryClinicalDiagnosisChooser');
+            },
             'maxChoosed': 1,
             'rowAddHandler': function (ul, row) {
                 $(ul).append($('<li>').text(row.description));
@@ -421,6 +430,10 @@ $(document).ready(function() {
         },
         'secondaryClinicalDiagnosisChooser': {
             'primary': 'id',
+            'bindedWindowSelector' : '#addClicnicalDiagnosisPopup',
+            'afterWindowShow' : function() {
+                $('#chooserId').val('secondaryClinicalDiagnosisChooser');
+            },
             'rowAddHandler': function (ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },

@@ -6,6 +6,7 @@ class FormValueAdd extends CFormModel
     public $id;
     public $controlId;
     public $greetingId;
+    public $chooserId;
 
     public function rules()
     {
@@ -14,7 +15,7 @@ class FormValueAdd extends CFormModel
                 'value', 'required'
             ),
             array(
-                'id, controlId, greetingId', 'safe'
+                'id, controlId, greetingId, chooserId', 'safe'
             )
         );
     }

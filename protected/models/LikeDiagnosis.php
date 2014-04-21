@@ -18,9 +18,9 @@ class LikeDiagnosis extends MisActiveRecord  {
     public function getRows($filters, $medworkerId, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $mkb10 = $connection->createCommand()
-            ->select('ml.*, cd.*')
+            ->select('ml.*, m.*')
             ->from(LikeDiagnosis::tableName().' ml')
-            ->join(ClinicalDiagnosis::tableName().' cd', 'cd.id = ml.mkb10_id')
+            ->join(Mkb10::tableName().' m', 'm.id = ml.mkb10_id')
             ->where('ml.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
 
         if($filters !== false) {
@@ -47,9 +47,9 @@ class LikeDiagnosis extends MisActiveRecord  {
     public function getOne($medworkerId) {
         $connection = Yii::app()->db;
         $medworker = $connection->createCommand()
-            ->select('ld.*, cd.*')
+            ->select('ld.*, m.*')
             ->from(LikeDiagnosis::tableName().' ld')
-            ->join(ClinicalDiagnosis::tableName().' cd', 'cd.id = ld.mkb10_id')
+            ->join(Mkb10::tableName().' m', 'm.id = ld.mkb10_id')
             ->where('ld.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
 
         return $medworker->queryAll();

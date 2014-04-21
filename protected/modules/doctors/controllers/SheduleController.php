@@ -238,10 +238,12 @@ class SheduleController extends Controller {
                 ));
 
                 // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать. Это позволит не сохранять неизменённые поля
-                /*if($value == $historyCategorieElement->value) {
-                    continue;
-                }*/
 
+                /*
+				if($value == $historyCategorieElement->value) {
+                    continue;
+                }
+				*/
                 $historyCategorieElementNext = new MedcardElementForPatient();
                 $historyCategorieElementNext->value = $value;
                 $historyCategorieElementNext->history_id = $historyCategorieElement->history_id + 1;
