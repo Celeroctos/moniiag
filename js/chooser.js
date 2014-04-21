@@ -35,9 +35,20 @@ $(document).ready(function() {
                 },
                 disable: function() {
                     $(chooser).find('input').prop('disabled', true);
+                    if($(chooser).find('.input-group-addon').length > 0) {
+                        $(chooser).find('.input-group-addon').off('click').css('cursor', 'default');
+                    }
                 },
                 enable: function() {
                     $(chooser).find('input').prop('disabled', false);
+                    $(chooser).find('.input-group-addon').off('click').css('cursor', 'pointer');
+                    if($(chooser).find('.input-group-addon').length > 0) {
+                        $(chooser).find('.input-group-addon').on('click', function() {
+                            if(typeof choosersConfig[$(chooser).prop('id')].bindedWindowSelector != 'undefined' && $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).length > 0) {
+                                $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                            }
+                        });
+                    }
                 },
                 addConfigParam: function(param, value) {
                     choosersConfig[$(chooser).prop('id')][param] = value;
@@ -119,6 +130,12 @@ $(document).ready(function() {
                 }
             });
 
+            $(chooser).find('.input-group-addon').on('click', function(e) {
+                if(typeof choosersConfig[$(chooser).prop('id')].bindedWindowSelector != 'undefined' && $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).length > 0) {
+                    $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                }
+            });
+
             function searchByField(field) {
                 // Смотрим, введено ли что-то в поле по сравнению с тем, что было. Если да - делаем запрос
                 if($.trim($(field).val()) != '') {
@@ -188,7 +205,7 @@ $(document).ready(function() {
                     }
                 }
                 $(this).parent().remove();
-                $(chooser).find('input').prop('disabled', false);
+                $.fn[$(chooser).attr('id')].enable();
                 if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterRemove') && typeof choosersConfig[$(chooser).prop('id')].afterRemove == 'function') {
                     choosersConfig[$(chooser).prop('id')].afterRemove();
                 }
@@ -261,7 +278,7 @@ $(document).ready(function() {
                             choosedElements.push(currentElements[i]);
                             /* Логика работы: если есть настройка о количестве добавляемых максмально вариантов, то нужно блокировать строку, если количество вариантов достигло максимума */
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
-                                $(chooser).find('input').prop('disabled', true);
+                                $.fn[$(chooser).attr('id')].disable();
                             }
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterInsert') && typeof choosersConfig[$(chooser).prop('id')].afterInsert == 'function') {
                                 choosersConfig[$(chooser).prop('id')].afterInsert(chooser);
@@ -365,6 +382,7 @@ $(document).ready(function() {
         },
         'primaryClinicalDiagnosisChooser': {
             'primary': 'id',
+            'bindedWindowSelector' : '#addClicnicalDiagnosisPopup',
             'maxChoosed': 1,
             'rowAddHandler': function (ul, row) {
                 $(ul).append($('<li>').text(row.description));
@@ -373,12 +391,12 @@ $(document).ready(function() {
             'filters': {
                 'groupOp': 'AND',
                 'rules': [
-                {
-                    'field': 'description',
-                    'op': 'cn',
-                    'data': ''
-                }
-            ]
+                    {
+                        'field': 'description',
+                        'op': 'cn',
+                        'data': ''
+                    }
+                ]
             }
         },
         'secondaryDiagnosisChooser' : {

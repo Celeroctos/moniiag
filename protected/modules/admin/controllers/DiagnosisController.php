@@ -174,7 +174,10 @@ class DiagnosisController extends Controller {
 		if ($model->save())
 		{
 			echo CJSON::encode(array('success' => true,
-				'data' => array()));
+				                     'data' => array(
+                                         'id' => $model->id,
+                                         'description' => $model->description
+                                     )));
 		}
 		else
 		{
