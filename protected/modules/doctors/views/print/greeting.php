@@ -20,6 +20,8 @@ foreach($categories as $categorie) {
 		?>
 		<div class="categorie">
 		<h4><?php echo $categorie[0]['info']['categorie_name']; ?></h4>
+		<nobr>
+		<p class ="print-elements">
 		<?php
 		foreach($categorie as $element)
 		{
@@ -30,6 +32,7 @@ foreach($categories as $categorie) {
 					$configOfTable =  CJSON::decode($element['element']['config']);
 					// Редактируемая таблица. Её надо раздербанить по ячейкам и вывести
 					?>
+					<br>
 					<table class="tableForPrint">
 					<tbody>
                     <?php 
@@ -101,15 +104,26 @@ foreach($categories as $categorie) {
 				// Всё, что кроме таблицы - выводим значение
 				else
 				{
+                    if ($element['element']['is_wrapped']=='1')
+					{
+						?>
+						<br>
+						<?php
+					}
 					?>
-					<div class="field">
+					<!--<div class="field inline-element">-->
+					<!--<div class="inline-element">-->
 					<strong><?php echo $element['info']['label']; ?></strong> <?php echo $element['element']['value']; ?>
-					</div>
+					
+					<!--</div>-->
+					
 					<?php
 				}
 			}
 		}
 		?>
+		</p>
+		</nobr>
 		</div>
 		<?
 	}

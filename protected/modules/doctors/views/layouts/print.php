@@ -9,7 +9,7 @@
     </script>
     <style>
         @media print {
-            .printBtnTr {
+            .printBtn {
                 display: none;
             }
         }

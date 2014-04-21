@@ -5,6 +5,7 @@ foreach($greetings as $greeting) {
     <div class="header">
         <h3>Результаты приёма за <?php echo $greeting['greeting']['date']; ?>, <?php echo $greeting['greeting']['doctor_fio']; ?> (пациент <?php echo $greeting['greeting']['patient_fio']; ?>, номер карты <?php echo $greeting['greeting']['card_number']; ?>)</h3>
     </div>
+	<nobr>
     <?php
     foreach($greeting['categories'] as $categorie) {
         ?>
@@ -23,6 +24,7 @@ foreach($greetings as $greeting) {
     <?
     }
     ?>
+	</nobr>
 </div>
 <?php
 }
