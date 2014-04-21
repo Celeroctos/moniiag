@@ -13,9 +13,9 @@ class DoctorsController extends Controller {
         $sord = $_GET['sord'];
 
         $model = new Doctor();
-
-	
         // Вычислим общее количество записей
+        var_dump($filters);
+        exit();
 	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
         $totalPages = ceil(count($num) / $rows);
         $start = $page * $rows - $rows;

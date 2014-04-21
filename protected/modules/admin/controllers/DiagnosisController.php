@@ -109,7 +109,7 @@ class DiagnosisController extends Controller {
         foreach($diagnosis as $dia) {
             $like = new LikeDiagnosis();
             $like->medworker_id = $_GET['medworker_id'];
-            $like->mkb10_id = $dia['id'];
+            $like->mkb10_id = $dia;
             if(!$like->save()) {
                 echo CJSON::encode(array('success' => false,
                                          'error' => 'Не могу сохранить любимый диагноз!')

@@ -687,10 +687,26 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
             'dataType' : 'json',
             'type' : 'POST',
             'success' : function(data, textStatus, jqXHR) {
-                $.fn['primaryClinicalDiagnosisChooser'].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
-                $('#addClicnicalDiagnosisPopup').modal('hide');
+                $.fn[$('#chooserId').val()].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
+                $('#addClicnicalDiagnosisPopup').modal('hide', function() {
+                    $('#diagnosisName').val('');
+                });
             }
         });
+    });
+
+    $('#prevHistoryPoint').on('click', function() {
+        $(this).disable();
+        $('#historyPopup .modal-body .row').html($('<img>').prop({
+            'src' : '/images/ajax-loader.gif',
+            'width' : 128,
+            'height' : 128,
+            'alt' : 'Загрузка...'
+        }));
+    });
+
+    $('#nextHistoryPoint').on('click', function() {
+        $(this).disable();
     });
 
 // Недоделано
