@@ -727,14 +727,22 @@ class SheduleController extends Controller {
         }
         if(!$sheduleElement->save()) {
             echo CJSON::encode(array('success' => 'false',
-                'data' => 'Не могу записать пациента!'));
+									 'data' => 'Не могу записать пациента!'));
             exit();
         }
 		
-		$writedMedcard = Medcard::model()->findByPk($_GET['card_number']);
-		if($writedMedcard != null) {
-			$writedOms = Oms::model()->findByPk($writedMedcard->policy_id);
+		if($_GET['mode'] == 0) {
+			$writedMedcard = Medcard::model()->findByPk($_GET['card_number']);
+			if($writedMedcard != null) {
+				$writedOms = Oms::model()->findByPk($writedMedcard->policy_id);
+			}
+		} else {
+			$writedOms = new Oms();
+			$writedOms->first_name = $mediateForm->firstName;
+			$writedOms->last_name = $mediateForm->lastName;
+			$writedOms->middle_name = $mediateForm->middleName;
 		}
+		
 		$writedDoctor = Doctor::model()->findByPk($_GET['doctor_id']);
 		if($writedDoctor != null) {
 			
