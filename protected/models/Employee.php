@@ -48,7 +48,7 @@ class Employee extends MisActiveRecord  {
     public function getRows($enterpriseId, $wardId, $filters = false, $sidx = false, $sord = false, $start = false, $limit = false, $onlyFree = false) {
         $connection = Yii::app()->db;
         $employees = $connection->createCommand()
-            ->select('d.*,
+            ->selectDistinct('d.*,
                       m.name as post,
                       de.name as degree,
                       t.name as titul,

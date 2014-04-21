@@ -706,8 +706,8 @@ $(document).ready(function() {
 
         // Повтор адреса регистрации в адресе проживания
         if($(clickedRow).find('input[type="text"]').prop('id') == 'addressReg') {
-            $(clickedRow).find('#address').val(textStr);
-            $(clickedRow).find('#addressHidden').val($.toJSON(dataToJson));
+            $(clickedRow).parent().find('#address').val(textStr);
+            $(clickedRow).parent().find('#addressHidden').val($.toJSON(dataToJson));
         }
 
         $('#editAddressPopup').modal('hide');
