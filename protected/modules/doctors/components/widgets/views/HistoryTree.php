@@ -31,6 +31,24 @@ if (count($primaryDiagnosis)>0)
 	?></ul><?php
 }
 
+// Клинические диагнозы
+if (count($clinicalPrimaryDiagnosis)>0)
+{
+?>
+	<h4>
+	Клинический диагноз:
+	</h4>
+	<ul>
+	<?php
+	foreach ($clinicalPrimaryDiagnosis as $diag)
+	{
+		?><li><?php
+		echo $diag['description'];
+		?></li><?php
+	}
+	?></ul><?php
+}
+
 if (count($secondaryDiagnosis)>0)
 {
 	?>
@@ -48,6 +66,26 @@ if (count($secondaryDiagnosis)>0)
 	?></ul><?php
 	
 }
+
+// Сопутсвующие клинические диагнозы
+if (count($clinicalSecondaryDiagnosis)>0)
+{
+?>
+	<h4>
+	Клинические сопутствующие диагнозы
+	</h4>
+	<ul>
+	<?php
+	foreach ($clinicalSecondaryDiagnosis as $diag)
+	{
+		?><li><?php
+		echo $diag['description'];
+		?></li><?php
+	}
+	?></ul><?php
+	
+}
+
 foreach($dividedCats as $key => $template) {
     ?>
     <h4>

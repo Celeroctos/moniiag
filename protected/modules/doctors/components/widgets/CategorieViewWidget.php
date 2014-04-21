@@ -678,11 +678,15 @@ class CategorieViewWidget extends CWidget {
 		//exit();
 		$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
 		$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
+		$cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
+		$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
 	
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
             'primaryDiagnosis' => $pd,
             'secondaryDiagnosis' => $sd,
+			'clinicalPrimaryDiagnosis' => $cpd,
+			'clinicalSecondaryDiagnosis' => $csd,
             'model' => $this->formModel,
             'templates' => $this->catsByTemplates,
             'dividedCats' => $this->dividedCats,
@@ -917,6 +921,9 @@ class CategorieViewWidget extends CWidget {
 			// Перебираем только элементы - категории добавляем, по требованию
 			if ($element['element_id']!=-1)
 			{
+				// Если свойство NULL или пустое значение - берём следующий элемент
+				if ($element['value']=='' || $element['value']==NULL)
+					continue;
 				// Делим путь 
 				$pathArr = explode('.', $element['path']);
 				$currentResultTree = &$this->historyTree;
