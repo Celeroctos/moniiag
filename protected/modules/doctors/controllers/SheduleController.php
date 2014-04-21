@@ -93,11 +93,6 @@ class SheduleController extends Controller {
 
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
-		
-		/*
-		var_dump($this->getHistoryPoints($medcard));
-		exit();
-		*/
 
 		$this->render('index', array(
             'patients' => $patients,
@@ -238,7 +233,6 @@ class SheduleController extends Controller {
                 ));
 
                 // Дальше смотрим, есть ли уже такой элемент в базе для конкретного пациента. Если есть - будем апдейтить. Если нет - писать. Это позволит не сохранять неизменённые поля
-
                 /*
 				if($value == $historyCategorieElement->value) {
                     continue;

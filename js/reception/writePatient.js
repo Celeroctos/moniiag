@@ -165,7 +165,19 @@ $(document).ready(function() {
                     $('#withoutCardCont').addClass('no-display');
 
                     if(data.rows.length == 0) {
-                        $('#notFoundPopup').modal({
+                        // Проверим: мб, есть пациент с таким полисом просто
+                        $.ajax({
+                            'url' : '/index.php/reception/patient/search/?withoutonly=0&rows=10&page=1&sidx=oms_number&sord=desc&filters=' + $.toJSON(filters),
+                            'cache' : false,
+                            'dataType' : 'json',
+                            'type' : 'GET',
+                            'success' : function(data, textStatus, jqXHR) {
+                                if(data.success && data.rows.length == 1) {
+                                    createWithOms = data.rows[0].id; // Записываем ОМС, с которым снадо создать карту
+                                }
+                                $('#notFoundPopup').modal({
+                                });
+                            }
                         });
                     } else {
                         displayAllPatients(data.rows);
@@ -639,6 +651,15 @@ $(document).ready(function() {
             $(popup).css({
                 'z-index' : '1051'
             }).modal({});
+        }
+    });
+
+    var createWithOms = false;
+    $('#createCard').on('click', function() {
+        if(createWithOms !== false) {
+            location.href = '/index.php/reception/patient/viewadd/?patientid=' + createWithOms
+        } else {
+            location.href = '/index.php/reception/patient/viewadd';
         }
     });
 });

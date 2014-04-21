@@ -60,13 +60,14 @@ class RoleToUser extends MisActiveRecord  {
     public function findAllRolesByUser($userId) {
         try {
             $connection = Yii::app()->db;
-            $roles = $connection->createCommand()
-                ->select('r.*, mp.priority, mp.url')
+            $role = $connection->createCommand()
+                ->selectDistinct('r.*, mp.priority, mp.url')
                 ->from('mis.roles r')
                 ->leftJoin('mis.role_to_user ru', 'ru.role_id = r.id')
                 ->leftJoin('mis.menu_pages mp', 'mp.id = r.startpage_id')
-                ->where('ru.user_id = :user_id', array(':user_id' => $userId))
-                ->queryAll();
+                ->where('ru.user_id = :user_id', array(':user_id' => $userId));
+
+            $roles = $role->queryAll();
 
             return $roles;
 
