@@ -128,10 +128,17 @@
 										var_dump($element);
 										exit();
 									}*/
-                                    if (isset($element['selected']['']))
+									//------>
+                                    //var_dump($element['value']);
+                                    /*if (isset($element['selected']['']))
                                     {
                                         $element['guide'][''] = 'Не выбрано';
+                                    }*/
+                                       if ($element['value']=='')
+                                    {
+										$element['guide'][''] = 'Не выбрано';
                                     }
+                                       
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['id'],
                                         'class' => 'form-control',

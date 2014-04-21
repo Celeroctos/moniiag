@@ -511,6 +511,16 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         var tempSubstr = controlId.substr(0, controlId.lastIndexOf('_'));
                         var substrSecond = tempSubstr.substr(0, tempSubstr.lastIndexOf('_') + 1);
                         $(control).prop('id', substrSecond + undottedPathAfter + substrFirst);
+                        // Перепишем имя у категории
+                        $(control).prop('name',
+                            'FormTemplateDefault['
+                            +
+                            tempSubstr.substr(0, tempSubstr.lastIndexOf('_') - 1)
+                            +
+                            undottedPathAfter
+                            +
+                            substrFirst+
+                            ']');
                     }
                 }
 
