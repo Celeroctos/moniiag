@@ -79,7 +79,7 @@ $('#medcardContentSave').on('click', function (e) {
 
     for (i = 0; i < buttonsContainers.length; i++) {
         // Имеем i-тую форму, контролы которой надо провалидировать
-        var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').has('label span.required');
+        var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').has('label span.required').not('.no-display');
         for (j = 0; j < controlElements.length; j++) {
 
             // Внутри контейнера с контролом ищу сам контрол
