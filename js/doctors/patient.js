@@ -299,6 +299,29 @@ $('#printPopup .btn-success').on('click', function (e) {
 // Печать листа приёма, само действие
 $('.print-greeting-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
+
+
+    
+    /*
+    $.ajax({
+        'url': '/index.php/doctors/print/printgreeting/?greetingid=' + id,
+        'cache': false,
+        'dataType': 'json',
+        'type': 'GET',
+        'error': function (data, textStatus, jqXHR) {
+            console.log(data);
+        },
+        'success': function (data, textStatus, jqXHR) {
+
+
+        }
+    });
+    return false;
+    */
+    
+
+    
+    
     var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
     printWin.focus();
     return false;
@@ -671,43 +694,43 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
 });
 
 
-    $('#addClinicalDiagnosisSubmit').on('click', function(e) {
-        var diagnosisName = $('#diagnosisName').val();
-        if($.trim(diagnosisName) == '') {
-            alert('Введите название диагноза!');
-            return false;
+$('#addClinicalDiagnosisSubmit').on('click', function (e) {
+    var diagnosisName = $('#diagnosisName').val();
+    if ($.trim(diagnosisName) == '') {
+        alert('Введите название диагноза!');
+        return false;
+    }
+
+    $.ajax({
+        'url': '/index.php/admin/diagnosis/addclinic',
+        'data': {
+            'FormClinicalDiagnosisAdd[description]': diagnosisName
+        },
+        'cache': false,
+        'dataType': 'json',
+        'type': 'POST',
+        'success': function (data, textStatus, jqXHR) {
+            $.fn[$('#chooserId').val()].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
+            $('#addClicnicalDiagnosisPopup').modal('hide', function () {
+                $('#diagnosisName').val('');
+            });
         }
-
-        $.ajax({
-            'url' : '/index.php/admin/diagnosis/addclinic',
-            'data' : {
-                'FormClinicalDiagnosisAdd[description]' : diagnosisName
-            },
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'POST',
-            'success' : function(data, textStatus, jqXHR) {
-                $.fn[$('#chooserId').val()].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
-                $('#addClicnicalDiagnosisPopup').modal('hide', function() {
-                    $('#diagnosisName').val('');
-                });
-            }
-        });
     });
+});
 
-    $('#prevHistoryPoint').on('click', function() {
-        $(this).disable();
-        $('#historyPopup .modal-body .row').html($('<img>').prop({
-            'src' : '/images/ajax-loader.gif',
-            'width' : 128,
-            'height' : 128,
-            'alt' : 'Загрузка...'
-        }));
-    });
+$('#prevHistoryPoint').on('click', function () {
+    $(this).disable();
+    $('#historyPopup .modal-body .row').html($('<img>').prop({
+        'src': '/images/ajax-loader.gif',
+        'width': 128,
+        'height': 128,
+        'alt': 'Загрузка...'
+    }));
+});
 
-    $('#nextHistoryPoint').on('click', function() {
-        $(this).disable();
-    });
+$('#nextHistoryPoint').on('click', function () {
+    $(this).disable();
+});
 
 // Недоделано
 /*

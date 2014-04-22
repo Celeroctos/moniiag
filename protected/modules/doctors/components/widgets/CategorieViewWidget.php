@@ -9,7 +9,7 @@ class CategorieViewWidget extends CWidget {
     public $canEditMedcard = 1; // Может ли редактировать медкарту
     public $medcard = null;
     public $currentDate = null;
-    public $historyElements = array(); // Массив истории элементов: по ним воссоздаётся шаблон
+	private $historyElements = array(); // Массив истории элементов: по ним воссоздаётся шаблон
     public $historyTree = array(); // Построенное дерево историии
     public $catsByTemplates = array(); // Категории по шаблону
     public $dividedCats = array(); // Поделённые категории
@@ -195,6 +195,11 @@ class CategorieViewWidget extends CWidget {
        // exit();
         return $categoriesResult;
     }
+
+	public function setHistoryElements($newHistoryElements)
+	{
+		$this->historyElements = $newHistoryElements;
+	}
 
 	public function getCategorie($id = false, $recordId, $templateId, $templateName, $path = false) {
 		// Выбираем категорию
@@ -664,7 +669,7 @@ class CategorieViewWidget extends CWidget {
 		//var_dump($this->historyElements);
 		//exit();
 		
-        $this->makeTree();
+		$this->makeTree('getTreeNode');
         $this->sortTree();
         // Теперь поделим категории
         $this->divideTreebyCats();
@@ -727,20 +732,6 @@ class CategorieViewWidget extends CWidget {
     	{
 			// Возьмём элемент массива element и прочитаем у 
 			//     него template_name и templateid
-			
-			//echo($nodeTopLevel['element']);
-			/*if (!isset($nodeTopLevel['element']))
-			{
-				var_dump($nodeTopLevel);
-				exit();
-			}
-			*/
-			/*
-			var_dump($nodeTopLevel);
-			var_dump("-----");
-			$num++;
-			continue;
-			*/
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
 			// Если в templates нет ИД шаблона - добавляем
@@ -902,6 +893,91 @@ class CategorieViewWidget extends CWidget {
 		return $nodeContent;
 	}
 
+
+	private function getTreeNodePrint($historyElement)
+	{
+		$nodeContent = array();
+		if ($historyElement['element_id'] == -1)
+		{
+			$nodeContent['name'] = $historyElement['categorie_name'];
+			$nodeContent['template_id'] = $historyElement['template_id'];
+			$nodeContent['template_name'] = $historyElement['template_name'];
+			$nodeContent['element_id'] = -1;
+			
+		}
+		else
+		{
+			$nodeContent = array(
+                           'label' => $historyElement['label_before'],
+                            'label_after' => $historyElement['label_after'],
+							'value' => $historyElement['value'],
+                            'id' => $historyElement['element_id'],
+                            'element_id' => $historyElement['element_id'],
+                            'path' => $historyElement['path'],
+							'config' => $historyElement['config'],
+							'type' => $historyElement['type'],
+				'is_wrapped' => $historyElement['is_wrapped'],
+				//'info' => $historyElement['info'],
+                            'config' => CJSON::decode($historyElement['config'])	
+                        );
+				if($historyElement['guide_id'] != null)
+                {			
+							// Если тип - таблица 
+							if ($historyElement['type']==4)
+							{
+								$nodeContent['value'] = 
+										CJSON::decode($nodeContent['value']);
+							}
+							// Если тип - выпадающий список или список множественного выбора
+							if ($historyElement['type']==3 ||$historyElement['type']==2)
+							{
+								$medguideValuesModel = new MedcardGuideValue();
+								$medguideValues = $medguideValuesModel->getRows(false, $historyElement['guide_id'], 'value', 'asc', false, false, $nodeContent['path'], $historyElement['greeting_id']);
+								if ($historyElement['type']==3)
+								{
+									$nodeContent['value'] = 
+										CJSON::decode($nodeContent['value']);
+
+								}
+								// Прочитываем значения и транслируем список id-шников в строку со значениями, разделёнными запятой
+								if (is_array($nodeContent['value']))
+								{
+						
+									// Перебираем 
+									$newElementValue = '';
+									foreach($nodeContent['value'] as $id)
+									{
+										foreach($medguideValues as $value)
+										{
+											if ($value['id']==$id)
+											{
+												if ($newElementValue!='')
+												{
+													$newElementValue .= ', ';
+												}
+												$newElementValue .= $value['value'];
+											}
+										}
+							
+									}
+									$nodeContent['value'] = $newElementValue;
+								}
+								else
+								{
+									foreach($medguideValues as $value)
+									{
+										if($value['id']==$nodeContent['value'])
+										{
+											$nodeContent['value'] = $value['value'];
+										}
+									}
+								}
+							}
+                        }
+		}
+		return $nodeContent;
+	}
+
 	// Возвращает конкатенирует части адреса из массива до позиции, указанной в pointer
 	private function getSubPath($pathArray, $pointer)
 	{
@@ -936,7 +1012,7 @@ class CategorieViewWidget extends CWidget {
 		return $result;
 	}
 
-	public function makeTree() {
+	public function makeTree($getTreeNodeFunction) {
 		foreach($this->historyElements as $element) {
 			// Перебираем только элементы - категории добавляем, по требованию
 			if ($element['element_id']!=-1)
@@ -961,7 +1037,8 @@ class CategorieViewWidget extends CWidget {
 					// Если в узле внутри нету ключа "element" - его нужно создать
 					if (!isset($currentResultTree['element']))
 					{
-						$currentResultTree['element'] = $this->getTreeNode($this->getTreeNodeCategory($pathArr , $i+1 ));
+						//$currentResultTree['element'] = $this->getTreeNode($this->getTreeNodeCategory($pathArr , $i+1 ));
+						$currentResultTree['element'] = $this->$getTreeNodeFunction($this->getTreeNodeCategory($pathArr , $i+1 ));
 					}
 				}
 				// Нашли местечко для элемента - вставили в текущий узел
@@ -972,12 +1049,13 @@ class CategorieViewWidget extends CWidget {
 				}
 				$currentResultTree[$pathArr[count($pathArr)-1]]['element'] = 
 					array();
-				$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->getTreeNode($element);
+				//$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->getTreeNode($element);
+				$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->$getTreeNodeFunction($element);
 			}
 		}
 	}
 	
-    private function sortTree(&$node = false) {
+	public function sortTree(&$node = false) {
         
         if(!$node) {
         	$node = &$this->historyTree;	

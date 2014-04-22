@@ -74,10 +74,25 @@ class PrintController extends Controller {
         }
         // В противном случае, выбираем все элементы, изменённые во время приёма
 		
-        $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
-		//var_dump($changedElements );
-		//exit();
-			if(count($changedElements) == 0) {
+		$greeting = SheduleByDay::model()->findByPk($greetingId);
+		if($greeting == null) {
+			exit('Ошибка: такого приёма не существует!');
+		}
+		
+		// Получим общую информацию о приёме
+		$doctor = Doctor::model()->findByPk($greeting['doctor_id']);
+		$greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+		// Найдём медкарту, а по ней и пациента
+		$medcard = Medcard::model()->findByPk($greeting['medcard_id']);
+		$patient = Oms::model()->findByPk($medcard['policy_id']);
+		$greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
+		$greetingInfo['card_number'] = $greeting['medcard_id'];
+		$dateParts = explode('-', $greeting['patient_day']);
+		$greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
+		
+		
+		$changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
+		if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
                 exit('Во время этого приёма не было произведено никаких изменений!');
@@ -85,6 +100,37 @@ class PrintController extends Controller {
                 return array();
             }
         }
+		
+		// Создадим виджет 
+		$categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
+		
+		// Запихнём виджету те элементы, которые мы вытащили по приёму
+		$categorieWidget->setHistoryElements($changedElements);
+		
+		// Провернём как в мясорубке элементы в этом виджете
+		$categorieWidget->makeTree('getTreeNodePrint');
+		$categorieWidget->sortTree();
+		// Теперь поделим категории
+		$categorieWidget->divideTreebyCats();
+		//var_dump($categorieWidget->dividedCats);
+		//exit();
+		$sortedElements = $categorieWidget->dividedCats;
+		
+		ob_end_clean();
+		// Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
+		if($greetingIn === false) {
+			$this->render('greeting', array(
+				'templates' => $sortedElements,
+				'greeting' => $greetingInfo
+				));
+		} else {
+			return array(
+				'categories' => $sortedElements,
+				'greeting' => $greetingInfo
+				);
+		}
+		
+		/*
         $sortedArr = array();
         // Сортируем по категориям
         $greetingInfo = array();
@@ -176,7 +222,15 @@ class PrintController extends Controller {
                 'greeting' => $greetingInfo
             );
         }
+		*/
     }
+
+	public function drawPrintCategorie($oneCat)
+	{
+		 $this->render('application.modules.doctors.components.widgets.views.printCategory', array(
+            'category' => $oneCat,
+        ));
+	}
 
     // Массовая печать результатов приёма
     public function actionMassPrintGreetings() {
