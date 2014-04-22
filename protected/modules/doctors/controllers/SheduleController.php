@@ -25,7 +25,7 @@ class SheduleController extends Controller {
                 $parts = explode('-', $medcard['birthday']);
                 $medcard['full_years'] = date('Y') - $parts[0];
                 $patientController = Yii::app()->createController('reception/patient');
-                $addressData = $patientController[0]->getAddressStr($medcard['address']);
+                $addressData = $patientController[0]->getAddressStr($medcard['address'], true);
                 $medcard['address'] = $addressData['addressStr'];
             }
             if(isset($_GET['rowid']) && trim($_GET['rowid']) != '') {

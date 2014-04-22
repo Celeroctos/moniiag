@@ -605,7 +605,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade error-popup" id="addClicnicalDiagnosisPopup">
+<div class="modal fade error-popup" id="addClinicalDiagnosisPopup">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

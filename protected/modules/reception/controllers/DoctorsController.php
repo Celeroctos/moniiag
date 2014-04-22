@@ -93,7 +93,7 @@ class DoctorsController extends Controller {
                 // Стоит проверить, не выходной ли это день
                 // Получим день недели
                 $parts = explode('-', $filter['data']);
-                $weekday = date('w', mktime(0, 0, 0, $parts[2], $parts[1], $parts[0]));
+                $weekday = date('w', mktime(0, 0, 0, $parts[1], $parts[2], $parts[0]));
                 $sheduleRestDay = SheduleRest::model()->findAll('day = :day', array(':day' => $weekday));
                 $sheduleRestDaysAlone = SheduleRestDay::model()->findAll('date = :date', array(':date' => $filter['data']));
                 if(count($sheduleRestDay) > 0 || count($sheduleRestDaysAlone) > 0) {

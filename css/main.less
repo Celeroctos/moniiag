@@ -766,12 +766,18 @@ body #editPopup {
       font-size: 12px;
       padding: 0 5px;
     }
-    li:hover {
-      background: #ecf5fc;
-      cursor: pointer;
+    li:not(.navigation):hover {
+        background: #ecf5fc;
+        cursor: pointer;
     }
     li.active {
       background: #E0F8F1;
+    }
+    a.prev {
+
+    }
+    a.next {
+      float: right;
     }
   }
   .choosed {
@@ -1041,6 +1047,12 @@ select#restDays {
     button + button {
       margin-left: 10px;
     }
+  }
+}
+#accordionH {
+  img {
+    position: relative;
+    top: -1px;
   }
 }
 
