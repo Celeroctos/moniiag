@@ -695,9 +695,8 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
             'type' : 'POST',
             'success' : function(data, textStatus, jqXHR) {
                 $.fn[$('#chooserId').val()].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
-                $('#addClicnicalDiagnosisPopup').modal('hide', function() {
-                    $('#diagnosisName').val('');
-                });
+                $('#diagnosisName').val('');
+                $('#addClinicalDiagnosisPopup').modal('hide');
             }
         });
     });

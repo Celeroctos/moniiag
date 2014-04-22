@@ -493,7 +493,7 @@ $(document).ready(function() {
         },
         'primaryClinicalDiagnosisChooser': {
             'primary': 'id',
-            'bindedWindowSelector' : '#addClicnicalDiagnosisPopup',
+            'bindedWindowSelector' : '#addClinicalDiagnosisPopup',
             'afterWindowShow' : function() {
                 $('#chooserId').val('primaryClinicalDiagnosisChooser');
             },
@@ -535,7 +535,7 @@ $(document).ready(function() {
         },
         'secondaryClinicalDiagnosisChooser': {
             'primary': 'id',
-            'bindedWindowSelector' : '#addClicnicalDiagnosisPopup',
+            'bindedWindowSelector' : '#addClinicalDiagnosisPopup',
             'afterWindowShow' : function() {
                 $('#chooserId').val('secondaryClinicalDiagnosisChooser');
             },
