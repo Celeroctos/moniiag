@@ -202,7 +202,7 @@ $(document).on('click', '.accept-greeting-link', function (e) {
             }*/
 
         }
-        console.log(data);
+
         return;
     }
 });
@@ -211,8 +211,10 @@ $(document).on('click', '.accept-greeting-link', function (e) {
 
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
-    $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active');
-    $(this).parent().addClass('active');
+    $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active').find('img').remove();
+    var gif = generateAjaxGif(16, 16);
+    $(this).parent().addClass('active').append(gif);
+
     var historyPointCoordinate = $(this).attr('href').substr(1);
     var coordinateStrings = historyPointCoordinate.split('_');
 
@@ -250,6 +252,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
                 }
                 element.val(data[i].value);
                 }*/
+                $(gif).remove();
                 $('#historyPopup .modal-body .row').html(data);
                 $('#historyPopup').modal({
 
@@ -265,6 +268,10 @@ $('#historyPopup').on('show.bs.modal', function (e) {
         var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
         changeControlState(deps[i], elementValue, '#historyPopup');
     }
+});
+
+$('#historyPopup').on('hidden.bs.modal', function (e) {
+    $('#historyPopup .modal-body .row').css('text-align', 'left');
 });
 
 $('.print-greeting-link').on('click', function (e) {
@@ -695,18 +702,79 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
         });
     });
 
-    $('#prevHistoryPoint').on('click', function() {
-        $(this).disable();
-        $('#historyPopup .modal-body .row').html($('<img>').prop({
+    function generateAjaxGif(width, height) {
+        return $('<img>').prop({
             'src' : '/images/ajax-loader.gif',
-            'width' : 128,
-            'height' : 128,
+            'width' : width,
+            'height' : height,
             'alt' : 'Загрузка...'
-        }));
+        });
+    }
+
+    function getHistoryPoint(medcardId, pointId, date) {
+        $.ajax({
+            'url': '/index.php/doctors/patient/gethistorymedcard',
+            'data': {
+                medcardid: medcardId,
+                historyPointId: pointId,
+                date: date
+            },
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success == 'true') {
+                    // Заполняем медкарту-историю значениями
+                    var data = data.data;
+                    $('#historyPopup .modal-body .row').html(data);
+                    $('#historyPopup .modal-body .row').css('text-align', 'left');
+                    $('#nextHistoryPoint, #prevHistoryPoint').attr('disabled', false);
+                }
+            }
+        });
+    }
+
+    $('#prevHistoryPoint').on('click', function() {
+        $(this).attr('disabled', true);
+        $('#nextHistoryPoint').attr('disabled', true);
+        var gif = generateAjaxGif(48, 48);
+        $('#historyPopup .modal-body .row').html(gif).css('text-align', 'center');
+
+        var activeDiv = $('#accordionH .accordion-inner .active').removeClass('active');
+        if($(activeDiv).prev().length > 0) {
+            activeDiv = $(activeDiv).prev().addClass('active');
+        } else {
+            activeDiv = $('#accordionH .accordion-inner div:last').addClass('active');
+        }
+        var href = $(activeDiv).find('a').attr('href');
+        var historyPointId = href.substr(href.lastIndexOf('_') + 1);
+        var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
+        getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
+        $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
+        $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
     });
 
     $('#nextHistoryPoint').on('click', function() {
-        $(this).disable();
+        $(this).attr('disabled', true);
+        $('#prevHistoryPoint').attr('disabled', true);
+        var gif = generateAjaxGif(48, 48);
+        $('#historyPopup .modal-body .row').html(gif).css('text-align', 'center');
+
+        var activeDiv = $('#accordionH .accordion-inner .active').removeClass('active');
+        if($(activeDiv).next().length > 0) {
+            activeDiv = $(activeDiv).next().addClass('active');
+        } else {
+            activeDiv = $('#accordionH .accordion-inner div:first').addClass('active');
+        }
+        var href = $(activeDiv).find('a').attr('href');
+        var historyPointId = href.substr(href.lastIndexOf('_') + 1);
+        var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
+        getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
+        $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
+        $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
     });
 
 // Недоделано

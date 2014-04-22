@@ -7,13 +7,13 @@ $(document).ready(function() {
             var prevVal = null;
             var currentElements = []; // Список строк с элементами. Требуется для того, чтобы связать определённый span  с конкретной строкой
             var choosedElements = []; // Список выбранных элементов для текущего контрола (строки)
+            var numRecords = null;
             $.fn[$(chooser).attr('id')] = {
                 getChoosed: function() {
                     return choosedElements;
                 },
                 addChoosed: function(li, rowData, withOutInsert) {
                     if(typeof currentElements == 'undefined') {
-                        console.log("!");
                         currentElements = [];
                     }
                     currentElements.push(rowData);
@@ -64,11 +64,11 @@ $(document).ready(function() {
                     if(e.keyCode == 38) {
                         $(chooser).find('.variants li.active').removeClass('active');
                         if(current == null) {
-                            $(chooser).find('.variants li:last').addClass('active');
-                            current = $(chooser).find('.variants li').length - 1;
+                            $(chooser).find('.variants li:not(.navigation):last').addClass('active');
+                            current = $(chooser).find('.variants li:not(.navigation)').length - 1;
                         } else {
                             if(current == 0) {
-                                current = $(chooser).find('.variants li').length - 1;
+                                current = $(chooser).find('.variants li:not(.navigation)').length - 1;
                             } else {
                                 --current;
                             }
@@ -77,9 +77,9 @@ $(document).ready(function() {
                         $(chooser).find('.variants li:eq(' + current + ')').addClass('active');
                         if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('displayFunc')) {
                             var toDisplay = choosersConfig[$(chooser).prop('id')].displayFunc(currentElements[current]);
-                            $(chooser).find('input').val(toDisplay);
+                            //$(chooser).find('input').val(toDisplay);
                         } else {
-                            $(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                            //$(chooser).find('input').val($(chooser).find('.variants li.active').text());
                         }
                     }
                     // Стрелка "Вниз"
@@ -89,7 +89,7 @@ $(document).ready(function() {
                             $(chooser).find('.variants li:first').addClass('active');
                             current = 0;
                         } else {
-                            if(current == $(chooser).find('.variants li').length - 1) {
+                            if(current == $(chooser).find('.variants li:not(.navigation)').length - 1) {
                                 current = 0;
                             } else {
                                 ++current;
@@ -99,10 +99,21 @@ $(document).ready(function() {
                         $(chooser).find('.variants li:eq(' + current + ')').addClass('active');
                         if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('displayFunc')) {
                             var toDisplay = choosersConfig[$(chooser).prop('id')].displayFunc(currentElements[current]);
-                            $(chooser).find('input').val(toDisplay);
+                            //$(chooser).find('input').val(toDisplay);
                         } else {
-                            $(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                            //$(chooser).find('input').val($(chooser).find('.variants li.active').text());
                         }
+                    }
+
+                    // Стрелка влево
+                    if(e.keyCode == 37) {
+                        navPrev();
+                        searchByField($(chooser).find('input'), 1);
+                    }
+                    // Стрелка вправо
+                    if(e.keyCode == 39) {
+                        navNext();
+                        searchByField($(chooser).find('input'), 1);
                     }
 
                     // Нажатие Enter переносит в список выбранных
@@ -122,13 +133,65 @@ $(document).ready(function() {
                 }
             });
 
+            function initPageParam(reset) {
+                if(typeof choosersConfig[$(chooser).prop('id')].extraparams == 'undefined') {
+                    choosersConfig[$(chooser).prop('id')].extraparams = {};
+                }
+                if(typeof choosersConfig[$(chooser).prop('id')].extraparams.page == 'undefined' || reset == 1) {
+                    choosersConfig[$(chooser).prop('id')].extraparams.page = 1;
+                }
+            }
+
+            function navPrev() {
+                if(choosersConfig[$(chooser).prop('id')].extraparams.page == 1) {
+                    choosersConfig[$(chooser).prop('id')].extraparams.page = Math.ceil(numRecords / 10);
+                } else {
+                    choosersConfig[$(chooser).prop('id')].extraparams.page--;
+                }
+            }
+
+            function navNext() {
+                if(choosersConfig[$(chooser).prop('id')].extraparams.page ==  Math.ceil(numRecords / 10)) {
+                    choosersConfig[$(chooser).prop('id')].extraparams.page = 1;
+                } else {
+                    choosersConfig[$(chooser).prop('id')].extraparams.page++;
+                }
+            }
+
+            $(chooser).on('click', '.navigation .prev', function(e) {
+                initPageParam();
+                navPrev();
+                searchByField($(chooser).find('input'), 1);
+                e.stopPropagation();
+                return false;
+            });
+
+            $(chooser).on('click', '.navigation .next', function(e) {
+                initPageParam();
+                navNext();
+                searchByField($(chooser).find('input'), 1);
+                e.stopPropagation();
+                return false;
+            });
+
+            // Как поменять местами порядок исполнения блюр и клик..?
+            $(chooser).find('input').on('blur', function(e) {
+               //$(this).parent().find('.variants').hide();
+            });
+
             $(chooser).find('input').on('keyup', function(e) {
                 // Нажатие бекспейса
                 if(!($(this).val().length == 1 && e.keyCode == 8)) {
+                    if(e.keyCode != 37 && e.keyCode != 39) {
+                        initPageParam(1);
+                    }
                     searchByField(this);
                 }
                 if($(this).val().length == 1) {
                     mode = 1;
+                    if(e.keyCode != 37 && e.keyCode != 39) {
+                        initPageParam(1);
+                    }
                     searchByField(this);
                 }
             });
@@ -142,7 +205,7 @@ $(document).ready(function() {
                 }
             });
 
-            function searchByField(field) {
+            function searchByField(field, isNavigation) {
                 // Смотрим, введено ли что-то в поле по сравнению с тем, что было. Если да - делаем запрос
                 if($.trim($(field).val()) != '') {
                     if(mode == 0) {
@@ -150,7 +213,7 @@ $(document).ready(function() {
                         return false;
                     }
 
-                    if(prevVal != $.trim($(field).val())) {
+                    if(prevVal != $.trim($(field).val()) || isNavigation == 1) {
                         if($(field).val().length > 0) {
                             prevVal = $.trim($(field).val());
                         }
@@ -168,7 +231,15 @@ $(document).ready(function() {
                         } else {
                             var extra = {};
                         }
-
+                        $(field).css('display', 'inline');
+                        var _field = field;
+                        var ajaxGif = generateAjaxGif(16, 16);
+                        $(ajaxGif).css({
+                            'position' : 'absolute',
+                            'left' : '100%',
+                            'top' : '5px'
+                        });
+                        $(ajaxGif).insertAfter($(field));
                         $.ajax({
                             'url' : url,
                             'cache' : false,
@@ -181,6 +252,8 @@ $(document).ready(function() {
                                     current = null;
                                     var ul = $(chooser).find('.variants')
                                     var rows = data.rows;
+                                    numRecords = data.records;
+
                                     if(rows.length == 0) {
                                         $(ul).hide();
                                     } else {
@@ -191,8 +264,28 @@ $(document).ready(function() {
                                             $(ul).find('li:eq(' + i + ')').prop('id', 'r' + rows[i][field]);
                                             currentElements.push(rows[i]);
                                         }
+                                        if(data.records > rows.length) {
+                                            $(ul).append($('<li>').prop({
+                                                'class' : 'navigation'
+                                            }).append(
+                                                $('<a>').prop({
+                                                    'href' : '#',
+                                                    'class' : 'prev'
+                                                }).append($('<span>').prop({
+                                                    'class' : 'glyphicon glyphicon-arrow-left'
+                                                })),
+                                                $('<a>').prop({
+                                                    'href' : '#',
+                                                    'class' : 'next'
+                                                }).append($('<span>').prop({
+                                                    'class' : 'glyphicon glyphicon-arrow-right'
+                                                }))
+                                            ));
+                                        }
                                         $(ul).show();
                                     }
+                                    $(_field).focus();
+                                    $(ajaxGif).remove();
                                 } else {
 
                                 }
@@ -200,6 +293,15 @@ $(document).ready(function() {
                         });
                     }
                 }
+            }
+
+            function generateAjaxGif(width, height) {
+                return $('<img>').prop({
+                    'src' : '/images/ajax-loader.gif',
+                    'width' : width,
+                    'height' : height,
+                    'alt' : 'Загрузка...'
+                });
             }
 
             $(chooser).on('click', '.choosed span.item span.glyphicon-remove', function(e) {
@@ -233,7 +335,7 @@ $(document).ready(function() {
             });
 
 
-            $(chooser).on('click', '.variants li', function(e) {
+            $(chooser).on('click', '.variants li:not(.navigation)', function(e) {
                 addVariantToChoosed(this);
             });
 
@@ -302,7 +404,10 @@ $(document).ready(function() {
     // Конфиг выборщиков
     var choosersConfig = {
         'doctorChooser' : {
-            'primary' : 'id', // Первичный ключ у строки
+            'primary' : 'id', // Первичный ключ у строки,
+            'extraparams' : {
+
+            },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
             },

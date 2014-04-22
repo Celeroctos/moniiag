@@ -9,6 +9,51 @@ $(document).ready(function() {
         });
     });
 
+    // Фильтр ввода на number
+    $('input[type="number"]').on('keydown', function(e) {
+        var max = parseFloat($(this).attr('max'));
+        var min = parseFloat($(this).attr('min'));
+        if((e.keyCode > 48 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 106)) {
+            var value = parseFloat('' + $(this).val() + String.fromCharCode(e.keyCode));
+            if(typeof max != 'undefined') {
+                if(value > max) {
+                    $(this).animate({
+                        backgroundColor: "rgb(255, 196, 196)"
+                    });
+                    return false;
+                }
+            }
+            if(typeof min != 'undefined') {
+                if(value < min) {
+                    $(this).animate({
+                        backgroundColor: "rgb(255, 196, 196)"
+                    });
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        if(e.keyCode != 8 && e.keyCode != 46) {
+            return false;
+        }
+        if(e.keyCode == 8) {
+            $(this).css({
+                backgroundColor: "rgb(255, 255, 255)"
+            });
+        }
+    });
+    $('input[type="number"]').on('change', function(e) {
+        $(this).css({
+            backgroundColor: "rgb(255, 255, 255)"
+        });
+    });
+    $('input[type="number"]').on('click', function(e) {
+        $(this).css({
+            backgroundColor: "rgb(255, 255, 255)"
+        });
+    });
+
     $("#add-value-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
