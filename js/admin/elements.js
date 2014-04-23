@@ -85,14 +85,14 @@ $(document).ready(function () {
                 hidden: true
             }
         ],
-        rowNum: 10,
-        rowList: [10, 20, 30],
+        rowNum: 25,
+        rowList: [10, 25],
         pager: '#elementsPager',
         sortname: 'id',
         viewrecords: true,
         sortorder: "desc",
         caption: "Врачебные справочники",
-        height: 300,
+        height: 600,
         ondblClickRow: editElement,
         onSelectRow: function (rowId, status, e) {
             var row = $("#elements").jqGrid('getRowData', rowId);

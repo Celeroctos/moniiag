@@ -116,7 +116,7 @@ class PrintController extends Controller {
 		//exit();
 		$sortedElements = $categorieWidget->dividedCats;
 		
-		ob_end_clean();
+		//ob_end_clean();
 		// Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
 		if($greetingIn === false) {
 			$this->render('greeting', array(
@@ -125,7 +125,7 @@ class PrintController extends Controller {
 				));
 		} else {
 			return array(
-				'categories' => $sortedElements,
+				'templates' => $sortedElements,
 				'greeting' => $greetingInfo
 				);
 		}
@@ -249,6 +249,7 @@ class PrintController extends Controller {
                 }
             }
         }
+
 
         $this->render('massprintonelist', array(
             'greetings' => $response

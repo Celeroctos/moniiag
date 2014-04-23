@@ -12,4 +12,8 @@ foreach ($templates as $oneTemplate)
 	
 }
 ?><br>
-<button class="printBtn default-margin-left">Напечатать результаты приёма</button>
+<?php
+if (!isset($notPrintPrintBtn))
+{
+	?><button class="printBtn default-margin-left">Напечатать результаты приёма</button><?php
+}

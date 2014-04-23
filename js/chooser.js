@@ -435,7 +435,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/search?page=1&withandwithout=0&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'url' : '/index.php/reception/patient/search?page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [

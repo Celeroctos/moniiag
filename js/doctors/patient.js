@@ -724,7 +724,7 @@ $('#addClinicalDiagnosisSubmit').on('click', function (e) {
             }
         });
     });
-});
+//});
 
     function generateAjaxGif(width, height) {
         return $('<img>').prop({
@@ -800,30 +800,6 @@ $('#addClinicalDiagnosisSubmit').on('click', function (e) {
         $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
         $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
     });
-
-// Недоделано
-/*
-// Если есть кнопка "Сохранить"
-if ($('#medcardContentSave').length > 0) {
-// Выбираем все ссылки на странице
-var pageLinks = $('a');
-// Перебираем эти ссылки
-for (i = 0; i < pageLinks.length; i++) {
-// Если у неё есть адрес
-if ((pageLinks[i]).hasOwnProperty('href')) {
-// Если в адресе у ссылки нет решётки
-if ($(pageLinks[i]).attr('href').indexOf('#') < 0) {
-// В этом случае привязываем к событию "click" ссылки событие, которое 
-// 0. Сохранит значение href у ссылки, на которую мы нажали
-// 1. Во-первых прервёт выполнение события "click"
-// 2. Вызовет сохранение приёма
-// 3. После сохранения приёма - вызовет переход по ссылке
-
-}
-}
-}
-}
-*/
 });
 
 
