@@ -253,7 +253,7 @@
                     )); ?>
                 </div>
             <?php } ?>
-            <div class="col-xs-12">
+            <div class="col-xs-12 default-margin-bottom">
                 <div id="accordionD" class="accordion">
                     <div class="accordion-group">
                         <div class="accordion-heading">
@@ -389,6 +389,17 @@
                     </div>
                 </div>
             </div>
+			<!--<a title="Печать листа приёма" class="print-recomendation-link" href="#518">
+				<span class="glyphicon glyphicon-print">
+				</span>
+			</a>-->
+			
+			
+			  <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
+			  	array('title' => 'Печать рекомендаций',
+			  'class' => 'print-recomendation-link')) : ''; ?>
+			
+			
             <?php
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>

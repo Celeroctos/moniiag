@@ -37,3 +37,153 @@ REQUEST_URI=/index.php/doctors/print/massprintgreetings/?greetingids=[%22515%22,
 in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (119)
 in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (246)
 in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 13:57:43 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:735)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PrintController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PrintController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): PrintController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): PrintController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/print/printgreeting/?greetingid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (735)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (114)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 13:59:26 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:735)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PrintController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PrintController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): PrintController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): PrintController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/print/printgreeting/?greetingid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (735)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (114)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 15:50:07 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42883]: Undefined function: 7 ОШИБКА:  функция isnull(integer) не существует
+LINE 8: ...               AND mep2.greeting_id = $1))) AND ((isNull(mt....
+                                                             ^
+HINT:  Функция с данными именем и типами аргументов не найдена. Возможно, вам следует добавить явные преобразования типов.. Выполнявшийся SQL-запрос: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+LEFT JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+LEFT JOIN "mis"."medcard_templates" "mt" ON mep2.template_id=mt.id
+WHERE ((mep.greeting_id = :greetingId) AND (mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.greeting_id = :greetingId))) AND ((isNull(mt.page_id) OR mt.page_id=1))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id", "mep"."value", "mep"."change_date", "mep"."greeting_id", "mep"."categorie_name", "mep"."categorie_id", "mep"."path".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (289)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (94)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 15:53:38 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: ""
+LINE 8: ...ep2.greeting_id = $1))) AND ((COALESCE(mt.page_id,'')='' OR ...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+LEFT JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+LEFT JOIN "mis"."medcard_templates" "mt" ON mep2.template_id=mt.id
+WHERE ((mep.greeting_id = :greetingId) AND (mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.greeting_id = :greetingId))) AND ((COALESCE(mt.page_id,'')='' OR mt.page_id=1))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id", "mep"."value", "mep"."change_date", "mep"."greeting_id", "mep"."categorie_name", "mep"."categorie_id", "mep"."path".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (289)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (94)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 15:55:18 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: ""
+LINE 8: ...ep2.greeting_id = $1))) AND ((COALESCE(mt.page_id,'')='' OR ...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT "mep".*
+FROM "mis"."medcard_elements_patient" "mep"
+LEFT JOIN "mis"."medcard_elements_patient" "mep2" ON mep.categorie_id=mep2.real_categorie_id
+LEFT JOIN "mis"."medcard_templates" "mt" ON mep2.template_id=mt.id
+WHERE ((mep.greeting_id = :greetingId) AND (mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.greeting_id = :greetingId))) AND ((COALESCE(mt.page_id,'')='' OR mt.page_id=1))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id", "mep"."value", "mep"."change_date", "mep"."greeting_id", "mep"."categorie_name", "mep"."categorie_id", "mep"."path".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (291)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (94)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 15:57:56 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:735)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PrintController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PrintController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): PrintController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): PrintController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/print/printgreeting/?greetingid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (735)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (117)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 16:01:05 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:735)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PrintController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PrintController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): PrintController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): PrintController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/print/printgreeting/?greetingid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (735)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (117)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 16:20:53 [error] [php] Undefined index: template_name (Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php:737)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs()
+#1 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#2 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PrintController->runAction()
+#4 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PrintController->filterGetAccessHierarchy()
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\CController.php(265): PrintController->runActionWithFilters()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(282): PrintController->run()
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/doctors/print/printgreeting/?greetingid=517
+in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\CategorieViewWidget.php (737)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (117)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+2014/04/23 16:21:51 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "mt" отсутствует в предложении FROM
+LINE 1: SELECT "mep".*, "mt"."page_id"
+                        ^. Выполнявшийся SQL-запрос: SELECT "mep".*, "mt"."page_id"
+FROM "mis"."medcard_elements_patient" "mep"
+WHERE (mep.greeting_id = :greetingId) AND (mep.history_id = (SELECT MAX(mep2.history_id)
+                                              FROM mis.medcard_elements_patient mep2
+                                              WHERE mep2.element_id = mep.element_id
+                                                    AND mep2.greeting_id = :greetingId))
+GROUP BY "mep"."element_id", "mep"."history_id", "mep"."medcard_id", "mep"."value", "mep"."change_date", "mep"."greeting_id", "mep"."categorie_name", "mep"."categorie_id", "mep"."path", "mt"."page_id".
+in Z:\home\mis.my\www\protected\models\MedcardElementForPatient.php (293)
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php (94)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)

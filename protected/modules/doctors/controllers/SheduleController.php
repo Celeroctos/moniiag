@@ -244,6 +244,7 @@ class SheduleController extends Controller {
 				$historyCategorieElementNext->is_record = 1;
 				$historyCategorieElementNext->record_id = $recordId + 1;
                 $historyCategorieElementNext->medcard_id = $historyCategorieElement->medcard_id;
+				$historyCategorieElementNext->template_page_id= $historyCategorieElement->template_page_id;
                 $historyCategorieElementNext->greeting_id = $historyCategorieElement->greeting_id;
                 $historyCategorieElementNext->categorie_name = $historyCategorieElement->categorie_name;
                 $historyCategorieElementNext->path = $historyCategorieElement->path;

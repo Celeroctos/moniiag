@@ -246,6 +246,7 @@ class CategorieViewWidget extends CWidget {
                 $medcardCategorie->greeting_id = $this->greetingId;
             }
             $medcardCategorie->history_id = 1;
+			$medcardCategorie->template_page_id = $this->templateType;
 			$medcardCategorie->record_id = $recordId;
             $medcardCategorie->categorie_name = $categorie->name;
 	   // $medcardCategorie->is_required = $categorie->is_required;
@@ -359,6 +360,7 @@ class CategorieViewWidget extends CWidget {
                             $medcardCategorieElement = new MedcardElementForPatient();
                             $medcardCategorieElement->medcard_id = $this->medcard['card_number'];
                             $medcardCategorieElement->history_id = 1;
+							$medcardCategorieElement->template_page_id = $this->templateType;
 							$medcardCategorieElement->record_id = $recordId; 
                             $medcardCategorieElement->greeting_id = $this->greetingId;
                             $medcardCategorieElement->categorie_name = '';
