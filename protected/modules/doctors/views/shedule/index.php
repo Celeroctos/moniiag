@@ -389,17 +389,9 @@
                     </div>
                 </div>
             </div>
-			<!--<a title="Печать листа приёма" class="print-recomendation-link" href="#518">
-				<span class="glyphicon glyphicon-print">
-				</span>
-			</a>-->
-			
-			
-			  <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
+			  <?php echo CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
 			  	array('title' => 'Печать рекомендаций',
-			  'class' => 'print-recomendation-link')) : ''; ?>
-			
-			
+			  'class' => 'print-recomendation-link')); ?>
             <?php
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
