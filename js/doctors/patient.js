@@ -525,9 +525,9 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
 
                 // Ставим кнопке пришедший первичный ключ
                 $(accClone).find('span.pr-key').text(data.data.pk_key);
+console.log(accParent);
 
                 $(accClone).insertAfter($(accParent));
-
                 // Теперь переименуем все элементы, согласно изменённым путям
                 var repath = data.data.repath;
                 for (var i in repath) {
@@ -613,23 +613,70 @@ checkElementsDependences();
 
 function hideControl(container, elementId) {
     if (typeof container == 'undefined') {
-        $('[id$="_' + elementId + '"]').parents('.form-group').hide();
-        // Убираем значение у элементов
-        $('[id$="_' + elementId + '"]').parents('.form-group').find('input, select, textarea').val('');
+        var next = $('[id$="_' + elementId + '"]').next();
+        var prev = $('[id$="_' + elementId + '"]').prev();
+        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+            $(next).hide();
+            var next = $(next).next();
+            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+                $(next).hide();
+            }
+        }
+        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+            $(prev).hide();
+        }
+        $('[id$="_' + elementId + '"]').val('').hide();
     }
     else {
-        $(container).find('[id$="_' + elementId + '"]').parents('.form-group').hide();
-        // Убираем значение у элементов
-        $(container).find('[id$="_' + elementId + '"]').parents('.form-group').find('input, select, textarea').val('');
+        var next = $(container).find('[id$="_' + elementId + '"]').next();
+        var prev = $(container).find('[id$="_' + elementId + '"]').prev();
+        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+            $(next).hide();
+            var next = $(next).next();
+            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+                $(next).hide();
+            }
+        }
+        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+            $(prev).hide();
+        }
+        $(container).find('[id$="_' + elementId + '"]').val('').hide();
 
     }
 }
 
 function showControl(container, elementId) {
     if (typeof container == 'undefined') {
-        $('[id$="_' + elementId + '"]').parents('.form-group').show();
-    } else {
-        $(container).find('[id$="_' + elementId + '"]').parents('.form-group').show();
+        var next = $('[id$="_' + elementId + '"]').next();
+        var prev = $('[id$="_' + elementId + '"]').prev();
+        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+            $(next).show();
+            // + у комбо
+            var next = $(next).next();
+            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+                $(next).show();
+            }
+        }
+        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+            $(prev).show();
+        }
+        $('[id$="_' + elementId + '"]').val('').hide();
+    }
+    else {
+        var next = $(container).find('[id$="_' + elementId + '"]').next();
+        var prev = $(container).find('[id$="_' + elementId + '"]').prev();
+        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+            var next = $(next).next();
+            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+                $(next).show();
+            }
+            $(next).show();
+        }
+        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+            $(prev).show();
+        }
+        $(container).find('[id$="_' + elementId + '"]').val('').show();
+
     }
 }
 

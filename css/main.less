@@ -634,7 +634,7 @@ tr.header {
   }
   .form-group {
      input + label, select + label {
-      margin-left: 10px;
+      margin-left: 0;
     }
   }
 }
@@ -1075,6 +1075,7 @@ select#restDays {
 }
 /* Контрол таблиц */
 .controltable {
+  margin-left: 10px;
   td {
     border: 1px solid #CCCCCC;
     padding: 2px 4px;
@@ -1226,7 +1227,7 @@ a.accordion-toggle:hover {
 	}
 }
 #showTemplatePopup .modal-dialog {
-  width: 90%;
+  width: 1016px;
 }
 #address-edit-form .choosed {
   min-height: 30px;
@@ -1252,4 +1253,19 @@ a.accordion-toggle:hover {
 	text-align:left;
 	font-weight: bold;
 	cursor:pointer;	
+}
+/* Категории медкарты: аккордеон */
+.medcard-accordion {
+  input, textarea, select {
+    margin: 5px 10px;
+  }
+  input.day, input.month, input.year {
+    margin: 0;
+  }
+  input[type="number"] {
+    height: 30px;
+  }
+  .label-before {
+    margin-left: 10px;
+  }
 }

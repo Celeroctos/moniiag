@@ -31,7 +31,7 @@ class CategorieViewWidget extends CWidget {
         } else {		
 			$categories = $this->getCategories($this->templateType, $this->medcardRecordId,$this->templateId);
         }
-		// 
+		//
 		/*echo('--------');
 		var_dump($categories);
 		
@@ -437,10 +437,10 @@ class CategorieViewWidget extends CWidget {
                     $elementResult['undotted_path'] = implode('|', explode('.', $elementResult['path']));
                     $this->formModel->setSafeRule('f'.$elementResult['undotted_path'].'_'.$elementResult['id']);
                     if($this->previewMode) {
-                        $parts = explode('.', $elementResult['path']);
+                        /* $parts = explode('.', $elementResult['path']);
                         $parts[count($parts) - 1] = '<strong class="text-danger">'.$parts[count($parts) - 1].'</strong>';
                         $displayedPath = implode('.', $parts);
-                        $elementResult['label_before'] = '<strong class="text-danger bold">ID '.$elementResult['id'].'</strong>, <strong class="text-primary bold">путь '.$displayedPath.'</strong>, '.$elementResult['label_before'];
+                       $elementResult['label_before'] = '<strong class="text-danger bold">ID '.$elementResult['id'].'</strong>, <strong class="text-primary bold">путь '.$displayedPath.'</strong>, '.$elementResult['label_before']; */
                     }
                     $this->formModel->setAttributeLabels('f'.$elementResult['undotted_path'].'_'.$elementResult['id'], $elementResult['label_before']);
                     $fieldName = 'f'.$elementResult['undotted_path'].'_'.$elementResult['id'];

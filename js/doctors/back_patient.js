@@ -358,7 +358,6 @@ $(document).ready(function() {
         var prKey = $(this).find('span.pr-key').text();
         var accParent = $(this).parents('.accordion')[0];
         var accClone = $(accParent).clone();
-
         // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
         $.ajax({
             'url' : '/index.php/doctors/patient/cloneelement',
