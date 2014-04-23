@@ -13,6 +13,7 @@
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
     $("#patient-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
+        console.log(ajaxData);
         var ajaxData = $.parseJSON(ajaxData);
         if (ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
             $('#successEditPopup').modal({
@@ -23,7 +24,12 @@
                 // Сбрасываем режим на дефолт
                 isThisPrint = false;
                 numCalls = 0;
-                $('.activeGreeting .print-greeting-link').trigger('print');
+                if (printHandler == 'print-greeting-link') {
+                    $('.activeGreeting .' + printHandler).trigger('print');
+                }
+                else {
+                    $('.' + printHandler).trigger('print');
+                }
             } else {
                 ++numCalls;
             }
@@ -276,6 +282,12 @@ $('#historyPopup').on('hidden.bs.modal', function (e) {
 
 $('.print-greeting-link').on('click', function (e) {
     $('#noticePopup').modal({});
+    printHandler = 'print-greeting-link';
+});
+
+$('.print-recomendation-link').on('click', function (e) {
+    $('#noticePopup').modal({});
+    printHandler = 'print-recomendation-link';
 });
 
 var isThisPrint = false;
@@ -299,7 +311,7 @@ $('#successEditPopup').on('hidden.bs.modal', function (e) {
 });
 
 $('#printPopup .btn-success').on('click', function (e) {
-    $('.activeGreeting .print-greeting-link').trigger('print');
+    $('.activeGreeting .' + printHandler).trigger('print');
     isThisPrint = false;
 });
 
@@ -308,28 +320,37 @@ $('.print-greeting-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
 
 
-    
+
     /*
     $.ajax({
-        'url': '/index.php/doctors/print/printgreeting/?greetingid=' + id,
-        'cache': false,
-        'dataType': 'json',
-        'type': 'GET',
-        'error': function (data, textStatus, jqXHR) {
-            console.log(data);
-        },
-        'success': function (data, textStatus, jqXHR) {
+    'url': '/index.php/doctors/print/printgreeting/?greetingid=' + id,
+    'cache': false,
+    'dataType': 'json',
+    'type': 'GET',
+    'error': function (data, textStatus, jqXHR) {
+    console.log(data);
+    },
+    'success': function (data, textStatus, jqXHR) {
 
 
-        }
+    }
     });
     return false;
     */
-    
 
-    
-    
+
+
+
     var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+    printWin.focus();
+    return false;
+});
+
+
+// Печать листа приёма, само действие
+$('.print-recomendation-link').on('print', function (e) {
+    var id = $(this).attr('href').substr(1);
+    var printWin = window.open('/index.php/doctors/print/printgreeting/?printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
     printWin.focus();
     return false;
 });
@@ -756,97 +777,97 @@ $('#addClinicalDiagnosisSubmit').on('click', function (e) {
     }
 
 
-        $.ajax({
-            'url' : '/index.php/admin/diagnosis/addclinic',
-            'data' : {
-                'FormClinicalDiagnosisAdd[description]' : diagnosisName
-            },
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'POST',
-            'success' : function(data, textStatus, jqXHR) {
-                $.fn[$('#chooserId').val()].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
-                $('#diagnosisName').val('');
-                $('#addClinicalDiagnosisPopup').modal('hide');
-            }
-        });
+    $.ajax({
+        'url': '/index.php/admin/diagnosis/addclinic',
+        'data': {
+            'FormClinicalDiagnosisAdd[description]': diagnosisName
+        },
+        'cache': false,
+        'dataType': 'json',
+        'type': 'POST',
+        'success': function (data, textStatus, jqXHR) {
+            $.fn[$('#chooserId').val()].addChoosed($('<li>').prop('id', 'r' + data.data.id).text(data.data.description), data.data);
+            $('#diagnosisName').val('');
+            $('#addClinicalDiagnosisPopup').modal('hide');
+        }
     });
+});
 //});
 
-    function generateAjaxGif(width, height) {
-        return $('<img>').prop({
-            'src' : '/images/ajax-loader.gif',
-            'width' : width,
-            'height' : height,
-            'alt' : 'Загрузка...'
-        });
-    }
+function generateAjaxGif(width, height) {
+    return $('<img>').prop({
+        'src': '/images/ajax-loader.gif',
+        'width': width,
+        'height': height,
+        'alt': 'Загрузка...'
+    });
+}
 
-    function getHistoryPoint(medcardId, pointId, date) {
-        $.ajax({
-            'url': '/index.php/doctors/patient/gethistorymedcard',
-            'data': {
-                medcardid: medcardId,
-                historyPointId: pointId,
-                date: date
-            },
-            'cache': false,
-            'dataType': 'json',
-            'type': 'GET',
-            'error': function (data, textStatus, jqXHR) {
-                console.log(data);
-            },
-            'success': function (data, textStatus, jqXHR) {
-                if (data.success == 'true') {
-                    // Заполняем медкарту-историю значениями
-                    var data = data.data;
-                    $('#historyPopup .modal-body .row').html(data);
-                    $('#historyPopup .modal-body .row').css('text-align', 'left');
-                    $('#nextHistoryPoint, #prevHistoryPoint').attr('disabled', false);
-                }
+function getHistoryPoint(medcardId, pointId, date) {
+    $.ajax({
+        'url': '/index.php/doctors/patient/gethistorymedcard',
+        'data': {
+            medcardid: medcardId,
+            historyPointId: pointId,
+            date: date
+        },
+        'cache': false,
+        'dataType': 'json',
+        'type': 'GET',
+        'error': function (data, textStatus, jqXHR) {
+            console.log(data);
+        },
+        'success': function (data, textStatus, jqXHR) {
+            if (data.success == 'true') {
+                // Заполняем медкарту-историю значениями
+                var data = data.data;
+                $('#historyPopup .modal-body .row').html(data);
+                $('#historyPopup .modal-body .row').css('text-align', 'left');
+                $('#nextHistoryPoint, #prevHistoryPoint').attr('disabled', false);
             }
-        });
+        }
+    });
+}
+
+$('#prevHistoryPoint').on('click', function () {
+    $(this).attr('disabled', true);
+    $('#nextHistoryPoint').attr('disabled', true);
+    var gif = generateAjaxGif(48, 48);
+    $('#historyPopup .modal-body .row').html(gif).css('text-align', 'center');
+
+    var activeDiv = $('#accordionH .accordion-inner .active').removeClass('active');
+    if ($(activeDiv).prev().length > 0) {
+        activeDiv = $(activeDiv).prev().addClass('active');
+    } else {
+        activeDiv = $('#accordionH .accordion-inner div:last').addClass('active');
     }
+    var href = $(activeDiv).find('a').attr('href');
+    var historyPointId = href.substr(href.lastIndexOf('_') + 1);
+    var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
+    getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
+    $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
+    $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
+});
 
-    $('#prevHistoryPoint').on('click', function() {
-        $(this).attr('disabled', true);
-        $('#nextHistoryPoint').attr('disabled', true);
-        var gif = generateAjaxGif(48, 48);
-        $('#historyPopup .modal-body .row').html(gif).css('text-align', 'center');
+$('#nextHistoryPoint').on('click', function () {
+    $(this).attr('disabled', true);
+    $('#prevHistoryPoint').attr('disabled', true);
+    var gif = generateAjaxGif(48, 48);
+    $('#historyPopup .modal-body .row').html(gif).css('text-align', 'center');
 
-        var activeDiv = $('#accordionH .accordion-inner .active').removeClass('active');
-        if($(activeDiv).prev().length > 0) {
-            activeDiv = $(activeDiv).prev().addClass('active');
-        } else {
-            activeDiv = $('#accordionH .accordion-inner div:last').addClass('active');
-        }
-        var href = $(activeDiv).find('a').attr('href');
-        var historyPointId = href.substr(href.lastIndexOf('_') + 1);
-        var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
-        getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
-        $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
-        $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
-    });
-
-    $('#nextHistoryPoint').on('click', function() {
-        $(this).attr('disabled', true);
-        $('#prevHistoryPoint').attr('disabled', true);
-        var gif = generateAjaxGif(48, 48);
-        $('#historyPopup .modal-body .row').html(gif).css('text-align', 'center');
-
-        var activeDiv = $('#accordionH .accordion-inner .active').removeClass('active');
-        if($(activeDiv).next().length > 0) {
-            activeDiv = $(activeDiv).next().addClass('active');
-        } else {
-            activeDiv = $('#accordionH .accordion-inner div:first').addClass('active');
-        }
-        var href = $(activeDiv).find('a').attr('href');
-        var historyPointId = href.substr(href.lastIndexOf('_') + 1);
-        var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
-        getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
-        $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
-        $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
-    });
+    var activeDiv = $('#accordionH .accordion-inner .active').removeClass('active');
+    if ($(activeDiv).next().length > 0) {
+        activeDiv = $(activeDiv).next().addClass('active');
+    } else {
+        activeDiv = $('#accordionH .accordion-inner div:first').addClass('active');
+    }
+    var href = $(activeDiv).find('a').attr('href');
+    var historyPointId = href.substr(href.lastIndexOf('_') + 1);
+    var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
+    getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
+    $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
+    $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
+});
 });
 
 

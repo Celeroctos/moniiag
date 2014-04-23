@@ -66,7 +66,7 @@ class PrintController extends Controller {
     }
 
     // Печать результа приёма
-    public function actionPrintGreeting($greetingIn = false) {
+	public function actionPrintGreeting($greetingIn = false,$printRecom=false) {
         if($greetingIn === false && !isset($_GET['greetingid'])) {
             exit('Ошибка: не выбран приём.');
         } else {
@@ -90,8 +90,18 @@ class PrintController extends Controller {
 		$dateParts = explode('-', $greeting['patient_day']);
 		$greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
 		
+		//var_dump($printRecom);
+		//exit();
 		
-		$changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
+		if (!$printRecom)
+		{
+			$changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
+		}
+		else
+		{
+			$changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId,false,'eq',true);
+		}
+		
 		if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
@@ -103,6 +113,9 @@ class PrintController extends Controller {
 		
 		// Создадим виджет 
 		$categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
+		
+		//var_dump($changedElements);
+		//exit();
 		
 		// Запихнём виджету те элементы, которые мы вытащили по приёму
 		$categorieWidget->setHistoryElements($changedElements);

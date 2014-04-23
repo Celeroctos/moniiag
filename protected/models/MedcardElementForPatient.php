@@ -97,32 +97,7 @@ class MedcardElementForPatient extends MisActiveRecord {
 				->from('mis.medcard_elements_patient mep')
 				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
 				->where('mep.medcard_id = :medcard_id AND mep.record_id=:ri', array(':medcard_id' => $medcardId, ':ri'=>$recordId));
-			
-			/*
-			$values = $connection->createCommand()
-				->select('
-					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, 
-					mep.greeting_id, 
-					mep.element_id, 
-				
-					(SELECT MAX(mep3.record_id)
-						FROM mis.medcard_elements_patient as mep3
-						WHERE
-							mep3.greeting_id=mep.greeting_id
-							AND mep3.element_id=mep.element_id
-
-
-					) as id_record,
-				
-			
-					mep2.template_name')
-				->from('mis.medcard_elements_patient mep')
-				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
-				->groupBy('greeting_id,element_id,id_record,template_name')
-				->where('mep.medcard_id = :medcard_id AND mep.record_id=:ri', array(':medcard_id' => $medcardId, ':ri'=>$recordId));
 		
-			*/
-			
 			$result = $values->queryAll();
 
 			if (count($result)==0)
@@ -267,11 +242,13 @@ class MedcardElementForPatient extends MisActiveRecord {
 	}
 
     // Найти все конечные состояния полей, изменённых во время приёма
-    public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq') {
-        try {
+	public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq', $recommendationOnly=false) {
+		//var_dump($greetingId);
+		//exit();
+			try {
             $connection = Yii::app()->db;
             $values = $connection->createCommand()
-                ->select('mep.*')
+				->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
                 ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
                 ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
@@ -290,6 +267,13 @@ class MedcardElementForPatient extends MisActiveRecord {
                         $values->andWhere(array('like', 'mep.path', array($pathForFind.'%')));
                     }
                 }
+				
+				// Если печатаем только рекоммендации
+				if ($recommendationOnly)
+				{
+				$values->andWhere('mep.template_page_id=1');
+				}
+				
                 $values->group('mep.element_id,
                          mep.history_id,
                          mep.medcard_id,
@@ -298,7 +282,7 @@ class MedcardElementForPatient extends MisActiveRecord {
                          mep.greeting_id,
                          mep.categorie_name,
                          mep.categorie_id,
-                         mep.path,
+                         mep.path
                          ');
 
             return $values->queryAll();
