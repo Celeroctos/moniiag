@@ -387,8 +387,9 @@
                 </div>
             </div>
 			  <?php echo CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
-			  	array('title' => 'Печать рекомендаций',
-			  'class' => 'print-recomendation-link')); ?>
+									array('title' => 'Печать рекомендаций',
+										  'class' => 'print-recomendation-link')); 
+			?>
             <?php
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
