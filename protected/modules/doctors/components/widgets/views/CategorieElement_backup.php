@@ -1,7 +1,7 @@
 <?php
 if(isset($categorie['id'])) {
 ?>
-<div id="accordion<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" class="accordion medcard-accordion">
+<div id="accordion<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" class="accordion">
     <div class="accordion-group">
         <div class="accordion-heading">
             <a href="#collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-parent="#accordion<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>" data-toggle="collapse" class="accordion-toggle"><?php echo $categorie['name']; ?>
@@ -31,21 +31,21 @@ if(isset($categorie['id'])) {
         <!--<div class="accordion-body collapse" id="collapse--><?php /* echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; */?><!--">-->
             <div class="accordion-inner">
                 <?php // Подкатегории
-                $nextWithNewRow = true;
-                $counter = 0;
-                foreach($categorie['childrenElementsOrder'] as $item) {
-                    $counter++;
-                    if ($item['arrayNumber'] == '1')
+                foreach($categorie['childrenElementsOrder'] as $item)
+                {
+					if ($item['arrayNumber']=='1')
 					{
 						// Выводим категорию
                         $this->drawCategorie(
-                        	$categorie['children'][$item['numberInArray']],
+                        	$categorie['children'][$item['numberInArray']], 
                         	$form,
                         	$model,
                         	$lettersInPixel,
                         	$templatePrefix
                         );
-					} else {
+					}
+					else
+					{
 						$element = $categorie['elements'][$item['numberInArray']];
 						// Выведем зависимости, если они есть
 						if(isset($element['dependences'])) {
@@ -57,36 +57,37 @@ if(isset($categorie['id'])) {
 	                                'elementId' : '<?php echo $element['id']; ?>'
 	                            });
 	                        </script>
-                        <?php }
+                        <?php } 
                         // Выводим сам элемент
                        ?>
-                        <?php if($nextWithNewRow) { ?>
-                        <div class="form-group col-xs-12">
-                            <?php } ?>
+                        <div class="form-group">
+                        	<!-- Выводим метку элемента -->
+                            <div class="col-xs-3">
                                 <?php
                                 // Добавляем звёздочку к метке, если элемент обязателен для заполнения
-                                if ($element["is_required"] == 1)
+                                if ($element["is_required"]==1)
                                 {
                                     $model->setAttributeLabels('f'.$element['undotted_path'].'_'.$element['id'],
                                         $model->attributeLabels['f'.$element['undotted_path'].'_'.$element['id']].
                                         " <span class=\"required\">*</span>");
-                                }
+                                }   
                                ?>
                                 <?php echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
-                                    'class' => 'control-label label-before'
+                                    'class' => 'col-xs-12 control-label'
                                 )); ?>
+                            </div>
+                           	<!-- Выводим сам элемент -->
+                            <div class="col-xs-9">
+                        
                         	<?php
                        	        if($element['type'] == 0) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
-                                        'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'placeholder' => ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
-                                    } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -101,13 +102,10 @@ if(isset($categorie['id'])) {
                                     $options =  array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
-                                        'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'placeholder' => ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
-                                    } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -123,19 +121,17 @@ if(isset($categorie['id'])) {
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'options' => $element['selected'],
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'options' => $element['selected']
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
-                                    } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
+                                        <div class="col-xs-10 no-padding-left">
                                         <?php
                                     }
                                     // Добавим пустое значение к выпадающему списку
@@ -148,6 +144,7 @@ if(isset($categorie['id'])) {
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
+                                        </div>
                                         <?php
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
@@ -163,19 +160,17 @@ if(isset($categorie['id'])) {
                                         'class' => 'form-control',
                                         'placeholder' => '',
                                         'options' => $element['selected'],
-                                        'multiple' => 'multiple',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'multiple' => 'multiple'
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
-                                    } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
+                                        <div class="col-xs-10  no-padding-left">
                                     <?php
                                     }
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
@@ -186,6 +181,7 @@ if(isset($categorie['id'])) {
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
+                                        </div>
                                     <?php
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
@@ -197,8 +193,8 @@ if(isset($categorie['id'])) {
                                     }
                                 } elseif($element['type'] == 4) {
 								?>
-
-                                    <table class="controltable" title="<?php echo 'ID '.$element['id'].', путь '.$element['path']; ?>">
+								
+                                    <table class="controltable">
                                         <tbody>
                                             <?php if(isset($element['config']['cols']) && count($element['config']['cols']) > 0) {
                                                 ?>
@@ -231,26 +227,26 @@ if(isset($categorie['id'])) {
                                                 <?php
                                                 for($j = 0; $j < $element['config']['numCols']; $j++) {
 													// Вывод значений по умолчанию
-													$cellDefaultVal = '';
+													$cellDefaultVal = '';	
                                                 	if (isset($element['config']['values']))
                                                 	{
                                                 		if (isset($element['config']['values'][$i."_".$j]))
                                                 		{
                                                 			$cellDefaultVal = $element['config']['values'][(string)$i."_".(string)$j ];
-														}
+														}	
                                                 	}
                                                     if($canEditMedcard)
 													{
 														?>
-														<td class="content-<?php echo $i.'_'.$j; ?>"><?php
-														echo $cellDefaultVal;
+														<td class="content-<?php echo $i.'_'.$j; ?>"><?php 
+														echo $cellDefaultVal; 
 														?></td>
 														<?php
-													} else
-													{
+													} else 
+													{ 
 														?>
 														<td><?php
-														echo $cellDefaultVal;
+														echo $cellDefaultVal; 
 
 														?></td>
 														<?php
@@ -271,8 +267,7 @@ if(isset($categorie['id'])) {
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
-                                        'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'placeholder' => ''
                                     );
                                     if(isset($element['config'])) {
                                         if(trim($element['config']['maxValue']) != '') {
@@ -287,27 +282,22 @@ if(isset($categorie['id'])) {
                                     }
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
-                                    } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->numberField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
                                 if($element['label_after'] != null) {
-										?><label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label><?php
+										?><label class="control-label"><?php echo ' '.$element['label_after'] ?></label><?php
                                     }
                                 } if($element['type'] == 6) { // dateField
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id'],
                                         'class' => 'form-control',
-                                        'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'placeholder' => ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
-                                    } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -349,24 +339,18 @@ if(isset($categorie['id'])) {
                                     <?php
                                     if($element['label_after'] != null) {
                                         ?>
-                                        <label class="control-label"><?php echo $element['label_after'] ?></label>
+                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                 }?>
-                            <?php
-                            if(!$element['is_wrapped'] && $counter < count($categorie['childrenElementsOrder'])) {
-                                $nextWithNewRow = false;
-                            } else {
-                                $nextWithNewRow = true;
-                            ?>
-                            </div>
-                            <?php } ?>
-                       	<?
-                    }
-                }
-                ?>
+                       		</div>
+                       	</div>
+                       	<? 
+                     }
+                }      
+                ?>    
             </div>
         </div>
     </div>
-</div>
+</div>    
 <? } ?>

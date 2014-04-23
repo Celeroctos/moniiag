@@ -50,7 +50,7 @@ class FormElementAdd extends CFormModel
             'labelAfter' => 'Метка после элемента',
             'size' => 'Размер элемента',
             'position' => 'Позиция в категории',
-            'isWrapped' => 'Перенос строки',
+            'isWrapped' => 'Следующий элемент с новой строки',
             'numRows' => 'Количество строк',
             'numCols' => 'Количество столбцов',
             'labelDisplay' => 'Метка для отображения в администрировании',

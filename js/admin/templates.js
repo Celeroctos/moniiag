@@ -46,7 +46,7 @@ $(document).ready(function() {
         sortorder: "desc",
         caption:"Шаблоны",
         height: 300,
-        ondblClickRow: editTemplate
+        ondblClickRow: showTemplate
     });
 
     $("#templates").jqGrid('navGrid','#templatesPager',{
@@ -198,9 +198,13 @@ $(document).ready(function() {
     });
 
     $('#showTemplate').on('click', function(e) {
+        showTemplate();
+    });
+
+    function showTemplate() {
         var currentRow = $('#templates').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
-            $(this).prop({
+            $('#showTemplate').prop({
                 'disabled' : true
             }).text('Подождите, шаблон вызывается...');
             // Надо вынуть данные для редактирования
@@ -231,5 +235,5 @@ $(document).ready(function() {
                 }
             })
         }
-    });
+    }
 });

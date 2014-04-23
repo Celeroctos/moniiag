@@ -253,138 +253,135 @@
                     )); ?>
                 </div>
             <?php } ?>
-            <div class="col-xs-12 default-margin-bottom">
-                <div id="accordionD" class="accordion">
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a href="#collapseD" data-parent="#accordionD" data-toggle="collapse"
-                               class="accordion-toggle red-color" data-toggle="tooltip" data-placement="right"
-                               title="Диагноз приёма"><strong>Диагноз приёма (основной и сопутствующие)</strong></a>
-                        </div>
-                        <div class="accordion-body collapse in" id="collapseD">
-                            <div class="accordion-inner">
-                                <?php
-                                $diagnosisForm = $this->beginWidget('CActiveForm', array(
-                                    'id' => 'diagnosis-form',
-                                    'enableAjaxValidation' => true,
-                                    'enableClientValidation' => true,
-                                    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/shedule/view'),
-                                    'htmlOptions' => array(
-                                        'class' => 'form-horizontal col-xs-12',
-                                        'role' => 'form'
-                                    )
-                                ));
-                                ?>
-                                <div class="form-group">
-                                    <label for="onlyLikeDiagnosis"
-                                           class="col-xs-3 control-label" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                        Выбирать только из списка "любимых" диагнозов
-                                    </label>
-
-                                    <div class="col-xs-9">
-                                        <input type="checkbox" id="onlyLikeDiagnosis">
-                                    </div>
+            <div id="accordionD" class="accordion col-xs-12">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a href="#collapseD" data-parent="#accordionD" data-toggle="collapse"
+                       class="accordion-toggle red-color" data-toggle="tooltip" data-placement="right"
+                       title="Диагноз приёма"><strong>Диагноз приёма (основной и сопутствующие)</strong></a>
+                    </div>
+                    <div class="accordion-body collapse in" id="collapseD">
+                        <div class="accordion-inner">
+                            <?php
+                            $diagnosisForm = $this->beginWidget('CActiveForm', array(
+                                'id' => 'diagnosis-form',
+                                'enableAjaxValidation' => true,
+                                'enableClientValidation' => true,
+                            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/shedule/view'),
+                                'htmlOptions' => array(
+                                    'class' => 'form-horizontal col-xs-12',
+                                    'role' => 'form'
+                                )
+                            ));
+                            ?>
+                            <div class="form-group">
+                                <label for="onlyLikeDiagnosis"
+                                   class="col-xs-3 control-label" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    Выбирать только из списка "любимых" диагнозов
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="checkbox" id="onlyLikeDiagnosis">
                                 </div>
-                                <div class="form-group chooser" id="primaryDiagnosisChooser">
-                                    <label for="doctor" class="col-xs-3 control-label">Основной диагноз:</label>
-
-                                    <div class="col-xs-9">
-                                        <input type="text" class="form-control" id="doctor"
-                                               placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                        <ul class="variants no-display">
-                                        </ul>
-                                        <div class="choosed">
-                                            <?php foreach ($primaryDiagnosis as $dia) { ?>
-                                                <span class="item"
-                                                      id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?>
-                                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group chooser" id="primaryClinicalDiagnosisChooser">
-                                    <label for="doctor" class="col-xs-3 control-label">Клинический основной
-                                        диагноз:</label>
-
-                                    <div class="col-xs-9">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="clinicalPrimaryDiagnosis"
-                                                   placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                            <span class="input-group-addon glyphicon glyphicon-plus"></span>
-                                        </div>
-                                        <ul class="variants no-display">
-                                        </ul>
-                                        <div class="choosed">
-                                            <?php /*if (false)*/
-                                            foreach ($primaryClinicalDiagnosis as $dia) { ?>
-                                                <span class="item"
-                                                      id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
-                                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="form-group chooser" id="secondaryDiagnosisChooser">
-                                    <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
-
-                                    <div class="col-xs-9">
-                                        <input type="text" class="form-control" id="doctor"
-                                               placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                        <ul class="variants no-display">
-                                        </ul>
-                                        <div class="choosed">
-                                            <?php foreach ($secondaryDiagnosis as $dia) { ?>
-                                                <span class="item"
-                                                      id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?>
-                                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
-                                    <label for="doctor" class="col-xs-3 control-label">Сопутствующие клинические
-                                        диагнозы:</label>
-
-                                    <div class="col-xs-9">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="clinicalSecondaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                            <span class="input-group-addon glyphicon glyphicon-plus"></span>
-                                        </div>
-                                        <ul class="variants no-display">
-                                        </ul>
-                                        <div class="choosed">
-                                            <?php /* if (false) */
-                                            foreach ($secondaryClinicalDiagnosis as $dia) {
-                                                ?>
-                                                <span class="item"
-                                                      id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
-                                                    <span class="glyphicon glyphicon-remove"></span></span>
-                                            <?php } ?>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label for="doctor" class="col-xs-3 control-label">Примечание:</label>
-
-                                    <div class="col-xs-9">
-                                        <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>
-                                    </div>
-                                </div>
-                                <?php if ($canEditMedcard) { ?>
-                                    <div class="form-group" id="submitDiagnosisContainer">
-                                        <input type="button" id="submitDiagnosis" value="Сохранить выбранные диагнозы"
-                                               class="templateContentSave">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="button" id="medcardContentSave" value="Сохранить"
-                                               class="btn btn-primary">
-                                    </div>
-                                <?php } ?>
-                                <?php $this->endWidget(); ?>
                             </div>
+                            <div class="form-group chooser" id="primaryDiagnosisChooser">
+                            <label for="doctor" class="col-xs-3 control-label">Основной диагноз:</label>
+
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" id="doctor"
+                                       placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php foreach ($primaryDiagnosis as $dia) { ?>
+                                            <span class="item"
+                                              id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?>
+                                            <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group chooser" id="primaryClinicalDiagnosisChooser">
+                            <label for="doctor" class="col-xs-3 control-label">Клинический основной
+                                    диагноз:</label>
+
+                                <div class="col-xs-9">
+                                    <div class="input-group">
+                                    <input type="text" class="form-control" id="clinicalPrimaryDiagnosis"
+                                           placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    <span class="input-group-addon glyphicon glyphicon-plus"></span>
+                                    </div>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php /*if (false)*/
+                                        foreach ($primaryClinicalDiagnosis as $dia) { ?>
+                                            <span class="item"
+                                              id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
+                                            <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group chooser" id="secondaryDiagnosisChooser">
+                            <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
+
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" id="doctor"
+                                       placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php foreach ($secondaryDiagnosis as $dia) { ?>
+                                            <span class="item"
+                                              id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?>
+                                            <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
+                            <label for="doctor" class="col-xs-3 control-label">Сопутствующие клинические
+                                    диагнозы:</label>
+
+                                <div class="col-xs-9">
+                                    <div class="input-group">
+                                    <input type="text" class="form-control" id="clinicalSecondaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    <span class="input-group-addon glyphicon glyphicon-plus"></span>
+                                    </div>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php /* if (false) */
+                                        foreach ($secondaryClinicalDiagnosis as $dia) {
+                                            ?>
+                                            <span class="item"
+                                              id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
+                                            <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="doctor" class="col-xs-3 control-label">Примечание:</label>
+
+                                <div class="col-xs-9">
+                                <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>
+                                </div>
+                            </div>
+                            <?php if ($canEditMedcard) { ?>
+                                <div class="form-group" id="submitDiagnosisContainer">
+                                <input type="button" id="submitDiagnosis" value="Сохранить выбранные диагнозы"
+                                           class="templateContentSave">
+                                </div>
+                                <div class="form-group">
+                                    <input type="button" id="medcardContentSave" value="Сохранить"
+                                           class="btn btn-primary">
+                                </div>
+                            <?php } ?>
+                            <?php $this->endWidget(); ?>
                         </div>
                     </div>
                 </div>
