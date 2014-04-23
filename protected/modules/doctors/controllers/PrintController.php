@@ -105,6 +105,9 @@ class PrintController extends Controller {
 		if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
+				var_dump($changedElements);
+				exit();
+				
                 exit('Во время этого приёма не было произведено никаких изменений!');
             } else {
                 return array();

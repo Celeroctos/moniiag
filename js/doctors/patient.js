@@ -338,11 +338,16 @@ $('.print-greeting-link').on('print', function (e) {
     return false;
     */
 
-
-
-
     var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
-    printWin.focus();
+    $(printWin).on('load',
+    function () {
+        this.focus();
+    }
+
+    );
+
+
+    //printWin.focus();
     return false;
 });
 
@@ -351,7 +356,13 @@ $('.print-greeting-link').on('print', function (e) {
 $('.print-recomendation-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
     var printWin = window.open('/index.php/doctors/print/printgreeting/?printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
-    printWin.focus();
+    $(printWin).on('load',
+    function () {
+        this.focus();
+    }
+
+    );
+
     return false;
 });
 
@@ -546,7 +557,7 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
 
                 // Ставим кнопке пришедший первичный ключ
                 $(accClone).find('span.pr-key').text(data.data.pk_key);
-console.log(accParent);
+                console.log(accParent);
 
                 $(accClone).insertAfter($(accParent));
                 // Теперь переименуем все элементы, согласно изменённым путям
@@ -636,14 +647,14 @@ function hideControl(container, elementId) {
     if (typeof container == 'undefined') {
         var next = $('[id$="_' + elementId + '"]').next();
         var prev = $('[id$="_' + elementId + '"]').prev();
-        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+        if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
-            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+            if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
                 $(next).hide();
             }
         }
-        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+        if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).hide();
         }
         $('[id$="_' + elementId + '"]').val('').hide();
@@ -651,14 +662,14 @@ function hideControl(container, elementId) {
     else {
         var next = $(container).find('[id$="_' + elementId + '"]').next();
         var prev = $(container).find('[id$="_' + elementId + '"]').prev();
-        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+        if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
-            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+            if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
                 $(next).hide();
             }
         }
-        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+        if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).hide();
         }
         $(container).find('[id$="_' + elementId + '"]').val('').hide();
@@ -670,15 +681,15 @@ function showControl(container, elementId) {
     if (typeof container == 'undefined') {
         var next = $('[id$="_' + elementId + '"]').next();
         var prev = $('[id$="_' + elementId + '"]').prev();
-        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+        if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).show();
             // + у комбо
             var next = $(next).next();
-            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+            if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
                 $(next).show();
             }
         }
-        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+        if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).show();
         }
         $('[id$="_' + elementId + '"]').val('').hide();
@@ -686,14 +697,14 @@ function showControl(container, elementId) {
     else {
         var next = $(container).find('[id$="_' + elementId + '"]').next();
         var prev = $(container).find('[id$="_' + elementId + '"]').prev();
-        if(typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+        if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             var next = $(next).next();
-            if(typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
+            if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
                 $(next).show();
             }
             $(next).show();
         }
-        if(typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
+        if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).show();
         }
         $(container).find('[id$="_' + elementId + '"]').val('').show();
