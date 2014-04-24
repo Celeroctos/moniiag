@@ -284,7 +284,7 @@
                                 </div>
                             </div>
                             <div class="form-group chooser" id="primaryDiagnosisChooser">
-                            <label for="doctor" class="col-xs-3 control-label">Основной диагноз:</label>
+                            <label for="doctor" class="col-xs-3 control-label">Основной диагноз по МКБ-10:</label>
 
                                 <div class="col-xs-9">
                                     <input type="text" class="form-control" id="doctor"
@@ -300,7 +300,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group chooser" id="primaryClinicalDiagnosisChooser">
+                            <div class="form-group chooser no-display" id="primaryClinicalDiagnosisChooser">
                             <label for="doctor" class="col-xs-3 control-label">Клинический основной
                                     диагноз:</label>
 
@@ -324,7 +324,7 @@
                             </div>
 
                             <div class="form-group chooser" id="secondaryDiagnosisChooser">
-                            <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы:</label>
+                            <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы по МКБ-10:</label>
 
                                 <div class="col-xs-9">
                                     <input type="text" class="form-control" id="doctor"
@@ -341,8 +341,8 @@
                                 </div>
                             </div>
                             <div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
-                            <label for="doctor" class="col-xs-3 control-label">Сопутствующие клинические
-                                    диагнозы:</label>
+                            <label for="doctor" class="col-xs-3 control-label">Клинические
+                                    диагноз / диагнозы:</label>
 
                                 <div class="col-xs-9">
                                     <div class="input-group">
