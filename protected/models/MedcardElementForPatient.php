@@ -115,6 +115,50 @@ class MedcardElementForPatient extends MisActiveRecord {
 		}
 	}
 
+
+	public function getLatestStateOfGreeting($greetingId, $elementPaths) {
+		try {
+			//var_dump($elementPaths);
+			//exit();
+			// Если массив путей пуст - вернём пустой массив
+			if (count($elementPaths)==0)
+				return array();
+			
+			// Соберём строку из путей для условия WHERE IN
+			$pathsToSelect = '';
+			foreach ($elementPaths as $onePath)
+			{
+				if ($pathsToSelect!='')
+				{
+					$pathsToSelect .= ',';
+				}
+				$pathsToSelect .= ('\'' . $onePath. '\'');
+			}
+
+			$connection = Yii::app()->db;
+			$elements = $connection->createCommand()
+				->select('mep.*')
+				->from('mis.medcard_elements_patient mep')
+				->where('mep.path in ('. $pathsToSelect .')
+                        AND mep.greeting_id = :greeting_id
+						AND mep.history_id = 
+							(SELECT MAX(mep2.history_id)
+							FROM mis.medcard_elements_patient mep2
+							WHERE mep.path=mep2.path
+							AND mep2.greeting_id = mep.greeting_id)',
+					array(':greeting_id' => $greetingId));
+			
+			$result =  $elements->queryAll();
+			//var_dump($result);
+			//exit();
+
+			return $result;
+		} catch(Exception $e) {
+			echo $e->getMessage();
+		}
+	}
+
+
     public function getMaxHistoryPointId($element, $medcardId, $greetingId) {
         try {
             $connection = Yii::app()->db;

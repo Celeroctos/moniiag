@@ -379,6 +379,8 @@
                                 <div class="form-group">
                                     <input type="button" id="medcardContentSave" value="Сохранить"
                                            class="btn btn-primary">
+									<input type="button" id="printContentButton" value="Сохранить и напечатать"
+											class="btn btn-primary">
                                 </div>
                             <?php } ?>
                             <?php $this->endWidget(); ?>
