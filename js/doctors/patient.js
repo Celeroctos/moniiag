@@ -489,6 +489,20 @@ var clones = {
 
 };
 
+function collapseAccordion(boyjan /*Див с аккордионом :)*/) {
+    $(boyjan).find('.accordion-body').removeClass('in');
+    $(boyjan).find('.accordion-body').addClass('collapse');
+    $(boyjan).find('.accordion-body').css('height', '0px');
+    $(boyjan).trigger('hidden.bs.collapse');
+}
+
+function unCollapseAccordion(boyjan /*Див с аккордионом :)*/) {
+    $(boyjan).find('.accordion-body').removeClass('collapse');
+    $(boyjan).find('.accordion-body').addClass('in');
+    $(boyjan).find('.accordion-body').css('height', 'auto');
+    $(boyjan).trigger('shown.bs.collapse');
+}
+
 // Клонирование элементов
 /* Клоны считаются, как clone_xx_yy, где xx - ID аккордеона, yy - порядковый номер клона */
 $(document).on('click', '.accordion-clone-btn', function (e) {
@@ -573,8 +587,40 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         var tempSubstr = controlId.substr(0, controlId.lastIndexOf('_'));
                         var substrSecond = tempSubstr.substr(0, tempSubstr.lastIndexOf('_') + 1);
                         $(control).prop('id', substrSecond + undottedPathAfter + substrFirst);
+                        // Перепишем имя у элемента
+                        $(control).prop('name',
+                        'FormTemplateDefault['
+                         +
+                        tempSubstr.substr(0, tempSubstr.lastIndexOf('_') - 1)
+                         +
+                        undottedPathAfter
+                         +
+                        substrFirst +
+                        ']');
                     }
                 }
+
+                // Надо сбросить все значения в склонированной категории,
+                //     чтобы новая категория была девственно чиста :)
+                $(accClone).find('input,textarea,select').val('');
+                // Надо скрыть все категории, кроме только что отклонированной
+                // Берём id родительской категории и ищем все аккордеоны, в поле ИД которых входит ИД-шник родительской
+                //   и посылаем сигнал "свернись!"
+                var children = $('[id^=' + accId + ']');
+                // Переберём детей
+                for (i = 0; i < children.length; i++) {
+                    //if ($(children[i]).prop('id') != $(accClone).prop('id')) {
+                    if (i != children.length-1) {
+                        collapseAccordion(children[i]);
+                    }
+                    else {
+                        // Раскрываем клонированную категорию (она может быть скрыта)
+                        unCollapseAccordion(children[i]);
+
+                    }
+                }
+                // Сворачиваем родителя
+                //collapseAccordion(accParent);
 
                 // Теперь надо разобрать зависимость
                 var deps = data.data.dependences;
