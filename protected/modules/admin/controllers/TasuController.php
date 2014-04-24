@@ -1489,14 +1489,17 @@ class TasuController extends Controller {
 					
 					// Вынимаем адрес. Адрес, если нет о нём данных в КЛАДР в ТАСУ, добавляется в справочники
 					$conn = Yii::app()->db2;
-					$addresses = $conn->createCommand('EXEC PDPStdStorage.dbo.p_addressselect_52243 '.$patient['uid'].',NULL')->queryAll();
+					$addresses = TasuAddress::model()->findAll('patientuid_32736 = :patient_uid AND version_end = :version_end', 
+							array(
+								':version_end' => $this->version_end,
+								':patient_uid' => $patient['uid']
+							)
+					);
+
 					// Два адреса только: адрес проживания и адрес регистрации
 					foreach($addresses as $address) {
-						$this->createPatientAddressFormTasu($misMedcard, $address) {
-						
-						}
+						$this->createPatientAddressFormTasu($misMedcard, $address);
 					}
-					
 					if(!$misMedcard->save()) {
 						$this->log[] = 'Невозможно создание / перенос медкарты пациента '.$tasuOms['uid'];
 						$this->numErrors++;
@@ -1521,47 +1524,48 @@ class TasuController extends Controller {
     }
 	
 	public function createPatientAddressFormTasu($medcard, $address) {
-		$region = CladrRegion::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $address['CodeRegion']));
+		$region = CladrRegion::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $address['coderegion_37290']));
 		if($region == null) {
 			$region = new CladrRegion();
-			$region->name = $address['RegionName'];
-			$region->code_cladr = $address['CodeRegion'];
+			$region->name = $address['regionname_60536]'];
+			$region->code_cladr = $address['coderegion_37290'];
 			if(!$region->save()) {
 				$this->numErrors++;
 				throw new Exception();
 			}
 		}
-		$district = CladrDistrict::model()->find('code_cladr = :code_cladr AND code_region = :code_region', array(':code_cladr' => $address['CodeDistrict'], ':code_region' => $address['CodeRegion']));
+		$district = CladrDistrict::model()->find('code_cladr = :code_cladr AND code_region = :code_region', array(':code_cladr' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290']));
 		if($district == null) {
 			$district = new CladrDistrict();
-			$district->name = $address['DistrictName'];
-			$district->code_region = $address['CodeRegion'];
-			$district->code_cladr = $address['CodeDistrict'];
+			$district->name = $address['districtname_52162'];
+			$district->code_region = $address['coderegion_37290'];
+			$district->code_cladr = $address['codedistrict_63369'];
 			if(!$district->save()) {
 				$this->numErrors++;
 				throw new Exception();
 			}
 		}
-		$settlement = CladrSettlement::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district', array(':code_cladr' => $address['CodeSettlement'], ':code_district' => $address['CodeDistrict'], ':code_region' => $address['CodeRegion']));
+		$settlement = CladrSettlement::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district', array(':code_cladr' => $address['codesettlement_46311'], ':code_district' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290']));
 		if($settlement == null) {
 			$settlement = new CladrSettlement();
-			$settlement->name = $address['SettlementName'];
-			$settlement->code_region = $address['CodeRegion'];
-			$settlement->code_district = $address['CodeDistrict'];
-			$settlement->code_cladr = $address['CodeSettlement'];
+			$settlement->name = $address['settlementname_17779'];
+			$settlement->code_region = $address['coderegion_37290'];
+			$settlement->code_district = $address['codedistrict_63369'];
+			$settlement->code_cladr = $address['codesettlement_46311'];
 			if(!$settlement->save()) {
 				$this->numErrors++;
 				throw new Exception();
 			}
 		}
-		$street = CladrStreet::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district AND code_settlement = :code_settlement', array(':code_cladr' => $address['CodeStreet'], ':code_district' => $address['CodeDistrict'], ':code_region' => $address['CodeRegion'], ':code_settlement' => $address['CodeSettlement']));
+
+		$street = CladrStreet::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district AND code_settlement = :code_settlement', array(':code_cladr' => $address['codestreet_11408'], ':code_district' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290'], ':code_settlement' => $address['codesettlement_46311']));
 		if($street == null) {
-			$street = new CladrDistrict();
-			$street->name = $address['StreetName'];
-			$street->code_region = $address['CodeRegion'];
-			$street->code_district = $address['CodeDistrict'];
-			$street->code_settlement = $address['CodeSettlement'];
-			$street->code_cladr = $address['CodeStreet'];
+			$street = new CladrStreet();
+			$street->name = $address['streetname_22113'];
+			$street->code_region = $address['coderegion_37290'];
+			$street->code_district = $address['codedistrict_63369'];
+			$street->code_settlement = $address['codesettlement_46311'];
+			$street->code_cladr = $address['codestreet_11408'];
 			if(!$street->save()) {
 				$this->numErrors++;
 				throw new Exception();
@@ -1573,17 +1577,27 @@ class TasuController extends Controller {
 			'districtId' => $district->id,
 			'settlementId' => $settlement->id,
 			'streetId' => $street->id,
-			'house' => $address['HouseNumber'],
-			'flat' => $address['FlatNumber'],
-			'building' => $address['BuildingNumber'],
-			'postindex' => $address['PostIndex']
+			'house' => $address['housenumber_07908'],
+			'flat' => $address['flatnumber_60133'],
+			'building' => $address['buildingnumber_35985'],
+			'postindex' => $address['postindex_62744']
 		));
 		
-		if($address['AddressType'] == 1) { // Адрес регистрации
-			//$
+		if($address['addresstype_31280'] == 1) { // Адрес регистрации
+			$medcard->address_reg = $addressData;
 		}
-		if($address['AddressType'] == 2) { // Адрес проживания
-			//$medcard->address_reg = 
+		if($address['addresstype_31280'] == 2) { // Адрес проживания
+			$medcard->address = $addressData;
+		}
+		
+		$patientController = Yii::app()->createController('reception/patient');
+		$addressData = $patientController[0]->getAddressStr($addressData, true);
+		
+		if($address['addresstype_31280'] == 1) { // Адрес регистрации
+			$medcard->address_reg_str = $addressData['addressStr'];
+		}
+		if($address['addresstype_31280'] == 2) { // Адрес проживания
+			$medcard->address_str = $addressData['addressStr'];
 		}
 	}
 	

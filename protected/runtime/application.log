@@ -1634,3 +1634,198 @@ in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.ph
 in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (293)
 in Z:\home\mis.my\www\protected\components\Controller.php (27)
 >>>>>>> 503b38b45d50167932c2c6100d69200ae8cc4c72
+2014/04/24 18:36:27 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[IMSSP]: The active result for the query contains no fields.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_addressselect_52243 578,NULL.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1492)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/24 18:36:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[IMSSP]: The active result for the query contains no fields.. The SQL statement executed was: EXEC PDPStdStorage.dbo.p_addressselect_52243 578,NULL' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1492): CDbCommand->queryAll()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341810
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:38:19 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetch(): SQLSTATE[IMSSP]: The active result for the query contains no fields.. Выполнявшийся SQL-запрос: EXEC PDPStdStorage.dbo.p_addressselect_52243 578,NULL.
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1492)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/24 18:38:19 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[IMSSP]: The active result for the query contains no fields.. The SQL statement executed was: EXEC PDPStdStorage.dbo.p_addressselect_52243 578,NULL' in F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php:543
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\CDbCommand.php(415): CDbCommand->queryInternal('fetch', Array, Array)
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1492): CDbCommand->queryRow()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#12 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341813
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:42:32 [error] [php] include(TasuAddress.php): failed to open stream: No such file or directory (F:\Hosts\Celeroctos\moniiag\yii\YiiBase.php:427)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1492): spl_autoload_call()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): TasuController->runAction()
+#4 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): TasuController->filterGetAccessHierarchy()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): TasuController->runActionWithFilters()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): TasuController->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341814
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php (1492)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/24 18:45:33 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "TasuAddress.CodeRegion".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(145): CComponent->__get('CodeRegion')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(596): CActiveRecord->__get('CodeRegion')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1527): CModel->offsetGet('CodeRegion')
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1501): TasuController->createPatientAddressFormTasu(Object(Medcard), Object(TasuAddress))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341817
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:49:27 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "CladrDistrict.code_district".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:174
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(161): CComponent->__set('code_district', '014')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1565): CActiveRecord->__set('code_district', '014')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1501): TasuController->createPatientAddressFormTasu(Object(Medcard), Object(TasuAddress))
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341818
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:51:00 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "CladrDistrict.code_district".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:174
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(161): CComponent->__set('code_district', '014')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1566): CActiveRecord->__set('code_district', '014')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1501): TasuController->createPatientAddressFormTasu(Object(Medcard), Object(TasuAddress))
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341821
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:51:22 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "CladrDistrict.code_district".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:174
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(161): CComponent->__set('code_district', '014')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1566): CActiveRecord->__set('code_district', '014')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1501): TasuController->createPatientAddressFormTasu(Object(Medcard), Object(TasuAddress))
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341822
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:52:11 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "CladrDistrict.code_settlement".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:174
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(161): CComponent->__set('code_settlement', '000056')
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1567): CActiveRecord->__set('code_settlement', '000056')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1501): TasuController->createPatientAddressFormTasu(Object(Medcard), Object(TasuAddress))
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#13 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341823
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
+2014/04/24 18:52:30 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "TasuAddress.AddressType".' in F:\Hosts\Celeroctos\moniiag\yii\base\CComponent.php:130
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\db\ar\CActiveRecord.php(145): CComponent->__get('AddressType')
+#1 F:\Hosts\Celeroctos\moniiag\yii\base\CModel.php(596): CActiveRecord->__get('AddressType')
+#2 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1586): CModel->offsetGet('AddressType')
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\modules\admin\controllers\TasuController.php(1501): TasuController->createPatientAddressFormTasu(Object(Medcard), Object(TasuAddress))
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): TasuController->actionSyncPatients()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(27): CFilterChain->run()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#11 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): CController->run('syncpatients')
+#13 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/tasu/sync...')
+#14 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/tasu/syncpatients?rowsPerQuery=50&totalMaked=150&totalRows=102085&_=1398345341824
+HTTP_REFERER=http://moniiag.toonftp.ru/index.php/admin/tasu/viewsync
+---
