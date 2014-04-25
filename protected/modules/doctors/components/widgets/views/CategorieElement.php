@@ -94,7 +94,7 @@ if(isset($categorie['id'])) {
                                     echo $form->textField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
                                     if($element['label_after'] != null) {
                                     ?>
-                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                        <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                 } elseif($element['type'] == 1) {
@@ -115,7 +115,7 @@ if(isset($categorie['id'])) {
                                     echo $form->textArea($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
                                     if($element['label_after'] != null) {
                                         ?>
-                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                        <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                 } elseif($element['type'] == 2) {
@@ -143,7 +143,7 @@ if(isset($categorie['id'])) {
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
                                     if($element['label_after'] != null) {
                                         ?>
-                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                        <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
@@ -181,7 +181,7 @@ if(isset($categorie['id'])) {
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
                                     if($element['label_after'] != null) {
                                         ?>
-                                        <label class="control-label"><?php echo ' '.$element['label_after'] ?></label>
+                                        <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
@@ -349,7 +349,7 @@ if(isset($categorie['id'])) {
                                     <?php
                                     if($element['label_after'] != null) {
                                         ?>
-                                        <label class="control-label"><?php echo $element['label_after'] ?></label>
+                                        <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
                                     <?php
                                     }
                                 }?>

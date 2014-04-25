@@ -1416,33 +1416,98 @@ class TasuController extends Controller {
                 )
             );
 
-            if($issetPatient != null) {
-                continue;
+            if($issetPatient == null) {
+                // Добавляем пациента, если его нет
+				try {
+					$newOms = new Oms();
+					$newOms->first_name = $patient['im_53316'];
+					$newOms->last_name = $patient['fam_18565'];
+					$newOms->type = 0; // Пока временно так
+					$newOms->middle_name = $patient['ot_48206'];
+					$newOms->oms_number = $tasuOms['series_14820'].' '.$tasuOms['number_12574'];
+					$newOms->gender = $patient['sex_40994'] == 1 ? 1 : 0;
+					$newOms->birthday = $patient['birthday_38523'];
+					$newOms->givedate = $tasuOms['issuedate_60296'];
+					$newOms->status = $tasuOms['state_19333'];
+					$newOms->enddate = $tasuOms['voiddate_10849'];
+					$newOms->tasu_id = $patient['uid'];
+					if(!$newOms->save()) {
+						$this->log[] = 'Невозможно импортировать пациента с кодом '.$tasuOms['uid'];
+						$this->numErrors++;
+					} else {
+						$this->numAdded++;
+					}
+					
+					$issetPatient = $newOms;
+					
+					// Добавляем медкарту к пациенту
+				} catch(Exception $e) {
+					$this->numErrors++;
+				}
             }
+			
+			$issetMedcard = TasuMedcard::model()->find('patientuid_37756 = :patient_uid AND version_end = :version_end', 
+					array(
+						':version_end' => $this->version_end,
+						':patient_uid' => $patient['uid']
+					)
+			);
+			if($issetMedcard != null && count(explode('/', $issetMedcard['number_50713'])) == 2) {
+				// Создаём медкарту, если такой нет в базе
+				$misMedcard = Medcard::model()->findByPk($issetMedcard['number_50713']);
+				if($misMedcard == null) {
+					$tasuDul = TasuDul::model()->find('patientuid_53984 = :patient_uid AND version_end = :version_end', 
+							array(
+								':version_end' => $this->version_end,
+								':patient_uid' => $patient['uid']
+							)
+					);
 
-            // Добавляем пациента, если его нет
-            try {
-                $newOms = new Oms();
-                $newOms->first_name = $patient['im_53316'];
-                $newOms->last_name = $patient['fam_18565'];
-                $newOms->type = 0; // Пока временно так
-                $newOms->middle_name = $patient['ot_48206'];
-                $newOms->oms_number = $tasuOms['series_14820'].' '.$tasuOms['number_12574'];
-                $newOms->gender = $patient['sex_40994'] == 1 ? 1 : 0;
-                $newOms->birthday = $patient['birthday_38523'];
-                $newOms->givedate = $tasuOms['issuedate_60296'];
-                $newOms->status = $tasuOms['state_19333'];
-                $newOms->enddate = $tasuOms['voiddate_10849'];
-                $newOms->tasu_id = $patient['uid'];
-                if(!$newOms->save()) {
-                    $this->log[] = 'Невозможно импортировать пациента с кодом '.$tasuOms['uid'];
-                    $this->numErrors++;
-                } else {
-                    $this->numAdded++;
-                }
-            } catch(Exception $e) {
-                $this->numErrors++;
-            }
+					$misMedcard = new Medcard();
+					$misMedcard->card_number = $issetMedcard['number_50713'];
+					$misMedcard->enterprise_id = 1; // Монииаг
+					$misMedcard->snils = $patient['snils_34985'];
+					$tel = '';
+					if($patient['homephone_02050'] != null && trim($patient['homephone_02050']) != '') {
+						$tel .= $patient['homephone_02050'].' (домашний), ';
+					}
+					if($patient['workphone_39150'] != null && trim($patient['workphone_39150']) != '') {
+						$tel .= $patient['workphone_39150'].' (рабочий), ';
+					}
+					$misMedcard->contact = $tel;
+					$misMedcard->work_place = $patient['employmentplace_12520'];
+					$misMedcard->snils = $patient['snils_34985'];
+					$misMedcard->profession = $patient['profession_56032'];
+					$misMedcard->post = $patient['position_61591'];
+					if($tasuDul != null) {
+						$misMedcard->serie = $tasuDul['dulseries_30145'];
+						$misMedcard->docnumber = $tasuDul['dulnumber_50657'];
+						$misMedcard->doctype = 1; // Паспорт
+						$misMedcard->gived_date = $tasuDul['issuedate_42162'];
+					}
+					$misMedcard->policy_id = $issetPatient->id;
+					
+					// Вынимаем адрес. Адрес, если нет о нём данных в КЛАДР в ТАСУ, добавляется в справочники
+					$conn = Yii::app()->db2;
+					$addresses = TasuAddress::model()->findAll('patientuid_32736 = :patient_uid AND version_end = :version_end', 
+							array(
+								':version_end' => $this->version_end,
+								':patient_uid' => $patient['uid']
+							)
+					);
+
+					// Два адреса только: адрес проживания и адрес регистрации
+					foreach($addresses as $address) {
+						$this->createPatientAddressFormTasu($misMedcard, $address);
+					}
+					if(!$misMedcard->save()) {
+						$this->log[] = 'Невозможно создание / перенос медкарты пациента '.$tasuOms['uid'];
+						$this->numErrors++;
+					} else {
+						$this->numAdded++;
+					}
+				}
+			}
         }
 
         echo CJSON::encode(array(
@@ -1457,6 +1522,85 @@ class TasuController extends Controller {
                 ))
         );
     }
+	
+	public function createPatientAddressFormTasu($medcard, $address) {
+		$region = CladrRegion::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $address['coderegion_37290']));
+		if($region == null) {
+			$region = new CladrRegion();
+			$region->name = $address['regionname_60536]'];
+			$region->code_cladr = $address['coderegion_37290'];
+			if(!$region->save()) {
+				$this->numErrors++;
+				throw new Exception();
+			}
+		}
+		$district = CladrDistrict::model()->find('code_cladr = :code_cladr AND code_region = :code_region', array(':code_cladr' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290']));
+		if($district == null) {
+			$district = new CladrDistrict();
+			$district->name = $address['districtname_52162'];
+			$district->code_region = $address['coderegion_37290'];
+			$district->code_cladr = $address['codedistrict_63369'];
+			if(!$district->save()) {
+				$this->numErrors++;
+				throw new Exception();
+			}
+		}
+		$settlement = CladrSettlement::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district', array(':code_cladr' => $address['codesettlement_46311'], ':code_district' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290']));
+		if($settlement == null) {
+			$settlement = new CladrSettlement();
+			$settlement->name = $address['settlementname_17779'];
+			$settlement->code_region = $address['coderegion_37290'];
+			$settlement->code_district = $address['codedistrict_63369'];
+			$settlement->code_cladr = $address['codesettlement_46311'];
+			if(!$settlement->save()) {
+				$this->numErrors++;
+				throw new Exception();
+			}
+		}
+
+		$street = CladrStreet::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district AND code_settlement = :code_settlement', array(':code_cladr' => $address['codestreet_11408'], ':code_district' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290'], ':code_settlement' => $address['codesettlement_46311']));
+		if($street == null) {
+			$street = new CladrStreet();
+			$street->name = $address['streetname_22113'];
+			$street->code_region = $address['coderegion_37290'];
+			$street->code_district = $address['codedistrict_63369'];
+			$street->code_settlement = $address['codesettlement_46311'];
+			$street->code_cladr = $address['codestreet_11408'];
+			if(!$street->save()) {
+				$this->numErrors++;
+				throw new Exception();
+			}
+		}
+		
+		$addressData = CJSON::encode(array(
+			'regionId' => $region->id,
+			'districtId' => $district->id,
+			'settlementId' => $settlement->id,
+			'streetId' => $street->id,
+			'house' => $address['housenumber_07908'],
+			'flat' => $address['flatnumber_60133'],
+			'building' => $address['buildingnumber_35985'],
+			'postindex' => $address['postindex_62744']
+		));
+		
+		if($address['addresstype_31280'] == 1) { // Адрес регистрации
+			$medcard->address_reg = $addressData;
+		}
+		if($address['addresstype_31280'] == 2) { // Адрес проживания
+			$medcard->address = $addressData;
+		}
+		
+		$patientController = Yii::app()->createController('reception/patient');
+		$addressData = $patientController[0]->getAddressStr($addressData, true);
+		
+		if($address['addresstype_31280'] == 1) { // Адрес регистрации
+			$medcard->address_reg_str = $addressData['addressStr'];
+		}
+		if($address['addresstype_31280'] == 2) { // Адрес проживания
+			$medcard->address_str = $addressData['addressStr'];
+		}
+	}
+	
     /* Синхронизация врачей: ТАСУ в МИС */
     public function actionSyncDoctors() {
 		if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
