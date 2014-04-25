@@ -1323,9 +1323,10 @@ class TasuController extends Controller {
 	private function getTasuProfessional($greeting) {
 		$conn = Yii::app()->db2;
 		$doctor = Doctor::model()->findByPk($greeting['doctor_id']);
-		if($doctor == null) {
+		if($doctor == null || $doctor->tasu_id != null) {
 			return false;
 		}
+
 		$sql = "SELECT
 					[sp].[uid] AS [ProfessionalUID]
 				FROM
@@ -1486,7 +1487,9 @@ class TasuController extends Controller {
 						$misMedcard->gived_date = $tasuDul['issuedate_42162'];
 					}
 					$misMedcard->policy_id = $issetPatient->id;
-					
+					if($patient['invgroup_59187'] != 4) { // Ребёнок-инвалид...? У нас такого нет
+						$misMedcard->invalid_group = $patient['invgroup_59187'];
+					}
 					// Вынимаем адрес. Адрес, если нет о нём данных в КЛАДР в ТАСУ, добавляется в справочники
 					$conn = Yii::app()->db2;
 					$addresses = TasuAddress::model()->findAll('patientuid_32736 = :patient_uid AND version_end = :version_end', 
