@@ -28,6 +28,7 @@
                 if (isThisPrint) {
                     if (printHandler == 'print-greeting-link') {
                         $('.activeGreeting .' + printHandler).trigger('print');
+                      //  $('#printContentButton').trigger('end');
                     }
                     else {
                         if (printHandler == 'print-recomendation-link') {
@@ -41,6 +42,7 @@
 
                 }
                 else {
+                  //  $('#medcardContentSave').trigger('end');
                     $('#successEditPopup').modal({});
                 }
 
@@ -89,7 +91,7 @@
     });
 
     $('#medcardContentSave').on('click', function (e) {
-
+       // $(this).trigger('begin');
         isThisPrint = false;
         // Берём кнопки с классом 
         var buttonsContainers = $('div.submitEditPatient').parents('form');
@@ -347,6 +349,7 @@ $('#successEditPopup').on('hidden.bs.modal', function (e) {
 });
 
 $(document).on('click', '#printContentButton', function () {
+   // $('#printContentButton').trigger('begin');
     $('.print-greeting-link').click();
 
 });

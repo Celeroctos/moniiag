@@ -164,6 +164,10 @@ $(document).ready(function() {
                                 formField: 'kpp'
                             },
                             {
+                                modelField: 'ogrn',
+                                formField: 'ogrn'
+                            },
+                            {
                                 modelField: 'type',
                                 formField: 'type'
                             }

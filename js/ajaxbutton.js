@@ -1,7 +1,9 @@
 ﻿$(document).ready(function() {
 	var buttonSelectors = [
 		'#patient-search-submit',
-		'.add-patient-submit input'
+		'.add-patient-submit input',
+        '#medcardContentSave',
+        '#printContentButton'
 	];
 	
 	buttonSelectors.forEach(function(buttonSelector) {
