@@ -9,7 +9,11 @@
 </script>
 <?php if(Yii::app()->user->checkAccess('writePatient')) { ?>
 <div class="row">
-    <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu'); ?>
+    <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
+        array(
+            'callcenter' => $callcenter
+        )
+    ); ?>
 </div>
 <h4>Необходимо найти врача к которому следует записать пациента на приём:</h4>
 <div class="row">

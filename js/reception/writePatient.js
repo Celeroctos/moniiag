@@ -242,11 +242,15 @@ $(document).ready(function() {
 
     // Отобразить таблицу тех, кто с картами
     function displayAllPatients(data) {
+        // Проверим - есть ли столбец номер ОМС в таблице
+        var printOms = (  $('#searchWithCardResult thead').find('.omsNumberCell').length>0  )
         var table = $('#searchWithCardResult tbody');
         table.find('tr').remove();
         for(var i = 0; i < data.length; i++) {
-            table.append(
-                '<tr>' +
+            // В цикле - сначала генерируем контент для строки, дописываем значения столбцов, в зависимости от того, есть
+            //    ли соответствующие столбцы
+            //   а потом дописываем строку в таблицу
+                var content = '<tr>' +
                     '<td class="write-patient-cell">' +
                         '<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
@@ -264,14 +268,20 @@ $(document).ready(function() {
                         '<a title="Посмотреть информацию по карте" href="#' + data[i].card_number + '" class="editMedcard">' +
                             data[i].card_number +
                         '</a>' +
-                    '</td>' +
+                    '</td>';
+
+            if (printOms)
+            {
+                content +=
                     '<td>' +
-                        '<a title="Посмотреть информацию по ОМС" href= "#' + data[i].id + '" class="editOms">' +
-                            data[i].oms_number +
-                        '</a>' +
-                    '</td>' +
-                '</tr>'
-            );
+                    '<a title="Посмотреть информацию по ОМС" href= "#' + data[i].id + '" class="editOms">' +
+                    data[i].oms_number +
+                    '</a>' +
+                    '</td>'
+
+            }
+            content += '<tr>';
+            table.append(content);
         }
         table.parents('div.no-display').removeClass('no-display');
     }

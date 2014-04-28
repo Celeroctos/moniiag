@@ -1031,11 +1031,12 @@ class PatientController extends Controller {
     }
 
     // Экшн записи пациента: шаг 1
-    public function actionWritePatientStepOne() {
+    public function actionWritePatientStepOne($callcenter=false) {
         $this->render('writePatient1', array(
             'privilegesList' => $this->getPrivileges(),
             'modelMedcard' => new FormPatientWithCardAdd(),
-            'modelOms' => new FormOmsEdit()
+            'modelOms' => new FormOmsEdit(),
+            'callcenter' => $callcenter
         ));
     }
 
@@ -1087,10 +1088,11 @@ class PatientController extends Controller {
     }
 
     // Запись опосредованного пациента
-    public function actionWritePatientWithoutData() {
+    public function actionWritePatientWithoutData($callcenter=false) {
         $this->render('writepatientwithoutdata', array(
             'wardsList' => $this->getWardsList(),
             'postsList' => $this->getPostsList(),
+            'callcenter' => $callcenter
         ));
     }
 
