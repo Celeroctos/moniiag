@@ -3,7 +3,7 @@ $(document).ready(function(e) {
 
     $('.progressBox').each(function(index, element) {
         var current = 0;
-        var rowsPerQuery = 50;
+        var rowsPerQuery = 500;
         var totalMaked = 0; // Сколько уже обработано строк
         var totalRows = null;
         var isPaused = false;

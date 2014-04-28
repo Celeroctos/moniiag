@@ -1,1 +1,28 @@
-﻿
+﻿2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/04/28 18:10:59 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (720)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)

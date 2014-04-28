@@ -1,5 +1,7 @@
 <?php
 class WritePatientTabMenu extends CWidget {
+    public $callcenter = false;
+
     public function run() {
         $this->render('application.modules.reception.components.widgets.views.WritePatientTabMenu', array(
             'controller' => strtolower($this->controller->getId()),

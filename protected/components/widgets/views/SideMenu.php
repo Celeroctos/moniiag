@@ -36,6 +36,22 @@
             </ul>
         </li>
         <?php } ?>
+
+
+        <?php if(Yii::app()->user->checkAccess('menuCallCenter')) { ?>
+            <li <?php echo $module == 'reception' ? 'class="active"' : ''; ?>>
+                <?php echo CHtml::link('<img src="/images/icons/call_center.png" width="32" height="32" alt="" />Call-Центр', array('#')) ?>
+                <ul class="nav">
+                    <?php if(Yii::app()->user->checkAccess('menuPatientWriteCallCenter')) { ?>
+                        <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo') ? 'class="active"' : ''; ?>>
+                            <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись пациента', array('/reception/patient/writepatientwithoutdata?callcenter=1')) ?>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </li>
+        <?php } ?>
+
+
         <?php if(Yii::app()->user->checkAccess('menuArm')) { ?>
         <li <?php echo $module == 'doctors' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('<img src="/images/icons/doctors_cabinet.png" width="32" height="32" alt="" />Кабинет врача', array('#')) ?>

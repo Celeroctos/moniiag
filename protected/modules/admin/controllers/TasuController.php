@@ -1397,13 +1397,9 @@ class TasuController extends Controller {
         } else {
             $this->totalRows = $_GET['totalRows'];
         }
-		
+
 		foreach($omss as $oms) {
             $this->processed++;
-			
-			if(trim($oms['ENP']) == '' || mb_strlen($oms['ENP']) != 16) {
-				continue;
-			}
 			
 			$serie = mb_substr($oms['ENP'], 0, 6);
 			$number = mb_substr($oms['ENP'], 6);
