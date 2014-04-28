@@ -282,6 +282,48 @@
                                 )); ?>
                             </div>
                         </div>
+						
+						<div class="form-group">
+							<?php  echo $form->labelEx($model,'dateFieldMaxValue', array(
+								'class' => 'col-xs-3 control-label'
+							));  ?>
+						
+							<div class="col-xs-6 input-group date" id="date-max-field-cont">
+								<?php  echo $form->hiddenField($model,'dateFieldMaxValue', array(
+									'id' => 'dateFieldMaxValue',
+									'class' => 'form-control',
+									'placeholder' => 'Формат гггг-мм-дд'
+								)); ?>
+								<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+								<div class="subcontrol">
+						
+						
+										<div class="date-ctrl-up-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+											</div>
+										</div>
+										<div class="form-inline subfields">
+											<input type="text" name="day" placeholder="ДД" class="form-control day">
+											<input type="text" name="month" placeholder="ММ" class="form-control month">
+											<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+										</div>
+										<div class="date-ctrl-down-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+											</div>
+										</div>
+						
+								</div>
+							</div>
+						</div>
+						
                         <div class="form-group no-display">
                             <?php echo $form->labelEx($model,'numberFieldMinValue', array(
                                 'class' => 'col-xs-3 control-label'
@@ -294,6 +336,57 @@
                                 )); ?>
                             </div>
                         </div>
+						
+						
+						
+						
+						
+						<div class="form-group">
+							<?php  echo $form->labelEx($model,'dateFieldMinValue', array(
+								'class' => 'col-xs-3 control-label'
+							));  ?>
+						
+							<div class="col-xs-6 input-group date" id="date-min-field-cont">
+								<?php  echo $form->hiddenField($model,'dateFieldMinValue', array(
+									'id' => 'dateFieldMinValue',
+									'class' => 'form-control',
+									'placeholder' => 'Формат гггг-мм-дд'
+								)); ?>
+								<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+								<div class="subcontrol">
+						
+						
+										<div class="date-ctrl-up-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+											</div>
+										</div>
+										<div class="form-inline subfields">
+											<input type="text" name="day" placeholder="ДД" class="form-control day">
+											<input type="text" name="month" placeholder="ММ" class="form-control month">
+											<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+										</div>
+										<div class="date-ctrl-down-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+											</div>
+										</div>
+						
+								</div>
+							</div>
+						</div>
+						
+						
+						
+						
+						
+						
                         <div class="form-group no-display">
                             <?php echo $form->labelEx($model,'numberStep', array(
                                 'class' => 'col-xs-3 control-label'
@@ -601,6 +694,51 @@
                                 )); ?>
                             </div>
                         </div>
+						
+						<div class="form-group">
+							<?php  echo $form->labelEx($model,'dateFieldMaxValue', array(
+									'class' => 'col-xs-3 control-label'
+								));  ?>
+						
+							<div class="col-xs-6 input-group date" id="date-max-field-cont">
+								<?php  echo $form->hiddenField($model,'dateFieldMaxValue', array(
+										'id' => 'dateFieldMaxValue',
+										'class' => 'form-control',
+										'placeholder' => 'Формат гггг-мм-дд'
+								)); ?>
+								<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+								<div class="subcontrol">
+						
+						
+										<div class="date-ctrl-up-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+											</div>
+										</div>
+										<div class="form-inline subfields">
+											<input type="text" name="day" placeholder="ДД" class="form-control day">
+											<input type="text" name="month" placeholder="ММ" class="form-control month">
+											<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+										</div>
+										<div class="date-ctrl-down-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+											</div>
+										</div>
+						
+								</div>
+							</div>
+						</div>
+						
+						
+						
+						
                         <div class="form-group no-display">
                             <?php echo $form->labelEx($model,'numberFieldMinValue', array(
                                 'class' => 'col-xs-3 control-label'
@@ -613,6 +751,55 @@
                                 )); ?>
                             </div>
                         </div>
+						
+						
+						
+						
+						
+						
+						<div class="form-group">
+							<?php  echo $form->labelEx($model,'dateFieldMinValue', array(
+								'class' => 'col-xs-3 control-label'
+							));  ?>
+						
+							<div class="col-xs-6 input-group date" id="date-min-field-cont">
+								<?php  echo $form->hiddenField($model,'dateFieldMinValue', array(
+									'id' => 'dateFieldMinValue',
+									'class' => 'form-control',
+									'placeholder' => 'Формат гггг-мм-дд'
+								)); ?>
+								<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+								</span>
+								<div class="subcontrol">
+						
+						
+										<div class="date-ctrl-up-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+											</div>
+										</div>
+										<div class="form-inline subfields">
+											<input type="text" name="day" placeholder="ДД" class="form-control day">
+											<input type="text" name="month" placeholder="ММ" class="form-control month">
+											<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+										</div>
+										<div class="date-ctrl-down-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+											</div>
+										</div>
+						
+								</div>
+							</div>
+						</div>
+						
+						
+						
                         <div class="form-group no-display">
                             <?php echo $form->labelEx($model,'numberStep', array(
                                 'class' => 'col-xs-3 control-label'

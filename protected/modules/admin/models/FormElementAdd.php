@@ -21,6 +21,8 @@ class FormElementAdd extends CFormModel
     public $defaultValueText;
     public $numberFieldMinValue;
     public $numberFieldMaxValue;
+	public $dateFieldMinValue;
+	public $dateFieldMaxValue;
     public $numberStep;
 
     public function rules()
@@ -30,7 +32,7 @@ class FormElementAdd extends CFormModel
                 'type, categorieId, label, position', 'required'
             ),
             array(
-                'id, guideId, allowAdd, isRequired, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue, defaultValueText', 'safe'
+					'id, guideId, allowAdd, isRequired, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue, defaultValueText,dateFieldMinValue, dateFieldMaxValue', 'safe'
             ),
             array(
                 'numberFieldMinValue, numberFieldMaxValue, numberStep', 'numerical'
@@ -58,7 +60,9 @@ class FormElementAdd extends CFormModel
             'defaultValueText' => 'Значение по умолчанию',
             'numberFieldMinValue' => 'Минимальное значение',
             'numberFieldMaxValue' => 'Максимальное значение',
-            'numberStep' => 'Шаг'
+            'numberStep' => 'Шаг',
+			'dateFieldMinValue' => 'Минимальное значение',
+			'dateFieldMaxValue' => 'Максимальное значение',
         );
     }
 }
