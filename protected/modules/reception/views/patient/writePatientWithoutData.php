@@ -14,49 +14,49 @@
 <h4>Необходимо найти врача к которому следует записать пациента на приём:</h4>
 <div class="row">
         <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
-            <div class="col-xs-6">
+            <div class="col-xs-5">
                 <div class="form-group">
-                <label for="ward" class="col-xs-4 control-label">Отделение</label>
-                <div class="col-xs-6">
-                    <select class="form-control" id="ward">
-                        <?php foreach($wardsList as $id => $name) { ?>
-                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="post" class="col-xs-4 control-label">Должность</label>
-                <div class="col-xs-6">
-                    <select class="form-control" id="post">
-                        <?php foreach($postsList as $id => $name) { ?>
-                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-                        <?php } ?>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
-                <div class="col-xs-6">
-                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
-                </div>
-            </div>
-                    <div class="form-group">
-                <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
-                    </div>
-                </div>
-                <div class="col-xs-6">
-                                <div class="form-group chooser first" id="diagnosisDistribChooser">
-                        <label for="diagnosis" class="col-xs-4 control-label">Диагноз (enter - добавить)</label>
-                        <div class="col-xs-6">
-                            <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
-                            <ul class="variants no-display">
-                            </ul>
-                            <div class="choosed">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+					<label for="ward" class="col-xs-4 control-label">Отделение</label>
+					<div class="col-xs-8">
+						<select class="form-control" id="ward">
+							<?php foreach($wardsList as $id => $name) { ?>
+								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+							<?php } ?>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="post" class="col-xs-4 control-label">Должность</label>
+					<div class="col-xs-8">
+						<select class="form-control" id="post">
+							<?php foreach($postsList as $id => $name) { ?>
+								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+							<?php } ?>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
+					<div class="col-xs-8">
+						<input type="text" class="form-control" id="fio" placeholder="ФИО врача">
+					</div>
+				</div>
+				<div class="form-group">
+					<input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
+				</div>
+			</div>
+			<div class="col-xs-7">
+				<div class="form-group chooser first" id="diagnosisDistribChooser">
+					<label for="diagnosis" class="col-xs-4 control-label">Диагноз (enter - добавить)</label>
+					<div class="col-xs-6">
+						<input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
+						<ul class="variants no-display">
+						</ul>
+						<div class="choosed">
+						</div>
+					</div>
+				</div>
+			</div>
         </form>
 </div>
 <h4>Необходимо выбрать врача</h4>

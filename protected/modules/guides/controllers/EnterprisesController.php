@@ -44,6 +44,7 @@ class EnterprisesController extends Controller {
     }
 
     private function addEditModel($enterprise, $model, $msg) {
+
         $enterprise->address_fact = $model->addressFact;
         $enterprise->address_jur = $model->addressJur;
         $enterprise->phone = $model->phone;
@@ -54,6 +55,7 @@ class EnterprisesController extends Controller {
         $enterprise->inn = $model->inn;
         $enterprise->kpp = $model->kpp;
         $enterprise->type = $model->type;
+		$enterprise->ogrn = $model->ogrn;
 
         if($enterprise->save()) {
             echo CJSON::encode(array('success' => true,
@@ -91,7 +93,7 @@ class EnterprisesController extends Controller {
                 $enterprise->inn = $model->inn;
                 $enterprise->kpp = $model->kpp;
                 $enterprise->type = $model->type;
-
+				$enterprise->ogrn = $model->ogrn;
                 if($enterprise->save()) {
                     echo CJSON::encode(array('success' => true,
                                              'text' => 'Новое учреждение успешно добавлено.'));

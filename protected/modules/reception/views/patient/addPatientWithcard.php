@@ -46,7 +46,10 @@
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
                         $("#patient-withcard-form").trigger("success", [data, textStatus, jqXHR])
-                    }'
+                    }',
+					'beforeSend' => 'function(jqXHR, settings) {
+						 $(".add-patient-submit input").trigger("begin")
+					}'
                 ),
                 array(
                     'class' => 'btn btn-success'

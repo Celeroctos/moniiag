@@ -73,7 +73,7 @@ if(isset($categorie['id'])) {
                                 }
                                ?>
                                 <?php echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
-                                    'class' => 'control-label label-before'
+                                    'class' => 'control-label label-before '.(($element['type'] == 6) ? 'medcard-date' : '')
                                 )); ?>
                         	<?php
                        	        if($element['type'] == 0) {
@@ -313,7 +313,7 @@ if(isset($categorie['id'])) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     ?>
-                                    <div id="<?php echo 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id']; ?>-cont" class="col-xs-3 input-group date null-padding-left">
+                                    <div id="<?php echo 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id']; ?>-cont" class="input-group date null-padding-left">
                                         <?php
                                         echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
                                         ?>

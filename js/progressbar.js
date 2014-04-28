@@ -194,6 +194,13 @@ $(document).ready(function(e) {
                 'successFunc' : function() {
 
                 }
+            },
+			'#syncOms' : {
+                'url' : '/index.php/admin/tasu/syncoms',
+                'successMsg' : 'Синхронизация с ТАСУ-ОМС завершена!',
+                'successFunc' : function() {
+
+                }
             }
         };
         return config;

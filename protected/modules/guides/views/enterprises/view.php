@@ -148,11 +148,24 @@
                                 )); ?>
                                 <div class="col-xs-9">
                                     <?php echo $form->textField($model,'kpp', array(
-                                        'id' => 'kpp',
+                                        'id' => 'ogrn',
                                         'class' => 'form-control',
                                         'placeholder' => 'КПП'
                                     )); ?>
                                     <?php echo $form->error($model,'kpp'); ?>
+                                </div>
+                            </div>
+							<div class="form-group">
+                                <?php echo $form->labelEx($model,'ogrn', array(
+                                	'class' => 'col-xs-3 control-label'
+                                )); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->textField($model,'ogrn', array(
+                                    	'id' => 'ogrn',
+                                    	'class' => 'form-control',
+                                    	'placeholder' => 'ОГРН'
+                                    )); ?>
+                                    <?php echo $form->error($model,'ogrn'); ?>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -330,6 +343,19 @@
                                     'id' => 'kpp',
                                     'class' => 'form-control',
                                     'placeholder' => 'КПП'
+                                )); ?>
+                                <?php echo $form->error($model,'kpp'); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'ogrn', array(
+                            	'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->textField($model,'ogrn', array(
+                                	'id' => 'ogrn',
+                                	'class' => 'form-control',
+                                	'placeholder' => 'ОГРН'
                                 )); ?>
                                 <?php echo $form->error($model,'kpp'); ?>
                             </div>

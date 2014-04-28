@@ -53,7 +53,7 @@
     // Паспорт (номер)
     $('#docnumber').keyfilter(/^[\d]+$/);
     // Номер карты
-    $('#cardNumber').keyfilter(/[\d\\]+/);
+    $('#cardNumber').keyfilter(/[\d\/]+/);
 
     this.initColorFields([
         '.custom-color' // Маркировка анкет

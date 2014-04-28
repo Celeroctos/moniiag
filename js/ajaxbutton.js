@@ -1,22 +1,27 @@
 ﻿$(document).ready(function() {
 	var buttonSelectors = [
 		'#patient-search-submit',
+		'#doctor-search-submit',
+		'.add-patient-submit input',
+        '#medcardContentSave',
+        '#printContentButton',
 		'.add-patient-submit input'
 	];
 	
 	buttonSelectors.forEach(function(buttonSelector) {
-		console.log(buttonSelector);
-		button = $(buttonSelector);
+		var button = $(buttonSelector);
 		var savedText = null;
+				
 		$(button).on('begin', function() {
 			endCalled = false;
 			$(button).prop('disabled', true);
-			$(button).trigger('process');
 			savedText = $(button).val();
+			$(button).trigger('process');
 		});
-		
+			
 		var pointCounter = 0;
 		var endCalled = false;
+		
 		$(button).on('process', function() {
 			setTimeout(process, 500);
 			function process() {
@@ -36,6 +41,7 @@
 				}
 			}
 		});
+
 		$(button).on('end', function() {
 			endCalled = true;
 			$(button).prop('disabled', false);

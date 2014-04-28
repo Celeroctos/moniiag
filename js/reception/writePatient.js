@@ -11,6 +11,7 @@ $(document).ready(function() {
     InitPaginationList('searchDoctorsResult','d.middle_name','desc',updateDoctorsList);
     // Поиск пациента
     $('#patient-search-submit').click(function(e) {
+		$(this).trigger("begin")
         updatePatientsList();
         return false;
 
@@ -147,7 +148,6 @@ $(document).ready(function() {
     }
     
     function updatePatientsList() {
-        
         var filters = getPatientsFilter();
         var PaginationData=getPaginationParameters('searchWithCardResult');
         if (PaginationData!='') {
@@ -190,6 +190,7 @@ $(document).ready(function() {
 
                     });
                 }
+				$('#patient-search-submit').trigger('end');
                 return;
             }
         });
@@ -227,16 +228,16 @@ $(document).ready(function() {
 
                     });
                 }
+				$('#doctor-search-submit').trigger('end');
                 return;
             }
         });
     }
     
     $('#doctor-search-submit').click(function(e) {
+		$(this).trigger('begin');
         updateDoctorsList();
-
         return false;
-
     });
 
 

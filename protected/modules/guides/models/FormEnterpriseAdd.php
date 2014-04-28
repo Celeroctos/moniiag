@@ -12,6 +12,7 @@ class FormEnterpriseAdd extends CFormModel
     public $inn;
     public $kpp;
     public $type;
+	public $ogrn;
     public $id;
 
     /**
@@ -22,7 +23,7 @@ class FormEnterpriseAdd extends CFormModel
         return array(
             // name, email, subject and body are required
             array(
-                'shortName, fullName, addressFact, addressJur, phone, bank, bankAccount, inn, kpp, type', 'required'
+                'shortName, fullName, addressFact, addressJur, phone, bank, bankAccount, inn, kpp, ogrn, type', 'required'
             )
         );
     }
@@ -44,6 +45,7 @@ class FormEnterpriseAdd extends CFormModel
             'bankAccount' => 'Расчётный счёт',
             'inn' => 'ИНН',
             'kpp' => 'КПП',
+			'ogrn' => 'ОГРН',
             'type' => 'Тип'
         );
     }

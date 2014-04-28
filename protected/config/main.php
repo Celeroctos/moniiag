@@ -117,6 +117,14 @@ return array(
 			'password' => 'system54@nof',
 			'charset' => 'utf8',
 		),
+		
+		'db3' => array(
+            'class'=>'system.db.CDbConnection',
+			'connectionString' => 'sqlsrv:Server=212.42.63.62\HISSQLEE,1433;Database=PDPRegStorage',
+			'username' => 'sa',
+			'password' => 'system54@nof',
+			'charset' => 'utf8',
+		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'index/error',
