@@ -50,11 +50,18 @@
         return isAllow;
     });
 
+    $('#cardNumber').on('keyup', function (e) {
+        if ($(this).val().indexOf('\\')>=0)
+        {
+            $(this).val(  $(this).val().replace('\\', '/')  );
+        }
+    });
+
     // Паспорт (номер)
     $('#docnumber').keyfilter(/^[\d]+$/);
     // Номер карты
-    $('#cardNumber').keyfilter(/[\d\\]+/);
-
+   // $('#cardNumber').keyfilter(/[\d\\]+/);
+    $('#cardNumber').keyfilter(/^[\d]*([\\\/][\d]*){0,1}$/);
     this.initColorFields([
         '.custom-color' // Маркировка анкет
     ]);
