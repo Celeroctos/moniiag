@@ -210,6 +210,9 @@ $("#element-add-form").on('success', function (eventObj, ajaxData, status, jqXHR
         $("#element-add-form")[0].reset(); // Сбрасываем форму
         $('.table-config-container').addClass('no-display').find('#numCols, #numRows').attr('disabled', false);
         $('#addElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').val('').parents('.form-group').addClass('no-display');
+        $('#addElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').addClass('no-display');
+        // 
+
         $('.table-config-headers tbody tr').remove();
     } else {
         // Удаляем предыдущие ошибки
@@ -467,6 +470,18 @@ function editElement() {
                                 $('#editElementPopup #numberFieldMinValue').val(config.minValue);
                                 $('#editElementPopup #numberStep').val(config.step);
                             }
+                            if (data.data['type'] == 6) {
+                                $('#editElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
+                                if (config != null && config != '') {
+                                    $('#editElementPopup #dateFieldMaxValue').val(config.maxValue);
+                                    $('#editElementPopup #dateFieldMinValue').val(config.minValue);
+
+                                    // Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
+                                    $('#editElementPopup #dateFieldMaxValue').trigger('change');
+                                    $('#editElementPopup #dateFieldMinValue').trigger('change');
+
+                                }
+                            }
                         }
                     }
 
@@ -607,6 +622,16 @@ $("select#type").on('change', function (e) {
     } else {
         $('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').val('').parents('.form-group').addClass('no-display');
     }
+
+
+
+    if ($(this).val() == 6) {
+        $('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
+    } else {
+        $('#dateFieldMaxValue, #dateFieldMinValue').val('').parents('.form-group').addClass('no-display');
+    }
+
+
 });
 
 var currentRow = null;

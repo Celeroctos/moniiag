@@ -19,8 +19,44 @@
 	    '#addShedulePopup #shift-date-end-cont',
         '#editSheduleEmployeePopup #shift-date-begin-cont',
 	    '#editSheduleEmployeePopup #shift-date-end-cont',
+
+        '#addElementPopup #date-max-field-cont',
+	    '#addElementPopup #date-min-field-cont',
+        '#editElementPopup #date-max-field-cont',
+	    '#editElementPopup #date-min-field-cont',
+
+
     ];
-    
+// Перечень конфигов контролов дат. Ключ к массиву - ИД контрола, а элемент - конфиг контрола
+var dateControlConfigs =
+    [
+
+    ];
+
+    // Занести в список контролов дат контрол
+    function pushDateControl(controlSelector,controlConfig)
+    {
+        DateControlContainers.push(controlSelector);
+        if (controlConfig)
+        {
+            var dateConfig = {};
+
+            var minDate = controlConfig.minValue;
+            var minParts = minDate.split('-');
+            dateConfig.minDay = parseInt(minParts[2]);
+            dateConfig.minMonth = parseInt(minParts[1]);
+            dateConfig.minYear =  parseInt(minParts[0]);
+
+            var maxDate = controlConfig.maxValue;
+            var maxParts = maxDate.split('-');
+            dateConfig.maxDay = parseInt(maxParts[2]);
+            dateConfig.maxMonth = parseInt(maxParts[1]);
+            dateConfig.maxYear =  parseInt(maxParts[0]);
+
+            dateControlConfigs[controlSelector] = dateConfig;
+        }
+    }
+
   //   $('.subcontrol input').val('');
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
     // Обрабатывает событие нажатия на кнопку-стрелку для контрола с датой
@@ -122,7 +158,34 @@
         return $(element).selection();
     }
 
-   function initDateField(DateField) {
+   // Возвращает строку, которую нужно записать в том случае, если дата не укладывается в диапазон min и max
+   function minMaxFilter(dayToTest,monthToTest,yearToTest,config)
+   {
+       // Инитим результат - по умолчанию возвращается то, что мы подали в фукцию
+       var result =[ dayToTest, monthToTest, yearToTest   ];
+       // Сначала сконвертим все даты в объекты
+       var dateToTest = new Date(yearToTest, monthToTest, dayToTest);
+       var minDateConfig = new Date(config.minYear, config.minMonth, config.minDay);
+       var maxDateConfig = new Date(config.maxYear, config.maxMonth, config.maxDay);
+
+       // Проверяем на минимакс
+       if (dateToTest <= minDateConfig)
+       {
+           // Если меньше минимума - берём минимум
+           result =[ config.minDay, config.minMonth, config.minYear   ];
+       }
+       else
+       {
+            if (dateToTest > maxDateConfig)
+            {
+                // Если больше максимума - берём максимум
+                result =[ config.maxDay, config.maxMonth, config.maxYear   ];
+            }
+       }
+       return result;
+   }
+
+   function initDateField(DateField, config) {
 	    var format = 'yyyy-mm-dd';
 	    if(DateField.length == 0) {
             return;
@@ -140,38 +203,53 @@
         });
        $(DateField).parents('.form-group').find('label').css({'padding-top' : '25px'});
         var ctrl = DateField.find('input.form-control:first');
-        $(ctrl).on('change', function(e, type){
+        $(ctrl).on('change', function(e, type)
+        {
             console.log(e.target);
             var subcontrols = $($(this).parents('div')[0]).find('.subcontrol');
-            if(typeof subcontrols != 'undefined') {
-
+            if(typeof subcontrols != 'undefined')
+            {
                 var day = $(subcontrols).find('input.day');
                 var month = $(subcontrols).find('input.month');
                 var year = $(subcontrols).find('input.year');
                 // Аргумент type говорит о том, в каком направлении нужно писать: из контролов в субконтролы или наоборот.
                 // Из суб в настоящий
-                if(typeof type == 'undefined') {
-        //$(subcontrols).find('input').val('');
+                if(typeof type == 'undefined')
+                {
                     var currentDate = $(this).val();
                     var parts = currentDate.split('-');
+                    var DayInt = parseInt(parts[2]);
+                    var MonthInt = parseInt(parts[1]);
+                    var YearInt =  parseInt(parts[0]);
+                    // Надо проверить DayInt и т.п.  на min-max
+                    if (config!=undefined)
+                    {
+                        var newValues = minMaxFilter(DayInt,MonthInt,YearInt,config);
+                        DayInt = newValues[0];
+                        MonthInt = newValues[1];
+                        YearInt =  newValues[2];
+                        $(this).val(YearInt  + '-' + MonthInt + '-' + DayInt);
+                    }
 
-        var DayInt = parseInt(parts[2]);
-        var MonthInt = parseInt(parts[1]);
-        var YearInt =  parseInt(parts[0]);
-
-        // Проверяем - выводим, если ни одна из компонент не равно NaN
-        //  Если число равно NaN, то проверка Число == Число выдаст false
-        if (DayInt==DayInt && MonthInt==MonthInt && YearInt==YearInt) {
-
-            $(day).val(DayInt);
-            $(month).val(MonthInt);
-            $(year).val(YearInt);
-
-        }
-        //$(day).val(parts[2]);
-                    //$(month).val(parts[1]);
-                    //$(year).val(parts[0]);
-                } else { // Из настоящего в суб
+                    // Проверяем - выводим, если ни одна из компонент не равно NaN
+                    //  Если число равно NaN, то проверка Число == Число выдаст false
+                    if (DayInt==DayInt && MonthInt==MonthInt && YearInt==YearInt)
+                    {
+                        $(day).val(DayInt);
+                        $(month).val(MonthInt);
+                        $(year).val(YearInt);
+                    }
+                }
+                else
+                { // Из настоящего в суб
+                    // Надо проверить значения контролов year, month, year а минимакс
+                    if (config!=undefined)
+                    {
+                        var newValues = minMaxFilter(day.val(),month.val(),year.val(),config);
+                        day.val(newValues[0]);
+                        month.val(newValues[1]);
+                        year.val(newValues[2]);
+                    }
                     $(this).val(year.val() + '-' + month.val() + '-' + day.val());
                 }
             }
@@ -519,8 +597,10 @@
     
         // Поля дат
    function initDateFields(dateFields) {
-        for(var i = 0; i < dateFields.length; i++) {
-	        initDateField($(dateFields[i]));
+        for(var i = 0; i < dateFields.length; i++)
+        {
+
+	        initDateField($(dateFields[i]),dateControlConfigs[dateFields[i]]);
         }
    }
     

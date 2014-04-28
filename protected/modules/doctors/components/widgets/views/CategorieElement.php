@@ -344,7 +344,19 @@ if(isset($categorie['id'])) {
                                         </div>
                                     </div>
                                     <script type="text/javascript">
-                                        DateControlContainers.push('#<?php echo $options['id']; ?>-cont');
+                                       <?php
+                                       // Если конфига нет - инитим контрол без него. Если есть - то подаём ещё и конфиг
+                                        if ($element['config']!=null)
+                                       {?>
+                                            pushDateControl('#'+'<?php echo $options['id']; ?>'+'-cont',<?php echo CJSON::encode($element['config']); ?>);
+                                       <?php
+                                       }
+                                       else
+                                       {?>
+                                           pushDateControl('#'+'<?php echo $options['id']; ?>'+'-cont');
+                                       <?php
+                                       }
+                                       ?>
                                     </script>
                                     <?php
                                     if($element['label_after'] != null) {

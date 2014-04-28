@@ -89,6 +89,7 @@ class ElementsController extends Controller {
     }
 
     public function actionAdd() {
+		
         $model = new FormElementAdd();
         if(isset($_POST['FormElementAdd'])) {
             $model->attributes = $_POST['FormElementAdd'];
@@ -177,6 +178,28 @@ class ElementsController extends Controller {
             );
             $element->config = CJSON::encode($config);
         }
+		
+		if ($model->type == 6)
+		{
+            // Проверим - больше ли максимальное значение минимального
+            if (strtotime($model->dateFieldMaxValue)<strtotime($model->dateFieldMinValue))
+            {
+                echo CJSON::encode(array('success' => false,
+                        'errors' => array(
+                            'maxminvalue' => array(
+                                'Максимальное значение поля меньше, чем минимальное!'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+			$config = array(
+				'maxValue' => $model->dateFieldMaxValue,
+				'minValue' => $model->dateFieldMinValue
+				);
+			$element->config = CJSON::encode($config);
+		}
 
         // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
         $partOfPath = $this->getElementPath($element->categorie_id);
