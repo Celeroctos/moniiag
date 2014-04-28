@@ -1323,9 +1323,10 @@ class TasuController extends Controller {
 	private function getTasuProfessional($greeting) {
 		$conn = Yii::app()->db2;
 		$doctor = Doctor::model()->findByPk($greeting['doctor_id']);
-		if($doctor == null) {
+		if($doctor == null || $doctor->tasu_id != null) {
 			return false;
 		}
+
 		$sql = "SELECT
 					[sp].[uid] AS [ProfessionalUID]
 				FROM
@@ -1361,6 +1362,91 @@ class TasuController extends Controller {
             'timestamps' => $toTempl
         ));
     }
+	
+	public function actionSyncOms() {
+		if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
+            echo CJSON::encode(array(
+                    'success' => false,
+                    'data' => array(
+                        'error' => 'Недостаточно информации о считывании данных!'
+                    ))
+            );
+            exit();
+        }
+		
+		$this->processed = 0;
+        $this->numErrors = 0;
+        $this->numAdded = 0;
+
+        $this->log = array();
+
+        $omss = TasuAllOms::model()->getRows(false, 'ENP', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
+	
+		if($_GET['totalRows'] == null) {
+            $this->totalRows = TasuAllOms::model()->getNumRows();
+            // Ставим отметку о дате синхронизации
+            $syncdateModel = Syncdate::model()->findByPk('oms');
+            if($syncdateModel == null) {
+                $syncdateModel = new Syncdate();
+            }
+            $syncdateModel->name = 'oms';
+            $syncdateModel->syncdate = date('Y-m-d h:i');
+            if(!$syncdateModel->save()) {
+                $this->log[] = 'Невозможно сохранить временную отметку о синронизации.';
+            }
+        } else {
+            $this->totalRows = $_GET['totalRows'];
+        }
+
+		foreach($omss as $oms) {
+            $this->processed++;
+			
+			$serie = mb_substr($oms['ENP'], 0, 6);
+			$number = mb_substr($oms['ENP'], 6);
+
+			$issetOms = Oms::model()->find('t.oms_number = :oms_number',
+                array(
+                    ':oms_number' => $serie.' '.$number,
+                )
+            );
+
+			if($issetOms == null) {
+                // Добавляем пациента, если его нет
+				try {
+					$newOms = new Oms();
+					$newOms->first_name = $oms['IM'];
+					$newOms->last_name = implode('', array_reverse(preg_split('//u', $oms['FAM'], -1, PREG_SPLIT_NO_EMPTY)));
+					$newOms->type = 0; // Пока временно так
+					$newOms->middle_name = $oms['OT'];
+					$newOms->oms_number = $serie.' '.$number;
+					$newOms->gender = $oms['SEX'] == 1 ? 1 : 0;
+					$newOms->birthday = $oms['BIRTHDAY'];
+					$newOms->givedate = $oms['DATE_N'];
+					$newOms->status = 0;
+					$newOms->enddate = $oms['DATE_E'];
+					if(!$newOms->save()) {
+						$this->log[] = 'Невозможно импортировать полис с кодом '.$serie.' '.$number;
+						$this->numErrors++;
+					} else {
+						$this->numAdded++;
+					}					
+				} catch(Exception $e) {
+					$this->numErrors++;
+				}
+            }
+		}
+		 echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'log' => $this->log,
+                    'successMsg' => 'Успешно импортировано '.($_GET['totalRows'] + $this->processed).' пациентов.',
+                    'processed' => $this->processed,
+                    'totalRows' => $this->totalRows,
+                    'numErrors' => $this->numErrors,
+                    'numAdded' => $this->numAdded
+                ))
+        );
+	}
 	
 
     /* Синхронизация пациентов: ТАСУ в МИС */
@@ -1421,7 +1507,7 @@ class TasuController extends Controller {
 				try {
 					$newOms = new Oms();
 					$newOms->first_name = $patient['im_53316'];
-					$newOms->last_name = $patient['fam_18565'];
+					$newOms->last_name = implode('', array_reverse(preg_split('//u', $patient['fam_18565'], -1, PREG_SPLIT_NO_EMPTY)));
 					$newOms->type = 0; // Пока временно так
 					$newOms->middle_name = $patient['ot_48206'];
 					$newOms->oms_number = $tasuOms['series_14820'].' '.$tasuOms['number_12574'];
@@ -1440,7 +1526,6 @@ class TasuController extends Controller {
 					
 					$issetPatient = $newOms;
 					
-					// Добавляем медкарту к пациенту
 				} catch(Exception $e) {
 					$this->numErrors++;
 				}
@@ -1452,7 +1537,9 @@ class TasuController extends Controller {
 						':patient_uid' => $patient['uid']
 					)
 			);
-			if($issetMedcard != null && count(explode('/', $issetMedcard['number_50713'])) == 2) {
+
+			$parts = explode('/', $issetMedcard['number_50713']);
+			if($issetMedcard != null && count($parts) == 2 && array_search($parts[1], array(11, 12, 13, 14)) !== false) {
 				// Создаём медкарту, если такой нет в базе
 				$misMedcard = Medcard::model()->findByPk($issetMedcard['number_50713']);
 				if($misMedcard == null) {
@@ -1486,7 +1573,9 @@ class TasuController extends Controller {
 						$misMedcard->gived_date = $tasuDul['issuedate_42162'];
 					}
 					$misMedcard->policy_id = $issetPatient->id;
-					
+					if($patient['invgroup_59187'] != 4) { // Ребёнок-инвалид...? У нас такого нет
+						$misMedcard->invalid_group = $patient['invgroup_59187'];
+					}
 					// Вынимаем адрес. Адрес, если нет о нём данных в КЛАДР в ТАСУ, добавляется в справочники
 					$conn = Yii::app()->db2;
 					$addresses = TasuAddress::model()->findAll('patientuid_32736 = :patient_uid AND version_end = :version_end', 
@@ -1527,7 +1616,7 @@ class TasuController extends Controller {
 		$region = CladrRegion::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $address['coderegion_37290']));
 		if($region == null) {
 			$region = new CladrRegion();
-			$region->name = $address['regionname_60536]'];
+			$region->name = $address['regionname_60536'];
 			$region->code_cladr = $address['coderegion_37290'];
 			if(!$region->save()) {
 				$this->numErrors++;
@@ -1592,7 +1681,6 @@ class TasuController extends Controller {
 		
 		$patientController = Yii::app()->createController('reception/patient');
 		$addressData = $patientController[0]->getAddressStr($addressData, true);
-		
 		if($address['addresstype_31280'] == 1) { // Адрес регистрации
 			$medcard->address_reg_str = $addressData['addressStr'];
 		}

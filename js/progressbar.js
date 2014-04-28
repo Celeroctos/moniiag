@@ -3,7 +3,7 @@ $(document).ready(function(e) {
 
     $('.progressBox').each(function(index, element) {
         var current = 0;
-        var rowsPerQuery = 50;
+        var rowsPerQuery = 500;
         var totalMaked = 0; // Сколько уже обработано строк
         var totalRows = null;
         var isPaused = false;
@@ -191,6 +191,13 @@ $(document).ready(function(e) {
             '#syncDoctors' : {
                 'url' : '/index.php/admin/tasu/syncdoctors',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
+                'successFunc' : function() {
+
+                }
+            },
+			'#syncOms' : {
+                'url' : '/index.php/admin/tasu/syncoms',
+                'successMsg' : 'Синхронизация с ТАСУ-ОМС завершена!',
                 'successFunc' : function() {
 
                 }

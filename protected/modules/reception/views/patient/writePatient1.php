@@ -309,8 +309,11 @@ $form = $this->beginWidget('CActiveForm', array(
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                    $("#patient-medcard-edit-form").trigger("success", [data, textStatus, jqXHR])
-                                }'
+							$("#patient-medcard-edit-form").trigger("success", [data, textStatus, jqXHR])
+						}',
+						'beforeSend' => 'function(jqXHR, settings) {
+							 $("#patient-search-submit").trigger("begin")
+						}'
                     ),
                     array(
                         'class' => 'btn btn-success'
@@ -358,8 +361,8 @@ $form = $this->beginWidget('CActiveForm', array(
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                    $("#patient-oms-edit-form").trigger("success", [data, textStatus, jqXHR])
-                                }'
+							$("#patient-oms-edit-form").trigger("success", [data, textStatus, jqXHR])
+						}'
                     ),
                     array(
                         'class' => 'btn btn-success'

@@ -62,6 +62,7 @@
     // Номер карты
    // $('#cardNumber').keyfilter(/[\d\\]+/);
     $('#cardNumber').keyfilter(/^[\d]*([\\\/][\d]*){0,1}$/);
+
     this.initColorFields([
         '.custom-color' // Маркировка анкет
     ]);

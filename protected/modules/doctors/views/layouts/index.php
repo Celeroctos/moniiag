@@ -31,6 +31,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboardcnf.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/consilium.js"></script>
     <style>
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;
@@ -54,7 +55,17 @@
     </div>
 </div>
 <div class ="buttonUpContainer">
-		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span><nobr>
+		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span></nobr>
+</div>
+<div class="consilium-cont">
+    <div class="panel-arrow">
+        <span class="glyphicon glyphicon-expand"></span>
+    </div>
+	<h4>Консилиум</h4>
+	<div class="main-window">
+	</div>
+	<input type="text" id="consilium-dialog-str" />
+	<span class="glyphicon glyphicon-plus submit" title="Отправить сообщение"></span>
 </div>
 </body>
 </html>

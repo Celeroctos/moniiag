@@ -375,11 +375,12 @@ $(document).ready(function() {
                     $(popup).find(' .modal-body .row').append("<p class=\"errorText\">" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-
+			
             $(popup).css({
                 'z-index' : '1051'
             }).modal({});
         }
+		$(this).find("input[type='submit']").trigger("end");
     });
 
     $("#firstName, #lastName, #middleName").on('keyup', function(e) {

@@ -6,7 +6,8 @@
 <?php $this->widget('application.modules.admin.components.widgets.UploadTasuTypesTabMenu', array(
 ));
 ?>
-<h4>Синхронизация с базой данных ТАСУ (подключение <span class="connectionString"><?php echo Yii::app()->db2->connectionString; ?>)</span></h4>
+<h4>Синхронизация с базой данных ТАСУ (подключение <span class="connectionString"><?php echo Yii::app()->db2->connectionString; ?>)</span> и
+синхронизация с базой данных ТАСУ-ОМС (подключение <span class="connectionString"><?php echo Yii::app()->db3->connectionString; ?>)</span></h4>
 <div class="row">
     <div id="accordion1" class="accordion">
         <div class="accordion-group">
@@ -212,6 +213,38 @@
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncDoctors">
+                        <h5><strong>Прогресс синхронизации</strong></h5>
+                        <div class="progress progress-striped active">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                <span class="sr-only"></span>
+                            </div>
+                        </div>
+                        <p class="text-warning">Всего строк: <span class="numStringsAll">0</span></p>
+                        <p class="text-primary">Обработано строк: <span class="numStrings">0</span></p>
+                        <p class="text-success">Добавлено строк: <span class="numStringsAdded">0</span></p>
+                        <p class="text-danger"><strong>Ошибок (строк): <span class="numStringsError">0</span></strong></p>
+                        <div class="form-group clear">
+                            <input type="button" class="btn btn-success successImport no-display" value="Закончить импорт">
+                            <input type="button" class="btn btn-danger pauseImport" value="Пауза">
+                            <input type="button" class="btn btn-danger continueImport" value="Продолжить" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div id="accordion8" class="accordion">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a href="#collapse8" data-parent="#accordion8" data-toggle="collapse" class="accordion-toggle" data-toggle="tooltip" data-placement="right" title="Врачи"><strong>ОМС</strong></a>
+            </div>
+            <div class="accordion-body collapse in" id="collapse8">
+                <div class="accordion-inner">
+                    <div class="row default-padding-left">
+                        <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['oms']) ? $timestamps['doctors'] : 'синхронизация не производилась'; ?></span></strong></p>
+                        <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
+                    </div>
+                    <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncOms">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
                             <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
