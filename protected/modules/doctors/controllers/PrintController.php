@@ -105,8 +105,8 @@ class PrintController extends Controller {
 		if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
-				var_dump($changedElements);
-				exit();
+				//var_dump($changedElements);
+				//exit();
 				
                 exit('Во время этого приёма не было произведено никаких изменений!');
             } else {
@@ -145,100 +145,6 @@ class PrintController extends Controller {
 				'greeting' => $greetingInfo
 				);
 		}
-		
-		/*
-        $sortedArr = array();
-        // Сортируем по категориям
-        $greetingInfo = array();
-        $resultArr = array();
-
-		//var_dump($changedElements );
-		//var_dump("||||||");
-		//exit();
-
-		//var_dump($changedElements);
-		//exit();
-		foreach($changedElements as $element)
-		{
-			$elementInfo = MedcardElement::model()->getOne($element['element_id']);
-			// Иногда выдаёт пустой элемент 
-			if (!$elementInfo) continue;
-            // Не существует общей информации по приёму
-            if(count($greetingInfo) == 0) {
-                $greeting = SheduleByDay::model()->findByPk($greetingId);
-                if($greeting == null) {
-                    exit('Ошибка: такого приёма не существует!');
-                } else {
-                    $doctor = Doctor::model()->findByPk($greeting['doctor_id']);
-                    $greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
-                    // Найдём медкарту, а по ней и пациента
-                    $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
-                    $patient = Oms::model()->findByPk($medcard['policy_id']);
-                    $greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
-                    $greetingInfo['card_number'] = $greeting['medcard_id'];
-                    $dateParts = explode('-', $greeting['patient_day']);
-                    $greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
-                }
-            }
-            // Не существует категории с таким id - создаём
-            $id = (string)$elementInfo['categorie_id'];
-            if(!isset($resultArr[$id])) {
-                $resultArr[$id] = array();
-            }
-			
-            $num = count($resultArr[$id]);
-            $resultArr[$id][$num]['element'] = $element;
-            $resultArr[$id][$num]['info'] = $elementInfo;
-            // Для комбо нужно посмотреть значение справочника
-            if($elementInfo['guide_id'] != null) {
-                if($elementInfo['type'] == 3) { // Комбо с множественным выбором
-                    $values = CJSON::decode($element['value']);
-                    // Клепаем строку из значений
-                    $counter = 0;
-					// Если values не array - делаем из него массив
-					if (!is_array($values))
-					{
-						$newArray = array();
-						$newArray[] = $values;
-						$values = $newArray;
-					}
-                    foreach($values as $value) {
-                        $valueSearched = MedcardGuideValue::model()->findByPk($value);
-                        if($valueSearched != null) {
-                            if($counter == 0) {
-                                $resultArr[$id][$num]['element']['value'] = $valueSearched['value'].', ';
-                            } else {
-                                $resultArr[$id][$num]['element']['value'] .= $valueSearched['value'].', ';
-                            }
-                            $counter++;
-                        }
-                    }
-                    $resultArr[$id][$num]['element']['value'] = substr($resultArr[$id][$num]['element']['value'], 0, count($resultArr[$id][$num]['element']['value']) - 3);
-                } else {
-                    $value = MedcardGuideValue::model()->findByPk($element['value']);
-                    if($value != null) {
-                        $resultArr[$id][$num]['element']['value'] = $value['value'];
-                    }
-                }
-            }
-        }
-
-		//var_dump($resultArr);
-		//exit();
-	
-        // Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
-        if($greetingIn === false) {
-            $this->render('greeting', array(
-                'categories' => $resultArr,
-                'greeting' => $greetingInfo
-            ));
-        } else {
-            return array(
-                'categories' => $resultArr,
-                'greeting' => $greetingInfo
-            );
-        }
-		*/
     }
 
 	public function drawPrintCategorie($oneCat)

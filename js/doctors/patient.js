@@ -107,7 +107,12 @@
     $('#medcardContentSave').on('click', function (e) {
        // $(this).trigger('begin');
         isThisPrint = false;
-        // Берём кнопки с классом 
+        onStartSave();
+    });
+
+    function onStartSave()
+    {
+        // Берём кнопки с классом
         var buttonsContainers = $('div.submitEditPatient').parents('form');
 
         var isError = false;
@@ -139,7 +144,7 @@
                     });
                     // Вытащим метку данного элемента
                     var labelOfControl = ($(controlElements[j]).find('label').text())
-                                                .trim();
+                        .trim();
                     // Если последний символ в строке звёздочка - обрезаем её
                     if (labelOfControl[labelOfControl.length - 1] == '*') {
                         labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
@@ -151,8 +156,8 @@
                     }
                     // Добавим в поп-ап сообщение из ошибки
                     $('#errorPopup .modal-body .row').append("<p>" +
-                                'Поле \"' + labelOfControl + '\" должно быть заполнено'
-                                + "</p>")
+                        'Поле \"' + labelOfControl + '\" должно быть заполнено'
+                        + "</p>")
                 }
 
 
@@ -172,7 +177,7 @@
             $('#submitDiagnosis').click();
         }
 
-    });
+    }
 
     $("#date-cont").on('changeDate', function (e) {
         $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
@@ -207,7 +212,7 @@
     $(document).on('click', '.accept-greeting-link', function (e) {
         printHandler = 'accept-greeting-link';
         isThisPrint = true;
-        $('.submitEditPatient input').trigger('click');
+        onStartSave();
     });
 
     // Закрытие приёма
@@ -322,16 +327,27 @@ $('.print-greeting-link').on('click', function (e) {
     //  $('#noticePopup').modal({});
     printHandler = 'print-greeting-link';
     isThisPrint = true;
-    $('.submitEditPatient input').trigger('click');
+    // После закрытия окна начинать сохранение медкарты и печать листа приёма
+        isThisPrint = true;
+        // Если нет кнопки "сохранить" - вызываем печать сразу
+        if ($('.submitEditPatient input').length<=0)
+        {
+            $('.activeGreeting .print-greeting-link').trigger('print');
+        }
+        else
+        {
+            // Иначе вызываем процедуру сохранения
+            $('.submitEditPatient input').trigger('click');
+        }
 });
-
+/*
 $('.accept-greeting-link').on('click', function (e) {
     //  $('#noticePopup').modal({});
     printHandler = 'accept-greeting-link';
     isThisPrint = true;
     $('.submitEditPatient input').trigger('click');
 });
-
+*/
 $('.print-recomendation-link').on('click', function (e) {
     // $('#noticePopup').modal({});
     printHandler = 'print-recomendation-link';
@@ -376,26 +392,6 @@ $('#printPopup .btn-success').on('click', function (e) {
 // Печать листа приёма, само действие
 $('.print-greeting-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
-
-
-
-    /*
-    $.ajax({
-    'url': '/index.php/doctors/print/printgreeting/?greetingid=' + id,
-    'cache': false,
-    'dataType': 'json',
-    'type': 'GET',
-    'error': function (data, textStatus, jqXHR) {
-    console.log(data);
-    },
-    'success': function (data, textStatus, jqXHR) {
-
-
-    }
-    });
-    return false;
-    */
-
     var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
     $(printWin).on('load',
     function () {
@@ -403,9 +399,6 @@ $('.print-greeting-link').on('print', function (e) {
     }
 
     );
-
-
-    //printWin.focus();
     return false;
 });
 
