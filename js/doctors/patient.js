@@ -1,14 +1,26 @@
 ﻿$(document).ready(function () {
-    // Недоделано
-    /*
+
+    globalVariables.isUnsavedUserData = false;  // Есть ли несохранённые данные у пользователя
+    globalVariables.wasUserFocused = false; // Был ли фокус на каком-то элементе
+    //    флаги isUnsavedUserData и wasUserFocused работают в связке
+
     $(window).on(
     'beforeunload',
     function () {
-    //  alert('Не уходи, пожалуйста!!!')
-    return '';
+        // Если есть несохранённые данные - спрашиваем, нужно ли их сохранить
+        if (globalVariables.isUnsavedUserData==true)
+        {
+            return 'В приёме остались несохранённые данные. Если Вы хотите их сохранить - нажмите "остаться на странице" и сохраните данные.';
+        }
+        else
+        {
+            return;
+        }
     }
     );
-    */
+
+
+    //$(window).bind('beforeunload', function() { alert('Ура!');} );
 
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
@@ -21,6 +33,8 @@
             //  }
             // if (isThisPrint) {
             if ($(".submitEditPatient").length - 1 == numCalls) {
+                // Сбрасываем, что есть несохранённые данные
+                globalVariables.isUnsavedUserData = false
                 // Сбрасываем режим на дефолт
                 // isThisPrint = false;
                 numCalls = 0;
@@ -107,7 +121,7 @@
             for (j = 0; j < controlElements.length; j++) {
 
                 // Внутри контейнера с контролом ищу сам контрол
-                var oneControlElement = $(controlElements[j]).find('input[type=text],textarea,select');
+                var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number],textarea,select');
                 //console.log(oneControlElement);
                 // Проверим - есть ли данного контрола значение
                 if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
@@ -970,6 +984,28 @@ $('#nextHistoryPoint').on('click', function () {
     $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
 });
 });
+
+// Это сделано для того, чтобы отследить изменение пользователем какого-либо элемента
+//     Если пользователь первый раз на чём-то сфокусировался - то надо поставить обработчик на изменение любого контрола
+//                 который в случае изменения - поднимает флаг
+$('html').on('focus','form[id=patient-edit-form] input[type=text],input[type=number],textarea,select',
+    function (e)
+    {
+        if (globalVariables.wasUserFocused ==false)
+        {
+            // Ставим обработчик на изменние -
+            $('html').on('change','form[id=patient-edit-form] input[type=text],input[type=number],textarea,select',
+                function (e)
+                {
+                    globalVariables.isUnsavedUserData = true;
+                }
+            );
+        }
+        globalVariables.wasUserFocused = true;
+    }
+
+);
+
 
 
 function getOnlyLikes() {
