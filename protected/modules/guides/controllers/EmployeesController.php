@@ -134,6 +134,7 @@ class EmployeesController extends Controller {
         $employee->degree_id = $model->degreeId;
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
+		$employee->greeting_type = $model->greetingType;
 
         if(!isset($_POST['notDateEnd'])) {
             $employee->date_end = $model->dateEnd;

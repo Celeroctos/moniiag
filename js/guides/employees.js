@@ -13,7 +13,8 @@ $(document).ready(function() {
                   'Звание',
                   'Дата начала действия',
                   'Дата окончания действия',
-                  'Отделение'],
+                  'Отделение',
+				  ''],
         colModel:[
             {
                 name:'id',
@@ -98,7 +99,12 @@ $(document).ready(function() {
                 name: 'ward',
                 index: 'ward',
                 width: 110
-            }
+            },
+			{
+				name: 'greeting_type',
+				index: 'greeting_type',
+				hidden: true
+			}
         ],
         rowNum: 15,
         rowList:[15,30,50],
@@ -281,7 +287,11 @@ $(document).ready(function() {
                             {
                                 modelField: 'ward_code',
                                 formField: 'wardCode'
-                            }
+                            },
+							{
+								modelField: 'greeting_type',
+								formField: 'greetingType'
+							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             if(fields[i].modelField == 'date_end') {

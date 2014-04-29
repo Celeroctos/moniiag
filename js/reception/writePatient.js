@@ -130,7 +130,14 @@ $(document).ready(function() {
                 'data' : choosedDiagnosis
             }
         ];
-
+		
+		if($('#greetingType').val() != 0) {
+			rules.push({
+                'field' : 'greeting_type',
+                'op' : 'eq',
+                'data' : $('#greetingType').val()
+            });
+		}
         // Дата не везде есть: на странице записи опосредованных пациентов её нет
         if($('#greetingDate').length > 0) {
             rules.push({
