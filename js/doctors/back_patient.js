@@ -217,7 +217,8 @@ $(document).ready(function() {
     // После закрытия окна начинать сохранение медкарты и печать листа приёма
     $('#noticePopup').on('hidden.bs.modal', function(e) {
         isThisPrint = true;
-        $('.submitEditPatient input').trigger('click');
+
+            $('.submitEditPatient input').trigger('click');
     });
 
     $('#successEditPopup').on('show.bs.modal', function(e) {
