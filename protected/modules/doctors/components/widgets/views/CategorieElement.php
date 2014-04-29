@@ -86,7 +86,7 @@ if(isset($categorie['id'])) {
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                        $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -107,7 +107,7 @@ if(isset($categorie['id'])) {
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                        $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -129,7 +129,7 @@ if(isset($categorie['id'])) {
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                        $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -169,7 +169,7 @@ if(isset($categorie['id'])) {
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                        $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -288,7 +288,7 @@ if(isset($categorie['id'])) {
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                        $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
@@ -307,7 +307,7 @@ if(isset($categorie['id'])) {
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                     } else {
-                                        $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                        $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                     }
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
