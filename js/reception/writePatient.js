@@ -109,6 +109,11 @@ $(document).ready(function() {
                 'op' : 'eq',
                 'data' : $('#post').val()
             },
+			{
+                'field' : 'greeting_type',
+                'op' : 'eq',
+                'data' : $('#greetingType').val()
+            },
             {
                 'field' : 'middle_name',
                 'op' : 'cn',
@@ -130,14 +135,7 @@ $(document).ready(function() {
                 'data' : choosedDiagnosis
             }
         ];
-		
-		if($('#greetingType').val() != 0) {
-			rules.push({
-                'field' : 'greeting_type',
-                'op' : 'eq',
-                'data' : $('#greetingType').val()
-            });
-		}
+
         // Дата не везде есть: на странице записи опосредованных пациентов её нет
         if($('#greetingDate').length > 0) {
             rules.push({
@@ -322,7 +320,7 @@ $(document).ready(function() {
                         ((data[i].post == null) ? '' : data[i].post) +
                     '</td>' +
                     '<td>' +
-                        data[i].ward  +
+                        (data[i].ward != null ? data[i].ward : '')  +
                     '</td>' +
                     '<td>' +
                         data[i].cabinet +
