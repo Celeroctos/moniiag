@@ -89,7 +89,7 @@
                                 if(isset($element['size']) && $element['size'] != null) {
                                     $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                 } else {
-                                    $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                    $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                 }
 
                                 echo $form->textField($model,'f'.$element['id'], $options);
@@ -110,7 +110,7 @@
                                 if(isset($element['size']) && $element['size'] != null) {
                                     $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                 } else {
-                                    $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                    $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                 }
 
                                 echo $form->textArea($model,'f'.$element['id'], $options);
@@ -135,7 +135,7 @@
                                 if(isset($element['size']) && $element['size'] != null) {
                                     $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                 }  else {
-                                    $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                    $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                 }
 
                                 echo $form->dropDownList($model,'f'.$element['id'], $element['guide'], $options);
@@ -156,7 +156,7 @@
                                 if(isset($element['size']) && $element['size'] != null) {
                                     $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
                                 }  else {
-                                    $options['style'] = 'width: '.(15 * $lettersInPixel).'px';
+                                    $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                 }
 
                                 if (isset($element['guide'])) {

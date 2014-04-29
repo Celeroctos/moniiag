@@ -1381,7 +1381,6 @@ class TasuController extends Controller {
         $this->log = array();
 
         $omss = TasuAllOms::model()->getRows(false, 'ENP', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
-	
 		if($_GET['totalRows'] == null) {
             $this->totalRows = TasuAllOms::model()->getNumRows();
             // Ставим отметку о дате синхронизации
@@ -1409,8 +1408,15 @@ class TasuController extends Controller {
                     ':oms_number' => $serie.' '.$number,
                 )
             );
-
-			if($issetOms == null) {
+			/*$sql = "SELECT
+						t.oms_number
+					FROM mis.oms t
+					WHERE t.oms_number = '".$serie." ".$number."'";*/
+			//$conn = Yii::app()->db;
+			//$issetOms = $conn->createCommand($sql)->queryRow();
+			//var_dump($issetOms);
+			//exit();
+			if($issetOms == null || $issetOms === false) {
                 // Добавляем пациента, если его нет
 				try {
 					$newOms = new Oms();
@@ -1423,7 +1429,19 @@ class TasuController extends Controller {
 					$newOms->birthday = $oms['BIRTHDAY'];
 					$newOms->givedate = $oms['DATE_N'];
 					$newOms->status = 0;
-					$newOms->enddate = $oms['DATE_E'];
+					$newOms->enddate = $oms['DATE_E']; 
+					/*$sql = "INSERT INTO mis.oms (first_name, last_name, type, middle_name, oms_number, gender, birthday, givedate, status, enddate) VALUES(
+					'".$oms['IM']."',
+					'".implode('', array_reverse(preg_split('//u', $oms['FAM'], -1, PREG_SPLIT_NO_EMPTY)))."',
+					0,
+					'".$oms['OT']."',
+					'".$serie." ".$number."',
+					'".($oms['SEX'] == 1 ? 1 : 0)."',
+					'".$oms['BIRTHDAY']."',
+					'".$oms['DATE_N']."',
+					0,
+					'".$oms['DATE_E']."')";
+					$result = $conn->createCommand($sql)->execute();*/
 					if(!$newOms->save()) {
 						$this->log[] = 'Невозможно импортировать полис с кодом '.$serie.' '.$number;
 						$this->numErrors++;
