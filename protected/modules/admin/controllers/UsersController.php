@@ -169,7 +169,7 @@ class UsersController extends Controller {
                     exit();
                 }
 
-                $user->password = crypt($_POST['FormUserAdd']['password'], $_POST['FormUserAdd']['password']);
+                $user->password = md5(md5($_POST['FormUserAdd']['password']));
                 if($user->save()) {
                     echo CJSON::encode(array('success' => 'true',
                                              'msg' => 'Пароль успешно отредактирован.'));
