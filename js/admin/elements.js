@@ -475,12 +475,16 @@ function editElement() {
                                 if (config != null && config != '') {
                                     $('#editElementPopup #dateFieldMaxValue').val(config.maxValue);
                                     $('#editElementPopup #dateFieldMinValue').val(config.minValue);
-
-                                    // Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
-                                    $('#editElementPopup #dateFieldMaxValue').trigger('change');
-                                    $('#editElementPopup #dateFieldMinValue').trigger('change');
-
                                 }
+                                else
+                                {
+                                    // Если конфига нет - надо просто поставить пустое значение
+                                    $('#editElementPopup #dateFieldMaxValue').val('');
+                                    $('#editElementPopup #dateFieldMinValue').val('');
+                                }
+                                // Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
+                                $('#editElementPopup #dateFieldMaxValue').trigger('change');
+                                $('#editElementPopup #dateFieldMinValue').trigger('change');
                             }
                         }
                     }
