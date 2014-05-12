@@ -12,6 +12,7 @@ class FormEmployeeAdd extends FormMisDefault
     public $dateBegin;
     public $dateEnd;
     public $wardCode;
+	public $greetingType;
     public $id;
 
 
@@ -19,7 +20,7 @@ class FormEmployeeAdd extends FormMisDefault
     {
         return array(
             array(
-                'firstName, middleName, lastName, postId, dateBegin, wardCode', 'required'
+                'firstName, middleName, lastName, postId, dateBegin, wardCode, greetingType', 'required'
             ),
             array(
                 'degreeId, titulId, tabelNumber', 'numerical'
@@ -43,7 +44,8 @@ class FormEmployeeAdd extends FormMisDefault
             'titulId' => 'Звание',
             'dateBegin' => 'Дата начала действия',
             'dateEnd' => 'Дата конца действия',
-            'wardCode' => 'Отделение'
+            'wardCode' => 'Отделение',
+			'greetingType' => 'Тип приёмов'
         );
     }
 }

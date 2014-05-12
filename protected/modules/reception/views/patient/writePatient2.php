@@ -38,6 +38,16 @@
                     </select>
                 </div>
             </div>
+			<div class="form-group">
+                <label for="post" class="col-xs-4 control-label">Тип приёма</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="greetingType">  
+						<option value="0">Любой</option>
+						<option value="1">Первичный</option>
+						<option value="2">Вторичный</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group">
                 <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
                 <div class="col-xs-6">
