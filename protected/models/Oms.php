@@ -53,6 +53,44 @@ class Oms extends MisActiveRecord {
 
         return $oms->queryAll();
     }
+	
+	public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
+                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false) {
+		
+	$connection = Yii::app()->db;
+        $oms = $connection->createCommand()
+            ->select('COUNT(*) as num')
+            ->from('mis.oms o')
+            ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
+
+        if($filters !== false) {
+            $this->getSearchConditions($oms, $filters, array(
+                'fio' => array(
+                    'first_name',
+                    'last_name',
+                    'middle_name'
+                )
+            ), array(
+                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio'),
+                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
+            ), array(
+
+            ));
+        }
+
+        // WHERE card_number==null
+        if ($onlyWithoutCards)
+        {
+            $oms->andWhere("coalesce(m.card_number,'')=''");
+        }
+        // WHERE card_number!=null
+        if ($onlyWithCards)
+        {
+            $oms->andWhere("coalesce(m.card_number,'')!=''");
+        }
+
+        return $oms->queryRow();
+	}
 
     public function getDistinctRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;

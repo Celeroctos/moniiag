@@ -18,6 +18,11 @@
     };
 
     $('#omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
+    $('#omsNumber, #policy').on('keydown', function(e) {
+        if($(this).val().length >= 16 && e.keyCode != 8 && e.keyCode != 46) {
+            return false;
+        }
+    });
     $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁёa-zA-Z\-]*$/);
 
     $('#snils').on('keyup', function (e) {
@@ -475,4 +480,6 @@ $('input[type="number"]').on('keydown', function(e) {
         }
     );
 
+    /* Двигающиеся модалки */
+    $('.modal').draggable();
 });

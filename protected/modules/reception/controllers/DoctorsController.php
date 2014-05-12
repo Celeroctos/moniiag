@@ -54,7 +54,7 @@ class DoctorsController extends Controller {
 		if(isset($filters['rules']['greeting_type']) && $filters['rules']['greeting_type'] == 0) {
 			unset($filters['rules']['greeting_type']);
 		}
-	
+
         // Вычислим общее количество записей
 	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
         $totalPages = ceil(count($num) / $rows);

@@ -197,7 +197,7 @@ class UsersController extends Controller {
 
     private function addEditModel($user, $model, $msg) {
         if($model->password != null) {
-            $user->password = crypt($model->password, $model->password);
+            $user->password = md5(md5($model->password));
         }
         $user->username = $model->username;
         $user->login = $model->login;

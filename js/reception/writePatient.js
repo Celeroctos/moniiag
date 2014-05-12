@@ -138,11 +138,13 @@ $(document).ready(function() {
 
         // Дата не везде есть: на странице записи опосредованных пациентов её нет
         if($('#greetingDate').length > 0) {
-            rules.push({
-                'field' : 'greeting_date',
-                'op' : 'eq',
-                'data' : $('#greetingDate').val()
-            });
+            if($('#greetingDateComboChoose').length == 0 || ($('#greetingDateComboChoose').length > 0 && $('#greetingDateComboChoose').val() == 1)) {
+                rules.push({
+                    'field' : 'greeting_date',
+                    'op' : 'eq',
+                    'data' : $('#greetingDate').val()
+                });
+            }
         }
         // Отсеиваем из массива
         var Result ={
@@ -676,6 +678,16 @@ $(document).ready(function() {
             location.href = '/index.php/reception/patient/viewadd/?patientid=' + createWithOms
         } else {
             location.href = '/index.php/reception/patient/viewadd';
+        }
+    });
+
+    /* Дата приёма (любая или не-любая) */
+    $('#greetingDateComboChoose').on('change', function(e) {
+        // Конкретная
+        if($(this).val() == 1) {
+            $('#greetingDate').parents('.form-group').removeClass('no-display');
+        } else {
+            $('#greetingDate').parents('.form-group').addClass('no-display');
         }
     });
 });

@@ -17,10 +17,10 @@
 </h4>
 <div class="row">
     <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
-        <div class = "col-xs-6">
+        <div class = "col-xs-5">
             <div class="form-group">
                 <label for="ward" class="col-xs-4 control-label">Отделение</label>
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <select class="form-control" id="ward">
                         <?php foreach($wardsList as $id => $name) { ?>
                         <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label for="post" class="col-xs-4 control-label">Должность</label>
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <select class="form-control" id="post">
                         <?php foreach($postsList as $id => $name) { ?>
                             <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
@@ -50,7 +50,7 @@
             </div>
             <div class="form-group">
                 <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
                 </div>
             </div>
@@ -73,7 +73,16 @@
                 </div>
             </div>-->
             <div class="form-group">
-                <label for="greetingDate" class="col-xs-4 control-label required">Дата приёма</label>
+                <label for="post" class="col-xs-4 control-label">Дата приёма</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="greetingDateComboChoose">
+                        <option value="0">Любая</option>
+                        <option value="1">Указать конкретную</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group no-display">
+                <label for="greetingDate" class="col-xs-4 control-label required"></label>
                 <div id="greetingDate-cont" class="col-xs-5 input-group date">
                     <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="greetingDate">
                     <span class="input-group-addon">
@@ -107,7 +116,7 @@
                        <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
             </div>
         </div>
-        <div class = "col-xs-6">
+        <div class = "col-xs-7">
             <div class="form-group chooser first" id="diagnosisDistribChooser">
                 <label for="diagnosis" class="col-xs-4 control-label">Диагноз (enter - добавить)</label>
                 <div class="col-xs-6">

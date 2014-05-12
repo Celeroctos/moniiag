@@ -1,4 +1,4 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
     // Инициализируем пагинацию для списков
     InitPaginationList('omsSearchWithCardResult','oms_number','desc',updatePatientWithCardsList);
     InitPaginationList('omsSearchWithoutCardResult','oms_number','desc',updatePatientWithoutCardsList);
@@ -26,22 +26,22 @@ $(document).ready(function() {
             'rules' : [
                 {
                     'field' : 'oms_number',
-                    'op' : 'cn',
+                    'op' : 'bw',
                     'data' :  $('#omsNumber').val()
                 },
                 {
                     'field' : 'first_name',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#firstName').val()
                 },
                 {
                     'field' : 'middle_name',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#middleName').val()
                 },
                 {
                     'field' : 'last_name',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#lastName').val()
                 },
                 {
@@ -779,7 +779,6 @@ $(document).ready(function() {
         }
     });
 
-
     $('#printPatientBtn').on('click', function() {
         if(cardNumber !== false) {
             var printWin = window.open('/index.php/doctors/print/printmainpage/?medcardid=' + cardNumber,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
@@ -797,4 +796,8 @@ $(document).ready(function() {
         }
     );
 
+    // Переадресация на страницу создания нового пациента
+    $('#createNewPatientBtn').on('click', function(e) {
+        location.href = '/index.php/reception/patient/viewadd';
+    });
 });
