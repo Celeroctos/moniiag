@@ -187,6 +187,9 @@ $("#edit-shedule-employee").on('success', function (eventObj, ajaxData, status, 
 }
 });
 
+$('#editSheduleEmployee').on('click', function(e) {
+    editSheduleEmployee();
+});
 
 $("#doctor-shedule-add-submit").on('click',
      function () {
@@ -656,6 +659,8 @@ $('#errorEditShedulePopup').on('hide.bs.modal', function (e) {
 
 });
 });
+
+
 
 function displayAllDoctors(data) {
     var table = $('#searchDoctorsResult tbody');

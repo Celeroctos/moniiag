@@ -92,9 +92,6 @@
 					<button type="button" class="btn btn-default" id="deleteSheduleEmployee">Удалить расписание</button>
 				</div>
             </div>
-			
-            
-          
     <!--</div>-->
 	<div class="row col-xs-12">
 	<h5><strong>Дни-исключения</strong></h5>

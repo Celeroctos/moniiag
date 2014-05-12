@@ -976,6 +976,29 @@ $('#nextHistoryPoint').on('click', function () {
     $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
     $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
 });
+
+
+    var isExpandedList = false;
+    $('#expandPatientList').on('click', function(e) {
+        $(this).addClass('no-display');
+        $('#collapsePatientList').removeClass('no-display');
+        isExpandedList = true;
+    });
+
+    $('#collapsePatientList').on('click', function(e) {
+        $(this).addClass('no-display');
+        $('#expandPatientList').removeClass('no-display');
+        isExpandedList = false;
+    });
+
+    $('#refreshPatientList').on('click', function(e) {
+        if(!isExpandedList) {
+
+        } else {
+
+        }
+    });
+
 });
 
 // Это сделано для того, чтобы отследить изменение пользователем какого-либо элемента
@@ -998,8 +1021,6 @@ $('html').on('focus','form[id=patient-edit-form] input[type=text],input[type=num
     }
 
 );
-
-
 
 function getOnlyLikes() {
     return globalVariables.onlyLikes;
