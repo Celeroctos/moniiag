@@ -239,6 +239,12 @@ var dateControlConfigs =
                         $(month).val(MonthInt);
                         $(year).val(YearInt);
                     }
+                    else
+                    {
+                        $(day).val('');
+                        $(month).val('');
+                        $(year).val('');
+                    }
                 }
                 else
                 { // Из настоящего в суб
