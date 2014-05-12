@@ -4,6 +4,7 @@ class UserIdentity extends CUserIdentity
 {
     private $_id;
 
+
 	public function authenticate()
 	{
         $record = User::model()->findByAttributes(array('login' => $this->username));
@@ -45,6 +46,16 @@ class UserIdentity extends CUserIdentity
         return !$this->errorCode;
 
 	}
+
+    public function wrongLogin()
+    {
+        return ($this->errorCode == self::ERROR_USERNAME_INVALID);
+    }
+
+    public function wrongPassword()
+    {
+        return ($this->errorCode == self::ERROR_PASSWORD_INVALID);
+    }
 }
 
 ?>

@@ -30,18 +30,24 @@
         )); ?>
     </div>
 </div>
-<div class="form-group">
-    <?php echo $form->labelEx($model,'whoGived', array(
-        'class' => 'col-xs-3 control-label'
-    )); ?>
-    <div class="col-xs-8">
-        <?php echo $form->textField($model,'whoGived', array(
-            'id' => 'whoGived',
-            'class' => 'form-control',
-            'placeholder' => 'Кем выдан'
+<!--Проверяем флаг и выводим поле "Кем выдан паспорт"-->
+<?php if(!$notEditPassport) { ?>
+    <div class="form-group">
+        <?php  echo $form->labelEx($model,'whoGived', array(
+            'class' => 'col-xs-3 control-label'
         )); ?>
+
+        <div class="col-xs-8">
+            <?php echo $form->textField($model,'whoGived', array(
+                'id' => 'whoGived',
+                'class' => 'form-control',
+                'placeholder' => 'Кем выдан'
+            )); ?>
+        </div>
     </div>
-</div>
+<?php } ?>
+<!--Проверяем флаг и выводим поле "Кем выдан паспорт"-->
+<?php if(!$notEditPassport) { ?>
 <div class="form-group">
     <?php echo $form->labelEx($model,'documentGivedate', array(
         'class' => 'col-xs-3 control-label'
@@ -78,6 +84,8 @@
         </div>
     </div>
 </div>
+<?php } ?>
+
 <div class="form-group">
     <?php echo $form->labelEx($model,'addressReg', array(
         'class' => 'col-xs-3 control-label'

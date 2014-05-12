@@ -1,4 +1,8 @@
 ﻿$(document).ready(function () {
+    globalVariables.wrongPassword = false;
+    globalVariables.wrongLogin = false;
+
+
     this.initColorFields = function (colorPickerFields) {
         $(function () {
             // Маркировка анкет
@@ -74,11 +78,23 @@
     // Форма логина-разлогина
     $("#login-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
+        globalVariables.wrongPassword = false;
+        globalVariables.wrongLogin = false;
         if (ajaxData.success == 'true') { // Логин прошёл удачно
             /*$('#loginSuccessPopup').modal({
             });*/
             location.href = ajaxData.data;
-        } else if (ajaxData.success == 'notfound') {
+        } else if (ajaxData.success == 'notFoundLogin' ||ajaxData.success == 'wrongPassword' ) {
+            if (ajaxData.success == 'notFoundLogin')
+            {
+                globalVariables.wrongLogin = true;
+            }
+
+            if (ajaxData.success == 'wrongPassword')
+            {
+                globalVariables.wrongPassword = true;
+            }
+
             $('#loginNotFoundPopup').modal({
         });
     } else {
@@ -86,6 +102,22 @@
     });
 }
 });
+
+    $('#loginNotFoundPopup').on('hidden.bs.modal',function(){
+        // Если неправильный логин - выделяем логин
+        if(globalVariables.wrongLogin)
+        {
+            $('#login').focus();
+        }
+
+        // Если не правильный пароль - выделяем пароль
+        if(globalVariables.wrongPassword)
+        {
+            $('#password').focus();
+        }
+        // В остальных случаях - ничего не делаем, отдыхаем
+
+    });
 
 // Форма разлогина
 $("#logout-form").on('success', function (eventObj, ajaxData, status, jqXHR) {

@@ -356,6 +356,7 @@ $(document).ready(function() {
                 $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
                 cardNumber = ajaxData.cardNumber;
                 console.log(cardNumber);
+                $('#successAddPopup').find('#successCardNumber').text(cardNumber);
                 $('#successAddPopup').modal({
 
                 });
@@ -537,6 +538,40 @@ $(document).ready(function() {
 
                     $(form).find('#documentGivedate').trigger('change');
                     $(form).find('#privilege').trigger('change');
+
+
+                    // Если адрес проживания не заполнен, а адрес регистрации - заполнен,
+                    //     то берём адрес проживания из адреса регистрации
+                    var addrHidden = $.parseJSON($(form).find('#addressHidden').val());
+                    var emptyFactAddress = true;
+                    // Перебираем элементы объекта addrHidden
+                    //    и проверяем на пустоту поле. Если хотя бы одно поле не пустое
+                    //    - значит адрес считается введённым
+                    for (var properties in addrHidden)
+                    {
+                        if (addrHidden[properties]!='' && addrHidden[properties]!=null)
+                        {
+                            emptyFactAddress = false;
+                            break;
+                        }
+                    }
+
+                    /*for (i=0;i<addrHidden.length;i++)
+                    {
+                        if (addrHidden[i]!='' && addrHidden[i]!=null)
+                        {
+                            emptyFactAddress = false;
+                            break;
+                        }
+                    }*/
+
+                    // Если поле фактического проживания пусто - берём значения полей "адрес регистрации" и перекачиваем
+                    //     их значения
+                    if (emptyFactAddress)
+                    {
+                        $(form).find('#address').val(  $(form).find('#addressReg').val()  );
+                        $(form).find('#addressHidden').val(  $(form).find('#addressRegHidden').val()  );
+                    }
 
                     $('#editMedcardPopup').modal({});
                 } else {
@@ -743,4 +778,23 @@ $(document).ready(function() {
             location.href = '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardNumber
         }
     });
+
+
+    $('#printPatientBtn').on('click', function() {
+        if(cardNumber !== false) {
+            var printWin = window.open('/index.php/doctors/print/printmainpage/?medcardid=' + cardNumber,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+            printWin.focus();
+            return false;
+        }
+    });
+
+    // По закрытию окна с инфой об успешной регистрацией - перенаправляем на поиск
+    $('#successAddPopup').on(
+        'hidden.bs.modal',
+        function()
+        {
+            location.href = '/index.php/reception/patient/viewsearch';
+        }
+    );
+
 });

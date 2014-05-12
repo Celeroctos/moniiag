@@ -13,7 +13,20 @@ class UsersController extends Controller {
                                              'data' => Yii::app()->request->baseUrl.'/index.php'.Yii::app()->user->startpageUrl));
                     exit();
                 } else {
-                    echo CJSON::encode(array('success' => 'notfound',
+
+                    $resultCode = 'loginError';
+                    // анализируем код ошибки из экземпл€ра класса userIdentity
+                    if ($userIdent->wrongLogin())
+                    {
+                        $resultCode = 'notFoundLogin';
+                    }
+
+                    if ($userIdent->wrongPassword())
+                    {
+                        $resultCode = 'wrongPassword';
+                    }
+
+                    echo CJSON::encode(array('success' => $resultCode,
                                              'errors' => $userIdent->errorMessage));
                 }
             } else {

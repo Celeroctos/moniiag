@@ -85,6 +85,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title">Успешно!</h4>
             </div>
+
+            <!--
             <div class="modal-body">
                 <div class="row">
                     <p>Поздравляем, вы успешно добавили нового пациента и создали для него первую карту. Впоследствии, Вы можете добавлять новые карты при <?php echo CHtml::link('поиске пациента', array('/reception/patient/viewsearch')) ?> или <?php echo CHtml::link('записать', array('#'), array('class' => 'writePatient')) ?> добавленного пациента на приём</p>
@@ -94,6 +96,19 @@
                 <button type="button" class="btn btn-success" id="writePatientBtn">Записать пациента</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
+            -->
+            <div class="modal-body">
+                <div class="row">
+                    <p>Поздравляем, вы успешно создали карту.</p>
+                    <p>Номер карты: <span id="successCardNumber"></span></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="printPatientBtn">Печать титульного листа</button>
+                <button type="button" class="btn btn-success" id="writePatientBtn">Записать пациента</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+
         </div>
     </div>
 </div>
