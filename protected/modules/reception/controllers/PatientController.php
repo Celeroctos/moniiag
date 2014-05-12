@@ -428,8 +428,8 @@ class PatientController extends Controller {
 
         $formModel->doctype = $medcard->doctype;
         $formModel->docnumber = $medcard->docnumber;
-        $formModel->whoGived = $medcard->who_gived;
-        $formModel->documentGivedate = $medcard->gived_date;
+       // $formModel->whoGived = $medcard->who_gived;
+       // $formModel->documentGivedate = $medcard->gived_date;
         $formModel->invalidGroup = $medcard->invalid_group;
         $formModel->workPlace = $medcard->work_place;
         $formModel->workAddress = $medcard->work_address;
@@ -679,8 +679,8 @@ class PatientController extends Controller {
         $medcard->doctype = $model->doctype;
         $medcard->serie = $model->serie;
         $medcard->docnumber = $model->docnumber;
-        $medcard->who_gived = $model->whoGived;
-        $medcard->gived_date = $model->documentGivedate;
+       // $medcard->who_gived = $model->whoGived;
+        //$medcard->gived_date = $model->documentGivedate;
         $medcard->invalid_group = $model->invalidGroup;
         $medcard->reg_date = date('Y-m-d');
         $medcard->work_place = $model->workPlace;

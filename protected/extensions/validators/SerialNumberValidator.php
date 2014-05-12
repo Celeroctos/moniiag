@@ -26,7 +26,7 @@ class SerialNumberValidator extends CValidator
 			//echo(Yii::t('yii','Недопустимый символ в поле {attribute}'));
 			$this->addError($object,$attribute,Yii::t('yii',
 			/*'Недопустимый символ в поле {attribute}')*/
-			'fdfgdfg {attribute}')
+			'Недопустимый символ в поле {attribute}')
 			);
 		}
 	} 

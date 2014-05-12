@@ -324,7 +324,6 @@ $form = $this->beginWidget('CActiveForm', array(
                         'model' => $modelMedcard,
                         'privilegesList' => $privilegesList,
                         'showEditIcon' => 1,
-                        'notEditPassport' => true,
                         'template' => 'application.modules.reception.components.widgets.views.MedcardFormWidget'
                     ));
                 ?>

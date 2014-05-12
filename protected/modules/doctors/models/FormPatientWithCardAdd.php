@@ -5,8 +5,6 @@ class FormPatientWithCardAdd extends FormMisDefault
     public $doctype;
     public $serie;
     public $docnumber;
-    public $whoGived;
-    public $documentGivedate;
     public $addressReg;
     public $addressRegHidden;
     public $address;
@@ -33,7 +31,8 @@ class FormPatientWithCardAdd extends FormMisDefault
         Yii::import('ext.validators.SerialNumberValidator');
         return array(
             array(
-                'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, privilege', 'required'
+                //'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, privilege', 'required'
+                'doctype, serie, docnumber, addressReg, address, contact, privilege', 'required'
             ),
             array(
                 'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId, addressRegHidden, addressHidden', 'safe'
@@ -53,8 +52,8 @@ class FormPatientWithCardAdd extends FormMisDefault
             'doctype' => 'Тип документа',
             'serie' => 'Серия',
             'docnumber' => 'Номер',
-            'whoGived' => 'Кем выдан',
-            'documentGivedate' => 'Дата выдачи',
+           // 'whoGived' => 'Кем выдан',
+           // 'documentGivedate' => 'Дата выдачи',
             'addressReg' => 'Адрес регистрации',
             'address' => 'Адрес проживания',
             'workPlace' => 'Место работы',
