@@ -10,7 +10,7 @@
             <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Главная', array('/')) ?>
         </li>-->
         <?php if(Yii::app()->user->checkAccess('menuRegister')) { ?>
-        <li <?php echo $module == 'reception' ? 'class="active"' : ''; ?>>
+        <li <?php echo $module == 'reception' && (!isset($_GET['callcenter']) || $_GET['callcenter'] != 1) ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('<img src="/images/icons/register.png" width="32" height="32" alt="" />Регистратура', array('#')) ?>
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuSearchPatient')) { ?>
@@ -39,11 +39,11 @@
 
 
         <?php if(Yii::app()->user->checkAccess('menuCallCenter')) { ?>
-            <li <?php echo $module == 'reception' ? 'class="active"' : ''; ?>>
+            <li <?php echo $module == 'reception' && isset($_GET['callcenter']) && $_GET['callcenter'] == 1 ? 'class="active"' : ''; ?>>
                 <?php echo CHtml::link('<img src="/images/icons/call_center.png" width="32" height="32" alt="" />Call-Центр', array('#')) ?>
                 <ul class="nav">
                     <?php if(Yii::app()->user->checkAccess('menuPatientWriteCallCenter')) { ?>
-                        <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo') ? 'class="active"' : ''; ?>>
+                        <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientwithoutdata' && isset($_GET['callcenter']) && $_GET['callcenter'] == 1) ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись пациента', array('/reception/patient/writepatientwithoutdata?callcenter=1')) ?>
                         </li>
                     <?php } ?>

@@ -26,22 +26,22 @@ $(document).ready(function() {
             'rules' : [
                 {
                     'field' : 'oms_number',
-                    'op' : 'cn',
+                    'op' : 'bw',
                     'data' :  $('#omsNumber').val()
                 },
                 {
                     'field' : 'first_name',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#firstName').val()
                 },
                 {
                     'field' : 'middle_name',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#middleName').val()
                 },
                 {
                     'field' : 'last_name',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#lastName').val()
                 },
                 {
@@ -742,5 +742,10 @@ $(document).ready(function() {
         if(cardNumber !== false) {
             location.href = '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardNumber
         }
+    });
+
+    // Переадресация на страницу создания нового пациента
+    $('#createNewPatientBtn').on('click', function(e) {
+        location.href = '/index.php/reception/patient/viewadd';
     });
 });

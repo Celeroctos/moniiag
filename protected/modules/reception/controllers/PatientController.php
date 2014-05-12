@@ -753,11 +753,10 @@ class PatientController extends Controller {
         if(!$mediateOnly) {
             $model = new Oms();
             // Вычислим общее количество записей
-            $num = $model->getRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
+            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
 
-            $totalPages = ceil(count($num) / $rows);
+            $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
-
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly);
 
             // Обрабатываем результат
@@ -830,7 +829,7 @@ class PatientController extends Controller {
             );
             exit();
         }
-	
+
 	    return $filters;
     }
     
