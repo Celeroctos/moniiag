@@ -26,6 +26,9 @@
     <li <?php echo $controller == 'service' && $action == 'view' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Медуслуги', array('/guides/service/view')) ?>
     </li>
+    <li <?php echo $controller == 'insurances' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Страховые компании', array('/guides/insurances/view')) ?>
+    </li>
     <li <?php echo $controller == 'cladr' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('КЛАДР', array('/guides/cladr/viewregions')) ?>
     </li>
