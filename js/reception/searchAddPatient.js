@@ -538,41 +538,36 @@
 
                     $(form).find('#documentGivedate').trigger('change');
                     $(form).find('#privilege').trigger('change');
-
-
-                    // Если адрес проживания не заполнен, а адрес регистрации - заполнен,
-                    //     то берём адрес проживания из адреса регистрации
-                    var addrHidden = $.parseJSON($(form).find('#addressHidden').val());
                     var emptyFactAddress = true;
-                    // Перебираем элементы объекта addrHidden
-                    //    и проверяем на пустоту поле. Если хотя бы одно поле не пустое
-                    //    - значит адрес считается введённым
-                    for (var properties in addrHidden)
+
+                    // Если есть адрес регистрации
+                    if ($(form).find('#addressRegHidden').val()!='' && $(form).find('#addressRegHidden').val()!=undefined)
                     {
-                        if (addrHidden[properties]!='' && addrHidden[properties]!=null)
+                        // Если адрес проживания не заполнен, а адрес регистрации - заполнен,
+                        //     то берём адрес проживания из адреса регистрации
+                        if ($(form).find('#addressHidden').val()!='' && $(form).find('#addressHidden').val()!=undefined)
                         {
-                            emptyFactAddress = false;
-                            break;
+                            var addrHidden = $.parseJSON($(form).find('#addressHidden').val());
+                            // Перебираем элементы объекта addrHidden
+                            //    и проверяем на пустоту поле. Если хотя бы одно поле не пустое
+                            //    - значит адрес считается введённым
+                            for (var properties in addrHidden)
+                            {
+                                if (addrHidden[properties]!='' && addrHidden[properties]!=null)
+                                {
+                                    emptyFactAddress = false;
+                                    break;
+                                }
+                            }
+                        }
+                        // Если поле фактического проживания пусто - берём значения полей "адрес регистрации" и перекачиваем
+                        //     их значения
+                        if (emptyFactAddress)
+                        {
+                            $(form).find('#address').val(  $(form).find('#addressReg').val()  );
+                            $(form).find('#addressHidden').val(  $(form).find('#addressRegHidden').val()  );
                         }
                     }
-
-                    /*for (i=0;i<addrHidden.length;i++)
-                    {
-                        if (addrHidden[i]!='' && addrHidden[i]!=null)
-                        {
-                            emptyFactAddress = false;
-                            break;
-                        }
-                    }*/
-
-                    // Если поле фактического проживания пусто - берём значения полей "адрес регистрации" и перекачиваем
-                    //     их значения
-                    if (emptyFactAddress)
-                    {
-                        $(form).find('#address').val(  $(form).find('#addressReg').val()  );
-                        $(form).find('#addressHidden').val(  $(form).find('#addressRegHidden').val()  );
-                    }
-
                     $('#editMedcardPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
