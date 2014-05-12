@@ -11,8 +11,8 @@ class FormPatientAdd extends FormMisDefault
     public $doctype;
     public $serie;
     public $docnumber;
-    public $whoGived;
-    public $documentGivedate;
+    //public $whoGived;
+    //public $documentGivedate;
     public $addressReg;
     public $addressRegHidden;
     public $address;
@@ -78,8 +78,8 @@ class FormPatientAdd extends FormMisDefault
             'doctype' => 'Тип документа',
             'serie' => 'Серия, номер',
             'docnumber' => 'Номер',
-            'whoGived' => 'Кем выдан',
-            'documentGivedate' => 'Дата выдачи',
+           // 'whoGived' => 'Кем выдан',
+           // 'documentGivedate' => 'Дата выдачи',
             'addressReg' => 'Адрес регистрации',
             'address' => 'Адрес проживания',
             'workPlace' => 'Место работы',

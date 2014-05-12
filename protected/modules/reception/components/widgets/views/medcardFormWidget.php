@@ -30,35 +30,33 @@
         )); ?>
     </div>
 </div>
-<!--Проверяем флаг и выводим поле "Кем выдан паспорт"-->
-<?php if(!$notEditPassport) { ?>
-    <div class="form-group">
-        <?php  echo $form->labelEx($model,'whoGived', array(
+<!--Поле "Кем выдан" - не используется-->
+<!--    <div class="form-group"> -->
+        <?php  /*echo $form->labelEx($model,'whoGived', array(
             'class' => 'col-xs-3 control-label'
-        )); ?>
+        )); */?>
 
-        <div class="col-xs-8">
-            <?php echo $form->textField($model,'whoGived', array(
+<!--            <div class="col-xs-8">-->
+            <?php /* echo $form->textField($model,'whoGived', array(
                 'id' => 'whoGived',
                 'class' => 'form-control',
                 'placeholder' => 'Кем выдан'
-            )); ?>
-        </div>
-    </div>
-<?php } ?>
-<!--Проверяем флаг и выводим поле "Кем выдан паспорт"-->
-<?php if(!$notEditPassport) { ?>
-<div class="form-group">
-    <?php echo $form->labelEx($model,'documentGivedate', array(
+            )); */ ?>
+<!--            </div>
+    </div>-->
+
+<!--Поле "Дата выдачи" - не нужно-->
+<!--<div class="form-group">-->
+    <?php /* echo $form->labelEx($model,'documentGivedate', array(
         'class' => 'col-xs-3 control-label'
-    )); ?>
-    <div class="col-xs-6 input-group date" id="document-givedate-cont">
-        <?php echo $form->hiddenField($model,'documentGivedate', array(
+    )); */ ?>
+<!--    <div class="col-xs-6 input-group date" id="document-givedate-cont">
+        <?php /* echo $form->hiddenField($model,'documentGivedate', array(
             'id' => 'documentGivedate',
             'class' => 'form-control',
             'placeholder' => 'Формат гггг-мм-дд'
-        )); ?>
-        <span class="input-group-addon">
+        )); */ ?>
+<!--       <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
         <div class="subcontrol">
@@ -83,8 +81,7 @@
             </div>
         </div>
     </div>
-</div>
-<?php } ?>
+</div>-->
 
 <div class="form-group">
     <?php echo $form->labelEx($model,'addressReg', array(
