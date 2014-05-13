@@ -1,3 +1,8 @@
+<div class="form-group no-display" id="insuranceHidden">
+    <?php echo $form->hiddenField($model,'insurance', array(
+        'class' => 'col-xs-3 control-label'
+    )); ?>
+</div>
 <div class="form-group">
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
@@ -72,6 +77,21 @@
         </div>
     </div>
 </div>
+<!-- Здесь будет большой, красивы чюзер с выбором страховой компании -->
+<div class="form-group chooser" id="insuranceChooser">
+    <label for="doctor" class="col-xs-3 control-label">Страховая компания: </label>
+
+    <div class="col-xs-9">
+        <input type="text" class="form-control" id="doctor"
+               placeholder="Начинайте вводить...">
+        <ul class="variants no-display">
+        </ul>
+        <div class="choosed">
+        </div>
+    </div>
+</div>
+<!-- -->
+
 <div class="form-group no-display policy-enddate">
     <?php echo $form->labelEx($model,'policyEnddate', array(
         'class' => 'col-xs-3 control-label'

@@ -2,6 +2,7 @@
 class FormPatientAdd extends FormMisDefault
 {
     public $omsType;
+    public $insurance;
     public $policy;
     public $lastName;
     public $firstName;
@@ -11,7 +12,7 @@ class FormPatientAdd extends FormMisDefault
     public $doctype;
     public $serie;
     public $docnumber;
-    //public $whoGived;
+   // public $whoGived;
     //public $documentGivedate;
     public $addressReg;
     public $addressRegHidden;
@@ -42,7 +43,7 @@ class FormPatientAdd extends FormMisDefault
 		Yii::import('ext.validators.FathersNameValidator');
         return array(
             array(
-                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, omsType, policyGivedate, status, privilege', 'required'
+                'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, addressReg, address, contact, omsType, policyGivedate, status, privilege', 'required'
             ),
             array(
                 'workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden', 'safe'
@@ -70,6 +71,7 @@ class FormPatientAdd extends FormMisDefault
         return array(
             'omsType' => 'Тип',
             'policy' => 'Номер',
+            'insurance' => 'Код страховой компании',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',

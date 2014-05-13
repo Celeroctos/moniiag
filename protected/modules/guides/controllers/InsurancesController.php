@@ -91,7 +91,9 @@ class InsurancesController extends Controller {
 
             $insurances = $model->getRows($filters, $sidx, $sord, $start, $rows);
             echo CJSON::encode(
-                array('rows' => $insurances,
+                array(
+                    'success' => true,
+                    'rows' => $insurances,
                     'total' => $totalPages,
                     'records' => count($num))
             );
