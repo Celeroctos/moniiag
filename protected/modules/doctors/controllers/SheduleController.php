@@ -103,6 +103,9 @@ class SheduleController extends Controller {
             'filterModel' => $this->filterModel,
             'medcard' => isset($medcard) ? $medcard : null,
             'currentDate' => $curDate,
+            'year' => $parts[0],
+            'month' => $parts[1],
+            'day' => $parts[2],
             'addModel' => new FormValueAdd(),
             'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null),
             'primaryDiagnosis' => $primaryDiagnosis,
@@ -120,6 +123,15 @@ class SheduleController extends Controller {
             'referenceTemplatesList' => isset($referenceTemplatesList) ? $referenceTemplatesList : array(),
             'greeting' => (isset($greeting)) ? $greeting : null,
 			'medcardRecordId' => $medcardRecordId
+        ));
+    }
+
+    public function actionUpdatePatientList() {
+        $this->filterModel = new FormSheduleFilter();
+        $patients = $this->getCurrentPatients();
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => $patients
         ));
     }
 
@@ -321,6 +333,7 @@ class SheduleController extends Controller {
         // Выбираем пациентов на обозначенный день
         $sheduleByDay = new SheduleByDay();
         $patients = $sheduleByDay->getRows($date, $doctor['employee_id'], 0);
+
         return $patients;
     }
 

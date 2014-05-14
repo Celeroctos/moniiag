@@ -982,20 +982,72 @@ $('#nextHistoryPoint').on('click', function () {
     $('#expandPatientList').on('click', function(e) {
         $(this).addClass('no-display');
         $('#collapsePatientList').removeClass('no-display');
-        isExpandedList = true;
+        isExpandedList = false;
+        updateCollapsed();
     });
 
     $('#collapsePatientList').on('click', function(e) {
         $(this).addClass('no-display');
         $('#expandPatientList').removeClass('no-display');
-        isExpandedList = false;
+        isExpandedList = true;
+        updateExpanded();
     });
+
+    function updateCollapsed() {
+        var url = '/index.php/doctors/shedule/updatepatientlist';
+        var data = {
+            FormSheduleFilter : {
+                date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
+            }
+        };
+        $.ajax({
+            'url': url,
+            'data': data,
+            'cache': false,
+            'dataType': 'json',
+            'type': 'POST',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success) {
+
+                }
+            }
+        });
+    }
+
+    function updateExpanded() {
+        var url = '/index.php/doctors/shedule/getpatientslistbydate';
+        var data = {
+            'doctorid' : globalVariables.doctorId,
+            'year' : globalVariables.year,
+            'month' : globalVariables.month,
+            'day' :globalVariables.day
+        };
+
+        $.ajax({
+            'url': url,
+            'data': data,
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success) {
+
+                }
+            }
+        });
+    }
 
     $('#refreshPatientList').on('click', function(e) {
         if(!isExpandedList) {
-
+            updateCollapsed();
         } else {
-
+            updateExpanded();
         }
     });
 
