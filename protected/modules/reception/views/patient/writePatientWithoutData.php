@@ -1,6 +1,10 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
+<?php if($calendarType == 0) { ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/calendar.js" ></script>
+<?php } elseif($calendarType == 1) { ?>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/organizer.js" ></script>
+<?php } ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/writePatient.js" ></script>
 <script type="text/javascript">
     globalVariables.months = [
@@ -17,62 +21,63 @@
 </div>
 <h4>Необходимо найти врача к которому следует записать пациента на приём:</h4>
 <div class="row">
-        <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
-            <div class="col-xs-5">
-                <div class="form-group">
-					<label for="ward" class="col-xs-4 control-label">Отделение</label>
-					<div class="col-xs-8">
-						<select class="form-control" id="ward">
-							<?php foreach($wardsList as $id => $name) { ?>
-								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-							<?php } ?>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="post" class="col-xs-4 control-label">Должность</label>
-					<div class="col-xs-8">
-						<select class="form-control" id="post">
-							<?php foreach($postsList as $id => $name) { ?>
-								<option value="<?php echo $id; ?>"><?php echo $name; ?></option>
-							<?php } ?>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="post" class="col-xs-4 control-label">Тип приёма</label>
-					<div class="col-xs-8">
-						<select class="form-control" id="greetingType">  
-							<option value="0">Любой</option>
-							<option value="1">Первичный</option>
-							<option value="2">Вторичный</option>
-						</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
-					<div class="col-xs-8">
-						<input type="text" class="form-control" id="fio" placeholder="ФИО врача">
-					</div>
-				</div>
-				<div class="form-group">
-					<input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
-				</div>
-			</div>
-			<div class="col-xs-7">
-				<div class="form-group chooser first" id="diagnosisDistribChooser">
-					<label for="diagnosis" class="col-xs-4 control-label">Диагноз (enter - добавить)</label>
-					<div class="col-xs-6">
-						<input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
-						<ul class="variants no-display">
-						</ul>
-						<div class="choosed">
-						</div>
-					</div>
-				</div>
-			</div>
-        </form>
+    <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
+        <div class="col-xs-5">
+            <div class="form-group">
+                <label for="ward" class="col-xs-4 control-label">Отделение</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="ward">
+                        <?php foreach($wardsList as $id => $name) { ?>
+                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="post" class="col-xs-4 control-label">Должность</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="post">
+                        <?php foreach($postsList as $id => $name) { ?>
+                            <option value="<?php echo $id; ?>"><?php echo $name; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="post" class="col-xs-4 control-label">Тип приёма</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="greetingType">
+                        <option value="0">Любой</option>
+                        <option value="1">Первичный</option>
+                        <option value="2">Вторичный</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
+                <div class="col-xs-8">
+                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <div class="form-group chooser first" id="diagnosisDistribChooser">
+                <label for="diagnosis" class="col-xs-4 control-label">Диагноз (enter - добавить)</label>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" autofocus id="diagnosis" placeholder="Название диагноза">
+                    <ul class="variants no-display">
+                    </ul>
+                    <div class="choosed">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
+<?php if($calendarType == 0) { ?>
 <h4>Необходимо выбрать врача</h4>
 <div class="row">
     <div class="col-xs-12 borderedBox">
@@ -150,27 +155,161 @@
                     <p><div class="legend-icon not-aviable-block"></div>Прошедшие дни (недоступные для записи)</p>
                 </div>
         </div>
+    </div>
+    <div class="col-xs-7">
+        <div class="busySheduleHeader no-display">
+            <h4>Занятость на <span class="text-danger busyDay"></span></h4>
         </div>
-        <div class="col-xs-7">
-            <div class="busySheduleHeader no-display">
-                <h4>Занятость на <span class="text-danger busyDay"></span></h4>
-            </div>
-            <div class="row busyShedule no-display">
-                <div class="col-xs-12 borderedBox">
-                    <table class="table table-condensed table-hover" id="sheduleByBusy">
-                        <thead>
-                        <tr class="header">
-                            <td class="col-xs-2">Время</td>
-                            <td class="col-xs-7">Пациент</td>
-                            <td class="col-xs-3 write-patient-cell">Записать</td>
-                        </tr>
+        <div class="row busyShedule no-display">
+            <div class="col-xs-12 borderedBox">
+                <table class="table table-condensed table-hover" id="sheduleByBusy">
+                    <thead>
+                    <tr class="header">
+                        <td class="col-xs-2">Время</td>
+                        <td class="col-xs-7">Пациент</td>
+                        <td class="col-xs-3 write-patient-cell">Записать</td>
+                    </tr>
                     </thead>
                     <tbody>
-                </tbody>
-            </table>
-            </div>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
+</div>
+<?php } elseif($calendarType == 1) { ?>
+<h4>Выберите врача и дату</h4>
+<div class="organizer">
+    <div class="sub">
+        <div class="headerCont">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="week_header_cell doctorH">Врач</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="headerCont2">
+            <table>
+                <tbody>
+                    <tr>
+                        <td class="current">Ср<br>сегодня</td>
+                        <td>Чт<br>15 мая</td>
+                        <td>Пт<br>16 мая</td>
+                        <td class="weekday">Сб<br>17 мая</td>
+                        <td class="weekday">Вс<br>18 мая</td>
+                        <td>Пн<br>19 мая</td>
+                        <td>Вт<br>20 мая</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="wrap sheduleCont">
+        <table class="doctorList">
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+            <tr>
+                <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
+            </tr>
+        </table>
+        <ul class="daysListCont">
+            <li>
+                <ul class="daysList">
+                    <li class="empty">1</li>
+                    <li class="empty">2</li>
+                    <li class="empty">3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li class="notfull">6</li>
+                    <li class="notfull">7</li>
+                </ul>
+            </li>
+            <li>
+                <ul class="daysList">
+                    <li>10.30 - 20.00</li>
+                    <li>2</li>
+                    <li class="full">3</li>
+                    <li class="weekday">4</li>
+                    <li class="weekday">5</li>
+                    <li>6</li>
+                    <li>7</li>
+                </ul>
+            </li>
+            <li>
+                <ul class="daysList">
+                    <li>1</li>
+                    <li class="full">2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                </ul>
+            </li>
+            <li>
+                <ul class="daysList">
+                    <li>1</li>
+                    <li class="full">2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                </ul>
+            </li>
+            <li>
+                <ul class="daysList">
+                    <li>1</li>
+                    <li class="full">2</li>
+                    <li>3</li>
+                    <li>4</li>
+                    <li>5</li>
+                    <li>6</li>
+                    <li>7</li>
+                </ul>
+            </li>
+            <li>
+                <ul class="daysList">
+                    <li>10.30 - 20.00</li>
+                    <li>2</li>
+                    <li class="full">3</li>
+                    <li class="weekday">4</li>
+                    <li class="weekday">5</li>
+                    <li>6</li>
+                    <li>7</li>
+                </ul>
+            </li>
+            <li>
+                <ul class="daysList">
+                    <li>10.30 - 20.00</li>
+                    <li>2</li>
+                    <li class="full">3</li>
+                    <li class="weekday">4</li>
+                    <li class="weekday">5</li>
+                    <li>6</li>
+                    <li>7</li>
+                </ul>
+            </li>
+        </ul>
+     </div>
+</div>
+<?php } ?>
 <div class="modal fade error-popup" id="patientDataPopup">
     <div class="modal-dialog">
         <div class="modal-content">

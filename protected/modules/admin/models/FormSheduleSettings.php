@@ -6,6 +6,7 @@ class FormSheduleSettings extends CFormModel
 	public $firstVisit;
     public $quote;
     public $shiftType;
+    public $calendarType;
 
     public function rules()
     {
@@ -14,7 +15,7 @@ class FormSheduleSettings extends CFormModel
                 'timePerPatient, firstVisit, quote, shiftType', 'required'
             ),
 			array(
-                'timePerPatient, firstVisit, quote, shiftType', 'numerical'
+                'timePerPatient, firstVisit, quote, shiftType, calendarType', 'numerical'
 			),
         );
     }
@@ -25,7 +26,8 @@ class FormSheduleSettings extends CFormModel
             'timePerPatient' => 'Норма времени на одного пациента (минут)',
 			'firstVisit' => 'Количество первичных осмотров  за смену',
             'quote' => 'Квота на запись на будущие числа',
-            'shiftType' => 'Правило организации смен работы'
+            'shiftType' => 'Правило организации смен работы',
+            'calendarType' => 'Тип календаря при записи пациента в регистратуре'
         );
     }
 }

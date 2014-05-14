@@ -5,6 +5,9 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript">
     globalVariables.patientsInCalendar = <?php echo $patientsInCalendar; ?>;
+    globalVariables.year = <?php echo $year; ?>;
+    globalVariables.month = <?php echo $month; ?>;
+    globalVariables.day = <?php echo $day; ?>;
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">

@@ -1,481 +1,447 @@
-﻿2014/05/13 11:21:16 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
-	Is the server running on host "moniiag.toonftp.ru" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\mis.my\yii\db\CDbConnection.php:382
+﻿в2014/05/14 12:03:09 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\mis.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\mis.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\mis.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\mis.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
-#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('login')
-#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('users/login')
-#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
 #17 {main}
-REQUEST_URI=/index.php/users/login
-HTTP_REFERER=http://mis.my/
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata
 ---
-2014/05/13 11:21:26 [error] [php] session_regenerate_id() [<a href='function.session-regenerate-id'>function.session-regenerate-id</a>]: Session object destruction failed (Z:\home\mis.my\yii\web\CHttpSession.php:181)
+2014/05/14 12:03:23 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\web\auth\CWebUser.php(233): CWebUser->changeIdentity()
-#1 Z:\home\mis.my\www\protected\controllers\UsersController.php(11): CWebUser->login()
-#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): UsersController->actionLogin()
-#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
-#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): UsersController->runAction()
-#5 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): UsersController->filterGetAccessHierarchy()
-#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#9 Z:\home\mis.my\yii\web\CController.php(265): UsersController->runActionWithFilters()
-#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): UsersController->run()
-#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#13 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/users/login
-in Z:\home\mis.my\www\protected\controllers\UsersController.php (11)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 12:54:05 [error] [php] Undefined variable: model (Z:\home\mis.my\www\protected\modules\guides\views\insurances\view.php:19)
-Stack trace:
-#0 Z:\home\mis.my\yii\web\CController.php(869): InsurancesController->renderFile()
-#1 Z:\home\mis.my\yii\web\CController.php(782): InsurancesController->renderPartial()
-#2 Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php(7): InsurancesController->render()
-#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): InsurancesController->actionView()
-#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
-#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): InsurancesController->runAction()
-#6 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): InsurancesController->filterGetAccessHierarchy()
-#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#10 Z:\home\mis.my\yii\web\CController.php(265): InsurancesController->runActionWithFilters()
-#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): InsurancesController->run()
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#14 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/guides/insurances/view
-in Z:\home\mis.my\www\protected\modules\guides\views\insurances\view.php (19)
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (7)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-2014/05/13 12:56:26 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormInsuranceAdd.description".' in Z:\home\mis.my\yii\base\CComponent.php:130
-Stack trace:
-#0 Z:\home\mis.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('description')
-#1 Z:\home\mis.my\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormInsuranceAdd), 'description')
-#2 Z:\home\mis.my\yii\web\helpers\CHtml.php(1434): CHtml::activeInputField('text', Object(FormInsuranceAdd), 'description', Array)
-#3 Z:\home\mis.my\yii\web\widgets\CActiveForm.php(725): CHtml::activeTextField(Object(FormInsuranceAdd), 'description', Array)
-#4 Z:\home\mis.my\www\protected\modules\guides\views\insurances\view.php(106): CActiveForm->textField(Object(FormInsuranceAdd), 'description', Array)
-#5 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
-#6 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
-#7 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
-#8 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('view', Array, true)
-#9 Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php(10): CController->render('view', Array)
-#10 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): InsurancesController->actionView()
-#11 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#12 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#13 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#14 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#15 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#16 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#17 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#18 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('view')
-#19 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/insuranc...')
-#20 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#21 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#22 {main}
-REQUEST_URI=/index.php/guides/insurances/view
-HTTP_REFERER=http://mis.my/index.php/guides/enterprises/view
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata
 ---
-2014/05/13 13:13:54 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Невозможно обработать запрос "guides/insurance/edit".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+2014/05/14 12:03:27 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/insuranc...')
-#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#3 {main}
-REQUEST_URI=/index.php/guides/insurance/edit
-HTTP_REFERER=http://mis.my/index.php/guides/insurances/view
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata
 ---
-2014/05/13 13:15:00 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Невозможно обработать запрос "guides/insurance/edit".' in Z:\home\mis.my\yii\web\CWebApplication.php:286
+2014/05/14 12:04:04 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/insuranc...')
-#1 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#2 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#3 {main}
-REQUEST_URI=/index.php/guides/insurance/edit
-HTTP_REFERER=http://mis.my/index.php/guides/insurances/view
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata
 ---
-2014/05/13 13:18:31 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormInsuranceAdd".
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (40)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 13:20:52 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormInsuranceAdd".
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (40)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 13:32:57 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormInsuranceAdd".
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (40)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 13:33:14 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
-DETAIL:  Ошибочная строка содержит (null, Ингострах).. Выполнявшийся SQL-запрос: INSERT INTO "mis"."insurances" ("name") VALUES (:yp0).
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (29)
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (57)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-2014/05/13 13:33:14 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
-DETAIL:  Ошибочная строка содержит (null, Ингострах).. The SQL statement executed was: INSERT INTO "mis"."insurances" ("name") VALUES (:yp0)' in Z:\home\mis.my\yii\db\CDbCommand.php:358
+2014/05/14 12:04:13 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
-#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
-#2 Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php(29): CActiveRecord->save()
-#3 Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php(57): InsurancesController->addEditModel(Object(Insurance), Object(FormInsuranceAdd), '???????????????...')
-#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): InsurancesController->actionAdd()
-#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('add')
-#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/insuranc...')
-#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#16 {main}
-REQUEST_URI=/index.php/guides/insurances/add
-HTTP_REFERER=http://mis.my/index.php/guides/insurances/view
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata
 ---
-2014/05/13 13:33:51 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
-DETAIL:  Ошибочная строка содержит (null, Ингострах).. Выполнявшийся SQL-запрос: INSERT INTO "mis"."insurances" ("name") VALUES (:yp0).
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (29)
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (57)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-2014/05/13 13:33:51 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[23502]: Not null violation: 7 ОШИБКА:  нулевое значение в колонке "id" нарушает ограничение NOT NULL
-DETAIL:  Ошибочная строка содержит (null, Ингострах).. The SQL statement executed was: INSERT INTO "mis"."insurances" ("name") VALUES (:yp0)' in Z:\home\mis.my\yii\db\CDbCommand.php:358
+2014/05/14 12:04:17 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
-#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
-#2 Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php(29): CActiveRecord->save()
-#3 Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php(57): InsurancesController->addEditModel(Object(Insurance), Object(FormInsuranceAdd), '???????????????...')
-#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): InsurancesController->actionAdd()
-#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('add')
-#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('guides/insuranc...')
-#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#16 {main}
-REQUEST_URI=/index.php/guides/insurances/add
-HTTP_REFERER=http://mis.my/index.php/guides/insurances/view
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
 ---
-2014/05/13 13:59:18 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormInsuranceAdd".
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (40)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 13:59:52 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormInsuranceAdd".
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (40)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 14:00:23 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormInsuranceAdd".
-in Z:\home\mis.my\www\protected\modules\guides\controllers\InsurancesController.php (40)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 14:11:07 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка d.greeting_type не существует
-LINE 5: WHERE (d.greeting_type = $1) AND (LOWER(d.last_name) LIKE '%...
-               ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "d".*, "w"."name" AS "ward", "m"."name" AS "post"
-FROM "mis"."doctors" "d"
-LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
-LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
-WHERE (d.greeting_type = :greeting_type) AND (LOWER(d.last_name) LIKE '%белова%').
-in Z:\home\mis.my\www\protected\models\Doctor.php (82)
-in Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php (18)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-2014/05/13 14:11:07 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка d.greeting_type не существует
-LINE 5: WHERE (d.greeting_type = $1) AND (LOWER(d.last_name) LIKE '%...
-               ^. The SQL statement executed was: SELECT DISTINCT "d".*, "w"."name" AS "ward", "m"."name" AS "post"
-FROM "mis"."doctors" "d"
-LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
-LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
-WHERE (d.greeting_type = :greeting_type) AND (LOWER(d.last_name) LIKE '%белова%')' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+2014/05/14 12:04:32 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
-#1 Z:\home\mis.my\www\protected\models\Doctor.php(82): CDbCommand->queryAll()
-#2 Z:\home\mis.my\www\protected\modules\reception\controllers\DoctorsController.php(18): Doctor->getRows(Array, false, false, false, false, Array, NULL)
-#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
-#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#6 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('search')
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/docto...')
-#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#15 {main}
-REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%220%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%B5%D0%BB%D0%BE%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&_=1399975858109
-HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientsteptwo/?cardid=1/13
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
 ---
-2014/05/13 15:07:07 [error] [php] Undefined variable: insurances (Z:\home\mis.my\www\protected\modules\reception\components\widgets\views\omsFormWidget.php:85)
+2014/05/14 12:05:44 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): OmsFormWidget->renderFile()
-#1 Z:\home\mis.my\www\protected\modules\reception\components\widgets\omsFormWidget.php(9): OmsFormWidget->render()
-#2 Z:\home\mis.my\yii\web\CBaseController.php(173): OmsFormWidget->run()
-#3 Z:\home\mis.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(26): PatientController->widget()
-#4 Z:\home\mis.my\yii\web\CBaseController.php(126): require()
-#5 Z:\home\mis.my\yii\web\CBaseController.php(95): PatientController->renderInternal()
-#6 Z:\home\mis.my\yii\web\CController.php(869): PatientController->renderFile()
-#7 Z:\home\mis.my\yii\web\CController.php(782): PatientController->renderPartial()
-#8 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(180): PatientController->render()
-#9 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
-#10 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
-#11 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
-#12 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#13 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
-#14 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#15 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#16 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
-#17 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
-#18 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#19 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#20 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/reception/patient/viewadd
-in Z:\home\mis.my\www\protected\modules\reception\components\widgets\views\omsFormWidget.php (85)
-in Z:\home\mis.my\www\protected\modules\reception\components\widgets\omsFormWidget.php (9)
-in Z:\home\mis.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php (26)
-2014/05/13 17:21:52 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormPatientAdd.insurance".' in Z:\home\mis.my\yii\base\CComponent.php:130
-Stack trace:
-#0 Z:\home\mis.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('insurance')
-#1 Z:\home\mis.my\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormPatientAdd), 'insurance')
-#2 Z:\home\mis.my\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormPatientAdd), 'insurance', Array)
-#3 Z:\home\mis.my\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormPatientAdd), 'insurance', Array)
-#4 Z:\home\mis.my\www\protected\modules\reception\components\widgets\views\omsFormWidget.php(1): CActiveForm->hiddenField(Object(FormPatientAdd), 'insurance', Array)
-#5 Z:\home\mis.my\yii\web\CBaseController.php(130): require('Z:\home\mis.my\...')
-#6 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, false)
-#7 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\mis.my\...', Array, false)
-#8 Z:\home\mis.my\www\protected\modules\reception\components\widgets\omsFormWidget.php(9): CWidget->render('application.mod...', Array)
-#9 Z:\home\mis.my\yii\web\CBaseController.php(173): OmsFormWidget->run()
-#10 Z:\home\mis.my\www\protected\modules\reception\views\patient\addPatientWithoutCard.php(26): CBaseController->widget('application.mod...', Array)
-#11 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
-#12 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
-#13 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
-#14 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('addPatientWitho...', Array, true)
-#15 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(180): CController->render('addPatientWitho...', Array)
-#16 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewAdd()
-#17 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#18 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#19 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#20 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#21 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#22 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#23 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#24 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
-#25 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#26 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#27 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#28 {main}
-REQUEST_URI=/index.php/reception/patient/viewadd
-HTTP_REFERER=http://mis.my/index.php/reception/patient/viewsearch
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/v...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/view
 ---
-2014/05/13 17:51:38 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 17:51:38 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormPatientAdd.documentGivedate".' in Z:\home\mis.my\yii\base\CComponent.php:130
+2014/05/14 12:27:26 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\validators\CRequiredValidator.php(58): CComponent->__get('documentGivedat...')
-#1 Z:\home\mis.my\yii\validators\CValidator.php(213): CRequiredValidator->validateAttribute(Object(FormPatientAdd), 'documentGivedat...')
-#2 Z:\home\mis.my\yii\base\CModel.php(159): CValidator->validate(Object(FormPatientAdd), NULL)
-#3 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(190): CModel->validate()
-#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
-#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('add')
-#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#16 {main}
-REQUEST_URI=/index.php/reception/patient/add
-HTTP_REFERER=http://mis.my/index.php/reception/patient/viewadd
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
 ---
-2014/05/13 17:54:38 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 17:54:38 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormPatientAdd.whoGived".' in Z:\home\mis.my\yii\base\CComponent.php:130
+2014/05/14 12:27:55 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\validators\CRequiredValidator.php(58): CComponent->__get('whoGived')
-#1 Z:\home\mis.my\yii\validators\CValidator.php(213): CRequiredValidator->validateAttribute(Object(FormPatientAdd), 'whoGived')
-#2 Z:\home\mis.my\yii\base\CModel.php(159): CValidator->validate(Object(FormPatientAdd), NULL)
-#3 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(190): CModel->validate()
-#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionAdd()
-#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#7 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('add')
-#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#16 {main}
-REQUEST_URI=/index.php/reception/patient/add
-HTTP_REFERER=http://mis.my/index.php/reception/patient/viewadd
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
 ---
-2014/05/13 17:55:55 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 17:56:48 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 17:56:54 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormOmsEdit.insurance".' in Z:\home\mis.my\yii\base\CComponent.php:130
+2014/05/14 12:28:22 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\web\helpers\CHtml.php(2529): CComponent->__get('insurance')
-#1 Z:\home\mis.my\yii\web\helpers\CHtml.php(2252): CHtml::resolveValue(Object(FormOmsEdit), 'insurance')
-#2 Z:\home\mis.my\yii\web\helpers\CHtml.php(1609): CHtml::activeInputField('hidden', Object(FormOmsEdit), 'insurance', Array)
-#3 Z:\home\mis.my\yii\web\widgets\CActiveForm.php(756): CHtml::activeHiddenField(Object(FormOmsEdit), 'insurance', Array)
-#4 Z:\home\mis.my\www\protected\modules\reception\components\widgets\views\omsFormWidget.php(4): CActiveForm->hiddenField(Object(FormOmsEdit), 'insurance', Array)
-#5 Z:\home\mis.my\yii\web\CBaseController.php(130): require('Z:\home\mis.my\...')
-#6 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, false)
-#7 Z:\home\mis.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\mis.my\...', Array, false)
-#8 Z:\home\mis.my\www\protected\modules\reception\components\widgets\omsFormWidget.php(9): CWidget->render('application.mod...', Array)
-#9 Z:\home\mis.my\yii\web\CBaseController.php(173): OmsFormWidget->run()
-#10 Z:\home\mis.my\www\protected\modules\reception\views\patient\searchPatient.php(378): CBaseController->widget('application.mod...', Array)
-#11 Z:\home\mis.my\yii\web\CBaseController.php(126): require('Z:\home\mis.my\...')
-#12 Z:\home\mis.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\mis.my\...', Array, true)
-#13 Z:\home\mis.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\mis.my\...', Array, true)
-#14 Z:\home\mis.my\yii\web\CController.php(782): CController->renderPartial('searchPatient', Array, true)
-#15 Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php(16): CController->render('searchPatient', Array)
-#16 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PatientController->actionViewSearch()
-#17 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#18 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#19 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#20 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#21 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#22 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#23 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#24 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('viewsearch')
-#25 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#26 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#27 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#28 {main}
-REQUEST_URI=/index.php/reception/patient/viewsearch
-HTTP_REFERER=http://mis.my/index.php/reception/patient/viewadd
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
 ---
-2014/05/13 17:58:51 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:01:36 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:02:59 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:06:21 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:09:15 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:10:15 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:13:17 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:17:33 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:18:14 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:20:19 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (188)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:24:50 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:24:59 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:25:43 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:26:14 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:26:43 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:28:36 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (665)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:30:27 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:30:50 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:31:11 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormOmsEdit".
-in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (663)
-in Z:\home\mis.my\www\protected\components\Controller.php (27)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/13 18:39:51 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "Oms.insurance_name".' in Z:\home\mis.my\yii\base\CComponent.php:173
+2014/05/14 14:43:45 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
 Stack trace:
-#0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(161): CComponent->__set('insurance_name', '???????????????...')
-#1 Z:\home\mis.my\yii\base\CModel.php(607): CActiveRecord->__set('insurance_name', '???????????????...')
-#2 Z:\home\mis.my\www\protected\modules\doctors\controllers\PrintController.php(47): CModel->offsetSet('insurance_name', '???????????????...')
-#3 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): PrintController->actionPrintMainPage()
-#4 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
-#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
-#6 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
-#7 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#8 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#9 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#10 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#11 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('printmainpage')
-#12 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/print/p...')
-#13 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#14 Z:\home\mis.my\www\index.php(13): CApplication->run()
-#15 {main}
-REQUEST_URI=/index.php/doctors/print/printmainpage/?medcardid=1/13
-HTTP_REFERER=http://mis.my/index.php/reception/patient/viewsearch
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/admin/users/view
+---
+2014/05/14 15:33:58 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+---
+2014/05/14 15:34:22 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+---
+2014/05/14 15:34:52 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+---
+2014/05/14 15:54:17 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+---
+2014/05/14 15:55:47 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+---
+2014/05/14 15:56:12 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection timed out (0x0000274C/10060)
+	Is the server running on host "moniiag.toonftp.ru" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(15): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
 ---
