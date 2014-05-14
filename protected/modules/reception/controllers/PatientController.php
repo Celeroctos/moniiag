@@ -1063,7 +1063,8 @@ class PatientController extends Controller {
                     'wardsList' => $this->getWardsList(),
                     'postsList' => $this->getPostsList(),
                     'medcard' => $medcard,
-                    'oms' => $oms
+                    'oms' => $oms,
+                    'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
                 ));
                 exit();
             }
@@ -1100,7 +1101,8 @@ class PatientController extends Controller {
         $this->render('writepatientwithoutdata', array(
             'wardsList' => $this->getWardsList(),
             'postsList' => $this->getPostsList(),
-            'callcenter' => $callcenter
+            'callcenter' => $callcenter,
+            'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
         ));
     }
 
