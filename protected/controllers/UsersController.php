@@ -2,9 +2,9 @@
 class UsersController extends Controller {
     public function actionLogin() {
         if(isset($_POST['FormLogin'])) {
+
             $formModel = new FormLogin();
             $formModel->attributes = $_POST['FormLogin'];
-
             if($formModel->validate()) {
                 $userIdent = new UserIdentity($formModel->login, $formModel->password);
                 if($userIdent->authenticate()) {

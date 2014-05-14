@@ -40,6 +40,13 @@ class PrintController extends Controller {
         if($oms['enddate'] != null) {
             $oms['enddate'] = $this->formatDate($oms['enddate']);
         }
+        // Записываем insurance_name в oms
+        if ($oms['insurance']!='' && $oms['insurance']!=null)
+        {
+            $insurance = Insurance::model()->findByPk($oms->insurance);
+            $oms['insurance'] = $insurance->name;
+        }
+
         foreach($privileges as &$priv) {
             $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
             $privModel = Privilege::model()->findByPk($priv->privilege_id);

@@ -186,7 +186,7 @@ class PatientController extends Controller {
         $model = new FormPatientAdd();
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
-
+            $model->insurance = $_POST['FormPatientAdd']['insurance'];
             if($model->validate()) {
                 $this->checkUniqueOms($model);
                 $this->checkUniqueMedcard($model);
@@ -310,6 +310,7 @@ class PatientController extends Controller {
         $oms->birthday = $model->birthday;
         $oms->givedate = $model->policyGivedate;
         $oms->status = $model->status;
+        $oms->insurance = $model->insurance;
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
@@ -608,11 +609,18 @@ class PatientController extends Controller {
             $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
         }
 
+        // Прочитаем название страховой компании
+        $omsInsurance =  new Insurance();
+        $insuranceObject = $omsInsurance ->findByPk($oms['insurance']);
+        $insuranceName = $insuranceObject['name'];
+
         $formModel = new FormOmsEdit();
         $formModel = $this->fillOmsModel($formModel, $oms);
         return array(
           'formModel' => $formModel,
-          'oms' => $oms
+          'oms' => $oms,
+          'insuranceId' => $oms['insurance'],
+          'insuranceName' => $insuranceName,
         );
     }
 
@@ -653,6 +661,7 @@ class PatientController extends Controller {
         $model = new FormOmsEdit();
         if(isset($_POST['FormOmsEdit'])) {
             $model->attributes = $_POST['FormOmsEdit'];
+            $model->insurance = $_POST['FormOmsEdit']['insurance'];
             if($model->validate()) {
                 $oms = Oms::model()->findByPk($_POST['FormOmsEdit']['id']);
                 $this->addEditModelOms($oms, $model);

@@ -13,6 +13,7 @@ class FormOmsEdit extends FormMisDefault
     public $policyGivedate;
     public $policyEnddate;
     public $status;
+    public $insurance;
 
     public function rules()
     {

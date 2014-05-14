@@ -5,6 +5,9 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript">
     globalVariables.patientsInCalendar = <?php echo $patientsInCalendar; ?>;
+    globalVariables.year = <?php echo $year; ?>;
+    globalVariables.month = <?php echo $month; ?>;
+    globalVariables.day = <?php echo $day; ?>;
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">
@@ -154,9 +157,9 @@
                 </div>
             </div>
             <div class="row">
-                <h5 class="patient-list-h5"><strong>Список пациентов на <span
-                            class="text-danger"><?php echo $currentDate; ?></span></strong></h5>
-
+                <h5 class="patient-list-h5">
+                    <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
+                </h5>
                 <div class="col-xs-12 borderedBox">
                     <table id="omsSearchWithCardResult" class="table table-condensed table-hover">
                         <thead>

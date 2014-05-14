@@ -976,6 +976,81 @@ $('#nextHistoryPoint').on('click', function () {
     $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
     $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
 });
+
+
+    var isExpandedList = false;
+    $('#expandPatientList').on('click', function(e) {
+        $(this).addClass('no-display');
+        $('#collapsePatientList').removeClass('no-display');
+        isExpandedList = false;
+        updateCollapsed();
+    });
+
+    $('#collapsePatientList').on('click', function(e) {
+        $(this).addClass('no-display');
+        $('#expandPatientList').removeClass('no-display');
+        isExpandedList = true;
+        updateExpanded();
+    });
+
+    function updateCollapsed() {
+        var url = '/index.php/doctors/shedule/updatepatientlist';
+        var data = {
+            FormSheduleFilter : {
+                date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
+            }
+        };
+        $.ajax({
+            'url': url,
+            'data': data,
+            'cache': false,
+            'dataType': 'json',
+            'type': 'POST',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success) {
+
+                }
+            }
+        });
+    }
+
+    function updateExpanded() {
+        var url = '/index.php/doctors/shedule/getpatientslistbydate';
+        var data = {
+            'doctorid' : globalVariables.doctorId,
+            'year' : globalVariables.year,
+            'month' : globalVariables.month,
+            'day' :globalVariables.day
+        };
+
+        $.ajax({
+            'url': url,
+            'data': data,
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success) {
+
+                }
+            }
+        });
+    }
+
+    $('#refreshPatientList').on('click', function(e) {
+        if(!isExpandedList) {
+            updateCollapsed();
+        } else {
+            updateExpanded();
+        }
+    });
+
 });
 
 // Это сделано для того, чтобы отследить изменение пользователем какого-либо элемента
@@ -998,8 +1073,6 @@ $('html').on('focus','form[id=patient-edit-form] input[type=text],input[type=num
     }
 
 );
-
-
 
 function getOnlyLikes() {
     return globalVariables.onlyLikes;
