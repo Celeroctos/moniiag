@@ -258,8 +258,11 @@ $(document).ready(function() {
                                         $(ul).hide();
                                     } else {
                                         currentElements = [];
+                                        // Берём обработчик, чтобы проверить его на непустоту в цикле
+                                        chooserRowAddHandler = choosersConfig[$(chooser).prop('id')].rowAddHandler;
                                         for(var i = 0; i < rows.length; i++) {
-                                            choosersConfig[$(chooser).prop('id')].rowAddHandler(ul, rows[i]);
+                                            if (chooserRowAddHandler != undefined)
+                                                chooserRowAddHandler(ul, rows[i]);
                                             var field = choosersConfig[$(chooser).prop('id')].primary;
                                             $(ul).find('li:eq(' + i + ')').prop('id', 'r' + rows[i][field]);
                                             currentElements.push(rows[i]);
@@ -906,6 +909,34 @@ $(document).ready(function() {
                         'data' : ''
                     }
                 ]
+            }
+        },
+        'insuranceChooser' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'url' : '/index.php/guides/insurances/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
+
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.name));
+            },
+            'afterInsert' : function()
+            {
+                $('#insuranceHidden input').val($.fn['insuranceChooser'].getChoosed()[0].id);
+            },
+            'afterRemove' : function() {
+                $('#insuranceHidden input').val('');
             }
         }
     };

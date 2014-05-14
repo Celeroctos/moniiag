@@ -594,7 +594,10 @@
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
+                    var insId = data.data.insuranceId;
+                    var insName = data.data.insuranceName;
                     var data = data.data.formModel;
+
                     var form = $('#patient-oms-edit-form');
                     for(var i in data) {
                         $(form).find('#' + i).val(data[i]);
@@ -603,6 +606,22 @@
                     $(form).find('#policyGivedate').trigger('change');
                     $(form).find('#birthday').trigger('change');
 
+                    // Запишем в чюзер страховой компании её название и ИД
+                    /*<span class="item"
+                    id="r<?php echo $ins['id']; ?>"><?php echo $dia['name']; ?>
+                        <span class="glyphicon glyphicon-remove"></span></span>
+                       */
+                    if (insId!='' && insId!=null)
+                    {
+                        $('#insuranceChooser .choosed').html(
+                            "<span class=\"item\"" +
+                            "id=\"r"+ insId +"\">" + insName +
+                                "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                        );
+
+                        // Заблочим чюзер
+                        $('#insuranceChooser input').attr('disabled', '');
+                    }
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
