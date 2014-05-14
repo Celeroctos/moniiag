@@ -1,5 +1,5 @@
 <h4>Краткая справка</h4>
-<p>Раздел предназначен для редактирования содержания медицинской карты для рабочего места врача. Карта у врача разбита на категории (раскрывающиеся списки), внутри них имеются управляющие элементы, которые могут представлять собой в том числе выбор значения из справочника.
+<p>Раздел предназначен для редактирования содержания медицинской карты для рабочего места врача. Карта у врача разбита на категории (раскрывающиеся списки), внутри них имеются управляющие элементы, которые могут представлять собой, в том числе, выбор значения из справочника.
     При формировании шаблона карты требуется определить группы, поля карты, справочники и привязать последние к определённым полям. Справочники при необходимости можно дополнять значениями.
 </p>
 <?php $this->widget('application.components.widgets.DoctorCardTabMenu') ?>
@@ -9,7 +9,7 @@
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addCategorie">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editCategorie">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteCategorie">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteCategorie">Удалить запись</button>
 </div>
 <div class="modal fade" id="addCategoriePopup">
     <div class="modal-dialog">
@@ -206,7 +206,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

@@ -80,7 +80,7 @@
     <button type="button" class="btn btn-default" id="editContact">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeleteContact')) { ?>
-    <button type="button" class="btn btn-default" id="deleteContact">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteContact">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addContactPopup">
@@ -215,7 +215,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

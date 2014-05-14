@@ -201,7 +201,7 @@
         <div class="form-group">
             <div class="pregnant-addedit-submit">
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addeditpregnant'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

@@ -5,7 +5,7 @@ $(document).ready(function() {
         colNames:['Код',
                   'Учреждение',
                   'Отделение',
-                  'Номер',
+                  'Номер кабинета',
                   'Описание',
                   '',
                   ''],
@@ -28,7 +28,7 @@ $(document).ready(function() {
             {
                 name: 'cab_number',
                 index: 'cab_number',
-                width: 70
+                width: 150
             },
             {
                 name: 'description',
@@ -128,9 +128,6 @@ $(document).ready(function() {
     });
 
     function editCabinet() {
-        if(Boolean(globalVariables.guideEdit) == false) {
-            return false;
-        }
         var currentRow = $('#cabinets').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования

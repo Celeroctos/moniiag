@@ -19,7 +19,7 @@
         <button type="button" class="btn btn-default" id="editSettlement">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeletePrivelege')) { ?>
-        <button type="button" class="btn btn-default" id="deleteSettlement">Удалить выбранные</button>
+        <button type="button" class="btn btn-default" id="deleteSettlement">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addSettlementPopup">
@@ -215,7 +215,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/settlementedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

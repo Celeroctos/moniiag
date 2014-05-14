@@ -59,6 +59,78 @@
         return isAllow;
     });
 
+    // При загрузке - если поле "контактные данные" пусто - надо поставить код России в начале в этом поле
+    if ($('#contact').length>0)
+    {
+        // Если поле "телефон" пусто - выводим в него '+7'
+        if ($('#contact').val()=='')
+        {
+            $('#contact').val('+7');
+        }
+
+    }
+
+
+    $('#contact').on('keydown', function (e) {
+        // Нажатая клавиша
+
+        var pressedKey = e.keyCode;
+        // Если символ Enter или Tab - сразу возвращаем true
+        if ((pressedKey == 13) || (pressedKey == 9)||(pressedKey == 16))
+            return true;
+
+        //var isAllow = true;
+        // Значение контрола
+        var value = $(this).val();
+
+        // Если телефон - российский, то разрешаем длину в 14 символов
+        if (value.substr(0,2)=='+7')
+        {
+            //разрешаем длину в 14 символов
+            if (value.length == 14 && !(pressedKey == 8 || pressedKey == 46)) {
+                return false;
+            }
+        }
+        // А если телефон не российский, то длина (теоретически) может быть любая
+
+        if (pressedKey == 8 || pressedKey == 46 || pressedKey == 16)
+            return true;
+
+        // Если номер не российский и длина значения больше 2, то разрешаем ставить пробелы
+        if (value.substr(0,2)!='+7' && value.length>=2)
+        {
+            if (pressedKey == 32)
+            {
+                return true;
+            }
+        }
+
+        // Если нажатая клавиша - "+",
+        //   то его нужно разрешить только в первой позиции
+        if (pressedKey == 187)
+        {
+            if ($('#contact').val()!='')
+            {return false;}
+            else
+            {return true;}
+        }
+
+        // Если клавиша - цифра
+        if (!(pressedKey  > 47 && pressedKey  < 58) && !(pressedKey > 95 && pressedKey  < 106))
+            return false;
+
+        // Делим на подгруппы номер только в том случае, если он российский.
+        //  У иностранных номеров может быть коды городов разной длины
+        if (value.substr(0,2)=='+7')
+        {
+            if (value.length == 2 || value.length == 6) {
+                $(this).val(value + ' ');
+            }
+        }
+        return true;
+    });
+
+
     $('#cardNumber').on('keyup', function (e) {
         if ($(this).val().indexOf('\\')>=0)
         {

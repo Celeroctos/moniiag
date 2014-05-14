@@ -20,7 +20,7 @@ class FormCladrSettlementAdd extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'name' => 'Название района',
+            'name' => 'Название населенного пункта',
             'codeCladr' => 'Код в КЛАДР',
             'codeRegion' => 'Регион',
             'codeDistrict' => 'Район'

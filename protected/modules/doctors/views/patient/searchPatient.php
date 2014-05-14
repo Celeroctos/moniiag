@@ -97,9 +97,9 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="address" class="col-xs-4 control-label">Адрес прописки</label>
+            <label for="address" class="col-xs-4 control-label">Адрес проживания</label>
             <div class="col-xs-8">
-                <input type="text" class="form-control" id="address" placeholder="Адрес прописки">
+                <input type="text" class="form-control" id="address" placeholder="Адрес проживания">
             </div>
         </div>
          <div class="form-group">

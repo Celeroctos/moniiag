@@ -14,7 +14,7 @@
     <button type="button" class="btn btn-default" id="editWard">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeleteWard')) { ?>
-    <button type="button" class="btn btn-default" id="deleteWard">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteWard">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addWardPopup">
@@ -145,7 +145,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/wards/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

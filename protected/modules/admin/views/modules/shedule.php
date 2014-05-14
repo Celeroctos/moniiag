@@ -69,7 +69,7 @@
         </div>
         <div class="form-group">
             <?php echo CHtml::ajaxSubmitButton(
-                'Редактировать',
+                'Сохранить',
                 CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/shedulesettingsedit'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
@@ -258,7 +258,7 @@
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addShift">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editShift">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteShift">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteShift">Удалить запись</button>
 </div>
 
 <div class="modal fade" id="editShiftPopup">
@@ -368,7 +368,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/editshift'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

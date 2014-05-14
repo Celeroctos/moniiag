@@ -5,7 +5,7 @@
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addStartpage">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editStartpage">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteStartpage">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteStartpage">Удалить запись</button>
 </div>
 <div class="modal fade" id="addStartpagePopup">
     <div class="modal-dialog">
@@ -157,7 +157,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/editstartpage'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

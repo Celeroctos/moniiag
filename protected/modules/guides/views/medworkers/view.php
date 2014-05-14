@@ -12,7 +12,7 @@
     <button type="button" class="btn btn-default" id="editMedworker">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeleteMedworker')) { ?>
-    <button type="button" class="btn btn-default" id="deleteMedworker">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteMedworker">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addMedworkerPopup">
@@ -207,7 +207,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/medworkers/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

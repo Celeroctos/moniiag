@@ -9,7 +9,7 @@
     <div class="btn-group default-margin-top">
         <button type="button" class="btn btn-default" id="addMedGuide">Добавить запись</button>
         <button type="button" class="btn btn-default" id="editMedGuide">Редактировать выбранную запись</button>
-        <button type="button" class="btn btn-default" id="deleteMedGuide">Удалить выбранные</button>
+        <button type="button" class="btn btn-default" id="deleteMedGuide">Удалить запись</button>
     </div>
     <div class="modal fade" id="addMedGuidePopup">
         <div class="modal-dialog">
@@ -115,7 +115,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
-                        'Отредактировать',
+                        'Сохранить',
                         CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/editinguide?id='.$currentGuideId),
                         array(
                             'success' => 'function(data, textStatus, jqXHR) {

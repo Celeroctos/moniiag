@@ -5,7 +5,7 @@
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addRole">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editRole">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="deleteRole">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteRole">Удалить запись</button>
 </div>
 <div class="modal fade" id="addRolePopup">
     <div class="modal-dialog">
@@ -179,7 +179,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

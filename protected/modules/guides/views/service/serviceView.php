@@ -12,7 +12,7 @@
         <button type="button" class="btn btn-default" id="editService">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeletePrivelege')) { ?>
-        <button type="button" class="btn btn-default" id="deleteService">Удалить выбранные</button>
+        <button type="button" class="btn btn-default" id="deleteService">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addServicePopup">
@@ -20,7 +20,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Добавить льготу</h4>
+                <h4 class="modal-title">Добавить медуслугу</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -89,7 +89,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Редактировать льготу</h4>
+                <h4 class="modal-title">Редактировать медуслугу</h4>
             </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
@@ -141,7 +141,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/service/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

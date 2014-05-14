@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#medworkers").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип персонала', 'Тип оплаты', 'Может обслуживать беременных', '', ''],
+        colNames:['Код', 'Наименование', 'Тип персонала', 'Тип оплаты', '', '', ''],
         colModel:[
             {
                 name:'id',
@@ -12,7 +12,8 @@ $(document).ready(function() {
             {
                 name: 'name',
                 index: 'name',
-                width: 200
+                width: 200,
+                hidden: true
             },
             {
                 name: 'medpersonal_type',

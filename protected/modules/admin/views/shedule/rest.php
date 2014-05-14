@@ -49,7 +49,7 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
     </div>
     <?php $this->endWidget(); ?>
 </div>
-<p>Дополнительно выделите праздничные и нерабочие дни:</p>
+<p>Дополнительно выделите праздничные и нерабочие дни, нажав на соответствующие ячейки календаря. Чтобы отменить - нажмите повторно на эту же ячейку</p>
 <div class="row">
     <table class="calendarTable">
         <?php for($i = 0; $i < 3; $i++) { ?>

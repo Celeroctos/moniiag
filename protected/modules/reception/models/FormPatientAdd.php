@@ -87,7 +87,7 @@ class FormPatientAdd extends FormMisDefault
             'workPlace' => 'Место работы',
             'workAddress' => 'Адрес работы',
             'post' => 'Должность',
-            'contact' => 'Контактные данные',
+            'contact' => 'Телефон',
             'snils' => 'СНИЛС',
             'invalidGroup' => 'Группа инвалидности',
             'privilege' => 'Льгота',

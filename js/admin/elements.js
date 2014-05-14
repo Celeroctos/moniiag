@@ -136,7 +136,7 @@ $(document).ready(function () {
     $("#dependences").jqGrid({
         url: url,
         datatype: "local",
-        colNames: ['Код', 'Контрол ("метка до")', 'Значение', 'Зависимый контрол', 'Действие'],
+        colNames: ['Код', 'Элемент ("метка до")', 'Значение', 'Зависимый элемент', 'Действие'],
         colModel: [
             {
                 name: 'id',

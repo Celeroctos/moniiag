@@ -12,7 +12,7 @@
     <button type="button" class="btn btn-default" id="editPrivilege">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeletePrivelege')) { ?>
-    <button type="button" class="btn btn-default" id="deletePrivilege">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deletePrivilege">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addPrivilegePopup">
@@ -141,7 +141,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/privileges/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

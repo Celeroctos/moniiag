@@ -44,7 +44,7 @@
         <div class="form-group">
             <div class="add-patient-submit">
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
