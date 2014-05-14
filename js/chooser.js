@@ -389,6 +389,31 @@ $(document).ready(function() {
                             choosedElements.push(currentElements[i]);
                             /* Логика работы: если есть настройка о количестве добавляемых максмально вариантов, то нужно блокировать строку, если количество вариантов достигло максимума */
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
+                                // Сначала поменяем фокус - вызовем для чюзера событие нажатия таба
+                                // Выбираем все focus-able элементы
+                                var focusables = $(':focusable');
+                                for (i=0;i<focusables.length;i++)
+                                {
+                                    // Проверяем - является ли и-тый элемент из фокусабельных элементом,
+                                    //    на котором сейчас стоит фокус
+                                    if ($(focusables[i])[0] == $(document.activeElement)[0])
+                                    {
+                                        // Тут может быть две ситуации - либо элемент последний в массиве
+                                        //   либо нет
+                                        if (i==focusables.length-1)
+                                        {
+                                            // Фокусируемся на первый элемент
+                                            $(focusables[0]).focus();
+                                        }
+                                        else
+                                        {
+                                            // Фокусируемся на следующий по номеру элемент
+                                            $(focusables[i+1]).focus();
+                                        }
+                                        break;
+                                    }
+                                }
+                                // А вот теперь со спокойной совестью блокируем чюзер
                                 $.fn[$(chooser).attr('id')].disable();
                             }
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterInsert') && typeof choosersConfig[$(chooser).prop('id')].afterInsert == 'function') {
@@ -403,6 +428,12 @@ $(document).ready(function() {
             }
         })(this);
     });
+
+    // Перебросить фокус на следующий элемент управления
+    function selectNextElement(currentElement)
+    {
+
+    }
 
     // Конфиг выборщиков
     var choosersConfig = {
@@ -620,6 +651,9 @@ $(document).ready(function() {
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+
+                // Переходим на следующий контрол на странице
+
             },
             'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {

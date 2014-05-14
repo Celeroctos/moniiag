@@ -19,7 +19,7 @@
         <button type="button" class="btn btn-default" id="editStreet">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeletePrivelege')) { ?>
-        <button type="button" class="btn btn-default" id="deleteStreet">Удалить выбранные</button>
+        <button type="button" class="btn btn-default" id="deleteStreet">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addStreetPopup">
@@ -247,7 +247,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/streetedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

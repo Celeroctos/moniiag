@@ -8,7 +8,7 @@
 <div class="btn-group default-margin-top">
         <button type="button" class="btn btn-default" id="addClinicalDiagnosis">Добавить запись</button>
         <button type="button" class="btn btn-default" id="editClinicalDiagnosis">Редактировать выбранную запись</button>
-        <button type="button" class="btn btn-default" id="deleteClinicalDiagnosis">Удалить выбранные</button>
+        <button type="button" class="btn btn-default" id="deleteClinicalDiagnosis">Удалить запись</button>
 </div>
 
 
@@ -118,7 +118,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
-                    	'Отредактировать',
+                    	'Сохранить',
                     	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/diagnosis/editclinic'),
                     	array(
                     			'success' => 'function(data, textStatus, jqXHR) {

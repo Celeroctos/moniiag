@@ -4,7 +4,7 @@ $(document).ready(function() {
     $("#diagnosiss").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип персонала', 'Может обслуживать беременных', ''],
+        colNames:['Код', 'Наименование', 'Тип персонала', '', ''],
         colModel:[
             {
                 name:'id',
@@ -24,7 +24,8 @@ $(document).ready(function() {
             {
                 name: 'pregnants',
                 index:'pregnants',
-                width: 240
+                width: 240,
+                hidden: true
             },
             {
                 name: 'is_for_pregnants',

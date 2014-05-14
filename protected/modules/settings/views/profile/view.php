@@ -69,7 +69,7 @@
         <div class="form-group">
             <div class="edit-profile-submit">
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/profile/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

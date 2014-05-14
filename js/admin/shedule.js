@@ -51,7 +51,7 @@ $(document).ready(function () {
 
 $("#writtenPatients").jqGrid({
      datatype: "json",
-     colNames: ['Дата', 'ФИО', 'Контактные данные', 'Отписать', '', ''],
+     colNames: ['Дата', 'ФИО', 'Телефон', 'Отписать', '', ''],
      colModel: [
              {
                  name: 'patient_date',

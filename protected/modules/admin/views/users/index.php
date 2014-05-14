@@ -6,7 +6,7 @@
     <button type="button" class="btn btn-default" id="addUser">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editUser">Редактировать выбранную запись</button>
     <button type="button" class="btn btn-default" id="editPasswordUser">Сменить пароль у выбранного</button>
-    <button type="button" class="btn btn-default" id="deleteUser">Удалить выбранные</button>
+    <button type="button" class="btn btn-default" id="deleteUser">Удалить запись</button>
 </div>
 <div class="modal fade" id="addUserPopup">
     <div class="modal-dialog">
@@ -201,7 +201,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
@@ -276,7 +276,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Отредактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/changepass'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

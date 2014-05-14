@@ -182,10 +182,9 @@
         <?php echo $form->textField($model,'contact', array(
             'id' => 'contact',
             'class' => 'form-control',
-            'placeholder' => 'Контактные данные',
             'data-toggle' => 'tooltip',
             'data-placement' => 'right',
-            'title' => 'Здесь могут быть любые данные, позволяющие связаться с пациентом (например, телефон, адрес эл. почты)'
+            'title' => 'Номер телефона пациента, по которому с ним можно связаться'
         )); ?>
     </div>
 </div>

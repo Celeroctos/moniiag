@@ -331,7 +331,7 @@ $form = $this->beginWidget('CActiveForm', array(
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
@@ -380,7 +380,7 @@ $form = $this->beginWidget('CActiveForm', array(
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

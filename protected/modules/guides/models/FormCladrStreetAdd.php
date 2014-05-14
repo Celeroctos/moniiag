@@ -21,7 +21,7 @@ class FormCladrStreetAdd extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'name' => 'Название района',
+            'name' => 'Название улицы',
             'codeCladr' => 'Код в КЛАДР',
             'codeRegion' => 'Регион',
             'codeDistrict' => 'Район',

@@ -19,7 +19,7 @@
         <button type="button" class="btn btn-default" id="editDistrict">Редактировать выбранную запись</button>
     <?php } ?>
     <?php if(Yii::app()->user->checkAccess('guideDeletePrivelege')) { ?>
-        <button type="button" class="btn btn-default" id="deleteDistrict">Удалить выбранные</button>
+        <button type="button" class="btn btn-default" id="deleteDistrict">Удалить запись</button>
     <?php } ?>
 </div>
 <div class="modal fade" id="addDistrictPopup">
@@ -183,7 +183,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
-                    'Редактировать',
+                    'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/districtedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {

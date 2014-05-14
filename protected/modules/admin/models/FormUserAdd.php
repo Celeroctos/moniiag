@@ -34,7 +34,7 @@ class FormUserAdd extends CFormModel
             'password' => 'Пароль',
             'roleId' => 'Роль',
             'passwordRepeat' => 'Повтор пароля',
-            'employeeId' => 'Ассоциированный сотрудник'
+            'employeeId' => 'Сотрудник'
         );
     }
 }
