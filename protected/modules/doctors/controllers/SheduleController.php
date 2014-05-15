@@ -445,10 +445,10 @@ class SheduleController extends Controller {
 
     // Логика выдачи календаря:
     /* Выдаются даты + характеристика дат. Например, количество пациентов на день. */
-    private function getCalendar() {
+    public function getCalendar($doctorId = false, $startYear = false, $startMonth = false, $startDay = false, $breakByErrors = true) {
         // Выбираем расписание врача
-        if(isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) {
-            $doctorId = (int)$_GET['doctorid'];
+        if((isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) || $doctorId !== false) {
+            $doctorId = isset($_GET['doctorid']) ? (int)$_GET['doctorid'] : $doctorId;
             // Выбираем настройки расписания
             $settings = $this->getSettings();
             $shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
@@ -469,29 +469,42 @@ class SheduleController extends Controller {
                 $this->currentDay = date('j');
             }
             // Расписание не установлено
-            if(count($shedule) == 0) {
+            if(count($shedule) == 0 && $breakByErrors) {
                 echo CJSON::encode(array('success' => 'false',
                                          'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
                 exit();
+            } elseif(count($shedule) == 0) {
+                return array();
             }
+
             // Количество дней в месяце
-            $dayBegin = 1;
-            if($this->currentYear != null && $this->currentMonth != null) {
-                $dayEnd = date('t', strtotime($this->currentYear.'-'.$this->currentMonth));
+            $dayBegin = $startDay !== false ? $startDay : 1;
+            // В случае органайзера мы показываем только на неделю вперёд
+            if($startDay === false) {
+                if($this->currentYear != null && $this->currentMonth != null) {
+                    $dayEnd = date('t', strtotime($this->currentYear.'-'.$this->currentMonth));
+                } else {
+                    $dayEnd = date('t');
+                }
             } else {
-                $dayEnd = date('t');
+                $dayEnd = $startDay + 6;
             }
+
             // Здесь составляем карту расписания на каждый день: разбираем на общее расписание и исключения
             $usual = array();
+            $usualData = array();
             $exps = array();
+            $expsData = array();
             foreach($shedule as $key => $element) {
                 // Обычное расписание
                 if($element['type'] == 0) {
                     array_push($usual, $element['weekday']);
+                    array_push($usualData, $element);
                 }
                 // Исключения
                 if($element['type'] == 1) {
                     array_push($exps, $element['day']);
+                    array_push($expsData, $element);
                 }
             }
             // Теперь вынем стабильное расписание выходных
@@ -523,10 +536,23 @@ class SheduleController extends Controller {
                 $weekday = date('w', strtotime($formatDate));
                 // 0 -> 0.. 1 -> 1..
                 $resultArr[$i - 1]['weekday'] = $weekday;
-                if((array_search($weekday, $usual) !== false && array_search($weekday, $restDaysArr) === false && array_search($i, $restDaysArrLonely) === false) || array_search($formatDate, $exps) !== false) {
+                $expsIndex = array_search($formatDate, $exps);
+                $usualIndex = array_search($weekday, $usual);
+                if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($i, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
                     $resultArr[$i - 1]['worked'] = true;
                     $resultArr[$i - 1]['restDay'] = false;
+
+                    // Начало и конец смены
+                    if($expsIndex !== false) {
+                        $resultArr[$i - 1]['beginTime'] = $expsData[$expsIndex]['time_begin'];
+                        $resultArr[$i - 1]['endTime'] = $expsData[$expsIndex]['time_end'];
+                    }
+
+                    if($usualIndex !== false) {
+                        $resultArr[$i - 1]['beginTime'] = $usualData[$usualIndex]['time_begin'];
+                        $resultArr[$i - 1]['endTime'] = $usualData[$usualIndex]['time_end'];
+                    }
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты

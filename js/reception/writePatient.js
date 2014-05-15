@@ -225,7 +225,11 @@ $(document).ready(function() {
                         $('#notFoundPopup').modal({
                         });
                     } else {
-                        displayAllDoctors(data.data);
+                        if(globalVariables.hasOwnProperty('calendarType') && globalVariables.calendarType == 0) {
+                            displayAllDoctors(data.data);
+                        } else {
+                            $('.organizer').trigger('showShedule', [data, textStatus, jqXHR]);
+                        }
                         printPagination('searchDoctorsResult',data.total);
                     }
                 } else {
