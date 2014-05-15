@@ -21,6 +21,28 @@ class DoctorsController extends Controller {
         $start = $page * $rows - $rows;
 		
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
+
+        // Посмотрим на то, какой календарь мы показываем сейчас
+        $calendarTypeSetting = Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value;
+
+        if($calendarTypeSetting == 1) {
+            $calendarController = Yii::app()->createController('doctors/shedule');
+        }
+
+        // Если дата не задана, считаем, что дата начала показа органайзера - от текущей даты
+        if($calendarTypeSetting == 1) {
+            if($this->greetingDate == null) {
+                $beginYear = date('Y');
+                $beginMonth = date('n');
+                $beginDay = date('j');
+            } else {
+                $parts = explode('-', $this->greetingDate);
+                $beginYear = $parts[0];
+                $beginMonth = $parts[1];
+                $beginDay = $parts[2];
+            }
+        }
+
         // Теперь обработаем врачей: ближайшую свободную дату можно взять из календаря
         foreach($doctors as &$doctor) {
             $nearFree = $this->getNearFreeDay($doctor['id']);
@@ -33,13 +55,34 @@ class DoctorsController extends Controller {
                     $doctor['cabinet'] = $cabinetElement['cab_number'].' ('.$cabinetElement['description'].')';
                 }
             }
+            // Если это органайзер, то нам нужно вынимать также часть календаря для каждого врача
+            if($calendarTypeSetting == 1) {
+                $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false);
+                $doctor['shedule'] = $daysList;
+            }
         }
 
-        echo CJSON::encode(array('success' => true,
-                                 'data' => $doctors,
-                                 'total' => $totalPages,
-				                 'records' => count($num)));
-        
+        $answer = array(
+            'success' => true,
+            'data' => $doctors,
+            'total' => $totalPages,
+            'records' => count($num)
+        );
+        if($calendarTypeSetting == 1) {
+            $answer['year'] = $beginYear;
+            $answer['month'] = $beginMonth;
+            $answer['day'] = $beginDay;
+
+            $restDays = SheduleRest::model()->findAll();
+            $restDaysArr = array();
+            foreach($restDays as $restDay) {
+                $restDaysArr[] = $restDay->day;
+            }
+
+            $answer['restDays'] = $restDaysArr;
+        }
+
+        echo CJSON::encode($answer);
     }
     
 	    // Экшн поиска врача без расписания (по-хорошему надо перенести это в другой контроллер)

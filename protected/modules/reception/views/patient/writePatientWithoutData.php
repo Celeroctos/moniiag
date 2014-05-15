@@ -10,6 +10,7 @@
     globalVariables.months = [
         'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
     ];
+    globalVariables.calendarType = <?php echo $calendarType; ?>;
 </script>
 <?php if(Yii::app()->user->checkAccess('writePatient')) { ?>
 <div class="row">
@@ -208,7 +209,7 @@
     </div>
     <div class="wrap sheduleCont">
         <table class="doctorList">
-            <tr>
+            <!--<tr>
                 <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
             </tr>
             <tr>
@@ -228,10 +229,10 @@
             </tr>
             <tr>
                 <td class="doctor_cell">Архипова Ольга Николаевна<span>Стоматологи-терапевты</span></td>
-            </tr>
+            </tr>-->
         </table>
         <ul class="daysListCont">
-            <li>
+            <!--<li>
                 <ul class="daysList">
                     <li class="empty">1</li>
                     <li class="empty">2</li>
@@ -305,7 +306,7 @@
                     <li>6</li>
                     <li>7</li>
                 </ul>
-            </li>
+            </li>-->
         </ul>
      </div>
 </div>
