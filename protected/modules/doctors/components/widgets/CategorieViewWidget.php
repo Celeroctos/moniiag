@@ -590,6 +590,7 @@ class CategorieViewWidget extends CWidget {
 
     // Заполнить форму значениями
     public function getFormValue($element, $historyId = false) {
+
         $medcardId = $this->currentPatient;
         if($this->formModel->medcardId == null) {
             $this->formModel->medcardId = $medcardId;
@@ -598,7 +599,14 @@ class CategorieViewWidget extends CWidget {
             $historyIdResult = MedcardElementForPatient::model()->getMaxHistoryPointId($element, $medcardId, $this->greetingId);
             if($historyIdResult['history_id_max'] == null) {
                 // Если нет значений для данного элемента, можно уже вернуть сам элемент, потому что его нечем заполнить
-                if($element['type'] == 3 || $element['type'] == 2) {
+                if($element['type'] == 3 || $element['type'] == 2 || $element['type'] == 7) {
+
+                   /* if ($element['id']==339)
+                    {
+                        var_dump("!");
+                        exit();
+                    }*/
+
                     $element['selected'] = array();
                 }
                 $element['history_id_max'] = 1;
@@ -608,7 +616,11 @@ class CategorieViewWidget extends CWidget {
                 $element['history_id_max'] = $historyId;
             }
         }
-
+       /* if ($element['id']==339)
+        {
+            var_dump("!");
+            exit();
+        }*/
         // Делаем выборку из базы значения
         $elementFinded = MedcardElementForPatient::model()->find(
             'element_id = :element_id
@@ -619,13 +631,34 @@ class CategorieViewWidget extends CWidget {
                   ':history_id' => $historyId
                  )
         );
+        /*if ($element['id']==339)
+        {
+            var_dump($elementFinded);
+            exit();
+        }*/
         if($elementFinded != null) {
+            /*if ($element['id']==339)
+            {
+                var_dump("!");
+                exit();
+            }*/
             $fieldName = 'f'.$element['undotted_path'].'_'.$element['id'];
-            // Если это комбо с множественным выбором
-            if($element['type'] == 3) {
+            // Если это комбо с множественным выбором или двухколоночный список
+            if($element['type'] == 3 || $element['type'] == 7) {
+                /*if ($element['id']==339)
+                {
+                    var_dump("!");
+                    exit();
+                }*/
                 $element['selected'] = array();
                 $element['value'] = CJSON::decode($elementFinded['value']);
-				if($element['value'] != null)
+
+               /*if ($element['id']==339)
+               {
+                   var_dump($elementFinded['value']);
+                   exit();
+               }*/
+                if($element['value'] != null)
 				{
 					// Если $element['value'] - не массив, то считаем это один айдишник - 
 					if(!is_array($element['value'])) {
@@ -673,8 +706,12 @@ class CategorieViewWidget extends CWidget {
 		
 		$this->makeTree('getTreeNode');
         $this->sortTree();
+        //var_dump($this->historyTree);
+        //exit();
         // Теперь поделим категории
         $this->divideTreebyCats();
+        //var_dump($this->dividedCats);
+        //exit();
 		$greeting  = null;
         // Рассортируем
 		// Вытащим приёмы
@@ -689,7 +726,6 @@ class CategorieViewWidget extends CWidget {
 					break;	
 				}
 			}
-			
 		}
 		//var_dump($this->historyElements);
 		//exit();
@@ -810,7 +846,7 @@ class CategorieViewWidget extends CWidget {
 			    			if(count($medguideValues) > 0)
 			    			{
                                 // Если не список множественного выбора
-								if($nodeContent['type'] != 3)
+								if($nodeContent['type'] != 3 && $nodeContent['type'] != 7)
 								{
 				    				$guideValues = array();
 				    				foreach($medguideValues as $value)
@@ -821,7 +857,7 @@ class CategorieViewWidget extends CWidget {
 				    				$nodeContent['guide'] = $guideValues;
 								}
                             }
-                            if($nodeContent['type'] == 3)
+                            if($nodeContent['type'] == 3 || $nodeContent['type'] == 7)
                             {
                                 $nodeContent['selected'] = array();
                                 $nodeContent['value'] = 
@@ -861,11 +897,15 @@ class CategorieViewWidget extends CWidget {
 					    					}
 										}
 				    				}
+
+
                                 } 
                                 else
                                 {
                                     $nodeContent['selected'] = array();
                                 }
+
+
                             }
                             // Простой выпадающий список
                             if($nodeContent['type'] == 2)
@@ -931,11 +971,11 @@ class CategorieViewWidget extends CWidget {
 										CJSON::decode($nodeContent['value']);
 							}
 							// Если тип - выпадающий список или список множественного выбора
-							if ($historyElement['type']==3 ||$historyElement['type']==2)
+							if ($historyElement['type']==3 ||$historyElement['type']==2 || $historyElement['type']==7)
 							{
 								$medguideValuesModel = new MedcardGuideValue();
 								$medguideValues = $medguideValuesModel->getRows(false, $historyElement['guide_id'], 'value', 'asc', false, false, $nodeContent['path'], $historyElement['greeting_id']);
-								if ($historyElement['type']==3)
+								if ($historyElement['type']==3 ||$historyElement['type']==7 )
 								{
 									$nodeContent['value'] = 
 										CJSON::decode($nodeContent['value']);
@@ -1001,11 +1041,17 @@ class CategorieViewWidget extends CWidget {
 	//     (максимальный индекс<pointer-а)
 	private function getTreeNodeCategory($pathArray, $pointer)
 	{
+        //var_dump($pathArray);
+        //var_dump($pointer);
+        //exit();
+
 		$result = false;
 		$pathToFind = $this->getSubPath($pathArray, $pointer);
 		//var_dump($pathToFind);
-		foreach($this->historyElements as $element) {
-			if ($element['path']==$pathToFind)
+		//exit();
+        foreach($this->historyElements as $element) {
+            // Равны ли пути
+            if (strcmp($element['path'],$pathToFind)==0)
 			{
 				$result = 	$element;
 				break;
@@ -1015,7 +1061,11 @@ class CategorieViewWidget extends CWidget {
 	}
 
 	public function makeTree($getTreeNodeFunction) {
+        //var_dump($this->historyElements);
+        //exit();
 		foreach($this->historyElements as $element) {
+			//var_dump($element);
+            //exit();
 			// Перебираем только элементы - категории добавляем, по требованию
 			if ($element['element_id']!=-1)
 			{
@@ -1027,6 +1077,8 @@ class CategorieViewWidget extends CWidget {
 				$currentResultTree = &$this->historyTree;
 				// Перебираем куски адреса  с каждым куском адреса 
 				//     перемещаем указатель на текущий узел
+
+
 				for ($i=0;$i<count($pathArr)-1;$i++)
 				{
 					// Если в узле нет такого ключа - создаём его
@@ -1034,13 +1086,17 @@ class CategorieViewWidget extends CWidget {
 					{
 						$currentResultTree[$pathArr[$i]] = array();
 					}
+
 					$currentResultTree = &$currentResultTree[$pathArr[$i]];
-					
+
+
+
 					// Если в узле внутри нету ключа "element" - его нужно создать
 					if (!isset($currentResultTree['element']))
 					{
 						//$currentResultTree['element'] = $this->getTreeNode($this->getTreeNodeCategory($pathArr , $i+1 ));
-						$currentResultTree['element'] = $this->$getTreeNodeFunction($this->getTreeNodeCategory($pathArr , $i+1 ));
+						$currentResultTree['element'] =
+                            $this->$getTreeNodeFunction($this->getTreeNodeCategory($pathArr , $i+1 ));
 					}
 				}
 				// Нашли местечко для элемента - вставили в текущий узел
@@ -1053,6 +1109,7 @@ class CategorieViewWidget extends CWidget {
 					array();
 				//$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->getTreeNode($element);
 				$currentResultTree[$pathArr[count($pathArr)-1]]['element']=$this->$getTreeNodeFunction($element);
+
 			}
 		}
 	}

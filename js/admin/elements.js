@@ -567,13 +567,18 @@ $("#deleteElement").click(function () {
 $("select#type").on('change', function (e) {
     // Если это список с выбором
     var form = $(this).parents('form');
-    if ($(this).val() == 2 || $(this).val() == 3) {
+    if ($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 7) {
         form.find("select#guideId").prop('disabled', false);
         form.find("select#allowAdd").prop('disabled', false);
-        form.find("select#defaultValue").prop('disabled', false);
-
+        if ($(this).val() == 7)
+        {
+            form.find("select#defaultValue").parents('div.form-group').addClass('no-display');
+        }
+        else
+        {
+            form.find("select#defaultValue").parents('div.form-group').removeClass('no-display');
+        }
         form.find("#defaultValueText").parents('div.form-group').addClass('no-display');
-        form.find("#defaultValue").parents('div.form-group').removeClass('no-display');
 
         //form.find("select#defaultValueText")
         //    .val('')
