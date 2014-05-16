@@ -987,18 +987,20 @@ $('#nextHistoryPoint').on('click', function () {
     });
 
     $('#collapsePatientList').on('click', function(e) {
-        $(this).addClass('no-display');
+     /*   $(this).addClass('no-display');
         $('#expandPatientList').removeClass('no-display');
         isExpandedList = true;
-        updateExpanded();
+        updateExpanded();*/
     });
 
-    function updateCollapsed() {
+    function updatePatientList() {
         var url = '/index.php/doctors/shedule/updatepatientlist';
         var data = {
             FormSheduleFilter : {
                 date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
-            }
+            },
+            currentPatient : $('#currentPatientId').val(),
+            currentGreeting : $('#greetingId').val()
         };
         $.ajax({
             'url': url,
@@ -1011,7 +1013,10 @@ $('#nextHistoryPoint').on('click', function () {
             },
             'success': function (data, textStatus, jqXHR) {
                 if (data.success) {
-
+                    // Убиваем старый список пациентов
+                    var parentContainer =  $('#omsSearchWithCardResult').parents()[0];
+                    $('#omsSearchWithCardResult').remove();
+                    $(parentContainer).append(data.data);
                 }
             }
         });
@@ -1044,11 +1049,7 @@ $('#nextHistoryPoint').on('click', function () {
     }
 
     $('#refreshPatientList').on('click', function(e) {
-        if(!isExpandedList) {
-            updateCollapsed();
-        } else {
-            updateExpanded();
-        }
+            updatePatientList();
     });
 
 });

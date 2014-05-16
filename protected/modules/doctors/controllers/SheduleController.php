@@ -129,9 +129,35 @@ class SheduleController extends Controller {
     public function actionUpdatePatientList() {
         $this->filterModel = new FormSheduleFilter();
         $patients = $this->getCurrentPatients();
+        $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
+        // Тащим из поста текущего пациента и текущий приём
+        $patientsListWidget->filterModel = $this->filterModel;
+        $greeting = false;
+        $medcard = false;
+        if (isset($_POST['currentPatient']))
+        {
+            if ($_POST['currentPatient']!='')
+            {
+                $medcard = $_POST['currentPatient'];
+            }
+        }
+
+        if (isset($_POST['currentGreeting']))
+        {
+            if ($_POST['currentGreeting']!='')
+            {
+                $greeting = $_POST['currentGreeting'];
+            }
+        }
+        $result = $patientsListWidget->getPatientList(
+            $patients,
+            $greeting,
+            $medcard
+        );
+        ob_end_clean();
         echo CJSON::encode(array(
             'success' => true,
-            'data' => $patients
+            'data' => $result
         ));
     }
 
