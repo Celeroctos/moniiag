@@ -21,6 +21,23 @@
     </thead>
     <tbody>
     <?php foreach ($patients as $key => $patient) {
+        // Если нет пацента - выводим пустую строку со временем
+        if ($patient['id']==null)
+        {
+            // Выводим только время приёма
+            ?>
+            <tr class="emptySheduleItem no-display">
+                <td>
+                </td>
+                <td>
+                    <?php echo $patient['timeBegin']; ?>
+                </td>
+                <td colspan="3">
+                </td>
+            </tr>
+            <?php
+            continue;
+        }
         if ($patient['id'] == $currentSheduleId) { // TODO
             ?>
             <tr class='success activeGreeting'>
@@ -69,3 +86,5 @@
     <?php } ?>
     </tbody>
 </table>
+<?php
+?>

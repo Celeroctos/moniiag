@@ -85,14 +85,40 @@ class SheduleController extends Controller {
         }
 
         $this->filterModel = new FormSheduleFilter();
-        $patients = $this->getCurrentPatients();
-        //var_dump($patients);
-        //exit();
+
+
+        /////////////////////////////////////
+        /*$date = $this->getCurrentDate();
+        $this->filterModel->date = $date;
+        $userId = Yii::app()->user->id;
+        $doctor = User::model()->findByPk($userId);
+        if($doctor == null) {
+            //exit('Error!');
+        }
+        // Выбираем пациентов на обозначенный день
+        $sheduleByDay = new SheduleByDay();
+        $patients = $sheduleByDay->getRows($date, $doctor['employee_id'], 0);
+
+        return $patients;
+
+        /////////////////////////////////////
+
+
+        /////////////////////////////////////
+*/
+        //$patients = $this->getCurrentPatients();
         $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
         $curDate = $this->getCurrentDate();
 
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
+
+        $userId = Yii::app()->user->id;
+        $doctor = User::model()->findByPk($userId);
+        $patients = $this->getPatientList($doctor['employee_id'],$curDate,false);
+        $patients = $patients['result'];
+        //var_dump($patients);
+        //exit();
 
 		$this->render('index', array(
             'patients' => $patients,
@@ -128,10 +154,21 @@ class SheduleController extends Controller {
 
     public function actionUpdatePatientList() {
         $this->filterModel = new FormSheduleFilter();
-        $patients = $this->getCurrentPatients();
+        // Получим дату, на которую нужны пациенты
+        $curDate = $this->getCurrentDate();
+        $parts = explode('-', $curDate);
+        $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
+        // Получим доктора
+        $userId = Yii::app()->user->id;
+        $doctor = User::model()->findByPk($userId);
+        // Получим пациентов
+        $patients = $this->getPatientList($doctor['employee_id'],$curDate,false);
+        $patients = $patients['result'];
+        // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
-        // Тащим из поста текущего пациента и текущий приём
         $patientsListWidget->filterModel = $this->filterModel;
+
+        // Тащим из поста текущего пациента и текущий приём
         $greeting = false;
         $medcard = false;
         if (isset($_POST['currentPatient']))
@@ -141,7 +178,6 @@ class SheduleController extends Controller {
                 $medcard = $_POST['currentPatient'];
             }
         }
-
         if (isset($_POST['currentGreeting']))
         {
             if ($_POST['currentGreeting']!='')
@@ -149,6 +185,7 @@ class SheduleController extends Controller {
                 $greeting = $_POST['currentGreeting'];
             }
         }
+        // Теперь получаем html-ку со списком пациентов
         $result = $patientsListWidget->getPatientList(
             $patients,
             $greeting,
@@ -646,12 +683,16 @@ class SheduleController extends Controller {
                                  'data' => $result['result']));
     }
 
-    private function getPatientList($doctorId, $formatDate) {
+    private function getPatientList($doctorId, $formatDate, $withMediate = true) {
         $patientsList = array();
         $sheduleByDay = new SheduleByDay();
         $weekday = date('w', strtotime($formatDate)); // День недели (число)
-        $patients = $sheduleByDay->getRows($formatDate, $doctorId);
-
+        $needMediate = 1;
+        if (!$withMediate);
+            $needMediate = false;
+        $patients = $sheduleByDay->getRows($formatDate, $doctorId, $needMediate);
+        //var_dump($patients);
+        //exit();
         // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
         $user = User::model()->findByPk(Yii::app()->user->id);
         if($user == null) {
@@ -714,7 +755,11 @@ class SheduleController extends Controller {
 							'isAllow' => 0, // Доступно ли время для записи или нет,
 							'id' => $patient['id'],
 							'type' => $patient['mediate_id'] != null ? 1 : 0,
-							'cardNumber' => $patient['card_number']
+							'cardNumber' => $patient['card_number'],
+                            'is_accepted' =>$patient['is_accepted'],
+                            'is_beginned' =>$patient['is_beginned'],
+                            'medcard_id' => $patient['card_number'],
+                            'patient_time' => date('G:i', $i)
 							);
 						$isFound = true;
 						$numRealPatients++;
