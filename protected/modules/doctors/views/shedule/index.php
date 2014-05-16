@@ -162,78 +162,16 @@
                     <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
                 </h5>
                 <div class="col-xs-12 borderedBox">
-                    <table id="omsSearchWithCardResult" class="table table-condensed table-hover">
-                        <thead>
-                        <tr class="header">
-                            <td>
-                                ФИО
-                            </td>
-                            <td>
-                                Время приёма
-                            </td>
-                            <td>
-                            </td>
-                            <!--<td>
-                            </td>-->
-                            <td>
-                            </td>
-                            <?php if ($currentPatient !== false && Yii::app()->user->checkAccess('canPrintMovement')) { ?>
-                                <td>
-                                </td>
-                            <?php } ?>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <?php foreach ($patients as $key => $patient) {
-                            if ($patient['id'] == $currentSheduleId) { // TODO
-                                ?>
-                                <tr class='success activeGreeting'>
-                            <?php
-                            } elseif ($patient['is_accepted'] == 1) {
-                                ?>
-                                <tr class='orange-block'>
-                            <?php
-                            } elseif ($patient['is_beginned'] == 1) {
-                                ?>
-                                <tr class='yellow-block'>
-                            <?php
-                            } else {
-                                ?>
-                                <tr class='magenta-block'>
-                            <?php } ?>
-                            <td>
-                                <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid=' . $patient['medcard_id'] . '&date=' . $filterModel->date . '&rowid=' . $patient['id'])); ?>
-                            </td>
-                            <td>
-                                <?php echo $patient['patient_time']; ?>
-                            </td>
-                            <td>
-                                <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('#' . $patient['medcard_id']), array('title' => 'Посмотреть медкарту', 'class' => 'editMedcard')); ?>
-                            </td>
-                            <!--<td>
-                                <?php echo ($patient['is_beginned'] == 1 || $patient['is_accepted'] == 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id']), array('title' => 'Начать приём')); ?>
-                            </td>-->
-                            <td>
-                                <?php
-                                //echo ($patient['is_accepted'] == 1 ||$patient['is_beginned'] != 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flag"></span>', array('/doctors/shedule/acceptcomplete/?id='.$patient['id']), array('title' => 'Закончить приём'));
-                                if (!($patient['is_accepted'] == 1 || $patient['is_beginned'] != 1)) {
-                                    echo CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '#' . $patient['id'],
-                                        array('title' => 'Закончить приём',
-                                            'class' => 'accept-greeting-link'));
-                                }
-                                ?>
-                            </td>
-                            <?php if (Yii::app()->user->checkAccess('canPrintMovement')) { ?>
-                                <td>
-                                    <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
-                                        array('title' => 'Печать листа приёма',
-                                            'class' => 'print-greeting-link')) : ''; ?>
-                                </td>
-                            <?php } ?>
-                            </tr>
-                        <?php } ?>
-                        </tbody>
-                    </table>
+                    <?php
+                    // Вызываем виджет списка пациентов
+                    $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+                        'patients' => $patients,
+                        'currentSheduleId' => $currentSheduleId,
+                        'currentPatient' => $currentPatient,
+                        'filterModel' => $filterModel
+                    ));
+                    ?>
+
                 </div>
             </div>
         </div>
@@ -393,10 +331,11 @@
                     </div>
                 </div>
             </div>
-			  <?php echo CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
-									array('title' => 'Печать рекомендаций',
-										  'class' => 'print-recomendation-link')); 
-			?>
+			  <?php
+            echo CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $currentSheduleId,
+                array('title' => 'Печать рекомендаций',
+                    'class' => 'print-recomendation-link'));
+            ?>
             <?php
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
@@ -584,6 +523,11 @@
                             'id' => 'greetingId',
                             'class' => 'form-control',
                             'value' => $currentSheduleId
+                        ));
+                        echo $addForm->hiddenField($addModel, 'patientId', array(
+                            'id' => 'currentPatientId',
+                            'class' => 'form-control',
+                            'value' => $currentPatient
                         ));
                         echo $addForm->textField($addModel, 'value', array(
                             'id' => 'addGreetingGuideValue',
