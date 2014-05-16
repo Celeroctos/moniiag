@@ -60,7 +60,12 @@ class SheduleController extends Controller {
                         }
                     }
 
-                    $templatesList = $_POST['templatesList'];
+                    $templatesListWithTemplateData = array();
+                    foreach($_POST['templatesList'] as $key => $id) {
+                        $templModel = MedcardTemplate::model()->findByPk($id);
+                        $templatesListWithTemplateData[] = $templModel;
+                    }
+                    $templatesList = $templatesListWithTemplateData;
                 } else {
                     $canEditMedcard = 0;
                     $templatesChoose = 1;
@@ -148,7 +153,8 @@ class SheduleController extends Controller {
             'templatesList' => isset($templatesList) ? $templatesList : array(),
             'referenceTemplatesList' => isset($referenceTemplatesList) ? $referenceTemplatesList : array(),
             'greeting' => (isset($greeting)) ? $greeting : null,
-			'medcardRecordId' => $medcardRecordId
+			'medcardRecordId' => $medcardRecordId,
+            'templateModel' =>  new  FormTemplateDefault()
         ));
     }
 

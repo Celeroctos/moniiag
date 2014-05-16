@@ -179,24 +179,94 @@
     <?php
     if ($currentPatient !== false) {
         if ($templatesChoose == 0) {
-            foreach ($templatesList as $key => $id) {
+            $counter = 0;
+    ?>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs templatesListNav">
+                    <?php foreach($templatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="t<?php echo $template['id']; ?>">
+                                <strong>
+                                    <?php echo $template['name']; ?>
+                                </strong>
+                            </a>
+                        </li>
+                    <?php
+                        $counter++;
+                    } ?>
+                </ul>
+            </div>
+            <script type="text/javascript">
+                if (globalVariables.elementsDependences == undefined)
+                {
+                    globalVariables.elementsDependences = new Array();
+                }
+            </script>
+            <?php
+
+            $formM = $this->beginWidget('CActiveForm', array(
+                'id' => 'patient-edit-form',
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+                'htmlOptions' => array(
+                    'class' => 'form-horizontal col-xs-12',
+                    'role' => 'form'
+                )
+            ));
+            echo $formM->hiddenField($templateModel,'medcardId', array(
+                'id' => 'medcardId',
+                'class' => 'form-control',
+                'value' => $currentPatient
+            ));
+            echo $formM->hiddenField($templateModel,'greetingId', array(
+                'id' => 'greetingId',
+                'class' => 'form-control',
+                'value' => $currentSheduleId
+            ));
+
+            $counter = 0;
+            foreach ($templatesList as $key => $template) {
                 ?>
-                <div class="default-margin-top">
+                <div>
                     <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
                         'currentPatient' => $currentPatient,
                         'templateType' => 0,
-                        'templateId' => $id,
+                        'templateId' => $template['id'],
                         'withoutSave' => 0,
                         'greetingId' => $currentSheduleId,
                         'canEditMedcard' => $canEditMedcard,
                         'medcard' => $medcard,
                         'currentDate' => $currentDate,
-                        'templatePrefix' => 'a' . $id,
-                        'medcardRecordId' => $medcardRecordId
+                        'templatePrefix' => 'a' . $template['id'],
+                        'medcardRecordId' => $medcardRecordId,
+                        'isActiveTemplate' => $counter == 0,
+						'form' => $formM
                     )); ?>
                 </div>
-            <?php } ?>
-            <div id="accordionD" class="accordion col-xs-12">
+            <?php
+                $counter++;
+            } ?>
+            <?php $this->endWidget(); ?>
+			<div class="modal fade error-popup" id="successEditPopup">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title">Успешно!</h4>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<p>Информация успешно сохранена.</p>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+						</div>
+					</div>
+				</div>
+			</div>
+            <div id="accordionD" class="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a href="#collapseD" data-parent="#accordionD" data-toggle="collapse"
@@ -337,6 +407,28 @@
                     'class' => 'print-recomendation-link'));
             ?>
             <?php
+			$formM = $this->beginWidget('CActiveForm', array(
+                'id' => 'patient-edit-form',
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+                'htmlOptions' => array(
+                    'class' => 'form-horizontal',
+                    'role' => 'form'
+                )
+            ));
+            echo $formM->hiddenField($templateModel,'medcardId', array(
+                'id' => 'medcardId',
+                'class' => 'form-control',
+                'value' => $currentPatient
+            ));
+            echo $formM->hiddenField($templateModel,'greetingId', array(
+                'id' => 'greetingId',
+                'class' => 'form-control',
+                'value' => $currentSheduleId
+            ));
+
+            $counter = 0;
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
                 <div class="default-margin-top">
@@ -350,10 +442,14 @@
                         'medcard' => $medcard,
                         'currentDate' => $currentDate,
                         'templatePrefix' => 'r' . $id,
-                        'medcardRecordId' => $medcardRecordId
+                        'medcardRecordId' => $medcardRecordId,
+						'isActiveTemplate' => $counter == 0,
+						'form' => $formM
                     )); ?>
                 </div>
-            <?php } ?>
+            <?php }
+				$this->endWidget();
+			?>
         <?php } ?>
     <?php } ?>
 <?php } ?>
