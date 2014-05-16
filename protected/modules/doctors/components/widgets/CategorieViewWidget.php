@@ -427,7 +427,11 @@ class CategorieViewWidget extends CWidget {
 						if(count($medguideValues) > 0) {
                             $guideValues = array();
                             foreach($medguideValues as $value) {
-                                $guideValues[$value['id']] = $value['value'];
+                                // Если значение из справочника равно "-3" и тип не равен 7ми, то добавим значение
+                                if (!(($value['id']==-3)&& ($elementResult['type']==7)))
+                                {
+                                    $guideValues[$value['id']] = $value['value'];
+                                }
                             }
                             $elementResult['guide'] = $guideValues;
                         } else {

@@ -386,6 +386,7 @@ if(isset($categorie['id'])) {
                                       //  exit();
                                         ?>
                                         <div class="twoColumnList">
+                                            <?php /* var_dump($element['guide']); exit(); */ ?>
                                             <select multiple="multiple" class="form-control twoColumnListFrom" style="width:200px">
                                                 <?php
                                                 foreach ($element['guide'] as $optionId => $oneOption)
@@ -429,7 +430,18 @@ if(isset($categorie['id'])) {
                                             echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
                                             ?>
                                         </div>
+
+
                                         <?php
+
+
+                                        if($element['label_after'] != null) {
+                                            ?>
+                                            <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
+                                            <?php
+                                        }
+
+
                                     }
                                 }
                                 ?>
