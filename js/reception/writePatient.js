@@ -556,8 +556,12 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
-                    // Перезагружаем календарь
-                    loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
+                    // Перезагружаем календарь или органайзер
+                    if($('.organizer').length > 0) {
+                        $('.organizer').trigger('reload');
+                    } else {
+                        loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
+                    }
                 } else {
 
                 }

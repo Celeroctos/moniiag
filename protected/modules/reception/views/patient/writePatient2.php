@@ -1,5 +1,9 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/writePatient.js" ></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/calendar.js" ></script>
+<?php if($calendarType == 0) { ?>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/calendar.js" ></script>
+<?php } elseif($calendarType == 1) { ?>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/organizer.js" ></script>
+<?php } ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <script type="text/javascript">
@@ -130,105 +134,143 @@
         </div>
     </form>
 </div>
-<h4>Необходимо выбрать врача</h4>
-</p>
-<div class="row">
-    <div class="col-xs-12 borderedBox">
-        <table class="table table-condensed table-hover" id="searchDoctorsResult">
-            <thead>
-            <tr class="header">
-                <td class="write-patient-cell">
-                    Записать
-                </td>
-                <td>
-                    ФИО врача
-                </td>
-                <td>
-                    Должность
-                </td>
-                <td>
-                    Отделение
-                </td>
-                <td>
-                    Кабинет
-                </td>
-                <td>
-                    Ближайшая дата
-                </td>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+<?php if($calendarType == 0) { ?>
+    <h4>Необходимо выбрать врача</h4>
+    </p>
     <div class="row">
-        <ul class="pagination content-pagination">
-        </ul>
-    </div>
-</div>
-        <h4><span class="text-danger busyFio"></span></h4>
-<div class="row">
-<div class="col-xs-5">
-            <div class="row busyCalendar no-display">
-                    <div class="col-xs-12 ">
-                        <div class="headerBusyCalendar no-display">
-                         <!--<h4>Занятость <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>-->
-                        <h4>Занятость на <span class="text-danger busyDate"></span></h4>
-                    </div>
-                    <table class="table-bordered table calendar" id="writeShedule">
-                        <thead>
-                            <tr class="header">
-                                <td>Пн</td>
-                                <td>Вт</td>
-                                <td>Ср</td>
-                                <td>Чт</td>
-                                <td>Пт</td>
-                                <td>Сб</td>
-                                <td>Вс</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <div class="row default-padding-left">
-                        <button type="button" class="btn btn-primary" id="showPrevMonth">
-                            <span class="glyphicon glyphicon-arrow-left"> </span><span class='prev-months-button'></span>
-                        </button>
-                        <button type="button" class="btn btn-primary" id="showNextMonth">
-                           <span class='next-months-button'></span> <span class="glyphicon glyphicon-arrow-right"></span>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-xs-12">
-                    <h4>Легенда</h4>
-                    <p><div class="legend-icon orange-block"></div>Выходные дни</p>
-                    <p><div class="legend-icon lightgreen-block"></div>Полностью свободные дни</p>
-                    <p><div class="legend-icon red-block"></div>Полностью занятые дни</p>
-                    <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
-                    <p><div class="legend-icon not-aviable-block"></div>Прошедшие дни (недоступные для записи)</p>
-                </div>
-        </div>
-</div>
-<div class="col-xs-7">
-    <div class="busySheduleHeader no-display">
-        <h4>Занятость на <span class="text-danger busyDay"></span></h4>
-    </div>
-    <div class="row busyShedule no-display">
         <div class="col-xs-12 borderedBox">
-            <table class="table table-condensed table-hover" id="sheduleByBusy">
+            <table class="table table-condensed table-hover" id="searchDoctorsResult">
                 <thead>
-                    <tr class="header">
-                        <td class="col-xs-2">Время</td>
-                        <td class="col-xs-7">Пациент</td>
-                        <td class="col-xs-3 write-patient-cell">Записать</td>
-                    </tr>
+                <tr class="header">
+                    <td class="write-patient-cell">
+                        Записать
+                    </td>
+                    <td>
+                        ФИО врача
+                    </td>
+                    <td>
+                        Должность
+                    </td>
+                    <td>
+                        Отделение
+                    </td>
+                    <td>
+                        Кабинет
+                    </td>
+                    <td>
+                        Ближайшая дата
+                    </td>
+                </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
         </div>
+        <div class="row">
+            <ul class="pagination content-pagination">
+            </ul>
+        </div>
     </div>
-</div>
+            <h4><span class="text-danger busyFio"></span></h4>
+    <div class="row">
+    <div class="col-xs-5">
+                <div class="row busyCalendar no-display">
+                        <div class="col-xs-12 ">
+                            <div class="headerBusyCalendar no-display">
+                             <!--<h4>Занятость <span class="text-danger busyFio"></span> на месяц <span class="text-danger busyDate"></span></h4>-->
+                            <h4>Занятость на <span class="text-danger busyDate"></span></h4>
+                        </div>
+                        <table class="table-bordered table calendar" id="writeShedule">
+                            <thead>
+                                <tr class="header">
+                                    <td>Пн</td>
+                                    <td>Вт</td>
+                                    <td>Ср</td>
+                                    <td>Чт</td>
+                                    <td>Пт</td>
+                                    <td>Сб</td>
+                                    <td>Вс</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                        <div class="row default-padding-left">
+                            <button type="button" class="btn btn-primary" id="showPrevMonth">
+                                <span class="glyphicon glyphicon-arrow-left"> </span><span class='prev-months-button'></span>
+                            </button>
+                            <button type="button" class="btn btn-primary" id="showNextMonth">
+                               <span class='next-months-button'></span> <span class="glyphicon glyphicon-arrow-right"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <h4>Легенда</h4>
+                        <p><div class="legend-icon orange-block"></div>Выходные дни</p>
+                        <p><div class="legend-icon lightgreen-block"></div>Полностью свободные дни</p>
+                        <p><div class="legend-icon red-block"></div>Полностью занятые дни</p>
+                        <p><div class="legend-icon yellow-block"></div>Частично свободные дни</p>
+                        <p><div class="legend-icon not-aviable-block"></div>Прошедшие дни (недоступные для записи)</p>
+                    </div>
+            </div>
+    </div>
+    <div class="col-xs-7">
+        <div class="busySheduleHeader no-display">
+            <h4>Занятость на <span class="text-danger busyDay"></span></h4>
+        </div>
+        <div class="row busyShedule no-display">
+            <div class="col-xs-12 borderedBox">
+                <table class="table table-condensed table-hover" id="sheduleByBusy">
+                    <thead>
+                        <tr class="header">
+                            <td class="col-xs-2">Время</td>
+                            <td class="col-xs-7">Пациент</td>
+                            <td class="col-xs-3 write-patient-cell">Записать</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <?php }  elseif($calendarType == 1) { ?>
+        <h4>Выберите врача и дату</h4>
+        <div class="organizer">
+            <div class="sub">
+                <div class="headerCont">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="week_header_cell doctorH">Врач</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="headerCont2">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td class="current">Ср<br>сегодня</td>
+                            <td>Чт<br>15 мая</td>
+                            <td>Пт<br>16 мая</td>
+                            <td class="weekday">Сб<br>17 мая</td>
+                            <td class="weekday">Вс<br>18 мая</td>
+                            <td>Пн<br>19 мая</td>
+                            <td>Вт<br>20 мая</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="wrap sheduleCont">
+                <table class="doctorList">
+                </table>
+                <ul class="daysListCont">
+                </ul>
+            </div>
+        </div>
+    <?php } ?>
 <?php } ?>
 <div class="modal fade error-popup" id="errorPopup">
     <div class="modal-dialog">
