@@ -73,6 +73,11 @@
                             'class' => 'control-label label-before'
                         ));  ?>
                         <?php
+                            /*if ($element['element_id']==339)
+                            {
+                                var_dump($element);
+                                exit();
+                            }*/
                             if($element['type'] == 0 || $element['type'] == 5 || $element['type'] == 6) {
                                 $options = array(
                                     'id' => 'f_'.$prefix.'_'.$element['id'],
@@ -144,7 +149,7 @@
                                     <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                 <?php
                                 }
-                            } elseif($element['type'] == 3) {
+                            } elseif($element['type'] == 3 || $element['type'] == 7) {
                                 $options = array(
                                     'id' => 'f_'.$prefix.'_'.$element['id'],
                                     'class' => 'form-control',

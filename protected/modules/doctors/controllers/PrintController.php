@@ -141,6 +141,9 @@ class PrintController extends Controller {
 		
 		//ob_end_clean();
 		// Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
+        //var_dump($sortedElements);
+        //exit();
+
 		if($greetingIn === false) {
 			$this->render('greeting', array(
 				'templates' => $sortedElements,
