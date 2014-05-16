@@ -980,25 +980,40 @@ $('#nextHistoryPoint').on('click', function () {
 
     var isExpandedList = false;
     $('#expandPatientList').on('click', function(e) {
-        $(this).addClass('no-display');
-        $('#collapsePatientList').removeClass('no-display');
-        isExpandedList = false;
-        updateCollapsed();
+        // Убираем no-display у пустых строк интерфейса
+        if ($(this).find('span').hasClass('glyphicon-resize-full'))
+        {
+            $('#omsSearchWithCardResult .emptySheduleItem').removeClass('no-display');
+            $(this).find('span').removeClass('glyphicon-resize-full');
+            $(this).find('span').addClass('glyphicon-resize-small');
+
+        }
+        else
+        {
+            if ($(this).find('span').hasClass('glyphicon-resize-small'))
+            {
+                $('#omsSearchWithCardResult .emptySheduleItem').addClass('no-display');
+                $(this).find('span').removeClass('glyphicon-resize-small');
+                $(this).find('span').addClass('glyphicon-resize-full');
+            }
+        }
     });
 
     $('#collapsePatientList').on('click', function(e) {
-        $(this).addClass('no-display');
+     /*   $(this).addClass('no-display');
         $('#expandPatientList').removeClass('no-display');
         isExpandedList = true;
-        updateExpanded();
+        updateExpanded();*/
     });
 
-    function updateCollapsed() {
+    function updatePatientList() {
         var url = '/index.php/doctors/shedule/updatepatientlist';
         var data = {
             FormSheduleFilter : {
                 date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
-            }
+            },
+            currentPatient : $('#currentPatientId').val(),
+            currentGreeting : $('#greetingId').val()
         };
         $.ajax({
             'url': url,
@@ -1011,7 +1026,14 @@ $('#nextHistoryPoint').on('click', function () {
             },
             'success': function (data, textStatus, jqXHR) {
                 if (data.success) {
+                    // Кнопку свёртывания/развёртывания перключим на развёртывание
+                    $('#expandPatientList').find('span').removeClass('glyphicon-resize-small');
+                    $('#expandPatientList').find('span').addClass('glyphicon-resize-full');
 
+                    // Убиваем старый список пациентов
+                    var parentContainer =  $('#omsSearchWithCardResult').parents()[0];
+                    $('#omsSearchWithCardResult').remove();
+                    $(parentContainer).append(data.data);
                 }
             }
         });
@@ -1044,11 +1066,7 @@ $('#nextHistoryPoint').on('click', function () {
     }
 
     $('#refreshPatientList').on('click', function(e) {
-        if(!isExpandedList) {
-            updateCollapsed();
-        } else {
-            updateExpanded();
-        }
+            updatePatientList();
     });
 
 });
