@@ -1,4 +1,93 @@
 $(document).ready(function() {
+    $('.organizer').on('reload', function(e) {
+        $(this).find('.sheduleCont').addClass('no-display');
+        $('#doctor-search-submit').trigger('click');
+    });
+
+    $('.organizer').on('writePatientWithCard', function(e, beginTime) {
+        var params = {
+            month : globalVariables.month + 1,
+            year : globalVariables.year,
+            day : globalVariables.day,
+            doctor_id : globalVariables.doctorId,
+            mode: 0, // Обычная запись
+            time: beginTime,
+            card_number: globalVariables.cardNumber
+        };
+
+        $.ajax({
+            'url' : '/index.php/doctors/shedule/writepatient',
+            'data' : params,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == 'true') {
+                    $('#successPopup p').text(data.data);
+                    $('#successPopup').modal({
+
+                    });
+                    // Перезагружаем календарь
+                    $('.organizer').trigger('reload');
+                } else {
+
+                }
+                return;
+            }
+        });
+        return false;
+    });
+
+    $('.organizer').on('showPatientData', function(e, patientData, li) {
+        $(li).addClass('pressed');
+        var title = 'Пациент ' + patientData.fio;
+        if(patientData.cardNumber != null) {
+            title += ', номер карты ' + patientData.cardNumber;
+        }
+
+        $(li).popover({
+            animation: true,
+            html: true,
+            placement: 'top',
+            title: title,
+            delay: {
+                show: 300,
+                hide: 300
+            },
+            container: $(li),
+            content: function() {
+                var unwriteLink = $('<a>').text('Отписать пациента');
+                $(unwriteLink).on('click', function() {
+                    var params = {
+                        id: $(li).prop('id').substr(1)
+                    };
+                    // Отписать пациента
+                    $.ajax({
+                        'url' : '/index.php/doctors/shedule/unwritepatient',
+                        'data' : params,
+                        'cache' : false,
+                        'dataType' : 'json',
+                        'type' : 'GET',
+                        'success' : function(data, textStatus, jqXHR) {
+                            if(data.success == 'true') {
+                                $('#successPopup p').text(data.data);
+                                $('#successPopup').modal({
+                                });
+                                $('.organizer').trigger('reload');
+                            } else {
+
+                            }
+                            return;
+                        }
+                    });
+                });
+                return unwriteLink;
+            }
+        });
+
+        $(li).popover('show');
+    });
+
     $('.organizer').on('showShedule', function(e, data, status, response) {
         var year = data.year; // вычисляем текущий год
         var month = data.month - 1; // вычисляем текущий месяц (расхождение с utc в единицу)
@@ -80,9 +169,11 @@ $(document).ready(function() {
                             $(li).addClass('full');
                         }
 
-                        (function(i, li, day, month, year, j) {
+                        (function(i, li, day, month, year, j, dayData) {
                             $(li).on('click', function(e) {
                                 var doctorId = data[i].id;
+                                globalVariables.doctorId = doctorId;
+                                globalVariables.patientTime = dayData.beginTime;
                                 var fio = data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name;
                                 $(daysListCont).find('li').removeClass('empty-pressed notfull-pressed full-pressed');
                                 $(daysListCont).find('.popover').remove();
@@ -95,8 +186,13 @@ $(document).ready(function() {
                                 }
 
                                 var date = dates[j % 7];
+
+                                globalVariables.month = date.getMonth();
+                                globalVariables.day = date.getDate() - 1;
+                                globalVariables.year = date.getFullYear();
+
                                 $.ajax({
-                                    'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate(),
+                                    'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + globalVariables.year + '&month=' + (globalVariables.month + 1) + '&day=' + globalVariables.day,
                                     'cache' : false,
                                     'dataType' : 'json',
                                     'type' : 'GET',
@@ -105,8 +201,8 @@ $(document).ready(function() {
                                             $(li).popover({
                                                 animation: true,
                                                 html: true,
-                                                placement: 'left',
-                                                title: 'Расписание врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
+                                                placement: 'bottom',
+                                                title: 'Расписание врача ' + fio + ' на ' + globalVariables.day + '.' + (globalVariables.month + 1) + '.' + globalVariables.year,
                                                 delay: {
                                                     show: 300,
                                                     hide: 300
@@ -114,15 +210,48 @@ $(document).ready(function() {
                                                 content: function() {
                                                     var ulInPopover = $('<ul>').addClass('patientList');
                                                     for(var j = 0; j < data.data.length; j++) {
-                                                        var li = $('<li>').html(
+                                                        var li = $('<li>').css({
+                                                            'cursor' : 'pointer'
+                                                        }).html(
                                                             data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
                                                         );
-                                                        if(data.data[j].cardNumber != null || data.data[j].id == null || $.trim(data.data[j].fio == '')) {
-                                                            $(li).addClass('withPatient');
-                                                        }
-                                                        $(li).on('click', function() {
 
-                                                        }).css({
+                                                        if(data.data[j].cardNumber != null || data.data[j].id != null || $.trim(data.data[j].fio) != '') {
+                                                            $(li).addClass('withPatient');
+                                                            if(data.data[j].id != null) {
+                                                                $(li).prop('id', 'i' + data.data[j].id);
+                                                            }
+                                                        } else {
+                                                            $(li).prop('title', 'Записать пациента')
+                                                        }
+                                                        $(li).on('mouseover', function(e) {
+                                                           $(this).addClass('pressed');
+                                                        });
+                                                        $(li).on('mouseout', function(e) {
+                                                            $(this).removeClass('pressed');
+                                                        });
+
+                                                        if(!$(li).hasClass('withPatient')) {
+                                                            (function(timeBegin) {
+                                                                $(li).on('click', function() {
+                                                                    // Если есть попап для записи пациента, то его нужно показать
+                                                                    $(this).addClass('pressed');
+                                                                    if($('#patientDataPopup').length > 0) {
+                                                                        $('#patientDataPopup').modal({});
+                                                                    } else { // Должны быть данные для записи пациента
+                                                                        $('.organizer').trigger('writePatientWithCard', [timeBegin]);
+
+                                                                    }
+                                                                });
+                                                            })(data.data[j].timeBegin)
+                                                        } else {
+                                                            (function(patientData, li) {
+                                                                $(li).on('click', function(e) {
+                                                                    $('.organizer').trigger('showPatientData', [patientData, li]);
+                                                                });
+                                                            })(data.data[j], li);
+                                                        }
+                                                        $(li).css({
                                                             'cursor' : 'pointer'
                                                         });
                                                         $(li).appendTo(ulInPopover);
@@ -149,7 +278,7 @@ $(document).ready(function() {
                                     }
                                 });
                             });
-                        })(i, li, day, month, year, j);
+                        })(i, li, day, month, year, j, dayData);
 
                     } else {
                         $(li).addClass('not-aviable');
@@ -164,5 +293,6 @@ $(document).ready(function() {
             }
             $(daysListCont).append(ulCont);
         }
+        $('.organizer').find('.sheduleCont').removeClass('no-display');
     });
 });
