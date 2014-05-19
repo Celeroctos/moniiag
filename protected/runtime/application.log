@@ -23,3 +23,143 @@ Stack trace:
 REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
 HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
 ---
+2014/05/19 14:11:54 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1105)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1105)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/19 14:12:24 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1067)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientsteptwo/?cardid=1/13
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1067)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/19 14:12:34 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "writepatientstepywo".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepywo
+---
+2014/05/19 14:12:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "writepatientstepеwo".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('writepatientste...')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstep%D0%B5wo
+---
+2014/05/19 14:12:57 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1067)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientsteptwo/?cardid=1/13
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1067)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/19 14:13:37 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1105)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1105)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/19 14:14:00 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1067)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientsteptwo/?cardid=1/13
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1067)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/19 14:14:11 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1105)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1105)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/19 14:14:43 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1105)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1105)
+in Z:\home\mis.my\www\protected\components\Controller.php (27)
+in Z:\home\mis.my\www\index.php (13)
