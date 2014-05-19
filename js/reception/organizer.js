@@ -154,7 +154,6 @@ $(document).ready(function() {
 
             $(doctorList).append(doctorTr);
             var lengthOfRow = $(doctorList).find('tr:last td').height();
-            console.log(  lengthOfRow);
 
             // Формируем строку с расписанием
             var ulCont = $('<ul>').addClass('daysList');
@@ -162,7 +161,12 @@ $(document).ready(function() {
             for(var j in data[i].shedule) {
                 var dayData = data[i].shedule[j];
                 var li = $('<li>');
-
+				$(li).css({
+					height: $(doctorTr).css('height'),
+					marginBottom: '2px',
+					marginTop: '1px',
+				});
+				
                 if(!dayData.worked) {
                     if(dayData.restDay != false) {
                         $(li).addClass('weekday');
