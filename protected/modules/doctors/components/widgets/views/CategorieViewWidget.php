@@ -1,73 +1,61 @@
-<script type="text/javascript">
+<?php if($this->previewMode) { ?>
+	<script type="text/javascript">
 		    if (globalVariables.elementsDependences==undefined)		    
 		    {
 					globalVariables.elementsDependences = new Array();
 		    }
-</script>
+	</script>
 <?php
-$form = $this->beginWidget('CActiveForm', array(
-    'id' => 'patient-edit-form',
-    'enableAjaxValidation' => true,
-    'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
-    'htmlOptions' => array(
-        'class' => 'form-horizontal col-xs-12',
-        'role' => 'form'
-    )
-));
-echo $form->hiddenField($model,'medcardId', array(
-    'id' => 'medcardId',
-    'class' => 'form-control',
-    'value' => $currentPatient
-));
-echo $form->hiddenField($model,'greetingId', array(
-    'id' => 'greetingId',
-    'class' => 'form-control',
-    'value' => $greetingId
-));
-?>
-<?php foreach($categories  as $index => $template) {
-    ?>
-    <h5><strong><?php echo $template['templateName']; ?></strong></h5>
-    <?php
-    if($this->previewMode) {
-     }
-    foreach($template['cats']  as $key => $categorie) {
-			$this->drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix);
-		} ?>
+	$form = $this->beginWidget('CActiveForm', array(
+		'id' => 'patient-edit-form',
+		'enableAjaxValidation' => true,
+		'enableClientValidation' => true,
+		'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+		'htmlOptions' => array(
+			'class' => 'form-horizontal col-xs-12',
+			'role' => 'form'
+		)
+	));
+	echo $form->hiddenField($model,'medcardId', array(
+		'id' => 'medcardId',
+		'class' => 'form-control',
+		'value' => $currentPatient
+	));
+	echo $form->hiddenField($model,'greetingId', array(
+		'id' => 'greetingId',
+		'class' => 'form-control',
+		'value' => $greetingId
+	));
+} ?>
+<?php if(!$this->previewMode && $this->templateType == 0) { ?>
+<div <?php echo !$isActiveTemplate ? 'class="no-display"' : ''; ?> id="tab<?php echo $templateId; ?>">
 <?php } ?>
-    <?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement') && !$this->previewMode) { ?>
-    <div class="form-group submitEditPatient">
-        <?php echo CHtml::ajaxSubmitButton(
-            'Сохранить',
-            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/patientedit'),
-            array(
-                'success' => 'function(data, textStatus, jqXHR) {
-                                $("#patient-edit-form").trigger("success", [data, textStatus, jqXHR])
-                            }'
-            ),
-            array(
-        			'class' => 'templateContentSave'
-            )
-        ); ?>
-    </div>
-    <?php } ?>
-<?php $this->endWidget(); ?>
-<div class="modal fade error-popup" id="successEditPopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Успешно!</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <p>Информация успешно сохранена.</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
+    <?php
+    foreach($categories  as $index => $template) {
+        foreach($template['cats']  as $key => $categorie) {
+            $this->drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix);
+        }
+    } ?>
+<?php if(!$this->previewMode && $this->templateType == 0) { ?>
 </div>
+<?php } ?>
+<?php if($this->previewMode) { 
+	$this->endWidget(); 
+	} 
+?>
+<?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement') && !$this->previewMode) { ?>
+<div class="form-group submitEditPatient">
+	<?php echo CHtml::ajaxSubmitButton(
+		'Сохранить',
+		CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/patientedit'),
+		array(
+			'success' => 'function(data, textStatus, jqXHR) {
+							$("#patient-edit-form").trigger("success", [data, textStatus, jqXHR])
+						}'
+		),
+		array(
+				'class' => 'templateContentSave'
+		)
+	); ?>
+</div>
+<?php } ?>

@@ -17,6 +17,8 @@ class CategorieViewWidget extends CWidget {
     public $templateId = null; // Это айдишник шаблона
 	public $medcardRecordId = null;
     public $previewMode = false;
+    public $isActiveTemplate = null; // Флаг активного шаблона (активной вкладки),
+	public $form = null;
 
     public function run() {
         ini_set('max_execution_time', 60);
@@ -38,9 +40,11 @@ class CategorieViewWidget extends CWidget {
 		echo('--------');
 		*/
 		//
+
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
+			'form' => $this->form,
             'currentPatient' => $this->currentPatient,
             'greetingId' => $this->greetingId,
             'greeting' => ($this->greetingId != null) ? SheduleByDay::model()->findByPk($this->greetingId) : null,
@@ -49,7 +53,10 @@ class CategorieViewWidget extends CWidget {
             'canEditMedcard' => $this->canEditMedcard,
             'templatePrefix' => $this->templatePrefix,
 			'currentRecordId' => $this->medcardRecordId,
-            'previewMode' => $this->previewMode
+            'previewMode' => $this->previewMode,
+            'isActiveTemplate' => $this->isActiveTemplate,
+            'templateId' => $this->templateId,
+			'templateType' => $this->templateType
         ), true);
         if(!Yii::app()->request->isAjaxRequest) {
             echo $answer;
