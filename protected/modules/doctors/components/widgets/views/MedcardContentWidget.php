@@ -25,6 +25,15 @@
                         Телефон:<strong> <?php echo $medcard['contact']; ?></strong><br/>
                         № амбулаторной карты:<strong> <?php echo $medcard['card_number']; ?></strong>
                     </p>
+                    <!--Комментарии:
+                    <div style="width:50px;">
+                        <div class="viewCommentsHistory">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                        </div>
+                        <div class="addNewComment">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </div>
+                    </div>-->
                 </div>
             </div>
         </div>
@@ -51,4 +60,6 @@
         </div>
     </div>
 </div>
+<!-- Выведем поп-ап для добавления комментария -->
+<!-- Поп-ап для ошибок -->
 <?php } ?>

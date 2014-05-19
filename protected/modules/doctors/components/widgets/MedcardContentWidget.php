@@ -12,6 +12,7 @@ class MedcardContentWidget extends CWidget {
     public $note = '';
     public $canEditMedcard = 1;
     public $currentDate = null;
+    public $addCommentModel = null;
                 
     public function run() {
         if($this->medcard) {
