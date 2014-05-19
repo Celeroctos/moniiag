@@ -14,7 +14,14 @@
 </script>
 <?php if(Yii::app()->user->checkAccess('writePatient')) { ?>
 <div class="row">
-    <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu'); ?>
+	<?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
+        array(
+            'callcenter' => $callcenter
+        )
+    ); ?>
+	<script type="text/javascript">
+		globalVariables.isCallCenter = <?php echo $callcenter; ?>;
+	</script>
 </div>
 <h4>
     Необходимо найти врача к которому следует записать пациента <?php echo $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name; ?> :
@@ -251,13 +258,6 @@
                     <table>
                         <tbody>
                         <tr>
-                            <td class="current">Ср<br>сегодня</td>
-                            <td>Чт<br>15 мая</td>
-                            <td>Пт<br>16 мая</td>
-                            <td class="weekday">Сб<br>17 мая</td>
-                            <td class="weekday">Вс<br>18 мая</td>
-                            <td>Пн<br>19 мая</td>
-                            <td>Вт<br>20 мая</td>
                         </tr>
                         </tbody>
                     </table>

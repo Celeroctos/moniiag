@@ -262,13 +262,22 @@ $(document).ready(function() {
             // В цикле - сначала генерируем контент для строки, дописываем значения столбцов, в зависимости от того, есть
             //    ли соответствующие столбцы
             //   а потом дописываем строку в таблицу
-                var content = '<tr>' +
-                    '<td class="write-patient-cell">' +
-                        '<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
-                            '<span class="glyphicon glyphicon-dashboard"></span>' +
-                        '</a>' +
-                    '</td>' +
-                    '<td>' +
+				if(globalVariables.isCallCenter) {
+					var content = '<tr>' +
+						'<td class="write-patient-cell">' +
+							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '&callcenter=1">' +
+								'<span class="glyphicon glyphicon-dashboard"></span>' +
+							'</a>' +
+						'</td>';
+				} else {
+					var content = '<tr>' +
+						'<td class="write-patient-cell">' +
+							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
+								'<span class="glyphicon glyphicon-dashboard"></span>' +
+							'</a>' +
+						'</td>';
+				}
+                content += '<td>' +
                         '<a title="Посмотреть информацию по пациенту" href="#' + data[i].id + '" class="viewHistory">' +
                             data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name +
                         '</a>' +
