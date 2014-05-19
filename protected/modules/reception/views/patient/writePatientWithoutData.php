@@ -195,13 +195,6 @@
             <table>
                 <tbody>
                     <tr>
-                        <td class="current">Ср<br>сегодня</td>
-                        <td>Чт<br>15 мая</td>
-                        <td>Пт<br>16 мая</td>
-                        <td class="weekday">Сб<br>17 мая</td>
-                        <td class="weekday">Вс<br>18 мая</td>
-                        <td>Пн<br>19 мая</td>
-                        <td>Вт<br>20 мая</td>
                     </tr>
                 </tbody>
             </table>

@@ -442,7 +442,7 @@
                         'canEditMedcard' => $canEditMedcard,
                         'medcard' => $medcard,
                         'currentDate' => $currentDate,
-                        'templatePrefix' => 'r' . $id,
+                        'templatePrefix' => 'r' . $template['id'],
                         'medcardRecordId' => $medcardRecordId,
 						'isActiveTemplate' => $counter == 0,
 						'form' => $formM
