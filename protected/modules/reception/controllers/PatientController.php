@@ -1058,12 +1058,18 @@ class PatientController extends Controller {
             } else {
                 throw new Exception('Не найдена медкарта!');
             }
+			if(isset($_GET['callcenter']) && $_GET['callcenter'] == 1) {
+				$callcenter = 1;
+			} else {
+				$callcenter = 0;
+			}
             if($medcard != null) {
                 $this->render('writePatient2', array(
                     'wardsList' => $this->getWardsList(),
                     'postsList' => $this->getPostsList(),
                     'medcard' => $medcard,
                     'oms' => $oms,
+					'callcenter' => $callcenter,
                     'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
                 ));
                 exit();

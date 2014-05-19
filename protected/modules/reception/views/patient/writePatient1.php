@@ -9,6 +9,9 @@
             'callcenter' => $callcenter
         )
     ); ?>
+	<script type="text/javascript">
+		globalVariables.isCallCenter = <?php echo $callcenter; ?>;
+	</script>
 </div>
 <h4>Необходимо найти пациента, которого требуется записать на приём:</h4>
 <div class="row">
