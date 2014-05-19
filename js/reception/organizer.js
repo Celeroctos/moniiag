@@ -189,7 +189,7 @@ $(document).ready(function() {
                                 var date = dates[counter];
 
                                 globalVariables.month = date.getMonth();
-                                globalVariables.day = date.getDate() - 1;
+                                globalVariables.day = date.getDate();
                                 globalVariables.year = date.getFullYear();
 
                                 $.ajax({
