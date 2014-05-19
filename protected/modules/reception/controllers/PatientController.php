@@ -1080,6 +1080,12 @@ class PatientController extends Controller {
         $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/writepatientstepone'));
     }
 
+    public function actionChangeOrDelete()
+    {
+        $this->render('changeRecord', array());
+        exit();
+    }
+
     private function getWardsList() {
         // Список отделений
         $ward = new Ward();
