@@ -1,6 +1,7 @@
 $(document).ready(function() {
     $('.organizer').on('reload', function(e) {
-        $(this).find('.sheduleCont').addClass('no-display');
+        cleanOrganizier();
+      //  $(this).find('.sheduleCont').addClass('no-display');
         $('#doctor-search-submit').trigger('click');
     });
 
@@ -88,20 +89,34 @@ $(document).ready(function() {
         $(li).popover('show');
     });
 
+    // Чистим, что осталось с предыдущих времён
+    function cleanOrganizier()
+    {
+        var doctorList = $(document).find('.sheduleCont .doctorList');
+        var daysListCont = $(document).find('.sheduleCont .daysListCont');
+        var headerCont = $(document).find('.sheduleCont .headerCont2');
+
+
+        $(headerCont).find('td').remove();
+        $(doctorList).find('tr').remove();
+        $(daysListCont).find('li').remove();
+    }
+
+
     $('.organizer').on('showShedule', function(e, data, status, response) {
         var year = data.year; // вычисляем текущий год
         var month = data.month - 1; // вычисляем текущий месяц (расхождение с utc в единицу)
         var day = data.day; // вычисляем текущее число
 
+
         var doctorList = $(this).find('.doctorList');
         var daysListCont = $(this).find('.daysListCont');
         var headerCont = $(this).find('.headerCont2');
-
-        // Чистим, что осталось с предыдущих времён
+         /*
         $(headerCont).find('td').remove();
         $(doctorList).find('tr').remove();
         $(daysListCont).find('li').remove();
-
+        */
         // Заполняем для начала заголовок. Для этого берём начальную дату из ответа с сервера
         var rusDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         var dates = [];
@@ -138,6 +153,9 @@ $(document).ready(function() {
             )
 
             $(doctorList).append(doctorTr);
+            var lengthOfRow = $(doctorList).find('tr:last td').height();
+            console.log(  lengthOfRow);
+
             // Формируем строку с расписанием
             var ulCont = $('<ul>').addClass('daysList');
 			var counter = 0;
@@ -294,6 +312,8 @@ $(document).ready(function() {
 				counter++;
             }
             $(daysListCont).append(ulCont);
+            // Берём последний UL в daysListCont и проставляем всем элементам Li внутри в высоту, равную высоте ячейки со врачом
+            $(daysListCont).find('ul:last li').height(lengthOfRow);
         }
         $('.organizer').find('.sheduleCont').removeClass('no-display');
     });

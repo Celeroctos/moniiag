@@ -983,7 +983,7 @@ $('#nextHistoryPoint').on('click', function () {
         // Убираем no-display у пустых строк интерфейса
         if ($(this).find('span').hasClass('glyphicon-resize-full'))
         {
-            $('#omsSearchWithCardResult .emptySheduleItem').removeClass('no-display');
+            $('#doctorPatientList .emptySheduleItem').removeClass('no-display');
             $(this).find('span').removeClass('glyphicon-resize-full');
             $(this).find('span').addClass('glyphicon-resize-small');
 
@@ -992,7 +992,7 @@ $('#nextHistoryPoint').on('click', function () {
         {
             if ($(this).find('span').hasClass('glyphicon-resize-small'))
             {
-                $('#omsSearchWithCardResult .emptySheduleItem').addClass('no-display');
+                $('#doctorPatientList .emptySheduleItem').addClass('no-display');
                 $(this).find('span').removeClass('glyphicon-resize-small');
                 $(this).find('span').addClass('glyphicon-resize-full');
             }
@@ -1031,8 +1031,8 @@ $('#nextHistoryPoint').on('click', function () {
                     $('#expandPatientList').find('span').addClass('glyphicon-resize-full');
 
                     // Убиваем старый список пациентов
-                    var parentContainer =  $('#omsSearchWithCardResult').parents()[0];
-                    $('#omsSearchWithCardResult').remove();
+                    var parentContainer =  $('#doctorPatientList').parents()[0];
+                    $('#doctorPatientList').remove();
                     $(parentContainer).append(data.data);
                 }
             }

@@ -1,4 +1,4 @@
-<table id="omsSearchWithCardResult" class="table table-condensed table-hover">
+<table id="doctorPatientList" class="table table-condensed table-hover">
     <thead>
     <tr class="header">
         <td>

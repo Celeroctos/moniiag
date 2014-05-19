@@ -24,7 +24,8 @@
                 'secondaryClinicalDiagnosis' => $secondaryClinicalDiagnosis,
                 'currentPatient' => $currentPatient,
                 'currentSheduleId' => $currentSheduleId,
-                'canEditMedcard' => $canEditMedcard
+                'canEditMedcard' => $canEditMedcard,
+                'addCommentModel' => $addCommentModel
             ));
             ?>
             <?php if ($templatesChoose == 1) { ?>
