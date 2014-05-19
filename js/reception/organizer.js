@@ -138,6 +138,9 @@ $(document).ready(function() {
             )
 
             $(doctorList).append(doctorTr);
+            var lengthOfRow = $(doctorList).find('tr:last td').height();
+            console.log(  lengthOfRow);
+
             // Формируем строку с расписанием
             var ulCont = $('<ul>').addClass('daysList');
             for(var j in data[i].shedule) {
@@ -292,6 +295,8 @@ $(document).ready(function() {
                 });
             }
             $(daysListCont).append(ulCont);
+            // Берём последний UL в daysListCont и проставляем всем элементам Li внутри в высоту, равную высоте ячейки со врачом
+            $(daysListCont).find('ul:last li').height(lengthOfRow);
         }
         $('.organizer').find('.sheduleCont').removeClass('no-display');
     });
