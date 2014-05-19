@@ -55,13 +55,23 @@
             <tr class='magenta-block'>
         <?php } ?>
         <td>
-            <?php echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid=' . $patient['medcard_id'] . '&date=' . $filterModel->date . '&rowid=' . $patient['id'])); ?>
+            <?php 
+			if($patient['medcard_id'] != null) {
+				echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid=' . $patient['medcard_id'] . '&date=' . $filterModel->date . '&rowid=' . $patient['id'])); 
+			} else {
+				echo $patient['fio'];
+			}
+			?>
         </td>
         <td>
             <?php echo $patient['patient_time']; ?>
         </td>
         <td>
-            <?php echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('#' . $patient['medcard_id']), array('title' => 'Посмотреть медкарту', 'class' => 'editMedcard')); ?>
+            <?php 
+				if($patient['medcard_id'] != null) {
+					echo CHtml::link('<span class="glyphicon glyphicon-edit"></span>', array('#' . $patient['medcard_id']), array('title' => 'Посмотреть медкарту', 'class' => 'editMedcard'));
+				}				
+			?>
         </td>
         <!--<td>
                                 <?php echo ($patient['is_beginned'] == 1 || $patient['is_accepted'] == 1) ? '' : CHtml::link('<span class="glyphicon glyphicon-flash"></span>', array('/doctors/shedule/acceptbegin/?id='.$patient['id']), array('title' => 'Начать приём')); ?>
