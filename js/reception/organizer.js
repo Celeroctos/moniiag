@@ -4,11 +4,11 @@ $(document).ready(function() {
         $('#doctor-search-submit').trigger('click');
     });
 
-    $('.organizer').on('writePatientWithCard', function(e, beginTime) {
+    $('.organizer').on('writePatientWithCard', function(e, beginTime, year, month, day) {
         var params = {
-            month : globalVariables.month + 1,
-            year : globalVariables.year,
-            day : globalVariables.day,
+            month : month + 1,
+            year : year,
+            day : day,
             doctor_id : globalVariables.doctorId,
             mode: 0, // Обычная запись
             time: beginTime,
@@ -38,7 +38,7 @@ $(document).ready(function() {
         return false;
     });
 
-    $('.organizer').on('showPatientData', function(e, patientData, li) {
+    $('.organizer').on('showPatientData', function(e, patientData, li, year, month, day) {
         $(li).addClass('pressed');
         var title = 'Пациент ' + patientData.fio;
         if(patientData.cardNumber != null) {
@@ -140,6 +140,7 @@ $(document).ready(function() {
             $(doctorList).append(doctorTr);
             // Формируем строку с расписанием
             var ulCont = $('<ul>').addClass('daysList');
+			var counter = 0;
             for(var j in data[i].shedule) {
                 var dayData = data[i].shedule[j];
                 var li = $('<li>');
@@ -169,7 +170,7 @@ $(document).ready(function() {
                             $(li).addClass('full');
                         }
 
-                        (function(i, li, day, month, year, j, dayData) {
+                        (function(i, li, counter, dayData) {
                             $(li).on('click', function(e) {
                                 var doctorId = data[i].id;
                                 globalVariables.doctorId = doctorId;
@@ -185,14 +186,14 @@ $(document).ready(function() {
                                     $(li).addClass('full-pressed');
                                 }
 
-                                var date = dates[j % 7];
+                                var date = dates[counter];
 
                                 globalVariables.month = date.getMonth();
                                 globalVariables.day = date.getDate() - 1;
                                 globalVariables.year = date.getFullYear();
 
                                 $.ajax({
-                                    'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + globalVariables.year + '&month=' + (globalVariables.month + 1) + '&day=' + globalVariables.day,
+                                    'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate(),
                                     'cache' : false,
                                     'dataType' : 'json',
                                     'type' : 'GET',
@@ -202,7 +203,7 @@ $(document).ready(function() {
                                                 animation: true,
                                                 html: true,
                                                 placement: 'bottom',
-                                                title: 'Расписание врача ' + fio + ' на ' + globalVariables.day + '.' + (globalVariables.month + 1) + '.' + globalVariables.year,
+                                                title: 'Расписание врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
                                                 delay: {
                                                     show: 300,
                                                     hide: 300
@@ -239,7 +240,7 @@ $(document).ready(function() {
                                                                     if($('#patientDataPopup').length > 0) {
                                                                         $('#patientDataPopup').modal({});
                                                                     } else { // Должны быть данные для записи пациента
-                                                                        $('.organizer').trigger('writePatientWithCard', [timeBegin]);
+                                                                        $('.organizer').trigger('writePatientWithCard', [timeBegin, date.getFullYear(), date.getMonth(), date.getDate()]);
 
                                                                     }
                                                                 });
@@ -247,7 +248,7 @@ $(document).ready(function() {
                                                         } else {
                                                             (function(patientData, li) {
                                                                 $(li).on('click', function(e) {
-                                                                    $('.organizer').trigger('showPatientData', [patientData, li]);
+                                                                    $('.organizer').trigger('showPatientData', [patientData, li, date.getFullYear(), date.getMonth(), date.getDate()]);
                                                                 });
                                                             })(data.data[j], li);
                                                         }
@@ -278,7 +279,7 @@ $(document).ready(function() {
                                     }
                                 });
                             });
-                        })(i, li, day, month, year, j, dayData);
+                        })(i, li, counter, dayData);
 
                     } else {
                         $(li).addClass('not-aviable');
@@ -290,6 +291,7 @@ $(document).ready(function() {
                 $(li).find('popover').css({
                     width: '600px'
                 });
+				counter++;
             }
             $(daysListCont).append(ulCont);
         }

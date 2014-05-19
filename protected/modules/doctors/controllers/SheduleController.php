@@ -689,13 +689,14 @@ class SheduleController extends Controller {
                                  'data' => $result['result']));
     }
 
-    private function getPatientList($doctorId, $formatDate, $withMediate = true) {
+    
+	private function getPatientList($doctorId, $formatDate, $withMediate = true) {
         $patientsList = array();
         $sheduleByDay = new SheduleByDay();
         $weekday = date('w', strtotime($formatDate)); // День недели (число)
         $needMediate = 1;
         if (!$withMediate);
-            $needMediate = false;
+            $needMediate = true;
         $patients = $sheduleByDay->getRows($formatDate, $doctorId, $needMediate);
         //var_dump($patients);
         //exit();

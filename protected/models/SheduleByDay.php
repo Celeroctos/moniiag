@@ -137,7 +137,6 @@ class SheduleByDay extends MisActiveRecord {
             $patients->andWhere('m.motion = 1 OR (m.motion = 0 AND dsbd.is_accepted = 1)');
         }
         $patients->order('dsbd.patient_time');
-
         return $patients->queryAll();
     }
 
