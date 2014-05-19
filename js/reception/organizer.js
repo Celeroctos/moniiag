@@ -1,4 +1,7 @@
 $(document).ready(function() {
+	var clickedTimeLi = null;
+	var clickedDayLi = null;
+	
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
       //  $(this).find('.sheduleCont').addClass('no-display');
@@ -40,12 +43,21 @@ $(document).ready(function() {
     });
 
     $('.organizer').on('showPatientData', function(e, patientData, li, year, month, day) {
-        $(li).addClass('pressed');
+        if($(clickedTimeLi).prop('id') == $(li).prop('id')) {
+			e.stopPropagation();
+			return false;
+		}
+		$(li).addClass('pressed');
         var title = 'Пациент ' + patientData.fio;
         if(patientData.cardNumber != null) {
             title += ', номер карты ' + patientData.cardNumber;
         }
-
+		
+		if(clickedTimeLi != null) {
+			$(clickedTimeLi).find('.popover').remove();
+		}
+		clickedTimeLi = $(li);
+		
         $(li).popover({
             animation: true,
             html: true,
@@ -96,7 +108,6 @@ $(document).ready(function() {
         var daysListCont = $(document).find('.sheduleCont .daysListCont');
         var headerCont = $(document).find('.sheduleCont .headerCont2');
 
-
         $(headerCont).find('td').remove();
         $(doctorList).find('tr').remove();
         $(daysListCont).find('li').remove();
@@ -112,11 +123,11 @@ $(document).ready(function() {
         var doctorList = $(this).find('.doctorList');
         var daysListCont = $(this).find('.daysListCont');
         var headerCont = $(this).find('.headerCont2');
-         /*
+
         $(headerCont).find('td').remove();
         $(doctorList).find('tr').remove();
         $(daysListCont).find('li').remove();
-        */
+
         // Заполняем для начала заголовок. Для этого берём начальную дату из ответа с сервера
         var rusDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         var dates = [];
@@ -154,7 +165,6 @@ $(document).ready(function() {
 
             $(doctorList).append(doctorTr);
             var lengthOfRow = $(doctorList).find('tr:last td').height();
-            console.log(  lengthOfRow);
 
             // Формируем строку с расписанием
             var ulCont = $('<ul>').addClass('daysList');
@@ -162,7 +172,12 @@ $(document).ready(function() {
             for(var j in data[i].shedule) {
                 var dayData = data[i].shedule[j];
                 var li = $('<li>');
-
+				$(li).css({
+					height: $(doctorTr).css('height'),
+					marginBottom: '2px',
+					marginTop: '1px',
+				});
+				
                 if(!dayData.worked) {
                     if(dayData.restDay != false) {
                         $(li).addClass('weekday');
@@ -190,6 +205,7 @@ $(document).ready(function() {
 
                         (function(i, li, counter, dayData) {
                             $(li).on('click', function(e) {
+								clickedDayLi = li;
                                 var doctorId = data[i].id;
                                 globalVariables.doctorId = doctorId;
                                 globalVariables.patientTime = dayData.beginTime;
@@ -217,79 +233,82 @@ $(document).ready(function() {
                                     'type' : 'GET',
                                     'success' : function(data, textStatus, jqXHR) {
                                         if(data.success == 'true') {
-                                            $(li).popover({
-                                                animation: true,
-                                                html: true,
-                                                placement: 'bottom',
-                                                title: 'Расписание врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
-                                                delay: {
-                                                    show: 300,
-                                                    hide: 300
-                                                },
-                                                content: function() {
-                                                    var ulInPopover = $('<ul>').addClass('patientList');
-                                                    for(var j = 0; j < data.data.length; j++) {
-                                                        var li = $('<li>').css({
-                                                            'cursor' : 'pointer'
-                                                        }).html(
-                                                            data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
-                                                        );
+											if($(clickedDayLi).prop('id') == $(li).prop('id')) {
+											console.log($(clickedDayLi).prop('id'));
+												$(li).popover({
+													animation: true,
+													html: true,
+													placement: 'bottom',
+													title: 'Расписание врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
+													delay: {
+														show: 300,
+														hide: 300
+													},
+													content: function() {
+														var ulInPopover = $('<ul>').addClass('patientList');
+														for(var j = 0; j < data.data.length; j++) {
+															var li = $('<li>').css({
+																'cursor' : 'pointer'
+															}).html(
+																data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
+															);
 
-                                                        if(data.data[j].cardNumber != null || data.data[j].id != null || $.trim(data.data[j].fio) != '') {
-                                                            $(li).addClass('withPatient');
-                                                            if(data.data[j].id != null) {
-                                                                $(li).prop('id', 'i' + data.data[j].id);
-                                                            }
-                                                        } else {
-                                                            $(li).prop('title', 'Записать пациента')
-                                                        }
-                                                        $(li).on('mouseover', function(e) {
-                                                           $(this).addClass('pressed');
-                                                        });
-                                                        $(li).on('mouseout', function(e) {
-                                                            $(this).removeClass('pressed');
-                                                        });
+															if(data.data[j].cardNumber != null || data.data[j].id != null || $.trim(data.data[j].fio) != '') {
+																$(li).addClass('withPatient');
+																if(data.data[j].id != null) {
+																	$(li).prop('id', 'i' + data.data[j].id);
+																}
+															} else {
+																$(li).prop('title', 'Записать пациента')
+															}
+															$(li).on('mouseover', function(e) {
+															   $(this).addClass('pressed');
+															});
+															$(li).on('mouseout', function(e) {
+																$(this).removeClass('pressed');
+															});
 
-                                                        if(!$(li).hasClass('withPatient')) {
-                                                            (function(timeBegin) {
-                                                                $(li).on('click', function() {
-                                                                    // Если есть попап для записи пациента, то его нужно показать
-                                                                    $(this).addClass('pressed');
-                                                                    if($('#patientDataPopup').length > 0) {
-                                                                        $('#patientDataPopup').modal({});
-                                                                    } else { // Должны быть данные для записи пациента
-                                                                        $('.organizer').trigger('writePatientWithCard', [timeBegin, date.getFullYear(), date.getMonth(), date.getDate()]);
+															if(!$(li).hasClass('withPatient')) {
+																(function(timeBegin) {
+																	$(li).on('click', function() {
+																		// Если есть попап для записи пациента, то его нужно показать
+																		$(this).addClass('pressed');
+																		if($('#patientDataPopup').length > 0) {
+																			$('#patientDataPopup').modal({});
+																		} else { // Должны быть данные для записи пациента
+																			$('.organizer').trigger('writePatientWithCard', [timeBegin, date.getFullYear(), date.getMonth(), date.getDate()]);
 
-                                                                    }
-                                                                });
-                                                            })(data.data[j].timeBegin)
-                                                        } else {
-                                                            (function(patientData, li) {
-                                                                $(li).on('click', function(e) {
-                                                                    $('.organizer').trigger('showPatientData', [patientData, li, date.getFullYear(), date.getMonth(), date.getDate()]);
-                                                                });
-                                                            })(data.data[j], li);
-                                                        }
-                                                        $(li).css({
-                                                            'cursor' : 'pointer'
-                                                        });
-                                                        $(li).appendTo(ulInPopover);
-                                                    }
-                                                    return ulInPopover;
-                                                },
-                                                container: $(li)
-                                            });
+																		}
+																	});
+																})(data.data[j].timeBegin)
+															} else {
+																(function(patientData, li) {
+																	$(li).on('click', function(e) {
+																		$('.organizer').trigger('showPatientData', [patientData, li, date.getFullYear(), date.getMonth(), date.getDate()]);
+																	});
+																})(data.data[j], li);
+															}
+															$(li).css({
+																'cursor' : 'pointer'
+															});
+															$(li).appendTo(ulInPopover);
+														}
+														return ulInPopover;
+													},
+													container: $(li)
+												});
 
-                                            $(li).popover('show');
-                                            $(li).find('.popover').css({
-                                                'cursor' : 'default',
-                                                'width' : '500px',
-                                                'max-width' : '500px'
-                                            });
+												$(li).popover('show');
+												$(li).find('.popover').css({
+													'cursor' : 'default',
+													'width' : '500px',
+													'max-width' : '500px'
+												});
 
-                                            $(li).on('click', '.popover', function(e) {
-                                                return false;
-                                            });
+												$(li).on('click', '.popover', function(e) {
+													return false;
+												});
+											}
                                         } else {
 
                                         }

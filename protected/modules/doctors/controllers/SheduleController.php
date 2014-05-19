@@ -227,6 +227,7 @@ class SheduleController extends Controller {
     private function getCurrentDate() {
         if(!isset($_POST['FormSheduleFilter']['date']) && !isset($_GET['date'])) {
             $date = date('Y-m-d');
+			$this->filterModel->date = $date;
         } else {
             if(isset($_POST['FormSheduleFilter'])) {
                 $this->filterModel->attributes = $_POST['FormSheduleFilter'];
