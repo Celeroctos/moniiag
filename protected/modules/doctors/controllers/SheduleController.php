@@ -86,27 +86,6 @@ class SheduleController extends Controller {
 
         $this->filterModel = new FormSheduleFilter();
 
-
-        /////////////////////////////////////
-        /*$date = $this->getCurrentDate();
-        $this->filterModel->date = $date;
-        $userId = Yii::app()->user->id;
-        $doctor = User::model()->findByPk($userId);
-        if($doctor == null) {
-            //exit('Error!');
-        }
-        // Выбираем пациентов на обозначенный день
-        $sheduleByDay = new SheduleByDay();
-        $patients = $sheduleByDay->getRows($date, $doctor['employee_id'], 0);
-
-        return $patients;
-
-        /////////////////////////////////////
-
-
-        /////////////////////////////////////
-*/
-        //$patients = $this->getCurrentPatients();
         $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
         $curDate = $this->getCurrentDate();
 
@@ -117,8 +96,6 @@ class SheduleController extends Controller {
         $doctor = User::model()->findByPk($userId);
         $patients = $this->getPatientList($doctor['employee_id'],$curDate,false);
         $patients = $patients['result'];
-        //var_dump($patients);
-        //exit();
 
 		$this->render('index', array(
             'patients' => $patients,
@@ -133,6 +110,7 @@ class SheduleController extends Controller {
             'month' => $parts[1],
             'day' => $parts[2],
             'addModel' => new FormValueAdd(),
+            'addCommentModel' => new FormCommentAdd(),
             'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null),
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
