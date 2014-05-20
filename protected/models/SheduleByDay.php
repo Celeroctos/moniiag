@@ -71,7 +71,7 @@ class SheduleByDay extends MisActiveRecord {
  	}
  
  	public function getRangePatientsRows(
- 	$filters,
+		$filters,
  		$dateBegin,
  		$dateEnd, 
  		$doctorId, 
@@ -105,6 +105,16 @@ class SheduleByDay extends MisActiveRecord {
  					)
  			);
  		
+		if($filters !== false) {
+            $this->getSearchConditions($patients, $filters, array(
+            ), array(
+                'o' => array('phone', 'id'),
+                'm' => array('card_number'),
+				'dsbd' => array('patient_day', 'doctor_id')
+            ), array(
+
+            ));
+        }
  	
  	
  		if($sidx !== false && $sord !== false)
@@ -116,7 +126,7 @@ class SheduleByDay extends MisActiveRecord {
  		{	
  			$patients->limit($limit, $start);
  		}
- 		
+
  		return $patients->queryAll();
  	}
 	
@@ -159,7 +169,7 @@ class SheduleByDay extends MisActiveRecord {
     }
 
     // Получить список приёмов по критериям
-    public function getGreetingsPerQrit($patientId, $doctorId, $date = false, $status = 0) {
+    public function getGreetingsPerQrit($patientId, $doctorId, $date = false, $status = 0, $cardNumber = false, $phone = false, $start = false, $limit = false) {
         try {
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
@@ -170,11 +180,17 @@ class SheduleByDay extends MisActiveRecord {
                                   d.middle_name as d_middle_name,
                                   d.last_name as d_last_name,
                                   m.motion,
-                                  o.id as oms_id')
+                                  m.card_number,
+                                  m.contact,
+                                  mdp.phone,
+                                  o.id as oms_id,
+                                  mp.name as post')
                 ->from('mis.doctor_shedule_by_day dsbd')
                 ->join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
                 ->join('mis.oms o', 'm.policy_id = o.id')
-                ->join('mis.doctors d', 'd.id = dsbd.doctor_id');
+                ->join('mis.doctors d', 'd.id = dsbd.doctor_id')
+                ->join('mis.medpersonal mp', 'd.post_id = mp.id')
+                ->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
 
             if(!is_array($patientId) && !is_array($doctorId)) {
                 $greetings->where('o.id = :id AND dsbd.doctor_id = :doctor_id', array(':id' => $patientId, ':doctor_id' => $doctorId));
@@ -188,8 +204,20 @@ class SheduleByDay extends MisActiveRecord {
                 $greetings->andWhere('dsbd.patient_day = :patient_day', array(':patient_day' => $date));
             }
 
+            if($cardNumber !== false) {
+                $greetings->andWhere('m.card_number = :card_number', array(':card_number' => $cardNumber));
+            }
+
+            if($phone !== false) {
+                $greetings->andWhere('m.contact = :contact', array(':contact' => $phone));
+            }
+
             $greetings->order('dsbd.patient_time');
-            $greetings->group('dsbd.id, dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id');
+            $greetings->group('dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id, mp.name, m.card_number, mdp.phone');
+
+            if($limit !== false && $start !== false) {
+                $greetings->limit($limit, $start);
+            }
 
             return $greetings->queryAll();
         } catch(Exception $e) {

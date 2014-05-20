@@ -833,8 +833,10 @@ class PatientController extends Controller {
         }
 
         if($allEmpty) {
-            echo CJSON::encode(array('success' => false,
-                    'data' => 'Задан пустой поисковой запрос.')
+            echo CJSON::encode(array(
+					'success' => false,
+                    'data' => 'Задан пустой поисковой запрос.'
+				)
             );
             exit();
         }
