@@ -131,15 +131,17 @@ $(document).ready(function() {
         // Заполняем для начала заголовок. Для этого берём начальную дату из ответа с сервера
         var rusDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         var dates = [];
+        var today = new Date();
         for(var i = 0; i < 7; i++) {
             var headerTd = $('<td>');
-            if(i == 0) {
+            var d = new Date(year, month, parseInt(day) + i);
+            dates.push(d);
+            var isToday = (today.getDate() == d.getDate() && today.getFullYear() == d.getFullYear() && today.getMonth() == d.getMonth());
+            if(isToday) {
                 $(headerTd).addClass('current');
             }
 
-            var d = new Date(year, month, parseInt(day) + i);
-            dates.push(d);
-            $(headerTd).html((i == 0 ? 'Cегодня<br/>' : rusDays[d.getDay()] + '<br/>') + ' ' + (parseInt(day) + i) + ' ' + globalVariables.months[d.getMonth()]);
+            $(headerTd).html((isToday ? 'Cегодня<br/>' : rusDays[d.getDay()] + '<br/>') + ' ' + (parseInt(day) + i) + ' ' + globalVariables.months[d.getMonth()]);
             for(var j = 0; j < data.restDays.length; j++) {
                 if(data.restDays[j] == d.getDay()) {
                     $(headerTd).addClass('weekday');

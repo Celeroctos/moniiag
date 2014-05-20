@@ -4,14 +4,17 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <?php if(Yii::app()->user->checkAccess('writePatient')) { ?>
 <div class="row">
-    <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
-        array(
-            'callcenter' => $callcenter
-        )
-    ); ?>
-	<script type="text/javascript">
-		globalVariables.isCallCenter = <?php echo $callcenter; ?>;
-	</script>
+    <?php
+    if(isset($callcenter)) {
+        $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
+            array(
+                'callcenter' => $callcenter
+            )
+        ); ?>
+        <script type="text/javascript">
+            globalVariables.isCallCenter = <?php echo $callcenter; ?>;
+        </script>
+    <?php } ?>
 </div>
 <h4>Необходимо найти пациента, которого требуется записать на приём:</h4>
 <div class="row">

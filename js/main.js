@@ -24,7 +24,7 @@
         }
     });
     $('#docnumber').on('keydown', function(e) {
-        if($(this).val().length >= 8 && e.keyCode != 8 && e.keyCode != 46) {
+        if($(this).val().length >= 6 && e.keyCode != 8 && e.keyCode != 46) {
             return false;
         }
     });
@@ -35,7 +35,7 @@
     });
 
     $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁёa-zA-Z\-]*$/);
-    $('#serie, #docnumber').keyfilter(/^[А-Яа-яЁёa-zA-Z\-\d]*$/);
+    $('#serie, #docnumber').keyfilter(/^[А-Яа-яЁёa-zA-Z\-\d\s]*$/);
 
     $('#snils').on('keyup', function (e) {
         var value = $(this).val();
