@@ -47,7 +47,7 @@
                         </li>
                     <?php } ?>
                     <?php if(Yii::app()->user->checkAccess('menuDeleteChangeCallCenter')) { ?>
-                        <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'changedelete' && isset($_GET['callcenter']) && $_GET['callcenter'] == 1) ? 'class="active"' : ''; ?>>
+                        <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'changeordelete' && isset($_GET['callcenter']) && $_GET['callcenter'] == 1) ? 'class="active"' : ''; ?>>
                             <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Изменение или отмена записи', array('/reception/patient/changeordelete?callcenter=1')) ?>
                         </li>
                     <?php } ?>
