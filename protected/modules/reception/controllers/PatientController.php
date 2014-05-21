@@ -1100,8 +1100,9 @@ class PatientController extends Controller {
 
     public function actionChangeOrDelete()
     {
-        $this->render('changeRecord', array());
-        exit();
+        $this->render('changeRecord', array(
+            'callcenter' => 1
+        ));
     }
 
     private function getWardsList() {
@@ -1127,13 +1128,24 @@ class PatientController extends Controller {
     }
 
     // Запись опосредованного пациента
-    public function actionWritePatientWithoutData($callcenter=false) {
-        $this->render('writepatientwithoutdata', array(
+    public function actionWritePatientWithoutData($callcenter = false) {
+        $answer = array(
             'wardsList' => $this->getWardsList(),
             'postsList' => $this->getPostsList(),
-            'callcenter' => $callcenter,
+            'callcenter' => (int)$callcenter,
             'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
-        ));
+        );
+        if(isset($_GET['greeting_id'])) {
+            $currentGreeting = SheduleByDay::model()->findByPk($_GET['greeting_id']);
+            $answer['greetingId'] = $currentGreeting->id;
+            $doctorModel = Doctor::model()->findByPk($currentGreeting->doctor_id);
+            if($doctorModel != null) {
+                $answer['doctorFio'] = $doctorModel->last_name.' '.$doctorModel->first_name.' '.$doctorModel->middle_name;
+            } else {
+                $answer['doctorFio'] = '';
+            }
+        }
+        $this->render('writepatientwithoutdata', $answer);
     }
 
     public function actionMediateToMedcard() {

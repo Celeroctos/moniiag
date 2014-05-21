@@ -1,7 +1,8 @@
 $(document).ready(function() {
 	var clickedTimeLi = null;
 	var clickedDayLi = null;
-	
+	var triggeredByLoad = true; // Это для вызова окна записанного пациента автоматом
+
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
       //  $(this).find('.sheduleCont').addClass('no-display');
@@ -48,7 +49,7 @@ $(document).ready(function() {
 			return false;
 		}
 		$(li).addClass('pressed');
-        var title = 'Пациент ' + patientData.fio;
+        var title = 'Пациент ' + patientData.fio + ', записан на ' + day + '.' + month + '.' + year + ', на ' + patientData.patient_time;
         if(patientData.cardNumber != null) {
             title += ', номер карты ' + patientData.cardNumber;
         }
@@ -61,7 +62,7 @@ $(document).ready(function() {
         $(li).popover({
             animation: true,
             html: true,
-            placement: 'top',
+            placement: 'bottom',
             title: title,
             delay: {
                 show: 300,
@@ -98,7 +99,23 @@ $(document).ready(function() {
             }
         });
 
+        var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+            marginLeft: '480px',
+            position: 'absolute',
+            cursor: 'pointer'
+        });
+
+        $(span).on('click', function(e) {
+            $(li).popover('hide');
+            e.stopPropagation();
+        });
+
         $(li).popover('show');
+        $(li).find('.popover span.glyphicon').remove();
+        $(li).find('.popover').css({
+            position: 'relative',
+            width: '350px'
+        }).append(span);
     });
 
     // Чистим, что осталось с предыдущих времён
@@ -177,7 +194,7 @@ $(document).ready(function() {
 				$(li).css({
 					height: $(doctorTr).css('height'),
 					marginBottom: '2px',
-					marginTop: '1px',
+					marginTop: '1px'
 				});
 				
                 if(!dayData.worked) {
@@ -236,7 +253,6 @@ $(document).ready(function() {
                                     'success' : function(data, textStatus, jqXHR) {
                                         if(data.success == 'true') {
 											if($(clickedDayLi).prop('id') == $(li).prop('id')) {
-											console.log($(clickedDayLi).prop('id'));
 												$(li).popover({
 													animation: true,
 													html: true,
@@ -256,7 +272,7 @@ $(document).ready(function() {
 															);
 
 															if(data.data[j].cardNumber != null || data.data[j].id != null || $.trim(data.data[j].fio) != '') {
-																$(li).addClass('withPatient');
+                                                                $(li).addClass('withPatient');
 																if(data.data[j].id != null) {
 																	$(li).prop('id', 'i' + data.data[j].id);
 																}
@@ -275,6 +291,7 @@ $(document).ready(function() {
 																	$(li).on('click', function() {
 																		// Если есть попап для записи пациента, то его нужно показать
 																		$(this).addClass('pressed');
+                                                                        globalVariables.patientTime = timeBegin;
 																		if($('#patientDataPopup').length > 0) {
 																			$('#patientDataPopup').modal({});
 																		} else { // Должны быть данные для записи пациента
@@ -289,6 +306,11 @@ $(document).ready(function() {
 																		$('.organizer').trigger('showPatientData', [patientData, li, date.getFullYear(), date.getMonth(), date.getDate()]);
 																	});
 																})(data.data[j], li);
+                                                                // Автовызов окна отписи пациента
+                                                                if(globalVariables.hasOwnProperty('greetingId') && globalVariables.greetingId == data.data[j].id && triggeredByLoad) {
+                                                                    triggeredByLoad = false;
+                                                                    $(li).trigger('click');
+                                                                }
 															}
 															$(li).css({
 																'cursor' : 'pointer'
@@ -301,13 +323,26 @@ $(document).ready(function() {
 												});
 
 												$(li).popover('show');
-												$(li).find('.popover').css({
-													'cursor' : 'default',
-													'width' : '500px',
-													'max-width' : '500px'
-												});
 
-												$(li).on('click', '.popover', function(e) {
+                                                var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+                                                    position: 'absolute',
+                                                    cursor: 'pointer',
+                                                    left: '480px'
+                                                });
+
+                                                $(span).on('click', function(e) {
+                                                    $(li).popover('hide');
+                                                    e.stopPropagation();
+                                                });
+
+                                                $(li).find('.popover span.glyphicon').remove();
+                                                $(li).find('.popover').css({
+                                                    'cursor' : 'default',
+                                                    'width' : '500px',
+                                                    'max-width' : '500px'
+                                                }).append(span);
+
+                                                $(li).on('click', '.popover', function(e) {
 													return false;
 												});
 											}
@@ -319,7 +354,6 @@ $(document).ready(function() {
                                 });
                             });
                         })(i, li, counter, dayData);
-
                     } else {
                         $(li).addClass('not-aviable');
                     }
@@ -330,8 +364,14 @@ $(document).ready(function() {
                 $(li).find('popover').css({
                     width: '600px'
                 });
+
+                if(globalVariables.hasOwnProperty('greetingId') && counter == 0 && triggeredByLoad) {
+                    $(li).trigger('click');
+                }
+
 				counter++;
             }
+
             $(daysListCont).append(ulCont);
             // Берём последний UL в daysListCont и проставляем всем элементам Li внутри в высоту, равную высоте ячейки со врачом
             $(daysListCont).find('ul:last li').height(lengthOfRow);
