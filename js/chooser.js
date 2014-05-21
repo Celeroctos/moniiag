@@ -220,7 +220,9 @@ $(document).ready(function() {
                         // Делаем запрос на сторону сервера
                         var url = choosersConfig[$(chooser).prop('id')].url;
                         choosersConfig[$(chooser).prop('id')].filters.rules[0].data = $.trim($(field).val());
-                        url += $.toJSON(choosersConfig[$(chooser).prop('id')].filters);
+                        var urlFilters = choosersConfig[$(chooser).prop('id')].filters;
+                        var urlJSON = $.toJSON(urlFilters);
+                        url += urlJSON;
                         if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('extraparams')) {
                             var extra = $.extend({}, choosersConfig[$(chooser).prop('id')].extraparams);
                             for(var i in extra) {
@@ -465,6 +467,35 @@ $(document).ready(function() {
                 } else {
                     $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
                 }
+            },
+            'displayFunc' : function(row) {
+                return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+            },
+            'url' : '/index.php/reception/patient/search?page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'monPatientChooser' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'rowAddHandler' : function(ul, row) {
+                if(row.card_number != null) {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', номер карты ' + row.card_number));
+                } else {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
+                }
+            },
+            'afterInsert' : function()
+            {
+
             },
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
