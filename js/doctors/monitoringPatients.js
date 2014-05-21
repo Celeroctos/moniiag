@@ -40,8 +40,8 @@ $(document).ready(function() {
                 width: 200
             },
             {
-                name: 'id',
-                index:'id',
+                name: 'monitoring_id',
+                index:'monitoring_id',
                 width: 50
             },
         ],

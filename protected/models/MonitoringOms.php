@@ -21,7 +21,7 @@ class MonitoringOms extends MisActiveRecord  {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $settings = $connection->createCommand()
-            ->select('mo.*, o.*, mt.*')
+            ->select('mo.*, mo.id as monitoring_id, o.*, mt.*')
             ->from('mis.monitoring_oms mo')
             ->join('mis.oms o', 'mo.id_patient= o.id')
             ->join('mis.monitoring_types mt', 'mt.id= mo.monitoring_type');
