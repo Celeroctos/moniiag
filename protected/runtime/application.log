@@ -1,11 +1,1 @@
-﻿2014/05/21 13:22:24 [error] [php] Undefined variable: action (Z:\home\mis.my\www\protected\components\Controller.php:15)
-Stack trace:
-#0 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
-#1 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
-#2 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
-#3 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#4 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#5 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/doctors/patient/acceptdata?value=10&id=34564
-in Z:\home\mis.my\www\protected\components\Controller.php (15)
-in Z:\home\mis.my\www\index.php (13)
+﻿

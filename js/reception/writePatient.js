@@ -219,6 +219,10 @@ $(document).ready(function() {
             var data = {};
         }
 
+        if(globalVariables.hasOwnProperty('greetingId')) {
+            $('#lastName, #fio').prop('disabled', true);
+        }
+
         // Делаем поиск
         $.ajax({
             'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
@@ -230,9 +234,7 @@ $(document).ready(function() {
                 if(data.success == true) {
                     // Изначально таблицы скрыты
                     $('#withoutCardCont').addClass('no-display');
-                    if(globalVariables.hasOwnProperty('greetingId')) {
-                        $('#lastName').prop('disabled', true);
-                    }
+                    $('#lastName, #fio').prop('disabled', false);
 
                     if(data.data.length == 0) {
                         $('#notFoundPopup').modal({
@@ -308,9 +310,9 @@ $(document).ready(function() {
             {
                 content +=
                     '<td>' +
-                    '<a title="Посмотреть информацию по ОМС" href= "#' + data[i].id + '" class="editOms">' +
-                    data[i].oms_number +
-                    '</a>' +
+                        '<a title="Посмотреть информацию по ОМС" href= "#' + data[i].id + '" class="editOms">' +
+                        data[i].oms_number +
+                        '</a>' +
                     '</td>'
 
             }

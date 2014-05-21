@@ -19,6 +19,16 @@
             'callcenter' => $callcenter
         )
     ); ?>
+    <script type="text/javascript">
+        globalVariables.isCallCenter = <?php echo $callcenter; ?>;
+    </script>
+    <?php
+    if(isset($greetingId)) {
+        ?>
+        <script type="text/javascript">
+            globalVariables.greetingId = <?php echo $greetingId; ?>;
+        </script>
+    <?php } ?>
 </div>
 <h4>Необходимо найти врача к которому следует записать пациента на приём:</h4>
 <div class="row">
@@ -57,7 +67,7 @@
             <div class="form-group">
                 <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
                 <div class="col-xs-8">
-                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
+                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача" <?php echo isset($doctorFio) ? 'value="'.$doctorFio.'"' : ''; ?>>
                 </div>
             </div>
             <div class="form-group">
