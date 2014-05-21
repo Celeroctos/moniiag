@@ -130,7 +130,7 @@ class SheduleByDay extends MisActiveRecord {
  		return $patients->queryAll();
  	}
 	
-    public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0, $filters) {
+    public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0) {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
         $patients = $connection->createCommand()
@@ -221,8 +221,8 @@ class SheduleByDay extends MisActiveRecord {
                         'm_middle_name'
                     )
                 ), array(
-                    'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio'),
-                    'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio'),
+                    'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio', 'patient_ids'),
+                    'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio', 'doctor_ids'),
                     'm' => array('phone'),
                     'mdp' => array('m_first_name', 'm_middle_name', 'm_last_name', 'patient_fio', 'phone'),
                     'dsbd' => array('patient_day', 'medcard_id')
@@ -236,7 +236,9 @@ class SheduleByDay extends MisActiveRecord {
                     'p_middle_name' => 'middle_name',
                     'm_last_name' => 'last_name',
                     'm_first_name' => 'first_name',
-                    'm_middle_name' => 'middle_name'
+                    'm_middle_name' => 'middle_name',
+                    'patient_ids' => 'id',
+                    'doctor_ids' => 'id'
                 ));
             }
 

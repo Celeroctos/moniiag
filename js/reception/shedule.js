@@ -152,17 +152,17 @@
                                 ((shedule[i].medcard_id != null) ?
                                     '<a href="#">' + shedule[i].p_last_name + ' ' + shedule[i].p_first_name + ' ' + shedule[i].p_middle_name + '</a>'
                                     :
-                                    shedule[i].p_last_name + ' ' + shedule[i].p_first_name + ' ' + shedule[i].p_middle_name
+                                    shedule[i].m_last_name + ' ' + shedule[i].m_first_name + ' ' + shedule[i].m_middle_name
                                 ) +
                             '</td>' +
                             '<td>' +
-                                (typeof shedule[i].phone != 'undefined' ? shedule[i].phone : '') +
+                                (typeof shedule[i].phone != 'undefined' && shedule[i].phone != null ? shedule[i].phone : '') +
                             '</td>' +
                             '<td>' +
                                 shedule[i].patient_time.substr(0, shedule[i].patient_time.lastIndexOf(':')) +
                             '</td>' +
                             '<td>' +
-                                ((shedule[i].medcard_id != null) ?  '<a href="#">' + shedule[i].medcard_id + '</a>' : '<button class="btn btn-primary" id="b' + shedule[i].mediate_id + '">Подтвердить приём</button>') +
+                                ((shedule[i].medcard_id != null) ?  '<a href="#" class="cardNumber">' + shedule[i].medcard_id + '</a>' : '<button class="btn btn-primary" id="b' + shedule[i].mediate_id + '">Подтвердить приём</button>') +
                             '</td>' +
                             '<td>' +
                                 motion +
