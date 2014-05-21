@@ -5,6 +5,12 @@ class Controller extends CController {
     public function filterGetAccessHierarchy($filterChain) {
         // Здесь нужно писать логи...
 
+        $action = Yii::app()->getController()->getAction();
+        if ($action->id=='acceptdata')
+        {
+            $filterChain->run();
+            return;
+        }
         if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
             // Если гость, то не давать заходить куда-то
             $this->redirect('/');
