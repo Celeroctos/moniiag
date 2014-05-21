@@ -75,6 +75,9 @@
                     <?php echo CHtml::link('<img src="/images/icons/view_medcard.png" width="32" height="32" alt="" />Просмотр ЭМК', array('/doctors/patient/viewsearch')) ?>
                 </li>
                 <?php } ?>
+                <li <?php echo $controller == 'patient' && $module == 'doctors' && $action == 'viewmonitoring' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('<img src="/images/icons/view_medcard.png" width="32" height="32" alt="" />Мониторинг', array('/doctors/patient/viewmonitoring')) ?>
+                </li>
             </ul>
         </li>
         <?php } ?>

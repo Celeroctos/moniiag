@@ -309,6 +309,8 @@ class PatientController extends Controller {
           );
     }
 
+
+
     // UnКлонирование элемента (категории)
 	public function actionUnCloneElement($pr_key) {
         $keyParts = explode('|', $pr_key);
@@ -349,6 +351,144 @@ class PatientController extends Controller {
 
     public function actionViewSearch() {
         $this->render('searchPatient', array());
+    }
+
+    public function actionGetIndicators()
+    {
+        $result = array();
+        // Получаем все показатели, которые были присланы сегодня
+        $indicators = RemoteData::model()->findAll(
+            'indicator_time >= \'today\'::date',array()
+        );
+
+        //var_dump($indicators );
+        //exit();
+
+        foreach($indicators as $indicator)
+        //for ($i=0;$i<count($indicators);$i++)
+        {
+            $oneRecord = array();
+            $oneRecord['value'] = $indicator['indicator_value'];
+            $oneRecord['indicatorName'] = 'Уровень сахара';
+
+            $oneRecord['dateStamp'] = $indicator['indicator_time'];
+            $oneRecord['idRecord'] = $indicator['id'];
+            // иии разыменуем пациента
+            $patient = Oms::model()->findByPk($indicator['id_patient']);
+            // Если пациента нет - пропускаем
+            if ($patient==null)
+                continue;
+            $oneRecord['patientName'] =
+                $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
+
+            $result[] = $oneRecord;
+
+        }
+
+        //var_dump('!');
+        //exit();
+        //var_dump($result);
+        //exit();
+        echo CJSON::encode(array('success' => 'true',
+            'data' => $result));
+    }
+
+    public function actionGetMonitoringResults($monId)
+    {
+        // Надо вернуть во-первых - имя пациента
+        //  Имя мониторинга (название типа)
+        // Массив с результатами
+        $monitoringName = '';
+        $results = array();
+        $measures = RemoteData::model()->findAll('id_monitoring = :mon_id', array(':mon_id' => $monId));
+
+        // Ищем мониторинг для
+        $monitoring = MonitoringOms::model()->findByPk($monId);
+
+        // Ищем тип мониторинга
+        $monType = MonitoringType::model()->findByPk($monitoring['monitoring_type']);
+
+        // Теперь из mon_type можно прочитать
+        $monitoringName = $monType['name'];
+
+        // Теперь перебираем измерения , конструируем из них массив результатов
+
+        foreach($measures as $oneMeasure)
+        {
+            $oneMeasureResult = array();
+            //$oneMeasureResult['val'] =
+
+        }
+
+        var_dump($measures);
+        exit();
+
+        echo CJSON::encode(array('success' => 'true',
+            'data' => array(
+                'monitoring' => $monitoringName,
+                'results' => $results
+
+            )));
+    }
+
+    public function actionViewMonitoring()
+    {
+        // Список типов измерений
+        $connection = Yii::app()->db;
+        $monitoringTypesDb = $connection->createCommand()
+            ->select('mt.*')
+            ->from('mis.monitoring_types mt')
+            ->queryAll();
+
+        $monitoringTypes = array();
+        foreach($monitoringTypesDb as $value) {
+            $monitoringTypes [(string)$value['id']] = $value['name'];
+        }
+
+        $this->render('monitoringPatient', array(
+            'monitoringTypes' => $monitoringTypes,
+            'model' => new FormMonitoringAdd()
+        ));
+    }
+
+    public function actionGetMonitoring()
+    {
+        $monitoring = new MonitoringOms();
+        $monResult = $monitoring->getRows(false);
+
+        foreach($monResult as &$onePatient)
+        {
+            $onePatient['fio'] = $onePatient['last_name'].' '.$onePatient['first_name'].' '.$onePatient['middle_name'];
+        }
+
+        echo CJSON::encode(
+            array('rows' => $monResult,
+                'total' => 0,
+                'records' => count($monResult))
+        );
+
+    }
+
+    public function actionAcceptData()
+    {
+        if (!isset($_GET['id']) || !isset($_GET['value']))
+            echo '0';
+        else
+        {
+            $patientId = $_GET['id'];
+            $indValue = $_GET['value'];
+            // Создаём модель
+            $incomingData = new RemoteData();
+            $incomingData->indicator_value = $indValue ;
+            $incomingData->id_monitoring= $patientId ;
+            $incomingData->indicator_time = date('Y-m-d h:i');
+            // Пишем в базу
+            $incomingData->save();
+
+            echo('1');
+            exit();
+        }
+
     }
 
     /* Добавить значение в конкретный элемент */
