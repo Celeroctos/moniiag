@@ -1293,6 +1293,20 @@ a.accordion-toggle:hover {
 .print-recomendation-link{
 	font-size: 30px;
 }
+
+.alerts-cont .main-window
+{
+  overflow: scroll;
+}
+
+.indicatorBlock
+{
+  border-width:1px;
+  border-style:solid;
+  border-color: rgb(216, 216, 216);
+  margin-bottom: 10px;
+  font-weight: bolder;
+}
 /* */
 #templates-choose-form {
   input[type="checkbox"] {
@@ -1344,6 +1358,50 @@ a.accordion-toggle:hover {
 		cursor: pointer;
 	}
 }
+.alerts-cont {
+  height: 350px;
+  width: 250px;
+  background: #D8D8D8;
+  position: fixed;
+  top: 300px;
+  border-bottom-right-radius: 5px;
+  left: -250px;
+  .panel-arrow {
+    width: 30px;
+    height: 30px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    font-size: 25px;
+    color: #ffffff;
+    left: 250px;
+    position: absolute;
+    background: #D8D8D8;
+    cursor: pointer;
+    span {
+      margin: -3px 0 0 3px;
+    }
+  }
+  h4 {
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+  }
+
+  .main-window {
+    background: #ffffff;
+    height: 250px;
+    border-right: 5px solid #D8D8D8;
+  }
+  .submit {
+    font-size: 20px;
+    color: #ffffff;
+    position: relative;
+    top: 5px;
+    left: 3px;
+    cursor: pointer;
+  }
+}
+
 #consilium-dialog-str {
 	margin: 5px 0 0 5px;
 	width: 200px;

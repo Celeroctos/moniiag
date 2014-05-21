@@ -5,6 +5,7 @@
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap-datetimepicker.min.css" rel="stylesheet/less" media="screen">
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen"  />
+    <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/jquery.jqplot.min.css">
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.less" rel="stylesheet/less" media="screen">
     <script type="text/javascript">
         var globalVariables = {
@@ -31,6 +32,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/consilium.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/alerts.js"></script>
     <style>
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;
@@ -53,7 +55,8 @@
 
     </div>
 </div>
-<div class ="buttonUpContainer">
+
+<!--<div class ="buttonUpContainer">
 		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span></nobr>
 </div>
 <div class="consilium-cont">
@@ -66,5 +69,21 @@
 	<input type="text" id="consilium-dialog-str" />
 	<span class="glyphicon glyphicon-plus submit" title="Отправить сообщение"></span>
 </div>
+-->
+<div class ="buttonUpContainer">
+    <nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span></nobr>
+</div>
+<div class="alerts-cont">
+    <div class="panel-arrow">
+        <span class="glyphicon glyphicon-expand"></span>
+    </div>
+    <h4>Удаленные показания</h4>
+    <div class="main-window">
+    </div>
+    <audio id="incomingIndicator" preload="auto">
+        <source src="/content/audio/signal.wav" type="audio/wav">
+    </audio>
+</div>
+
 </body>
 </html>
