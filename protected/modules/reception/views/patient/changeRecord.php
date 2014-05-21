@@ -14,24 +14,16 @@
 </h4>
 <div class="row">
     <form class="form-horizontal col-xs-12" role="form" id="doctors-search-greetings">
-        <div class="form-group chooser" id="doctorChooser">
-            <label for="doctor" class="col-xs-2 control-label">Врач</label>
+        <div class="form-group">
+            <label for="doctorFio" class="col-xs-2 control-label">ФИО врача</label>
             <div class="col-xs-4">
-                <input type="text" class="form-control" autofocus id="doctor" placeholder="ФИО врача">
-                <ul class="variants no-display">
-                </ul>
-                <div class="choosed">
-                </div>
+                <input type="text" class="form-control" id="doctorFio" placeholder="ФИО врача">
             </div>
         </div>
-        <div class="form-group chooser" id="patientChooser">
-            <label for="categorie" class="col-xs-2 control-label">Пациент</label>
+        <div class="form-group">
+            <label for="patientFio" class="col-xs-2 control-label">ФИО пациента</label>
             <div class="col-xs-4">
-                <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
-                <ul class="variants no-display">
-                </ul>
-                <div class="choosed">
-                </div>
+                <input type="text" class="form-control" id="patientFio" placeholder="ФИО пациента">
             </div>
         </div>
         <div class="form-group">

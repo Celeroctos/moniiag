@@ -17,43 +17,14 @@ class SheduleController extends Controller {
         $sord = $_GET['sord'];
 
         $model = new SheduleByDay();
-        if(isset($filters['doctor_id'])) {
-            $doctorId = $filters['doctor_id'];
-        } else {
-            $doctorId = array();
-        }
 
-        if(isset($filters['oms_id'])) {
-            $patientId = $filters['oms_id'];
-        } else {
-            $patientId = array();
-        }
-
-        if(isset($filters['patient_day'])) {
-            $date = $filters['patient_day'];
-        } else {
-            $date = false;
-        }
-
-        if(isset($filters['card_number'])) {
-            $cardNumber = $filters['card_number'];
-        } else {
-            $cardNumber = false;
-        }
-
-        if(isset($filters['phone'])) {
-            $phone = $filters['phone'];
-        } else {
-            $phone = false;
-        }
-
-        $greetings = $model->getGreetingsPerQrit($patientId, $doctorId, $date, 0, $cardNumber, $phone);
+        $greetings = $model->getGreetingsPerQrit($filters, false, false);
         $num = count($greetings);
 
         $totalPages = ceil($num / $rows);
         $start = $page * $rows - $rows;
 
-        $greetings = $model->getGreetingsPerQrit($patientId, $doctorId, $date, 0, $cardNumber, $phone, $start, $rows);
+        $greetings = $model->getGreetingsPerQrit($filters, $start, $rows);
 
         foreach($greetings as &$greeting) {
             if($greeting['contact'] == null) {
@@ -107,7 +78,7 @@ class SheduleController extends Controller {
             exit();
         }
 
-	    return $resultFilters;
+	    return $filters;
 	}
 
     public function actionGetShedule() {
