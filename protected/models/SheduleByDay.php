@@ -143,7 +143,7 @@ class SheduleByDay extends MisActiveRecord {
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
-            ->join('mis.users u', 'u.employee_id = dsbd.doctor_id');
+            ->leftJoin('mis.users u', 'u.employee_id = dsbd.doctor_id');
         if($withMediate) {
             $patients->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
         }
@@ -182,7 +182,7 @@ class SheduleByDay extends MisActiveRecord {
         try {
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
-                ->select('dsbd.*, o.first_name as p_first_name,
+                ->selectDistinct('dsbd.*, o.first_name as p_first_name,
                                   o.middle_name as p_middle_name,
                                   o.last_name as p_last_name,
                                   d.first_name as d_first_name,

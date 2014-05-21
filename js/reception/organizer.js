@@ -111,6 +111,7 @@ $(document).ready(function() {
         });
 
         $(li).popover('show');
+        $(li).find('.popover span.glyphicon').remove();
         $(li).find('.popover').css({
             position: 'relative',
             width: '350px'
@@ -322,13 +323,26 @@ $(document).ready(function() {
 												});
 
 												$(li).popover('show');
-												$(li).find('.popover').css({
-													'cursor' : 'default',
-													'width' : '500px',
-													'max-width' : '500px'
-												});
 
-												$(li).on('click', '.popover', function(e) {
+                                                var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+                                                    position: 'absolute',
+                                                    cursor: 'pointer',
+                                                    left: '480px'
+                                                });
+
+                                                $(span).on('click', function(e) {
+                                                    $(li).popover('hide');
+                                                    e.stopPropagation();
+                                                });
+
+                                                $(li).find('.popover span.glyphicon').remove();
+                                                $(li).find('.popover').css({
+                                                    'cursor' : 'default',
+                                                    'width' : '500px',
+                                                    'max-width' : '500px'
+                                                }).append(span);
+
+                                                $(li).on('click', '.popover', function(e) {
 													return false;
 												});
 											}
