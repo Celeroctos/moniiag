@@ -134,12 +134,21 @@ class SheduleByDay extends MisActiveRecord {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
         $patients = $connection->createCommand()
-            ->selectDistinct('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, m.card_number AS card_number, SUBSTR(CAST(dsbd.patient_time AS text), 0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time, m.motion')
+            ->selectDistinct('dsbd.*,
+                            CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio,
+                            m.card_number AS card_number,
+                            SUBSTR(CAST(dsbd.patient_time AS text),
+                            0, CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2) AS patient_time,
+                            m.motion')
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
-            ->join('mis.users u', 'u.employee_id = dsbd.doctor_id')
-            ->where('dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':doctor_id' => $doctorId));
+            ->join('mis.users u', 'u.employee_id = dsbd.doctor_id');
+        if($withMediate) {
+            $patients->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
+        }
+
+        $patients->where('dsbd.doctor_id = :doctor_id AND dsbd.patient_day = :patient_day', array(':patient_day' => $date, ':doctor_id' => $doctorId));
         if(!$withMediate) {
             $patients->andWhere('dsbd.mediate_id IS NULL');
         }
@@ -183,11 +192,14 @@ class SheduleByDay extends MisActiveRecord {
                                   m.card_number,
                                   m.contact,
                                   mdp.phone,
+                                  mdp.first_name as m_first_name,
+                                  mdp.middle_name as m_middle_name,
+                                  mdp.last_name as m_last_name,
                                   o.id as oms_id,
                                   mp.name as post')
                 ->from('mis.doctor_shedule_by_day dsbd')
-                ->join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
-                ->join('mis.oms o', 'm.policy_id = o.id')
+                ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+                ->leftJoin('mis.oms o', 'm.policy_id = o.id')
                 ->join('mis.doctors d', 'd.id = dsbd.doctor_id')
                 ->join('mis.medpersonal mp', 'd.post_id = mp.id')
                 ->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
@@ -213,7 +225,7 @@ class SheduleByDay extends MisActiveRecord {
             }
 
             $greetings->order('dsbd.patient_time');
-            $greetings->group('dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id, mp.name, m.card_number, mdp.phone');
+            $greetings->group('dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id, mp.name, m.card_number, mdp.phone, mdp.last_name, mdp.middle_name, mdp.first_name');
 
             if($limit !== false && $start !== false) {
                 $greetings->limit($limit, $start);

@@ -2,6 +2,13 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/ajaxbutton.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/changegreetings.js" ></script>
+<div class="row">
+    <?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
+        array(
+            'callcenter' => $callcenter
+        )
+    ); ?>
+</div>
 <h4>
     Изменение или отмена записей
 </h4>
