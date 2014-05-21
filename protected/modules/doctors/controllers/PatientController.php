@@ -482,7 +482,7 @@ class PatientController extends Controller {
             $incomingData = new RemoteData();
             $incomingData->indicator_value = $indValue ;
             $incomingData->id_monitoring= $patientId ;
-            $incomingData->indicator_time = date('Y-m-d h:i');
+            $incomingData->indicator_time = date('Y-m-d h:i:s');
             // Пишем в базу
             $incomingData->save();
 
