@@ -14,6 +14,13 @@ class DoctorsController extends Controller {
 
         $model = new Doctor();
 
+        if(isset($_GET['greeting_id'])) {
+            $greetingModel = SheduleByDay::model()->findByPk($_GET['greeting_id']);
+            if($greetingModel != null) {
+                $this->greetingDate = $greetingModel->patient_day;
+            }
+        }
+
         // Вычислим общее количество записей
 	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
 

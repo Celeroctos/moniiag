@@ -1041,7 +1041,7 @@ class PatientController extends Controller {
     }
 
     // Экшн записи пациента: шаг 1
-    public function actionWritePatientStepOne($callcenter=false) {
+    public function actionWritePatientStepOne($callcenter = 0) {
         $this->render('writePatient1', array(
             'privilegesList' => $this->getPrivileges(),
             'modelMedcard' => new FormPatientWithCardAdd(),
@@ -1066,14 +1066,30 @@ class PatientController extends Controller {
 				$callcenter = 0;
 			}
             if($medcard != null) {
-                $this->render('writePatient2', array(
+                $answer = array();
+                if(isset($_GET['greeting_id'])) {
+                    $currentGreeting = SheduleByDay::model()->findByPk($_GET['greeting_id']);
+                    // Крайне слабая проверка. Надо думать.
+                    if($currentGreeting->medcard_id == $_GET['cardid']) {
+                        $answer['greetingId'] = $currentGreeting->id;
+                        $doctorModel = Doctor::model()->findByPk($currentGreeting->doctor_id);
+                        if($doctorModel != null) {
+                            $answer['doctorFio'] = $doctorModel->last_name.' '.$doctorModel->first_name.' '.$doctorModel->middle_name;
+                        } else {
+                            $answer['doctorFio'] = '';
+                        }
+
+                    }
+                }
+                $answer += array(
                     'wardsList' => $this->getWardsList(),
                     'postsList' => $this->getPostsList(),
                     'medcard' => $medcard,
                     'oms' => $oms,
-					'callcenter' => $callcenter,
+                    'callcenter' => $callcenter,
                     'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
-                ));
+                );
+                $this->render('writePatient2', $answer);
                 exit();
             }
         }

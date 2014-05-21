@@ -14,14 +14,24 @@
 </script>
 <?php if(Yii::app()->user->checkAccess('writePatient')) { ?>
 <div class="row">
-	<?php $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
-        array(
-            'callcenter' => $callcenter
-        )
-    ); ?>
-	<script type="text/javascript">
-		globalVariables.isCallCenter = <?php echo $callcenter; ?>;
-	</script>
+    <?php
+    if(isset($callcenter)) {
+        $this->widget('application.modules.reception.components.widgets.WritePatientTabMenu',
+            array(
+                'callcenter' => $callcenter
+            )
+        ); ?>
+        <script type="text/javascript">
+            globalVariables.isCallCenter = <?php echo $callcenter; ?>;
+        </script>
+    <?php } ?>
+    <?php
+    if(isset($greetingId)) {
+    ?>
+        <script type="text/javascript">
+            globalVariables.greetingId = <?php echo $greetingId; ?>;
+        </script>
+    <?php } ?>
 </div>
 <h4>
     Необходимо найти врача к которому следует записать пациента <?php echo $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name; ?> :
@@ -62,7 +72,7 @@
             <div class="form-group">
                 <label for="lastName" class="col-xs-4 control-label">ФИО врача</label>
                 <div class="col-xs-8">
-                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача">
+                    <input type="text" class="form-control" id="fio" placeholder="ФИО врача" <?php echo isset($doctorFio) ? 'value="'.$doctorFio.'"' : ''; ?>>
                 </div>
             </div>
             <!--<div class="form-group">

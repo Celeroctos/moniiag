@@ -206,20 +206,33 @@ $(document).ready(function() {
 
     function updateDoctorsList() {
         var filters = getDoctorsFilter();
-        var PaginationData=getPaginationParameters('searchDoctorsResult');
-        if (PaginationData!='') {
+        var PaginationData = getPaginationParameters('searchDoctorsResult');
+        if (PaginationData != '') {
             PaginationData = '&'+PaginationData;
         }
+
+        if(globalVariables.hasOwnProperty('greetingId')) {
+            var data = {
+                greeting_id : globalVariables.greetingId
+            };
+        } else {
+            var data = {};
+        }
+
         // Делаем поиск
         $.ajax({
-            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
             'cache' : false,
             'dataType' : 'json',
+            'data' : data,
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
                     // Изначально таблицы скрыты
                     $('#withoutCardCont').addClass('no-display');
+                    if(globalVariables.hasOwnProperty('greetingId')) {
+                        $('#lastName').prop('disabled', true);
+                    }
 
                     if(data.data.length == 0) {
                         $('#notFoundPopup').modal({
@@ -707,4 +720,9 @@ $(document).ready(function() {
             $('#greetingDate').parents('.form-group').addClass('no-display');
         }
     });
+
+    if(globalVariables.hasOwnProperty('greetingId')) {
+        $('#lastName').prop('disabled', true);
+        $('#doctor-search-submit').trigger('click');
+    }
 });

@@ -1,5 +1,6 @@
 $(document).ready(function() {
 	InitPaginationList('greetingsSearchResult','id','desc',updatePatientList);
+    var mediateStatus = [];
 
 	function getFilters() {
 		var doctorIds = [];
@@ -19,12 +20,12 @@ $(document).ready(function() {
                 {
                     'field' : 'doctor_id',
                     'op' : 'in',
-                    'data' :  doctorIds // TODO
+                    'data' :  doctorIds
                 },
 				{
                     'field' : 'oms_id',
                     'op' : 'in',
-                    'data' :  omsIds // TODO
+                    'data' :  omsIds
                 },
                 {
                     'field' : 'medcard_id',
@@ -53,6 +54,7 @@ $(document).ready(function() {
 	function updatePatientList() {
 		var PaginationData = getPaginationParameters('greetingsSearchResult');
 		var filters = getFilters();
+        $('#greetings-search-submit').trigger('begin');
 
 		$.ajax({
             'url' : '/index.php/reception/shedule/search?'+ PaginationData,
@@ -64,6 +66,7 @@ $(document).ready(function() {
 			},
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
+                $('#greetings-search-submit').trigger('end');
                 if(data.success) {
                     if(data.rows.length > 0) {
                         displayAllGreetings(data.rows);
@@ -84,11 +87,17 @@ $(document).ready(function() {
         // Заполняем пришедшими данными таблицу тех, кто без карт
         var table = $('#greetingsSearchResult tbody');
         table.find('tr').remove();
+        mediateStatus = [];
         for(var i = 0; i < data.length; i++) {
             data[i].patient_day = data[i].patient_day.split('-').reverse().join('.');
             var timeSplit = data[i].patient_time.split(':');
             timeSplit.pop();
             data[i].patient_time = timeSplit.join(':');
+            mediateStatus['i' + data[i].id] = {
+                id : data[i].id,
+                isMediate : data[i].card_number == null ? 1 : 0,
+                cardNumber: data[i].card_number
+            }; // Опосредованный пациент или нет
 
             table.append(
                 '<tr>' +
@@ -115,7 +124,7 @@ $(document).ready(function() {
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="#' + data[i].id + '" class="editGreeting" title="Редактировать запись">' +
+                        '<a href="#' + data[i].id + '" id="i' + data[i].id + '" class="editGreeting" title="Редактировать запись">' +
                             '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
@@ -127,6 +136,7 @@ $(document).ready(function() {
 
 
     $('#greetingsSearchResult').on('click', '.cancelGreeting', function(e) {
+        var link = $(this);
         var params = {
             id : $(this).attr('href').substr(1)
         };
@@ -138,7 +148,9 @@ $(document).ready(function() {
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == 'true') {
-
+                    $(link).parents('tr').fadeOut(500, function() {
+                        $(link).parents('tr').remove();
+                    });
                 } else {
 
                 }
@@ -148,6 +160,16 @@ $(document).ready(function() {
     });
 
     $('#greetingsSearchResult').on('click', '.editGreeting', function(e) {
+        var greetingId = $(this).prop('id').substr(1);
+        var mediateData = mediateStatus['i' + greetingId];
+        // Опосредованных по одному адресу, обычных, с картами, - по другому
 
+        if(!mediateData.isMediate) {
+            var url = '/index.php/reception/patient/writepatientsteptwo?callcenter=1&cardid=' + mediateData.cardNumber + '&greeting_id=' + mediateData.id
+        } else {
+            var url = '/index.php/reception/patient/writepatientwithoutdata?callcenter=1&greeting_id=' + mediateData.id;
+        }
+
+        location.href = 'http://' + location.host + url;
     });
 });
