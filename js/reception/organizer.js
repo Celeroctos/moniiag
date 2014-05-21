@@ -132,6 +132,20 @@ $(document).ready(function() {
 
 
     $('.organizer').on('showShedule', function(e, data, status, response) {
+        // Проверка на то, что кто-то вообще есть в выборке с расписанием
+        var isIssetAnybody = false;
+        for(var i = 0; i < data.length; i++) {
+            if(data[i].shedule.length != 0) {
+                isIssetAnybody = true;
+                break;
+            }
+        }
+
+        if(!isIssetAnybody) {
+            $('#notFoundPopup').modal({});
+            return false;
+        }
+
         var year = data.year; // вычисляем текущий год
         var month = data.month - 1; // вычисляем текущий месяц (расхождение с utc в единицу)
         var day = data.day; // вычисляем текущее число
