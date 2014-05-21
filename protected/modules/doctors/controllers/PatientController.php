@@ -416,12 +416,13 @@ class PatientController extends Controller {
         foreach($measures as $oneMeasure)
         {
             $oneMeasureResult = array();
-            //$oneMeasureResult['val'] =
-
+            $oneMeasureResult['val'] = $oneMeasure['indicator_value'];
+            $oneMeasureResult['time'] = $oneMeasure['indicator_time'];
+            $results[] = $oneMeasureResult;
         }
 
-        var_dump($measures);
-        exit();
+       // var_dump($measures);
+       // exit();
 
         echo CJSON::encode(array('success' => 'true',
             'data' => array(

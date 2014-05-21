@@ -7,6 +7,10 @@
 <!-- Поключаем plot -->
 <!--script language="javascript" type="text/javascript" src="/assets/libs/plot/jquery.min.js"></script-->
 <script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/jquery.jqplot.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.dateAxisRenderer.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.canvasTextRenderer.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <!-- -->
 
 <h4>Мониторинг</h4>
