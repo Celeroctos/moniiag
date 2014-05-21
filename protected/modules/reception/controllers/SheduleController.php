@@ -5,6 +5,110 @@ class SheduleController extends Controller {
     public function actionView() {
         $this->render('view', array());
     }
+	
+	/* Получить список расписаний */
+	public function actionSearch() {
+		// Проверим наличие фильтров
+        $filters = $this->checkFilters();
+
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $model = new SheduleByDay();
+        if(isset($filters['doctor_id'])) {
+            $doctorId = $filters['doctor_id'];
+        } else {
+            $doctorId = array();
+        }
+
+        if(isset($filters['oms_id'])) {
+            $patientId = $filters['oms_id'];
+        } else {
+            $patientId = array();
+        }
+
+        if(isset($filters['patient_day'])) {
+            $date = $filters['patient_day'];
+        } else {
+            $date = false;
+        }
+
+        if(isset($filters['card_number'])) {
+            $cardNumber = $filters['card_number'];
+        } else {
+            $cardNumber = false;
+        }
+
+        if(isset($filters['phone'])) {
+            $phone = $filters['phone'];
+        } else {
+            $phone = false;
+        }
+
+        $greetings = $model->getGreetingsPerQrit($patientId, $doctorId, $date, 0, $cardNumber, $phone);
+        $num = count($greetings);
+
+        $totalPages = ceil($num / $rows);
+        $start = $page * $rows - $rows;
+
+        $greetings = $model->getGreetingsPerQrit($patientId, $doctorId, $date, 0, $cardNumber, $phone, $start, $rows);
+
+        foreach($greetings as &$greeting) {
+            if($greeting['contact'] == null) {
+                if($greeting['phone'] == null) {
+                    $greeting['phone'] = '';
+                }
+            } else {
+                $greeting['phone'] = $greeting['contact'];
+            }
+        }
+
+        echo CJSON::encode(
+            array('rows' => $greetings,
+                'total' => $totalPages,
+                'records' => $num,
+                'success' => true)
+        );
+	}
+	
+	public function checkFilters($filters = false) {
+		if((!isset($_GET['filters']) || trim($_GET['filters']) == '') && (bool) $filters === false) {
+            echo CJSON::encode(array('success' => false,
+                                     'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
+
+        $filters = CJSON::decode(isset($_GET['filters']) ? $_GET['filters'] : $filters);
+        $allEmpty = true;
+
+        $resultFilters = array();
+        foreach($filters['rules'] as &$filter) {
+			if(($filter['field'] == 'doctor_id' || $filter['field'] == 'oms_id') && count($filter['data']) == 0) {
+				unset($filter);
+                continue;
+			}
+
+			if(!is_array($filter['data']) && trim($filter['data']) == '') {
+				unset($filter);
+                continue;
+			}
+
+            $allEmpty = false;
+            $resultFilters[$filter['field']] = $filter['data'];
+        }
+
+        if($allEmpty) {
+            echo CJSON::encode(array('success' => false,
+									 'data' => 'Задан пустой поисковой запрос.')
+            );
+            exit();
+        }
+
+	    return $resultFilters;
+	}
 
     public function actionGetShedule() {
         if((!isset($_GET['doctors']) && !isset($_GET['patients'])) || !isset($_GET['date']) || trim($_GET['date']) == '') {

@@ -1,7 +1,10 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
-<h3>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/ajaxbutton.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/changegreetings.js" ></script>
+<h4>
     Изменение или отмена записей
-</h3>
+</h4>
 <div class="row">
     <form class="form-horizontal col-xs-12" role="form" id="doctors-search-greetings">
         <div class="form-group chooser" id="doctorChooser">
@@ -95,10 +98,10 @@
                 <td>
                     Контактный телефон
                 </td>
-                <td>
+                <td class="cancelGreetingTh">
                     <!-- Отменить приём -->
                 </td>
-                <td>
+                <td class="editGreetingTh">
                     <!-- Изменить приём -->
                 </td>
             </tr>
@@ -106,5 +109,27 @@
             <tbody>
             </tbody>
         </table>
+    </div>
+	<div class="row no-display">
+        <ul class="pagination content-pagination">
+        </ul>
+    </div>
+</div>
+<div class="modal fade error-popup" id="notFoundPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Сообщение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>По введённым поисковым критериям не найдено ни одного пациента, либо задан пустой поисковой запрос.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Вернуться в поиск</button>
+            </div>
+        </div>
     </div>
 </div>

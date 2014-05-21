@@ -154,8 +154,7 @@ public function getGreetingsByIds(
                                   o.middle_name as p_middle_name,
                                   o.last_name as p_last_name,
                                   d.first_name as d_first_name,
-                                  d.middle_name as d_middle_name,
-<<<<<<< HEAD
+                                  d.middle_name as d_middle_name
                                   d.last_name as d_last_name,
                                   o.id as oms_id')
 =======
