@@ -2918,3 +2918,26 @@ REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
 in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1117)
 in Z:\home\mis.my\www\protected\components\Controller.php (27)
 in Z:\home\mis.my\www\index.php (13)
+2014/05/21 12:55:04 [error] [exception.CDbException] exception 'CDbException' with message 'Имя столбца должно быть строкой или массивом.' in Z:\home\mis.my\yii\db\schema\CDbCommandBuilder.php:828
+Stack trace:
+#0 Z:\home\mis.my\yii\db\schema\CDbCommandBuilder.php(621): CDbCommandBuilder->createInCondition(Object(CPgsqlTableSchema), NULL, Array, '"t".')
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1485): CDbCommandBuilder->createPkCriteria(Object(CPgsqlTableSchema), '2', '', Array, '"t".')
+#2 Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php(406): CActiveRecord->findByPk('2')
+#3 [internal function]: PatientController->actionGetMonitoringResults('2')
+#4 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(PatientController), Array)
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(PatientController), Object(ReflectionMethod), Array)
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(27): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('getmonitoringre...')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/patient/getmonitoringresults?monId=2&_=1400661429920
+HTTP_REFERER=http://mis.my/index.php/doctors/patient/viewmonitoring
+---
