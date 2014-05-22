@@ -31,7 +31,23 @@ class RemoteData extends MisActiveRecord  {
             ->select(' COUNT (*) ')
             ->from('mis.remote_data rd')
             ->leftJoin('mis.monitoring_oms mo', 'rd.id_monitoring=mo.id')
-            ->where('((rd.is_read=0) AND (( monitoring_type=1 AND CAST(indicator_value AS float8)>220  ) OR ( monitoring_type=2 AND CAST(indicator_value AS float8)>30 )))', array())
+            ->where(
+                '(
+                        (rd.is_read=0)
+                        AND
+                        (
+                            (
+                                monitoring_type=1 AND
+                                (CAST(indicator_value AS float8)>140 OR CAST(indicator_value AS float8)<70)
+                            )
+                            OR
+                            (
+                                monitoring_type=2 AND
+                                (CAST(indicator_value AS float8)>7 OR  CAST(indicator_value AS float8)<4)
+                            )
+                        )
+                  )'
+                , array())
             ->queryRow();
 
         return $indicators;

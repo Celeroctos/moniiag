@@ -85,7 +85,7 @@ $(document).ready(function() {
     function printPlot()
     {
         // Запускаем перерисовку раз в секунду
-        plotRefreshTimeOut = setTimeout(printPlot,1000);
+        plotRefreshTimeOut = setTimeout(printPlot,2000);
         // Ставим на
         // По ID-шнику мониторинга подкачиваю массив результатов
         var currentRow = $('#patientsOnMonitor').jqGrid('getGridParam', 'selrow');
