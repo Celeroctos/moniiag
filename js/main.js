@@ -566,4 +566,119 @@ $('input[type="number"]').on('keydown', function(e) {
 
     /* Двигающиеся модалки */
     $('.modal').draggable();
+
+
+    // Дальше идёт треш по сообщениям о больным, которым плохо
+    // ------------------------------->
+        var cont = $('.alerts-cont');
+        $(cont).find('.panel-arrow').on('click', function(e) {
+            if($(this).find('span').hasClass('glyphicon-expand')) {
+                //show)
+                $(cont).animate({
+                    'left' : '0'
+                }, 500, function() {
+                    $(cont).find('.panel-arrow span').removeClass('glyphicon-expand').addClass('glyphicon-collapse-down');
+                });
+            } else {
+                $(cont).animate({
+                    'left' : '-250px'
+                }, 500, function() {
+                    $(cont).find('.panel-arrow span').removeClass('glyphicon-collapse-down').addClass('glyphicon-expand');
+                });
+
+
+            }
+        });
+
+        /*
+         function showIndicators(cont)
+         {
+         $(cont).animate({
+         'left' : '0'
+         }, 500, function() {
+         $(cont).find('.panel-arrow span').removeClass('glyphicon-expand').addClass('glyphicon-collapse-down');
+         });
+         }
+
+         function closeIndicators(cont)
+         {
+         $(cont).animate({
+         'left' : '-250px'
+         }, 500, function() {
+         $(cont).find('.panel-arrow span').removeClass('glyphicon-collapse-down').addClass('glyphicon-expand');
+         });
+         }
+         */
+
+        wasLoadedMessages = false;
+
+        function refreshIndicators()
+        {
+            // Если панель удалённых показания свёрнута - выходим из функции
+            /*if ($('.alerts-cont .panel-arrow span').hasClass('glyphicon-expand'))
+             {
+
+             }
+             else
+             {
+
+             console.log('Тест');
+             }*/
+            console.log('Тест');
+            $.ajax({
+                'url' : '/index.php/doctors/patient/getindicators',
+                'data' : {
+                },
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true || data.success == 'true') {
+                        if (data.data!='0')
+                        {
+                            //console.log('Всем пиздец!');
+                            $('.alarm-button').addClass('is-patients-to-check');
+                            $('.alarm-button img').removeClass('no-display');
+
+                            // Через полсекунды кнопка пропадает
+                            setTimeout(
+                                function ()
+                                {
+                                    $('.alarm-button img').addClass('no-display');
+                                },
+                                750
+                            );
+
+
+                            // Загорается кнопочка
+                        }
+                        else
+                        {
+                            // Кнопочка гасится
+                            $('.alarm-button img').removeClass('is-patients-to-check');
+                        }
+
+
+                    } else {
+
+                    }
+                }
+            });
+
+            // Устанавливаем тайм-аут
+            setTimeout(refreshIndicators,1500);
+        }
+        setTimeout(refreshIndicators,1500);
+
+        // По клику на кнопку перенаправляемся на страницу со списком мониторингов
+        $(document).on('click', '.is-patients-to-check', function()
+        {
+            console.log('!');
+            // Перенаправляем на страницу
+            location.href = '/index.php/doctors/patient/viewmonitoring?alarm=1'
+        });
+
+
+    // <-------------------------------
+
 });

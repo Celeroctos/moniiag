@@ -355,17 +355,19 @@ class PatientController extends Controller {
 
     public function actionGetIndicators()
     {
+        // Получим те показания, у которых is_read = 0  и показания превышены
+        $indicatorsCount = new RemoteData();
+        $numberOfAlarms = $indicatorsCount->getAlarms();
+        echo CJSON::encode(array('success' => true,
+            'data' => $numberOfAlarms['count']));
+
+        return;
         $result = array();
         // Получаем все показатели, которые были присланы сегодня
         $indicators = RemoteData::model()->findAll(
             'indicator_time >= \'today\'::date',array()
         );
-
-        //var_dump($indicators );
-        //exit();
-
         foreach($indicators as $indicator)
-        //for ($i=0;$i<count($indicators);$i++)
         {
             $oneRecord = array();
             $oneRecord['value'] = $indicator['indicator_value'];
@@ -380,15 +382,9 @@ class PatientController extends Controller {
                 continue;
             $oneRecord['patientName'] =
                 $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
-
             $result[] = $oneRecord;
 
         }
-
-        //var_dump('!');
-        //exit();
-        //var_dump($result);
-        //exit();
         echo CJSON::encode(array('success' => 'true',
             'data' => $result));
     }
@@ -398,21 +394,21 @@ class PatientController extends Controller {
         // Надо вернуть во-первых - имя пациента
         //  Имя мониторинга (название типа)
         // Массив с результатами
-        $monitoringName = '';
         $results = array();
         $measures = RemoteData::model()->findAll('id_monitoring = :mon_id', array(':mon_id' => $monId));
 
+        foreach($measures as $oneMeasure)
+        {
+            $oneMeasure->is_read = 1;
+            $oneMeasure->save();
+        }
         // Ищем мониторинг для
         $monitoring = MonitoringOms::model()->findByPk($monId);
-
         // Ищем тип мониторинга
         $monType = MonitoringType::model()->findByPk($monitoring['monitoring_type']);
-
         // Теперь из mon_type можно прочитать
         $monitoringName = $monType['name'];
-
         // Теперь перебираем измерения , конструируем из них массив результатов
-
         foreach($measures as $oneMeasure)
         {
             $oneMeasureResult = array();
@@ -420,10 +416,6 @@ class PatientController extends Controller {
             $oneMeasureResult['time'] = $oneMeasure['indicator_time'];
             $results[] = $oneMeasureResult;
         }
-
-       // var_dump($measures);
-       // exit();
-
         echo CJSON::encode(array('success' => 'true',
             'data' => array(
                 'monitoring' => $monitoringName,
@@ -440,12 +432,10 @@ class PatientController extends Controller {
             ->select('mt.*')
             ->from('mis.monitoring_types mt')
             ->queryAll();
-
         $monitoringTypes = array();
         foreach($monitoringTypesDb as $value) {
             $monitoringTypes [(string)$value['id']] = $value['name'];
         }
-
         $this->render('monitoringPatient', array(
             'monitoringTypes' => $monitoringTypes,
             'model' => new FormMonitoringAdd()
@@ -456,18 +446,15 @@ class PatientController extends Controller {
     {
         $monitoring = new MonitoringOms();
         $monResult = $monitoring->getRows(false);
-
         foreach($monResult as &$onePatient)
         {
             $onePatient['fio'] = $onePatient['last_name'].' '.$onePatient['first_name'].' '.$onePatient['middle_name'];
         }
-
         echo CJSON::encode(
             array('rows' => $monResult,
                 'total' => 0,
                 'records' => count($monResult))
         );
-
     }
 
     public function actionAcceptData()
