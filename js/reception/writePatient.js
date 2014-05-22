@@ -223,6 +223,10 @@ $(document).ready(function() {
             $('#lastName, #fio').prop('disabled', true);
         }
 
+        if(globalVariables.hasOwnProperty('beginDate') && globalVariables.beginDate != null) {
+            data.beginDate = globalVariables.beginDate;
+        }
+
         // Делаем поиск
         $.ajax({
             'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
@@ -592,6 +596,11 @@ $(document).ready(function() {
                 return;
             }
         });
+    });
+
+    $('#patientDataPopup').on('hidden.bs.modal', function (e) {
+        $('#patientDataPopup').find('#firstName, #lastName, #middleName').val('');
+        $('#patientDataPopup').find('#phone').val('+7');
     });
 
     // Просмотр истории медкарты

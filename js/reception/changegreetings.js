@@ -3,17 +3,6 @@ $(document).ready(function() {
     var mediateStatus = [];
 
 	function getFilters() {
-		var doctorIds = [];
-		var omsIds = [];
-		var choosedDoctors = $.fn['doctorChooser'].getChoosed();
-		var choosedOms = $.fn['patientChooser'].getChoosed();
-		for(var i = 0; i < choosedDoctors.length; i++) {
-			doctorIds.push(choosedDoctors[i].id);
-		}
-		for(var i = 0; i < choosedOms.length; i++) {
-			omsIds.push(choosedOms[i].id);
-		}
-
         if($.trim($('#greetingDate').val()) != '') {
             var currentDate = new Date();
             var inputDate =  $('#greetingDate').val();
@@ -28,24 +17,24 @@ $(document).ready(function() {
             'groupOp' : 'AND',
             'rules' : [
                 {
-                    'field' : 'doctor_id',
-                    'op' : 'in',
-                    'data' :  doctorIds
+                    'field' : 'doctor_fio',
+                    'op' : 'bw',
+                    'data' :  $('#doctorFio').val()
                 },
 				{
-                    'field' : 'oms_id',
-                    'op' : 'in',
-                    'data' :  omsIds
+                    'field' : 'patient_fio',
+                    'op' : 'bw',
+                    'data' :  $('#patientFio').val()
                 },
                 {
                     'field' : 'medcard_id',
-                    'op' : 'eq',
+                    'op' : 'bw',
                     'data' : $('#cardNumber').val()
                 },
                 {
                     'field' : 'phone',
-                    'op' : 'eq',
-                    'data' : $('#phoneNumber').val()
+                    'op' : 'cn',
+                    'data' : $('#phone').val()
                 },
 				{
 					'field' : 'patient_day',

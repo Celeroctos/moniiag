@@ -72,7 +72,7 @@
     });
 
     // При загрузке - если поле "контактные данные" пусто - надо поставить код России в начале в этом поле
-    if ($('#contact').length>0)
+    if ($('#contact, #phone').length > 0)
     {
         // Если поле "телефон" пусто - выводим в него '+7'
         if ($('#contact').val()=='')
@@ -83,9 +83,8 @@
     }
 
 
-    $('#contact').on('keydown', function (e) {
+    $('#contact, #phone').on('keydown', function (e) {
         // Нажатая клавиша
-
         var pressedKey = e.keyCode;
         // Если символ Enter или Tab - сразу возвращаем true
         if ((pressedKey == 13) || (pressedKey == 9)||(pressedKey == 16))
@@ -136,7 +135,7 @@
         if (value.substr(0,2)=='+7')
         {
             if (value.length == 2 || value.length == 6) {
-                $(this).val(value + ' ');
+                $(this).val(value + '-');
             }
         }
         return true;
