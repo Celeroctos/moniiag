@@ -23,6 +23,9 @@
             <ul class="nav navbar-nav">
                 <li><a href="#">Справка</a></li>
             </ul>
+            <ul class="nav navbar-nav alarm-button" style="width:50px;height:50px;">
+                <li><img src="/images/icons/alarm.png" width="50" height="50" class="no-display"></img></li>
+            </ul>
             <ul class="nav navbar-nav navbar-right" id="loggedUserNavbar">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong><?php echo isset(Yii::app()->user->fio) ? Yii::app()->user->fio : ''; ?></strong> <b class="caret"></b></a>

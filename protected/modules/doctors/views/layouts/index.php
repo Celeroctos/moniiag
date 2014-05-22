@@ -32,7 +32,7 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/consilium.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/alerts.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/patientAlarms.js"></script>
     <style>
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;
@@ -70,7 +70,7 @@
 	<span class="glyphicon glyphicon-plus submit" title="Отправить сообщение"></span>
 </div>
 -->
-<div class ="buttonUpContainer">
+<!--div class ="buttonUpContainer">
     <nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span></nobr>
 </div>
 <div class="alerts-cont">
@@ -83,7 +83,7 @@
     <audio id="incomingIndicator" preload="auto">
         <source src="/content/audio/signal.wav" type="audio/wav">
     </audio>
-</div>
+</div-->
 
 </body>
 </html>
