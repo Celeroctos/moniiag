@@ -635,7 +635,6 @@ $('input[type="number"]').on('keydown', function(e) {
                     if(data.success == true || data.success == 'true') {
                         if (data.data!='0')
                         {
-                            //console.log('Всем пиздец!');
                             $('.alarm-button').addClass('is-patients-to-check');
                             $('.alarm-button img').removeClass('no-display');
 
@@ -645,7 +644,7 @@ $('input[type="number"]').on('keydown', function(e) {
                                 {
                                     $('.alarm-button img').addClass('no-display');
                                 },
-                                750
+                                1000
                             );
 
 
@@ -655,6 +654,7 @@ $('input[type="number"]').on('keydown', function(e) {
                         {
                             // Кнопочка гасится
                             $('.alarm-button img').removeClass('is-patients-to-check');
+                            $('.alarm-button img').addClass('no-display');
                         }
 
 
@@ -665,9 +665,9 @@ $('input[type="number"]').on('keydown', function(e) {
             });
 
             // Устанавливаем тайм-аут
-            setTimeout(refreshIndicators,1500);
+            setTimeout(refreshIndicators,2000);
         }
-        setTimeout(refreshIndicators,1500);
+        setTimeout(refreshIndicators,2000);
 
         // По клику на кнопку перенаправляемся на страницу со списком мониторингов
         $(document).on('click', '.is-patients-to-check', function()

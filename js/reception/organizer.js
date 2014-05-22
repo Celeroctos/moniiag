@@ -407,9 +407,9 @@ $(document).ready(function() {
     });
 
     $('.organizerNav .back').on('click', function(e) {
-       // $('.organizer').trigger('reload');
+        $('.organizer').trigger('reload');
     });
     $('.organizerNav .forward').on('click', function(e) {
-      //  $('.organizer').trigger('reload');
+        $('.organizer').trigger('reload');
     });
 });

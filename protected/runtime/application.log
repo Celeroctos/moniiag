@@ -1,1 +1,77 @@
-﻿
+﻿2014/05/22 11:26:00 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[HY000]: General error: 7 server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. Выполнявшийся SQL-запрос: SELECT a.attname, LOWER(format_type(a.atttypid, a.atttypmod)) AS type, d.adsrc, a.attnotnull, a.atthasdef,
+	pg_catalog.col_description(a.attrelid, a.attnum) AS comment
+FROM pg_attribute a LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+WHERE a.attnum > 0 AND NOT a.attisdropped
+	AND a.attrelid = (SELECT oid FROM pg_catalog.pg_class WHERE relname=:table
+		AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = :schema))
+ORDER BY a.attnum.
+in Z:\home\mis.my\www\protected\components\Controller.php (21)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/22 11:26:00 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[HY000]: General error: 7 server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.. The SQL statement executed was: SELECT a.attname, LOWER(format_type(a.atttypid, a.atttypmod)) AS type, d.adsrc, a.attnotnull, a.atthasdef,
+	pg_catalog.col_description(a.attrelid, a.attnum) AS comment
+FROM pg_attribute a LEFT JOIN pg_attrdef d ON a.attrelid = d.adrelid AND a.attnum = d.adnum
+WHERE a.attnum > 0 AND NOT a.attisdropped
+	AND a.attrelid = (SELECT oid FROM pg_catalog.pg_class WHERE relname=:table
+		AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = :schema))
+ORDER BY a.attnum' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\schema\pgsql\CPgsqlSchema.php(179): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\schema\pgsql\CPgsqlSchema.php(111): CPgsqlSchema->findColumns(Object(CPgsqlTableSchema))
+#3 Z:\home\mis.my\yii\db\schema\CDbSchema.php(103): CPgsqlSchema->loadTable('mis.roles')
+#4 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(2361): CDbSchema->getTable('mis.roles')
+#5 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#6 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#7 Z:\home\mis.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('getmonitoringre...')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/doctors/patient/getmonitoringresults?monId=2&_=1400742987009
+HTTP_REFERER=http://mis.my/index.php/doctors/patient/viewmonitoring?alarm=1
+---
+2014/05/22 12:17:09 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1136)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1136)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/22 12:24:52 [error] [php] Trying to get property of non-object (Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php:1136)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CInlineAction->runWithParamsInternal()
+#1 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): PatientController->runAction()
+#3 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): PatientController->filterGetAccessHierarchy()
+#5 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#7 Z:\home\mis.my\yii\web\CController.php(265): PatientController->runActionWithFilters()
+#8 Z:\home\mis.my\yii\web\CWebApplication.php(282): PatientController->run()
+#9 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+in Z:\home\mis.my\www\protected\modules\reception\controllers\PatientController.php (1136)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
