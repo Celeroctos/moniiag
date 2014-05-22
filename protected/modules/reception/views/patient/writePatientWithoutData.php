@@ -71,6 +71,15 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="canPregnant" class="col-xs-4 control-label">Может обслуживать беременных</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="canPregnant">
+                        <option value="0">Нет</option>
+                        <option value="1">Да</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
                 <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
             </div>
         </div>
