@@ -180,6 +180,8 @@ class SheduleByDay extends MisActiveRecord {
     // Получить список приёмов по критериям
     public function getGreetingsPerQrit($filters, $start = false, $limit = false) {
         try {
+            var_dump($filters);
+            exit();
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
                 ->selectDistinct('dsbd.*,
@@ -225,6 +227,7 @@ class SheduleByDay extends MisActiveRecord {
                         'm_phone'
                     )
                 ), array(
+                    'mp' => array('is_for_pregnants'),
                     'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio', 'patient_ids'),
                     'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio', 'doctor_ids'),
                     'm' => array('contact'),
@@ -246,9 +249,7 @@ class SheduleByDay extends MisActiveRecord {
                     'm_phone' => 'phone'
                 ));
             }
-       //     var_dump($filters);
-//var_dump($greetings->text);
-      //      exit();
+
             $greetings->order('dsbd.patient_time');
             $greetings->group('dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id, mp.name, m.card_number, mdp.phone, mdp.last_name, mdp.middle_name, mdp.first_name');
 

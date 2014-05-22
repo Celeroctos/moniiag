@@ -133,6 +133,11 @@ $(document).ready(function() {
                 'field' : 'diagnosis',
                 'op' : 'in',
                 'data' : choosedDiagnosis
+            },
+            {
+                'field' : 'is_for_pregnants',
+                'op' : 'eq',
+                'data' : $('#canPregnant').val()
             }
         ];
 
