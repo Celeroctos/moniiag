@@ -133,13 +133,16 @@ $(document).ready(function() {
                 'field' : 'diagnosis',
                 'op' : 'in',
                 'data' : choosedDiagnosis
-            },
-            {
+            }
+        ];
+
+        if($('#canPregnant').val() == 1) {
+            rules.push({
                 'field' : 'is_for_pregnants',
                 'op' : 'eq',
                 'data' : $('#canPregnant').val()
-            }
-        ];
+            });
+        }
 
         // Дата не везде есть: на странице записи опосредованных пациентов её нет
         if($('#greetingDate').length > 0) {
@@ -493,7 +496,14 @@ $(document).ready(function() {
     });
 
     $(document).on('click', '.write-link', function(e) {
-        globalVariables.patientTime = $(this).attr('href').substr(1);
+        writePatient();
+    });
+
+    function writePatient() {
+        if(!globalVariables.hasOwnProperty('withWindow')) {
+            globalVariables.patientTime = $(this).attr('href').substr(1);
+        }
+
         // В зависимости от того, есть ли номер карты или нет, можно судить, запись это опосредованного пациента или нет. Это говорит о том, нужно ли вводить данные о пациенте или нет
         if(typeof globalVariables.cardNumber == 'undefined') {
             // Нужно показать модалку для ввода данных о пациенте
@@ -507,7 +517,8 @@ $(document).ready(function() {
                 doctor_id : globalVariables.doctorId,
                 mode: 0, // Обычная запись
                 time: globalVariables.patientTime,
-                card_number: globalVariables.cardNumber
+                card_number: globalVariables.cardNumber,
+                comment: $('#comment').val()
             };
         }
 
@@ -532,7 +543,7 @@ $(document).ready(function() {
             }
         });
         return false;
-    });
+    }
 
     $(document).on('click', '.unwrite-link', function(e) {
         var params = {
@@ -567,6 +578,7 @@ $(document).ready(function() {
             'firstName' : $('#firstName').val(),
             'lastName' : $('#lastName').val(),
             'middleName' : $('#middleName').val(),
+            'comment' : $('#comment').val(),
             'phone' :  $('#phone').val(),
             'month' : globalVariables.month + 1,
             'year' : globalVariables.year,
@@ -741,4 +753,9 @@ $(document).ready(function() {
         $('#lastName').prop('disabled', true);
         $('#doctor-search-submit').trigger('click');
     }
+
+    $('#submitPatient').on('click', function(e) {
+        alert("!");
+        writePatient();
+    });
 });

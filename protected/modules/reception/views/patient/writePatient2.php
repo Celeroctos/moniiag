@@ -134,7 +134,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="canPregnant" class="col-xs-4 control-label">Может обслуживать беременных</label>
+                <label for="canPregnant" class="col-xs-4 control-label">Беременная</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="canPregnant">
                         <option value="0">Нет</option>
@@ -306,6 +306,32 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="patientDataPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="#" role="form" class="form-horizontal col-xs-12">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Комментарий к приёму (опционально)</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="comment" class="col-xs-3 control-label">Комментарий</label>
+                            <div class="col-xs-9">
+                                <textarea name="comment" placeholder="Комментарий" class="form-control" id="comment" value=""></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="submitPatient">Записать пациента</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

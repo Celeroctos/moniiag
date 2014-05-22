@@ -100,7 +100,7 @@ $(document).ready(function() {
         });
 
         var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
-            marginLeft: '480px',
+            marginLeft: '340px',
             position: 'absolute',
             cursor: 'pointer'
         });
@@ -113,8 +113,7 @@ $(document).ready(function() {
         $(li).popover('show');
         $(li).find('.popover span.glyphicon').remove();
         $(li).find('.popover').css({
-            position: 'relative',
-            width: '350px'
+            width: '480px'
         }).append(span);
     });
 
@@ -320,6 +319,7 @@ $(document).ready(function() {
 																		$(this).addClass('pressed');
                                                                         globalVariables.patientTime = timeBegin;
 																		if($('#patientDataPopup').length > 0) {
+                                                                            globalVariables.withWindow = 1;
 																			$('#patientDataPopup').modal({});
 																		} else { // Должны быть данные для записи пациента
 																			$('.organizer').trigger('writePatientWithCard', [timeBegin, date.getFullYear(), date.getMonth(), date.getDate()]);

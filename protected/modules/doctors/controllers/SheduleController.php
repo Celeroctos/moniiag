@@ -808,6 +808,7 @@ class SheduleController extends Controller {
         if($_GET['mode'] == 0) { // Обычная запись
             $sheduleElement->medcard_id = $_GET['card_number'];
             $sheduleElement->mediate_id = null;
+            $sheduleElement->comment = $_GET['comment']; // XSS
         } elseif($_GET['mode'] == 1) { // Опосредованная запись
             $sheduleElement->medcard_id = null;
             // Создаём запись опосредованного пациента
@@ -825,6 +826,7 @@ class SheduleController extends Controller {
             $mediate->last_name = $mediateForm->lastName;
             $mediate->middle_name = $mediateForm->middleName;
             $mediate->phone = $mediateForm->phone;
+            $sheduleElement->comment = $mediateForm->comment;
 
             if(!$mediate->save()) {
                 echo CJSON::encode(array('success' => 'false',
