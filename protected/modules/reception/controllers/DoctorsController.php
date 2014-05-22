@@ -21,6 +21,10 @@ class DoctorsController extends Controller {
             }
         }
 
+        if(isset($_GET['begiDate'])) {
+            $this->greetingDate = $_GET['beginDate'];
+        }
+
         // Вычислим общее количество записей
 	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
 

@@ -132,10 +132,11 @@ $(document).ready(function() {
 
 
     $('.organizer').on('showShedule', function(e, data, status, response) {
+        $('.organizerNav').removeClass('no-display');
         // Проверка на то, что кто-то вообще есть в выборке с расписанием
         var isIssetAnybody = false;
-        for(var i = 0; i < data.length; i++) {
-            if(data[i].shedule.length != 0) {
+        for(var i = 0; i < data.data.length; i++) {
+            if(data.data[i].shedule.length != 0) {
                 isIssetAnybody = true;
                 break;
             }
@@ -163,6 +164,8 @@ $(document).ready(function() {
         var rusDays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         var dates = [];
         var today = new Date();
+        var wasToday = false;
+
         for(var i = 0; i < 7; i++) {
             var headerTd = $('<td>');
             var d = new Date(year, month, parseInt(day) + i);
@@ -170,6 +173,15 @@ $(document).ready(function() {
             var isToday = (today.getDate() == d.getDate() && today.getFullYear() == d.getFullYear() && today.getMonth() == d.getMonth());
             if(isToday) {
                 $(headerTd).addClass('current');
+                wasToday = true;
+            }
+
+            if(i == 6) {
+                if(wasToday) {
+                    $('.organizerNav .back').addClass('no-display');
+                } else {
+                    $('.organizerNav .back').removeClass('no-display');
+                }
             }
 
             $(headerTd).html((isToday ? 'Cегодня<br/>' : rusDays[d.getDay()] + '<br/>') + ' ' + (parseInt(day) + i) + ' ' + globalVariables.months[d.getMonth()]);
@@ -180,6 +192,7 @@ $(document).ready(function() {
                 }
             }
 
+            globalVariables.beginDate = d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
             $(headerTd).appendTo(headerCont);
         }
 
@@ -391,5 +404,12 @@ $(document).ready(function() {
             $(daysListCont).find('ul:last li').height(lengthOfRow);
         }
         $('.organizer').find('.sheduleCont').removeClass('no-display');
+    });
+
+    $('.organizerNav .back').on('click', function(e) {
+       // $('.organizer').trigger('reload');
+    });
+    $('.organizerNav .forward').on('click', function(e) {
+      //  $('.organizer').trigger('reload');
     });
 });

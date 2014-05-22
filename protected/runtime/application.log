@@ -1,319 +1,414 @@
-﻿2014/05/21 16:13:56 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
-	Is the server running on host "localhost" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+﻿2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:32:44 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:22 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:31 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:36:39 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:42:17 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка o.phone не существует
+LINE 8: WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE...
+                     ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (257)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:42:17 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка o.phone не существует
+LINE 8: WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE...
+                     ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time" LIMIT 15.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (257)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:42:17 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php:29)
 Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('search')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/docto...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%2211%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%221%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&_=1400674175285
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
----
-2014/05/21 16:14:10 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
-	Is the server running on host "localhost" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/search?rows=15&page=1&sidx=id&sord=desc&mediateonly=0&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22doctor_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22patient_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22medcard_id%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22phone%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%22%2B7%22%7D%2C%7B%22field%22%3A%22patient_day%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%5D%7D&_=1400693980351
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:42:42 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка o.phone не существует
+LINE 8: WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE...
+                     ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (257)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:42:42 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка o.phone не существует
+LINE 8: WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE...
+                     ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(o.phone) LIKE '%+7%') OR (LOWER(m.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time" LIMIT 15.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (257)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:42:42 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php:29)
 Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:14:12 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
-	Is the server running on host "localhost" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/search?rows=15&page=1&sidx=id&sord=desc&mediateonly=0&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22doctor_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22patient_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22medcard_id%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22phone%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%22%2B7%22%7D%2C%7B%22field%22%3A%22patient_day%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%5D%7D&_=1400694144493
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:43:51 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка m.phone не существует
+LINE 8: WHERE (LOWER(m.phone) LIKE '%+7%') OR (LOWER(mdp.contact) LI...
+                     ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(m.phone) LIKE '%+7%') OR (LOWER(mdp.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (257)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:43:51 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка m.phone не существует
+LINE 8: WHERE (LOWER(m.phone) LIKE '%+7%') OR (LOWER(mdp.contact) LI...
+                     ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(m.phone) LIKE '%+7%') OR (LOWER(mdp.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time" LIMIT 15.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (257)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:43:51 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php:29)
 Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:14:15 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
-	Is the server running on host "localhost" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/search?rows=15&page=1&sidx=id&sord=desc&mediateonly=0&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22doctor_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22patient_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22medcard_id%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22phone%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%22%2B7%22%7D%2C%7B%22field%22%3A%22patient_day%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%5D%7D&_=1400694214290
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/21 21:44:43 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mdp.contact не существует
+LINE 8: WHERE (LOWER(m.contact) LIKE '%+7%') OR (LOWER(mdp.contact) ...
+                                                       ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(m.contact) LIKE '%+7%') OR (LOWER(mdp.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time".
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (256)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (21)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:44:43 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка mdp.contact не существует
+LINE 8: WHERE (LOWER(m.contact) LIKE '%+7%') OR (LOWER(mdp.contact) ...
+                                                       ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "dsbd".*, "o"."first_name" AS "p_first_name", "o"."middle_name" AS "p_middle_name", "o"."last_name" AS "p_last_name", "d"."first_name" AS "d_first_name", "d"."middle_name" AS "d_middle_name", "d"."last_name" AS "d_last_name", "m"."motion", "m"."card_number", "m"."contact", "mdp"."phone", "mdp"."first_name" AS "m_first_name", "mdp"."middle_name" AS "m_middle_name", "mdp"."last_name" AS "m_last_name", "o"."id" AS "oms_id", "mp"."name" AS "post"
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+LEFT JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+LEFT JOIN "mis"."oms" "o" ON m.policy_id = o.id
+JOIN "mis"."doctors" "d" ON d.id = dsbd.doctor_id
+JOIN "mis"."medpersonal" "mp" ON d.post_id = mp.id
+LEFT JOIN "mis"."mediate_patients" "mdp" ON mdp.id = dsbd.mediate_id
+WHERE (LOWER(m.contact) LIKE '%+7%') OR (LOWER(mdp.contact) LIKE '%+7%')
+GROUP BY "dsbd"."id", "o"."first_name", "o"."last_name", "o"."middle_name", "d"."first_name", "d"."last_name", "d"."middle_name", "m"."motion", "o"."id", "mp"."name", "m"."card_number", "mdp"."phone", "mdp"."last_name", "mdp"."middle_name", "mdp"."first_name"
+ORDER BY "dsbd"."patient_time" LIMIT 15.
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (256)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (27)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+2014/05/21 21:44:43 [error] [php] Invalid argument supplied for foreach() (F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php:29)
 Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:14:36 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
-	Is the server running on host "localhost" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/search?rows=15&page=1&sidx=id&sord=desc&mediateonly=0&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22doctor_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22patient_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22medcard_id%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22phone%22%2C%22op%22%3A%22cn%22%2C%22data%22%3A%22%2B7%22%7D%2C%7B%22field%22%3A%22patient_day%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%5D%7D&_=1400694266736
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (29)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:03 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:06 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:49:13 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:33 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (816)
+in F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php (33)
+in F:\Hosts\Celeroctos\moniiag\www\index.php (13)
+2014/05/22 08:50:59 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
 Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:14:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
-	Is the server running on host "localhost" and accepting
-	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
-Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:15:25 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] �����:  � pg_hba.conf ��� ������, ����������� ����������� ��� ���������� � ���������� "178.208.158.26" ��� ������������ "postgres", ���� ������ "postgres", SSL ����.' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
-Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:15:29 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] �����:  � pg_hba.conf ��� ������, ����������� ����������� ��� ���������� � ���������� "178.208.158.26" ��� ������������ "postgres", ���� ������ "postgres", SSL ����.' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
-Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:15:30 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] �����:  � pg_hba.conf ��� ������, ����������� ����������� ��� ���������� � ���������� "178.208.158.26" ��� ������������ "postgres", ���� ������ "postgres", SSL ����.' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
-Stack trace:
-#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
-#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
-#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
-#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
-#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
-#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
-#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
-#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
-#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
-#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
-#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
-#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
-#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientwit...')
-#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
-#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
-#17 {main}
-REQUEST_URI=/index.php/reception/patient/writepatientwithoutdata?callcenter=1
-HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?callcenter=1
----
-2014/05/21 16:50:22 [error] [php] Invalid argument supplied for foreach() (Z:\home\moniiag.my\www\protected\models\MisActiveRecord.php:13)
-Stack trace:
-#0 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionSearch()
-#1 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams()
-#2 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
-#3 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
-#4 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
-#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#6 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
-#7 Z:\home\moniiag.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
-#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): SheduleController->run()
-#9 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#10 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#11 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/reception/shedule/search?rows=15&page=1&sidx=id&sord=desc&mediateonly=0&filters=%7B%22groupOp%22%3A%22AND%22%2C%22rules%22%3A%5B%7B%22field%22%3A%22doctor_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%D0%91%D0%B5%D0%BB%22%7D%2C%7B%22field%22%3A%22patient_fio%22%2C%22op%22%3A%22bw%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22medcard_id%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22phone%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%2C%7B%22field%22%3A%22patient_day%22%2C%22op%22%3A%22eq%22%2C%22data%22%3A%22%22%7D%5D%7D&_=1400676616946
-in Z:\home\moniiag.my\www\protected\models\MisActiveRecord.php (13)
-in Z:\home\moniiag.my\www\protected\models\SheduleByDay.php (227)
-in Z:\home\moniiag.my\www\protected\modules\reception\controllers\SheduleController.php (21)
-2014/05/21 17:34:19 [error] [php] Missing argument 5 for SheduleByDay::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php on line 679 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php:133)
-Stack trace:
-#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\DoctorsController.php(67): SheduleController->getCalendar()
-#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
-#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
-#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
-#4 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
-#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
-#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
-#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
-#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): DoctorsController->run()
-#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%2219%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%220%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&_=1400679382266
-in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (133)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (679)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (609)
-2014/05/21 17:53:07 [error] [php] Missing argument 5 for SheduleByDay::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php on line 679 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php:133)
-Stack trace:
-#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\DoctorsController.php(67): SheduleController->getCalendar()
-#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
-#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
-#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
-#4 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
-#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
-#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
-#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
-#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): DoctorsController->run()
-#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%220%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%92%D0%B0%D0%B4%D0%B8%D0%BC%D0%BE%D0%B2%D0%BD%D0%B0%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%BE%D0%BD%D0%B4%D0%B0%D1%80%D0%B5%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%9E%D0%BB%D1%8C%D0%B3%D0%B0%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&greeting_id=636&_=1400680891835
-in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (133)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (679)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (609)
-2014/05/21 17:53:31 [error] [php] Missing argument 5 for SheduleByDay::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php on line 679 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php:133)
-Stack trace:
-#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\DoctorsController.php(67): SheduleController->getCalendar()
-#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
-#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
-#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
-#4 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
-#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
-#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
-#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
-#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): DoctorsController->run()
-#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%220%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%92%D0%B0%D0%B4%D0%B8%D0%BC%D0%BE%D0%B2%D0%BD%D0%B0%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%BE%D0%BD%D0%B4%D0%B0%D1%80%D0%B5%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%9E%D0%BB%D1%8C%D0%B3%D0%B0%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&greeting_id=596&_=1400680915302
-in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (133)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (679)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (609)
-2014/05/21 17:55:25 [error] [php] Missing argument 5 for SheduleByDay::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php on line 679 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php:133)
-Stack trace:
-#0 F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\DoctorsController.php(67): SheduleController->getCalendar()
-#1 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): DoctorsController->actionSearch()
-#2 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
-#3 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
-#4 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
-#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
-#6 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
-#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
-#8 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
-#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): DoctorsController->run()
-#10 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
-#11 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
-#12 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%220%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%92%D0%B0%D0%B4%D0%B8%D0%BC%D0%BE%D0%B2%D0%BD%D0%B0%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%91%D0%BE%D0%BD%D0%B4%D0%B0%D1%80%D0%B5%D0%B2%D0%B0%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%D0%9E%D0%BB%D1%8C%D0%B3%D0%B0%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&greeting_id=636&_=1400681030098
-in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (133)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (679)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (609)
-2014/05/21 18:16:15 [error] [php] Missing argument 5 for SheduleByDay::getRows(), called in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php on line 679 and defined (F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php:133)
-Stack trace:
-#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
 #1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
 #2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
 #3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
@@ -325,7 +420,313 @@ Stack trace:
 #9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
 #10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
 #11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
-REQUEST_URI=/index.php/doctors/shedule/view
-in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (133)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (679)
-in F:\Hosts\Celeroctos\moniiag\www\protected\modules\doctors\controllers\SheduleController.php (102)
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400734401150
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:51:05 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-28&status=0&forDoctors=0&forPatients=0&_=1400734401151
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:51:08 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-28&status=0&forDoctors=0&forPatients=0&_=1400734401152
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:51:11 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-27&status=0&forDoctors=0&forPatients=0&_=1400734401153
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:51:53 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400734455264
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:51:58 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400734455265
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:51:59 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400734455266
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 08:52:17 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B68%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=1&forPatients=0&_=1400734455271
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (159)
+2014/05/22 08:52:20 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B68%5D&patients=%5B%5D&date=2014-5-28&status=0&forDoctors=1&forPatients=0&_=1400734455272
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (159)
+2014/05/22 08:52:22 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B68%5D&patients=%5B%5D&date=2014-5-28&status=0&forDoctors=1&forPatients=0&_=1400734455273
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (159)
+2014/05/22 08:52:22 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B68%5D&patients=%5B%5D&date=2014-5-28&status=0&forDoctors=1&forPatients=0&_=1400734455274
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (159)
+2014/05/22 08:52:22 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B68%5D&patients=%5B%5D&date=2014-5-28&status=0&forDoctors=1&forPatients=0&_=1400734455275
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (159)
+2014/05/22 08:52:25 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B68%5D&patients=%5B%5D&date=2014-5-27&status=0&forDoctors=1&forPatients=0&_=1400734455276
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (159)
+2014/05/22 09:01:25 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400735027185
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 09:01:27 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400735027186
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 09:01:28 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400735027187
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 09:01:29 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400735027188
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)
+2014/05/22 09:01:29 [error] [php] Undefined index: groupOp (F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php:54)
+Stack trace:
+#0 F:\Hosts\Celeroctos\moniiag\yii\web\actions\CInlineAction.php(49): SheduleController->actionGetShedule()
+#1 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(308): CInlineAction->runWithParams()
+#2 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#3 F:\Hosts\Celeroctos\moniiag\www\protected\components\Controller.php(33): CFilterChain->run()
+#4 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#5 F:\Hosts\Celeroctos\moniiag\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#6 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(291): CFilterChain->run()
+#7 F:\Hosts\Celeroctos\moniiag\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#8 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(282): SheduleController->run()
+#9 F:\Hosts\Celeroctos\moniiag\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#10 F:\Hosts\Celeroctos\moniiag\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#11 F:\Hosts\Celeroctos\moniiag\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/shedule/getshedule?doctors=%5B%5D&patients=%5B%5D&date=2014-5-22&status=0&forDoctors=0&forPatients=0&_=1400735027189
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\MisActiveRecord.php (54)
+in F:\Hosts\Celeroctos\moniiag\www\protected\models\SheduleByDay.php (247)
+in F:\Hosts\Celeroctos\moniiag\www\protected\modules\reception\controllers\SheduleController.php (191)

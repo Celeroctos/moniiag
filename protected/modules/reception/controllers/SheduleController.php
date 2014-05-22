@@ -62,6 +62,12 @@ class SheduleController extends Controller {
                 continue;
 			}
 
+            if($filter['field'] == 'patient_day' && trim($filter['data']) == '') {
+                $filter['data'] = date('Y-m-j');
+                $filter['op'] = 'gt';
+                continue;
+            }
+
 			if(!is_array($filter['data']) && trim($filter['data']) == '') {
 				unset($filter);
                 continue;
@@ -95,33 +101,103 @@ class SheduleController extends Controller {
 
         if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
             $data = CJSON::decode($_GET['patients']);
+            $filters = array(
+                'groupOn' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    ),
+                    array(
+                        'field' => 'patient_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    )
+                )
+            );
             if(count($data) > 0) {
-                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($data, array(), $_GET['date']);
+                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters);
             } else {
                 $data = CJSON::decode($_GET['doctors']);
-                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit(array(), $data, $_GET['date']);
-                $mediateElements = MediatePatient::model()->getGreetingsPerQrit(array(), $data, $_GET['date']);
+                $filters = array(
+                    'groupOn' => 'AND',
+                    'rules' => array(
+                        array(
+                            'field' => 'patient_day',
+                            'op' => 'eq',
+                            'data' => $_GET['date']
+                        ),
+                        array(
+                            'field' => 'doctors_ids',
+                            'op' => 'in',
+                            'data' => $data
+                        )
+                    )
+                );
+                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters);
             }
         } elseif($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 0) {
             $data = CJSON::decode($_GET['doctors']);
+            $filters = array(
+                'groupOn' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    ),
+                    array(
+                        'field' => 'doctors_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    )
+                )
+            );
+
             if(!$_GET['status']) { // Не отмечен флаг "только опосредованнные"
-                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit(array(), $data, $_GET['date']);
+                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters);
             }
-            $mediateElements = MediatePatient::model()->getGreetingsPerQrit(array(), $data, $_GET['date']);
         } elseif($_GET['forDoctors'] == 0 && $_GET['forPatients'] == 1) {
             $data = CJSON::decode($_GET['patients']);
-            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($data, array(), $_GET['date']);
+            $filters = array(
+                'groupOn' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    ),
+                    array(
+                        'field' => 'patient_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    )
+                )
+            );
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false);
         } else {
             if(!$_GET['status']) { // Не отмечен флаг "только опосредованнные"
-                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit(array(), array(), $_GET['date']);
+                $filters = array(
+                    'groupOn' => 'AND',
+                    'rules' => array(
+                        array(
+                            'field' => 'patient_day',
+                            'op' => 'eq',
+                            'data' => $_GET['date']
+                        )
+                    )
+                );
+                $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false);
             }
-            $mediateElements = MediatePatient::model()->getGreetingsPerQrit(array(), array(), $_GET['date']);
         }
 
         $result = array();
         $num = count($sheduleElements);
-        foreach($mediateElements as $element) {
-           array_push($sheduleElements, $element);
+        if(isset($mediateElements)) {
+            foreach($mediateElements as $element) {
+               array_push($sheduleElements, $element);
+            }
         }
 
         $num = count($sheduleElements);

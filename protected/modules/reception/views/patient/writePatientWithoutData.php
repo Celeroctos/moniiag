@@ -190,6 +190,14 @@
 </div>
 <?php } elseif($calendarType == 1) { ?>
 <h4>Выберите врача и дату</h4>
+<div class="row organizerNav no-display">
+    <button class="btn btn-primary back">
+        <span class="glyphicon glyphicon-arrow-left"></span>Раньше
+    </button>
+    <button class="btn btn-primary forward">
+        Позже<span class="glyphicon glyphicon-arrow-right"></span>
+    </button>
+</div>
 <div class="organizer">
     <div class="sub">
         <div class="headerCont">
@@ -249,7 +257,7 @@
                         <div class="form-group">
                             <label for="phone" class="col-xs-3 control-label required">Контактный телефон <span class="required">*</span></label>
                             <div class="col-xs-9">
-                                <input type="text" name="phone" placeholder="Контактный телефон" class="form-control" id="phone">
+                                <input type="text" name="phone" placeholder="Контактный телефон" class="form-control" id="phone" value="+7">
                             </div>
                         </div>
                     </div>

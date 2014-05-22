@@ -130,7 +130,7 @@ class SheduleByDay extends MisActiveRecord {
  		return $patients->queryAll();
  	}
 	
-    public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0, $filters) {
+    public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0) {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
         $patients = $connection->createCommand()
@@ -219,12 +219,16 @@ class SheduleByDay extends MisActiveRecord {
                         'm_last_name',
                         'm_first_name',
                         'm_middle_name'
+                    ),
+                    'phone' => array(
+                        'contact',
+                        'm_phone'
                     )
                 ), array(
-                    'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio'),
-                    'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio'),
-                    'm' => array('phone'),
-                    'mdp' => array('m_first_name', 'm_middle_name', 'm_last_name', 'patient_fio', 'phone'),
+                    'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio', 'patient_ids'),
+                    'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio', 'doctor_ids'),
+                    'm' => array('contact'),
+                    'mdp' => array('m_first_name', 'm_middle_name', 'm_last_name', 'patient_fio', 'm_phone'),
                     'dsbd' => array('patient_day', 'medcard_id')
                 ), array(
                     'phone' => 'contact',
@@ -236,10 +240,15 @@ class SheduleByDay extends MisActiveRecord {
                     'p_middle_name' => 'middle_name',
                     'm_last_name' => 'last_name',
                     'm_first_name' => 'first_name',
-                    'm_middle_name' => 'middle_name'
+                    'm_middle_name' => 'middle_name',
+                    'patient_ids' => 'id',
+                    'doctor_ids' => 'id',
+                    'm_phone' => 'phone'
                 ));
             }
-
+       //     var_dump($filters);
+//var_dump($greetings->text);
+      //      exit();
             $greetings->order('dsbd.patient_time');
             $greetings->group('dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id, mp.name, m.card_number, mdp.phone, mdp.last_name, mdp.middle_name, mdp.first_name');
 

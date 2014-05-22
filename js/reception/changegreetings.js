@@ -33,8 +33,8 @@ $(document).ready(function() {
                 },
                 {
                     'field' : 'phone',
-                    'op' : 'bw',
-                    'data' : $('#phoneNumber').val()
+                    'op' : 'cn',
+                    'data' : $('#phone').val()
                 },
 				{
 					'field' : 'patient_day',
