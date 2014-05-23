@@ -621,7 +621,7 @@ $(document).ready(function() {
     });
 
     $('#patientDataPopup').on('hidden.bs.modal', function (e) {
-        $('#patientDataPopup').find('#firstName, #lastName, #middleName').val('');
+        $('#patientDataPopup').find('#firstName, #lastName, #middleName, #comment').val('');
         $('#patientDataPopup').find('#phone').val('+7');
     });
 

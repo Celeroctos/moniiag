@@ -33,6 +33,7 @@
 
                     });
                     // Перезагружаем календарь
+                    globalVariables.greetingId = data.greetingId;
                     $('.organizer').trigger('reload');
                 } else {
 

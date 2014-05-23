@@ -55,6 +55,7 @@ $(document).ready(function() {
             console.log('Тест');
         }*/
         console.log('Тест');
+        return false;
         $.ajax({
             'url' : '/index.php/doctors/patient/getindicators',
             'data' : {
