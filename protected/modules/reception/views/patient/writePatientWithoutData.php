@@ -71,7 +71,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="canPregnant" class="col-xs-4 control-label">Может обслуживать беременных</label>
+                <label for="canPregnant" class="col-xs-4 control-label">Беременная</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="canPregnant">
                         <option value="0">Нет</option>
@@ -267,6 +267,12 @@
                             <label for="phone" class="col-xs-3 control-label required">Контактный телефон <span class="required">*</span></label>
                             <div class="col-xs-9">
                                 <input type="text" name="phone" placeholder="Контактный телефон" class="form-control" id="phone" value="+7">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment" class="col-xs-3 control-label">Комментарий</label>
+                            <div class="col-xs-9">
+                                <textarea name="comment" placeholder="Комментарий" class="form-control" id="comment" value=""></textarea>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
     var clickedTimeLi = null;
     var clickedDayLi = null;
     var triggeredByLoad = true; // Это для вызова окна записанного пациента автоматом

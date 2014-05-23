@@ -15,17 +15,17 @@
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuSearchPatient')) { ?>
                     <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewsearch' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/search_patient.png" width="32" height="32" alt="" />Поиск пациента', array('/reception/patient/viewsearch')) ?>
+                        <?php echo CHtml::link('<img src="/images/icons/search_patient.png" width="32" height="32" alt="" />Поиск', array('/reception/patient/viewsearch')) ?>
                     </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAddPatient')) { ?>
                     <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewadd' ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/patient_add.png" width="32" height="32" alt="" />Регистрация пациента', array('/reception/patient/viewadd')) ?>
+                        <?php echo CHtml::link('<img src="/images/icons/patient_add.png" width="32" height="32" alt="" />Регистрация', array('/reception/patient/viewadd')) ?>
                     </li>
                 <? } ?>
                 <?php if(Yii::app()->user->checkAccess('menuPatientWrite')) { ?>
                     <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo') ? 'class="active"' : ''; ?>>
-                        <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись пациента', array('/reception/patient/writepatientstepone')) ?>
+                        <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись', array('/reception/patient/writepatientstepone')) ?>
                     </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuRaspDoctor')) { ?>
@@ -43,12 +43,12 @@
                 <ul class="nav">
                     <?php if(Yii::app()->user->checkAccess('menuPatientWriteCallCenter')) { ?>
                         <li <?php echo $controller == 'patient' && $module == 'reception' && (($action == 'writepatientwithoutdata' || $action == 'writepatientstepone' || $action == 'writepatientsteptwo') && isset($_GET['callcenter']) && $_GET['callcenter'] == 1) ? 'class="active"' : ''; ?>>
-                            <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись пациента', array('/reception/patient/writepatientwithoutdata?callcenter=1')) ?>
+                            <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись', array('/reception/patient/writepatientwithoutdata?callcenter=1')) ?>
                         </li>
                     <?php } ?>
                     <?php if(Yii::app()->user->checkAccess('menuDeleteChangeCallCenter')) { ?>
                         <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'changeordelete' && isset($_GET['callcenter']) && $_GET['callcenter'] == 1) ? 'class="active"' : ''; ?>>
-                            <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Изменение или отмена записи', array('/reception/patient/changeordelete?callcenter=1')) ?>
+                            <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Изменение', array('/reception/patient/changeordelete?callcenter=1')) ?>
                         </li>
                     <?php } ?>
                 </ul>
@@ -62,17 +62,17 @@
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuDoctorMovement')) { ?>
                 <li <?php echo $controller == 'shedule' && $module == 'doctors' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/greeting_patient.png" width="32" height="32" alt="" />Приём пациентов', array('/doctors/shedule/view')) ?>
+                    <?php echo CHtml::link('<img src="/images/icons/greeting_patient.png" width="32" height="32" alt="" />Приём', array('/doctors/shedule/view')) ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuPrintMovements')) { ?>
                 <li <?php echo $controller == 'print' && $module == 'doctors' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/massprint.png" width="32" height="32" alt="" />Массовая печать', array('/doctors/print/massprintview')) ?>
+                    <?php echo CHtml::link('<img src="/images/icons/massprint.png" width="32" height="32" alt="" />Печать', array('/doctors/print/massprintview')) ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuDoctorEmk')) { ?>
                 <li <?php echo $controller == 'patient' && $module == 'doctors' && $action == 'viewsearch' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/view_medcard.png" width="32" height="32" alt="" />Просмотр ЭМК', array('/doctors/patient/viewsearch')) ?>
+                    <?php echo CHtml::link('<img src="/images/icons/view_medcard.png" width="32" height="32" alt="" />ЭМК', array('/doctors/patient/viewsearch')) ?>
                 </li>
                 <?php } ?>
                 <li <?php echo $controller == 'patient' && $module == 'doctors' && $action == 'viewmonitoring' ? 'class="active"' : ''; ?>>
@@ -87,12 +87,12 @@
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuTasuIn')) { ?>
                 <li <?php echo $controller == 'tasu' && $module == 'admin' && $action == 'viewin' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/3.1.jpg" width="32" height="32" alt="" />Загрузка в ТАСУ', array('/admin/tasu/viewin')) ?>
+                    <?php echo CHtml::link('<img src="/images/icons/3.1.jpg" width="32" height="32" alt="" />Экспорт', array('/admin/tasu/viewin')) ?>
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuTasuOut')) { ?>
                 <li <?php echo ($controller == 'tasu' && $module == 'admin' && $action == 'view') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/3.2.jpg" width="32" height="32" alt="" />Загрузка из ТАСУ', array('/admin/tasu/view'))
+                    <?php echo CHtml::link('<img src="/images/icons/3.2.jpg" width="32" height="32" alt="" />Импорт', array('/admin/tasu/view'))
                   //  echo CHtml::link('<img src="/images/icons/3.2.jpg" width="32" height="32" alt="" />Загрузка из ТАСУ', array('/admin/tasu2/view'))
                     ?>
                 </li>
@@ -107,7 +107,7 @@
         <?php } ?>
         <?php if(Yii::app()->user->checkAccess('menuAdmin')) { ?>
         <li <?php echo ($module == 'admin' && $controller != 'tasu') || $module == 'guides' || $module == 'settings' ? 'class="active"' : ''; ?>>
-            <?php echo CHtml::link('<img src="/images/icons/admin.png" width="32" height="32" alt="" />Администрирование', array('#')) ?>
+            <?php echo CHtml::link('<img src="/images/icons/admin.png" width="32" height="32" alt="" />Сервис', array('#')) ?>
             <ul class="nav">
                 <?php if(Yii::app()->user->checkAccess('menuOrgGuides')) { ?>
                 <li <?php echo $module == 'guides' || ($module == 'admin' && $action == 'shedulesettings') ? 'class="active"' : ''; ?>>

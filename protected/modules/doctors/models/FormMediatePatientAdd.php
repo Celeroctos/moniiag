@@ -6,6 +6,7 @@ class FormMediatePatientAdd extends CFormModel
     public $lastName;
     public $middleName;
     public $phone;
+    public $comment;
     public $id;
 
     public function rules()
@@ -15,7 +16,7 @@ class FormMediatePatientAdd extends CFormModel
                 'firstName, lastName, phone', 'required'
             ),
             array(
-                'id, middleName', 'safe'
+                'id, middleName, comment', 'safe'
             )
         );
     }
