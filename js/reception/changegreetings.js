@@ -34,7 +34,7 @@ $(document).ready(function() {
                 {
                     'field' : 'phone',
                     'op' : 'cn',
-                    'data' : $('#phone').val()
+                    'data' : $('#phoneFilter').val()
                 },
 				{
 					'field' : 'patient_day',
