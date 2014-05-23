@@ -80,7 +80,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
+                <nobr>
+                    <input type="submit" class="btn btn-success" id="doctor-search-submit" value="Найти" />
+                    <input type="submit" class="btn btn-success" id="doctor-search-reset" value="Сброс" />
+                </nobr>
             </div>
         </div>
         <div class="col-xs-7">

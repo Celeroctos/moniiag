@@ -409,6 +409,8 @@
         $('.organizer').find('.sheduleCont').removeClass('no-display');
     });
 
+    globalVariables.resetBeginDate = true;
+
     $('.organizerNav .back').on('click', function(e) {
         // Нужно поправить дату начала недели
         var dateParsed = globalVariables.beginDate.split('-');
@@ -423,10 +425,11 @@
 
         console.log(globalVariables.beginDate);
         //return;
-
+        globalVariables.resetBeginDate = false;
         $('.organizer').trigger('reload');
     });
     $('.organizerNav .forward').on('click', function(e) {
+        globalVariables.resetBeginDate = false;
         $('.organizer').trigger('reload');
     });
 });

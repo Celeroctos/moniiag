@@ -655,7 +655,6 @@ $('input[type="number"]').on('keydown', function(e) {
          */
 
         wasLoadedMessages = false;
-
         function refreshIndicators()
         {
             // Если панель удалённых показания свёрнута - выходим из функции
@@ -724,5 +723,13 @@ $('input[type="number"]').on('keydown', function(e) {
 
 
     // <-------------------------------
+
+    $('#doctor-search-reset').click(
+        function ()
+        {
+            $(this).parents('form')[0].reset();
+            return false;
+        }
+    );
 
 });
