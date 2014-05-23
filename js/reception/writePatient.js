@@ -545,6 +545,7 @@ $(document).ready(function() {
                     });
                     // Перезагружаем календарь
                    /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
+                    globalVariables.greetingId = data.greetingId;
                     if($('.organizer').length > 0) {
                         $('.organizer').trigger('reload');
                     } else {
@@ -615,8 +616,11 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
+
                     // Перезагружаем календарь или органайзер
                     if($('.organizer').length > 0) {
+                        globalVariables.greetingId = data.greetingId;
+                        $('.organaizer').trigger('changeTriggerByLoad');
                         $('.organizer').trigger('reload');
                     } else {
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));

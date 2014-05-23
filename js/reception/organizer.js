@@ -9,6 +9,10 @@
         $('#doctor-search-submit').trigger('click');
     });
 
+    $('.organaizer').on('changeTriggerByLoad', function(e) {
+        triggeredByLoad = true;
+    });
+
     $('.organizer').on('writePatientWithCard', function(e, beginTime, year, month, day) {
         var params = {
             month : month + 1,
@@ -34,6 +38,7 @@
                     });
                     // Перезагружаем календарь
                     globalVariables.greetingId = data.greetingId;
+                    $('.organaizer').trigger('changeTriggerByLoad');
                     $('.organizer').trigger('reload');
                 } else {
 
@@ -395,7 +400,7 @@
                     width: '600px'
                 });
 
-                if(globalVariables.hasOwnProperty('greetingId') && counter == 0 && triggeredByLoad) {
+                if(globalVariables.hasOwnProperty('greetingId') && triggeredByLoad && counter == 0) {
                     $(li).trigger('click');
                 }
 
