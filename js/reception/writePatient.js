@@ -1,4 +1,4 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
     
     $('#greetingDate').val((new Date).getFullYear() + '-' + ((new Date).getMonth() + 1) + '-' + (new Date).getDate());
     $('#greetingDate').trigger('change');
@@ -560,7 +560,8 @@ $(document).ready(function() {
 
                     });
                     // Перезагружаем календарь
-                    /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
+                   /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
+                    globalVariables.greetingId = data.greetingId;
                     if($('.organizer').length > 0) {
                         $('.organizer').trigger('reload');
                     } else {
@@ -662,8 +663,11 @@ $(document).ready(function() {
                     $('#successPopup').modal({
 
                     });
+
                     // Перезагружаем календарь или органайзер
                     if($('.organizer').length > 0) {
+                        globalVariables.greetingId = data.greetingId;
+                        $('.organaizer').trigger('changeTriggerByLoad');
                         $('.organizer').trigger('reload');
                     } else {
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
@@ -677,7 +681,7 @@ $(document).ready(function() {
     });
 
     $('#patientDataPopup').on('hidden.bs.modal', function (e) {
-        $('#patientDataPopup').find('#firstName, #lastName, #middleName').val('');
+        $('#patientDataPopup').find('#firstName, #lastName, #middleName, #comment').val('');
         $('#patientDataPopup').find('#phone').val('+7');
     });
 

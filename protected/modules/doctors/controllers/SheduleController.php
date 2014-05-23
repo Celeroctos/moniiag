@@ -859,7 +859,8 @@ class SheduleController extends Controller {
 		}		
 		
         echo CJSON::encode(array('success' => 'true',
-                                              'data' => 'Пациент '.$writedOms->last_name.' '.$writedOms->first_name.' '.$writedOms->middle_name.' записан на приём к специалисту '.$writedDoctor->last_name.' '.$writedDoctor->first_name.' '.$writedDoctor->middle_name.' на '.$_GET['day'].'.'.$_GET['month'].' '.$_GET['year'].' '.$_GET['time'].'.'));
+                                 'greetingId' => $sheduleElement->id,
+                                 'data' => 'Пациент '.$writedOms->last_name.' '.$writedOms->first_name.' '.$writedOms->middle_name.' записан на приём к специалисту '.$writedDoctor->last_name.' '.$writedDoctor->first_name.' '.$writedDoctor->middle_name.' на '.$_GET['day'].'.'.$_GET['month'].' '.$_GET['year'].' '.$_GET['time'].'.'));
     }
     // Отписать пациента от приёма
     public function actionUnwritePatient() {

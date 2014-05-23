@@ -9,6 +9,10 @@
         $('#doctor-search-submit').trigger('click');
     });
 
+    $('.organaizer').on('changeTriggerByLoad', function(e) {
+        triggeredByLoad = true;
+    });
+
     $('.organizer').on('writePatientWithCard', function(e, beginTime, year, month, day) {
         var params = {
             month : month + 1,
@@ -33,6 +37,8 @@
 
                     });
                     // Перезагружаем календарь
+                    globalVariables.greetingId = data.greetingId;
+                    $('.organaizer').trigger('changeTriggerByLoad');
                     $('.organizer').trigger('reload');
                 } else {
 
@@ -100,7 +106,7 @@
         });
 
         var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
-            marginLeft: '340px',
+            marginLeft: '330px',
             position: 'absolute',
             cursor: 'pointer'
         });
@@ -113,7 +119,7 @@
         $(li).popover('show');
         $(li).find('.popover span.glyphicon').remove();
         $(li).find('.popover').css({
-            width: '480px'
+            minWidth: '350px'
         }).append(span);
     });
 
@@ -362,13 +368,15 @@
                                                 $(span).on('click', function(e) {
                                                     $(li).popover('hide');
                                                     e.stopPropagation();
+                                                    return false;
                                                 });
 
                                                 $(li).find('.popover span.glyphicon').remove();
                                                 $(li).find('.popover').css({
                                                     'cursor' : 'default',
                                                     'width' : '500px',
-                                                    'max-width' : '500px'
+                                                    'max-width' : '500px',
+                                                    'min-width' : '500px'
                                                 }).append(span);
 
                                                 $(li).on('click', '.popover', function(e) {
@@ -394,7 +402,7 @@
                     width: '600px'
                 });
 
-                if(globalVariables.hasOwnProperty('greetingId') && counter == 0 && triggeredByLoad) {
+                if(globalVariables.hasOwnProperty('greetingId') && triggeredByLoad && counter == 0) {
                     $(li).trigger('click');
                 }
 
