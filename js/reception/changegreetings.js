@@ -177,9 +177,11 @@ $(document).ready(function() {
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == 'true') {
-                    $(link).parents('tr').fadeOut(500, function() {
-                        $(link).parents('tr').remove();
-                    });
+                    if(window.confirm('Вы действительно хотите отменить приём?')) {
+                        $(link).parents('tr').fadeOut(500, function() {
+                            $(link).parents('tr').remove();
+                        });
+                    }
                 } else {
 
                 }
@@ -200,5 +202,11 @@ $(document).ready(function() {
         }
 
         location.href = 'http://' + location.host + url;
+    });
+
+    $('#doctors-search-greetings').on('keydown', function(e) {
+        if(e.keyCode == 13) {
+            $('#greetings-search-submit').trigger('click');
+        }
     });
 });

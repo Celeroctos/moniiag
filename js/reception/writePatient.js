@@ -544,7 +544,12 @@ $(document).ready(function() {
 
                     });
                     // Перезагружаем календарь
-                    loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
+                   /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
+                    if($('.organizer').length > 0) {
+                        $('.organizer').trigger('reload');
+                    } else {
+                        loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
+                    }
                 } else {
 
                 }
@@ -764,7 +769,14 @@ $(document).ready(function() {
     }
 
     $('#submitPatient').on('click', function(e) {
-        alert("!");
+        $('#patientDataPopup').modal('hide');
         writePatient();
+    });
+
+    $('#patient-search-form').on('keydown', function(e) {
+        if(e.keyCode == 13) {
+            $('#patient-search-submit').trigger('click');
+            return false;
+        }
     });
 });
