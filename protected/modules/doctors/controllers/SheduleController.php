@@ -503,19 +503,28 @@ class SheduleController extends Controller {
             // Здесь проверяем день, месяц, год..
             if(isset($_GET['year'])) {
                 $this->currentYear = $_GET['year'];
+            } elseif($startYear !== false) {
+                $this->currentYear = $startYear;
             } else {
                 $this->currentYear = date('Y');
             }
+
             if(isset($_GET['month'])) {
                 $this->currentMonth = $_GET['month'];
+            } elseif($startMonth !== false) {
+                $this->currentMonth = $startMonth;
             } else {
                 $this->currentMonth = date('n');
             }
+
             if(isset($_GET['day'])) {
                 $this->currentDay = $_GET['day'];
+            } elseif($startDay !== false) {
+                $this->currentDay = $startDay;
             } else {
                 $this->currentDay = date('j');
             }
+
             // Расписание не установлено
             if(count($shedule) == 0 && $breakByErrors) {
                 echo CJSON::encode(array('success' => 'false',
@@ -595,6 +604,7 @@ class SheduleController extends Controller {
                 $resultArr[(string)$i - 1]['weekday'] = $weekday;
                 $expsIndex = array_search($formatDate, $exps);
                 $usualIndex = array_search($weekday, $usual);
+
                 if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($i, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
                     $resultArr[(string)$i - 1]['worked'] = true;
@@ -613,7 +623,7 @@ class SheduleController extends Controller {
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
-                    $timeStampCurrent = mktime(0, 0, 0);
+                        $timeStampCurrent = mktime(0, 0, 0);
                         if(strtotime($formatDate) >= $timeStampCurrent) {
                         $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day);
                         $resultArr[(string)$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
