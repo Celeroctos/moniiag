@@ -541,6 +541,7 @@
                 mode: 0, // Обычная запись
                 time: globalVariables.patientTime,
                 card_number: globalVariables.cardNumber,
+                greeting_type: $('#greetingType').val(),
                 comment: $('#comment').val()
             };
 
@@ -641,6 +642,7 @@
             'lastName' : $('#lastName').val(),
             'middleName' : $('#middleName').val(),
             'comment' : $('#comment').val(),
+            'greeting_type': $('#greetingType').val(),
             'phone' :  $('#phone').val(),
             'month' : globalVariables.month + 1,
             'year' : globalVariables.year,
