@@ -165,29 +165,29 @@ $(document).ready(function() {
 
 
     $('#greetingsSearchResult').on('click', '.cancelGreeting', function(e) {
-        var link = $(this);
-        var params = {
-            id : $(this).attr('href').substr(1)
-        };
-        $.ajax({
-            'url' : '/index.php/doctors/shedule/unwritepatient',
-            'data' : params,
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == 'true') {
-                    if(window.confirm('Вы действительно хотите отменить приём?')) {
+        if(window.confirm('Вы действительно хотите отменить приём?')) {
+            var link = $(this);
+            var params = {
+                id : $(this).attr('href').substr(1)
+            };
+            $.ajax({
+                'url' : '/index.php/doctors/shedule/unwritepatient',
+                'data' : params,
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == 'true') {
                         $(link).parents('tr').fadeOut(500, function() {
                             $(link).parents('tr').remove();
                         });
-                    }
-                } else {
+                    } else {
 
+                    }
+                    return;
                 }
-                return;
-            }
-        });
+            });
+        }
     });
 
     $('#greetingsSearchResult').on('click', '.editGreeting', function(e) {
