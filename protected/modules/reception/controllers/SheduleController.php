@@ -64,7 +64,7 @@ class SheduleController extends Controller {
 
             if($filter['field'] == 'patient_day' && trim($filter['data']) == '') {
                 $filter['data'] = date('Y-m-j');
-                $filter['op'] = 'gt';
+                $filter['op'] = 'ge';
                 continue;
             }
 

@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="post" class="col-xs-4 control-label">Должность</label>
+                <label for="post" class="col-xs-4 control-label">Специальность</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="post">
                         <?php foreach($postsList as $id => $name) { ?>
@@ -175,7 +175,7 @@
                         ФИО врача
                     </td>
                     <td>
-                        Должность
+                        Специальность
                     </td>
                     <td>
                         Отделение
@@ -262,6 +262,14 @@
     </div>
     <?php }  elseif($calendarType == 1) { ?>
         <h4>Выберите врача и дату</h4>
+        <div class="row organizerNav no-display">
+            <button class="btn btn-primary back">
+                <span class="glyphicon glyphicon-arrow-left"></span>Раньше
+            </button>
+            <button class="btn btn-primary forward">
+                Позже<span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </div>
         <div class="organizer">
             <div class="sub">
                 <div class="headerCont">

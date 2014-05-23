@@ -6,6 +6,8 @@ class DoctorsController extends Controller {
 
     // Экшн поиска врача
     public function actionSearch() {
+        //var_dump($_POST);
+        //exit();
         $filters = $this->checkFilters();
         $rows = $_GET['rows'];
 	    $page = $_GET['page'];
@@ -21,7 +23,7 @@ class DoctorsController extends Controller {
             }
         }
 
-        if(isset($_GET['begiDate'])) {
+        if(isset($_GET['beginDate'])) {
             $this->greetingDate = $_GET['beginDate'];
         }
 

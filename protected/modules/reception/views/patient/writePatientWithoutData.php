@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="post" class="col-xs-4 control-label">Должность</label>
+                <label for="post" class="col-xs-4 control-label">Специальность</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="post">
                         <?php foreach($postsList as $id => $name) { ?>
@@ -111,7 +111,7 @@
                     ФИО врача
                 </td>
                 <td>
-                    Должность
+                    Специальность
                 </td>
                 <td>
                     Отделение
