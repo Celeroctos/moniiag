@@ -76,6 +76,8 @@
             },
             container: $(li),
             content: function() {
+                var commentBlock = $('<div>').html(patientData.comment);
+                var unwriteBlock = $('<div>');
                 var unwriteLink = $('<a>').text('Отписать пациента');
                 $(unwriteLink).on('click', function() {
                     var params = {
@@ -101,7 +103,8 @@
                         }
                     });
                 });
-                return unwriteLink;
+                $(commentBlock).append($(unwriteBlock).append(unwriteLink));
+                return commentBlock;
             }
         });
 
@@ -404,6 +407,7 @@
 
                 if(globalVariables.hasOwnProperty('greetingId') && triggeredByLoad && counter == 0) {
                     $(li).trigger('click');
+                    triggeredByLoad = false;
                 }
 
                 counter++;

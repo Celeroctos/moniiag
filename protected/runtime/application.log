@@ -1,128 +1,84 @@
-﻿2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:45:51 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "SheduleByDay.greeting_type".' in Z:\home\mis.my\yii\base\CComponent.php:173
+Stack trace:
+#0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(161): CComponent->__set('greeting_type', '1')
+#1 Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php(833): CActiveRecord->__set('greeting_type', '1')
+#2 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionWritePatient()
+#3 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#6 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('writepatient')
+#11 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#12 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/doctors/shedule/writepatient?firstName=%D0%A2%D0%B5%D1%81%D1%82&lastName=%D0%A2%D0%B5%D1%81%D1%82&middleName=&comment=&greeting_type=0&phone=%2B7-888-8888888&month=5&year=2014&day=26&doctor_id=48&mode=1&time=14%3A00&_=1400859866591
+HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientwithoutdata?callcenter=1
+---
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:55:47 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:46:54 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:21 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 18:56:56 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (819)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
-in Z:\home\mis.my\www\protected\components\Controller.php (33)
-in Z:\home\mis.my\www\index.php (13)
-2014/05/23 19:07:05 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
-in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (824)
+2014/05/23 19:48:05 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\SheduleController.php (847)
 in Z:\home\mis.my\www\protected\components\Controller.php (33)
 in Z:\home\mis.my\www\index.php (13)

@@ -503,19 +503,28 @@ class SheduleController extends Controller {
             // Здесь проверяем день, месяц, год..
             if(isset($_GET['year'])) {
                 $this->currentYear = $_GET['year'];
+            } elseif($startYear !== false) {
+                $this->currentYear = $startYear;
             } else {
                 $this->currentYear = date('Y');
             }
+
             if(isset($_GET['month'])) {
                 $this->currentMonth = $_GET['month'];
+            } elseif($startMonth !== false) {
+                $this->currentMonth = $startMonth;
             } else {
                 $this->currentMonth = date('n');
             }
+
             if(isset($_GET['day'])) {
                 $this->currentDay = $_GET['day'];
+            } elseif($startDay !== false) {
+                $this->currentDay = $startDay;
             } else {
                 $this->currentDay = date('j');
             }
+
             // Расписание не установлено
             if(count($shedule) == 0 && $breakByErrors) {
                 echo CJSON::encode(array('success' => 'false',
@@ -574,74 +583,84 @@ class SheduleController extends Controller {
             // Теперь смотрим по дням и составляем календарь
             $resultArr = array();
             for($i = $dayBegin; $i <= $dayEnd; $i++) {
-                $resultArr[$i - 1] = array();
+                $resultArr[(string)$i - 1] = array();
 
                 // Ведущие нули
+                $perMonth = date('t', strtotime($this->currentYear.'-'.($this->currentMonth > 9 ? $this->currentMonth : '0'.$this->currentMonth)));
+
+                if(($i > $perMonth)) {
+                    $day = ($i - $perMonth) < 10 ? '0'.($i - $perMonth) : ($i - $perMonth);
+                    $this->currentMonth++;
+                } else {
+                    $day = $i < 10 ? '0'.$i : $i;
+                }
+
                 $month = $this->currentMonth < 10 ? '0'.$this->currentMonth : $this->currentMonth;
-                $day = $i < 10 ? '0'.$i : $i;
 
                 $formatDate =  $this->currentYear.'-'.$month.'-'.$day;
                 $weekday = date('w', strtotime($formatDate));
+
                 // 0 -> 0.. 1 -> 1..
-                $resultArr[$i - 1]['weekday'] = $weekday;
+                $resultArr[(string)$i - 1]['weekday'] = $weekday;
                 $expsIndex = array_search($formatDate, $exps);
                 $usualIndex = array_search($weekday, $usual);
+
                 if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($i, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
-                    $resultArr[$i - 1]['worked'] = true;
-                    $resultArr[$i - 1]['restDay'] = false;
+                    $resultArr[(string)$i - 1]['worked'] = true;
+                    $resultArr[(string)$i - 1]['restDay'] = false;
 
                     // Начало и конец смены
                     if($expsIndex !== false) {
-                        $resultArr[$i - 1]['beginTime'] = $expsData[$expsIndex]['time_begin'];
-                        $resultArr[$i - 1]['endTime'] = $expsData[$expsIndex]['time_end'];
+                        $resultArr[(string)$i - 1]['beginTime'] = $expsData[$expsIndex]['time_begin'];
+                        $resultArr[(string)$i - 1]['endTime'] = $expsData[$expsIndex]['time_end'];
                     }
 
                     if($usualIndex !== false) {
-                        $resultArr[$i - 1]['beginTime'] = $usualData[$usualIndex]['time_begin'];
-                        $resultArr[$i - 1]['endTime'] = $usualData[$usualIndex]['time_end'];
+                        $resultArr[(string)$i - 1]['beginTime'] = $usualData[$usualIndex]['time_begin'];
+                        $resultArr[(string)$i - 1]['endTime'] = $usualData[$usualIndex]['time_end'];
                     }
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
-                    $timeStampCurrent = mktime(0, 0, 0);
+                        $timeStampCurrent = mktime(0, 0, 0);
                         if(strtotime($formatDate) >= $timeStampCurrent) {
                         $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day);
-                        $resultArr[$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
+                        $resultArr[(string)$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
                             return $element['id'] != null;
                         }));
                         // Если мест реально меньше, чем квота (у врача укороченная смена, либо текущий день и середина смены, скажем)
                         if($numPatients['numPlaces'] < $settings['quote']) {
-                            $resultArr[$i - 1]['quote'] = $numPatients['numPlaces'];
+                            $resultArr[(string)$i - 1]['quote'] = $numPatients['numPlaces'];
                         } else {
-                            $resultArr[$i - 1]['quote'] = $settings['quote'];
+                            $resultArr[(string)$i - 1]['quote'] = $settings['quote'];
                         }
                     } else {
-                        $resultArr[$i - 1]['quote'] = $settings['quote'];
-                        $resultArr[$i - 1]['numPatients'] = 0;
+                        $resultArr[(string)$i - 1]['quote'] = $settings['quote'];
+                        $resultArr[(string)$i - 1]['numPatients'] = 0;
                     }
                     // Квота изменяется вручную: возможно, врач просто не успеет за смену принять квоту человек
                     // Если врач работает в этот день, надо посмотреть, не прошедшая ли дата. На прошедшие даты записывать не надо.
                     $timeStampPerIteration = mktime(0, 0, 0, $month, $day, $this->currentYear);
                     // Если время итерируемое больше, то на такие числа записывать можно
                     if($timeStampCurrent <= $timeStampPerIteration) {
-                        $resultArr[$i - 1]['allowForWrite'] = 1;
+                        $resultArr[(string)$i - 1]['allowForWrite'] = 1;
                     } else {
-                        $resultArr[$i - 1]['allowForWrite'] = 0;
+                        $resultArr[(string)$i - 1]['allowForWrite'] = 0;
                     }
                 } else {
                     // Если это выходной, его тоже нужно помечать
                     if(array_search($weekday, $restDaysArr) !== false || array_search($i, $restDaysArrLonely) !== false) {
-                        $resultArr[$i - 1]['restDay'] = true;
+                        $resultArr[(string)$i - 1]['restDay'] = true;
                     } else {
-                        $resultArr[$i - 1]['restDay'] = false;
+                        $resultArr[(string)$i - 1]['restDay'] = false;
                     }
-                    $resultArr[$i - 1]['worked'] = false;
-                    $resultArr[$i - 1]['numPatients'] = 0;
-                    $resultArr[$i - 1]['quote'] = 0;
-                    $resultArr[$i - 1]['allowForWrite'] = 0;
+                    $resultArr[(string)$i - 1]['worked'] = false;
+                    $resultArr[(string)$i - 1]['numPatients'] = 0;
+                    $resultArr[(string)$i - 1]['quote'] = 0;
+                    $resultArr[(string)$i - 1]['allowForWrite'] = 0;
                 }
-                $resultArr[$i - 1]['day'] = $i;
+                $resultArr[(string)$i - 1]['day'] = $i;
             }
             return $resultArr;
 			
@@ -745,7 +764,8 @@ class SheduleController extends Controller {
                             'is_accepted' =>$patient['is_accepted'],
                             'is_beginned' =>$patient['is_beginned'],
                             'medcard_id' => $patient['card_number'],
-                            'patient_time' => date('G:i', $i)
+                            'patient_time' => date('G:i', $i),
+                            'comment' => $patient['comment']
 							);
 						$isFound = true;
 						$numRealPatients++;
@@ -787,6 +807,9 @@ class SheduleController extends Controller {
         //exit();
 
         $greetingType = $_GET['greeting_type'] ;
+
+        if ($greetingType=='0')
+            $greetingType = '1';
 
         if(!Yii::app()->request->isAjaxRequest) {
             echo "Error!";
