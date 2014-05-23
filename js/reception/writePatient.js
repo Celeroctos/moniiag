@@ -231,10 +231,12 @@ $(document).ready(function() {
             $('#lastName, #fio').prop('disabled', true);
         }
 
-        if(globalVariables.hasOwnProperty('beginDate') && globalVariables.beginDate != null) {
+
+        if(globalVariables.hasOwnProperty('beginDate') && globalVariables.beginDate != null && !(globalVariables.resetBeginDate)) {
             data.beginDate = globalVariables.beginDate;
         }
 
+        globalVariables.resetBeginDate = true;
         // Делаем поиск
         $.ajax({
             'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
@@ -272,11 +274,18 @@ $(document).ready(function() {
         });
     }
     
-    $('#doctor-search-submit').click(function(e) {
+    /*$('#doctor-search-submit').click(function(e) {
 		$(this).trigger('begin');
         updateDoctorsList();
         return false;
-    });
+    });*/
+
+    $(document).on('click', '#doctor-search-submit', function(e) {
+        $(this).trigger('begin');
+        updateDoctorsList();
+        return false;
+     });
+
 
 
     // Отобразить таблицу тех, кто с картами
