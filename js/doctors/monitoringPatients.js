@@ -144,16 +144,49 @@ $(document).ready(function() {
 
 
             },
+            seriesDefaults: {
+               // showMarker:false,
+                pointLabels: { show:true }
+            },
+          /*  series:
+            [
+                {
+                    // Don't show a line, just show markers.
+                    // Make the markers 7 pixels with an 'x' style
+                    //showLine:false,
+                    markerOptions: { size: 7, style:"x" }
+                }
+            ],*/
             axes: {
                 xaxis:{
                     renderer: $.jqplot.DateAxisRenderer,
-                    pad: 0
+                    pad: 0,
+                    tickOptions:{
+                        formatString:'%b&nbsp;%#d'
+                    }/*,
+                    labelOptions: {
+                        fontSize: '24pt'
+                    }*/
                 },
                 yaxis:
                 {
                     min: (parseFloat(minVal)-1),
-                    max: (parseFloat(maxVal)+1)
+                    max: (parseFloat(maxVal)+1),
+                    tickOptions:{
+                        formatString:'%.2f'
+                    }/*,
+                    labelOptions: {
+                        fontSize: '24pt'
+                    }*/
                 }
+            },
+            highlighter: {
+                show: false
+            },
+            cursor:
+            {
+               // show:true,
+               // tooltipLocation:'sw'
             }
         });
     }

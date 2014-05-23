@@ -262,6 +262,14 @@
     </div>
     <?php }  elseif($calendarType == 1) { ?>
         <h4>Выберите врача и дату</h4>
+        <div class="row organizerNav no-display">
+            <button class="btn btn-primary back">
+                <span class="glyphicon glyphicon-arrow-left"></span>Раньше
+            </button>
+            <button class="btn btn-primary forward">
+                Позже<span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </div>
         <div class="organizer">
             <div class="sub">
                 <div class="headerCont">

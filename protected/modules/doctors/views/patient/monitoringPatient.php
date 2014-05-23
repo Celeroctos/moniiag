@@ -11,6 +11,12 @@
 <script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.dateAxisRenderer.min.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.canvasTextRenderer.js"></script>
 <script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.cursor.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.highlighter.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.pointLabels.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.barRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+
 <!-- -->
 
 <h4>Мониторинг</h4>
@@ -21,7 +27,7 @@
 
      </div>
 <div class="col-xs-6">
-    <div id="chart2">
+    <div id="chart2" style="font-size:18px;">
 
     </div>
 </div>

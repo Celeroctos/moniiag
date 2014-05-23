@@ -56,10 +56,10 @@
     </div>
 </div>
 
-<!--<div class ="buttonUpContainer">
+<div class ="buttonUpContainer">
 		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span></nobr>
 </div>
-<div class="consilium-cont">
+<!--<div class="consilium-cont">
     <div class="panel-arrow">
         <span class="glyphicon glyphicon-expand"></span>
     </div>
