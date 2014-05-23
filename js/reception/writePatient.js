@@ -755,7 +755,7 @@ $(document).ready(function() {
     }
 
     $('#submitPatient').on('click', function(e) {
-        alert("!");
+        //alert("!");
         writePatient();
     });
 });

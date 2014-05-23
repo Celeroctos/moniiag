@@ -180,8 +180,8 @@ class SheduleByDay extends MisActiveRecord {
     // Получить список приёмов по критериям
     public function getGreetingsPerQrit($filters, $start = false, $limit = false) {
         try {
-            var_dump($filters);
-            exit();
+            //var_dump($filters);
+            //exit();
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
                 ->selectDistinct('dsbd.*,

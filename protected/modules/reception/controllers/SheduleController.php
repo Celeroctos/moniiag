@@ -102,7 +102,7 @@ class SheduleController extends Controller {
         if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
             $data = CJSON::decode($_GET['patients']);
             $filters = array(
-                'groupOn' => 'AND',
+                'groupOp' => 'AND',
                 'rules' => array(
                     array(
                         'field' => 'patient_day',
@@ -121,7 +121,7 @@ class SheduleController extends Controller {
             } else {
                 $data = CJSON::decode($_GET['doctors']);
                 $filters = array(
-                    'groupOn' => 'AND',
+                    'groupOp' => 'AND',
                     'rules' => array(
                         array(
                             'field' => 'patient_day',
@@ -140,7 +140,7 @@ class SheduleController extends Controller {
         } elseif($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 0) {
             $data = CJSON::decode($_GET['doctors']);
             $filters = array(
-                'groupOn' => 'AND',
+                'groupOp' => 'AND',
                 'rules' => array(
                     array(
                         'field' => 'patient_day',
@@ -161,7 +161,7 @@ class SheduleController extends Controller {
         } elseif($_GET['forDoctors'] == 0 && $_GET['forPatients'] == 1) {
             $data = CJSON::decode($_GET['patients']);
             $filters = array(
-                'groupOn' => 'AND',
+                'groupOp' => 'AND',
                 'rules' => array(
                     array(
                         'field' => 'patient_day',
@@ -179,7 +179,7 @@ class SheduleController extends Controller {
         } else {
             if(!$_GET['status']) { // Не отмечен флаг "только опосредованнные"
                 $filters = array(
-                    'groupOn' => 'AND',
+                    'groupOp' => 'AND',
                     'rules' => array(
                         array(
                             'field' => 'patient_day',

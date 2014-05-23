@@ -225,7 +225,7 @@ $(document).ready(function() {
 				
                 if(!dayData.worked) {
                     if(dayData.restDay != false) {
-                        $(li).addClass('weekday');
+                        $(li).addClass('not-aviable');
                     } else {
                         if(!dayData.allowForWrite) {
                             $(li).addClass('not-aviable');
