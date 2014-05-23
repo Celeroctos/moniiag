@@ -508,7 +508,21 @@ $(document).ready(function() {
         writePatient();
     });
 
-    function writePatient() {
+
+    $('#deleteOldGreeting').on('click',
+        function()
+        {
+            greetingId = globalVariables.greetingId;
+            unWritePatient(greetingId);
+        }
+
+    );
+
+
+    function writePatientQuery()
+    {
+
+
         if(!globalVariables.hasOwnProperty('withWindow')) {
             globalVariables.patientTime = $(this).attr('href').substr(1);
         }
@@ -529,6 +543,8 @@ $(document).ready(function() {
                 card_number: globalVariables.cardNumber,
                 comment: $('#comment').val()
             };
+
+
         }
 
         $.ajax({
@@ -544,7 +560,7 @@ $(document).ready(function() {
 
                     });
                     // Перезагружаем календарь
-                   /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
+                    /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
                     if($('.organizer').length > 0) {
                         $('.organizer').trigger('reload');
                     } else {
@@ -556,12 +572,44 @@ $(document).ready(function() {
                 return;
             }
         });
+    }
+
+
+    $('#confirmPopup').on('hidden.bs.modal', function (e)
+    {
+        //
+        writePatientQuery();
+    }
+    );
+
+
+    function writePatient() {
+        if (globalVariables.greetingId!=undefined)
+        {
+
+
+           $('#confirmPopup').modal({ });
+
+        }
+        else
+        {
+            writePatientQuery();
+        }
+
+
         return false;
     }
 
     $(document).on('click', '.unwrite-link', function(e) {
+        id =  $(this).attr('href').substr(1);
+        unWritePatient(id);
+        return false;
+    });
+
+    function unWritePatient(greetingId)
+    {
         var params = {
-           id : $(this).attr('href').substr(1)
+            id : greetingId
         };
         $.ajax({
             'url' : '/index.php/doctors/shedule/unwritepatient',
@@ -583,8 +631,7 @@ $(document).ready(function() {
                 return;
             }
         });
-        return false;
-    });
+    }
 
     // Подтвердить данные для опосредованного пациента
     $('#submitReservData').on('click', function() {
