@@ -7,6 +7,14 @@
         prevBeginDate(false);
     });
 
+    $('.organizer').on('resetClickedTime', function(e) {
+        clickedTimeLi = null;
+    });
+
+    $('.organizer').on('resetClickedDay', function(e) {
+        clickedDayLi = null;
+    });
+
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
         //  $(this).find('.sheduleCont').addClass('no-display');
@@ -45,6 +53,8 @@
                     prevBeginDate();
                     $('.organaizer').trigger('changeTriggerByLoad');
                     $('.organizer').trigger('reload');
+                    $('.organizer').trigger('resetClickedTime');
+                    $('.organizer').trigger('resetClickedDay');
                 } else {
 
                 }
@@ -81,7 +91,10 @@
             },
             container: $(li),
             content: function() {
-                var commentBlock = $('<div>').html(patientData.comment);
+                if(patientData.comment == null) {
+                    patientData.comment = '';
+                }
+                var commentBlock = $('<div>').html('<span class="text-danger">Комментарий: </span>' + patientData.comment);
                 var unwriteBlock = $('<div>');
                 var unwriteLink = $('<a>').text('Отписать пациента');
                 $(unwriteLink).on('click', function() {
@@ -259,7 +272,7 @@
                         // Рабочие дни
                         var beginTime = dayData.beginTime.substr(0, dayData.beginTime.lastIndexOf(':'));
                         var endTime = dayData.endTime.substr(0, dayData.endTime.lastIndexOf(':'));
-                        $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + dayData.secondaryGreetings);
+                        $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + (parseInt(dayData.secondaryGreetings) + parseInt(dayData.primaryGreetings)));
 
                         if(dayData.numPatients == 0) {
                             $(li).addClass('empty');
@@ -397,6 +410,10 @@
                                                 $(li).on('click', '.popover', function(e) {
                                                     return false;
                                                 });
+
+                                                $('body, html').animate({
+                                                    scrollTop: $(li).find('.popover').css('top')
+                                                }, 600);
                                             }
                                         } else {
 
