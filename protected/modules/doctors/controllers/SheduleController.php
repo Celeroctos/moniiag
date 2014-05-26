@@ -742,10 +742,8 @@ class SheduleController extends Controller {
 			$today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
             $primaryGreetings = 0;
             $secondaryGreetings = 0;
-			//var_dump($timestampBegin);
-			//exit();
+
 			for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
-				//var_dump("!");
 				if($currentTimestamp >= $i && $today) {
 					continue;
 				}
@@ -762,6 +760,7 @@ class SheduleController extends Controller {
 								$patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
 							}
 						}
+
 						$result[] = array(
 							'timeBegin' => date('G:i', $i),
 							'timeEnd' => date('G:i', $i + $increment),
@@ -809,7 +808,7 @@ class SheduleController extends Controller {
 			$result = array();
 			$numRealPatients = 0;
 		}
-		
+
 		return array(
                 'result' => $result,
                 'allReserved' => $numRealPatients == count($result),

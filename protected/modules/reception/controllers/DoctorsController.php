@@ -106,6 +106,21 @@ class DoctorsController extends Controller {
             $answer['restDays'] = $restDaysArr;
         }
 
+        // Вынимаем настройки для предельных времён: беременности и первичного приёма
+        $primaryGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'primaryGreetingsLimit'));
+        $pregnantGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'pregnantGreetingsLimit'));
+        if($primaryGreetingsLimit != null) {
+            $answer['primaryGreetingsLimit'] = $primaryGreetingsLimit->value;
+        } else {
+            $answer['primaryGreetingsLimit'] = null;
+        }
+
+        if($pregnantGreetingsLimit != null) {
+            $answer['pregnantGreetingsLimit'] = $pregnantGreetingsLimit->value;
+        } else {
+            $answer['pregnantGreetingsLimit'] = null;
+        }
+
         echo CJSON::encode($answer);
     }
     

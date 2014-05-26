@@ -188,7 +188,7 @@
                 </li>
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuAdminDoctorRasp')) { ?>
-                <li <?php echo $controller == 'shedule' && $module == 'admin' ? 'class="active"' : ''; ?>>
+                <li <?php echo $controller == 'shedule' && $module == 'admin' && $action == 'view' ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('Настройка расписания врачей', array('/admin/shedule/view')) ?>
                 </li>
                 <?php } ?>
