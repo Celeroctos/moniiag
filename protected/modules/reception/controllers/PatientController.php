@@ -187,6 +187,9 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
             $model->insurance = $_POST['FormPatientAdd']['insurance'];
+            // Если телефон равен +7, значит его не ввели
+            if ($model->contact=="+7")
+                $model->contact = "";
             if($model->validate()) {
                 $this->checkUniqueOms($model);
                 $this->checkUniqueMedcard($model);
@@ -255,6 +258,9 @@ class PatientController extends Controller {
         $model = new FormPatientWithCardAdd();
         if(isset($_POST['FormPatientWithCardAdd'])) {
             $model->attributes = $_POST['FormPatientWithCardAdd'];
+            // Проверим - если поле "contact" равно "+7", то занулим его
+            if ($model->contact == "+7")
+                $model->contact = "";
             if($model->validate()) {
                 $oms = Oms::model()->findByPk($model->policy);
                 // Проверим, нет ли карты с таким годом и с таким пациентом

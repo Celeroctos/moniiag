@@ -679,6 +679,16 @@
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
                     }
                 } else {
+                    $('#errorPopup .modal-body .row').empty();
+                    for(var i in data.errors) {
+                        for(var j = 0; j < data.errors[i].length; j++) {
+                            $('#errorPopup .modal-body .row').append("<p>" + data.errors[i][j] + "</p>")
+                        }
+                    }
+
+                    $('#errorPopup').modal({
+
+                    });
 
                 }
                 return;
