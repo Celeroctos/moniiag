@@ -635,9 +635,13 @@ class SheduleController extends Controller {
                         } else {
                             $resultArr[(string)$i - 1]['quote'] = $settings['quote'];
                         }
+                        $resultArr[(string)$i - 1]['primaryGreetings'] = $numPatients['primaryGreetings'];
+                        $resultArr[(string)$i - 1]['secondaryGreetings'] = $numPatients['secondaryGreetings'];
                     } else {
                         $resultArr[(string)$i - 1]['quote'] = $settings['quote'];
                         $resultArr[(string)$i - 1]['numPatients'] = 0;
+                        $resultArr[(string)$i - 1]['primaryGreetings'] = 0;
+                        $resultArr[(string)$i - 1]['secondaryGreetings'] = 0;
                     }
                     // Квота изменяется вручную: возможно, врач просто не успеет за смену принять квоту человек
                     // Если врач работает в этот день, надо посмотреть, не прошедшая ли дата. На прошедшие даты записывать не надо.
@@ -659,6 +663,9 @@ class SheduleController extends Controller {
                     $resultArr[(string)$i - 1]['numPatients'] = 0;
                     $resultArr[(string)$i - 1]['quote'] = 0;
                     $resultArr[(string)$i - 1]['allowForWrite'] = 0;
+                    $resultArr[(string)$i - 1]['numPatients'] = 0;
+                    $resultArr[(string)$i - 1]['primaryGreetings'] = 0;
+                    $resultArr[(string)$i - 1]['secondaryGreetings'] = 0;
                 }
                 $resultArr[(string)$i - 1]['day'] = $i;
             }
@@ -733,6 +740,8 @@ class SheduleController extends Controller {
 			$currentTimestamp = time();
 			$parts = explode('-', $formatDate);
 			$today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
+            $primaryGreetings = 0;
+            $secondaryGreetings = 0;
 			//var_dump($timestampBegin);
 			//exit();
 			for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
@@ -765,8 +774,15 @@ class SheduleController extends Controller {
                             'is_beginned' =>$patient['is_beginned'],
                             'medcard_id' => $patient['card_number'],
                             'patient_time' => date('G:i', $i),
-                            'comment' => $patient['comment']
-							);
+                            'comment' => $patient['comment'],
+                            'greetingType' => $patient['greeting_type']
+					    );
+                        if($patient['greeting_type'] == 1) {
+                            $primaryGreetings++;
+                        }
+                        if($patient['greeting_type'] == 2) {
+                            $secondaryGreetings++;
+                        }
 						$isFound = true;
 						$numRealPatients++;
 					}
@@ -797,7 +813,9 @@ class SheduleController extends Controller {
 		return array(
                 'result' => $result,
                 'allReserved' => $numRealPatients == count($result),
-                'numPlaces' => count($result)
+                'numPlaces' => count($result),
+                'primaryGreetings' => $primaryGreetings,
+                'secondaryGreetings' => $secondaryGreetings
         );
     }
 

@@ -3,6 +3,10 @@
     var clickedDayLi = null;
     var triggeredByLoad = true; // Это для вызова окна записанного пациента автоматом
 
+    $('.organizer').on('returnDate', function(e) {
+        prevBeginDate(false);
+    });
+
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
         //  $(this).find('.sheduleCont').addClass('no-display');
@@ -38,6 +42,7 @@
                     });
                     // Перезагружаем календарь
                     globalVariables.greetingId = data.greetingId;
+                    prevBeginDate();
                     $('.organaizer').trigger('changeTriggerByLoad');
                     $('.organizer').trigger('reload');
                 } else {
@@ -201,8 +206,15 @@
                     break;
                 }
             }
-
-            globalVariables.beginDate = d.getFullYear() + '-' + (parseInt(d.getMonth())+1) + '-' + d.getDate();
+/*  && typeof globalVariables.greetingId != 'undefined' && globalVariables.greetingId != null */
+            if(d.getDay() == 1) { // Отсчёт в последующие разы начинаем с понедельника
+                if(i != 0) { // Если не первый день - првиети к первому дню. Если нет ид расписания
+                    globalVariables.beginDate = d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getDate();
+                } else {
+                    d.setDate(d.getDate() + 7);
+                    globalVariables.beginDate = d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getDate();
+                }
+            }
             $(headerTd).appendTo(headerCont);
         }
 
@@ -247,7 +259,7 @@
                         // Рабочие дни
                         var beginTime = dayData.beginTime.substr(0, dayData.beginTime.lastIndexOf(':'));
                         var endTime = dayData.endTime.substr(0, dayData.endTime.lastIndexOf(':'));
-                        $(li).html(beginTime + ' - ' + endTime);
+                        $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + dayData.secondaryGreetings);
 
                         if(dayData.numPatients == 0) {
                             $(li).addClass('empty');
@@ -405,8 +417,13 @@
                     width: '600px'
                 });
 
-                if(globalVariables.hasOwnProperty('greetingId') && triggeredByLoad && counter == 0) {
-                    $(li).trigger('click');
+                if(globalVariables.hasOwnProperty('greetingId') && globalVariables.hasOwnProperty('greetingDate') && $.trim(globalVariables.greetingDate) != '') {
+
+                    var date = dates[counter];
+                    var greetingDataSplitted = globalVariables.greetingDate.split('-');
+                    if(date.getFullYear() == parseInt(greetingDataSplitted[0]) && date.getMonth() + 1 == parseInt(greetingDataSplitted[1]) && date.getDate() == parseInt(greetingDataSplitted[2])) {
+                        $(li).trigger('click');
+                    }
                     triggeredByLoad = false;
                 }
 
@@ -424,21 +441,35 @@
 
     $('.organizerNav .back').on('click', function(e) {
         // Нужно поправить дату начала недели
-        var dateParsed = globalVariables.beginDate.split('-');
-        var beginDateDate = new Date(dateParsed[0],parseInt(dateParsed[1])-1,dateParsed[2]);
-        // Вычитаем из даты 12, чтобы попасть на предыдущую неделю
-        beginDateDate.setDate(beginDateDate.getDate()-12)
-
-        globalVariables.beginDate = beginDateDate.getFullYear()+'-'+
-            (beginDateDate.getMonth()+1)+'-'+
-            beginDateDate.getDate();
-
-
-        console.log(globalVariables.beginDate);
-        //return;
+        prevBeginDate(false, 1);
         globalVariables.resetBeginDate = false;
         $('.organizer').trigger('reload');
     });
+
+    function prevBeginDate(onlyOneWeek, dummy) {
+        var dateParsed = globalVariables.beginDate.split('-');
+        var beginDateDate = new Date(dateParsed[0], parseInt(dateParsed[1]) - 1, dateParsed[2]);
+        // Вычитаем из даты 6, чтобы попасть на предыдущую неделю
+        if(!onlyOneWeek) {
+            beginDateDate.setDate(beginDateDate.getDate() - 7);
+        }
+        var counter = 0;
+        while(true) {
+            if(beginDateDate.getDay() == 1 && ((dummy && counter != 0 ) || !dummy)) { // Ищем понедельник предыдущей недели
+                break;
+            }
+            beginDateDate.setDate(beginDateDate.getDate() - 1);
+            counter++;
+        }
+
+        var today = new Date();
+        if(today.getTime() <= beginDateDate.getTime()) {
+            globalVariables.beginDate = beginDateDate.getFullYear() + '-' + (beginDateDate.getMonth() + 1) + '-' + beginDateDate.getDate();
+        } else {
+            globalVariables.beginDate = null;
+        }
+    }
+
     $('.organizerNav .forward').on('click', function(e) {
         globalVariables.resetBeginDate = false;
         $('.organizer').trigger('reload');

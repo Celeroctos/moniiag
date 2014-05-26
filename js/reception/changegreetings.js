@@ -7,7 +7,8 @@ $(document).ready(function() {
             var currentDate = new Date();
             var inputDate =  $('#greetingDate').val();
             var inputDateSplit = inputDate.split('-');
-            if(parseInt(inputDateSplit[0]) < currentDate.getFullYear() || parseInt(inputDateSplit[1]) < currentDate.getMonth() || parseInt(inputDateSplit[2]) < currentDate.getDate()) {
+            var dateSplitted = new Date(inputDateSplit[0], inputDateSplit[1], inputDateSplit[2]);
+            if(dateSplitted.getTime() < currentDate.getTime()) {
                 alert('Искомая дата для изменения / отмены приёмов меньше, чем текущая дата!');
                 return false;
             }

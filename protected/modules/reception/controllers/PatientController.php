@@ -1050,7 +1050,7 @@ class PatientController extends Controller {
         ));
     }
 
-    // Экшн записи пациента: шаг 1
+    // Экшн записи пациента: шаг 2
     public function actionWritePatientStepTwo() {
         if(isset($_GET['cardid'])) {
             // Проверим, что такая карта реально есть
@@ -1072,6 +1072,7 @@ class PatientController extends Controller {
                     // Крайне слабая проверка. Надо думать.
                     if($currentGreeting->medcard_id == $_GET['cardid']) {
                         $answer['greetingId'] = $currentGreeting->id;
+                        $answer['greetingDate'] =  $currentGreeting->patient_day;
                         $doctorModel = Doctor::model()->findByPk($currentGreeting->doctor_id);
                         if($doctorModel != null) {
                             $answer['doctorFio'] = $doctorModel->last_name.' '.$doctorModel->first_name.' '.$doctorModel->middle_name;
@@ -1138,6 +1139,7 @@ class PatientController extends Controller {
         if(isset($_GET['greeting_id'])) {
             $currentGreeting = SheduleByDay::model()->findByPk($_GET['greeting_id']);
             $answer['greetingId'] = $currentGreeting->id;
+            $answer['greetingDate'] =  $currentGreeting->patient_day;
             $doctorModel = Doctor::model()->findByPk($currentGreeting->doctor_id);
             if($doctorModel != null) {
                 $answer['doctorFio'] = $doctorModel->last_name.' '.$doctorModel->first_name.' '.$doctorModel->middle_name;

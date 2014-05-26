@@ -27,6 +27,7 @@
         ?>
         <script type="text/javascript">
             globalVariables.greetingId = <?php echo $greetingId; ?>;
+            globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
         </script>
     <?php } ?>
 </div>

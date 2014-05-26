@@ -564,6 +564,8 @@
                    /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
                     globalVariables.greetingId = data.greetingId;
                     if($('.organizer').length > 0) {
+                        $('.organizer').trigger('returnDate');
+                        globalVariables.resetBeginDate = false;
                         $('.organizer').trigger('reload');
                     } else {
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
@@ -670,6 +672,8 @@
                     if($('.organizer').length > 0) {
                         globalVariables.greetingId = data.greetingId;
                         $('.organaizer').trigger('changeTriggerByLoad');
+                        $('.organizer').trigger('returnDate');
+                        globalVariables.resetBeginDate = false;
                         $('.organizer').trigger('reload');
                     } else {
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));

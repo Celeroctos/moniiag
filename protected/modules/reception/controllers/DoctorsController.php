@@ -19,7 +19,15 @@ class DoctorsController extends Controller {
         if(isset($_GET['greeting_id'])) {
             $greetingModel = SheduleByDay::model()->findByPk($_GET['greeting_id']);
             if($greetingModel != null) {
-                $this->greetingDate = $greetingModel->patient_day;
+                $patientTimestamp = strtotime($greetingModel->patient_day);
+                while(true) {
+                    $weekday = date('w', $patientTimestamp);
+                    if($weekday == 1) { // Понедельник
+                        break;
+                    }
+                    $patientTimestamp -= 24 * 3600;
+                }
+                $this->greetingDate = date('Y-n-j', $patientTimestamp);
             }
         }
 
@@ -58,6 +66,9 @@ class DoctorsController extends Controller {
 
         // Теперь обработаем врачей: ближайшую свободную дату можно взять из календаря
         foreach($doctors as &$doctor) {
+            if($doctor['middle_name'] == null) {
+                $doctor['middle_name'] = '';
+            }
             $nearFree = $this->getNearFreeDay($doctor['id']);
             $doctor['nearFree'] = $nearFree !== false ? $nearFree : '';
             $doctor['cabinet'] = '';
