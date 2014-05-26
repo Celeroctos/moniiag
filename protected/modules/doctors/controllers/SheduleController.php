@@ -862,6 +862,7 @@ class SheduleController extends Controller {
             $mediate = new MediatePatient();
             $mediateForm = new FormMediatePatientAdd();
             $mediateForm->attributes = $_GET;
+            if ($mediateForm->phone=="+7") $mediateForm->phone = "";
             if(!$mediateForm->validate()) {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' =>  $mediateForm->getErrors()));

@@ -24,7 +24,7 @@ class FormMediatePatientAdd extends CFormModel
     public function attributeLabels()
     {
         return array(
-
+            'phone' => 'Контактный телефон'
         );
     }
 }
