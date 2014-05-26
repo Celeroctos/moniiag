@@ -803,6 +803,14 @@ class SheduleController extends Controller {
 
     // Записать пациента на приём
     public function actionWritePatient() {
+        //var_dump($_GET);
+        //exit();
+
+        $greetingType = $_GET['greeting_type'] ;
+
+        if ($greetingType=='0')
+            $greetingType = '1';
+
         if(!Yii::app()->request->isAjaxRequest) {
             echo "Error!";
             exit();
@@ -822,6 +830,8 @@ class SheduleController extends Controller {
         $sheduleElement->patient_day = $formatDate;
         $sheduleElement->is_accepted = 0;
         $sheduleElement->patient_time = $formatTime;
+        $sheduleElement->greeting_type = $greetingType;
+
         if($sheduleSetted != null) {
             $sheduleElement->shedule_id = $sheduleSetted->id;
         }

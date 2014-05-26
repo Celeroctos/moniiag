@@ -71,6 +71,7 @@
         return isAllow;
     });
 
+
     // При загрузке - если поле "контактные данные" пусто - надо поставить код России в начале в этом поле
     if ($('#contact, #phone').length > 0)
     {
@@ -657,6 +658,7 @@ $('input[type="number"]').on('keydown', function(e) {
         wasLoadedMessages = false;
         function refreshIndicators()
         {
+            return false;
             // Если панель удалённых показания свёрнута - выходим из функции
             /*if ($('.alerts-cont .panel-arrow span').hasClass('glyphicon-expand'))
              {
