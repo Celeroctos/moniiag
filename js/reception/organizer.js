@@ -8,6 +8,8 @@
     });
 
     $('.organizer').on('resetClickedTime', function(e) {
+        console.log( $(clickedTimeLi));
+        $(clickedTimeLi).removeClass('withPatient-pressed pressed');
         clickedTimeLi = null;
     });
 
@@ -17,6 +19,8 @@
 
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
+        $('.organizer').on('resetClickedTime');
+        $('.organizer').on('resetClickedDay');
         //  $(this).find('.sheduleCont').addClass('no-display');
         $('#doctor-search-submit').trigger('click');
     });
@@ -65,20 +69,10 @@
     });
 
     $('.organizer').on('showPatientData', function(e, patientData, li, year, month, day) {
-        if($(clickedTimeLi).prop('id') == $(li).prop('id')) {
-            e.stopPropagation();
-            return false;
-        }
-        $(li).addClass('pressed');
         var title = 'Пациент ' + patientData.fio + ', записан на ' + day + '.' + month + '.' + year + ', на ' + patientData.patient_time;
         if(patientData.cardNumber != null) {
             title += ', номер карты ' + patientData.cardNumber;
         }
-
-        if(clickedTimeLi != null) {
-            $(clickedTimeLi).find('.popover').remove();
-        }
-        clickedTimeLi = $(li);
 
         $(li).popover({
             animation: true,
@@ -134,6 +128,7 @@
 
         $(span).on('click', function(e) {
             $(li).popover('hide');
+            $(clickedDayLi).removeClass('empty-pressed notfull-pressed full-pressed');
             e.stopPropagation();
         });
 
@@ -286,6 +281,13 @@
 
                         (function(i, li, counter, dayData) {
                             $(li).on('click', function(e) {
+                                if($(clickedDayLi).prop('id') == $(li).prop('id')) {
+                                    $(li).removeClass('empty-pressed notfull-pressed full-pressed');
+                                    e.stopPropagation();
+                                    return false;
+                                }
+                                $('.organizer').on('resetClickedTime');
+                                $('.organizer').on('resetClickedDay');
                                 clickedDayLi = li;
                                 var doctorId = data[i].id;
                                 globalVariables.doctorId = doctorId;
@@ -329,9 +331,11 @@
                                                         for(var j = 0; j < data.data.length; j++) {
                                                             var li = $('<li>').css({
                                                                 'cursor' : 'pointer'
+                                                            }).prop({
+                                                                'id' : 't' + j
                                                             }).html(
-                                                                    data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
-                                                                );
+                                                                data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
+                                                            );
 
                                                             if(data.data[j].cardNumber != null || data.data[j].id != null || $.trim(data.data[j].fio) != '') {
                                                                 $(li).addClass('withPatient');
@@ -341,18 +345,22 @@
                                                             } else {
                                                                 $(li).prop('title', 'Записать пациента')
                                                             }
-                                                            $(li).on('mouseover', function(e) {
-                                                                $(this).addClass('pressed');
-                                                            });
-                                                            $(li).on('mouseout', function(e) {
-                                                                $(this).removeClass('pressed');
-                                                            });
 
                                                             if(!$(li).hasClass('withPatient')) {
-                                                                (function(timeBegin) {
+                                                                (function(timeBegin, li) {
                                                                     $(li).on('click', function() {
                                                                         // Если есть попап для записи пациента, то его нужно показать
-                                                                        $(this).addClass('pressed');
+                                                                        if($(clickedTimeLi).prop('id') == $(li).prop('id')) {
+                                                                            return false;
+                                                                        }
+                                                                        if(clickedTimeLi != null) {
+                                                                            $(clickedTimeLi).find('.popover').remove();
+                                                                            $(clickedTimeLi).removeClass('pressed withPatient-pressed');
+                                                                        }
+
+                                                                        clickedTimeLi = $(li);
+                                                                        $(li).addClass('pressed');
+
                                                                         globalVariables.patientTime = timeBegin;
                                                                         if($('#patientDataPopup').length > 0) {
                                                                             globalVariables.withWindow = 1;
@@ -362,10 +370,21 @@
 
                                                                         }
                                                                     });
-                                                                })(data.data[j].timeBegin)
+                                                                })(data.data[j].timeBegin, li);
                                                             } else {
                                                                 (function(patientData, li) {
                                                                     $(li).on('click', function(e) {
+                                                                        if($(clickedTimeLi).prop('id') == $(li).prop('id')) {
+                                                                            e.stopPropagation();
+                                                                            return false;
+                                                                        }
+                                                                        if(clickedTimeLi != null) {
+                                                                            $(clickedTimeLi).find('.popover').remove();
+                                                                            $(clickedTimeLi).removeClass('withPatient-pressed pressed');
+                                                                        }
+
+                                                                        clickedTimeLi = $(li);
+                                                                        $(li).addClass('withPatient-pressed');
                                                                         $('.organizer').trigger('showPatientData', [patientData, li, date.getFullYear(), date.getMonth(), date.getDate()]);
                                                                     });
                                                                 })(data.data[j], li);
@@ -395,6 +414,8 @@
 
                                                 $(span).on('click', function(e) {
                                                     $(li).popover('hide');
+                                                    $(li).removeClass('full-pressed empty-pressed notfull-pressed');
+                                                    $('.organaizer').trigger('resetClickedDay');
                                                     e.stopPropagation();
                                                     return false;
                                                 });
@@ -428,6 +449,9 @@
                     }
                 }
 
+                $(li).prop({
+                    'id' : 's' + i + '_' + counter
+                });
                 $(li).appendTo(ulCont);
 
                 $(li).find('popover').css({
@@ -490,5 +514,9 @@
     $('.organizerNav .forward').on('click', function(e) {
         globalVariables.resetBeginDate = false;
         $('.organizer').trigger('reload');
+    });
+
+    $('#patientDataPopup').on('hidden.bs.modal', function(e) {
+        $('.organizer').trigger('resetClickedTime');
     });
 });
