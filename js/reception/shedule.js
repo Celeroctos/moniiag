@@ -115,7 +115,7 @@
                             currentDoctorId = shedule[i].doctor_id;
                             if(i + 1 != shedule.length || shedule.length == 1) {
                                 var text = "<span class=\"bold\">" + shedule[i].d_last_name + ' ' + shedule[i].d_first_name + ' ' + shedule[i].d_middle_name + "</span>";
-                                if(cabinets[shedule[i].doctor_id].cabNumber != null) {
+                                if(typeof cabinets[shedule[i].doctor_id] != 'undefined' && cabinets[shedule[i].doctor_id].hasOwnProperty('cabNumber') && cabinets[shedule[i].doctor_id].cabNumber != null) {
                                     var cabinet = '<span class="bold text-danger">кабинет ' + cabinets[shedule[i].doctor_id].cabNumber + ' (' + cabinets[shedule[i].doctor_id].description + ')</span>';
                                 } else {
                                    var cabinet = '<span class="bold text-danger">кабинет неизвестен</span>';
@@ -157,6 +157,9 @@
                             '</td>' +
                             '<td>' +
                                 (typeof shedule[i].phone != 'undefined' && shedule[i].phone != null ? shedule[i].phone : '') +
+                            '</td>' +
+                            '<td>' +
+                                (typeof shedule[i].phone != 'comment' && shedule[i].comment != null ? shedule[i].comment : '') +
                             '</td>' +
                             '<td>' +
                                 shedule[i].patient_time.substr(0, shedule[i].patient_time.lastIndexOf(':')) +
@@ -286,6 +289,7 @@
     $('#print-submit').on('click', function() {
         var printWin = window.open('','','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         var sheduleTable = $('#sheduleTable');
+     //   return false;
         printWin.focus();
         var document = $(printWin).document;
         $(document).ready(function() {
@@ -297,18 +301,18 @@
             });
 
             $(tableClone).find('td').css({
-               'border-collapse' : 'collapse'
+                 'border-collapse' : 'collapse'
             }); // TODO: collapse не работает?
 
-            $(tableClone).find('tr').each(function(index, element) {
+            /*$(tableClone).find('tr').each(function(index, element) {
                 if($(element).find('td').length == 9) { // Это с колонкой врача
                     $(element).find('td:eq(1)').remove();
-                    $(element).find('td:eq(8)').remove();
+                    $(element).find('td:eq(9)').remove();
                 } else {
                     $(element).find('td:eq(0)').remove();
-                    $(element).find('td:eq(7)').remove();
+                    $(element).find('td:eq(8)').remove();
                 }
-            });
+            });*/
 
             // Дату в шапку
             var date = $('#greetingDate').val();

@@ -26,7 +26,7 @@ class FormEmployeeAdd extends FormMisDefault
                 'degreeId, titulId, tabelNumber', 'numerical'
             ),
             array(
-                'dateEnd', 'safe'
+                'dateEnd, middleName', 'safe'
             )
         );
     }

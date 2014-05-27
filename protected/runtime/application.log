@@ -606,3 +606,76 @@ in Z:\home\moniiag.my\www\index.php (13)
 in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
 in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
 in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:03:32 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:03:32 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:03:45 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:03:45 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:03:49 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 8: ORDER BY "fio" ASC LIMIT 15
+                 ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "w"."id" AS "ward_id", "w"."enterprise_id" AS "enterprise_id", "ep"."shortname" AS "enterprise"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."enterprise_params" "ep" ON w.enterprise_id = ep.id
+ORDER BY "fio" ASC LIMIT 15.
+in Z:\home\moniiag.my\www\protected\models\Employee.php (111)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (215)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/05/27 18:04:02 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:04:02 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:04:19 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:04:19 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:05:12 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:05:12 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:06:12 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:06:12 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:06:41 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:06:41 [warning] [application] Не удалось присвоить небезопасный атрибут "middleName" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 18:07:12 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)

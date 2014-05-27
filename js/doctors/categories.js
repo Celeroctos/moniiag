@@ -9,49 +9,43 @@ $(document).ready(function() {
         });
     });
 
-    // Фильтр ввода на number
-    $('input[type="number"]').on('keydown', function(e) {
-        var max = parseFloat($(this).attr('max'));
-        var min = parseFloat($(this).attr('min'));
-        if((e.keyCode > 48 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 106)) {
-            var value = parseFloat('' + $(this).val() + String.fromCharCode(e.keyCode));
-            if(typeof max != 'undefined') {
-                if(value > max) {
-                    $(this).animate({
-                        backgroundColor: "rgb(255, 196, 196)"
-                    });
-                    return false;
-                }
-            }
-            if(typeof min != 'undefined') {
-                if(value < min) {
-                    $(this).animate({
-                        backgroundColor: "rgb(255, 196, 196)"
-                    });
-                    return false;
-                }
-            }
-            return true;
-        }
+    $('input[type="number"]').on('focus', function(e) {
+        $(this).css({
+            backgroundColor: "rgb(255, 255, 255)"
+        });
+    });
 
-        if(e.keyCode != 8 && e.keyCode != 46) {
+    $('input[type="number"]').on('keydown', function(e) {
+        if((!(e.keyCode > 48 && e.keyCode < 58) && !(e.keyCode > 96 && e.keyCode < 106)) && e.keyCode != 8 && e.keyCode != 46) {
             return false;
         }
-        if(e.keyCode == 8) {
-            $(this).css({
-                backgroundColor: "rgb(255, 255, 255)"
-            });
+    });
+
+    $('input[type="number"]').on('blur', function(e) {
+        $(this).css({
+            backgroundColor: "rgb(255, 255, 255)"
+        });
+        var max = parseFloat($(this).attr('max'));
+        var min = parseFloat($(this).attr('min'));
+        var value = parseFloat('' + $(this).val() + String.fromCharCode(e.keyCode));
+        if(typeof max != 'undefined') {
+            if(value > max) {
+                $(this).animate({
+                    backgroundColor: "rgb(255, 196, 196)"
+                });
+                $(this).focus();
+                return false;
+            }
         }
-    });
-    $('input[type="number"]').on('change', function(e) {
-        $(this).css({
-            backgroundColor: "rgb(255, 255, 255)"
-        });
-    });
-    $('input[type="number"]').on('click', function(e) {
-        $(this).css({
-            backgroundColor: "rgb(255, 255, 255)"
-        });
+        if(typeof min != 'undefined') {
+            if(value < min) {
+                $(this).animate({
+                    backgroundColor: "rgb(255, 196, 196)"
+                });
+                $(this).focus();
+                return false;
+            }
+        }
     });
 
     $("#add-value-form").on('success', function(eventObj, ajaxData, status, jqXHR) {

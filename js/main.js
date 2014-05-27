@@ -529,10 +529,6 @@ $('select[multiple="multiple"]').each(function(index, select) {
 	});*/ 
 });
 
-$('input[type="number"]').on('keydown', function(e) {
-
-});
-
  globalVariables.notChangeNavButton = false;
  $('.buttonUpContainer').click(function () {
  // Смотрим - есть ли у this класс "backWardButton"
@@ -717,7 +713,6 @@ $('input[type="number"]').on('keydown', function(e) {
         // По клику на кнопку перенаправляемся на страницу со списком мониторингов
         $(document).on('click', '.is-patients-to-check', function()
         {
-            console.log('!');
             // Перенаправляем на страницу
             location.href = '/index.php/doctors/patient/viewmonitoring?alarm=1'
         });
@@ -732,5 +727,11 @@ $('input[type="number"]').on('keydown', function(e) {
             return false;
         }
     );
+
+    $(document).on('keydown', function(e) {
+        if(e.keyCode == 27) {
+            $('.modal').modal('hide');
+        }
+    });
 
 });

@@ -31,18 +31,18 @@
                 },
                 {
                     'field' : 'first_name',
-                    'op' : 'bw',
-                    'data' : $('#firstName').val()
+                    'op' : 'eq',
+                    'data' : $('#firstName').val().toUpperCase()
                 },
                 {
                     'field' : 'middle_name',
-                    'op' : 'bw',
-                    'data' : $('#middleName').val()
+                    'op' : 'eq',
+                    'data' : $('#middleName').val().toUpperCase()
                 },
                 {
                     'field' : 'last_name',
-                    'op' : 'bw',
-                    'data' : $('#lastName').val()
+                    'op' : 'eq',
+                    'data' : $('#lastName').val().toUpperCase()
                 },
                 {
                     'field' : 'address_reg_str',
@@ -81,6 +81,7 @@
                 }
             ]
         };
+
         return Result;
     }
 
