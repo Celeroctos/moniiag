@@ -658,7 +658,6 @@ $('input[type="number"]').on('keydown', function(e) {
         wasLoadedMessages = false;
         function refreshIndicators()
         {
-            return false;
             // Если панель удалённых показания свёрнута - выходим из функции
             /*if ($('.alerts-cont .panel-arrow span').hasClass('glyphicon-expand'))
              {

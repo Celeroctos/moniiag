@@ -61,7 +61,12 @@
                     $('.organizer').trigger('resetClickedTime');
                     $('.organizer').trigger('resetClickedDay');
                 } else {
-
+                    // Удаляем предыдущие ошибки
+                    $('#errorPopup .modal-body .row p').remove();
+                    // Вставляем новые
+                    $('#errorPopup .modal-body .row').append("<p>" + data.error + "</p>");
+                    $('#errorPopup').modal({
+                    });
                 }
                 return;
             }

@@ -732,7 +732,10 @@ class SheduleController extends Controller {
                 $choosedType = $sheduleElement['type']; // Далее можно выбрать только частный день
             }
         }
-		if (count($sheduleElements)>0)
+        $primaryGreetings = 0;
+        $secondaryGreetings = 0;
+
+        if (count($sheduleElements)>0)
 		{
 			$increment = $settings['timePerPatient'] * 60;
 			$result = array();
@@ -740,9 +743,6 @@ class SheduleController extends Controller {
 			$currentTimestamp = time();
 			$parts = explode('-', $formatDate);
 			$today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
-            $primaryGreetings = 0;
-            $secondaryGreetings = 0;
-
 			for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
 				if($currentTimestamp >= $i && $today) {
 					continue;
@@ -842,6 +842,21 @@ class SheduleController extends Controller {
         // Определим день
         $weekday = date('w', strtotime($formatDate));
         $sheduleSetted = SheduleSetted::model()->find('weekday = :weekday AND employee_id = :employee_id AND day IS NULL', array(':weekday' => $weekday, ':employee_id' => $_GET['doctor_id']));
+
+        // Обработка коллизии выбора одного и того же времени у врачей
+        $issetSheduleElement = SheduleByDay::model()->find('doctor_id = :doctor_id AND patient_day = :patient_day AND patient_time = :patient_time',
+        array(
+            ':doctor_id' => $_GET['doctor_id'],
+            ':patient_day' => $formatDate,
+            ':patient_time' => $formatTime
+        ));
+
+        // Коллизия: время уже занято
+        if($issetSheduleElement != null) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'Время, на которое Вами записывается пациент, уже занято! Пожалуйста, выберите другое время!'));
+            exit();
+        }
         $sheduleElement = new SheduleByDay();
         $sheduleElement->doctor_id = $_GET['doctor_id'];
         $sheduleElement->patient_day = $formatDate;

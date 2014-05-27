@@ -1,1 +1,608 @@
-﻿
+﻿2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:46:57 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (882)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:54:57 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:04 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:55:18 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:57:23 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:35 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 11:58:52 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (878)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:38 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:06:43 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:24 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:08:28 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:09 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:12:13 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:38 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:14:42 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:16 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:16:22 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:17:06 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "greeting_type" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "month" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "year" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "day" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "doctor_id" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "mode" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "time" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/27 12:25:40 [warning] [application] Не удалось присвоить небезопасный атрибут "_" класса "FormMediatePatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php (879)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)

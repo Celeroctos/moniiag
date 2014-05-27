@@ -26,22 +26,22 @@
             'rules' : [
                 {
                     'field' : 'oms_number',
-                    'op' : 'bw',
+                    'op' : 'eq',
                     'data' :  $('#omsNumber').val()
                 },
                 {
                     'field' : 'first_name',
-                    'op' : 'eq',
+                    'op' : 'bw',
                     'data' : $('#firstName').val()
                 },
                 {
                     'field' : 'middle_name',
-                    'op' : 'eq',
+                    'op' : 'bw',
                     'data' : $('#middleName').val()
                 },
                 {
                     'field' : 'last_name',
-                    'op' : 'eq',
+                    'op' : 'bw',
                     'data' : $('#lastName').val()
                 },
                 {
@@ -56,22 +56,22 @@
                 },
                 {
                     'field' : 'card_number',
-                    'op' : 'cn',
+                    'op' : 'bw',
                     'data' : $('#cardNumber').val()
                 },
                 {
                     'field' : 'serie',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#serie').val()
                 },
                 {
                     'field' : 'docnumber',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#docnumber').val()
                 },
                 {
                     'field' : 'snils',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#snils').val()
                 },
                 {
