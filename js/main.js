@@ -688,8 +688,8 @@ $('select[multiple="multiple"]').each(function(index, select) {
                                 },
                                 1000
                             );
-
-
+                            // Устанавливаем тайм-аут
+                            setTimeout(refreshIndicators,2000);
                             // Загорается кнопочка
                         }
                         else
@@ -703,11 +703,11 @@ $('select[multiple="multiple"]').each(function(index, select) {
                     } else {
 
                     }
+
+                    // Устанавливаем тайм-аут
+                    setTimeout(refreshIndicators,2000);
                 }
             });
-
-            // Устанавливаем тайм-аут
-            setTimeout(refreshIndicators,2000);
         }
         setTimeout(refreshIndicators,2000);
 

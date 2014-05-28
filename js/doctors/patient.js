@@ -237,7 +237,6 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
                             isError += globalVariables.reqDiagnosis[i].name + ', ';
                         }
                     }
-                    console.log(isError);
                     if($.trim(isError) != '') {
                         isError = isError.substr(0, isError.length - 2);
                         isError = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + isError + '</strong>';
