@@ -214,13 +214,12 @@
     $(document).on('click', '.accept-greeting-link', function (e) {
         printHandler = 'accept-greeting-link';
         isThisPrint = true;
-        //onStartSave();
+        onStartSave();
         $(this).trigger('accept');
     });
 
 // Закрытие приёма
 $(document).on('accept', '.accept-greeting-link', function(e) {
-    alert(1);
     // Берём id-шник приёма
     var greetingId = $(this).attr('href').substr(1);
     // Теперь смотрим, заполнен ли основной диагноз. Для этого нужно делать ajax-запрос, потому что отображение диагнозов не означает их сохранённость на стороне сервера
