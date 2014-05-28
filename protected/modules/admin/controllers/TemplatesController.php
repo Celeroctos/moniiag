@@ -56,6 +56,12 @@ class TemplatesController extends Controller {
 
             $templates = $model->getRows($filters, $sidx, $sord, $start, $rows);
             foreach($templates as $key => &$template) {
+                if($template['primary_diagnosis']) {
+                    $template['primary_diagnosis_desc'] = 'Да';
+                } else {
+                    $template['primary_diagnosis_desc'] = 'Нет';
+                }
+
                 $template['page'] = $this->pagesList[$template['page_id']];
                 // Список категорий разбираем
                 $template['categories'] = '';
@@ -116,6 +122,33 @@ class TemplatesController extends Controller {
     private function addEditModel($template, $model, $msg) {
         $template->name = $model->name;
         $template->page_id = $model->pageId;
+        // Проверяем индекс
+        $issetIndex = MedcardTemplate::model()->find('index = :index', array(
+            'index' => $model->index
+        ));
+        if($issetIndex != null && $issetIndex->id != $template->id) {
+            $indexes = MedcardTemplate::model()->getTemplateIndexes();
+            $answer = array(
+                'success' => false,
+                'errors' => array(
+                    'index' => array(
+                        'Такой порядковый номер шаблона существует! (Занятые индексы: '
+                    )
+                )
+            );
+
+            foreach($indexes as $index) {
+                if($index['index'] != null) {
+                    $answer['errors']['index'][0] .= $index['index'].', ';
+                }
+            }
+            $answer['errors']['index'][0] = mb_substr($answer['errors']['index'][0], 0, mb_strlen($answer['errors']['index'][0]) - 2).')';
+            echo CJSON::encode($answer);
+            exit();
+        }
+
+        $template->index = $model->index;
+        $template->primary_diagnosis = $model->primaryDiagnosisFilled;
         if($model->categorieIds != null) {
             $template->categorie_ids = CJSON::encode($model->categorieIds);
         } else {

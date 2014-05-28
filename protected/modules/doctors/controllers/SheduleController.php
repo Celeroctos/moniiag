@@ -61,10 +61,26 @@ class SheduleController extends Controller {
                     }
 
                     $templatesListWithTemplateData = array();
+                    $requiredDiagnosis = array();
                     foreach($_POST['templatesList'] as $key => $id) {
                         $templModel = MedcardTemplate::model()->findByPk($id);
                         $templatesListWithTemplateData[] = $templModel;
+                        $requiredDiagnosis['t'.$id] = array(
+                            'name' => $templModel->name,
+                            'isReq' => $templModel->primary_diagnosis
+                        );
                     }
+
+                    usort($templatesListWithTemplateData, function($template1, $template2) {
+                        if($template1->index > $template2->index) {
+                            return 1;
+                        } elseif($template1->index < $template2->index) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+
                     $templatesList = $templatesListWithTemplateData;
                 } else {
                     $canEditMedcard = 0;
@@ -131,8 +147,24 @@ class SheduleController extends Controller {
             'templatesList' => isset($templatesList) ? $templatesList : array(),
             'referenceTemplatesList' => isset($referenceTemplatesList) ? $referenceTemplatesList : array(),
             'greeting' => (isset($greeting)) ? $greeting : null,
+            'requiredDiagnosis' => isset($requiredDiagnosis) ? $requiredDiagnosis : array(),
 			'medcardRecordId' => $medcardRecordId,
             'templateModel' =>  new  FormTemplateDefault()
+        ));
+    }
+
+    public function actionGetPrimaryDiagnosis() {
+        if(!isset($_GET['greeting_id'])) {
+            echo CJSON::encode(array(
+                'success' => false,
+                'text' => 'Не хватает данных о приёме!'
+            ));
+            exit();
+        }
+        $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['greeting_id'], 0);
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => count($primaryDiagnosis)
         ));
     }
 

@@ -7,7 +7,7 @@
 	</script>
 <?php
 	$form = $this->beginWidget('CActiveForm', array(
-		'id' => 'patient-edit-form',
+		'id' => 'template-edit-form',
 		'enableAjaxValidation' => true,
 		'enableClientValidation' => true,
 		'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
@@ -50,8 +50,8 @@
 		CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/patientedit'),
 		array(
 			'success' => 'function(data, textStatus, jqXHR) {
-							$("#patient-edit-form").trigger("success", [data, textStatus, jqXHR])
-						}'
+                $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])
+            }'
 		),
 		array(
 				'class' => 'templateContentSave'

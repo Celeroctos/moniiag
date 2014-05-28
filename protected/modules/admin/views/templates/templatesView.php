@@ -70,7 +70,29 @@
                                     'id' => 'pageId',
                                     'class' => 'form-control'
                                 )); ?>
-                                <?php echo $form->error($model,'pageId'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'primaryDiagnosisFilled', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'primaryDiagnosisFilled', array('Нет', 'Да'), array(
+                                    'id' => 'primaryDiagnosisFilled',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'index', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->numberField($model,'index', array(
+                                    'id' => 'index',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Порядковый номер для отображения'
+                                )); ?>
                             </div>
                         </div>
                     </div>
@@ -159,6 +181,29 @@
                                         'class' => 'form-control'
                                     )); ?>
                                     <?php echo $form->error($model,'pageId'); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model,'primaryDiagnosisFilled', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->dropDownList($model, 'primaryDiagnosisFilled', array('Нет', 'Да'), array(
+                                        'id' => 'primaryDiagnosisFilled',
+                                        'class' => 'form-control'
+                                    )); ?>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model,'index', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->numberField($model,'index', array(
+                                        'id' => 'index',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Порядковый номер для отображения'
+                                    )); ?>
                                 </div>
                             </div>
                         </div>

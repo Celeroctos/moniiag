@@ -24,7 +24,7 @@
 
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
-    $("#patient-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
+    $("#template-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
         console.log(ajaxData);
         var ajaxData = $.parseJSON(ajaxData);
         if (ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
@@ -113,8 +113,7 @@
     function onStartSave()
     {
         // Берём кнопки с классом
-        var buttonsContainers = $('div.submitEditPatient').parents('form');
-
+        var buttonsContainers = $('div.submitEditPatient').parents('form#template-edit-form');
         var isError = false;
         // Очищаем поп-ап с ошибками
         $('#errorPopup .modal-body .row').html("");
@@ -122,12 +121,16 @@
 
         for (i = 0; i < buttonsContainers.length; i++) {
             // Имеем i-тую форму, контролы которой надо провалидировать
-            var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').has('label span.required');
-            for (j = 0; j < controlElements.length; j++) {
+            var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').filter(function(index) {
+                return $(this).parents('#patient-medcard-edit-form').length == 0
+                    && $(this).parents('#add-greeting-value-form') == 0
+                    && $(this).parents('#add-value-form') == 0;
+                    // Чтобы не попало окно с данными медкарты и добавления
+            }).has('label span.required');
 
+            for (j = 0; j < controlElements.length; j++) {
                 // Внутри контейнера с контролом ищу сам контрол
-                var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number],textarea,select');
-                //console.log(oneControlElement);
+                var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number], textarea, select');
                 // Проверим - есть ли данного контрола значение
                 if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
                     isError = true;
@@ -142,9 +145,12 @@
                     $(oneControlElement[0]).one('keydown', function () {
                         $(this).css('background-color', '');
                     });
+
                     // Вытащим метку данного элемента
-                    var labelOfControl = ($(controlElements[j]).find('label').text())
-                        .trim();
+                    var labelOfControl = ($(controlElements[j]).find('label').text()).trim();
+                    // Вытащим заголовок категории, чтобы указать место, где заполнять
+                    var categorieTitle = $(oneControlElement).parents('.accordion');
+
                     // Если последний символ в строке звёздочка - обрезаем её
                     if (labelOfControl[labelOfControl.length - 1] == '*') {
                         labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
@@ -155,12 +161,8 @@
                         labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
                     }
                     // Добавим в поп-ап сообщение из ошибки
-                    $('#errorPopup .modal-body .row').append("<p>" +
-                        'Поле \"' + labelOfControl + '\" должно быть заполнено'
-                        + "</p>")
+                    $('#errorPopup .modal-body .row').append("<p>" + 'Поле \"' + labelOfControl + '\" должно быть заполнено' + "</p>")
                 }
-
-
             }
         }
 
@@ -173,7 +175,7 @@
         }
         else {
             // Вызываем сабмит всех кнопок
-            $(buttonsContainers).find('input').click();
+            $(buttonsContainers).find('input[type="submit"]').click();
             $('#submitDiagnosis').click();
         }
 
@@ -212,52 +214,72 @@
     $(document).on('click', '.accept-greeting-link', function (e) {
         printHandler = 'accept-greeting-link';
         isThisPrint = true;
-        onStartSave();
+        //onStartSave();
+        $(this).trigger('accept');
     });
 
-    // Закрытие приёма
-    $('.accept-greeting-link').on('accept', function (e) {
-        console.log(this);
-        // Берём id-шник приёма
-        var greetingId = $(this).attr('href').substr(1);
-        //'/doctors/shedule/acceptcomplete/?id='.$patient['id']
-        //console.log(greetingId);
-
-        // Дёргаем Ajax
-        $.ajax({
-            'url': '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
-            'cache': false,
-            'dataType': 'json',
-            'type': 'GET',
-            'success': function (data, textStatus, jqXHR) {
-                if (data.success == true) {
-                    // Перезагружаем страницу
-                    location.reload();
-                } else {
-                    // Если не установлен диагноз - надо сфокусировать на поле диагноза
-                    if (data.needMainDiagnosis != undefined) {
-                        $('#errorPopup').one('hidden.bs.modal', function () {
-                            $('#primaryDiagnosisChooser #doctor').focus();
-                        });
+// Закрытие приёма
+$(document).on('accept', '.accept-greeting-link', function(e) {
+    alert(1);
+    // Берём id-шник приёма
+    var greetingId = $(this).attr('href').substr(1);
+    // Теперь смотрим, заполнен ли основной диагноз. Для этого нужно делать ajax-запрос, потому что отображение диагнозов не означает их сохранённость на стороне сервера
+    $.ajax({
+        'url' : '/index.php/doctors/shedule/getprimarydiagnosis/?greeting_id=' + greetingId,
+        'cache' : false,
+        'dataType' : 'json',
+        'type' : 'GET',
+        'success' : function(data, textStatus, jqXHR) {
+            if(data.success == true) {
+                if(data.data == 0) {// Это означает, что первичный диагноз не установлен. В том случае, если есть шаблоны, которые требуют установки первичного диагноза, вываливать сообщение об ошибке
+                    var isError = '';
+                    for(var i in globalVariables.reqDiagnosis) {
+                        if(globalVariables.reqDiagnosis[i].isReq) {
+                            isError += globalVariables.reqDiagnosis[i].name + ', ';
+                        }
                     }
+                    console.log(isError);
+                    if($.trim(isError) != '') {
+                        isError = isError.substr(0, isError.length - 2);
+                        isError = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + isError + '</strong>';
+                        // Выводим сообщение об ошибке
+                        $('#errorPopup .modal-body .row').html("<p>" + isError + "</p>");
+                        $('#errorPopup').modal({
+                        });
+                        return false;
+                    }
+                }
+                // Дёргаем Ajax
+                $.ajax({
+                    'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            // Перезагружаем страницу
+                            location.reload();
+                        } else {
+                            // Выводим сообщение об ошибке
+                            $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
+                            $('#errorPopup').modal({
 
-                    // Выводим сообщение об ошибке
-                    $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
-                    $('#errorPopup').modal({
-
+                            });
+                        }
+                        return;
+                    }
                 });
-                /*if (data.needMainDiagnosis != undefined) {
-                $('#primaryDiagnosisChooser #doctor').focus();
-                }*/
-
+            } else {
+                // Выводим сообщение об ошибке
+                $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
+                $('#errorPopup').modal({
+                });
             }
-
             return;
         }
     });
 
 });
-
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
     $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active').find('img').remove();
@@ -340,14 +362,7 @@ $('.print-greeting-link').on('click', function (e) {
             $('.submitEditPatient input').trigger('click');
         }
 });
-/*
-$('.accept-greeting-link').on('click', function (e) {
-    //  $('#noticePopup').modal({});
-    printHandler = 'accept-greeting-link';
-    isThisPrint = true;
-    $('.submitEditPatient input').trigger('click');
-});
-*/
+
 $('.print-recomendation-link').on('click', function (e) {
     // $('#noticePopup').modal({});
     printHandler = 'print-recomendation-link';

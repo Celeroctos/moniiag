@@ -6,6 +6,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript">
     globalVariables.patientsInCalendar = <?php echo $patientsInCalendar; ?>;
+    globalVariables.reqDiagnosis = <?php echo CJSON::encode($requiredDiagnosis); ?>;
     globalVariables.year = <?php echo $year; ?>;
     globalVariables.month = <?php echo $month; ?>;
     globalVariables.day = <?php echo $day; ?>;
@@ -206,7 +207,7 @@
             <?php
 
             $formM = $this->beginWidget('CActiveForm', array(
-                'id' => 'patient-edit-form',
+                'id' => 'template-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
                 'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
@@ -409,7 +410,7 @@
             ?>
             <?php
 			$formM = $this->beginWidget('CActiveForm', array(
-                'id' => 'patient-edit-form',
+                'id' => 'template-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
                 'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),

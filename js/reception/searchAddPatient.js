@@ -100,7 +100,7 @@
         $('#notFoundPopup').modal({
         });
     }
-    
+
     function updatePatientWithCardsList() {
         var filters = getFilters();
         var PaginationData=getPaginationParameters('omsSearchWithCardResult');
