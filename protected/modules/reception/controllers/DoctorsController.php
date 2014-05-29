@@ -214,6 +214,9 @@ class DoctorsController extends Controller {
             if(($filter['field'] == 'first_name' || $filter['field'] == 'middle_name' || $filter['field'] == 'last_name') && trim($filter['data']) == '') {
                 unset($filters['rules'][$key]);
             }
+            if($filter['field'] == 'greeting_type' && $filter['data'] == 2) { // Вторичный приём
+                unset($filters['rules'][$key]);
+            }
             if(!is_array($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;
             }

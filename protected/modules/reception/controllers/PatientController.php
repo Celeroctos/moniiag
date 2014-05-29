@@ -759,20 +759,26 @@ class PatientController extends Controller {
             $WithoutOnly = true;
         }
 
-        if ((isset($_GET['mediateonly'])) && ($_GET['mediateonly'] == 0)) {
+        if((isset($_GET['mediateonly'])) && ($_GET['mediateonly'] == 0)) {
             $mediateOnly = true;
         } else {
             $mediateOnly = false;
         }
 
+        if(isset($_GET['onlyingreetings']) && $_GET['onlyingreetings'] == 1) {
+            $onlyInGreetings = true;
+        } else {
+            $onlyInGreetings = false;
+        }
+
         if(!$mediateOnly) {
             $model = new Oms();
             // Вычислим общее количество записей
-            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly);
+            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings);
 
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
-            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly);
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings);
 
             // Обрабатываем результат
             foreach($items as $index => &$item) {

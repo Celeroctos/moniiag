@@ -10,7 +10,7 @@
 <h4>Расписание</h4>
 <div class="row">
 	<form method="post" id="reception-shedule-form" role="form" class="form-horizontal col-xs-12">
-		<div class="col-xs-6">
+		<div class="col-xs-5">
 		  <div class="form-group">
 			  <label class="col-xs-2 control-label required" for="greetingDate">Дата</label>
 			  <div class="col-xs-3 input-group date date-control" id="greetingDate-cont">
@@ -48,7 +48,7 @@
 		  </div>
 		</div>
 		
-		<div class="col-xs-6">
+		<div class="col-xs-7">
 		  <div class="form-group">
 			  <label for="doctorCombo" class="col-xs-4 control-label required">Для врачей</label>
 			  <div class="col-xs-6">

@@ -219,7 +219,7 @@ $(document).ready(function() {
                         }
                         // Делаем запрос на сторону сервера
                         var url = choosersConfig[$(chooser).prop('id')].url;
-                        choosersConfig[$(chooser).prop('id')].filters.rules[0].data = $.trim($(field).val());
+                        choosersConfig[$(chooser).prop('id')].filters.rules[0].data = $.trim($(field).val().toLowerCase());
                         var urlFilters = choosersConfig[$(chooser).prop('id')].filters;
                         var urlJSON = $.toJSON(urlFilters);
                         url += urlJSON;
@@ -471,7 +471,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/search?page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'url' : '/index.php/reception/patient/search?onlyingreetings=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [

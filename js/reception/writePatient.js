@@ -118,17 +118,17 @@
             {
                 'field' : 'middle_name',
                 'op' : 'cn',
-                'data' : fioFields.length > 2 ? fioFields[2] : '' //$('#middleName').val()
+                'data' : fioFields.length > 2 ? fioFields[2].toLowerCase() : '' //$('#middleName').val()
             },
             {
                 'field' : 'last_name',
                 'op' : 'cn',
-                'data' : fioFields.length > 0 ? fioFields[0] : '' //$('#lastName').val()
+                'data' : fioFields.length > 0 ? fioFields[0].toLowerCase() : '' //$('#lastName').val()
             },
             {
                 'field' : 'first_name',
                 'op' : 'cn',
-                'data' : fioFields.length > 1 ? fioFields[1] : '' //$('#firstName').val()
+                'data' : fioFields.length > 1 ? fioFields[1].toLowerCase() : '' //$('#firstName').val()
             },
             {
                 'field' : 'diagnosis',

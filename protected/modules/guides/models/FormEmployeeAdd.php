@@ -13,6 +13,7 @@ class FormEmployeeAdd extends FormMisDefault
     public $dateEnd;
     public $wardCode;
 	public $greetingType;
+
     public $id;
 
 
