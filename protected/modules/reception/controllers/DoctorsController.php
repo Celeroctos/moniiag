@@ -59,7 +59,7 @@ class DoctorsController extends Controller {
 
         //var_dump($filters);
         //exit();
-        $filters['rules'] = array();
+        //$filters['rules'] = array();
 
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
 
@@ -214,8 +214,15 @@ class DoctorsController extends Controller {
             if(($filter['field'] == 'first_name' || $filter['field'] == 'middle_name' || $filter['field'] == 'last_name') && trim($filter['data']) == '') {
                 unset($filters['rules'][$key]);
             }
-            if($filter['field'] == 'greeting_type' && $filter['data'] == 2) { // Вторичный приём
+            if($filter['field'] == 'greeting_type') { // Вторичный приём
                 unset($filters['rules'][$key]);
+                if($filter['data'] != 2) {
+                    $filters['rules'][] = array(
+                        'field' => 'greeting_type',
+                        'op' => 'in',
+                        'data' => array(1, 0)
+                    );
+                }
             }
             if(!is_array($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;

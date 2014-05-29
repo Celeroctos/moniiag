@@ -55,6 +55,7 @@ class Doctor extends MisActiveRecord  {
                   'd' => array('id', 'first_name', 'last_name', 'middle_name', 'post_id', 'ward_code', 'greeting_type'),
                   'm' => array('is_for_pregnants')
               ), array(
+
               ));
           }
 
@@ -82,6 +83,7 @@ class Doctor extends MisActiveRecord  {
               $doctor->order($sidx.' '.$sord);
               $doctor->limit($limit, $start);
           }
+
 
         $doctors = $doctor->queryAll();
         return $doctors;
