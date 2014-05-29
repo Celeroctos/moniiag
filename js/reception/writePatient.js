@@ -109,6 +109,7 @@
                 'op' : 'eq',
                 'data' : $('#post').val()
             },
+
 			{
                 'field' : 'greeting_type',
                 'op' : 'eq',

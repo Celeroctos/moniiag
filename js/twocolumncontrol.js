@@ -15,6 +15,8 @@ $(document).ready(function() {
                 }
                 // Запишем в специальное скрытое поле значение
                 $(control).find('.twoColumnHidden').val($.toJSON(optionIds));
+
+                $(control).trigger('refresh');
             }
 
             refreshValue(control);
@@ -66,7 +68,39 @@ $(document).ready(function() {
                 onDoubleClickHandler(control,this);
             });
 
-            // Обработчик двойного нажатия неа опшн
+            // Ставим обработчик "все направо"
+            $(control).find('.twoColumnAddAllBtn').on('click', function(e) {
+                // Принцип такой - берём из левой колонки все опшены.
+                //   Копируем в начало списка правой колонки выделенные опшионы
+                //   Удаляем их из левой колонки выделенные опшионы
+                var options = $(control).find('.twoColumnListFrom option');
+                var rightList = $(control).find('.twoColumnListTo');
+                for (i=options.length-1;i>=0;i--)
+                {
+                    $(rightList).prepend($(options[i]));
+                }
+                $(rightList).find(':selected').prop('selected', false);
+                // Вызываем обновление значения
+                refreshValue(control);
+
+            });
+
+            // Ставим обработчик "все налево"
+            $(control).find('.twoColumnRemoveAllBtn').on('click', function(e) {
+                // Принцип такой - берём из правой колонки все опшены.
+                //   Копируем в начало списка левой колонки выделенные опшионы
+                //   Удаляем их из правой колонки выделенные опшионы
+                var options = $(control).find('.twoColumnListTo option');
+                var leftList = $(control).find('.twoColumnListFrom');
+                for (i=options.length-1;i>=0;i--)
+                {
+                    $(leftList).prepend($(options[i]).prop('selected', false));
+                }
+                // Вызываем обновление значения
+                refreshValue(control);
+            });
+
+            // Обработчик двойного нажатия на опшн
             function onDoubleClickHandler(control,option)
             {
                 // Сбрасываем выделение у опшена

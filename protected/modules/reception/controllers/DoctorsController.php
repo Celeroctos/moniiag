@@ -56,8 +56,16 @@ class DoctorsController extends Controller {
             $totalPages = 1;
         }
         $start = $page * $rows - $rows;
-		
-        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting);
+
+        //var_dump($filters);
+        //exit();
+        $filters['rules'] = array();
+
+        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
+
+        // Посмотрим на то, какой календарь мы показываем сейчас
+        $calendarTypeSetting = Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value;
+
 
         if($calendarTypeSetting == 1) {
             $calendarController = Yii::app()->createController('doctors/shedule');
