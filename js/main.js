@@ -665,7 +665,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
              console.log('Тест');
              }*/
             console.log('Тест');
-            //return false;
+            return false;
             $.ajax({
                 'url' : '/index.php/doctors/patient/getindicators',
                 'data' : {

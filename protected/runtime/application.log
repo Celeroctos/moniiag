@@ -2478,3 +2478,53 @@ REQUEST_URI=/index.php/users/login
 in Z:\home\moniiag.my\www\protected\controllers\UsersController.php (11)
 in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
 in Z:\home\moniiag.my\www\index.php (13)
+2014/05/28 18:56:38 [error] [exception.CDbException] exception 'CDbException' with message 'Таблица "mis.roles", упомянутая в записи active record класса "Role", не найдена в базе данных.' in Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php:2362
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#1 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#2 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
+#3 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('getindicators')
+#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#9 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/doctors/patient/getindicators?_=1401288850970
+HTTP_REFERER=http://moniiag.my/index.php/doctors/patient/viewmonitoring
+---
+2014/05/28 18:56:41 [error] [exception.CDbException] exception 'CDbException' with message 'Таблица "mis.roles", упомянутая в записи active record класса "Role", не найдена в базе данных.' in Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php:2362
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#1 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#2 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
+#3 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewmonitoring')
+#8 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#9 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#10 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/index.php/doctors/patient/viewmonitoring
+HTTP_REFERER=http://moniiag.my/index.php/doctors/patient/viewsearch
+---
+2014/05/29 13:39:37 [error] [php] Division by zero (Z:\home\moniiag.my\www\protected\modules\reception\controllers\DoctorsController.php:53)
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): DoctorsController->runAction()
+#1 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): DoctorsController->filterGetAccessHierarchy()
+#3 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\moniiag.my\yii\web\CController.php(265): DoctorsController->runActionWithFilters()
+#6 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): DoctorsController->run()
+#7 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\moniiag.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/reception/doctors/search/?filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22ward_code%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22post_id%22,%22op%22:%22eq%22,%22data%22:%22-1%22},{%22field%22:%22greeting_type%22,%22op%22:%22eq%22,%22data%22:%220%22},{%22field%22:%22middle_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22diagnosis%22,%22op%22:%22in%22,%22data%22:[]}]}&rows=15&page=1&sidx=d.middle_name&sord=desc&_=1401356374995
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\DoctorsController.php (53)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
