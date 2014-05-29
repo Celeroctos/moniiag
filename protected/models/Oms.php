@@ -11,12 +11,16 @@ class Oms extends MisActiveRecord {
     }
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false) {
+                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false) {
         $connection = Yii::app()->db;
         $oms = $connection->createCommand()
             ->selectDistinct('o.*, m.card_number, m.reg_date')
             ->from('mis.oms o')
             ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
+
+        if($onlyInGreetings) {
+            $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
+        }
 
         if($filters !== false) {
             $this->getSearchConditions($oms, $filters, array(
@@ -50,26 +54,29 @@ class Oms extends MisActiveRecord {
         {
             $oms->andWhere("coalesce(m.card_number,'')!=''");
         }
-        
+
         if ($sidx && $sord && $limit)
         {
 
             $oms->order($sidx.' '.$sord);
             $oms->limit($limit, $start);    
         }
-//var_dump($oms->text);
-  //      exit();
+
         return $oms->queryAll();
     }
 	
 	public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false) {
-		
-	$connection = Yii::app()->db;
+                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false) {
+
+    	$connection = Yii::app()->db;
         $oms = $connection->createCommand()
             ->select('COUNT(*) as num')
             ->from('mis.oms o')
             ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
+
+        if($onlyInGreetings) {
+            $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
+        }
 
         if($filters !== false) {
             $this->getSearchConditions($oms, $filters, array(

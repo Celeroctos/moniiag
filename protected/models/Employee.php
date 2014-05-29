@@ -46,6 +46,7 @@ class Employee extends MisActiveRecord  {
 
     // $onlyFree - сотрудники, которые не заняты каким-либо пользователем
     public function getRows($enterpriseId, $wardId, $filters = false, $sidx = false, $sord = false, $start = false, $limit = false, $onlyFree = false) {
+
         $connection = Yii::app()->db;
         $employees = $connection->createCommand()
             ->selectDistinct('d.*,

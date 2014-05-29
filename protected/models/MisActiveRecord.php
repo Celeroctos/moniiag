@@ -12,7 +12,7 @@ class MisActiveRecord extends CActiveRecord {
 
     protected function getSearchConditions($conn, $filters, $multipleFields, $aliases, $fieldAliases, $subGroupOp = array()) {
         foreach($filters['rules'] as $index => $filter) {
-	        if(!isset($filter['data']) || (!is_array($filter['data']) && trim($filter['data']) == '') || (is_array($filter['data']) && count($filter['data'])) > 0) { // При пустых входных данных не нужно делать доп. условие
+	        if(!isset($filter['data']) || (!is_array($filter['data']) && trim($filter['data']) == '') || (is_array($filter['data']) && count($filter['data']) == 0)) { // При пустых входных данных не нужно делать доп. условие
         		continue;
         	}
             if(isset($multipleFields[$filter['field']])) {
@@ -53,6 +53,7 @@ class MisActiveRecord extends CActiveRecord {
                         'op' => $filter['op'],
                         'data' => $filter['data']
                     );
+
                     $this->getSearchOperator($conn, $groupFilter, $filterByField, $this->searchAlias($dbField, $aliases));
                 }
             } else {
@@ -139,10 +140,10 @@ class MisActiveRecord extends CActiveRecord {
                 $chainOp == 'AND' ? $conn->andWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%')) : $conn->orWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%'));
             break;
             case 'in' :
-                $chainOp == 'AND' ? $conn->andWhere(array('in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data']))) : $conn->orWhere(array('in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data'])));
+                $chainOp == 'AND' ? $conn->andWhere(array('in', $alias.'.'.$filter['field'], $filter['data'])) : $conn->orWhere(array('in', $alias.'.'.$filter['field'], $filter['data']));
             break;
             case 'ni' :
-                $chainOp == 'AND' ? $conn->andWhere(array('not in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data']))) : $conn->orWhere(array('not in', 'LOWER('.$alias.'.'.$filter['field'].')', array($filter['data'])));
+                $chainOp == 'AND' ? $conn->andWhere(array('not in', $alias.'.'.$filter['field'], $filter['data'])) : $conn->orWhere(array('not in', $alias.'.'.$filter['field'], $filter['data']));
             break;
             case 'ew' :
                 $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'])) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data']));

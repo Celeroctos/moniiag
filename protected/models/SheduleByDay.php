@@ -178,7 +178,7 @@ class SheduleByDay extends MisActiveRecord {
     }
 
     // Получить список приёмов по критериям
-    public function getGreetingsPerQrit($filters, $start = false, $limit = false) {
+    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false) {
         try {
             //var_dump($filters);
             //exit();
@@ -228,8 +228,8 @@ class SheduleByDay extends MisActiveRecord {
                     )
                 ), array(
                     'mp' => array('is_for_pregnants'),
-                    'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio', 'patient_ids'),
-                    'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio', 'doctor_ids'),
+                    'o' => array('p_first_name', 'p_middle_name', 'p_last_name', 'patient_fio', 'patients_ids'),
+                    'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio', 'doctors_ids'),
                     'm' => array('contact'),
                     'mdp' => array('m_first_name', 'm_middle_name', 'm_last_name', 'patient_fio', 'm_phone'),
                     'dsbd' => array('patient_day', 'medcard_id')
@@ -244,10 +244,14 @@ class SheduleByDay extends MisActiveRecord {
                     'm_last_name' => 'last_name',
                     'm_first_name' => 'first_name',
                     'm_middle_name' => 'middle_name',
-                    'patient_ids' => 'id',
-                    'doctor_ids' => 'id',
+                    'patients_ids' => 'id',
+                    'doctors_ids' => 'id',
                     'm_phone' => 'phone'
                 ));
+            }
+
+            if($mediateOnly) {
+                $greetings->andWhere('dsbd.mediate_id IS NOT NULL');
             }
 
             $greetings->order('dsbd.patient_time');
