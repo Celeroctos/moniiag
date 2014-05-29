@@ -210,8 +210,18 @@ class SheduleController extends Controller {
  				$element['patient_date'] =	$greetingDateArr[2].'.'
  					.$greetingDateArr[1].'.'
  					.$greetingDateArr[0].' '.$element['patient_time'];
- 					
- 					
+
+                $element['doctor_fio'] = $element['last_name'];
+
+                if ($element['first_name']!='')
+                {
+                    $element['doctor_fio'] .= (' '.mb_substr($element['first_name'],0,1,'utf-8').'.');
+                }
+
+                if ($element['middle_name']!='')
+                {
+                    $element['doctor_fio'] .= (' '.mb_substr($element['middle_name'],0,1,'utf-8'). '.');
+                }
  					
  				$element['unwrite'] = '<a class="unwrite-link" href="#' + $element['id'] + '">' +
                                     '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
@@ -236,7 +246,8 @@ class SheduleController extends Controller {
  			$page = $_GET['page'];
  			$sidx = $_GET['sidx'];
  			$sord = $_GET['sord'];
- 
+
+
  			if(isset($_GET['filters']) && trim($_GET['filters']) != '') 
  			{
  				$filters = CJSON::decode($_GET['filters']);
@@ -248,40 +259,87 @@ class SheduleController extends Controller {
  
  			$dayBegin = $_GET['date_begin'];	
  			$dayEnd = $_GET['date_end'];
- 			$doctorId= $_GET['doctor_id'];
- 
+ 			//$doctorId= $_GET['doctor_id'];
+            $doctors = array();
+
+            // Инициализируем массив докторов
+
+
+            if (isset($_GET['doctorsIds']))
+            {
+                $doctorsArr = CJSON::decode($_GET['doctorsIds']);
+                if (is_array($doctorsArr))
+                {
+                    $doctors = $doctorsArr;
+                }
+                else
+                {
+                    $doctors[] = $doctorsArr;
+                }
+            }
+            else
+            {
+                $doctors[] = $_GET['doctor_id'];
+            }
+
  			$model = new SheduleByDay();
- 			$num = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctorId);
+ 			$num = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors);
  
  
  
  			$totalPages = ceil(count($num) / $rows);
  			$start = $page * $rows - $rows;
  
- 			$greetings = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctorId, $sidx, $sord, $start, $rows);
- 				
+ 			$greetings = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors, $sidx, $sord, $start, $rows);
+
+            //var_dump($greetings);
+            //exit();
  			// Приведём дату в приличный вид
  			foreach($greetings as &$element) {
- 				$greetingDateArr= explode('-', $element['patient_day']);
+
+
+                $greetingDateArr= explode('-', $element['patient_day']);
  				$element['patient_date'] =	$greetingDateArr[2].'.'
  					.$greetingDateArr[1].'.'
  					.$greetingDateArr[0].' '.$element['patient_time'];
- 					
+
+
+                $element['doctor_fio'] = $element['last_name'];
+
+                if ($element['first_name']!='')
+                {
+                    $element['doctor_fio'] .= (' '.mb_substr($element['first_name'],0,1,'utf-8').'.');
+                }
+
+                if ($element['middle_name']!='')
+                {
+                    $element['doctor_fio'] .= (' '.mb_substr($element['middle_name'],0,1,'utf-8'). '.');
+                }
+
+
  				//$element['unwrite'] = '\<Test'.(string)$element['id'];
- 					
+
+
+
  				$element['unwrite'] = '<a class="unwrite-link" href="#'.(string)$element['id'].'">'.
  					'<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>'.
  					'</a>';	
  				
  				//var_dump($element['unwrite']);
  				//exit();
- 					
- 			}			
- 			echo CJSON::encode(
- 				array(	'rows' => $greetings,
- 						'total' => $totalPages,
- 						'records' => count($num))
- 				);
+                //var_dump($element);
+ 			}
+
+            $greetingsJSON = CJSON::encode(
+                array(	'rows' => $greetings,
+                    'total' => $totalPages,
+                    'records' => count($num))
+            );
+
+           // var_dump($greetingsJSON );
+           // exit();
+
+ 			echo $greetingsJSON;
  		
  		} catch(Exception $e) {
  			echo $e->getMessage();
@@ -292,17 +350,30 @@ class SheduleController extends Controller {
  	//    у данного врача
  	public function actionIsGreeting()
  	{
-
- 		$dateBegin = $_GET['begin'];
- 		$dateEnd = $_GET['end'];
- 		$doctorId = $_GET['doctor_id'];
+        $dateBegin = $_GET['begin'];
+        $dateEnd = $_GET['end'];
+        $doctors = array();
+        if (isset($_GET['doctorsIds']))
+        {
+            if (is_array($_GET['doctorsIds']))
+            {
+                $doctors = $_GET['doctorsIds'];
+            }
+            else
+            {
+                $doctors[] = $_GET['doctorsIds'];
+            }
+        }
+        else
+        {
+            $doctors[] = $_GET['doctor_id'];
+        }
 
         // Возвращаем количество записей
         echo CJSON::encode(array('success' => true,
-            'data' => $this->isGreetingInternal($dateBegin, $dateEnd, array( $doctorId ) )
+            'data' => $this->isGreetingInternal($dateBegin, $dateEnd, $doctors )
 
         ));
-
  	}
 
     // Вытаскиваем приёмы по id докторов и дате начала и конца
@@ -310,8 +381,8 @@ class SheduleController extends Controller {
     {
         $doctorsStr = implode(",", $doctors);
 
-        $greetings = SheduleByDay::model()->findAll('doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end',
-            array(':doctors' => $doctorsStr,':date_begin' => $begin,
+        $greetings = SheduleByDay::model()->findAll('doctor_id in (' .$doctorsStr. ') AND patient_day >= :date_begin AND patient_day <= :date_end',
+            array(':date_begin' => $begin,
                 ':date_end' => $end
             )
         );

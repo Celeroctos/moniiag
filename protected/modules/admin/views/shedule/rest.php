@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/writtenPatients.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/restshedule.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/twocolumncontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
@@ -51,8 +52,14 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
     <?php $this->endWidget(); ?>
 </div>
 <div class="row">
-    <div class="twoColumnList col-xs-12" id="doctorsSelector" style="text-align: center; vertical-align: middle;">
-            <select multiple="multiple" class="twoColumnListFrom" style="width:300px;height:300">
+    <div class="col-xs-2">
+        <input type="radio" id="dayType" name="dayType" value = "1" checked>Выходной<br>
+        <input type="radio" id="dayType" name="dayType" value = "2">Отпуск<br>
+        <input type="radio" id="dayType" name="dayType" value = "3">Болезнь<br>
+        <input type="radio" id="dayType" name="dayType" value = "4">Командировка<br>
+    </div>
+    <div class="twoColumnList col-xs-10" id="doctorsSelector" style="text-align: center; vertical-align: middle;">
+            <select multiple="multiple" class="twoColumnListFrom" style="width:300px">
                 <?php
                 foreach ($doctors as $oneDoctor)
                 {
@@ -74,19 +81,14 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
 
 
         </div>
-            <select multiple="multiple" class="twoColumnListTo" style="width:300px;height:300">
+            <select multiple="multiple" class="twoColumnListTo"  style="width:300px">
                 <!-- Здесь будут выбранные опции -->
 
             </select>
         <input type="hidden" id="doctorsToChangeTimetable" class="twoColumnHidden"></input>
     </div>
 </div>
-<div class="row">
-    <input type="radio" id="dayType" name="dayType" value = "1" checked>Выходной<br>
-    <input type="radio" id="dayType" name="dayType" value = "2">Отпуск<br>
-    <input type="radio" id="dayType" name="dayType" value = "3">Болезнь<br>
-    <input type="radio" id="dayType" name="dayType" value = "4">Командировка<br>
-</div>
+
 <div class="row">
     <table class="calendarTable">
 
@@ -141,4 +143,24 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
         <span id="nextYearBtnCaption">Следующий год</span><span> </span><span class="glyphicon glyphicon-arrow-right"></span>
     </button>
     <button type="button" class="btn btn-primary editCalendar">Сохранить</button>
+</div>
+<div class="modal fade error-popup" id="viewWritedPatient">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Для врачей на эту даты уже записаны пациенты по старому расписанию</h4>
+                <p>Пожалуйста, отпишите данных пацентов у этого врача прежде, чем расписание будет изменено</p>
+            </div>
+            <div class="modal-body">
+                <div id="writtenPatientsTimetable" class="row">
+                    <table id="writtenPatients"></table>
+                    <div id="writtenPatientsPager"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
 </div>

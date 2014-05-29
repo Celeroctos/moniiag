@@ -39,7 +39,7 @@ class SheduleByDay extends MisActiveRecord {
  		
  		$connection = Yii::app()->db;
  		$patients = $connection->createCommand()
- 			->select('dsbd.*, 
+ 			->select('dsbd.*, d.first_name,d.middle_name,d.last_name,
  					CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, 
  					m.card_number AS card_number,
  					SUBSTR(
@@ -51,6 +51,7 @@ class SheduleByDay extends MisActiveRecord {
  			->from('mis.doctor_shedule_by_day dsbd')
  			->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
  			->Join('mis.oms o', 'm.policy_id = o.id')
+            ->leftJoin('mis.doctors d', 'dsbd.doctor_id = d.id')
  			->where('dsbd.id in ('.$idsString.')
  					'
  				);
@@ -74,16 +75,17 @@ class SheduleByDay extends MisActiveRecord {
 		$filters,
  		$dateBegin,
  		$dateEnd, 
- 		$doctorId, 
+ 		$doctorIds,
  		$sidx = false, 
  		$sord = false, 
  		$start = false, 
  		$limit = false
  	) {
- 	
+
+        $doctorStr = implode(",",$doctorIds);
  		$connection = Yii::app()->db;
  		$patients = $connection->createCommand()
- 			->select('dsbd.*, 
+ 			->select('dsbd.*, d.first_name,d.middle_name,d.last_name,
  				CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, 
  					m.card_number AS card_number,
  					SUBSTR(
@@ -95,13 +97,13 @@ class SheduleByDay extends MisActiveRecord {
  			->from('mis.doctor_shedule_by_day dsbd')
  			->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
  			->Join('mis.oms o', 'm.policy_id = o.id')
- 			->where('dsbd.doctor_id = :doctor_id
+            ->leftJoin('mis.doctors d', 'dsbd.doctor_id = d.id')
+ 			->where('dsbd.doctor_id in ('.$doctorStr.')
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
  					', array(
  						':beginDate' => $dateBegin,
- 						':endDate' => $dateEnd, 
- 						':doctor_id' => $doctorId
+ 						':endDate' => $dateEnd
  					)
  			);
  		

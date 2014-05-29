@@ -188,7 +188,7 @@ $(document).ready(function() {
     $(document).on('click', 'td.clickableCell', function() {
         //onChangeHolidays();
         onCellClick(this);
-        refreshExceptionalDays();
+        //refreshExceptionalDays();
 
     });
 
@@ -199,20 +199,17 @@ $(document).ready(function() {
         }
     });
 
-    function onCellClick(cellClicked)
+
+    function getSelectedDoctors()
     {
-        // Получим врачей
-        //  Смотрим - они либо из правого списка выбора (если там что-то выбрано)
-        //   либо - из левого (если ничего не выбрано)
-        var selectedDoctors = new Array();
-        var doctors = null;
+        var result = new Array();
         if ( $('#doctorsSelector .twoColumnListTo option').length!=0 )
         {
             // Перебираем и снимаем value
             doctors = $('#doctorsSelector .twoColumnListTo option');
             for (i=0;i<doctors.length;i++)
             {
-                selectedDoctors.push($(doctors[i]).val());
+                result.push($(doctors[i]).val());
             }
         }
         else
@@ -221,16 +218,23 @@ $(document).ready(function() {
             doctors = $('#doctorsSelector .twoColumnListFrom option');
             for (i=0;i<doctors.length;i++)
             {
-                selectedDoctors.push($(doctors[i]).val());
+                result.push($(doctors[i]).val());
             }
         }
 
-        // selectedDoctors - врачи, которым устанавливается дата
-        //
+        return result;
+    }
+
+    var needCancelWeekEnds = false;
+    var dateToChange = null;
+
+    function onCellClick(cellClicked)
+    {
+        var selectedDoctors = getSelectedDoctors();
         // Читаем дату из cellClicked
         var dateString = $(cellClicked).prop('id').substr(1);
-
         // Читаем врачей которые в дате
+        dateToChange = dateString;
         var doctorsInDate = calendarBuffer[dateString];
         if (doctorsInDate==undefined)
             doctorsInDate = new Array();
@@ -297,6 +301,77 @@ $(document).ready(function() {
         //     allFound = false, oneWasFound = true - квадратик жёлтый
         //     allFound = false, oneWasFound = false - квадратик белый
 
+        needCancelWeekEnds = allFound && allTypesIsEqual;
+
+        // Если устанавливаем рабочие дни, то есть переменная needCancelWeekends = true,
+        //   то делать аякс-запрос не нужно - сразу вызываем функцию изменения дня
+        if (needCancelWeekEnds)
+        {
+            changeDay();
+            return;
+        }
+
+        // Иначе делаем ajax-запрос и выясняем, можно ли
+        $.ajax({
+            'url': '/index.php/admin/shedule/isgreeting?begin=' + dateString + '&end=' + dateString,
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'data': { 'doctorsIds':selectedDoctors }, // Отправляем выделенных докторов
+            'async': false,
+            'success': function (data, textStatus, jqXHR)
+            {
+
+                if (data.success == true) {
+                    if (data.data <= 0)
+                    {
+                        changeDay();
+                    }
+                    else
+                    {
+                        printWrittenPatients();
+
+                    }
+                }
+            }
+        });
+
+    }
+    $('.calendarTable').on('print', function(e) {
+        printYearCalendar();
+    });
+
+    function printWrittenPatients()
+    {
+        // Открываем поп-ап с поциэнтами, которых надо отписать
+        //alert('Есть поциенты');
+
+        jQuery("#writtenPatients").jqGrid(
+            'setGridParam',
+            {
+                url: globalVariables.baseUrl +
+                    '/index.php/admin/shedule/getwrittenpatients?' +
+                    'doctorsIds=' + $.toJSON(getSelectedDoctors()) +
+                    '&date_begin=' + dateToChange +
+                    '&date_end=' + dateToChange,
+                page: 1
+            }
+        );
+        jQuery("#writtenPatients").trigger('reloadGrid');
+        $('#viewWritedPatient').modal({});
+
+    }
+
+
+    function changeDay()
+    {
+        var selectedDoctors = getSelectedDoctors();
+
+        // Читаем врачей которые в дате
+        var doctorsInDate = calendarBuffer[dateToChange];
+        if (doctorsInDate==undefined)
+            doctorsInDate = new Array();
+
         // Теперь удаляем сконца элементы из массива doctorsInDate
         for (i=0;i<indexToDelete.length;i++)
         {
@@ -314,7 +389,7 @@ $(document).ready(function() {
         }
         doctorsInDate = newDoctorsInDate;
         // Теперь в том случае, если не всё найдено и не все типы равны - добавляем в doctorsInDate врачей с типами их выходного
-        if (!  (allFound && allTypesIsEqual) )
+        if (! needCancelWeekEnds )
         {
             // Добавляем в doctorsInDate
             if (selectedDoctors.length!=0)
@@ -330,14 +405,12 @@ $(document).ready(function() {
 
         }
         // Возвращаем данные в буффер
-        calendarBuffer[dateString] = doctorsInDate;
-        dateChanged.push(dateString);
+        calendarBuffer[dateToChange] = doctorsInDate;
+        dateChanged.push(dateToChange);
+
+        // Обновляем
+        refreshExceptionalDays();
     }
-
-    $('.calendarTable').on('print', function(e) {
-        printYearCalendar();
-    });
-
 
     // Перебор исключительных дней и перекраска ячеек календаря в соответствии с ними
     function refreshExceptionalDays()
@@ -345,25 +418,7 @@ $(document).ready(function() {
         var types = new Array();
 
         // Берём врачей, для которые выбраны в селекте
-        var selectedDoctors = new Array();
-        if ( $('#doctorsSelector .twoColumnListTo option').length!=0 )
-        {
-            // Перебираем и снимаем value
-            doctors = $('#doctorsSelector .twoColumnListTo option');
-            for (i=0;i<doctors.length;i++)
-            {
-                selectedDoctors.push($(doctors[i]).val());
-            }
-        }
-        else
-        {
-            // Перебираем и снимаем value
-            doctors = $('#doctorsSelector .twoColumnListFrom option');
-            for (i=0;i<doctors.length;i++)
-            {
-                selectedDoctors.push($(doctors[i]).val());
-            }
-        }
+        var selectedDoctors = getSelectedDoctors();
 
         // Перебираем такие данные в буфере, которые входят в текущий год
         for (oneDate in calendarBuffer)

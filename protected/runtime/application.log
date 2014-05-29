@@ -1,1 +1,243 @@
-﻿
+﻿2014/05/29 16:25:32 [error] [php] Undefined index: doctor_id (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:311)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323547
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (311)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/29 16:28:01 [error] [php] Undefined index: doctor_id (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:311)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323548
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (311)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/29 16:28:50 [error] [php] Undefined index: doctor_id (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:311)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323549
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (311)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/29 16:29:18 [error] [php] Undefined index: doctor_id (Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php:311)
+Stack trace:
+#0 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): SheduleController->runAction()
+#1 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#2 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): SheduleController->filterGetAccessHierarchy()
+#3 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter()
+#4 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#5 Z:\home\mis.my\yii\web\CController.php(265): SheduleController->runActionWithFilters()
+#6 Z:\home\mis.my\yii\web\CWebApplication.php(282): SheduleController->run()
+#7 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController()
+#8 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#9 Z:\home\mis.my\www\index.php(13): CWebApplication->run()
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323550
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (311)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/05/29 16:30:39 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "17,46,44,35,84,50,83,93,77,53,15,97,64,18,95,96,94,32,42,75,99,29,55,37,57,39,72,26,40,20,76,48,61,68,28,65,69,24,100,14,27,71,51,79,74,88,87,19,36,70,49,47,91,30,73,82,56,33,60,45,34,85,80,98,23,54,62,92,78,86,63,67,16,25,12,58,22,8,41,43,90,31,21,89,52,38,66,59". Выполнявшийся SQL-запрос: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (330)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (316)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+2014/05/29 16:30:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "17,46,44,35,84,50,83,93,77,53,15,97,64,18,95,96,94,32,42,75,99,29,55,37,57,39,72,26,40,20,76,48,61,68,28,65,69,24,100,14,27,71,51,79,74,88,87,19,36,70,49,47,91,30,73,82,56,33,60,45,34,85,80,98,23,54,62,92,78,86,63,67,16,25,12,58,22,8,41,43,90,31,21,89,52,38,66,59". The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(330): CActiveRecord->findAll('doctor_id in (:...', Array)
+#4 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(316): SheduleController->isGreetingInternal('2014-05-29', '2014-05-29', Array)
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionIsGreeting()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('isgreeting')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323552
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/viewrest
+---
+2014/05/29 16:33:09 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "SELECT")
+LINE 1: ...CT * FROM "mis"."doctor_shedule_by_day" "t" WHERE SELECT * F...
+                                                             ^. Выполнявшийся SQL-запрос: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE SELECT * FROM mis.doctor_shedule_by_day doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (331)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (316)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+2014/05/29 16:33:09 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "SELECT")
+LINE 1: ...CT * FROM "mis"."doctor_shedule_by_day" "t" WHERE SELECT * F...
+                                                             ^. The SQL statement executed was: SELECT * FROM "mis"."doctor_shedule_by_day" "t" WHERE SELECT * FROM mis.doctor_shedule_by_day doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1351): CDbCommand->queryAll()
+#2 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1470): CActiveRecord->query(Object(CDbCriteria), true)
+#3 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(331): CActiveRecord->findAll('SELECT * FROM m...', Array)
+#4 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(316): SheduleController->isGreetingInternal('2014-05-29', '2014-05-29', Array)
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionIsGreeting()
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('isgreeting')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323553
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/viewrest
+---
+2014/05/29 16:34:01 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "doctor_id")
+LINE 1: doctor_id in ($1) AND patient_day >= $2 AND patient_day <= $...
+        ^. Выполнявшийся SQL-запрос: doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (330)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (316)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+2014/05/29 16:34:01 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "doctor_id")
+LINE 1: doctor_id in ($1) AND patient_day >= $2 AND patient_day <= $...
+        ^. The SQL statement executed was: doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1581): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(330): CActiveRecord->findAllBySql('doctor_id in (:...', Array)
+#3 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(316): SheduleController->isGreetingInternal('2014-05-29', '2014-05-29', Array)
+#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionIsGreeting()
+#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('isgreeting')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323554
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/viewrest
+---
+2014/05/29 16:35:21 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "17,46,44,35,84,50,83,93,77,53,15,97,64,18,95,96,94,32,42,75,99,29,55,37,57,39,72,26,40,20,76,48,61,68,28,65,69,24,100,14,27,71,51,79,74,88,87,19,36,70,49,47,91,30,73,82,56,33,60,45,34,85,80,98,23,54,62,92,78,86,63,67,16,25,12,58,22,8,41,43,90,31,21,89,52,38,66,59". Выполнявшийся SQL-запрос: SELECT * FROM mis.doctor_shedule_by_day WHERE doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end.
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (330)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (316)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+2014/05/29 16:35:21 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[22P02]: Invalid text representation: 7 ОШИБКА:  неверное значение для целого числа: "17,46,44,35,84,50,83,93,77,53,15,97,64,18,95,96,94,32,42,75,99,29,55,37,57,39,72,26,40,20,76,48,61,68,28,65,69,24,100,14,27,71,51,79,74,88,87,19,36,70,49,47,91,30,73,82,56,33,60,45,34,85,80,98,23,54,62,92,78,86,63,67,16,25,12,58,22,8,41,43,90,31,21,89,52,38,66,59". The SQL statement executed was: SELECT * FROM mis.doctor_shedule_by_day WHERE doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end' in Z:\home\mis.my\yii\db\CDbCommand.php:543
+Stack trace:
+#0 Z:\home\mis.my\yii\db\CDbCommand.php(396): CDbCommand->queryInternal('fetchAll', Array, Array)
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1581): CDbCommand->queryAll()
+#2 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(330): CActiveRecord->findAllBySql('SELECT * FROM m...', Array)
+#3 Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php(316): SheduleController->isGreetingInternal('2014-05-29', '2014-05-29', Array)
+#4 Z:\home\mis.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionIsGreeting()
+#5 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#6 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#8 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#9 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#11 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#12 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('isgreeting')
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/shedule/i...')
+#14 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#15 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#16 {main}
+REQUEST_URI=/index.php/admin/shedule/isgreeting?begin=2014-05-29&end=2014-05-29&doctorsIds%5B%5D=17&doctorsIds%5B%5D=46&doctorsIds%5B%5D=44&doctorsIds%5B%5D=35&doctorsIds%5B%5D=84&doctorsIds%5B%5D=50&doctorsIds%5B%5D=83&doctorsIds%5B%5D=93&doctorsIds%5B%5D=77&doctorsIds%5B%5D=53&doctorsIds%5B%5D=15&doctorsIds%5B%5D=97&doctorsIds%5B%5D=64&doctorsIds%5B%5D=18&doctorsIds%5B%5D=95&doctorsIds%5B%5D=96&doctorsIds%5B%5D=94&doctorsIds%5B%5D=32&doctorsIds%5B%5D=42&doctorsIds%5B%5D=75&doctorsIds%5B%5D=99&doctorsIds%5B%5D=29&doctorsIds%5B%5D=55&doctorsIds%5B%5D=37&doctorsIds%5B%5D=57&doctorsIds%5B%5D=39&doctorsIds%5B%5D=72&doctorsIds%5B%5D=26&doctorsIds%5B%5D=40&doctorsIds%5B%5D=20&doctorsIds%5B%5D=76&doctorsIds%5B%5D=48&doctorsIds%5B%5D=61&doctorsIds%5B%5D=68&doctorsIds%5B%5D=28&doctorsIds%5B%5D=65&doctorsIds%5B%5D=69&doctorsIds%5B%5D=24&doctorsIds%5B%5D=100&doctorsIds%5B%5D=14&doctorsIds%5B%5D=27&doctorsIds%5B%5D=71&doctorsIds%5B%5D=51&doctorsIds%5B%5D=79&doctorsIds%5B%5D=74&doctorsIds%5B%5D=88&doctorsIds%5B%5D=87&doctorsIds%5B%5D=19&doctorsIds%5B%5D=36&doctorsIds%5B%5D=70&doctorsIds%5B%5D=49&doctorsIds%5B%5D=47&doctorsIds%5B%5D=91&doctorsIds%5B%5D=30&doctorsIds%5B%5D=73&doctorsIds%5B%5D=82&doctorsIds%5B%5D=56&doctorsIds%5B%5D=33&doctorsIds%5B%5D=60&doctorsIds%5B%5D=45&doctorsIds%5B%5D=34&doctorsIds%5B%5D=85&doctorsIds%5B%5D=80&doctorsIds%5B%5D=98&doctorsIds%5B%5D=23&doctorsIds%5B%5D=54&doctorsIds%5B%5D=62&doctorsIds%5B%5D=92&doctorsIds%5B%5D=78&doctorsIds%5B%5D=86&doctorsIds%5B%5D=63&doctorsIds%5B%5D=67&doctorsIds%5B%5D=16&doctorsIds%5B%5D=25&doctorsIds%5B%5D=12&doctorsIds%5B%5D=58&doctorsIds%5B%5D=22&doctorsIds%5B%5D=8&doctorsIds%5B%5D=41&doctorsIds%5B%5D=43&doctorsIds%5B%5D=90&doctorsIds%5B%5D=31&doctorsIds%5B%5D=21&doctorsIds%5B%5D=89&doctorsIds%5B%5D=52&doctorsIds%5B%5D=38&doctorsIds%5B%5D=66&doctorsIds%5B%5D=59&_=1401366323555
+HTTP_REFERER=http://mis.my/index.php/admin/shedule/viewrest
+---
+2014/05/29 17:00:58 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "[")
+LINE 13: WHERE dsbd.doctor_id in (["17","46","44","35","84","50","83"...
+                                  ^. Выполнявшийся SQL-запрос: SELECT dsbd.*, 
+ 				CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, 
+ 					m.card_number AS card_number,
+ 					SUBSTR(
+ 						CAST(dsbd.patient_time AS text),
+ 						0, 
+ 						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+ 					) AS patient_time,
+ 					m.contact
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+WHERE dsbd.doctor_id in (["17","46","44","35","84","50","83","93","77","53","15","97","64","18","95","96","94","32","42","75","99","29","55","37","57","39","72","26","40","20","76","48","61","68","28","65","69","24","100","14","27","71","51","79","74","88","87","19","36","70","49","47","91","30","73","82","56","33","60","45","34","85","80","98","23","54","62","92","78","86","63","67","16","25","12","58","22","8","41","43","90","31","21","89","52","38","66","59"])
+ 					AND dsbd.patient_day >= :beginDate
+ 					AND dsbd.patient_day <= :endDate
+ 					.
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (130)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (272)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+2014/05/29 17:26:23 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "(")
+LINE 2:      CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_na...
+                   ^. Выполнявшийся SQL-запрос: SELECT dsbd.*, d.first_name,d.middle_name,d.last_name
+ 				CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, 
+ 					m.card_number AS card_number,
+ 					SUBSTR(
+ 						CAST(dsbd.patient_time AS text),
+ 						0, 
+ 						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+ 					) AS patient_time,
+ 					m.contact
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."doctors" "d" ON dsbd.doctor_id = d.id
+WHERE dsbd.doctor_id in (17,46,44,35,84,50,83,93,77,53,15,97,64,18,95,96,94,32,42,75,99,29,55,37,57,39,72,26,40,20,76,48,61,68,28,65,69,24,100,14,27,71,51,79,74,88,87,19,36,70,49,47,91,30,73,82,56,33,60,45,34,85,80,98,23,54,62,92,78,86,63,67,16,25,12,58,22,8,41,43,90,31,21,89,52,38,66,59)
+ 					AND dsbd.patient_day >= :beginDate
+ 					AND dsbd.patient_day <= :endDate
+ 					.
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (131)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (275)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+2014/05/29 17:28:16 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42601]: Syntax error: 7 ОШИБКА:  ошибка синтаксиса (примерное положение: "(")
+LINE 2:      CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_na...
+                   ^. Выполнявшийся SQL-запрос: SELECT dsbd.*, d.first_name,d.middle_name,d.last_name
+ 				CONCAT(o.last_name, ' ', o.first_name, ' ', o.middle_name ) as fio, 
+ 					m.card_number AS card_number,
+ 					SUBSTR(
+ 						CAST(dsbd.patient_time AS text),
+ 						0, 
+ 						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+ 					) AS patient_time,
+ 					m.contact
+FROM "mis"."doctor_shedule_by_day" "dsbd"
+JOIN "mis"."medcards" "m" ON dsbd.medcard_id = m.card_number
+JOIN "mis"."oms" "o" ON m.policy_id = o.id
+LEFT JOIN "mis"."doctors" "d" ON dsbd.doctor_id = d.id
+WHERE dsbd.doctor_id in (17,46,44,35,84,50,83,93,77,53,15,97,64,18,95,96,94,32,42,75,99,29,55,37,57,39,72,26,40,20,76,48,61,68,28,65,69,24,100,14,27,71,51,79,74,88,87,19,36,70,49,47,91,30,73,82,56,33,60,45,34,85,80,98,23,54,62,92,78,86,63,67,16,25,12,58,22,8,41,43,90,31,21,89,52,38,66,59)
+ 					AND dsbd.patient_day >= :beginDate
+ 					AND dsbd.patient_day <= :endDate
+ 					.
+in Z:\home\mis.my\www\protected\models\SheduleByDay.php (131)
+in Z:\home\mis.my\www\protected\modules\admin\controllers\SheduleController.php (275)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
