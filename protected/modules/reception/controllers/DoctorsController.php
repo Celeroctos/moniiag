@@ -8,9 +8,17 @@ class DoctorsController extends Controller {
     public function actionSearch() {
         //var_dump($_POST);
         //exit();
+        // Посмотрим на то, какой календарь мы показываем сейчас
+        $calendarTypeSetting = Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value;
+
         $filters = $this->checkFilters();
-        $rows = $_GET['rows'];
-	    $page = $_GET['page'];
+        if($calendarTypeSetting == 0) {
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+        } else {
+            $rows = false; // Всё на одной странице
+            $page = 1;
+        }
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
 
@@ -32,13 +40,21 @@ class DoctorsController extends Controller {
         }
 
         if(isset($_GET['beginDate'])) {
-            $this->greetingDate = $_GET['beginDate'];
+            if($calendarTypeSetting == 1) {
+                $this->greetingDate = $_GET['beginDate'];
+            } else {
+                $this->greetingDate = false;
+            }
         }
 
         // Вычислим общее количество записей
-	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate);
+	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting);
 
-        $totalPages = ceil(count($num) / $rows);
+        if($calendarTypeSetting == 0) {
+            $totalPages = ceil(count($num) / $rows);
+        } else {
+            $totalPages = 1;
+        }
         $start = $page * $rows - $rows;
 
         //var_dump($filters);
@@ -50,13 +66,14 @@ class DoctorsController extends Controller {
         // Посмотрим на то, какой календарь мы показываем сейчас
         $calendarTypeSetting = Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value;
 
+
         if($calendarTypeSetting == 1) {
             $calendarController = Yii::app()->createController('doctors/shedule');
         }
 
         // Если дата не задана, считаем, что дата начала показа органайзера - от текущей даты
         if($calendarTypeSetting == 1) {
-            if($this->greetingDate == null) {
+            if($this->greetingDate == null || $this->greetingDate == false) {
                 $beginYear = date('Y');
                 $beginMonth = date('n');
                 $beginDay = date('j');

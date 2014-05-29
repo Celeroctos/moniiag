@@ -36,7 +36,7 @@ class Doctor extends MisActiveRecord  {
     }
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false, $choosedDiagnosis = array(), $greetingDate = false) {
+                            $limit = false, $choosedDiagnosis = array(), $greetingDate = false, $calendarType = 0) {
 
         $connection = Yii::app()->db;
         $doctor = $connection->createCommand()
@@ -62,11 +62,14 @@ class Doctor extends MisActiveRecord  {
               $doctor->andWhere(array('in', 'md.mkb10_id', $choosedDiagnosis));
           }
 
-
           // Теперь нужно выяснить сотрудников, которые могут принимать в этот день
           if($greetingDate !== false && $greetingDate !== null) {
               // Теперь мы знаем, каких врачей выбирать, с каким днём
-              $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
+              if($calendarType == 0) {
+                 $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
+              } else { // Это выбирает врачей в промежутке
+                 $doctorsPerDay = SheduleSetted::model()->getAllPerDates($greetingDate);
+              }
               $doctorIds = array();
               $num = count($doctorsPerDay);
               for($i = 0; $i < $num; $i++) {

@@ -643,15 +643,14 @@ class SheduleController extends Controller {
 
                 if(($i > $perMonth)) {
                     $day = ($i - $perMonth) < 10 ? '0'.($i - $perMonth) : ($i - $perMonth);
-                    $this->currentMonth++;
+                    $month = ($this->currentMonth + 1) < 10 ? '0'.($this->currentMonth + 1) : ($this->currentMonth + 1);
                 } else {
                     $day = $i < 10 ? '0'.$i : $i;
+                    $month = $this->currentMonth < 10 ? '0'.$this->currentMonth : $this->currentMonth;
                 }
 
-                $month = $this->currentMonth < 10 ? '0'.$this->currentMonth : $this->currentMonth;
-
                 $formatDate =  $this->currentYear.'-'.$month.'-'.$day;
-                var_dump($formatDate);
+                //var_dump($formatDate);
                 $weekday = date('w', strtotime($formatDate));
 
                 // 0 -> 0.. 1 -> 1..
@@ -729,8 +728,8 @@ class SheduleController extends Controller {
                 }
                 $resultArr[(string)$i - 1]['day'] = $i;
             }
+
             return $resultArr;
-			
         }
     }
 
