@@ -1,5 +1,6 @@
 $(document).ready(function() {
-    
+    calendarBuffer = {};
+    dateChanged = new Array();
     // Ставим обработчик - По изменению значений чекбоксов выбора
     //    выходных - кликаем на кнопку, которая засабмичивает форму
     $('#weekEndSelector :checkbox').on(
@@ -9,8 +10,58 @@ $(document).ready(function() {
                                             $('#submitRestDays').click();
                                        }
                                        );
-    
-    $('.calendarTable').on('showCalendar', function(e, restDays, row, col, year, holidays) {
+
+    function synchronizeHolidays()
+    {
+        // Подкачать аяксом выходные текущего года
+        $.ajax({
+            'url' : '/index.php/admin/shedule/getholidays?currentYear=' + globalVariables.currentYear,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if (data.success==true || data.success=='true')
+                {
+                    // Раскодировать данные
+                    var dates = data.data;
+                    // Перебираем дату
+                    for (i in dates)
+                    {
+                        // Если calendarBuffer нет даты - вставляем её в буфер
+                        if (calendarBuffer[i]==undefined)
+                            calendarBuffer[i] = dates[i];
+                    }
+                    $('.calendarTable').empty();
+                    var calendarAll = $('.calendarTable');
+                    for (i=0;i<3;i++)
+                    {
+                        var oneRow = $('<tr>')
+                        $(calendarAll).append(oneRow);
+
+                        for (j=0;j<4;j++)
+                        {
+                            var oneCell = $('<td>');
+                            $(oneCell).addClass('calendarTd');
+                            $(oneCell).append( $('<h6>') );
+                            oneRow.append(oneCell);
+
+                            $('.calendarTable').trigger('showCalendar',[i,j, globalVariables.currentYear])
+                        }
+                    }
+                }
+            }
+        });
+
+    }
+
+    $('.calendarTable').on('refresh', function() {
+        refreshExceptionalDays();
+    });
+
+    var monthsDrawed = 0;
+    $('.calendarTable').on('showCalendar', function(e, row, col, year) {
+        holidays = globalVariables.weekEndDays;
+
         var holidaysArr = [];
         for(var i in holidays) {
             holidaysArr.push(i);
@@ -25,7 +76,7 @@ $(document).ready(function() {
         for(var i = 0; i < 7; i++) {
             tdDayOfWeek = $('<td>');
             $(tdDayOfWeek).text(daysOfWeek[i]);
-            
+
             // Смотрим - является ли день выходным.
             //   Если является - ставим ему класс "rest"
             for(var j = 0; j < holidaysArr.length; j++) {
@@ -36,15 +87,12 @@ $(document).ready(function() {
                     $(tdDayOfWeek).addClass('rest');
                 }
             }
-            
+
             $(theader).append(tdDayOfWeek);
         }
 
         // Смотрим, есть ли уже проставленные дни в календаре
         var restDaysCurrent = [];
-        if(typeof restDays[tdNum] != 'undefined') {
-            restDaysCurrent = restDays[tdNum];
-        }
 
         var tbody = $('<tbody>');
         $(tableForCalendar).append(theader, tbody);
@@ -64,7 +112,7 @@ $(document).ready(function() {
         // На кнопочки "Следующий" и "Предыдущий год" выведем цифры year+1 и year-1
         $('#previousYearBtnCaption').text(year-1);
         $('#nextYearBtnCaption').text(year+1);
-        
+
         // Сначала наполняем первую неделю
         var tr = $("<tr>");
         if(firstWday == 0) {
@@ -89,7 +137,7 @@ $(document).ready(function() {
         // Строим основной месяц
         for(; i < firstWday + numDays; i++) {
             var currentDay = (i - firstWday) + 1;
-            var td = $('<td>').text(currentDay);
+            var td = $('<td>').addClass('clickableCell').text(currentDay);
             if(currentDay < 9) {
                 currentDay = '0' + currentDay;
             }
@@ -98,12 +146,6 @@ $(document).ready(function() {
             $(td).prop({
                 'id' : 'd' + id
             });
-            for(var j = 0; j < restDaysCurrent.length; j++) {
-                var restDayParts = restDaysCurrent[j].date.split(' ');
-                if(id == restDayParts[0]) {
-                    $(td).addClass('clicked');
-                }
-            }
             $(tr).append($(td));
 
             if(i % 7 == 0) {
@@ -121,29 +163,33 @@ $(document).ready(function() {
 
         $(tr).appendTo($(tbody));
         // Теперь стабильные выхи
-        
+
         var trs = $(tbody).find('tr');
         for(var j = 0; j < trs.length; j++) {
             for(var i = 0; i < holidaysArr.length; i++) {
                 if(holidaysArr[i] == 0) {
                     holidaysArr[i] = 7;
                 }
-                $(trs[j]).find('td:eq(' + (holidaysArr[i] - 1) + ')').not('.not-clicked').addClass('rest not-clicked');
+                $(trs[j]).find('td:eq(' + (holidaysArr[i] - 1) + ')').not('.not-clicked').addClass('rest not-clicked').removeClass('clickableCell');
             }
         }
-        
-        
+
+
         $(tableForCalendar).appendTo(tdForTable);
+
+        monthsDrawed++;
+        if (monthsDrawed == 12)
+        {
+            refreshExceptionalDays();
+            monthsDrawed = 0;
+        }
     });
 
+    $(document).on('click', 'td.clickableCell', function() {
+        //onChangeHolidays();
+        onCellClick(this);
+        refreshExceptionalDays();
 
-    $('td.calendarTd').on('click', 'tbody td:not(.not-clicked)', function() {
-        if($(this).hasClass('clicked')) {
-            $(this).removeClass('clicked');
-        } else {
-            $(this).addClass('clicked');
-        }
-        onChangeHolidays();
     });
 
     $("#restcalendar-shedule-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
@@ -153,59 +199,380 @@ $(document).ready(function() {
         }
     });
 
-    /*
-    $('#submitHolidays').on('click', function() {
-        var clickedTds = $('.calendarTable td.calendarTd tbody td.clicked');
-        var jsonData = [];
-        for(var i = 0; i < clickedTds.length; i++) {
-            jsonData.push($(clickedTds[i]).prop('id').substr(1));
-        }
-        $.ajax({
-            'url' : '/index.php/admin/shedule/setholidays?dates=' + $.toJSON(jsonData),
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == true) {
-                    location.reload();
-                } else {
-
-                }
-            }
-        });
-    });
-    */
-    
-    // Обработчик, который должен быть вызван при изменении дня праздничный-рабочий.
-    //  Функция читает все праздничные дни, отмеченные во всём календаре и отправляет их на 
-    function onChangeHolidays()
+    function onCellClick(cellClicked)
     {
-        var clickedTds = $('.calendarTable td.calendarTd tbody td.clicked');
-        var jsonData = [];
-        for(var i = 0; i < clickedTds.length; i++) {
-            jsonData.push($(clickedTds[i]).prop('id').substr(1));
+        // Получим врачей
+        //  Смотрим - они либо из правого списка выбора (если там что-то выбрано)
+        //   либо - из левого (если ничего не выбрано)
+        var selectedDoctors = new Array();
+        var doctors = null;
+        if ( $('#doctorsSelector .twoColumnListTo option').length!=0 )
+        {
+            // Перебираем и снимаем value
+            doctors = $('#doctorsSelector .twoColumnListTo option');
+            for (i=0;i<doctors.length;i++)
+            {
+                selectedDoctors.push($(doctors[i]).val());
+            }
         }
-        $.ajax({
-            'url' : '/index.php/admin/shedule/setholidays?dates=' + $.toJSON(jsonData),
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == true) {
-                    location.reload();
-                } else {
+        else
+        {
+            // Перебираем и снимаем value
+            doctors = $('#doctorsSelector .twoColumnListFrom option');
+            for (i=0;i<doctors.length;i++)
+            {
+                selectedDoctors.push($(doctors[i]).val());
+            }
+        }
 
+        // selectedDoctors - врачи, которым устанавливается дата
+        //
+        // Читаем дату из cellClicked
+        var dateString = $(cellClicked).prop('id').substr(1);
+
+        // Читаем врачей которые в дате
+        var doctorsInDate = calendarBuffer[dateString];
+        if (doctorsInDate==undefined)
+            doctorsInDate = new Array();
+
+        indexToDelete = new Array();
+
+        allFound = true;
+        oneWasFound = false;
+        allTypesIsEqual = true;
+
+        currentType = -1;
+
+        // Пробегаемся по doctorsInDate
+        for (i = 0;i<selectedDoctors.length;i++)
+        {
+            wasFound = false;
+            // Перебираем докторов в массиве selectedDoctors
+            for (j=0;j<doctorsInDate.length;j++)
+            {
+                // ищем по совпадению id-шников
+                if (doctorsInDate[j]['doctor']==selectedDoctors[i])
+                {
+                    // Запоминаем индекс - его надо будет удалить
+                    indexToDelete.push(j);
+
+                    wasFound = true;
+
+                    // Проверим тип
+                    // Если тип равен -1 - берём его из текущего doctorsInDate
+                    if (currentType==-1)
+                    {
+                        currentType = doctorsInDate[j]['type'];
+                    }
+                    else
+                    {
+                        // Проверяем - совпадает ли тип
+                        if (currentType !=doctorsInDate[j]['type'])
+                            allTypesIsEqual = false;
+                    }
+
+
+
+                    break;
                 }
             }
-        });
+            if (!wasFound)
+                allFound = false;
+            else
+            {
+                oneWasFound = true;
+            }
+
+        }
+        // Если тип currentType и значение переключателя не равны
+        //   то сбрасываем флаг "все типы равны"
+        if (  parseInt($('input[name=dayType]:checked')[0].value)!=parseInt(currentType) )
+        {
+            allTypesIsEqual = false;
+        }
+
+        // Имеем три состояния
+        //     allFound = true, allTypesIsEqual = true - квадратик красный
+        //     allFound = true, allTypesIsEqual = false - квадратик жёлтый
+        //     allFound = false, oneWasFound = true - квадратик жёлтый
+        //     allFound = false, oneWasFound = false - квадратик белый
+
+        // Теперь удаляем сконца элементы из массива doctorsInDate
+        for (i=0;i<indexToDelete.length;i++)
+        {
+            doctorsInDate[indexToDelete[i]] = undefined;
+        }
+
+        // Копируем массив
+        newDoctorsInDate = new Array();
+        for (i=0;i<doctorsInDate.length;i++)
+        {
+            if (doctorsInDate[i]!=undefined)
+            {
+                newDoctorsInDate.push(doctorsInDate[i]);
+            }
+        }
+        doctorsInDate = newDoctorsInDate;
+        // Теперь в том случае, если не всё найдено и не все типы равны - добавляем в doctorsInDate врачей с типами их выходного
+        if (!  (allFound && allTypesIsEqual) )
+        {
+            // Добавляем в doctorsInDate
+            if (selectedDoctors.length!=0)
+            {
+                for(i=0;i<selectedDoctors.length;i++)
+                {
+                    var newOneDoctor = {};
+                    newOneDoctor['doctor'] = selectedDoctors[i];
+                    newOneDoctor['type'] = $('input[name=dayType]:checked')[0].value;
+                    doctorsInDate.push(newOneDoctor);
+                }
+            }
+
+        }
+        // Возвращаем данные в буффер
+        calendarBuffer[dateString] = doctorsInDate;
+        dateChanged.push(dateString);
     }
-    
+
+    $('.calendarTable').on('print', function(e) {
+        printYearCalendar();
+    });
+
+
+    // Перебор исключительных дней и перекраска ячеек календаря в соответствии с ними
+    function refreshExceptionalDays()
+    {
+        var types = new Array();
+
+        // Берём врачей, для которые выбраны в селекте
+        var selectedDoctors = new Array();
+        if ( $('#doctorsSelector .twoColumnListTo option').length!=0 )
+        {
+            // Перебираем и снимаем value
+            doctors = $('#doctorsSelector .twoColumnListTo option');
+            for (i=0;i<doctors.length;i++)
+            {
+                selectedDoctors.push($(doctors[i]).val());
+            }
+        }
+        else
+        {
+            // Перебираем и снимаем value
+            doctors = $('#doctorsSelector .twoColumnListFrom option');
+            for (i=0;i<doctors.length;i++)
+            {
+                selectedDoctors.push($(doctors[i]).val());
+            }
+        }
+
+        // Перебираем такие данные в буфере, которые входят в текущий год
+        for (oneDate in calendarBuffer)
+        {
+            // Проверим - надо ли обрабатывать данную запись (если её год равен текущему году из globalVariables)
+            var dateComponents = oneDate.split('-');
+            if ( parseInt(dateComponents[0]) ==  parseInt(globalVariables.currentYear) )
+            {
+                // Теперь надо посмотреть - у всех ли выбранных врачей в данный день выходной и
+                //      причём выходной одного типа
+
+                // Перебираем всех выбранных врачей
+                var types = new Array();
+                yellow = false;
+                wasOneFound = false;
+                for (i=0;i<selectedDoctors.length;i++)
+                {
+                    // Если хотя бы один врач не найден в списке врачей на дату (или не равен type) - то красим в красный цвет
+                    wasFound = false;
+                    for (j=0;j<calendarBuffer[oneDate].length;j++)
+                    {
+                        if (   selectedDoctors[i] ==  calendarBuffer[oneDate][j]['doctor'] )
+                        {
+                            wasFound= true;
+                            wasOneFound = true;
+                            types.push(calendarBuffer[oneDate][j]['type']);
+                            break;
+                        }
+                    }
+                    if (!wasFound)
+                    {
+                        yellow = true;
+                    }
+                }
+
+                // Перебираем типы и проверяем - есть ли исключительные дни разных типов
+                currentType = -10000;
+                for (i=0;i<types.length;i++)
+                {
+                    if (currentType<0)
+                    {
+                        currentType = types[i];
+                    }
+                    else
+                    {
+                        if (currentType!=types[i])
+                        {
+                            yellow = true;
+                        }
+                    }
+                }
+
+                console.log(oneDate);
+                console.log(wasOneFound);
+                console.log(yellow);
+
+                if (!wasOneFound)
+                {
+                    $('#d' + oneDate).removeClass('redCell');
+                    $('#d' + oneDate).removeClass('yellowCell');
+
+                    $('#d' + oneDate).removeClass('greenCell');
+                    $('#d' + oneDate).removeClass('pinkCell');
+                    $('#d' + oneDate).removeClass('blueCell');
+                }
+                else
+                {
+                    if (yellow)
+                    {
+                        $('#d' + oneDate).addClass('yellowCell');
+                        $('#d' + oneDate).removeClass('redCell');
+
+                        $('#d' + oneDate).removeClass('greenCell');
+                        $('#d' + oneDate).removeClass('pinkCell');
+                        $('#d' + oneDate).removeClass('blueCell');
+
+                    }
+                    else
+                    {
+                        // ToDo красить разные типы в разные цвета
+                        switch (parseInt(types[0]))
+                        {
+                            case 1:
+                                $('#d' + oneDate).addClass('redCell');
+                                $('#d' + oneDate).removeClass('greenCell');
+                                $('#d' + oneDate).removeClass('pinkCell');
+                                $('#d' + oneDate).removeClass('blueCell');
+
+                            break;
+
+                            case 2:
+                                $('#d' + oneDate).removeClass('redCell');
+                                $('#d' + oneDate).addClass('greenCell');
+                                $('#d' + oneDate).removeClass('pinkCell');
+                                $('#d' + oneDate).removeClass('blueCell');
+                                break;
+
+                            case 3:
+                                $('#d' + oneDate).removeClass('redCell');
+                                $('#d' + oneDate).removeClass('greenCell');
+                                $('#d' + oneDate).addClass('pinkCell');
+                                $('#d' + oneDate).removeClass('blueCell');
+                                break;
+
+
+                            case 4:
+                                $('#d' + oneDate).removeClass('redCell');
+                                $('#d' + oneDate).removeClass('greenCell');
+                                $('#d' + oneDate).removeClass('pinkCell');
+                                $('#d' + oneDate).addClass('blueCell');
+                                break;
+                        }
+                        $('#d' + oneDate).removeClass('yellowCell');
+                    }
+                }
+            }
+        }
+    }
+
+    // Вывести на экран календарь
+    function printYearCalendar()
+    {
+        if (globalVariables.currentYear == undefined)
+        {
+            globalVariables.currentYear = (new Date()).getFullYear();
+        }
+
+        // Вот тут надо аяксом подтянуть данные дата->врач->тип даты
+        synchronizeHolidays();
+    }
+    $('.editCalendar').on('click',function(){
+        var toSend = {};
+        for (d in calendarBuffer)
+        {
+            // Смотрим - есть ли в списке изменённых
+            //   Данная дата
+
+            for (changed in dateChanged)
+            {
+                // Если d==changed, то добавляем в toSend
+                if (d==dateChanged[changed])
+                    toSend[d] = calendarBuffer[d];
+            }
+
+        }
+
+        // Сохраняем данные в базу
+        params = {
+            'calendarData': $.toJSON(toSend)
+             /* Кодируем в JSON, чтобы не нагружать метод $.ajax. Он ругается */
+        };
+        $.ajax({
+            'url' : '/index.php/admin/shedule/saverestdays',
+            'data' : params,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'POST',
+            'success' : function(data, textStatus, jqXHR) {
+
+                dateChanged = new Array();
+                $('#successPopup').modal({
+                });
+                return;
+            }
+        });
+
+
+    });
+
     $('#showNextYear').click(function() {
-        var year = parseInt($('.currentYear').text());
-        location.href = globalVariables.baseUrl + '/index.php/admin/shedule/viewrest?date=' + (year + 1) + '-01-01';
+        globalVariables.currentYear = parseInt(globalVariables.currentYear)+1;
+        $('.calendarTable').trigger('print');
+        refreshExceptionalDays();
+
     });
     $('#showPrevYear').click(function() {
-        var year = parseInt($('.currentYear').text());
-        location.href = globalVariables.baseUrl + '/index.php/admin/shedule/viewrest?date=' + (year - 1) + '-01-01';
+        globalVariables.currentYear = parseInt(globalVariables.currentYear)-1;
+        $('.calendarTable').trigger('print');
+        refreshExceptionalDays()
     });
+    $('.twoColumnList').on('refresh',
+        function(){
+           // Сортируем по имени элементы
+           //   (и в той и в другой колонке)
+            var $elements = $(this).find('.twoColumnListFrom option');
+            $elements.sort(function (a, b) {
+                var an = $(a).text(),
+                    bn = $(b).text();
+
+                if (an && bn) {
+                    return an.toUpperCase().localeCompare(bn.toUpperCase());
+                }
+
+                return 0;
+            });
+            $elements.detach().appendTo(  $(this).find('.twoColumnListFrom')   );
+            // ------------->
+            var $elements = $(this).find('.twoColumnListTo option');
+            $elements.sort(function (a, b) {
+                var an = $(a).text(),
+                    bn = $(b).text();
+                if (an && bn) {
+                    return an.toUpperCase().localeCompare(bn.toUpperCase());
+                }
+                return 0;
+            });
+            $elements.detach().appendTo(  $(this).find('.twoColumnListTo')   );
+
+            refreshExceptionalDays();
+
+        });
 });

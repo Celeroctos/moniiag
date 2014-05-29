@@ -494,6 +494,14 @@ class SheduleController extends Controller {
     // Логика выдачи календаря:
     /* Выдаются даты + характеристика дат. Например, количество пациентов на день. */
     public function getCalendar($doctorId = false, $startYear = false, $startMonth = false, $startDay = false, $breakByErrors = true) {
+        //!!!!!
+        //var_dump($doctorId);
+        //var_dump($startYear);
+        //var_dump($startMonth);
+        //var_dump($startDay);
+
+
+
         // Выбираем расписание врача
         if((isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) || $doctorId !== false) {
             $doctorId = isset($_GET['doctorid']) ? (int)$_GET['doctorid'] : $doctorId;
@@ -572,17 +580,30 @@ class SheduleController extends Controller {
             }
 
             // Теперь вынем все дни, которые являются праздничными: на них тоже нельзя записывать человеков
-            $paramDate =  $this->currentYear.'-'.($this->currentMonth > 9 ? $this->currentMonth : '0'.$this->currentMonth);
-            $restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 8) = :date', array(':date' => $paramDate));
+            //$paramDate =  $this->currentYear.'-'.($this->currentMonth > 9 ? $this->currentMonth : '0'.$this->currentMonth);
+            $paramDate = $this->currentYear."";
+            //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 8) = :date  AND doctor_id = :doctor',
+            $restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 5) = :date  AND doctor_id = :doctor',
+                    array(
+                    ':date' => $paramDate,
+                    ':doctor' => $doctorId
+                ));
+           // var_dump($restDaysLonely);
+
             $restDaysArrLonely = array();
             foreach($restDaysLonely as $dayLonely) {
-                $parts = explode('-', $dayLonely->date);
-                $restDaysArrLonely[] = (int)$parts[2];
+               // var_dump( substr($dayLonely->date,0,10));
+               // exit();
+               // $parts = explode('-', $dayLonely->date);
+                $restDaysArrLonely[] = substr($dayLonely->date,0,10);
             }
 
             // Теперь смотрим по дням и составляем календарь
             $resultArr = array();
+            //var_dump($dayBegin);
+            //var_dump($dayEnd);
             for($i = $dayBegin; $i <= $dayEnd; $i++) {
+
                 $resultArr[(string)$i - 1] = array();
 
                 // Ведущие нули
@@ -654,7 +675,13 @@ class SheduleController extends Controller {
                     }
                 } else {
                     // Если это выходной, его тоже нужно помечать
-                    if(array_search($weekday, $restDaysArr) !== false || array_search($i, $restDaysArrLonely) !== false) {
+                    // состыкуем дату
+
+
+                    //if(array_search($weekday, $restDaysArr) !== false || array_search($i, $restDaysArrLonely) !== false) {
+                    var_dump($formatDate);
+                    //var_dump($restDaysArrLonely);
+                    if(array_search($weekday, $restDaysArr) !== false || array_search($formatDate, $restDaysArrLonely) !== false) {
                         $resultArr[(string)$i - 1]['restDay'] = true;
                     } else {
                         $resultArr[(string)$i - 1]['restDay'] = false;

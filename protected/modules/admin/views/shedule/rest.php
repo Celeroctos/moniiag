@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/restshedule.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/twocolumncontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <h4>Календарь выходных дней на <strong class="currentYear"><?php echo $year; ?></strong> год</h4>
 <div class="row">
@@ -49,10 +50,55 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
     </div>
     <?php $this->endWidget(); ?>
 </div>
-<p>Дополнительно выделите праздничные и нерабочие дни, нажав на соответствующие ячейки календаря. Чтобы отменить - нажмите повторно на эту же ячейку</p>
+<div class="row">
+    <div class="twoColumnList col-xs-12" id="doctorsSelector" style="text-align: center; vertical-align: middle;">
+            <select multiple="multiple" class="twoColumnListFrom" style="width:300px;height:300">
+                <?php
+                foreach ($doctors as $oneDoctor)
+                {
+                    ?>
+                        <option value="<?php echo $oneDoctor['id']; ?>"><?php
+                            echo ($oneDoctor['last_name'].' '.$oneDoctor['first_name'].' '.$oneDoctor['middle_name']);
+
+                            ?></option>
+                    <?php
+                }
+                ?>
+            </select>
+        <div class="TCLButtonsContainer" style="text-align: center;">
+            <span class = "glyphicon glyphicon-forward twoColumnAddAllBtn"></span>
+            <span class = "glyphicon glyphicon-backward twoColumnRemoveAllBtn"></span>
+
+            <span class = "glyphicon glyphicon-arrow-right twoColumnAddBtn"></span>
+            <span class = "glyphicon glyphicon-arrow-left twoColumnRemoveBtn"></span>
+
+
+        </div>
+            <select multiple="multiple" class="twoColumnListTo" style="width:300px;height:300">
+                <!-- Здесь будут выбранные опции -->
+
+            </select>
+        <input type="hidden" id="doctorsToChangeTimetable" class="twoColumnHidden"></input>
+    </div>
+</div>
+<div class="row">
+    <input type="radio" id="dayType" name="dayType" value = "1" checked>Выходной<br>
+    <input type="radio" id="dayType" name="dayType" value = "2">Отпуск<br>
+    <input type="radio" id="dayType" name="dayType" value = "3">Болезнь<br>
+    <input type="radio" id="dayType" name="dayType" value = "4">Командировка<br>
+</div>
 <div class="row">
     <table class="calendarTable">
-        <?php for($i = 0; $i < 3; $i++) { ?>
+
+        <script type="text/javascript">
+            globalVariables.weekEndDays = <?php echo $selectedDaysJson; ?>;
+            $(document).ready(function() {
+                $('.calendarTable').trigger('print');
+                $('.calendarTable').trigger('refresh');
+            });
+        </script>
+
+        <?php if (false) for($i = 0; $i < 3; $i++) { ?>
             <tr>
                 <?php for($j = 0; $j < 4; $j++) { ?>
                     <td class="calendarTd">
@@ -69,6 +115,24 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
     </table>
     <!--<input type="button" value="Сохранить" id="submitHolidays" class="btn btn-success">-->
 </div>
+<div class="modal fade error-popup" id="successPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Расписание успешно изменено.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row default-padding-left yearBtnCont">
     <button id="showPrevYear" class="btn btn-primary" type="button">
         <span class="glyphicon glyphicon-arrow-left"></span><span> </span><span id="previousYearBtnCaption">Предыдущий год
@@ -76,4 +140,5 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
     <button id="showNextYear" class="btn btn-primary" type="button" >
         <span id="nextYearBtnCaption">Следующий год</span><span> </span><span class="glyphicon glyphicon-arrow-right"></span>
     </button>
+    <button type="button" class="btn btn-primary editCalendar">Сохранить</button>
 </div>

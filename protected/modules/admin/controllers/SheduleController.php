@@ -292,23 +292,34 @@ class SheduleController extends Controller {
  	//    у данного врача
  	public function actionIsGreeting()
  	{
+
  		$dateBegin = $_GET['begin'];
  		$dateEnd = $_GET['end'];
  		$doctorId = $_GET['doctor_id'];
- 	
- 		// Выбираем по доктору, дате начала и дате конца
- 		$greetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end', 
- 												array(':doctor_id' => $doctorId,':date_begin' => $dateBegin,
- 															':date_end' => $dateEnd
- 													)
- 											);
- 		
- 		// Возвращаем количество записей
- 		echo CJSON::encode(array('success' => true,
- 			'data' => count($greetings) ));
- 		
+
+        // Возвращаем количество записей
+        echo CJSON::encode(array('success' => true,
+            'data' => $this->isGreetingInternal($dateBegin, $dateEnd, array( $doctorId ) )
+
+        ));
+
  	}
- 	
+
+    // Вытаскиваем приёмы по id докторов и дате начала и конца
+    private function isGreetingInternal($begin, $end, $doctors)
+    {
+        $doctorsStr = implode(",", $doctors);
+
+        $greetings = SheduleByDay::model()->findAll('doctor_id in (:doctors) AND patient_day >= :date_begin AND patient_day <= :date_end',
+            array(':doctors' => $doctorsStr,':date_begin' => $begin,
+                ':date_end' => $end
+            )
+        );
+
+
+        return count($greetings);
+    }
+
  	function actionIntersectionGreeting()
  	{
  		$dateBegin = $_GET['begin'];
@@ -810,6 +821,14 @@ class SheduleController extends Controller {
         $restDays = SheduleRest::model()->findAll();
         $restDaysResponse = array();
         $restDaysValues = array();
+
+        // Выбираем докторов с табельным номером
+        $doctorObject = new Doctor();
+        $doctors = $doctorObject->getAll();
+        //var_dump($doctors);
+        //exit();
+
+
         if(!isset($_GET['date'])) {
             $dateBegin = date('Y-n-j');
         } else {
@@ -824,6 +843,8 @@ class SheduleController extends Controller {
         //exit();
         $restModel->restDays = $restDaysValues;
         $parts = explode('-', $dateBegin);
+        //var_dump($doctors);
+        //exit();
         $this->render('rest', array(
             'model' => $restModel,
             'selectedDaysJson' => CJSON::encode($restDaysResponse),
@@ -831,6 +852,7 @@ class SheduleController extends Controller {
             'restCalendars' => CJSON::encode($this->getRestDays($dateBegin)),
             'firstDay' => date('w', strtotime($dateBegin)),
             'year' => $parts[0],
+            'doctors' => $doctors,
             'displayPrev' => date('Y') < $parts[0],
             'restDays' => array(1 => 'Понедельник',
                 2 => 'Вторник',
@@ -876,6 +898,56 @@ class SheduleController extends Controller {
             $response[$month - 1][] = $day;
         }
         return $response;
+    }
+
+    public function actionSaveRestDays()
+    {
+        // Получим данные для записи (они были заэнкожены, чтобы было проще передать)
+        $dataToWrite = CJSON::decode($_POST['calendarData']);
+        // Теперь надо убить все строки с датами, которые указаны в пришедших данных
+
+        // Читаем ключи ассоциативного массива
+        $dateToDelete = array();
+        foreach ($dataToWrite as $key => $oneDate)
+        {
+            $dateToDelete[] = $key;
+        }
+        // Удаляем
+        SheduleRestDay::deleteDates($dateToDelete);
+        // А теперь пишем обратно
+        SheduleRestDay::writeAllRestDays($dataToWrite);
+
+        echo CJSON::encode(array('success' => true,
+            'data' => array()));
+    }
+
+
+    public function actionGetHolidays($currentYear)
+    {
+        // Прочтём SheduleRestDay для года, который указан в currentYear
+        //    отсортируем по дате
+        $restSheduleDays = SheduleRestDay::getYearRestDays($currentYear);
+
+        $result = array();
+        // Если не пустой вывод из базы
+        if (count($restSheduleDays )!=0)
+        {
+            $keys = array_keys($restSheduleDays);
+            $currentDate = $restSheduleDays[$keys[0]]['date'];
+            // Перебираем результаты запроса и добавляем их в результат
+            foreach ($restSheduleDays as $oneDay)
+            {
+                $oneDoctor = array();
+                $oneDoctor['doctor'] = $oneDay['doctor_id'];
+                $oneDoctor['type'] = $oneDay['type'];
+
+                $result[ substr($oneDay['date'],0,10)][] = $oneDoctor;
+
+            }
+
+        }
+        echo CJSON::encode(array('success' => true,
+            'data' => $result));
     }
 
     public function actionSetHolidays() {
