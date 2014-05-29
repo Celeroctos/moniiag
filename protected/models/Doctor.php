@@ -58,7 +58,7 @@ class Doctor extends MisActiveRecord  {
               ));
           }
 
-/*          if(count($choosedDiagnosis) > 0) {
+         if(count($choosedDiagnosis) > 0) {
               $doctor->andWhere(array('in', 'md.mkb10_id', $choosedDiagnosis));
           }
 
@@ -79,7 +79,7 @@ class Doctor extends MisActiveRecord  {
               $doctor->order($sidx.' '.$sord);
               $doctor->limit($limit, $start);
           }
-*/
+
         $doctors = $doctor->queryAll();
         return $doctors;
     }
