@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#templates").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/templates/get',
         datatype: "json",
-        colNames:['Код', 'Название', 'Страница', 'Категории', '', ''],
+        colNames:['Код', 'Название', 'Страница', 'Категории', 'Обязательность диагноза', 'Порядок', '', '', ''],
         colModel:[
             {
                 name:'id',
@@ -28,6 +28,16 @@ $(document).ready(function() {
                 }
             },
             {
+                name: 'primary_diagnosis_desc',
+                index:'primary_diagnosis_desc',
+                width: 200
+            },
+            {
+                name: 'index',
+                index: 'index',
+                width: 80
+            },
+            {
                 name: 'page_id',
                 index: 'pageId',
                 hidden: true
@@ -35,6 +45,11 @@ $(document).ready(function() {
             {
                 name: 'categorie_ids',
                 index: 'categorie_ids',
+                hidden: true
+            },
+            {
+                name: 'primary_diagnosis',
+                index: 'primary_diagnosis',
                 hidden: true
             }
         ],
@@ -149,6 +164,14 @@ $(document).ready(function() {
                             {
                                 modelField: 'page_id',
                                 formField: 'pageId'
+                            },
+                            {
+                                modelField: 'primary_diagnosis',
+                                formField: 'primaryDiagnosisFilled'
+                            },
+                            {
+                                modelField: 'index',
+                                formField: 'index'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {

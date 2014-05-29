@@ -26,23 +26,23 @@
             'rules' : [
                 {
                     'field' : 'oms_number',
-                    'op' : 'bw',
+                    'op' : 'eq',
                     'data' :  $('#omsNumber').val()
                 },
                 {
                     'field' : 'first_name',
                     'op' : 'eq',
-                    'data' : $('#firstName').val()
+                    'data' : $('#firstName').val().toUpperCase()
                 },
                 {
                     'field' : 'middle_name',
                     'op' : 'eq',
-                    'data' : $('#middleName').val()
+                    'data' : $('#middleName').val().toUpperCase()
                 },
                 {
                     'field' : 'last_name',
                     'op' : 'eq',
-                    'data' : $('#lastName').val()
+                    'data' : $('#lastName').val().toUpperCase()
                 },
                 {
                     'field' : 'address_reg_str',
@@ -56,22 +56,22 @@
                 },
                 {
                     'field' : 'card_number',
-                    'op' : 'cn',
+                    'op' : 'bw',
                     'data' : $('#cardNumber').val()
                 },
                 {
                     'field' : 'serie',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#serie').val()
                 },
                 {
                     'field' : 'docnumber',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#docnumber').val()
                 },
                 {
                     'field' : 'snils',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#snils').val()
                 },
                 {
@@ -81,6 +81,7 @@
                 }
             ]
         };
+
         return Result;
     }
 
@@ -99,7 +100,7 @@
         $('#notFoundPopup').modal({
         });
     }
-    
+
     function updatePatientWithCardsList() {
         var filters = getFilters();
         var PaginationData=getPaginationParameters('omsSearchWithCardResult');

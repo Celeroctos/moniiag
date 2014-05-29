@@ -81,6 +81,16 @@ class MedcardTemplate extends MisActiveRecord {
 
         return $templates->queryAll();
     }
+
+    public function getTemplateIndexes() {
+        $connection = Yii::app()->db;
+        $templates = $connection->createCommand()
+            ->selectDistinct('me.index')
+            ->from(MedcardTemplate::tableName().' me')
+            ->order('me.index', 'asc');
+
+        return $templates->queryAll();
+    }
 }
 
 ?>

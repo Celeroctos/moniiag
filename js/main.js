@@ -529,10 +529,6 @@ $('select[multiple="multiple"]').each(function(index, select) {
 	});*/ 
 });
 
-$('input[type="number"]').on('keydown', function(e) {
-
-});
-
  globalVariables.notChangeNavButton = false;
  $('.buttonUpContainer').click(function () {
  // Смотрим - есть ли у this класс "backWardButton"
@@ -658,7 +654,6 @@ $('input[type="number"]').on('keydown', function(e) {
         wasLoadedMessages = false;
         function refreshIndicators()
         {
-            return false;
             // Если панель удалённых показания свёрнута - выходим из функции
             /*if ($('.alerts-cont .panel-arrow span').hasClass('glyphicon-expand'))
              {
@@ -670,6 +665,7 @@ $('input[type="number"]').on('keydown', function(e) {
              console.log('Тест');
              }*/
             console.log('Тест');
+            //return false;
             $.ajax({
                 'url' : '/index.php/doctors/patient/getindicators',
                 'data' : {
@@ -692,8 +688,8 @@ $('input[type="number"]').on('keydown', function(e) {
                                 },
                                 1000
                             );
-
-
+                            // Устанавливаем тайм-аут
+                            setTimeout(refreshIndicators,2000);
                             // Загорается кнопочка
                         }
                         else
@@ -707,18 +703,17 @@ $('input[type="number"]').on('keydown', function(e) {
                     } else {
 
                     }
+
+                    // Устанавливаем тайм-аут
+                    setTimeout(refreshIndicators,2000);
                 }
             });
-
-            // Устанавливаем тайм-аут
-            setTimeout(refreshIndicators,2000);
         }
         setTimeout(refreshIndicators,2000);
 
         // По клику на кнопку перенаправляемся на страницу со списком мониторингов
         $(document).on('click', '.is-patients-to-check', function()
         {
-            console.log('!');
             // Перенаправляем на страницу
             location.href = '/index.php/doctors/patient/viewmonitoring?alarm=1'
         });
@@ -733,5 +728,11 @@ $('input[type="number"]').on('keydown', function(e) {
             return false;
         }
     );
+
+    $(document).on('keydown', function(e) {
+        if(e.keyCode == 27) {
+            $('.modal').modal('hide');
+        }
+    });
 
 });

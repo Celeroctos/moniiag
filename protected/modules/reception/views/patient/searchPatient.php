@@ -40,7 +40,7 @@
         <div class="form-group">
             <label for="firstName" class="col-xs-4 control-label">Имя</label>
             <div class="col-xs-8">
-                <input type="text" class="form-control" id="firstName" placeholder="Имя" data-toggle="tooltip" data-placement="right" title="Имя может состоять из кириллицы и дефисов">
+                <input type="text" class="form-control" id="firstName" placeholder="Имя" data-toggle="tooltip" data-placement="right" title="Имя может состоять из кириллицы и дефисов" >
             </div>
         </div>
         <div class="form-group">

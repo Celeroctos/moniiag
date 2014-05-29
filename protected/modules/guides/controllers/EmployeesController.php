@@ -125,7 +125,6 @@ class EmployeesController extends Controller {
     }
 
     private function addEditModel($employee, $model, $msg) {
-
         $employee->first_name = $model->firstName;
         $employee->middle_name = $model->middleName;
         $employee->last_name = $model->lastName;
@@ -216,7 +215,7 @@ class EmployeesController extends Controller {
             }
 
             foreach($employees as $key => &$employee) {
-                $employee['fio'] = $employee['first_name'].' '.$employee['middle_name'].' '.$employee['last_name'];
+                $employee['fio'] = $employee['first_name'].' '.$employee['last_name'].' '.$employee['middle_name'];
                 $employee['more_info'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть подробную информацию по '.$employee['fio'].'"><span class="glyphicon glyphicon-share-alt"></span>
 </a>';
                 $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>

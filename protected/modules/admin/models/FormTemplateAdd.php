@@ -6,12 +6,14 @@ class FormTemplateAdd extends CFormModel
     public $categorieIds;
     public $pageId;
     public $name;
+    public $index;
+    public $primaryDiagnosisFilled;
 
     public function rules()
     {
         return array(
             array(
-                'name, pageId', 'required'
+                'name, pageId, index, primaryDiagnosisFilled', 'required'
             ),
             array(
                 'id, categorieIds', 'safe'
@@ -24,7 +26,9 @@ class FormTemplateAdd extends CFormModel
         return array(
             'pageId' => 'Тип шаблона',
             'categorieIds' => 'Категории',
-            'name' => 'Названиие'
+            'name' => 'Названиие',
+            'primaryDiagnosisFilled' => 'Обязательность заполнения основного диагноза',
+            'index' => 'Порядковый номер отображения для врача'
         );
     }
 }

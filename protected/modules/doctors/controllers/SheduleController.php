@@ -61,10 +61,26 @@ class SheduleController extends Controller {
                     }
 
                     $templatesListWithTemplateData = array();
+                    $requiredDiagnosis = array();
                     foreach($_POST['templatesList'] as $key => $id) {
                         $templModel = MedcardTemplate::model()->findByPk($id);
                         $templatesListWithTemplateData[] = $templModel;
+                        $requiredDiagnosis['t'.$id] = array(
+                            'name' => $templModel->name,
+                            'isReq' => $templModel->primary_diagnosis
+                        );
                     }
+
+                    usort($templatesListWithTemplateData, function($template1, $template2) {
+                        if($template1->index > $template2->index) {
+                            return 1;
+                        } elseif($template1->index < $template2->index) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+
                     $templatesList = $templatesListWithTemplateData;
                 } else {
                     $canEditMedcard = 0;
@@ -131,8 +147,24 @@ class SheduleController extends Controller {
             'templatesList' => isset($templatesList) ? $templatesList : array(),
             'referenceTemplatesList' => isset($referenceTemplatesList) ? $referenceTemplatesList : array(),
             'greeting' => (isset($greeting)) ? $greeting : null,
+            'requiredDiagnosis' => isset($requiredDiagnosis) ? $requiredDiagnosis : array(),
 			'medcardRecordId' => $medcardRecordId,
             'templateModel' =>  new  FormTemplateDefault()
+        ));
+    }
+
+    public function actionGetPrimaryDiagnosis() {
+        if(!isset($_GET['greeting_id'])) {
+            echo CJSON::encode(array(
+                'success' => false,
+                'text' => 'Не хватает данных о приёме!'
+            ));
+            exit();
+        }
+        $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['greeting_id'], 0);
+        echo CJSON::encode(array(
+            'success' => true,
+            'data' => count($primaryDiagnosis)
         ));
     }
 
@@ -619,6 +651,7 @@ class SheduleController extends Controller {
                 $month = $this->currentMonth < 10 ? '0'.$this->currentMonth : $this->currentMonth;
 
                 $formatDate =  $this->currentYear.'-'.$month.'-'.$day;
+                var_dump($formatDate);
                 $weekday = date('w', strtotime($formatDate));
 
                 // 0 -> 0.. 1 -> 1..
@@ -626,7 +659,7 @@ class SheduleController extends Controller {
                 $expsIndex = array_search($formatDate, $exps);
                 $usualIndex = array_search($weekday, $usual);
 
-                if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($i, $restDaysArrLonely) === false) || $expsIndex !== false) {
+                if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($formatDate, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
                     $resultArr[(string)$i - 1]['worked'] = true;
                     $resultArr[(string)$i - 1]['restDay'] = false;
@@ -679,7 +712,7 @@ class SheduleController extends Controller {
 
 
                     //if(array_search($weekday, $restDaysArr) !== false || array_search($i, $restDaysArrLonely) !== false) {
-                    var_dump($formatDate);
+                    //var_dump($formatDate);
                     //var_dump($restDaysArrLonely);
                     if(array_search($weekday, $restDaysArr) !== false || array_search($formatDate, $restDaysArrLonely) !== false) {
                         $resultArr[(string)$i - 1]['restDay'] = true;
@@ -759,7 +792,10 @@ class SheduleController extends Controller {
                 $choosedType = $sheduleElement['type']; // Далее можно выбрать только частный день
             }
         }
-		if (count($sheduleElements)>0)
+        $primaryGreetings = 0;
+        $secondaryGreetings = 0;
+
+        if (count($sheduleElements)>0)
 		{
 			$increment = $settings['timePerPatient'] * 60;
 			$result = array();
@@ -767,12 +803,7 @@ class SheduleController extends Controller {
 			$currentTimestamp = time();
 			$parts = explode('-', $formatDate);
 			$today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
-            $primaryGreetings = 0;
-            $secondaryGreetings = 0;
-			//var_dump($timestampBegin);
-			//exit();
 			for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
-				//var_dump("!");
 				if($currentTimestamp >= $i && $today) {
 					continue;
 				}
@@ -789,6 +820,7 @@ class SheduleController extends Controller {
 								$patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
 							}
 						}
+
 						$result[] = array(
 							'timeBegin' => date('G:i', $i),
 							'timeEnd' => date('G:i', $i + $increment),
@@ -836,7 +868,7 @@ class SheduleController extends Controller {
 			$result = array();
 			$numRealPatients = 0;
 		}
-		
+
 		return array(
                 'result' => $result,
                 'allReserved' => $numRealPatients == count($result),
@@ -870,6 +902,21 @@ class SheduleController extends Controller {
         // Определим день
         $weekday = date('w', strtotime($formatDate));
         $sheduleSetted = SheduleSetted::model()->find('weekday = :weekday AND employee_id = :employee_id AND day IS NULL', array(':weekday' => $weekday, ':employee_id' => $_GET['doctor_id']));
+
+        // Обработка коллизии выбора одного и того же времени у врачей
+        $issetSheduleElement = SheduleByDay::model()->find('doctor_id = :doctor_id AND patient_day = :patient_day AND patient_time = :patient_time',
+        array(
+            ':doctor_id' => $_GET['doctor_id'],
+            ':patient_day' => $formatDate,
+            ':patient_time' => $formatTime
+        ));
+
+        // Коллизия: время уже занято
+        if($issetSheduleElement != null) {
+            echo CJSON::encode(array('success' => 'false',
+                                     'error' => 'Время, на которое Вами записывается пациент, уже занято! Пожалуйста, выберите другое время!'));
+            exit();
+        }
         $sheduleElement = new SheduleByDay();
         $sheduleElement->doctor_id = $_GET['doctor_id'];
         $sheduleElement->patient_day = $formatDate;

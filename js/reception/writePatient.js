@@ -23,52 +23,52 @@
             'rules' : [
                 {
                     'field' : 'oms_number',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' :  $('#omsNumber').val()
                 },
                 {
                     'field' : 'first_name',
-                    'op' : 'cn',
-                    'data' : $('#firstName').val()
+                    'op' : 'eq',
+                    'data' : $('#firstName').val().toUpperCase()
                 },
                 {
                     'field' : 'middle_name',
-                    'op' : 'cn',
-                    'data' : $('#middleName').val()
+                    'op' : 'eq',
+                    'data' : $('#middleName').val().toUpperCase()
                 },
                 {
                     'field' : 'last_name',
-                    'op' : 'cn',
-                    'data' : $('#lastName').val()
+                    'op' : 'eq',
+                    'data' : $('#lastName').val().toUpperCase()
                 },
                 {
-                    'field' : 'address_reg',
+                    'field' : 'address_reg_str',
                     'op' : 'cn',
                     'data' : $('#addressReg').val()
                 },
                 {
-                    'field' : 'address',
+                    'field' : 'address_str',
                     'op': 'cn',
                     'data' : $('#address').val()
                 },
                 {
                     'field' : 'card_number',
-                    'op' : 'cn',
+                    'op' : 'bw',
                     'data' : $('#cardNumber').val()
                 },
                 {
                     'field' : 'serie',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#serie').val()
                 },
                 {
                     'field' : 'docnumber',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#docnumber').val()
                 },
                 {
                     'field' : 'snils',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#snils').val()
                 },
                 {
@@ -109,6 +109,7 @@
                 'op' : 'eq',
                 'data' : $('#post').val()
             },
+
 			{
                 'field' : 'greeting_type',
                 'op' : 'eq',
@@ -571,7 +572,12 @@
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
                     }
                 } else {
-
+                    // Удаляем предыдущие ошибки
+                    $('#errorPopup .modal-body .row p').remove();
+                    // Вставляем новые
+                    $('#errorPopup .modal-body .row').append("<p>" + data.error + "</p>");
+                    $('#errorPopup').modal({
+                    });
                 }
                 return;
             }
@@ -679,17 +685,12 @@
                         loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
                     }
                 } else {
-                    $('#errorPopup .modal-body .row').empty();
-                    for(var i in data.errors) {
-                        for(var j = 0; j < data.errors[i].length; j++) {
-                            $('#errorPopup .modal-body .row').append("<p>" + data.errors[i][j] + "</p>")
-                        }
-                    }
-
+                    // Удаляем предыдущие ошибки
+                    $('#errorPopup .modal-body .row p').remove();
+                    // Вставляем новые
+                    $('#errorPopup .modal-body .row').append("<p>" + data.error + "</p>");
                     $('#errorPopup').modal({
-
                     });
-
                 }
                 return;
             }

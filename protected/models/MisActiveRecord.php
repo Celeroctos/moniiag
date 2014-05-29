@@ -7,9 +7,10 @@ class MisActiveRecord extends CActiveRecord {
      * array('interfaceField' => array('dbfield1' ... ) ... )
      * @param $aliases - массив в виде array('aliasOfTable' => array(field1, ...) ... ) - алиасы таблиц для поиска. Первое измерение - псевдоним таблицы, второе - поля данной таблицы-алиаса
      * @param $fieldAliases - массив алиасов полей
+     * @subGroupOp - субгрупповой оператор в формате 'Оператор' => 'Поле'
      */
 
-    protected function getSearchConditions($conn, $filters, $multipleFields, $aliases, $fieldAliases) {
+    protected function getSearchConditions($conn, $filters, $multipleFields, $aliases, $fieldAliases, $subGroupOp = array()) {
         foreach($filters['rules'] as $index => $filter) {
 	        if(!isset($filter['data']) || (!is_array($filter['data']) && trim($filter['data']) == '') || (is_array($filter['data']) && count($filter['data'])) > 0) { // При пустых входных данных не нужно делать доп. условие
         		continue;
@@ -18,21 +19,37 @@ class MisActiveRecord extends CActiveRecord {
                 // Условия по всем полям, которые попадают под составное поле
                 $opCounter = 0;
                 foreach($multipleFields[$filter['field']] as $key => $dbField) {
+
+                    if($opCounter == 0) {
+                        $groupFilter = $filters['groupOp'];
+                        $opCounter++;
+                        $isFound = false;
+                        foreach($subGroupOp as $op => $fieldsInOp) {
+                            foreach($fieldsInOp as $fieldInOp) {
+                                // Если есть совпадение по оператору
+                                if($fieldInOp == $dbField) {
+                                    $groupFilter = $op;
+                                    $isFound = true;
+                                    break;
+                                }
+                            }
+                            if($isFound) {
+                                break;
+                            }
+                        }
+                    } else {
+                        $groupFilter = 'OR';
+                    }
+
                     if(isset($fieldAliases[$dbField])) {
                         $dbFieldReal = $fieldAliases[$dbField];
                     } else {
                         $dbFieldReal = $dbField;
                     }
 
-                    if($opCounter == 0) {
-                        $groupFilter = $filters['groupOp'];
-                        $opCounter++;
-                    } else {
-                        $groupFilter = 'OR';
-                    }
-
                     $filterByField = array(
                         'field' => $dbFieldReal,
+                        'field_alias' => $dbField,
                         'op' => $filter['op'],
                         'data' => $filter['data']
                     );
@@ -45,13 +62,33 @@ class MisActiveRecord extends CActiveRecord {
                     $dbFieldReal = $filter['field'];
                 }
 
+                $isFound = false;
+                foreach($subGroupOp as $op => $fieldsInOp) {
+                    foreach($fieldsInOp as $fieldInOp) {
+                        // Если есть совпадение по оператору
+                        if($fieldInOp == $filter['field']) {
+                            $subGroupFilter = $op;
+                            $isFound = true;
+                            break;
+                        }
+                    }
+                    if($isFound) {
+                        break;
+                    }
+                }
+                if(!$isFound) {
+                    $subGroupFilter = $filters['groupOp'];
+                }
+
                 $filterByField = array(
                     'field' => $dbFieldReal,
+                    'field_alias' => $filter['field'],
                     'op' => $filter['op'],
                     'data' => $filter['data']
                 );
 
-                $this->getSearchOperator($conn, $filters['groupOp'], $filterByField, $this->searchAlias($filter['field'], $aliases));
+
+                $this->getSearchOperator($conn, $subGroupFilter, $filterByField, $this->searchAlias($filter['field'], $aliases));
             }
         }
     }
@@ -74,25 +111,26 @@ class MisActiveRecord extends CActiveRecord {
      * @param $filter
      */
     protected function getSearchOperator($conn, $chainOp, $filter, $alias) {
-        $filter['data'] = mb_strtolower($filter['data'], 'UTF-8'); // Прикольно. Он не может без необязательного параметра различить кодировку.
+        //$filter['data'] = mb_strtolower($filter['data'], 'UTF-8'); // Прикольно. Он не может без необязательного параметра различить кодировку.
+       // $filter['data'] = trim($filter['data']);
         switch($filter['op']) {
             case 'eq' :
-                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' = :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' = :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' = :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' = :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data']));
             break;
             case 'ne' :
-                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' != :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' != :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' != :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' != :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data']));
             break;
             case 'lt' :
-                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' < :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' < :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' < :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' < :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data']));
             break;
             case 'le' :
-                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' <= :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' <= :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' <= :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' <= :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data']));
             break;
             case 'gt' :
-                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' > :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' > :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' > :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' > :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data']));
             break;
             case 'ge' :
-                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' >= :'.$filter['field'], array(':'.$filter['field'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' >= :'.$filter['field'], array(':'.$filter['field'] => $filter['data']));
+                $chainOp == 'AND' ? $conn->andWhere($alias.'.'.$filter['field'].' >= :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data'])) : $conn->orWhere($alias.'.'.$filter['field'].' >= :'.$filter['field_alias'], array(':'.$filter['field_alias'] => $filter['data']));
             break;
             case 'bw' :
                 $chainOp == 'AND' ? $conn->andWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%')) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', $filter['data'].'%'));

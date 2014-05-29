@@ -79,7 +79,7 @@ class Doctor extends MisActiveRecord  {
         }
 
         $doctors = $doctor->queryAll();
-        foreach($doctors as $key => &$doctor) {
+       foreach($doctors as $key => &$doctor) {
             $doctor['cabinets'] = array();
             $cabinets = DoctorCabinet::model()->findAll('doctor_id = :doctor_id', array(':doctor_id' => $doctor['id']));
             foreach($cabinets as $cabinet) {

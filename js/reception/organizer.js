@@ -2,13 +2,14 @@
     var clickedTimeLi = null;
     var clickedDayLi = null;
     var triggeredByLoad = true; // Это для вызова окна записанного пациента автоматом
+    var pregnantGreetingsTimeLimit = null; // Настройка по предельному времени приёма для беременных
+    var primaryGreetingsTimeLimit = null; // Настройка по предельному времени приёма для первичных приёмов
 
     $('.organizer').on('returnDate', function(e) {
         prevBeginDate(false);
     });
 
     $('.organizer').on('resetClickedTime', function(e) {
-        console.log( $(clickedTimeLi));
         $(clickedTimeLi).removeClass('withPatient-pressed pressed');
         clickedTimeLi = null;
     });
@@ -60,7 +61,12 @@
                     $('.organizer').trigger('resetClickedTime');
                     $('.organizer').trigger('resetClickedDay');
                 } else {
-
+                    // Удаляем предыдущие ошибки
+                    $('#errorPopup .modal-body .row p').remove();
+                    // Вставляем новые
+                    $('#errorPopup .modal-body .row').append("<p>" + data.error + "</p>");
+                    $('#errorPopup').modal({
+                    });
                 }
                 return;
             }
@@ -128,7 +134,7 @@
 
         $(span).on('click', function(e) {
             $(li).popover('hide');
-            $(clickedDayLi).removeClass('empty-pressed notfull-pressed full-pressed');
+            $(li).removeClass('withPatient-pressed');
             e.stopPropagation();
         });
 
@@ -219,15 +225,19 @@
                 if(i != 0) { // Если не первый день - првиети к первому дню. Если нет ид расписания
                     globalVariables.beginDate = d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getDate();
                 } else {
-                    d.setDate(d.getDate() + 7);
-                    globalVariables.beginDate = d.getFullYear() + '-' + (parseInt(d.getMonth()) + 1) + '-' + d.getDate();
+                    var tempD = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+                    tempD.setDate(tempD.getDate() + 7);
+                    globalVariables.beginDate = tempD.getFullYear() + '-' + (parseInt(tempD.getMonth()) + 1) + '-' + tempD.getDate();
                 }
             }
             $(headerTd).appendTo(headerCont);
         }
 
+        pregnantGreetingsTimeLimit = data.pregnantGreetingsLimit.split(':');
+        primaryGreetingsTimeLimit = data.primaryGreetingsLimit.split(':');
         // Заполняем список врачей
         var data = data.data;
+
         for(var i = 0; i < data.length; i++) {
             // Тех, у кого расписания нет, бессмысленно показывать
             if(data[i].shedule.length == 0) {
@@ -236,7 +246,7 @@
             // Формируем строку с врачом (ФИО-должность)
             var doctorTr = $('<tr>').append($('<td>').prop('class', 'doctor_cell').html(
                 data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '<span>' + data[i].post + '</span>'
-            )
+                )
             )
 
             $(doctorList).append(doctorTr);
@@ -267,6 +277,12 @@
                         // Рабочие дни
                         var beginTime = dayData.beginTime.substr(0, dayData.beginTime.lastIndexOf(':'));
                         var endTime = dayData.endTime.substr(0, dayData.endTime.lastIndexOf(':'));
+                        if(dayData.secondaryGreetings == null) { // Странный фикс: иногда возвращается null
+                            dayData.secondaryGreetings = 0;
+                        }
+                        if(dayData.primaryGreetings == null) { // Странный фикс: иногда возвращается null
+                            dayData.primaryGreetings = 0;
+                        }
                         $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + (parseInt(dayData.secondaryGreetings) + parseInt(dayData.primaryGreetings)));
 
                         if(dayData.numPatients == 0) {
@@ -329,6 +345,11 @@
                                                     content: function() {
                                                         var ulInPopover = $('<ul>').addClass('patientList');
                                                         for(var j = 0; j < data.data.length; j++) {
+                                                            // Проверка настроек и текущего времени: нельзя записать на прошлое время
+                                                            if(!isPassedTime(data.data[j].timeBegin, date, true)) {
+                                                                continue;
+                                                            }
+
                                                             var li = $('<li>').css({
                                                                 'cursor' : 'pointer'
                                                             }).prop({
@@ -444,6 +465,12 @@
                                 });
                             });
                         })(i, li, counter, dayData);
+
+                        // Де-факто после того, как полностью сформирован список, может получиться так, что в нём ни одного элемента. В первую очередь это выясняется по времени окончания смены
+                        if(!isPassedTime(data[i].shedule[j].endTime, dates[counter])) {
+                            $(li).removeClass('not-full full empty').addClass('not-aviable').off('click');
+                        }
+
                     } else {
                         $(li).addClass('not-aviable');
                     }
@@ -519,4 +546,38 @@
     $('#patientDataPopup').on('hidden.bs.modal', function(e) {
         $('.organizer').trigger('resetClickedTime');
     });
+
+    function isPassedTime(time, date, isFull) {
+        var now = new Date();
+        var splitTime = time.split(':');
+        if(now.getFullYear() == date.getFullYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
+            if(now.getTime() > (new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]))).getTime()) {
+                return false;
+            }
+        }
+
+        if(isFull) { // Полная проверка
+            // Теперь смотрим на выбранные фильтры..
+            if($('#greetingType').val() == 0) { // Первичный приём
+                // От беременности
+                // Дальше играет роль только время. Поэтому оттолкнёмся от текущей даты даже
+                var now1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(primaryGreetingsTimeLimit[0]), parseInt(primaryGreetingsTimeLimit[1]));
+                var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[0]));
+                if(now1.getTime() < now2.getTime()) {
+                    return false;
+                }
+            }
+            if($('#greetingType').val() == 2) { // Вторичный приём
+                if($('#canPregnant').val() == 1) { // Беременная
+                    var now1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(pregnantGreetingsTimeLimit[0]), parseInt(pregnantGreetingsTimeLimit[1]));
+                    var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[0]));
+                    if(now1.getTime() < now2.getTime()) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 });

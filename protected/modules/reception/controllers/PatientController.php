@@ -836,6 +836,24 @@ class PatientController extends Controller {
             if(isset($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;
             }
+            if($filter['field'] == 'oms_number' && trim($filter['data']) != '') {
+                if(mb_strlen($filter['data']) != 16) {
+                    unset($filter);
+                    continue;
+                }
+                // Создаём два дополнительных фильтра по ОМС
+                $filters['rules'][] = array(
+                    'field' => 'e_oms_number',
+                    'op' => 'eq',
+                    'data' => ' '.$filter['data']
+                );
+
+                $filters['rules'][] = array(
+                    'field' => 'k_oms_number',
+                    'op' => 'eq',
+                    'data' => mb_substr($filter['data'], 0, 6).' '.mb_substr($filter['data'], 6)
+                );
+            }
         }
 
         if($allEmpty) {

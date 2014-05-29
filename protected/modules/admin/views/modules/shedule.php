@@ -80,6 +80,70 @@
             </div>
         </div>
         <div class="form-group">
+            <?php echo $form->labelEx($model,'primaryGreetingsLimit', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="input-group date time-control col-xs-4" id="primaryGreetingsLimit-cont">
+                <?php echo $form->hiddenField($model,"primaryGreetingsLimit", array(
+                    'id' => 'primaryGreetingsLimit',
+                    'class' => 'form-control'
+                )); ?>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+                <div class="subcontrol">
+                    <div class="time-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                        </div>
+                    </div>
+                    <div class="form-inline subfields">
+                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                    </div>
+                    <div class="time-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model,'pregnantGreetingsLimit', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="input-group date time-control col-xs-4" id="pregnantGreetingsLimit-cont">
+                <?php echo $form->hiddenField($model,"pregnantGreetingsLimit", array(
+                    'id' => 'pregnantGreetingsLimit',
+                    'class' => 'form-control'
+                )); ?>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-time"></span>
+                </span>
+                <div class="subcontrol">
+                    <div class="time-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-hour-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon minute-button up-minute-button"></button>
+                        </div>
+                    </div>
+                    <div class="form-inline subfields">
+                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                    </div>
+                    <div class="time-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-hour-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon minute-button down-minute-button"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <?php echo CHtml::ajaxSubmitButton(
                 'Сохранить',
                 CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/shedulesettingsedit'),
