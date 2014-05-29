@@ -1,0 +1,75 @@
+2014/05/29 17:34:42 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewadd')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/viewadd
+HTTP_REFERER=http://moniiag.my/index.php/reception/shedule/view
+---
+2014/05/29 17:34:44 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] could not connect to server: Connection refused (0x0000274D/10061)
+	Is the server running on host "localhost" and accepting
+	TCP/IP connections on port 5432?' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewsearch')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/viewsearch
+HTTP_REFERER=http://moniiag.my/index.php/reception/shedule/view
+---
+2014/05/29 17:35:18 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[08006] [7] server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.' in Z:\home\moniiag.my\yii\db\CDbConnection.php:382
+Stack trace:
+#0 Z:\home\moniiag.my\yii\db\CDbConnection.php(330): CDbConnection->open()
+#1 Z:\home\moniiag.my\yii\db\CDbConnection.php(308): CDbConnection->setActive(true)
+#2 Z:\home\moniiag.my\yii\base\CModule.php(387): CDbConnection->init()
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(450): CModule->getComponent('db')
+#4 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(634): CApplication->getDb()
+#5 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(2361): CActiveRecord->getDbConnection()
+#6 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(411): CActiveRecordMetaData->__construct(Object(Role))
+#7 Z:\home\moniiag.my\yii\db\ar\CActiveRecord.php(79): CActiveRecord->getMetaData()
+#8 Z:\home\moniiag.my\www\protected\components\Controller.php(21): CActiveRecord->__construct()
+#9 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('viewsearch')
+#14 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#15 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/reception/patient/viewsearch
+HTTP_REFERER=http://moniiag.my/index.php/reception/shedule/view
+---

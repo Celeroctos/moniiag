@@ -1,7 +1,7 @@
 <?php
 class SerialNumberValidator extends CValidator
 {
-	public $pattern='/^[a-zA-Z0-9а-яA-Я]+$/';
+	public $pattern='/^[a-zA-Z0-9а-яA-Я\s]+$/';
 	// Разрешены цифры, латинский и русские буквы
 		
 	protected function validateAttribute($object,$attribute)
