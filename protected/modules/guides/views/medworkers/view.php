@@ -86,6 +86,17 @@
                                 )); ?>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isMedworker', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isMedworker', array('Нет', 'Да'), array(
+                                    'id' => 'isMedworker',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
                         <h5><strong>Шаблоны приёма:</strong></h5>
                         <div class="form-group">
                         <?php foreach ($allTemplates as $key => $template) { ?>
@@ -188,6 +199,17 @@
                             <div class="col-xs-9">
                                 <?php echo $form->dropDownList($model, 'paymentType', array('ОМС', 'Бюджет'), array(
                                     'id' => 'paymentType',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'isMedworker', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isMedworker', array('Нет', 'Да'), array(
+                                    'id' => 'isMedworker',
                                     'class' => 'form-control'
                                 )); ?>
                             </div>

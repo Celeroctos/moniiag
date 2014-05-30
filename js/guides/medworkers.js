@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#medworkers").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип персонала', 'Тип оплаты', '', '', ''],
+        colNames:['Код', 'Наименование', 'Тип персонала', 'Тип оплаты', 'Принимает беременных', 'Меддолжность', '', '', ''],
         colModel:[
             {
                 name:'id',
@@ -13,12 +13,11 @@ $(document).ready(function() {
                 name: 'name',
                 index: 'name',
                 width: 200,
-                hidden: true
             },
             {
                 name: 'medpersonal_type',
                 index:'medpersonal_type',
-                width: 150
+                width: 140
             },
             {
                 name: 'payment_type_desc',
@@ -28,7 +27,12 @@ $(document).ready(function() {
             {
                 name: 'pregnants',
                 index:'pregnants',
-                width: 240
+                width: 220
+            },
+            {
+                name: 'is_medworker_desc',
+                index: 'is_medworker_desc',
+                width: 110
             },
             {
                 name: 'is_for_pregnants',
@@ -41,6 +45,11 @@ $(document).ready(function() {
                 index:'payment_type',
                 hidden: true
             },
+            {
+                name: 'is_medworker',
+                index: 'is_medworker',
+                hidden: true
+            }
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -157,6 +166,10 @@ $(document).ready(function() {
                             {
                                 modelField: 'payment_type',
                                 formField: 'paymentType'
+                            },
+                            {
+                                modelField: 'is_medworker',
+                                formField: 'isMedworker'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {

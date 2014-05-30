@@ -246,7 +246,7 @@ class PatientController extends Controller {
             echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
                     'policy' => array(
-                        'Такой номер ОМС уже существует в базе!'
+                        'Такой номер полиса ОМС уже существует в базе!'
                     )
                 )));
             exit();
@@ -1095,6 +1095,13 @@ class PatientController extends Controller {
 			} else {
 				$callcenter = 0;
 			}
+
+            if(isset($_GET['is_pregnant']) && (int)$_GET['is_pregnant'] == 1) {
+                $isPregnant = 1;
+            } else {
+                $isPregnant = 0;
+            }
+
             if($medcard != null) {
                 $answer = array();
                 if(isset($_GET['greeting_id'])) {
@@ -1103,9 +1110,16 @@ class PatientController extends Controller {
                     if($currentGreeting->medcard_id == $_GET['cardid']) {
                         $answer['greetingId'] = $currentGreeting->id;
                         $answer['greetingDate'] =  $currentGreeting->patient_day;
+                        $answer['greetingType'] = $currentGreeting->greeting_type;
                         $doctorModel = Doctor::model()->findByPk($currentGreeting->doctor_id);
                         if($doctorModel != null) {
                             $answer['doctorFio'] = $doctorModel->last_name.' '.$doctorModel->first_name.' '.$doctorModel->middle_name;
+                            if($doctorModel->post_id != null) {
+                                $medworker = Medworker::model()->findByPk($doctorModel->post_id);
+                                if($medworker != null) {
+                                    $isPregnant = $medworker->is_for_pregnants;
+                                }
+                            }
                         } else {
                             $answer['doctorFio'] = '';
                         }
@@ -1117,6 +1131,7 @@ class PatientController extends Controller {
                     'postsList' => $this->getPostsList(),
                     'medcard' => $medcard,
                     'oms' => $oms,
+                    'isPregnant' => $isPregnant,
                     'callcenter' => $callcenter,
                     'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
                 );

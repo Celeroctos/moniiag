@@ -215,14 +215,14 @@
 									</div>
 								</div>
 							</div>
-								</div>
-								<div class="form-group">
+                            </div>
+                            <div class="form-group">
 									<label for="notDateEnd" class="col-xs-11 control-label">
 										Не ограничивать сотрудника по времени
 									</label>
 									<input type="checkbox" id="notDateEnd" name="notDateEnd">
-								</div>
-						<div class="form-group">
+                            </div>
+						    <div class="form-group">
 									   <?php echo $form->labelEx($model,'dateEnd', array(
 								'class' => 'col-xs-3 control-label'
 							)); ?>
@@ -280,6 +280,17 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'greetingType'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->label($model,'displayInCallcenter', array(
+                                'class' => 'col-xs-3 control-label text-left'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'displayInCallcenter', array('Нет', 'Да'), array(
+                                    'id' => 'displayInCallcenter',
+                                    'class' => 'form-control',
+                                )); ?>
                             </div>
                         </div>
                     </div>
@@ -456,14 +467,14 @@
                         </div>
                     </div>
                         </div>
-                        <div class="form-group">
-                            <label for="notDateEndEdit" class="col-xs-11 control-label">
-                                Не ограничивать сотрудника по времени
-                            </label>
-                            <input type="checkbox" id="notDateEndEdit" name="notDateEnd">
-                        </div>
-                        <div class="form-group">
-                                                  <?php echo $form->labelEx($model,'dateEnd', array(
+                    <div class="form-group">
+                        <label for="notDateEndEdit" class="col-xs-11 control-label">
+                            Не ограничивать сотрудника по времени
+                        </label>
+                        <input type="checkbox" id="notDateEndEdit" name="notDateEnd">
+                    </div>
+                    <div class="form-group">
+                    <?php echo $form->labelEx($model,'dateEnd', array(
                         'class' => 'col-xs-3 control-label'
                     )); ?>
                     <div class="col-xs-9 input-group date" id="dateEndEdit-cont">
@@ -497,7 +508,7 @@
                             </div>
                         </div>
                     </div>
-                        </div>
+                    </div>
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'wardCode', array(
                                 'class' => 'col-xs-3 control-label'
@@ -520,6 +531,17 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'greetingType'); ?>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <?php echo $form->label($model,'displayInCallcenter', array(
+                                'class' => 'col-xs-3 control-label text-left'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'displayInCallcenter', array('Нет', 'Да'), array(
+                                    'id' => 'displayInCallcenter',
+                                    'class' => 'form-control',
+                                )); ?>
                             </div>
                         </div>
                     </div>

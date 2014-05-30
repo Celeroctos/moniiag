@@ -237,6 +237,10 @@
             data.beginDate = globalVariables.beginDate;
         }
 
+        if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1) {
+            data.is_callcenter = 1;
+        }
+
         globalVariables.resetBeginDate = true;
         // Делаем поиск
         $.ajax({
@@ -302,7 +306,7 @@
 				if(globalVariables.isCallCenter) {
 					var content = '<tr>' +
 						'<td class="write-patient-cell">' +
-							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '&callcenter=1">' +
+							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '&callcenter=1&is_pregnant=' + $('#canPregnant').val() + '">' +
 								'<span class="glyphicon glyphicon-dashboard"></span>' +
 							'</a>' +
 						'</td>';
@@ -545,7 +549,6 @@
                 greeting_type: $('#greetingType').val(),
                 comment: $('#comment').val()
             };
-
 
         }
 

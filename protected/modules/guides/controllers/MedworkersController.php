@@ -65,6 +65,7 @@ class MedworkersController extends Controller {
         $medworker->type = $model->type;
         $medworker->payment_type = $model->paymentType;
         $medworker->is_for_pregnants = $model->isForPregnants;
+        $medworker->is_medworker = $model->isMedworker;
         
         $success = true;
         if(!$medworker->save()) {
@@ -135,6 +136,12 @@ class MedworkersController extends Controller {
 
             $medworkers = $model->getRows($filters, $sidx, $sord, $start, $rows);
             foreach($medworkers as &$medworker) {
+                if($medworker['is_medworker'] == 1) {
+                    $medworker['is_medworker_desc'] = 'Да';
+                } else {
+                    $medworker['is_medworker_desc'] = 'Нет';
+                }
+
                 if($medworker['is_for_pregnants'] == null) {
                     $medworker['is_for_pregnants'] = 0;
                 }

@@ -33,7 +33,7 @@ class FormOmsEdit extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'policy' => 'Номер ОМС',
+            'policy' => 'Номер полиса ОМС',
             'lastName' => 'Фамилия',
             'firstName' => 'Имя',
             'middleName' => 'Отчество',

@@ -14,6 +14,8 @@ $(document).ready(function() {
                   'Дата начала действия',
                   'Дата окончания действия',
                   'Отделение',
+                  'Отображать в Call-центре',
+                  '',
 				  ''],
         colModel:[
             {
@@ -99,6 +101,16 @@ $(document).ready(function() {
                 name: 'ward',
                 index: 'ward',
                 width: 110
+            },
+            {
+                name: 'display_in_callcenter_desc',
+                index: 'display_in_callcenter_desc',
+                width: 190
+            },
+            {
+                name: 'display_in_callcenter',
+                index: 'display_in_callcenter',
+                hidden: true
             },
 			{
 				name: 'greeting_type',
@@ -291,7 +303,11 @@ $(document).ready(function() {
 							{
 								modelField: 'greeting_type',
 								formField: 'greetingType'
-							}
+							},
+                            {
+                                modelField: 'display_in_callcenter',
+                                formField: 'displayInCallcenter'
+                            }
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             if(fields[i].modelField == 'date_end') {
