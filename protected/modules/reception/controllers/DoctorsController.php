@@ -47,8 +47,14 @@ class DoctorsController extends Controller {
             }
         }
 
+        if(isset($_GET['is_callcenter']) && $_GET['is_callcenter'] == 1) {
+            $isCallCenter = true;
+        } else {
+            $isCallCenter = false;
+        }
+
         // Вычислим общее количество записей
-	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting);
+	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
 
         if($calendarTypeSetting == 0) {
             $totalPages = ceil(count($num) / $rows);
@@ -61,7 +67,7 @@ class DoctorsController extends Controller {
         //exit();
         //$filters['rules'] = array();
 
-        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate);
+        $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
 
         // Посмотрим на то, какой календарь мы показываем сейчас
         $calendarTypeSetting = Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value;

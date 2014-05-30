@@ -505,17 +505,17 @@ function getDoctorsFilter() {
                 {
                     'field': 'middle_name',
                     'op': 'cn',
-                    'data': $('#middleName').val()
+                    'data': $('#middleName').val().toLowerCase()
                 },
                 {
                     'field': 'last_name',
                     'op': 'cn',
-                    'data': $('#lastName').val()
+                    'data': $('#lastName').val().toLowerCase()
                 },
                 {
                     'field': 'first_name',
                     'op': 'cn',
-                    'data': $('#firstName').val()
+                    'data': $('#firstName').val().toLowerCase()
                 }
             ]
     };

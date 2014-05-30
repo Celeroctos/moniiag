@@ -256,7 +256,7 @@ $(document).ready(function() {
                                     var rows = data.rows;
                                     numRecords = data.records;
 
-                                    if(rows.length == 0) {
+                                    if(rows.length == 0 || $.trim($(chooser).find('input').val()) == '') {
                                         $(ul).hide();
                                     } else {
                                         currentElements = [];

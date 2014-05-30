@@ -1,1 +1,24 @@
-﻿
+﻿2014/05/30 13:28:54 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/30 13:29:00 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/30 13:42:38 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/30 13:46:50 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormEmployeeAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (91)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/30 14:25:38 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormMedworkerAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (39)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/05/30 14:28:01 [warning] [application] Не удалось присвоить небезопасный атрибут "id" класса "FormMedworkerAdd".
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (39)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)

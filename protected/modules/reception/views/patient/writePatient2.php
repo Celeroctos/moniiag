@@ -63,10 +63,9 @@
 			<div class="form-group">
                 <label for="post" class="col-xs-4 control-label">Тип приёма</label>
                 <div class="col-xs-8">
-                    <select class="form-control" id="greetingType">  
-						<option value="0">Первичный</option>
-						<!--<option value="1">Первичный</option>-->
-						<option value="2">Вторичный</option>
+                    <select class="form-control" id="greetingType">
+                        <option value="0" <?php echo isset($greetingType) && ($greetingType == 0 || $greetingType == 1) ? 'selected="selected"' : '';  ?>>Первичный</option>
+                        <option value="2" <?php echo isset($greetingType) && $greetingType == 2 ? 'selected="selected"' : '';  ?>>Вторичный</option>
                     </select>
                 </div>
             </div>
@@ -138,8 +137,8 @@
                 <label for="canPregnant" class="col-xs-4 control-label">Беременная</label>
                 <div class="col-xs-8">
                     <select class="form-control" id="canPregnant">
-                        <option value="0">Нет</option>
-                        <option value="1">Да</option>
+                        <option value="0" <?php echo isset($isPregnant) && $isPregnant == 0 ? 'selected="selected"' : '';  ?>>Нет</option>
+                        <option value="1" <?php echo isset($isPregnant) && $isPregnant == 1 ? 'selected="selected"' : ''; ?>>Да</option>
                     </select>
                 </div>
             </div>

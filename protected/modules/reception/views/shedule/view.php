@@ -166,9 +166,9 @@
                     ));
                     ?>
                     <div class="form-group">
-                        <label for="omsNumber" class="col-xs-2 control-label">Номер ОМС</label>
+                        <label for="omsNumber" class="col-xs-2 control-label">Номер полиса ОМС</label>
                         <div class="col-xs-4">
-                            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС" title="Номер ОМС может состоять из цифр и пробелов">
+                            <input type="text" class="form-control" autofocus id="omsNumber" placeholder="ОМС" title="Номер полиса ОМС может состоять из цифр и пробелов">
                         </div>
                     </div>
                     <div class="form-group">
@@ -254,7 +254,7 @@
                                     ФИО
                                 </td>
                                 <td>
-                                    Номер ОМС
+                                    Номер полиса ОМС
                                 </td>
                             </tr>
                             </thead>
@@ -281,7 +281,7 @@
                                     Год регистрации карты
                                 </td>
                                 <td>
-                                    Номер ОМС
+                                    Номер полиса ОМС
                                 </td>
                                 <td>
                                     Номер карты

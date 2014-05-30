@@ -36,7 +36,7 @@ class Doctor extends MisActiveRecord  {
     }
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false, $choosedDiagnosis = array(), $greetingDate = false, $calendarType = 0) {
+                    $limit = false, $choosedDiagnosis = array(), $greetingDate = false, $calendarType = 0, $isCallCenter = false) {
 
         $connection = Yii::app()->db;
         $doctor = $connection->createCommand()
@@ -61,7 +61,12 @@ class Doctor extends MisActiveRecord  {
 
          if(count($choosedDiagnosis) > 0) {
               $doctor->andWhere(array('in', 'md.mkb10_id', $choosedDiagnosis));
-          }
+         }
+
+         if($isCallCenter) {
+             $doctor->andWhere('d.display_in_callcenter = 1');
+         }
+         $doctor->andWhere('m.is_medworker = 1');
 
           // Теперь нужно выяснить сотрудников, которые могут принимать в этот день
           if($greetingDate !== false && $greetingDate !== null) {

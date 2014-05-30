@@ -134,6 +134,7 @@ class EmployeesController extends Controller {
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
 		$employee->greeting_type = $model->greetingType;
+        $employee->display_in_callcenter = $model->displayInCallcenter;
 
         if(!isset($_POST['notDateEnd'])) {
             $employee->date_end = $model->dateEnd;
@@ -215,11 +216,16 @@ class EmployeesController extends Controller {
             }
 
             foreach($employees as $key => &$employee) {
-                $employee['fio'] = $employee['first_name'].' '.$employee['last_name'].' '.$employee['middle_name'];
+                $employee['fio'] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'];
                 $employee['more_info'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть подробную информацию по '.$employee['fio'].'"><span class="glyphicon glyphicon-share-alt"></span>
 </a>';
                 $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
 </a>';
+                if($employee['display_in_callcenter'] == 1) {
+                    $employee['display_in_callcenter_desc'] = 'Да';
+                } else {
+                    $employee['display_in_callcenter_desc'] = 'Нет';
+                }
             }
 
             echo CJSON::encode(

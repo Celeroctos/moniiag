@@ -7,12 +7,13 @@ class FormMedworkerAdd extends CFormModel
     public $isForPregnants;
     public $id;
     public $paymentType;
+    public $isMedworker;
 
     public function rules()
     {
         return array(
             array(
-                'name, type, isForPregnants, paymentType', 'required'
+                'name, type, isForPregnants, paymentType, isMedworker', 'required'
             )
         );
     }
@@ -23,7 +24,8 @@ class FormMedworkerAdd extends CFormModel
             'name'=> 'Наименование',
             'type' => 'Тип персонала',
             'isForPregnants' => 'Может наблюдать за беременными',
-            'paymentType' => 'Тип оплаты'
+            'paymentType' => 'Тип оплаты',
+            'isMedworker' => 'Медицинский работник'
         );
     }
 }

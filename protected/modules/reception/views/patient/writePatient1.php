@@ -122,6 +122,17 @@
             </div>
         <?php } ?>
 
+        <?php if($callcenter) { ?>
+            <div class="form-group">
+                <label for="canPregnant" class="col-xs-4 control-label">Беременная</label>
+                <div class="col-xs-8">
+                    <select class="form-control" id="canPregnant">
+                        <option value="0">Нет</option>
+                        <option value="1">Да</option>
+                    </select>
+                </div>
+            </div>
+        <?php } ?>
 
         <div class="form-group">
             <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
@@ -204,7 +215,7 @@
                 {
                 ?>
                     <td class="omsNumberCell">
-                        Номер ОМС
+                        Номер полиса ОМС
                     </td>
                 <?php } ?>
             </tr>
