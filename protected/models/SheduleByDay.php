@@ -27,6 +27,7 @@ class SheduleByDay extends MisActiveRecord {
     }
 
 
+    /*
 	public function getGreetingsByIds(
  		$filters,
  		$idsString, 
@@ -70,7 +71,49 @@ class SheduleByDay extends MisActiveRecord {
  		
  		return $patients->queryAll();
  	}
- 
+    */
+
+    public function getGreetingsByIds(
+        $filters,
+        $idsString,
+        $sidx = false,
+        $sord = false,
+        $start = false,
+        $limit = false
+    )
+    {
+
+        $connection = Yii::app()->db;
+        $patients = $connection->createCommand()
+            ->select('dsbd.*, d.first_name,d.middle_name,d.last_name,
+ 					SUBSTR(
+ 						CAST(dsbd.patient_time AS text),
+ 						0,
+ 						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
+ 					) AS patient_time')
+            ->from('mis.doctor_shedule_by_day dsbd')
+         //   ->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+         //   ->Join('mis.oms o', 'm.policy_id = o.id')
+            ->leftJoin('mis.doctors d', 'dsbd.doctor_id = d.id')
+            ->where('dsbd.id in ('.$idsString.')
+ 					'
+            );
+
+
+
+        if($sidx !== false && $sord !== false)
+        {
+            $patients->order($sidx.' '.$sord);
+        }
+
+        if ($start !== false && $limit !== false)
+        {
+            $patients->limit($limit, $start);
+        }
+
+        return $patients->queryAll();
+    }
+
  	public function getRangePatientsRows(
 		$filters,
  		$dateBegin,
@@ -85,18 +128,20 @@ class SheduleByDay extends MisActiveRecord {
         $doctorStr = implode(",",$doctorIds);
  		$connection = Yii::app()->db;
  		$patients = $connection->createCommand()
+        /*
+ 		+ 		CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio,
+ 					m.card_number AS card_number
+                    m.contact
+        */
  			->select('dsbd.*, d.first_name,d.middle_name,d.last_name,
- 				CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio, 
- 					m.card_number AS card_number,
  					SUBSTR(
  						CAST(dsbd.patient_time AS text),
  						0, 
  						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
- 					) AS patient_time,
- 					m.contact')
+ 					) AS patient_time')
  			->from('mis.doctor_shedule_by_day dsbd')
- 			->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
- 			->Join('mis.oms o', 'm.policy_id = o.id')
+ 			//->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+ 			//->Join('mis.oms o', 'm.policy_id = o.id')
             ->leftJoin('mis.doctors d', 'dsbd.doctor_id = d.id')
  			->where('dsbd.doctor_id in ('.$doctorStr.')
  					AND dsbd.patient_day >= :beginDate
@@ -131,7 +176,6 @@ class SheduleByDay extends MisActiveRecord {
 
  		return $patients->queryAll();
  	}
-	
     public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0) {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
@@ -159,6 +203,50 @@ class SheduleByDay extends MisActiveRecord {
         }
         $patients->order('dsbd.patient_time');
         return $patients->queryAll();
+    }
+
+    // Получить информацию о пациентах на опосредованные приёмы
+    public static function getMediateGreetingsInfo($greetingIds)
+    {
+        $greetingsIdsStr = implode(",",$greetingIds);
+        $connection = Yii::app()->db;
+        $patients = $connection->createCommand()
+            ->select('dsbd.id,
+                CONCAT(mp.last_name, \' \', mp.first_name, \' \', mp.middle_name ) as fio,
+                mp.phone as contact
+            ')
+            ->from('mis.doctor_shedule_by_day dsbd')
+           ->Join('mis.mediate_patients mp', 'dsbd.mediate_id = mp.id')
+            ->where('dsbd.id in ('. $greetingsIdsStr.')',
+                array(
+                )
+            );
+        return $patients->queryAll();
+    }
+
+    // Получить информацию о пациентах на обычные приёмы
+    public static function getDirectGreetingsInfo($greetingIds)
+    {
+        $greetingsIdsStr = implode(",",$greetingIds);
+        $connection = Yii::app()->db;
+        $patients = $connection->createCommand()
+            /*
+             + 		CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio,
+                         m.card_number AS card_number
+                        m.contact
+            */
+            ->select('dsbd.id,
+ 					CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as fio,
+                    m.contact,
+                    m.card_number AS card_number
+ 					')
+            ->from('mis.doctor_shedule_by_day dsbd')
+            ->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+            ->Join('mis.oms o', 'm.policy_id = o.id')
+            ->where('dsbd.id in ('.$greetingsIdsStr.')', array()
+            );
+        return $patients->queryAll();
+
     }
 
     public function getByEnterprise($id) {

@@ -199,10 +199,9 @@ $("#doctor-shedule-add-submit").on('click',
          }
  
          if (begin != '' && end != '') {
- 
-             urlStr = '/index.php/admin/shedule/intersectiongreeting' +
-                     '?begin=' + begin +
-                     '&end=' + end +
+             urlStr = '/index.php/admin/shedule/isgreetingedit' +
+                     '?date_begin=' + begin +
+                     '&date_end=' + end +
                      '&doctor_id=' + doctorId +
                      '&shedule_id=' + employeeId +
                       '&times=' + $.toJSON(getTimesObject($("#editSheduleEmployeePopup")));
@@ -221,13 +220,14 @@ $("#doctor-shedule-add-submit").on('click',
                              // Выводим список пациентов
                              //     alert('Есть записанные паценты');
                              openViewWritedPatientEdit(doctorId, employeeId, begin, end, $.toJSON(getTimesObject($("#editSheduleEmployeePopup"))));
+                             // Поднимаем флаг отмены.
                              cancelation = true;
                          }
-                         else {
-                             alert("Сохраняем новое расписание");
-                         }
+                         // Если всё нормально - ничего не делаем. Зачем что-то делать, если всё нормально?
+                         //   Всё будет идти своим чередом и раписание благополучно сохраниться :)
  
                      }
+
                  }
              });
          }
@@ -323,8 +323,8 @@ function openViewWritedPatientEdit(doctor, shedule, beginDate, endDate, times) {
                  url: globalVariables.baseUrl +
                      '/index.php/admin/shedule/getwrittenpatients?' +
                          'doctor_id=' + doctor +
-                         '&date_begin=' + beginDate +
-                         '&date_end=' + endDate,
+                         '&begin=' + beginDate +
+                         '&end=' + endDate,
                  page: 1
              }
          );
