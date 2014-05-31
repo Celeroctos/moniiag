@@ -352,8 +352,8 @@ $(document).ready(function() {
                 url: globalVariables.baseUrl +
                     '/index.php/admin/shedule/getwrittenpatients?' +
                     'doctorsIds=' + $.toJSON(getSelectedDoctors()) +
-                    '&date_begin=' + dateToChange +
-                    '&date_end=' + dateToChange,
+                    '&begin=' + dateToChange +
+                    '&end=' + dateToChange,
                 page: 1
             }
         );

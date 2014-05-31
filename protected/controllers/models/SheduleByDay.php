@@ -43,6 +43,7 @@ class SheduleByDay extends MisActiveRecord {
         return $patients->queryAll();
     }
 
+
 public function getGreetingsByIds(
  		$filters,
  		$idsString, 
@@ -84,7 +85,7 @@ public function getGreetingsByIds(
  		
  		return $patients->queryAll();
  	}
- 
+
  public function getRangePatientsRows(
  		$filters,
  		$dateBegin,

@@ -73,8 +73,21 @@ $(document).ready(function () {
                 if (data.success == 'true') {
                     var currentRow = $('#writtenPatients').jqGrid('getGridParam', 'selrow');
                     var rowData = $('#writtenPatients').getRowData(currentRow);
+
+
                     var medcardId = rowData['medcard_id'];
-                    var newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
+                    var newLink = '';
+                    // Проверим - опосредованный поциэнт или нет
+                    if (medcardId=='')
+                    {
+                        newLink = '<a href=\"/index.php/reception/patient/writepatientwithoutdata" target=\"_blank\">Перезаписать</a>';
+                    }
+                    else
+                    {
+                        newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
+                    }
+
+                    //var newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
                     rowData.unwrite = newLink;
                     $('#writtenPatients').jqGrid('setRowData', currentRow, rowData);
 

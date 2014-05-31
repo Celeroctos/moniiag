@@ -386,8 +386,18 @@ if(isset($categorie['id'])) {
                                       //  exit();
                                         ?>
                                         <div class="twoColumnList">
-                                            <?php /* var_dump($element['guide']); exit(); */ ?>
-                                            <select multiple="multiple" class="form-control twoColumnListFrom" style="width:200px">
+                                            <?php
+
+                                            $sizeOfTwoColumnList = 0;
+
+                                            if(isset($element['size']) && $element['size'] != null) {
+                                                $sizeOfTwoColumnList = ($element['size'] * $lettersInPixel);
+                                            } else {
+                                                $sizeOfTwoColumnList  = (40 * $lettersInPixel);
+                                            }
+
+                                            ?>
+                                            <select multiple="multiple" class="form-control twoColumnListFrom" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
                                                 <?php
                                                 foreach ($element['guide'] as $optionId => $oneOption)
                                                 {
@@ -406,7 +416,7 @@ if(isset($categorie['id'])) {
                                             <span class = "glyphicon glyphicon-arrow-right twoColumnAddBtn"></span>
                                             <span class = "glyphicon glyphicon-arrow-left twoColumnRemoveBtn"></span>
                                             </div>
-                                            <select multiple="multiple" class="form-control twoColumnListTo" style="width:200px">
+                                            <select multiple="multiple" class="form-control twoColumnListTo" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
                                                 <!-- Здесь будут выбранные опции -->
                                                 <?php
                                                 foreach ($element['guide'] as $optionId => $oneOption)

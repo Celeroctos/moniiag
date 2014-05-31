@@ -57,209 +57,69 @@ class SheduleController extends Controller {
 
 	public function actionGetWrittenPatientsEdit()
  	{
- 		try {
- 			$rows = $_GET['rows'];
- 			$page = $_GET['page'];
- 			$sidx = $_GET['sidx'];
- 			$sord = $_GET['sord'];
- 			
- 			
- 
- 			if(isset($_GET['filters']) && trim($_GET['filters']) != '') 
- 			{
- 				$filters = CJSON::decode($_GET['filters']);
- 			}
- 			else
- 			{
- 				$filters = false;
- 			}
- 
- 			$dayBegin = $_GET['date_begin'];	
- 			$dayEnd = $_GET['date_end'];
- 			$doctorId= $_GET['doctor_id'];
- 			$times = CJSON::decode($_GET['times']);
- 			$sheduleId = $_GET['shedule_id'];
- 			$idGreetingsToCancel = array();
- 			//------------------
- 			// Дальше нужно собрать id тех приёмов, которые нужно отменить
- 			//------------------
- 			$oldShedule = SheduleSettedBe::model()->find('id = :id', array(':id'=>$sheduleId));
- 			
- 			// Выбираем приёмы, которые попадали раньше в промежуток	
- 			$oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end', 
- 				array(':doctor_id' => $doctorId,':date_begin' => $oldShedule['date_begin'],
- 						':date_end' => $oldShedule['date_end']
- 						)
- 					);
- 			// Выбираем приёмы, которые попадают в промежуток теперь
- 			$newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end', 
- 				array(':doctor_id' => $doctorId,':date_begin' => $dayBegin,
- 						':date_end' => $dayEnd
- 						)
- 					);
- 			$newGreetingsCount = count($newGreetings );
- 			$oldGreetingsCount = count($oldGreetings );
- 
- 			foreach($newGreetings as $oneNewGreeting)
- 			{
- 				$wasFound = false;
- 				foreach($oldGreetings as $oneOldGreeting)
- 				{
- 					if ($oneNewGreeting['id']==$oneOldGreeting['id'])
- 					{		
- 						$wasFound = true;
- 						break;	
- 					}
- 				}	
- 				// Новый приём не нашли в старых.
- 				// Это значит, что после изменения расписания приём оказался в даном периоде, хотя раньше там не был
- 				if (!$wasFound)
- 				{
- 					//var_dump($oneNewGreeting['id']);
- 					$idGreetingToCancel[] = $oneNewGreeting['id'];
- 					/*
- 					$arrayStatusChanged = 1;
- 					break;
- 					*/
- 				}
- 			}
- 			
- 			foreach($oldGreetings as $oneOldGreeting)
- 			{
- 				$wasFound = false;
- 				foreach($newGreetings as $oneNewGreeting)
- 				{
- 					if ($oneNewGreeting['id']==$oneOldGreeting['id'])
- 					{
- 						$wasFound = true;
- 						break;	
- 					}
- 				}	
- 				// Не нашли старый приём в новых. Это значит, что приём "вывалился"
- 				if (!$wasFound)
- 				{
- 					//var_dump($oneNewGreeting['id']);
- 					$idGreetingToCancel[] = $oneOldGreeting['id'];
- 					//$arrayStatusChanged = 1;
- 					//break;
- 				}
- 			}
- 			
- 			//exit();
- 				// Перебираем старые приёмы
- 			foreach($oldGreetings as $oneOldGreeting)
- 			{
- 				if (!in_array($oneOldGreeting['id'],$idGreetingToCancel))
- 				{
- 					
- 					
- 					$weekday = date('w', strtotime($oneOldGreeting['patient_day']));
- 					// Надо проверить - попадает ли patient_time в промежуток между 
- 					//    началом приёма в данный день недели
- 					
- 					// Если в этот день приёма нет (хотя приём записан)
- 					if ($times['timesBegin'][$weekday]=='' ||$times['timesEnd'][$weekday]=='')
- 					{
- 						//$arrayStatusChanged = 1;
- 						//break;
- 						$idGreetingToCancel[] = $oneOldGreeting['id'];
- 					}
- 					
- 					// Если время приёма не попадает в новый промежуток времени
- 					if (!(strtotime($oneOldGreeting['patient_time'])>strtotime($times['timesBegin'][$weekday]))
- 						&&
- 						(strtotime($oneOldGreeting['patient_time'])<strtotime($times['timesEnd'][$weekday])))
- 					{
- 						//$arrayStatusChanged = 1;
- 						//break;
- 						$idGreetingToCancel[] = $oneOldGreeting['id'];
- 					}
- 				}	
- 			}
- 			
- 			// В данной точке имеем в массиве $idGreetingToCancel перечисление ИД приёмов, 
- 			//   которые надо отменить, чтобы изменить расписание
- 			// Теперь надо эти приёмы по-нормальному выбрать
- 			
- 			$idsString = ''; // Строка, которая содержит распарсенное перечисление id, которых надо выбрать из базы
- 			
- 			// Склеим идшники
- 			foreach($idGreetingToCancel as $oneId)
- 			{
- 				if ($idsString != '')
- 				{
- 					$idsString = $idsString.',';
- 				}		
- 				$idsString =$idsString.((string)$oneId); 
- 			
- 			}
- 			
- 			$model = new SheduleByDay();
- 			$num = $model->getGreetingsByIds($filters, $idsString);
- 
- 
- 
- 			$totalPages = ceil(count($num) / $rows);
- 			$start = $page * $rows - $rows;
- 
- 			$greetings = $model->getGreetingsByIds($filters, $idsString, $sidx, $sord, $start, $rows);
- 			
- 			// Приведём дату в приличный вид и запишем ссылку для отписывания
- 			foreach($greetings as &$element) {
- 				$greetingDateArr= explode('-', $element['patient_day']);
- 				$element['patient_date'] =	$greetingDateArr[2].'.'
- 					.$greetingDateArr[1].'.'
- 					.$greetingDateArr[0].' '.$element['patient_time'];
-
-                $element['doctor_fio'] = $element['last_name'];
-
-                if ($element['first_name']!='')
-                {
-                    $element['doctor_fio'] .= (' '.mb_substr($element['first_name'],0,1,'utf-8').'.');
-                }
-
-                if ($element['middle_name']!='')
-                {
-                    $element['doctor_fio'] .= (' '.mb_substr($element['middle_name'],0,1,'utf-8'). '.');
-                }
- 					
- 				$element['unwrite'] = '<a class="unwrite-link" href="#' + $element['id'] + '">' +
-                                    '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' +
-                                 '</a>';
- 			}			
- 			echo CJSON::encode(
- 				array(	'rows' => $greetings,
- 						'total' => $totalPages,
- 						'records' => count($num))
- 					);
- 			
- 		} catch(Exception $e) {
- 			echo $e->getMessage();
- 		}
+        $result = $this->getPatientsWrittenEdit();
+        // В поле рекордс добавляем информацию о пациентах
+        $this->getPatientsInfoToGreetings($result['rows']);
+        $greetingsJSON = CJSON::encode($result);
+        echo $greetingsJSON;
  	}
- 
- 
- 	public function actionGetWrittenPatients()
- 	{
- 		try {
- 			$rows = $_GET['rows'];
- 			$page = $_GET['page'];
- 			$sidx = $_GET['sidx'];
- 			$sord = $_GET['sord'];
+
+    // Получить пациентов, записанных на данного врача (голые строки)
+    // Новая часть
+    private function getPatientsWritten()
+    {
+        try {
+
+            // Прочитаем параметры
+            if (!isset($_GET['rows']))
+            {
+                $rows = false;
+            }
+            else
+            {
+                $rows = $_GET['rows'];
+            }
+
+            if (!isset ($_GET['page']))
+            {
+                $page = false;
+            }
+            else
+            {
+                $page = $_GET['page'];
+            }
+
+            if (!isset($_GET['sidx']))
+            {
+                $sidx = false;
+            }
+            else
+            {
+                $sidx = $_GET['sidx'];
+            }
+
+            if (!isset($_GET['sord']))
+            {
+                $sord = false;
+            }
+            else
+            {
+                $sord = $_GET['sord'];
+            }
 
 
- 			if(isset($_GET['filters']) && trim($_GET['filters']) != '') 
- 			{
- 				$filters = CJSON::decode($_GET['filters']);
- 			}
- 			else
- 			{
- 				$filters = false;
- 			}
- 
- 			$dayBegin = $_GET['date_begin'];	
- 			$dayEnd = $_GET['date_end'];
- 			//$doctorId= $_GET['doctor_id'];
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '')
+            {
+                $filters = CJSON::decode($_GET['filters']);
+            }
+            else
+            {
+                $filters = false;
+            }
+
+            $dayBegin = $_GET['begin'];
+            $dayEnd = $_GET['end'];
+            //$doctorId= $_GET['doctor_id'];
             $doctors = array();
 
             // Инициализируем массив докторов
@@ -267,7 +127,22 @@ class SheduleController extends Controller {
 
             if (isset($_GET['doctorsIds']))
             {
-                $doctorsArr = CJSON::decode($_GET['doctorsIds']);
+
+                //var_dump($_GET['doctorsIds']);
+                //exit();
+
+                if (is_array($_GET['doctorsIds']))
+                {
+                    $doctorsArr = $_GET['doctorsIds'];
+                }
+                else
+                {
+                    $doctorsArr = CJSON::decode($_GET['doctorsIds']);
+                }
+
+
+
+
                 if (is_array($doctorsArr))
                 {
                     $doctors = $doctorsArr;
@@ -282,26 +157,33 @@ class SheduleController extends Controller {
                 $doctors[] = $_GET['doctor_id'];
             }
 
- 			$model = new SheduleByDay();
- 			$num = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors);
- 
- 
- 
- 			$totalPages = ceil(count($num) / $rows);
- 			$start = $page * $rows - $rows;
- 
- 			$greetings = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors, $sidx, $sord, $start, $rows);
+            $model = new SheduleByDay();
+            $num = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors);
+            //var_dump($num);
+            //exit();
+
+
+            $totalPages = 0;
+            $start = 0;
+            if ($rows)
+            {
+                $totalPages = ceil(count($num) / $rows);
+                $start = $page * $rows - $rows;
+            }
+
+
+            $greetings = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors, $sidx, $sord, $start, $rows);
 
             //var_dump($greetings);
             //exit();
- 			// Приведём дату в приличный вид
- 			foreach($greetings as &$element) {
+            // Приведём дату в приличный вид
+            foreach($greetings as &$element) {
 
 
                 $greetingDateArr= explode('-', $element['patient_day']);
- 				$element['patient_date'] =	$greetingDateArr[2].'.'
- 					.$greetingDateArr[1].'.'
- 					.$greetingDateArr[0].' '.$element['patient_time'];
+                $element['patient_date'] =	$greetingDateArr[2].'.'
+                    .$greetingDateArr[1].'.'
+                    .$greetingDateArr[0].' '.$element['patient_time'];
 
 
                 $element['doctor_fio'] = $element['last_name'];
@@ -317,184 +199,370 @@ class SheduleController extends Controller {
                 }
 
 
- 				//$element['unwrite'] = '\<Test'.(string)$element['id'];
+                //$element['unwrite'] = '\<Test'.(string)$element['id'];
 
 
 
- 				$element['unwrite'] = '<a class="unwrite-link" href="#'.(string)$element['id'].'">'.
- 					'<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>'.
- 					'</a>';	
- 				
- 				//var_dump($element['unwrite']);
- 				//exit();
+                $element['unwrite'] = '<a class="unwrite-link" href="#'.(string)$element['id'].'">'.
+                    '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>'.
+                    '</a>';
+
+                //var_dump($element['unwrite']);
+                //exit();
                 //var_dump($element);
- 			}
+            }
 
-            $greetingsJSON = CJSON::encode(
+          //  var_dump($greetings);
+          //  exit();
+            return
                 array(	'rows' => $greetings,
                     'total' => $totalPages,
                     'records' => count($num))
+            ;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    private function getPatientsInfoToGreetings(&$arrayOfGreetings)
+    {
+        // Нужно прочитать для каждого приёма ФИО пациента и его контакты пациенты
+        //    Цимес в том, что ФИО и контакты пациента могут быть либо в таблице опосредованных пациентов, либо
+        //     из обычных
+
+
+        // Перебираем приёмы
+        //    Для каждого приёма смотрим
+        //    Опосредованный ли он
+        //   Если да - то читаем из таблицы опосредованных пацентов
+
+        // Ассоциативные массивы [Id приёма] => Индекс в выборке
+        $mediateAssociation = array();
+        $directAssociation = array();
+
+        // Информация о приёмах опосредованных и обычных
+        $mediatesInfo = null;
+        $directsInfo = null;
+
+        $mediateIds = array();
+        $directIds = array();
+
+        // Разделим ИД приёмов
+        foreach ($arrayOfGreetings as $oneGreeting)
+        {
+            if ($oneGreeting['mediate_id']=='')
+            {
+                array_push( $directIds,$oneGreeting['id']);
+            }
+            else
+            {
+                array_push( $mediateIds ,$oneGreeting['id']);
+            }
+        }
+
+
+        // Прочитаем инфу о приёмах по отдельности
+        if (count($mediateIds)!=0)
+        {
+            $mediatesInfo = SheduleByDay::getMediateGreetingsInfo($mediateIds);
+        }
+
+        if (count($directIds)!=0)
+        {
+            $directsInfo = SheduleByDay::getDirectGreetingsInfo($directIds);
+        }
+        // Сделаем массивы ключей
+        for($i=0;$i<count($mediatesInfo );$i++)
+        {
+            $mediateAssociation[$mediatesInfo [$i]['id']] = $i;
+        }
+
+
+        for($i=0;$i<count($directsInfo );$i++)
+        {
+            $directAssociation[$directsInfo [$i]['id']] = $i;
+        }
+
+        // Перебираем массив приёмов и добавляем в каждый элемент инфу о приёме в зависимости от того, опосредованный он или нет
+        foreach ($arrayOfGreetings as &$oneGreeting)
+        {
+            // Определён ли этот ид в обычных приёмах
+            if (isset  (    $directAssociation[$oneGreeting['id']]   )  )
+            {
+                // Приём обычный
+                $infoIndex =$directAssociation[$oneGreeting['id']];
+                $oneGreeting['fio'] = $directsInfo[$infoIndex ]['fio'];
+                $oneGreeting['contact'] = $directsInfo[$infoIndex ]['contact'];
+
+            }
+            else
+            {
+                // Приём опосредованный
+                $infoIndex =$mediateAssociation[$oneGreeting['id']];
+                $oneGreeting['fio'] = $mediatesInfo[$infoIndex ]['fio'];
+                $oneGreeting['contact'] = $mediatesInfo[$infoIndex ]['contact'];
+            }
+        }
+    }
+
+    // Получить пациентов, записанных на данного врача при редактировании расписания (голые строки из базы)
+    // Новая часть
+    private function getPatientsWrittenEdit()
+    {
+        try {
+
+            // Прочитываем параметры
+            if (!isset($_GET['rows']))
+            {
+                $rows = false;
+            }
+            else
+            {
+                $rows = $_GET['rows'];
+            }
+
+            if (!isset ($_GET['page']))
+            {
+                $page = false;
+            }
+            else
+            {
+                $page = $_GET['page'];
+            }
+
+            if (!isset($_GET['sidx']))
+            {
+                $sidx = false;
+            }
+            else
+            {
+                $sidx = $_GET['sidx'];
+            }
+
+            if (!isset($_GET['sord']))
+            {
+                $sord = false;
+            }
+            else
+            {
+                $sord = $_GET['sord'];
+            }
+
+
+            if(isset($_GET['filters']) && trim($_GET['filters']) != '')
+            {
+                $filters = CJSON::decode($_GET['filters']);
+            }
+            else
+            {
+                $filters = false;
+            }
+
+            $dayBegin = $_GET['date_begin'];
+            $dayEnd = $_GET['date_end'];
+            $doctorId= $_GET['doctor_id'];
+            $times = CJSON::decode($_GET['times']);
+            $sheduleId = $_GET['shedule_id'];
+            $idGreetingToCancel = array();
+            //------------------
+            // Дальше нужно собрать id тех приёмов, которые нужно отменить
+            //------------------
+            $oldShedule = SheduleSettedBe::model()->find('id = :id', array(':id'=>$sheduleId));
+
+            // Выбираем приёмы, которые попадали раньше в промежуток
+            $oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end',
+                array(':doctor_id' => $doctorId,':date_begin' => $oldShedule['date_begin'],
+                    ':date_end' => $oldShedule['date_end']
+                )
             );
+            // Выбираем приёмы, которые попадают в промежуток теперь
+            $newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end',
+                array(':doctor_id' => $doctorId,':date_begin' => $dayBegin,
+                    ':date_end' => $dayEnd
+                )
+            );
+            $newGreetingsCount = count($newGreetings );
+            $oldGreetingsCount = count($oldGreetings );
 
-           // var_dump($greetingsJSON );
-           // exit();
+            foreach($newGreetings as $oneNewGreeting)
+            {
+                $wasFound = false;
+                foreach($oldGreetings as $oneOldGreeting)
+                {
+                    if ($oneNewGreeting['id']==$oneOldGreeting['id'])
+                    {
+                        $wasFound = true;
+                        break;
+                    }
+                }
+                // Новый приём не нашли в старых.
+                // Это значит, что после изменения расписания приём оказался в даном периоде, хотя раньше там не был
+                if (!$wasFound)
+                {
+                    //var_dump($oneNewGreeting['id']);
+                    $idGreetingToCancel[] = $oneNewGreeting['id'];
+                    /*
+                    $arrayStatusChanged = 1;
+                    break;
+                    */
+                }
+            }
 
- 			echo $greetingsJSON;
- 		
- 		} catch(Exception $e) {
- 			echo $e->getMessage();
- 		}
+            foreach($oldGreetings as $oneOldGreeting)
+            {
+                $wasFound = false;
+                foreach($newGreetings as $oneNewGreeting)
+                {
+                    if ($oneNewGreeting['id']==$oneOldGreeting['id'])
+                    {
+                        $wasFound = true;
+                        break;
+                    }
+                }
+                // Не нашли старый приём в новых. Это значит, что приём "вывалился"
+                if (!$wasFound)
+                {
+                    //var_dump($oneNewGreeting['id']);
+                    $idGreetingToCancel[] = $oneOldGreeting['id'];
+                    //$arrayStatusChanged = 1;
+                    //break;
+                }
+            }
+
+            //exit();
+            // Перебираем старые приёмы
+            foreach($oldGreetings as $oneOldGreeting)
+            {
+                if (!in_array($oneOldGreeting['id'],$idGreetingToCancel))
+                {
+
+
+                    $weekday = date('w', strtotime($oneOldGreeting['patient_day']));
+                    // Надо проверить - попадает ли patient_time в промежуток между
+                    //    началом приёма в данный день недели
+
+                    // Если в этот день приёма нет (хотя приём записан)
+                    if ($times['timesBegin'][$weekday]=='' ||$times['timesEnd'][$weekday]=='')
+                    {
+                        //$arrayStatusChanged = 1;
+                        //break;
+                        $idGreetingToCancel[] = $oneOldGreeting['id'];
+                    }
+
+                    // Если время приёма не попадает в новый промежуток времени
+                    if (!(strtotime($oneOldGreeting['patient_time'])>strtotime($times['timesBegin'][$weekday]))
+                        &&
+                        (strtotime($oneOldGreeting['patient_time'])<strtotime($times['timesEnd'][$weekday])))
+                    {
+                        //$arrayStatusChanged = 1;
+                        //break;
+                        $idGreetingToCancel[] = $oneOldGreeting['id'];
+                    }
+                }
+            }
+
+            // В данной точке имеем в массиве $idGreetingToCancel перечисление ИД приёмов,
+            //   которые надо отменить, чтобы изменить расписание
+            // Теперь надо эти приёмы по-нормальному выбрать
+
+            $idsString = ''; // Строка, которая содержит распарсенное перечисление id, которых надо выбрать из базы
+
+            // Склеим идшники
+            foreach($idGreetingToCancel as $oneId)
+            {
+                if ($idsString != '')
+                {
+                    $idsString = $idsString.',';
+                }
+                $idsString =$idsString.((string)$oneId);
+
+            }
+
+            $model = new SheduleByDay();
+            $num = $model->getGreetingsByIds($filters, $idsString);
+
+
+
+            $totalPages = 0;
+            $start = 0;
+            if ($rows)
+            {
+                $totalPages = ceil(count($num) / $rows);
+                $start = $page * $rows - $rows;
+            }
+
+            $greetings = $model->getGreetingsByIds($filters, $idsString, $sidx, $sord, $start, $rows);
+
+            // Приведём дату в приличный вид и запишем ссылку для отписывания
+            foreach($greetings as &$element) {
+                $greetingDateArr= explode('-', $element['patient_day']);
+                $element['patient_date'] =	$greetingDateArr[2].'.'
+                    .$greetingDateArr[1].'.'
+                    .$greetingDateArr[0].' '.$element['patient_time'];
+
+                $element['doctor_fio'] = $element['last_name'];
+
+                if ($element['first_name']!='')
+                {
+                    $element['doctor_fio'] .= (' '.mb_substr($element['first_name'],0,1,'utf-8').'.');
+                }
+
+                if ($element['middle_name']!='')
+                {
+                    $element['doctor_fio'] .= (' '.mb_substr($element['middle_name'],0,1,'utf-8'). '.');
+                }
+
+                $element['unwrite'] = '<a class="unwrite-link" href="#' .(string) $element['id'] . '">' .
+                    '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>' .
+                    '</a>';
+            }
+            return
+                array(	'rows' => $greetings,
+                    'total' => $totalPages,
+                    'records' => count($num));
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+
+
+
+    public function actionGetWrittenPatients()
+ 	{
+        $result = $this->getPatientsWritten();
+        // В поле рекордс добавляем информацию о пациентах
+        $this->getPatientsInfoToGreetings($result['rows']);
+        $greetingsJSON = CJSON::encode($result);
+        echo $greetingsJSON;
  	}
  
  	// Возвращает количество пацентов, записанных на данный промежуток времени
  	//    у данного врача
  	public function actionIsGreeting()
  	{
-        $dateBegin = $_GET['begin'];
-        $dateEnd = $_GET['end'];
-        $doctors = array();
-        if (isset($_GET['doctorsIds']))
-        {
-            if (is_array($_GET['doctorsIds']))
-            {
-                $doctors = $_GET['doctorsIds'];
-            }
-            else
-            {
-                $doctors[] = $_GET['doctorsIds'];
-            }
-        }
-        else
-        {
-            $doctors[] = $_GET['doctor_id'];
-        }
-
-        // Возвращаем количество записей
-        echo CJSON::encode(array('success' => true,
-            'data' => $this->isGreetingInternal($dateBegin, $dateEnd, $doctors )
-
-        ));
- 	}
-
-    // Вытаскиваем приёмы по id докторов и дате начала и конца
-    private function isGreetingInternal($begin, $end, $doctors)
-    {
-        $doctorsStr = implode(",", $doctors);
-
-        $greetings = SheduleByDay::model()->findAll('doctor_id in (' .$doctorsStr. ') AND patient_day >= :date_begin AND patient_day <= :date_end',
-            array(':date_begin' => $begin,
-                ':date_end' => $end
-            )
-        );
-
-
-        return count($greetings);
+        $result = $this->getPatientsWritten();
+            echo CJSON::encode(
+                array(
+                    'success'=> true,
+                    'data'=> $result['records']
+                )
+            );
     }
 
- 	function actionIntersectionGreeting()
- 	{
- 		$dateBegin = $_GET['begin'];
- 		$dateEnd = $_GET['end'];
- 		$sheduleId = $_GET['shedule_id'];
- 		$doctorId = $_GET['doctor_id'];
- 		$times = CJSON::decode($_GET['times']);
- 		
- 		//var_dump($times );
- 		//exit();
- 		
- 		$oldShedule = SheduleSettedBe::model()->find('id = :id', array(':id'=>$sheduleId));
- 		
- 		// Выбираем приёмы, которые попадали раньше в промежуток	
- 		$oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end', 
- 			array(':doctor_id' => $doctorId,':date_begin' => $oldShedule['date_begin'],
- 					':date_end' => $oldShedule['date_end']
- 					)
- 				);
- 		// Выбираем приёмы, которые попадают в промежуток теперь
- 		$newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end', 
- 													array(':doctor_id' => $doctorId,':date_begin' => $dateBegin,
- 															':date_end' => $dateEnd
- 													)
- 											);
- 		$newGreetingsCount = count($newGreetings );
- 		$oldGreetingsCount = count($oldGreetings );
- 		$arrayStatusChanged = 0; // Флаг - появились ли приёмы, которые не были в старом диапазон 
- 		//(появились ли новые или исчезли ли старые)
- 
- 		foreach($newGreetings as $oneNewGreeting)
- 		{
- 			$wasFound = false;
- 			foreach($oldGreetings as $oneOldGreeting)
- 			{
- 				if ($oneNewGreeting['id']==$oneOldGreeting['id'])
- 				{		
- 					$wasFound = true;
- 					break;	
- 				}
- 			}	
- 			// Если не нашли хотя бы один новый приём в старых - поднимаем флаг, что изменился список приёмов
- 			if (!$wasFound)
- 			{
- 				$arrayStatusChanged = 1;
- 				break;
- 			}
- 		}
- 		if ($arrayStatusChanged == 0)
- 		{
- 			foreach($oldGreetings as $oneOldGreeting)
- 			{
- 				$wasFound = false;
- 				foreach($newGreetings as $oneNewGreeting)
- 				{
- 					if ($oneNewGreeting['id']==$oneOldGreeting['id'])
- 					{
-  						$wasFound = true;
- 						break;	
- 					}
- 				}	
- 				// Если не нашли хотя бы один новый приём в старых - поднимаем флаг, что изменился список приёмов
- 				if (!$wasFound)
- 				{
- 					$arrayStatusChanged = 1;
- 					break;
- 				}
- 			}	
- 		}
- 		
- 		// Если все пациенты попали в список - все ли старые пациенты попадают по времени
- 		if ($arrayStatusChanged == 0)
- 		{
- 			// Перебираем старые приёмы
- 			foreach($oldGreetings as $oneOldGreeting)
- 			{
- 				$weekday = date('w', strtotime($oneOldGreeting['patient_day']));
- 				// Надо проверить - попадает ли patient_time в промежуток между 
- 				//    началом приёма в данный день недели
- 				
- 				// Если в этот день приёма нет (хотя приём записан)
- 				if ($times['timesBegin'][$weekday]=='' ||$times['timesEnd'][$weekday]=='')
- 				{
- 					$arrayStatusChanged = 1;
- 					break;
- 				}
- 				
- 				// Если время приёма не попадает в новый промежуток времени
- 				if (!(strtotime($oneOldGreeting['patient_time'])>strtotime($times['timesBegin'][$weekday]))
- 					&&
- 					(strtotime($oneOldGreeting['patient_time'])<strtotime($times['timesEnd'][$weekday])))
- 				{
- 					$arrayStatusChanged = 1;
- 					break;
- 				}
- 				
- 			}
- 		}
- 		
- 		//exit();
- 		// Возвращаем флаг, что есть записи, которые обламываются
- 		echo CJSON::encode(array('success' => true,
- 			'data' => $arrayStatusChanged ));
- 	}
+    public function actionIsGreetingEdit()
+    {
+        $result = $this->getPatientsWrittenEdit();
+        echo CJSON::encode(
+            array(
+                'success'=> true,
+                'data'=> $result['records']
+            )
+        );
+    }
+
 	// Получение смен врачей
 	public function actionGetShiftsEmployee() {
 		try {
