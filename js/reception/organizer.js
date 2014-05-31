@@ -20,8 +20,8 @@
 
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
-        $('.organizer').on('resetClickedTime');
-        $('.organizer').on('resetClickedDay');
+        $('.organizer').trigger('resetClickedTime');
+        $('.organizer').trigger('resetClickedDay');
         //  $(this).find('.sheduleCont').addClass('no-display');
         $('#doctor-search-submit').trigger('click');
     });
@@ -30,7 +30,7 @@
         triggeredByLoad = true;
     });
 
-    $('.organizer').on('writePatientWithCard', function(e, beginTime, year, month, day) {
+    $('.organizer').on('writePatientWithCard', function(e, beginTime, year, month, day, li) {
         var params = {
             month : month + 1,
             year : year,
@@ -40,6 +40,9 @@
             time: beginTime,
             card_number: globalVariables.cardNumber
         };
+        if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
+            params.order_number = $(li).prop('id').substr(1);
+        }
 
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
@@ -283,7 +286,13 @@
                         if(dayData.primaryGreetings == null) { // Странный фикс: иногда возвращается null
                             dayData.primaryGreetings = 0;
                         }
-                        $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + (parseInt(dayData.secondaryGreetings) + parseInt(dayData.primaryGreetings)));
+
+                        // В том случае, если это не живая очередь, нужно писать время и кол-во первичных-вторичных приёмов. В ином случае, - кол-во пациентов / кол-во пациентов для живой очереди
+                        if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
+                            $(li).html(dayData.numPatients + '/' + globalVariables.maxInWaitingLine);
+                        } else {
+                            $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + (parseInt(dayData.secondaryGreetings) + parseInt(dayData.primaryGreetings)));
+                        }
 
                         if(dayData.numPatients == 0) {
                             $(li).addClass('empty');
@@ -325,19 +334,33 @@
                                 globalVariables.day = date.getDate();
                                 globalVariables.year = date.getFullYear();
 
+                                if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
+                                    var params = {
+                                        onlywaitingline : 1
+                                    };
+                                } else {
+                                    var params = {};
+                                }
+
                                 $.ajax({
                                     'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate(),
                                     'cache' : false,
                                     'dataType' : 'json',
                                     'type' : 'GET',
+                                    'data' : params,
                                     'success' : function(data, textStatus, jqXHR) {
                                         if(data.success == 'true') {
                                             if($(clickedDayLi).prop('id') == $(li).prop('id')) {
+                                                if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
+                                                    var title = 'Живая очередь ';
+                                                } else {
+                                                    var title = 'Расписание ';
+                                                }
                                                 $(li).popover({
                                                     animation: true,
                                                     html: true,
                                                     placement: 'bottom',
-                                                    title: 'Расписание врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
+                                                    title: title + 'врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
                                                     delay: {
                                                         show: 300,
                                                         hide: 300
@@ -345,18 +368,28 @@
                                                     content: function() {
                                                         var ulInPopover = $('<ul>').addClass('patientList');
                                                         for(var j = 0; j < data.data.length; j++) {
-                                                            // Проверка настроек и текущего времени: нельзя записать на прошлое время
-                                                            if(!isPassedTime(data.data[j].timeBegin, date, true)) {
-                                                                continue;
-                                                            }
+                                                            // Живая очередь обрабатывается иначе, чем обычная запись
+                                                            if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
+                                                                var li = $('<li>').css({
+                                                                    'cursor' : 'pointer'
+                                                                }).prop({
+                                                                    'id' : 'p' + data.data[j].orderNumber
+                                                                }).html(data.data[j].orderNumber);
 
-                                                            var li = $('<li>').css({
-                                                                'cursor' : 'pointer'
-                                                            }).prop({
-                                                                'id' : 't' + j
-                                                            }).html(
-                                                                data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
-                                                            );
+                                                            } else {
+                                                                // Проверка настроек и текущего времени: нельзя записать на прошлое время
+                                                                if(!isPassedTime(data.data[j].timeBegin, date, true)) {
+                                                                    continue;
+                                                                }
+
+                                                                var li = $('<li>').css({
+                                                                    'cursor' : 'pointer'
+                                                                }).prop({
+                                                                    'id' : 't' + j
+                                                                }).html(
+                                                                    data.data[j].timeBegin + ' - ' + data.data[j].timeEnd
+                                                                );
+                                                            }
 
                                                             if(data.data[j].cardNumber != null || data.data[j].id != null || $.trim(data.data[j].fio) != '') {
                                                                 $(li).addClass('withPatient');
@@ -383,11 +416,13 @@
                                                                         $(li).addClass('pressed');
 
                                                                         globalVariables.patientTime = timeBegin;
+                                                                        globalVariables.orderNumber = $(li).prop('id').substr(1);
                                                                         if($('#patientDataPopup').length > 0) {
                                                                             globalVariables.withWindow = 1;
                                                                             $('#patientDataPopup').modal({});
                                                                         } else { // Должны быть данные для записи пациента
-                                                                            $('.organizer').trigger('writePatientWithCard', [timeBegin, date.getFullYear(), date.getMonth(), date.getDate()]);
+                                                                            var args = [timeBegin, date.getFullYear(), date.getMonth(), date.getDate(), li];
+                                                                            $('.organizer').trigger('writePatientWithCard', args);
 
                                                                         }
                                                                     });
@@ -467,8 +502,8 @@
                         })(i, li, counter, dayData);
 
                         // Де-факто после того, как полностью сформирован список, может получиться так, что в нём ни одного элемента. В первую очередь это выясняется по времени окончания смены
-                        if(!isPassedTime(data[i].shedule[j].endTime, dates[counter])) {
-                            $(li).removeClass('not-full full empty').addClass('not-aviable').off('click');
+                        if(!isPassedTime(data[i].shedule[j].endTime, dates[counter]) || (counter > 0 && globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1)) {
+                            $(li).removeClass('notfull full empty').addClass('not-aviable').off('click');
                         }
 
                     } else {

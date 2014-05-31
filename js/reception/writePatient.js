@@ -24,22 +24,22 @@
                 {
                     'field' : 'oms_number',
                     'op' : 'eq',
-                    'data' :  $('#omsNumber').val()
+                    'data' :  $('#omsNumber').length > 0 ? $('#omsNumber').val() : ''
                 },
                 {
                     'field' : 'first_name',
                     'op' : 'eq',
-                    'data' : $('#firstName').val().toUpperCase()
+                    'data' :  $('#firstName').length > 0 ? $('#firstName').val().toUpperCase() : ''
                 },
                 {
                     'field' : 'middle_name',
                     'op' : 'eq',
-                    'data' : $('#middleName').val().toUpperCase()
+                    'data' :  $('#middleName').length > 0 ? $('#middleName').val().toUpperCase() : ''
                 },
                 {
                     'field' : 'last_name',
                     'op' : 'eq',
-                    'data' : $('#lastName').val().toUpperCase()
+                    'data' : $('#lastName').length > 0 ? $('#lastName').val().toUpperCase() : ''
                 },
                 {
                     'field' : 'address_reg_str',
@@ -241,6 +241,10 @@
             data.is_callcenter = 1;
         }
 
+        if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
+            data.onlywaitingline = 1;
+        }
+
         globalVariables.resetBeginDate = true;
         // Делаем поиск
         $.ajax({
@@ -313,7 +317,7 @@
 				} else {
 					var content = '<tr>' +
 						'<td class="write-patient-cell">' +
-							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '">' +
+							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + ((globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) ? '&waitingline=1' : '') +'">' +
 								'<span class="glyphicon glyphicon-dashboard"></span>' +
 							'</a>' +
 						'</td>';
@@ -549,7 +553,10 @@
                 greeting_type: $('#greetingType').val(),
                 comment: $('#comment').val()
             };
+        }
 
+        if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1 && globalVariables.hasOwnProperty('orderNumber')) {
+            params.order_number = globalVariables.orderNumber;
         }
 
         $.ajax({

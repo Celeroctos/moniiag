@@ -1019,7 +1019,7 @@ $('#nextHistoryPoint').on('click', function () {
         updateExpanded();*/
     });
 
-    function updatePatientList() {
+    function updatePatientList(onlyWaitingList) {
         var url = '/index.php/doctors/shedule/updatepatientlist';
         var data = {
             FormSheduleFilter : {
@@ -1028,6 +1028,10 @@ $('#nextHistoryPoint').on('click', function () {
             currentPatient : $('#currentPatientId').val(),
             currentGreeting : $('#greetingId').val()
         };
+        if(typeof onlyWaitingList != 'undefined') {
+            data.onlywaitinglist = 1;
+        }
+
         $.ajax({
             'url': url,
             'data': data,
@@ -1040,13 +1044,19 @@ $('#nextHistoryPoint').on('click', function () {
             'success': function (data, textStatus, jqXHR) {
                 if (data.success) {
                     // Кнопку свёртывания/развёртывания перключим на развёртывание
-                    $('#expandPatientList').find('span').removeClass('glyphicon-resize-small');
-                    $('#expandPatientList').find('span').addClass('glyphicon-resize-full');
+                    if(typeof onlyWaitingList == 'undefined') {
+                        $('#expandPatientList').find('span').removeClass('glyphicon-resize-small');
+                        $('#expandPatientList').find('span').addClass('glyphicon-resize-full');
 
-                    // Убиваем старый список пациентов
-                    var parentContainer =  $('#doctorPatientList').parents()[0];
-                    $('#doctorPatientList').remove();
-                    $(parentContainer).append(data.data);
+                        // Убиваем старый список пациентов
+                        var parentContainer =  $('#doctorPatientList').parents()[0];
+                        $('#doctorPatientList').remove();
+                        $(parentContainer).append(data.data);
+                    } else {
+                        var parentContainer = $('#doctorWaitingList').parents()[0];
+                        $('#doctorWaitingList').remove();
+                        $(parentContainer).append(data.data);
+                    }
                 }
             }
         });
@@ -1080,6 +1090,24 @@ $('#nextHistoryPoint').on('click', function () {
 
     $('#refreshPatientList').on('click', function(e) {
             updatePatientList();
+    });
+
+    $('.patientListNav li').on('click', function() {
+        $('.patientListNav li').removeClass('active');
+        $(this).addClass('active');
+        $('#writedByOrderCont, #writedByTimeCont').addClass('no-display');
+        var tabId = $(this).find('a').attr('id');
+        $('#' + tabId + 'Cont').removeClass('no-display');
+        if(tabId == 'writedByOrder') {
+            $('#refreshWaitingList').trigger('click');
+        } else {
+            $('#refreshPatientList').trigger('click');
+        }
+    });
+
+    // Обновить живую очредь, список
+    $('#refreshWaitingList').on('click', function(e) {
+        updatePatientList(1);
     });
 
 });

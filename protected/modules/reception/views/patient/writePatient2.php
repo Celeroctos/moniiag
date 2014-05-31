@@ -33,6 +33,12 @@
             globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
         </script>
     <?php } ?>
+    <?php if(isset($waitingLine) && $waitingLine) { ?>
+        <script type="text/javascript">
+            globalVariables.isWaitingLine = 1;
+            globalVariables.maxInWaitingLine = <?php echo $maxInWaitingLine; ?>;
+        </script>
+    <?php } ?>
 </div>
 <h4>
     Необходимо найти врача к которому следует записать пациента <?php echo $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name; ?> :

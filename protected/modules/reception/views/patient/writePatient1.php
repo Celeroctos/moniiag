@@ -15,6 +15,12 @@
             globalVariables.isCallCenter = <?php echo $callcenter; ?>;
         </script>
     <?php } ?>
+    <?php if(isset($waitingLine) && $waitingLine) { ?>
+        <script type="text/javascript">
+            globalVariables.isWaitingLine = 1;
+            globalVariables.maxInWaitingLine = <?php echo $maxInWaitingLine; ?>;
+        </script>
+    <?php } ?>
 </div>
 <h4>Необходимо найти пациента, которого требуется записать на приём:</h4>
 <div class="row">

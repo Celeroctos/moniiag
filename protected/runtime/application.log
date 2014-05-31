@@ -22,3 +22,179 @@ in Z:\home\moniiag.my\www\index.php (13)
 in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (39)
 in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
 in Z:\home\moniiag.my\www\index.php (13)
+2014/05/31 14:08:45 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "writeinwaitingline".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('writeinwaitingl...')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writeinwaitingl...')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writeinwaitingline
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
+---
+2014/05/31 14:23:30 [error] [exception.CException] exception 'CException' with message 'Контроллер PatientController содержит в своем представлении "Z:\home\moniiag.my\www\protected\modules\reception\views\patient\waitingLineStep1.php" тэги виджетов с неправильной вложенностью. В виджете CActiveForm не используется вызов endWidget().' in Z:\home\moniiag.my\yii\web\CBaseController.php:101
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#1 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('waitingLineStep...', Array, true)
+#2 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(1260): CController->render('waitingLineStep...', Array)
+#3 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): PatientController->actionWriteInWaitingLine()
+#4 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#5 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#6 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#7 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#10 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writeinwaitingl...')
+#12 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#13 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#14 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/index.php/reception/patient/writeinwaitingline
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
+---
+2014/05/31 14:24:43 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "writeinwaitingline".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('writeinwaitingl...')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writeinwaitingl...')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writeinwaitingline
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
+---
+2014/05/31 14:26:13 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "writeinwaitingline".' in Z:\home\moniiag.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CController.php(270): CController->missingAction('writeinwaitingl...')
+#1 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writeinwaitingl...')
+#2 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#3 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/reception/patient/writeinwaitingline
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
+---
+2014/05/31 14:27:15 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "WritePatientTabMenu.waitigLine".' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\WritePatientTabMenu.php(21): CComponent->__get('waitigLine')
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#4 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\WritePatientTabMenu.php(10): CWidget->render('application.mod...', Array)
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(173): WritePatientTabMenu->run()
+#6 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\writePatient1.php(13): CBaseController->widget('application.mod...', Array)
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#9 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#10 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('writePatient1', Array, true)
+#11 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(1080): CController->render('writePatient1', Array)
+#12 [internal function]: PatientController->actionWritePatientStepOne(0)
+#13 Z:\home\moniiag.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(PatientController), Array)
+#14 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(PatientController), Object(ReflectionMethod), Array)
+#15 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#16 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#17 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#18 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#23 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#24 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#25 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone?waitingline=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?waitingline=1
+---
+2014/05/31 14:27:58 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "WritePatientTabMenu.waitigLine".' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\WritePatientTabMenu.php(21): CComponent->__get('waitigLine')
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#4 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\WritePatientTabMenu.php(11): CWidget->render('application.mod...', Array)
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(173): WritePatientTabMenu->run()
+#6 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\writePatient1.php(13): CBaseController->widget('application.mod...', Array)
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#9 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#10 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('writePatient1', Array, true)
+#11 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(1080): CController->render('writePatient1', Array)
+#12 [internal function]: PatientController->actionWritePatientStepOne(0)
+#13 Z:\home\moniiag.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(PatientController), Array)
+#14 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(PatientController), Object(ReflectionMethod), Array)
+#15 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#16 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#17 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#18 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#23 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#24 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#25 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone?waitingline=1
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone?waitingline=1
+---
+2014/05/31 14:28:02 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "WritePatientTabMenu.waitigLine".' in Z:\home\moniiag.my\yii\base\CComponent.php:130
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\views\WritePatientTabMenu.php(21): CComponent->__get('waitigLine')
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(130): require('Z:\home\moniiag...')
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, false)
+#3 Z:\home\moniiag.my\yii\web\widgets\CWidget.php(244): CBaseController->renderFile('Z:\home\moniiag...', Array, false)
+#4 Z:\home\moniiag.my\www\protected\modules\reception\components\widgets\WritePatientTabMenu.php(11): CWidget->render('application.mod...', Array)
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(173): WritePatientTabMenu->run()
+#6 Z:\home\moniiag.my\www\protected\modules\reception\views\patient\writePatient1.php(13): CBaseController->widget('application.mod...', Array)
+#7 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#8 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#9 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#10 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('writePatient1', Array, true)
+#11 Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php(1080): CController->render('writePatient1', Array)
+#12 [internal function]: PatientController->actionWritePatientStepOne(0)
+#13 Z:\home\moniiag.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(PatientController), Array)
+#14 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(PatientController), Object(ReflectionMethod), Array)
+#15 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#16 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#17 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#18 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#19 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#20 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#21 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#22 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('writepatientste...')
+#23 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('reception/patie...')
+#24 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#25 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#26 {main}
+REQUEST_URI=/index.php/reception/patient/writepatientstepone?waitingline=1
+---
+2014/05/31 19:17:30 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "PatientListWidget.isWaitingLine".' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\yii\web\CWidgetFactory.php(161): CComponent->__set('isWaitingLine', 0)
+#1 Z:\home\moniiag.my\yii\web\CBaseController.php(146): CWidgetFactory->createWidget(Object(SheduleController), 'application.mod...', Array)
+#2 Z:\home\moniiag.my\yii\web\CBaseController.php(172): CBaseController->createWidget('application.mod...', Array)
+#3 Z:\home\moniiag.my\www\protected\modules\doctors\views\shedule\index.php(180): CBaseController->widget('application.mod...', Array)
+#4 Z:\home\moniiag.my\yii\web\CBaseController.php(126): require('Z:\home\moniiag...')
+#5 Z:\home\moniiag.my\yii\web\CBaseController.php(95): CBaseController->renderInternal('Z:\home\moniiag...', Array, true)
+#6 Z:\home\moniiag.my\yii\web\CController.php(869): CBaseController->renderFile('Z:\home\moniiag...', Array, true)
+#7 Z:\home\moniiag.my\yii\web\CController.php(782): CController->renderPartial('index', Array, true)
+#8 Z:\home\moniiag.my\www\protected\modules\doctors\controllers\SheduleController.php(153): CController->render('index', Array)
+#9 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): SheduleController->actionView()
+#10 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#11 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#13 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#14 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#15 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#16 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#17 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('view')
+#18 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule...')
+#19 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#20 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#21 {main}
+REQUEST_URI=/index.php/doctors/shedule/view
+HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientsteptwo/?cardid=33/14&waitingline=1
+---

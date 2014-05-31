@@ -132,7 +132,7 @@ class SheduleByDay extends MisActiveRecord {
  		return $patients->queryAll();
  	}
 	
-    public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0) {
+    public function getRows($date, $doctorId, $withMediate = 1, $onlyForDoctor = 0, $onlyWaitingLine = 0) {
         $connection = Yii::app()->db;
         // Здесь есть анальный баг с повтором строк..
         $patients = $connection->createCommand()
@@ -157,7 +157,15 @@ class SheduleByDay extends MisActiveRecord {
         if($onlyForDoctor) {
             $patients->andWhere('m.motion = 1 OR (m.motion = 0 AND dsbd.is_accepted = 1)');
         }
-        $patients->order('dsbd.patient_time');
+
+        if($onlyWaitingLine) {
+            $patients->andWhere('dsbd.order_number IS NOT NULL');
+            $patients->order('dsbd.order_number');
+        } else {
+            $patients->andWhere('dsbd.order_number IS NULL');
+            $patients->order('dsbd.patient_time');
+        }
+
         return $patients->queryAll();
     }
 

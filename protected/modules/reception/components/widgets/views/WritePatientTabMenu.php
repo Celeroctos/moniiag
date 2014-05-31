@@ -18,11 +18,14 @@
     else
     {
     ?>
-        <li <?php echo $controller == 'patient' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo') ? 'class="active"' : ''; ?>>
+        <li <?php echo $controller == 'patient' && (($action == 'writepatientstepone' || $action == 'writepatientsteptwo') && !$this->waitingLine) ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Запись пациента', array('/reception/patient/writepatientstepone'.( $this->callcenter ? '?callcenter=1':'' )   )) ?>
         </li>
         <li <?php echo $controller == 'patient' && $action == 'writepatientwithoutdata' ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Запись опосредованного пациента', array('/reception/patient/writepatientwithoutdata'.($this->callcenter ? '?callcenter=1':'' ) )) ?>
+        </li>
+        <li <?php echo $controller == 'patient' && (($action == 'writepatientstepone' || $action == 'writepatientsteptwo') && $this->waitingLine) ? 'class="active"' : ''; ?>>
+            <?php echo CHtml::link('Запись в живую очередь', array('/reception/patient/writepatientstepone?waitingline=1')); ?>
         </li>
     <?php }?>
 </ul>
