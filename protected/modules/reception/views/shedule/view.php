@@ -96,7 +96,7 @@
 		</div>
 	</form>
 </div class="row">
-<h4 id="sheduleInfoH4">Расписание на </h4>
+<h4 id="sheduleInfoH4"></h4>
 <div class="row">
     <table id="sheduleTable" class="col-xs-11">
         <thead>
@@ -114,6 +114,30 @@
                 <td>Статус приёма</td>
                 <td></td>
             </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+</div>
+<h4 id="writingLineInfoH4"></h4>
+<div class="row">
+    <table id="writingLineTable" class="col-xs-11">
+        <thead>
+        <tr class="header">
+            <td>Врач</td>
+            <td>
+                <input type="checkbox" value="-1" title="Отметить все" id="checkAll">
+            </td>
+            <td>Пациент</td>
+            <td>Контактный телефон</td>
+            <td>Комментарий</td>
+            <td>Время</td>
+            <td>Номер карты</td>
+            <td>Статус карты</td>
+            <td>Статус приёма</td>
+            <td></td>
+        </tr>
         </thead>
         <tbody>
 

@@ -8,7 +8,6 @@ class PatientListWidget extends CWidget {
     public $isWaitingLine = false;
     public $tableId = 'doctorPatientList';
 
-
     public function run() {
             echo $this->render('application.modules.doctors.components.widgets.views.PatientListWidget', array(
                 'patients' => $this->patients,
