@@ -96,7 +96,7 @@ $(document).ready(function () {
         ondblClickRow: editElement,
         onSelectRow: function (rowId, status, e) {
             var row = $("#elements").jqGrid('getRowData', rowId);
-            if (row.type_id == 2 || row.type_id == 3) {
+            if (row.type_id == 2 || row.type_id == 3 || row.type_id == 7) {
                 $('#editElementDependences').removeClass('disabled');
             } else {
                 $('#editElementDependences').addClass('disabled');
