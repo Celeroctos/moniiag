@@ -23,3 +23,31 @@ Stack trace:
 REQUEST_URI=/index.php/reception/patient/writepatientstepone?waitingline=1
 HTTP_REFERER=http://moniiag.my/index.php/reception/patient/writepatientstepone
 ---
+2014/06/02 15:13:29 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (188)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/06/02 15:13:34 [warning] [application] Не удалось присвоить небезопасный атрибут "insurance" класса "FormPatientAdd".
+in Z:\home\moniiag.my\www\protected\modules\reception\controllers\PatientController.php (188)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+in Z:\home\moniiag.my\www\index.php (13)
+2014/06/02 16:57:08 [error] [exception.CException] exception 'CException' with message 'Не определено свойство "FormSheduleSettings.maxInWaitingLine".' in Z:\home\moniiag.my\yii\base\CComponent.php:174
+Stack trace:
+#0 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ModulesController.php(51): CComponent->__set('maxInWaitingLin...', '8')
+#1 Z:\home\moniiag.my\www\protected\modules\admin\controllers\ModulesController.php(14): ModulesController->fillSheduleModel()
+#2 Z:\home\moniiag.my\yii\web\actions\CInlineAction.php(49): ModulesController->actionSheduleSettings()
+#3 Z:\home\moniiag.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#4 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 Z:\home\moniiag.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#6 Z:\home\moniiag.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#7 Z:\home\moniiag.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#8 Z:\home\moniiag.my\yii\web\CController.php(291): CFilterChain->run()
+#9 Z:\home\moniiag.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 Z:\home\moniiag.my\yii\web\CWebApplication.php(282): CController->run('shedulesettings')
+#11 Z:\home\moniiag.my\yii\web\CWebApplication.php(141): CWebApplication->runController('admin/modules/s...')
+#12 Z:\home\moniiag.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#13 Z:\home\moniiag.my\www\index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/index.php/admin/modules/shedulesettings
+HTTP_REFERER=http://moniiag.my/index.php/admin/users/view
+---

@@ -289,7 +289,7 @@
 
                         // В том случае, если это не живая очередь, нужно писать время и кол-во первичных-вторичных приёмов. В ином случае, - кол-во пациентов / кол-во пациентов для живой очереди
                         if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
-                            $(li).html(dayData.numPatients + '/' + globalVariables.maxInWaitingLine);
+                            $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.numPatients + '/' + globalVariables.maxInWaitingLine);
                         } else {
                             $(li).html(beginTime + ' - ' + endTime + '<br />' + dayData.primaryGreetings + '/' + (parseInt(dayData.secondaryGreetings) + parseInt(dayData.primaryGreetings)));
                         }

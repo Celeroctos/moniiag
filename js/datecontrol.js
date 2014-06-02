@@ -27,15 +27,23 @@
 
 
     ];
+
+var d = new Date();
 // Перечень конфигов контролов дат. Ключ к массиву - ИД контрола, а элемент - конфиг контрола
 var dateControlConfigs =
-    [
-
-    ];
+    {
+        '#policy-givedate-cont' : {
+            maxMonth: (d.getMonth() + 1),
+            maxYear: d.getFullYear(),
+            maxDay : d.getDate()
+        }
+    };
 
     // Занести в список контролов дат контрол
     function pushDateControl(controlSelector,controlConfig)
     {
+        console.log(controlConfig.minValue);
+
         DateControlContainers.push(controlSelector);
         if (controlConfig)
         {
@@ -130,6 +138,10 @@ var dateControlConfigs =
             StructDate.setDate(StructDate.getDate() - 1);
         }
 
+       var configId = $(Target.currentTarget).parents('.date').prop('id');
+       if(dateControlConfigs.hasOwnProperty('#' + configId) && typeof dateControlConfigs['#' + configId] == 'object') {
+           var result = minMaxFilter(StructDate.getDate(), StructDate.getMonth(), StructDate.getFullYear(), dateControlConfigs['#' + configId]);
+       }
         // Преобразовываем изменённую дату обратно и записываем в контрол
         // Преобразуем компоненты в строковое представление с ведущими нулями
         var dd = StructDate.getDate();
@@ -159,7 +171,7 @@ var dateControlConfigs =
     }
 
    // Возвращает строку, которую нужно записать в том случае, если дата не укладывается в диапазон min и max
-   function minMaxFilter(dayToTest,monthToTest,yearToTest,config)
+   function minMaxFilter(dayToTest, monthToTest, yearToTest, config)
    {
        // Инитим результат - по умолчанию возвращается то, что мы подали в фукцию
        var result =[ dayToTest, monthToTest, yearToTest   ];
@@ -222,7 +234,7 @@ var dateControlConfigs =
                     var MonthInt = parseInt(parts[1]);
                     var YearInt =  parseInt(parts[0]);
                     // Надо проверить DayInt и т.п.  на min-max
-                    if (config!=undefined)
+                    if (config != undefined && typeof config == 'object')
                     {
                         var newValues = minMaxFilter(DayInt,MonthInt,YearInt,config);
                         DayInt = newValues[0];
@@ -249,7 +261,7 @@ var dateControlConfigs =
                 else
                 { // Из настоящего в суб
                     // Надо проверить значения контролов year, month, year а минимакс
-                    if (config!=undefined)
+                    if (config != undefined && typeof config == 'object')
                     {
                         var newValues = minMaxFilter(day.val(),month.val(),year.val(),config);
                         day.val(newValues[0]);

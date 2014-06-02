@@ -95,8 +95,8 @@
                     var data = data.data;
                     var cabinets = data.cabinets;
                     $('#todoctor-submit').prop('disabled', true);
-                    makeSheduleTable('#sheduleTable', data.sheduleOnlyByWriting, cabinets, 'Расписание на ' + greetingDate.split('-').reverse().join('.') + ' года ', '#sheduleInfoH4');
-                    makeSheduleTable('#writingLineTable', data.sheduleOnlyWaitingLine, cabinets, 'Живая очередь на ' + greetingDate.split('-').reverse().join('.') + ' года ', '#writingLineInfoH4');
+                    makeSheduleTable('#sheduleTable', data.sheduleOnlyByWriting, cabinets, 'Расписание на ' + greetingDate.split('-').reverse().join('.') + ' года ', '#sheduleInfoH4', 1);
+                    makeSheduleTable('#writingLineTable', data.sheduleOnlyWaitingLine, cabinets, 'Живая очередь на ' + greetingDate.split('-').reverse().join('.') + ' года ', '#writingLineInfoH4', 0);
                 } else {
                     // Удаляем предыдущие ошибки
                     $('#errorPopup .modal-body .row p').remove();
@@ -115,15 +115,15 @@
     });
 
     // Отобразить таблицу для расписания
-    function makeSheduleTable(tableId, shedule, cabinets, title, hCont) {
+    function makeSheduleTable(tableId, shedule, cabinets, title, hCont, displayTime) {
         var table = $(tableId);
         $(table).find('tbody tr').remove();
         var currentDoctorId = null;
         var numRows = 1; // Для rowspan
         var firstTd = null;
         var added = false; // Добавлена или нет первая ячейка
-        $().html(title);
-        if(shedule.length > 0) {`
+        $(hCont).html(title);
+        if(shedule.length > 0) {
             $('#print-submit').prop('disabled', false);
         } else {
             $('#print-submit').prop('disabled', true);
@@ -180,11 +180,15 @@
                 '</td>' +
                 '<td>' +
                     (typeof shedule[i].phone != 'comment' && shedule[i].comment != null ? shedule[i].comment : '') +
-                '</td>' +
-                '<td>' +
-                    ((typeof shedule[i].patient_time != 'undefined' && shedule[i].patient_time != null) ? shedule[i].patient_time.substr(0, shedule[i].patient_time.lastIndexOf(':')) : '') +
-                '</td>' +
-                '<td>' +
+                '</td>';
+
+            if(displayTime == 1) {
+                content += '<td>' +
+                        ((typeof shedule[i].patient_time != 'undefined' && shedule[i].patient_time != null) ? shedule[i].patient_time.substr(0, shedule[i].patient_time.lastIndexOf(':')) : '') +
+                    '</td>';
+            }
+
+            content += '<td>' +
                     ((shedule[i].medcard_id != null) ?  '<a href="#" class="cardNumber">' + shedule[i].medcard_id + '</a>' : '<button class="btn btn-primary" id="b' + shedule[i].mediate_id + '">Подтвердить приём</button>') +
                 '</td>' +
                 '<td>' +
@@ -229,31 +233,31 @@
 	// Раписание на текущую дату
 	$('#sheduleViewSubmit').trigger('click'); 
 
-    $('#sheduleTable').on('click', 'td button', function() {
+    $('#sheduleTable, #writingLineTable').on('click', 'td button', function() {
         // Логика следующая: опосредованный пациент может быть на самом деле пустым, с ОМС или с медкартой. Ищем по ОМС, т.к. пациент всегда предъявляет ОМС и даём сопоставить, как в случае поиска
         globalVariables.currentMediateId = $(this).prop('id').substr(1);
         $('#acceptGreetingPopup').modal({});
     });
 
     // Отметить все медкарты
-    $('#checkAll').on('click', function(e) {
+    $('.checkAll').on('click', function(e) {
         if($(this).prop('checked')) {
             $(this).prop('title', 'Снять все отмеченные');
-            $('#sheduleTable tbody input[type="checkbox"]').prop('checked', true);
+            $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', true);
         } else {
             $(this).prop('title', 'Отметить все');
-            $('#sheduleTable tbody input[type="checkbox"]').prop('checked', false);
+            $(this).parents('table').find('tbody input[type="checkbox"]').prop('checked', false);
         }
-        checkToDoctorEnabled(e);
+        checkToDoctorEnabled(e, $(this).parents('table').prop('id'));
     });
 
     // Разнос отмеченных карт по кабинетам
     $('#todoctor-submit').on('click', function(e) {
-        var checked = $('#sheduleTable tbody input[type="checkbox"]');
+        var checked = $('#sheduleTable tbody input[type="checkbox"], #writingLineTable tbody input[type="checkbox"]');
         if(checked.length == 0 || $(this).prop('disabled')) {
             return false;
         } 
-
+console.log(checked);
         var ids = [];
         var numChecked = 0;
         for(var i = 0; i < checked.length; i++) {
@@ -336,37 +340,37 @@
     })
     
         // Проверяет - нужно ли делатиь активной кнопку разноса медкарт
-    function checkToDoctorEnabled(e)
+    function checkToDoctorEnabled(e, tableId)
     {
-                    var checked = $('#sheduleTable tbody input[type="checkbox"]');
-                    var checkedCount = 0;
-                    for (i=0;i<checked.length;i++)
-                    {
-                        if ($(checked[i]).prop('checked'))
-                        {
-                            checkedCount++;
-                            break;
-                        }
-                    }
-                    
-                    if(checkedCount > 0) {
-                        $('#todoctor-submit').prop('disabled', false);
-                    }
-                    else
-                    {
-                        $('#todoctor-submit').prop('disabled', true);
-                    }
+        var checked = $(tableId).find('tbody input[type="checkbox"]');
+        var checkedCount = 0;
+        for (i=0;i<checked.length;i++)
+        {
+            if ($(checked[i]).prop('checked'))
+            {
+                checkedCount++;
+                break;
+            }
+        }
+
+        if(checkedCount > 0) {
+            $('#todoctor-submit').prop('disabled', false);
+        }
+        else
+        {
+            $('#todoctor-submit').prop('disabled', true);
+        }
     }
     
     // Ставим на клик по чекбоксам в таблице расписания обрабочтчик,
     //    задача которого проверить выделен ли хотя бы
     //   один чекбокс в таблице, то делаем кнопку "Разнести отмеченные по кабинетам" активной,
     //   в противном случае - ставим неактивной
-    $(document).on('change', '#sheduleTable tbody input[type="checkbox"]',
-               function(e)
-               {
-                    checkToDoctorEnabled(e);
-               }
+    $(document).on('change', '#sheduleTable tbody input[type="checkbox"], #writingLineTable tbody input[type="checkbox"]',
+       function(e)
+       {
+            checkToDoctorEnabled(e, $(this).parents('table'));
+       }
      );
     
 
