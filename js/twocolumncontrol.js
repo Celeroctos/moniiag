@@ -14,7 +14,7 @@ $(document).ready(function() {
                     optionIds.push($(rightList[i]).attr('value'));
                 }
                 // Запишем в специальное скрытое поле значение
-                $(control).find('.twoColumnHidden').val($.toJSON(optionIds));
+                $(control).find('.twoColumnHidden').val($.toJSON(optionIds)).change();
 
                 $(control).trigger('refresh');
             }

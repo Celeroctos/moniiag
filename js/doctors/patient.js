@@ -700,7 +700,7 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                                 changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
                             });
                             $(select).trigger('change');
-                        })($('select[id*="_' + undottedPath + '_"]'), deps[i]);
+                        })(getElementForDependences(undottedPath), deps[i]);
                     }
                 }
             } else {
@@ -709,6 +709,12 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
         }
     });
 });
+
+    function getElementForDependences(undottedPath)
+    {
+       // return $('select[id*="_' + undottedPath + '_"]');
+        return $('[id*="_' + undottedPath + '_"]');
+    }
 
 // UnКлонирование элементов
 $(document).on('click', '.accordion-unclone-btn', function (e) {
@@ -736,17 +742,20 @@ function checkElementsDependences() {
         var deps = globalVariables.elementsDependences;
         for (var i = 0; i < deps.length; i++) {
             // По этому пути вынимаем контрол
+           // console.log(deps[i].elementId);
             var undottedPath = deps[i].path.split('.').join('|');
             if (deps[i].dependences.list.length > 0) {
                 filteredDeps.push(deps[i]);
                 (function (select, dep) {
+                   // console.log( $(select).attr('id') );
                     $(select).on('change', function (e) {
                         var elementValue = $(select).val();
                         changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
                     });
                     $(select).trigger('change');
 
-                })($('select[id*="_' + undottedPath + '_"]'), deps[i]);
+                })(getElementForDependences(undottedPath), deps[i]);
+                //})($('[id*="_' + undottedPath + '_"]'), deps[i]);
             }
         }
     }
@@ -754,9 +763,10 @@ function checkElementsDependences() {
 checkElementsDependences();
 
 function hideControl(container, elementId) {
+    var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
     if (typeof container == 'undefined') {
-        var next = $('[id$="_' + elementId + '"]').next();
-        var prev = $('[id$="_' + elementId + '"]').prev();
+        var next = $(elementWithWrapper).next();
+        var prev = $(elementWithWrapper).prev();
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
@@ -767,11 +777,12 @@ function hideControl(container, elementId) {
         if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).hide();
         }
-        $('[id$="_' + elementId + '"]').val('').hide();
+        $('[id$="_' + elementId + '"]').val('');
+        $(elementWithWrapper).hide();
     }
     else {
-        var next = $(container).find('[id$="_' + elementId + '"]').next();
-        var prev = $(container).find('[id$="_' + elementId + '"]').prev();
+        var next = $(elementWithWrapper).next();
+        var prev = $(elementWithWrapper).prev();
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
@@ -782,15 +793,17 @@ function hideControl(container, elementId) {
         if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).hide();
         }
-        $(container).find('[id$="_' + elementId + '"]').val('').hide();
+        $(container).find('[id$="_' + elementId + '"]').val('');
+        $(elementWithWrapper).hide();
 
     }
 }
 
 function showControl(container, elementId) {
+    var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
     if (typeof container == 'undefined') {
-        var next = $('[id$="_' + elementId + '"]').next();
-        var prev = $('[id$="_' + elementId + '"]').prev();
+        var next = $(elementWithWrapper).next();
+        var prev = $(elementWithWrapper).prev();
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).show();
             // + у комбо
@@ -802,11 +815,12 @@ function showControl(container, elementId) {
         if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).show();
         }
-        $('[id$="_' + elementId + '"]').val('').hide();
+        $('[id$="_' + elementId + '"]').val('');
+        $(elementWithWrapper).show();
     }
     else {
-        var next = $(container).find('[id$="_' + elementId + '"]').next();
-        var prev = $(container).find('[id$="_' + elementId + '"]').prev();
+        var next = $(elementWithWrapper).next();
+        var prev = $(elementWithWrapper).prev();
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             var next = $(next).next();
             if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
@@ -817,9 +831,51 @@ function showControl(container, elementId) {
         if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).show();
         }
-        $(container).find('[id$="_' + elementId + '"]').val('').show();
+        $(container).find('[id$="_' + elementId + '"]').val('');
+        $(elementWithWrapper).show();
+    }
+}
+
+
+$(document).on('change', '.twoColumnHidden',function()
+{
+    // По событию изменения hidden двухколоночного контрола
+    //     - надо проверить, если значение пусто - то выкинуть выбранные
+    //     в правой колонке значения в колонку с исходными значениями
+
+});
+
+function getDependenceElementWithWrapper(container, selectorString)
+{
+    var result = undefined;
+
+    // Смотрим - какой элемент. Если элемент скрытый (type=hidden),
+    //    то нужно определить верхний контейнер-обёртку для этого элемента
+    var targetElement = undefined;
+
+    if (container==undefined)
+    {
+        targetElement = $('[id$="_' + selectorString + '"]');
+    }
+    else
+    {
+        targetElement = $(container).find('[id$="_' + selectorString + '"]');
+    }
+    if (targetElement!=undefined)
+    {
+        //
+        if ($(targetElement).prop('type')=='hidden')
+        {
+            // Выбираем родителя div c классом twoColumnList
+            result = $(targetElement).parents('div.twoColumnList');
+        }
+        else
+        {
+            result = $(targetElement);
+        }
 
     }
+    return result;
 }
 
 // Вызывается при совпадении свойства главного контрола
@@ -842,10 +898,26 @@ function onNotEqualValue(container, dependence) {
 
 
 function changeControlState(dep, elementValue, container) {
-    // Значение элемента является массивом в том случае, если у нас 
-    //    список с множественным выбором
-    if ($.isArray(elementValue)) {
+    // Проверяем - если тип контрола двухколоночный список - то надо раскодировать JSON-значение контрола в массив
+    if ( $('[id$="_' + dep.elementId + '"]').parents('div.twoColumnList').length>0    )
+    {
+        try
+        {
+            var parsedObject  = $.parseJSON(elementValue);
+            elementValue = parsedObject;
+        }
+        catch (e)
+        {
+            // Если исключение - ничего не делаю. Мне лень
 
+        }
+    }
+
+    // Значение элемента является массивом в том случае, если у нас
+    //    список с множественным выбором и двухколоночный список
+    if ($.isArray(elementValue)) {
+        //  Этот код старый. Вдруг понядобится, так что пусть пока здесь поживёт.
+        /*
         for (var j = 0; j < dep.dependences.list.length; j++) {
             // Перебираем elementValue как массив
             for (k = 0; k < elementValue.length; k++) {
@@ -858,7 +930,31 @@ function changeControlState(dep, elementValue, container) {
                 }
             }
         }
+        */
 
+        for (var j = 0; j < dep.dependences.list.length; j++)
+        {
+            // Ищем значение зависимости в выбранных значениях элемента
+            wasFound = false;
+            // Сканируем значения списка
+            for (k = 0; k < elementValue.length; k++) {
+                if (dep.dependences.list[j].value == elementValue[k])
+                {
+                    wasFound = true;
+                    break;
+                }
+            }
+            if (wasFound)
+            {
+                // Если нашли совпадение - выполняем действие, которое указано в зависимости
+                onEqualValue(container, dep.dependences.list[j]);
+            }
+            else
+            {
+                // Иначе - противоположное по значению
+                onNotEqualValue(container, dep.dependences.list[j]);
+            }
+        }
     }
     else {
         for (var j = 0; j < dep.dependences.list.length; j++) {
