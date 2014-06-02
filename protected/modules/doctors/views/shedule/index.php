@@ -160,20 +160,45 @@
                 </div>
             </div>
             <div class="row">
-                <h5 class="patient-list-h5">
-                    <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
-                </h5>
-                <div class="col-xs-12 borderedBox">
-                    <?php
-                    // Вызываем виджет списка пациентов
-                    $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                        'patients' => $patients,
-                        'currentSheduleId' => $currentSheduleId,
-                        'currentPatient' => $currentPatient,
-                        'filterModel' => $filterModel
-                    ));
-                    ?>
-
+                <ul class="nav nav-tabs patientListNav">
+                    <li class="active"><a href="#" id="writedByTime">По записи</a></li>
+                    <li><a href="#" id="writedByOrder">Живая очередь</a></li>
+                </ul>
+                <div id="writedByTimeCont">
+                    <h5 class="patient-list-h5">
+                        <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
+                    </h5>
+                    <div class="col-xs-12 borderedBox">
+                        <?php
+                        // Вызываем виджет списка пациентов
+                        $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+                            'patients' => $patients,
+                            'currentSheduleId' => $currentSheduleId,
+                            'currentPatient' => $currentPatient,
+                            'filterModel' => $filterModel,
+                            'isWaitingLine' => 0,
+                            'tableId' => 'doctorPatientList'
+                        ));
+                        ?>
+                    </div>
+                </div>
+                <div id="writedByOrderCont" class="no-display">
+                    <h5 class="patient-list-h5">
+                        <strong>Живая очередь на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshWaitingList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a>
+                    </h5>
+                    <div class="col-xs-12 borderedBox">
+                        <?php
+                        // Вызываем виджет списка пациентов
+                        $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+                            'patients' => $patients,
+                            'currentSheduleId' => $currentSheduleId,
+                            'currentPatient' => $currentPatient,
+                            'filterModel' => $filterModel,
+                            'isWaitingLine' => 1,
+                            'tableId' => 'doctorWaitingList'
+                        ));
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>

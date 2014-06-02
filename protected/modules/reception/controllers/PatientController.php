@@ -1072,11 +1072,18 @@ class PatientController extends Controller {
 
     // Экшн записи пациента: шаг 1
     public function actionWritePatientStepOne($callcenter = 0) {
+        if(isset($_GET['waitingline']) && $_GET['waitingline'] == 1) {
+            $waitingLine = 1;
+        } else {
+            $waitingLine = 0;
+        }
         $this->render('writePatient1', array(
             'privilegesList' => $this->getPrivileges(),
             'modelMedcard' => new FormPatientWithCardAdd(),
             'modelOms' => new FormOmsEdit(),
-            'callcenter' => $callcenter
+            'callcenter' => $callcenter,
+            'waitingLine' => $waitingLine,
+            'maxInWaitingLine' => Setting::model()->find('name = :name', array(':name' => 'maxInWaitingLine'))->value
         ));
     }
 
@@ -1100,6 +1107,12 @@ class PatientController extends Controller {
                 $isPregnant = 1;
             } else {
                 $isPregnant = 0;
+            }
+
+            if(isset($_GET['waitingline']) && $_GET['waitingline'] == 1) {
+                $waitingLine = 1;
+            } else {
+                $waitingLine = 0;
             }
 
             if($medcard != null) {
@@ -1131,6 +1144,8 @@ class PatientController extends Controller {
                     'postsList' => $this->getPostsList(),
                     'medcard' => $medcard,
                     'oms' => $oms,
+                    'waitingLine' => $waitingLine,
+                    'maxInWaitingLine' => Setting::model()->find('name = :name', array(':name' => 'maxInWaitingLine'))->value,
                     'isPregnant' => $isPregnant,
                     'callcenter' => $callcenter,
                     'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value

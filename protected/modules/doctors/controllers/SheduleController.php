@@ -177,12 +177,18 @@ class SheduleController extends Controller {
         // Получим доктора
         $userId = Yii::app()->user->id;
         $doctor = User::model()->findByPk($userId);
+        if(isset($_POST['onlywaitinglist']) && $_POST['onlywaitinglist'] == 1) {
+            $onlyWaitingLine = true;
+        } else {
+            $onlyWaitingLine = false;
+        }
         // Получим пациентов
-        $patients = $this->getPatientList($doctor['employee_id'],$curDate,false);
+        $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
         $patients = $patients['result'];
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
         $patientsListWidget->filterModel = $this->filterModel;
+        $patientsListWidget->isWaitingLine = $onlyWaitingLine;
 
         // Тащим из поста текущего пациента и текущий приём
         $greeting = false;
@@ -201,6 +207,11 @@ class SheduleController extends Controller {
                 $greeting = $_POST['currentGreeting'];
             }
         }
+
+        if(isset($_GET['onlywaitinglist']) && $_GET['onlywaitinglist'] == 1) {
+            $patientsListWidget->isWaitingLine = true;
+        }
+
         // Теперь получаем html-ку со списком пациентов
         $result = $patientsListWidget->getPatientList(
             $patients,
@@ -515,7 +526,8 @@ class SheduleController extends Controller {
                                                     AND name IN(\'timePerPatient\',
                                                                 \'firstVisit\',
                                                                 \'quote\',
-                                                                \'shiftType\')');
+                                                                \'shiftType\',
+                                                                \'maxInWaitingLine\')');
         $result = array();
         foreach($settings as $setting) {
             $result[$setting['name']] = $setting['value'];
@@ -525,15 +537,12 @@ class SheduleController extends Controller {
 
     // Логика выдачи календаря:
     /* Выдаются даты + характеристика дат. Например, количество пациентов на день. */
-    public function getCalendar($doctorId = false, $startYear = false, $startMonth = false, $startDay = false, $breakByErrors = true) {
+    public function getCalendar($doctorId = false, $startYear = false, $startMonth = false, $startDay = false, $breakByErrors = true, $onlyWaitingLine = false) {
         //!!!!!
         //var_dump($doctorId);
         //var_dump($startYear);
         //var_dump($startMonth);
         //var_dump($startDay);
-
-
-
         // Выбираем расписание врача
         if((isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) || $doctorId !== false) {
             $doctorId = isset($_GET['doctorid']) ? (int)$_GET['doctorid'] : $doctorId;
@@ -678,7 +687,7 @@ class SheduleController extends Controller {
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
                         $timeStampCurrent = mktime(0, 0, 0);
                         if(strtotime($formatDate) >= $timeStampCurrent) {
-                        $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day);
+                        $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day, true, $onlyWaitingLine);
                         $resultArr[(string)$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
                             return $element['id'] != null;
                         }));
@@ -747,21 +756,29 @@ class SheduleController extends Controller {
         $this->currentYear = $_GET['year'];
         $this->currentMonth = $_GET['month'];
         $this->currentDay = $_GET['day'];
-        $result = $this->getPatientList($_GET['doctorid'], $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay);
+
+        if(isset($_GET['onlywaitingline']) && $_GET['onlywaitingline'] == 1) {
+            $onlyWaitingLine = 1;
+        } else {
+            $onlyWaitingLine = 0;
+        }
+
+        $result = $this->getPatientList($_GET['doctorid'], $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay, true, $onlyWaitingLine);
 
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $result['result']));
     }
 
     
-	private function getPatientList($doctorId, $formatDate, $withMediate = true) {
+	private function getPatientList($doctorId, $formatDate, $withMediate = true, $onlyWaitingLine = false) {
         $patientsList = array();
         $sheduleByDay = new SheduleByDay();
         $weekday = date('w', strtotime($formatDate)); // День недели (число)
         $needMediate = 1;
         if (!$withMediate);
             $needMediate = true;
-        $patients = $sheduleByDay->getRows($formatDate, $doctorId, $needMediate);
+
+        $patients = $sheduleByDay->getRows($formatDate, $doctorId, $needMediate, 0, $onlyWaitingLine);
         //var_dump($patients);
         //exit();
         // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
@@ -796,22 +813,33 @@ class SheduleController extends Controller {
 
         if (count($sheduleElements)>0)
 		{
-			$increment = $settings['timePerPatient'] * 60;
 			$result = array();
 			$numRealPatients = 0; // Это для того, чтобы понять, заполнено ли всё
 			$currentTimestamp = time();
 			$parts = explode('-', $formatDate);
 			$today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
-			for($i = $timestampBegin; $i < $timestampEnd; $i += $increment) {
-				if($currentTimestamp >= $i && $today) {
+            // Определяем параметры цикла. В случае, если это живая очередь, отсчёт идёт по местам. В случае, если это запись, по времени.
+
+            if($onlyWaitingLine) {
+                $beginValue = 0;
+                $endValue = $settings['maxInWaitingLine'];
+                $increment = 1;
+            } else {
+                $beginValue = $timestampBegin;
+                $endValue = $timestampEnd;
+                $increment = $settings['timePerPatient'] * 60;
+            }
+			for($i = $beginValue; $i < $endValue; $i += $increment) {
+				if(!$onlyWaitingLine && $currentTimestamp >= $i && $today) {
 					continue;
 				}
 				// Ищем пациента для такого времени. Если он найден, значит время занято
 				$isFound = false;
+                if($onlyWaitingLine)
 				
 				foreach($patients as $key => $patient) {
 					$timestamp = strtotime($patient['patient_time']);
-					if($timestamp == $i) {
+					if((!$onlyWaitingLine && $timestamp == $i) || ($onlyWaitingLine && $patient['order_number'] == $i + 1)) {
 						// Если пациент опосредованный, для него надо выбрать ФИО
 						if($patient['mediate_id'] != null) {
 							$mediatePatient = MediatePatient::model()->findByPk($patient['mediate_id']);
@@ -833,7 +861,8 @@ class SheduleController extends Controller {
                             'medcard_id' => $patient['card_number'],
                             'patient_time' => date('G:i', $i),
                             'comment' => $patient['comment'],
-                            'greetingType' => $patient['greeting_type']
+                            'greetingType' => $patient['greeting_type'],
+                            'orderNumber' => $patient['order_number']
 					    );
                         if($patient['greeting_type'] == 1) {
                             $primaryGreetings++;
@@ -853,8 +882,9 @@ class SheduleController extends Controller {
 						'isAllow' => 1,
 						'fio' => '',
 						'id' => null,
-						'cardNumber' => null
-						);
+						'cardNumber' => null,
+                        'orderNumber' => $i + 1
+                    );
 				}
 			}
 			
@@ -902,26 +932,46 @@ class SheduleController extends Controller {
         $weekday = date('w', strtotime($formatDate));
         $sheduleSetted = SheduleSetted::model()->find('weekday = :weekday AND employee_id = :employee_id AND day IS NULL', array(':weekday' => $weekday, ':employee_id' => $_GET['doctor_id']));
 
-        // Обработка коллизии выбора одного и того же времени у врачей
-        $issetSheduleElement = SheduleByDay::model()->find('doctor_id = :doctor_id AND patient_day = :patient_day AND patient_time = :patient_time',
-        array(
-            ':doctor_id' => $_GET['doctor_id'],
-            ':patient_day' => $formatDate,
-            ':patient_time' => $formatTime
-        ));
+        // Обработка коллизии выбора одного и того же времени у врачей. Либо по месту, либо по времени (зависит от того, живая очередь или нет)
+        if(!isset($_GET['order_number'])) { // По наличию этого параметра можно установить, что запрос пошёл от живой очереди
+            $issetSheduleElement = SheduleByDay::model()->find('doctor_id = :doctor_id AND patient_day = :patient_day AND patient_time = :patient_time',
+            array(
+                ':doctor_id' => $_GET['doctor_id'],
+                ':patient_day' => $formatDate,
+                ':patient_time' => $formatTime
+            ));
+        } else {
+            $issetSheduleElement = SheduleByDay::model()->find('doctor_id = :doctor_id AND patient_day = :patient_day AND order_number = :order_number',
+            array(
+                ':doctor_id' => $_GET['doctor_id'],
+                ':patient_day' => $formatDate,
+                ':order_number' => $_GET['order_number']
+            ));
+        }
 
         // Коллизия: время уже занято
         if($issetSheduleElement != null) {
-            echo CJSON::encode(array('success' => 'false',
-                                     'error' => 'Время, на которое Вами записывается пациент, уже занято! Пожалуйста, выберите другое время!'));
+            if(!isset($_GET['order_number'])) {
+                echo CJSON::encode(array('success' => 'false',
+                                         'error' => 'Время, на которое Вами записывается пациент, уже занято! Пожалуйста, выберите другое время!'));
+            } else {
+                echo CJSON::encode(array('success' => 'false',
+                                         'error' => 'Место, на которое Вами записывается пациент, уже занято! Пожалуйста, выберите другое место!'));
+            }
             exit();
         }
         $sheduleElement = new SheduleByDay();
         $sheduleElement->doctor_id = $_GET['doctor_id'];
         $sheduleElement->patient_day = $formatDate;
         $sheduleElement->is_accepted = 0;
-        $sheduleElement->patient_time = $formatTime;
+        // Время пишется только в случае с пациентами неживой очереди
+        if(!isset($_GET['order_number'])) {
+            $sheduleElement->patient_time = $formatTime;
+        }
         $sheduleElement->greeting_type = $greetingType;
+        if(isset($_GET['order_number'])) {
+            $sheduleElement->order_number = $_GET['order_number'];
+        }
 
         if($sheduleSetted != null) {
             $sheduleElement->shedule_id = $sheduleSetted->id;
@@ -929,7 +979,7 @@ class SheduleController extends Controller {
         if($_GET['mode'] == 0) { // Обычная запись
             $sheduleElement->medcard_id = $_GET['card_number'];
             $sheduleElement->mediate_id = null;
-            $sheduleElement->comment = $_GET['comment']; // XSS
+            $sheduleElement->comment = $_GET['comment']; // XSS TODO
         } elseif($_GET['mode'] == 1) { // Опосредованная запись
             $sheduleElement->medcard_id = null;
             // Создаём запись опосредованного пациента

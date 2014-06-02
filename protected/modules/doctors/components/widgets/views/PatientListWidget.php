@@ -1,12 +1,14 @@
-<table id="doctorPatientList" class="table table-condensed table-hover">
+<table id="<?php echo $tableId; ?>" class="table table-condensed table-hover">
     <thead>
     <tr class="header">
         <td>
             ФИО
         </td>
+        <?php if(!$isWaitingLine) { ?>
         <td>
             Время приёма
         </td>
+        <?php } ?>
         <td>
         </td>
         <!--<td>
@@ -63,9 +65,11 @@
 			}
 			?>
         </td>
+        <?php if(!$isWaitingLine) { ?>
         <td>
             <?php echo $patient['patient_time']; ?>
         </td>
+        <?php } ?>
         <td>
             <?php 
 				if($patient['medcard_id'] != null) {

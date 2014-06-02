@@ -91,6 +91,12 @@ class DoctorsController extends Controller {
             }
         }
 
+        if(isset($_GET['onlywaitingline']) && $_GET['onlywaitingline'] == 1) {
+            $onlyWaitingLine = 1;
+        } else {
+            $onlyWaitingLine = 0;
+        }
+
         // Теперь обработаем врачей: ближайшую свободную дату можно взять из календаря
         foreach($doctors as &$doctor) {
             if($doctor['middle_name'] == null) {
@@ -108,7 +114,7 @@ class DoctorsController extends Controller {
             }
             // Если это органайзер, то нам нужно вынимать также часть календаря для каждого врача
             if($calendarTypeSetting == 1) {
-                $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false);
+                $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
                 $doctor['shedule'] = $daysList;
             }
         }
