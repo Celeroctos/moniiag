@@ -68,6 +68,9 @@ class PrintController extends Controller {
     }
 
     public function formatDate($date) {
+        if($date == null) {
+            return '';
+        }
         $parts = explode('-', $date);
         return $parts[2].'.'.$parts[1].'.'.$parts[0];
     }

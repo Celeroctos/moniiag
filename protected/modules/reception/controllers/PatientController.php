@@ -58,10 +58,14 @@ class PatientController extends Controller {
         $history = $model->getHistoryOfMotion($omsId, $sidx, $sord, $start, $rows);
 
         foreach($history as &$element) {
-            $parts = explode(' ', $element['greeting_timestamp']);
-            $subparts1 = explode('-', $parts[0]);
-            $subparts2 = explode(':', $parts[1]);
-            $element['greeting_timestamp'] = $subparts1[2].'.'.$subparts1[1].'.'.$subparts1[0].' '.$subparts2[0].':'.$subparts2[1];
+            if($element['greeting_timestamp'] != null) {
+                $parts = explode(' ', $element['greeting_timestamp']);
+                $subparts1 = explode('-', $parts[0]);
+                $subparts2 = explode(':', $parts[1]);
+                $element['greeting_timestamp'] = $subparts1[2].'.'.$subparts1[1].'.'.$subparts1[0].' '.$subparts2[0].':'.$subparts2[1];
+            } else {
+                $element['greeting_timestamp'] = '';
+            }
         }
 
         echo CJSON::encode(

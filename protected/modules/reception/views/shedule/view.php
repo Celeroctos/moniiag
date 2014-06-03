@@ -103,7 +103,7 @@
             <tr class="header">
                 <td>Врач</td>
                 <td>
-                    <input type="checkbox" value="-1" title="Отметить все" id="checkAll">
+                    <input type="checkbox" value="-1" title="Отметить все" class="checkAll">
                 </td>
                 <td>Пациент</td>
                 <td>Контактный телефон</td>
@@ -127,12 +127,11 @@
         <tr class="header">
             <td>Врач</td>
             <td>
-                <input type="checkbox" value="-1" title="Отметить все" id="checkAll">
+                <input type="checkbox" value="-1" title="Отметить все" class="checkAll">
             </td>
             <td>Пациент</td>
             <td>Контактный телефон</td>
             <td>Комментарий</td>
-            <td>Время</td>
             <td>Номер карты</td>
             <td>Статус карты</td>
             <td>Статус приёма</td>
