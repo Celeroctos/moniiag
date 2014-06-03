@@ -1092,7 +1092,7 @@ $('#nextHistoryPoint').on('click', function () {
         // Убираем no-display у пустых строк интерфейса
         if ($(this).find('span').hasClass('glyphicon-resize-full'))
         {
-            $('#doctorPatientList .emptySheduleItem').removeClass('no-display');
+            $('#writedByTimeCont #doctorPatientList .emptySheduleItem').removeClass('no-display');
             $(this).find('span').removeClass('glyphicon-resize-full');
             $(this).find('span').addClass('glyphicon-resize-small');
 
@@ -1101,7 +1101,7 @@ $('#nextHistoryPoint').on('click', function () {
         {
             if ($(this).find('span').hasClass('glyphicon-resize-small'))
             {
-                $('#doctorPatientList .emptySheduleItem').addClass('no-display');
+                $('#writedByTimeCont #doctorPatientList .emptySheduleItem').addClass('no-display');
                 $(this).find('span').removeClass('glyphicon-resize-small');
                 $(this).find('span').addClass('glyphicon-resize-full');
             }

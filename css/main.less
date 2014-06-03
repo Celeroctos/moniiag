@@ -956,7 +956,7 @@ select#restDays {
   margin: 10px 0 0 0;
 }
 /* Расписание для ресепшена */
-#sheduleTable {
+#sheduleTable, #writingLineTable {
     margin: 15px;
     td {
       border: 1px solid #d4d0c8;
@@ -1441,6 +1441,42 @@ a.accordion-toggle:hover {
 }
 #refreshPatientList, #expandPatientList, #collapsePatientList, #refreshWaitingList {
   margin-left: 10px;
+}
+
+#addCommentButton
+{
+  margin-top: 10px;
+}
+
+.commentsContainer
+{
+  display:inline-block;
+  padding: 0 0 0 0;
+  vertical-align:text-top;
+  .commentsHandleContainer
+  {
+
+   /* .commentCreateDate
+    {
+      font-size: 10px;
+    }
+    vertical-align:text-top;
+    width: 100px;*/
+
+    .editComment
+    {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    font-weight: bold;
+  }
+}
+
+#moreCommentsButton
+{
+  text-align: center;
+  cursor:pointer;
 }
 
 .twoColumnList

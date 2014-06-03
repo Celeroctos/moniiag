@@ -13,8 +13,12 @@ class MedcardContentWidget extends CWidget {
     public $canEditMedcard = 1;
     public $currentDate = null;
     public $addCommentModel = null;
+    public $doctorComment;
+    public $numberDoctorComments;
                 
     public function run() {
+        //var_dump($this->doctorComment);
+        //exit();
         if($this->medcard) {
             echo $this->render('application.modules.doctors.components.widgets.views.MedcardContentWidget', array(
                 'medcard' => $this->medcard,
@@ -25,7 +29,10 @@ class MedcardContentWidget extends CWidget {
                 'currentSheduleId' => $this->currentSheduleId,
                 'note' => $this->note,
                 'canEditMedcard' => $this->canEditMedcard,
-                'currentDate' => date('Y-m-d h:m')
+                'currentDate' => date('Y-m-d h:m'),
+                'doctorComment' => $this->doctorComment,
+                'numberDoctorComments' => $this->numberDoctorComments,
+                'addCommentModel' => $this->addCommentModel
             ));
         }
     }

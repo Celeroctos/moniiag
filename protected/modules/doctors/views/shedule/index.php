@@ -1,4 +1,5 @@
 ﻿<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/patient.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/comments.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/categories.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/tablecontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/twocolumncontrol.js"></script>
@@ -26,6 +27,8 @@
                 'currentPatient' => $currentPatient,
                 'currentSheduleId' => $currentSheduleId,
                 'canEditMedcard' => $canEditMedcard,
+                'doctorComment' => $doctorComment,
+                'numberDoctorComments' => $numberDoctorComments,
                 'addCommentModel' => $addCommentModel
             ));
             ?>
@@ -161,10 +164,10 @@
             </div>
             <div class="row">
                 <ul class="nav nav-tabs patientListNav">
-                    <li class="active"><a href="#" id="writedByTime">По записи</a></li>
-                    <li><a href="#" id="writedByOrder">Живая очередь</a></li>
+                    <li <?php echo isset($openedTab) && $openedTab == 0 ? 'class="active"' : ''; ?>><a href="#" id="writedByTime">По записи</a></li>
+                    <li <?php echo isset($openedTab) && $openedTab == 1 ? 'class="active"' : ''; ?>><a href="#" id="writedByOrder">Живая очередь</a></li>
                 </ul>
-                <div id="writedByTimeCont">
+                <div id="writedByTimeCont" <?php echo isset($openedTab) && $openedTab == 1 ? 'class="no-display"' : ''; ?>>
                     <h5 class="patient-list-h5">
                         <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
                     </h5>
@@ -172,7 +175,7 @@
                         <?php
                         // Вызываем виджет списка пациентов
                         $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                            'patients' => $patients,
+                            'patients' => ((isset($openedTab) && $openedTab == 0) || !isset($openedTab)) ? $patients : array(),
                             'currentSheduleId' => $currentSheduleId,
                             'currentPatient' => $currentPatient,
                             'filterModel' => $filterModel,
@@ -182,7 +185,7 @@
                         ?>
                     </div>
                 </div>
-                <div id="writedByOrderCont" class="no-display">
+                <div id="writedByOrderCont" <?php echo isset($openedTab) && $openedTab == 0 ? 'class="no-display"' : ''; ?>>
                     <h5 class="patient-list-h5">
                         <strong>Живая очередь на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshWaitingList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a>
                     </h5>
@@ -190,7 +193,7 @@
                         <?php
                         // Вызываем виджет списка пациентов
                         $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                            'patients' => $patients,
+                            'patients' => ((isset($openedTab) && $openedTab == 1)) ? $patients : array(),
                             'currentSheduleId' => $currentSheduleId,
                             'currentPatient' => $currentPatient,
                             'filterModel' => $filterModel,

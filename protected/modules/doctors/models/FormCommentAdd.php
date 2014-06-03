@@ -3,8 +3,8 @@
 class FormCommentAdd extends CFormModel
 {
 
-    public $id;
-    public $patientId;
+    public $commentId;
+    public $forPatientId;
     public $commentText;
 
     public function rules()
@@ -14,7 +14,7 @@ class FormCommentAdd extends CFormModel
                 'commentText', 'required'
             ),
             array(
-                'id, patientId, commentText', 'safe'
+                'commentId, forPatientId, commentText', 'safe'
             )
         );
     }
@@ -22,7 +22,7 @@ class FormCommentAdd extends CFormModel
     public function attributeLabels()
     {
         return array(
-            'commentText' => 'Комментарий:',
+            'commentText' => 'РљРѕРјРјРµРЅС‚Р°СЂРёР№:',
         );
     }
 }

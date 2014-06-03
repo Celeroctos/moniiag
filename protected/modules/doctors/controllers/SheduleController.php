@@ -4,6 +4,7 @@ class SheduleController extends Controller {
     public $filterModel = null;
     public $currentPatient = false;
     public $currentSheduleId = false;
+
     /* Календарь */
     public $currentDay = null;
     public $currentYear = null;
@@ -31,6 +32,11 @@ class SheduleController extends Controller {
             if(isset($_GET['rowid']) && trim($_GET['rowid']) != '') {
                 $this->currentSheduleId = trim($_GET['rowid']);
                 $greeting = SheduleByDay::model()->findByPk($_GET['rowid']);
+                if($greeting != null && $greeting->order_number != null) {
+                   $openedTab = 1; // Живая очередь
+                } else {
+                   $openedTab = 0; // Обычная запись
+                }
                 if(isset($_POST['templatesList'])) {
                     $templatesChoose = 0;
                     // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
@@ -115,8 +121,19 @@ class SheduleController extends Controller {
 
         $userId = Yii::app()->user->id;
         $doctor = User::model()->findByPk($userId);
-        $patients = $this->getPatientList($doctor['employee_id'],$curDate,false);
+        if(isset($openedTab) && $openedTab == 1) {
+            $onlyWaitingLine = 1;
+        } else {
+            $onlyWaitingLine = 0;
+        }
+        $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
         $patients = $patients['result'];
+
+        //var_dump(    $this->getTopComment(isset($medcard) ? $medcard : null)    );
+        //exit();
+
+        $doctorComment = CommentOms::getTopComment(isset($medcard) ? $medcard : null);
+        $doctorNumberComments = count(CommentOms::getComments(isset($medcard) ? $medcard : null));
 
 		$this->render('index', array(
             'patients' => $patients,
@@ -133,6 +150,8 @@ class SheduleController extends Controller {
             'addModel' => new FormValueAdd(),
             'addCommentModel' => new FormCommentAdd(),
             'historyPoints' => $this->getHistoryPoints(isset($medcard) ? $medcard : null),
+            'doctorComment' => $doctorComment,
+            'numberDoctorComments' => $doctorNumberComments,
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
 			'primaryClinicalDiagnosis' => $primaryClinicalDiagnosis,
@@ -149,7 +168,8 @@ class SheduleController extends Controller {
             'greeting' => (isset($greeting)) ? $greeting : null,
             'requiredDiagnosis' => isset($requiredDiagnosis) ? $requiredDiagnosis : array(),
 			'medcardRecordId' => $medcardRecordId,
-            'templateModel' =>  new  FormTemplateDefault()
+            'templateModel' =>  new  FormTemplateDefault(),
+            'openedTab' => isset($openedTab) ? $openedTab : 0
         ));
     }
 
@@ -225,6 +245,7 @@ class SheduleController extends Controller {
         ));
     }
 
+
     // Получить список льгот
     private function getPrivileges() {
         // Льготы
@@ -259,6 +280,44 @@ class SheduleController extends Controller {
         $historyPoints = MedcardElementForPatient::model()->getHistoryPoints($medcard);
         return $historyPoints;
     }
+
+    // Возвращает html c амым позднем комментарием для карты
+    public function actionUpdateTopComment()
+    {
+
+
+
+    }
+
+    public function actionGetAllPatientComments($cardId)
+    {
+        // Прочитаем все комментарии
+        // По номеру карточки найдём номер полиса
+        $medcard = Medcard::model()->find('card_number = :card',array(':card'=>$cardId));
+        $omsNumber = $medcard['policy_id'];
+
+        // По номеру ОМС ищем все комментарии
+        $onePatientComments = CommentOms::getCommentsByPoliceId($omsNumber);
+        // Обработаем все комментарии
+        foreach ($onePatientComments as &$oneComment)
+        {
+            CommentOms::treatComment($oneComment);
+        }
+
+        // Вызовем рендеринг
+        $commentsListWidget = $this->createWidget('application.modules.doctors.components.widgets.allCommentsBlock');
+        ob_end_clean();
+        $result = $commentsListWidget->getCommentsList($onePatientComments);
+
+
+
+        echo CJSON::encode(array('success' => true,
+                                    'data' => $result
+        ));
+
+    }
+
+
 
     // Получить даты, в которых у врача есть пациенты
     private function getDaysWithPatients() {
@@ -829,14 +888,13 @@ class SheduleController extends Controller {
                 $endValue = $timestampEnd;
                 $increment = $settings['timePerPatient'] * 60;
             }
+
 			for($i = $beginValue; $i < $endValue; $i += $increment) {
 				if(!$onlyWaitingLine && $currentTimestamp >= $i && $today) {
 					continue;
 				}
 				// Ищем пациента для такого времени. Если он найден, значит время занято
 				$isFound = false;
-                if($onlyWaitingLine)
-				
 				foreach($patients as $key => $patient) {
 					$timestamp = strtotime($patient['patient_time']);
 					if((!$onlyWaitingLine && $timestamp == $i) || ($onlyWaitingLine && $patient['order_number'] == $i + 1)) {
