@@ -6,8 +6,6 @@ $(document).ready(function () {
     $(document).on('click','#moreCommentsButton',function(){
         var url = '/index.php/doctors/shedule/getallpatientcomments?cardId='+$('#currentPatientId').val();
 
-
-
         $.ajax({
             'url': url,
             'cache': false,
@@ -129,5 +127,4 @@ $(document).ready(function () {
         $('.greetingCommentBlock').empty();
         $('.greetingCommentBlock').append(newCommentSection);
     }
-
 });
