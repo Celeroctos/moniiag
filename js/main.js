@@ -608,8 +608,13 @@ $('select[multiple="multiple"]').each(function(index, select) {
     /* Двигающиеся модалки */
     $('.modal').draggable();
 
-
-
+    // По нажатию на кнопку "удалить" - спрашиваем подтверждение на удаление
+    $('button[id^=delete]').on('click',function(e)
+    {
+        response = confirm ('Вы действительно хотите выполнить удаление?');
+        if (!response)
+            e.stopImmediatePropagation();
+    });
 
     // Дальше идёт треш по сообщениям о больным, которым плохо
     // ------------------------------->

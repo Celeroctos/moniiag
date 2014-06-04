@@ -329,3 +329,8 @@ Stack trace:
 REQUEST_URI=/index.php/reception/patient/search/?withonly=0&filters={%22groupOp%22:%22AND%22,%22rules%22:[{%22field%22:%22oms_number%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22first_name%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22middle_name%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22last_name%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22address_reg_str%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22address_str%22,%22op%22:%22cn%22,%22data%22:%22%22},{%22field%22:%22card_number%22,%22op%22:%22bw%22,%22data%22:%221%22},{%22field%22:%22serie%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22docnumber%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22snils%22,%22op%22:%22eq%22,%22data%22:%22%22},{%22field%22:%22birthday%22,%22op%22:%22eq%22,%22data%22:%22%22}]}&rows=15&page=1&sidx=oms_number&sord=desc&_=1401882264215
 HTTP_REFERER=http://mis.my/index.php/reception/patient/writepatientstepone
 ---
+2014/06/04 16:45:59 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23503]: Foreign key violation: 7 ОШИБКА:  UPDATE или DELETE в таблице "enterprise_params" нарушает ограничение внешнего ключа "cabinets_enterprise_id_fkey" таблицы "cabinets"
+DETAIL:  На ключ (id)=(8) всё ещё есть ссылки в таблице "cabinets".. Выполнявшийся SQL-запрос: DELETE FROM "mis"."enterprise_params" WHERE "mis"."enterprise_params"."id"=8.
+in Z:\home\mis.my\www\protected\modules\guides\controllers\EnterprisesController.php (69)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
