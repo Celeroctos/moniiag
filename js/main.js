@@ -609,6 +609,8 @@ $('select[multiple="multiple"]').each(function(index, select) {
     $('.modal').draggable();
 
 
+
+
     // Дальше идёт треш по сообщениям о больным, которым плохо
     // ------------------------------->
         var cont = $('.alerts-cont');

@@ -201,6 +201,8 @@ class Oms extends MisActiveRecord {
             //    1. ищет такой номер медкарты, две последние цифры у которого максималны для данного полиса
             //    2. ищет максимальную дату регистрацию карт, привязанных к данному ОМС
             $connection = Yii::app()->db;
+            //var_dump($inIds);
+           // exit();
             $oms2 = $connection->createCommand()
                 ->select('o.*,
                             (
@@ -236,9 +238,8 @@ class Oms extends MisActiveRecord {
                 ')
 
                 ->from('mis.oms o')
-                ->where('id in (:policy_ids)',
+                ->where('id in ('.$inIds.')',
                     array(
-                        ':policy_ids'=>$inIds
                     ));
 
             $omsByIds = $oms2->queryAll();
