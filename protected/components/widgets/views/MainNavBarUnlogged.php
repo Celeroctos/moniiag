@@ -12,6 +12,9 @@
             <ul class="nav navbar-nav">
                 <li><a href="#">Справка</a></li>
             </ul>
+            <div class="row" id="dateInfoCont">
+                Сегодня <?php echo $weekdayDesc; ?>, <br /> <?php echo $day; ?> <?php echo $monthDesc; ?> <?php echo $year; ?> года, <?php echo $time; ?>
+            </div>
             <?php
             $form = $this->beginWidget('CActiveForm', array(
                 'id' => 'login-form',

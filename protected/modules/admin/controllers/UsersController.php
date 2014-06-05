@@ -8,7 +8,7 @@ class UsersController extends Controller {
 
         // Список сотрудников
         $employeeModel = new Employee();
-        $employees = $employeeModel->getRows(-1, -1, false, false, false, false, false, true);
+        $employees = $employeeModel->getRows(-1, -1, false, 'last_name', 'asc', false, false, true);
         $employeesList = array();
         foreach($employees as $key => $employee) {
             $employeesList[$employee['id']] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.mb_strtolower($employee['ward'], 'UTF-8').' отделение, '.$employee['enterprise'].')';
@@ -16,7 +16,7 @@ class UsersController extends Controller {
 
         // Список ролей
         $roleModel = new Role();
-        $roles = $roleModel->getRows(false);
+        $roles = $roleModel->getRows(false, 'name', 'asc');
         $rolesList = array();
         foreach($roles as $key => $role) {
             $rolesList[$role['id']] = $role['name'];
@@ -48,6 +48,13 @@ class UsersController extends Controller {
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
+
+            $order = array(
+                'rolename' => 'role_id'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
 
             $users = $model->getRows($filters, $sidx, $sord, $start, $rows);
 

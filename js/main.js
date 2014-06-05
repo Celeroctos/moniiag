@@ -661,18 +661,8 @@ $('select[multiple="multiple"]').each(function(index, select) {
         wasLoadedMessages = false;
         function refreshIndicators()
         {
-            // Если панель удалённых показания свёрнута - выходим из функции
-            /*if ($('.alerts-cont .panel-arrow span').hasClass('glyphicon-expand'))
-             {
-
-             }
-             else
-             {
-
-             console.log('Тест');
-             }*/
             console.log('Тест');
-            return false;
+
             $.ajax({
                 'url' : '/index.php/doctors/patient/getindicators',
                 'data' : {
@@ -695,9 +685,6 @@ $('select[multiple="multiple"]').each(function(index, select) {
                                 },
                                 1000
                             );
-                            // Устанавливаем тайм-аут
-                            setTimeout(refreshIndicators,2000);
-                            // Загорается кнопочка
                         }
                         else
                         {
@@ -705,14 +692,11 @@ $('select[multiple="multiple"]').each(function(index, select) {
                             $('.alarm-button img').removeClass('is-patients-to-check');
                             $('.alarm-button img').addClass('no-display');
                         }
-
-
                     } else {
 
                     }
-
-                    // Устанавливаем тайм-аут
-                    setTimeout(refreshIndicators,2000);
+					// Устанавливаем тайм-аут
+					setTimeout(refreshIndicators,2000);
                 }
             });
         }

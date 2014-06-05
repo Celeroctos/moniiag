@@ -134,6 +134,15 @@ class MedworkersController extends Controller {
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
+            $order = array(
+                'is_medworker_desc' => 'is_medworker',
+                'payment_type_desc' => 'payment_type',
+                'pregnants' =>  'is_for_pregnants'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
+
             $medworkers = $model->getRows($filters, $sidx, $sord, $start, $rows);
             foreach($medworkers as &$medworker) {
                 if($medworker['is_medworker'] == 1) {

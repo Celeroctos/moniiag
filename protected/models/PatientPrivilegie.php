@@ -43,8 +43,10 @@ class PatientPrivilegie extends MisActiveRecord {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $privileges->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
             $privileges->limit($limit, $start);
         }
 

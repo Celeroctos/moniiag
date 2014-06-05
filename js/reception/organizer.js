@@ -40,6 +40,7 @@
             time: beginTime,
             card_number: globalVariables.cardNumber
         };
+
         if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
             params.order_number = $(li).prop('id').substr(1);
         }
@@ -56,9 +57,12 @@
                     $('#successPopup').modal({
 
                     });
+
                     // Перезагружаем календарь
-                    globalVariables.greetingId = data.greetingId;
-                    prevBeginDate();
+                    if(!globalVariables.hasOwnProperty('isWaitingLine') || globalVariables.isWaitingLine != 1) {
+                        globalVariables.greetingId = data.greetingId;
+                        prevBeginDate();
+                    }
                     $('.organaizer').trigger('changeTriggerByLoad');
                     $('.organizer').trigger('reload');
                     $('.organizer').trigger('resetClickedTime');
@@ -101,8 +105,6 @@
                 var unwriteBlock = $('<div>');
                 var unwriteLink = $('<a>').text('Отписать пациента');
                 $(unwriteLink).on('click', function() {
-
-
                     if(window.confirm('Вы действительно хотите отменить приём?')) {
 
 

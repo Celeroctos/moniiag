@@ -4,7 +4,7 @@ class SheduleController extends Controller {
 
     public function actionView() {
         $ward = new Ward();
-        $wardsResult = $ward->getRows(false);
+        $wardsResult = $ward->getRows(false, 'name', 'asc');
         $wardsList = array('-1' => 'Нет');
         foreach($wardsResult as $key => $value) {
             $wardsList[$value['id']] = $value['name'];
@@ -12,7 +12,7 @@ class SheduleController extends Controller {
 
         // Список должностей
         $post = new Post();
-        $postsResult = $post->getRows(false);
+        $postsResult = $post->getRows(false, 'name', 'asc');
         $postsList = array('-1' => 'Нет');
         foreach($postsResult as $key => $value) {
             $postsList[$value['id']] = $value['name'];
@@ -23,7 +23,7 @@ class SheduleController extends Controller {
 
         // Список кабинетов
         $cabinet = new Cabinet();
-        $cabinetResult = $cabinet->getRows(false);
+        $cabinetResult = $cabinet->getRows(false, 'cab_number', 'asc');
         $cabinetList = array();
         foreach($cabinetResult as $key => $value) {
             $cabinetList[$value['id']] = $value['cab_number'].' - '.$value['description'].', '.$value['ward'].' отделение, '.$value['enterprise'];

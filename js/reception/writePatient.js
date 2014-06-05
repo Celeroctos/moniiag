@@ -573,7 +573,9 @@
                     });
                     // Перезагружаем календарь
                    /* loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id')); */
-                    globalVariables.greetingId = data.greetingId;
+                    if(!globalVariables.hasOwnProperty('isWaitingLine') || globalVariables.isWaitingLine != 1) {
+                        globalVariables.greetingId = data.greetingId;
+                    }
                     if($('.organizer').length > 0) {
                         $('.organizer').trigger('returnDate');
                         globalVariables.resetBeginDate = false;

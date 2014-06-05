@@ -221,7 +221,7 @@ class SheduleController extends Controller {
                     $cabinets[$element['doctor_id']] = array('cabNumber' => $cabinetElement['cab_number'],
                                                              'description' => $cabinetElement['description']);
                 } else {
-                    $cabinets[$cabinetElement->doctor_id] = null;
+                    $cabinets[$element['doctor_id']] = null;
                 }
             }
         }

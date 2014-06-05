@@ -49,6 +49,13 @@ class ElementsController extends Controller {
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
+            $order = array(
+                'is_wrapped_name' => 'is_wrapped'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
+
             $elements = $model->getRows($filters, $sidx, $sord, $start, $rows);
             $typesList = $model->getTypesList();
             foreach($elements as $key => &$element) {

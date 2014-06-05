@@ -36,7 +36,8 @@ class Employee extends MisActiveRecord  {
                  ->from('mis.doctors d')
                  ->join('mis.wards w', 'd.ward_code = w.id')
                  ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
-                 ->where('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)');
+                 ->where('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)')
+                 ->order('last_name asc');
 
             return $employees->queryAll();
         } catch(Exception $e) {
@@ -102,11 +103,14 @@ class Employee extends MisActiveRecord  {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $employees->order($sidx.' '.$sord);
-            $employees->limit($limit, $start);
         } else {
             $employees->order('d.last_name, d.first_name, d.middle_name desc');
+        }
+
+        if($start !== false && $limit !== false) {
+            $employees->limit($limit, $start);
         }
 
         return $employees->queryAll();
@@ -137,6 +141,7 @@ class Employee extends MisActiveRecord  {
                 ->join('mis.wards w', 'd.ward_code = w.id')
                 ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
                 ->where('d.post_id = :id', array(':id' => $id))
+                ->order('d.last_name asc')
                 ->queryAll();
 
             return $employees;

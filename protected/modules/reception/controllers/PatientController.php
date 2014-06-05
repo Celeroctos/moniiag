@@ -1173,7 +1173,7 @@ class PatientController extends Controller {
     private function getWardsList() {
         // Список отделений
         $ward = new Ward();
-        $wardsResult = $ward->getRows(false);
+        $wardsResult = $ward->getRows(false, 'name', 'asc');
         $wardsList = array('-1' => 'Нет');
         foreach($wardsResult as $key => $value) {
             $wardsList[$value['id']] = $value['name'];
@@ -1184,7 +1184,7 @@ class PatientController extends Controller {
     private function getPostsList() {
         // Список должностей
         $post = new Post();
-        $postsResult = $post->getRows(false);
+        $postsResult = $post->getRows(false, 'name', 'asc');
         $postsList = array('-1' => 'Нет');
         foreach($postsResult as $key => $value) {
             $postsList[$value['id']] = $value['name'];
