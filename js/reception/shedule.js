@@ -7,6 +7,11 @@
     ];
 
 
+    jQuery.fn.outerHTML = function(s) {
+        return s
+            ? this.before(s).remove()
+            : jQuery("<p>").append(this.eq(0).clone()).html();
+    };
     
    
    /*
@@ -97,6 +102,14 @@
                     $('#todoctor-submit').prop('disabled', true);
                     makeSheduleTable('#sheduleTable', data.sheduleOnlyByWriting, cabinets, 'Расписание на ' + greetingDate.split('-').reverse().join('.') + ' года ', '#sheduleInfoH4', 1);
                     makeSheduleTable('#writingLineTable', data.sheduleOnlyWaitingLine, cabinets, 'Живая очередь на ' + greetingDate.split('-').reverse().join('.') + ' года ', '#writingLineInfoH4', 0);
+                    if (data.sheduleOnlyByWriting.length>0 || data.sheduleOnlyWaitingLine.length>0)
+                    {
+                        $('#print-submit').prop('disabled', false);
+                    }
+                    else
+                    {
+                        $('#print-submit').prop('disabled', true);
+                    }
                 } else {
                     // Удаляем предыдущие ошибки
                     $('#errorPopup .modal-body .row p').remove();
@@ -116,6 +129,7 @@
 
     // Отобразить таблицу для расписания
     function makeSheduleTable(tableId, shedule, cabinets, title, hCont, displayTime) {
+        console.log('11');
         var table = $(tableId);
         $(table).find('tbody tr').remove();
         var currentDoctorId = null;
@@ -123,11 +137,11 @@
         var firstTd = null;
         var added = false; // Добавлена или нет первая ячейка
         $(hCont).html(title);
-        if(shedule.length > 0) {
+        /*if(shedule.length > 0) {
             $('#print-submit').prop('disabled', false);
         } else {
             $('#print-submit').prop('disabled', true);
-        }
+        }*/
         for(var i = 0; i < shedule.length; i++) {
             var tr = $('<tr>');
             var content = '';
@@ -308,20 +322,6 @@ console.log(checked);
                 'padding' : '3px 5px'
             });
 
-            $(tableClone).find('td').css({
-                 'border-collapse' : 'collapse'
-            }); // TODO: collapse не работает?
-
-            /*$(tableClone).find('tr').each(function(index, element) {
-                if($(element).find('td').length == 9) { // Это с колонкой врача
-                    $(element).find('td:eq(1)').remove();
-                    $(element).find('td:eq(9)').remove();
-                } else {
-                    $(element).find('td:eq(0)').remove();
-                    $(element).find('td:eq(8)').remove();
-                }
-            });*/
-
             // Дату в шапку
             var date = $('#greetingDate').val();
             var parts = date.split('-');
@@ -333,9 +333,18 @@ console.log(checked);
             $(tableClone).find('button').remove();
             var printBtn = $('<button>').text('Распечатать расписание');
             $(printBtn).on('click', function() {
-                window.print();
+                printWin.print();
             });
-            $('body', printWin.document).append(dateDiv, tableClone, printBtn);
+            $('body', printWin.document).append(dateDiv);
+
+            //$('body', printWin.document).append(tableClone);
+            $('body', printWin.document).html(   $('body', printWin.document).html() + $(tableClone).outerHTML()  );
+            /* Вот эта (^) гадость с аппендом не работала (поэтому добавляем через outerHTML).
+                При использовании аппенд сбрасывались края у таблице в родительской странице
+            */
+
+            $('body', printWin.document).append(printBtn);
+
         });
     })
     

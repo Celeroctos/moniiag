@@ -103,8 +103,8 @@ return array(
 		'db'=>array(
 		   //'connectionString' => 'pgsql:host=moniiag.toonftp.ru;port=5432;dbname=postgres;',
            'connectionString' => 'pgsql:host=localhost;port=5432;dbname=postgres;',
-           //'username' => 'moniiag',
-           //'password' => '12345',
+          // 'username' => 'moniiag',
+          //  'password' => '12345',
           'username' => 'postgres',
           'password' => '12345'
         ),
