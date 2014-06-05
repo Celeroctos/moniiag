@@ -42,10 +42,8 @@ var dateControlConfigs =
     // Занести в список контролов дат контрол
     function pushDateControl(controlSelector,controlConfig)
     {
-        console.log(controlConfig.minValue);
-
         DateControlContainers.push(controlSelector);
-        if (controlConfig)
+        if (typeof controlConfig != 'undefined' && controlConfig)
         {
             var dateConfig = {};
 

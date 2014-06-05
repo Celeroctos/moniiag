@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+﻿
+=======
 ﻿2014/06/04 11:55:27 [error] [exception.CException] exception 'CException' with message 'В классе Oms и его поведениях не найден метод или замыкание с именем "getNumRows".' in Z:\home\mis.my\yii\base\CComponent.php:266
 Stack trace:
 #0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(227): CComponent->__call('getNumRows', Array)
@@ -424,3 +427,487 @@ REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2014-6-11&rowid=560
 in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\PatientListWidget.php (6)
 in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\PatientListWidget.php (21)
 in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (185)
+>>>>>>> fdb8e1654f77d2954f04da024f7c13c3606a0ba7
+2014/06/05 15:36:20 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:36:21 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:36:23 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:36:25 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:14 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "payment_type_desc" не существует
+LINE 4: ORDER BY "payment_type_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "payment_type_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:16 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "payment_type_desc" не существует
+LINE 4: ORDER BY "payment_type_desc" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "payment_type_desc" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:17 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "pregnants" не существует
+LINE 4: ORDER BY "pregnants" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "pregnants" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:18 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "pregnants" не существует
+LINE 4: ORDER BY "pregnants" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "pregnants" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:19 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_medworker_desc" не существует
+LINE 4: ORDER BY "is_medworker_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "is_medworker_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:21 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_medworker_desc" не существует
+LINE 4: ORDER BY "is_medworker_desc" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "is_medworker_desc" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:23 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_medworker_desc" не существует
+LINE 4: ORDER BY "is_medworker_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "is_medworker_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:28 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_medworker_desc" не существует
+LINE 4: ORDER BY "is_medworker_desc" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "is_medworker_desc" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:29 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_medworker_desc" не существует
+LINE 4: ORDER BY "is_medworker_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "is_medworker_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:34 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_medworker_desc" не существует
+LINE 4: ORDER BY "is_medworker_desc" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "is_medworker_desc" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:42 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "payment_type_desc" не существует
+LINE 4: ORDER BY "payment_type_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "payment_type_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:37:57 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:39:34 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:39:35 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:48:37 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "requisits" не существует
+LINE 4: ORDER BY "requisits" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "requisits" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (129)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 15:53:21 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "bank bank_account inn kpp" не существует
+LINE 4: ORDER BY "bank bank_account inn kpp" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "ep".*, "et"."name" AS "enterprise_type"
+FROM "mis"."enterprise_params" "ep"
+JOIN "mis"."enterprise_types" "et" ON ep.type = et.id
+ORDER BY "bank bank_account inn kpp" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Enterprise.php (43)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EnterprisesController.php (136)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:02:21 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "payment_type_desc" не существует
+LINE 4: ORDER BY "payment_type_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "payment_type_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:02:25 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "payment_type_desc" не существует
+LINE 4: ORDER BY "payment_type_desc" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "m".*, "mt"."name" AS "medpersonal_type"
+FROM "mis"."medpersonal" "m"
+JOIN "mis"."medpersonal_types" "mt" ON m.type = mt.id
+ORDER BY "payment_type_desc" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Medworker.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\MedworkersController.php (137)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:06:11 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 8: ORDER BY "fio" ASC LIMIT 15
+                 ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "w"."id" AS "ward_id", "w"."enterprise_id" AS "enterprise_id", "ep"."shortname" AS "enterprise"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."enterprise_params" "ep" ON w.enterprise_id = ep.id
+ORDER BY "fio" ASC LIMIT 15.
+in Z:\home\moniiag.my\www\protected\models\Employee.php (116)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (220)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:06:12 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 8: ORDER BY "fio" DESC LIMIT 15
+                 ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "w"."id" AS "ward_id", "w"."enterprise_id" AS "enterprise_id", "ep"."shortname" AS "enterprise"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."enterprise_params" "ep" ON w.enterprise_id = ep.id
+ORDER BY "fio" DESC LIMIT 15.
+in Z:\home\moniiag.my\www\protected\models\Employee.php (116)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (220)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:07:11 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "display_in_callcenter_desc" не существует
+LINE 8: ORDER BY "display_in_callcenter_desc" ASC LIMIT 15
+                 ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "w"."id" AS "ward_id", "w"."enterprise_id" AS "enterprise_id", "ep"."shortname" AS "enterprise"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."enterprise_params" "ep" ON w.enterprise_id = ep.id
+ORDER BY "display_in_callcenter_desc" ASC LIMIT 15.
+in Z:\home\moniiag.my\www\protected\models\Employee.php (116)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (229)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:07:12 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "display_in_callcenter_desc" не существует
+LINE 8: ORDER BY "display_in_callcenter_desc" DESC LIMIT 15
+                 ^. Выполнявшийся SQL-запрос: SELECT DISTINCT "d".*, "m"."name" AS "post", "de"."name" AS "degree", "t"."name" AS "titul", "w"."name" AS "ward", "w"."id" AS "ward_id", "w"."enterprise_id" AS "enterprise_id", "ep"."shortname" AS "enterprise"
+FROM "mis"."doctors" "d"
+LEFT JOIN "mis"."medpersonal" "m" ON d.post_id = m.id
+LEFT JOIN "mis"."degrees" "de" ON d.degree_id = de.id
+LEFT JOIN "mis"."tituls" "t" ON d.titul_id = t.id
+LEFT JOIN "mis"."wards" "w" ON d.ward_code = w.id
+LEFT JOIN "mis"."enterprise_params" "ep" ON w.enterprise_id = ep.id
+ORDER BY "display_in_callcenter_desc" DESC LIMIT 15.
+in Z:\home\moniiag.my\www\protected\models\Employee.php (116)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\EmployeesController.php (229)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:08:53 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "fio" не существует
+LINE 5: ORDER BY "fio" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "c".*, "d"."first_name", "d"."middle_name", "d"."last_name"
+FROM "mis"."contacts" "c"
+LEFT JOIN "mis"."doctors" "d" ON d.id = c.employee_id
+LEFT JOIN "mis"."wards" "w" ON w.id = d.ward_code
+ORDER BY "fio" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\Contact.php (68)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\ContactsController.php (163)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:18:19 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" ASC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "district" ASC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (206)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:18:21 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" DESC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "district" DESC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (206)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:18:22 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" ASC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "district" ASC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (206)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:18:25 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" DESC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "district" DESC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (206)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:24:29 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" ASC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "district" ASC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (206)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:25:48 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 4: ORDER BY "cd"."name" DESC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "cd"."name" DESC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (213)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:25:49 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 4: ORDER BY "cd"."name" ASC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "cd"."name" ASC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (213)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:25:52 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42P01]: Undefined table: 7 ОШИБКА:  таблица "cd" отсутствует в предложении FROM
+LINE 4: ORDER BY "cd"."name" DESC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cs".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_settlements" "cs"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cs.code_region = cr.code_cladr
+ORDER BY "cd"."name" DESC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrSettlement.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (213)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:27:42 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "settlement" не существует
+LINE 4: ORDER BY "settlement" ASC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cst".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_streets" "cst"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cst.code_region = cr.code_cladr
+ORDER BY "settlement" ASC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrStreet.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (268)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:27:43 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "settlement" не существует
+LINE 4: ORDER BY "settlement" DESC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cst".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_streets" "cst"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cst.code_region = cr.code_cladr
+ORDER BY "settlement" DESC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrStreet.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (268)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:27:44 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" ASC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cst".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_streets" "cst"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cst.code_region = cr.code_cladr
+ORDER BY "district" ASC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrStreet.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (268)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:27:45 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "district" не существует
+LINE 4: ORDER BY "district" DESC LIMIT 30
+                 ^. Выполнявшийся SQL-запрос: SELECT "cst".*, "cr"."id" AS "region_id", "cr"."name" AS "region"
+FROM "mis"."cladr_streets" "cst"
+LEFT JOIN "mis"."cladr_regions" "cr" ON cst.code_region = cr.code_cladr
+ORDER BY "district" DESC LIMIT 30.
+in Z:\home\moniiag.my\www\protected\models\CladrStreet.php (35)
+in Z:\home\moniiag.my\www\protected\modules\guides\controllers\CladrController.php (268)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:29:50 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "page" не существует
+LINE 3: ORDER BY "page" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "me".*
+FROM "mis"."medcard_templates" "me"
+ORDER BY "page" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardTemplate.php (82)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\TemplatesController.php (57)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:29:54 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "page" не существует
+LINE 3: ORDER BY "page" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "me".*
+FROM "mis"."medcard_templates" "me"
+ORDER BY "page" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardTemplate.php (82)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\TemplatesController.php (57)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:32:03 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "categories" не существует
+LINE 3: ORDER BY "categories" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "me".*
+FROM "mis"."medcard_templates" "me"
+ORDER BY "categories" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardTemplate.php (82)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\TemplatesController.php (66)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:32:04 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "categories" не существует
+LINE 3: ORDER BY "categories" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "me".*
+FROM "mis"."medcard_templates" "me"
+ORDER BY "categories" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardTemplate.php (82)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\TemplatesController.php (66)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:33:35 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_dynamic_name" не существует
+LINE 4: ORDER BY "is_dynamic_name" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "mc".*, "mc2"."name" AS "parent"
+FROM "mis"."medcard_categories" "mc"
+LEFT JOIN "mis"."medcard_categories" "mc2" ON mc.parent_id = mc2.id
+ORDER BY "is_dynamic_name" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardCategorie.php (54)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (41)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:33:36 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_dynamic_name" не существует
+LINE 4: ORDER BY "is_dynamic_name" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "mc".*, "mc2"."name" AS "parent"
+FROM "mis"."medcard_categories" "mc"
+LEFT JOIN "mis"."medcard_categories" "mc2" ON mc.parent_id = mc2.id
+ORDER BY "is_dynamic_name" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardCategorie.php (54)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (41)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:45:19 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_dynamic_name" не существует
+LINE 4: ORDER BY "is_dynamic_name" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "mc".*, "mc2"."name" AS "parent"
+FROM "mis"."medcard_categories" "mc"
+LEFT JOIN "mis"."medcard_categories" "mc2" ON mc.parent_id = mc2.id
+ORDER BY "is_dynamic_name" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardCategorie.php (54)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (50)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:45:20 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_dynamic_name" не существует
+LINE 4: ORDER BY "is_dynamic_name" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT "mc".*, "mc2"."name" AS "parent"
+FROM "mis"."medcard_categories" "mc"
+LEFT JOIN "mis"."medcard_categories" "mc2" ON mc.parent_id = mc2.id
+ORDER BY "is_dynamic_name" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\MedcardCategorie.php (54)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\CategoriesController.php (50)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:53:43 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_wrapped_name" не существует
+LINE 5: ORDER BY "is_wrapped_name" ASC LIMIT 25
+                 ^. Выполнявшийся SQL-запрос: SELECT "me".*, "mg"."name" AS "guide", "mc"."name" AS "categorie"
+FROM "mis"."medcard_elements" "me"
+LEFT JOIN "mis"."medcard_guides" "mg" ON mg.id = me.guide_id
+LEFT JOIN "mis"."medcard_categories" "mc" ON mc.id = me.categorie_id
+ORDER BY "is_wrapped_name" ASC LIMIT 25.
+in Z:\home\moniiag.my\www\protected\models\MedcardElement.php (71)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (52)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:53:44 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "is_wrapped_name" не существует
+LINE 5: ORDER BY "is_wrapped_name" DESC LIMIT 25
+                 ^. Выполнявшийся SQL-запрос: SELECT "me".*, "mg"."name" AS "guide", "mc"."name" AS "categorie"
+FROM "mis"."medcard_elements" "me"
+LEFT JOIN "mis"."medcard_guides" "mg" ON mg.id = me.guide_id
+LEFT JOIN "mis"."medcard_categories" "mc" ON mc.id = me.categorie_id
+ORDER BY "is_wrapped_name" DESC LIMIT 25.
+in Z:\home\moniiag.my\www\protected\models\MedcardElement.php (71)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\ElementsController.php (52)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:57:06 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "rolename" не существует
+LINE 4: ORDER BY "rolename" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT u.login, u.username, u.employee_id, u.id, CONCAT(d.last_name, ' ', d.first_name, ' ', d.middle_name) as employee
+FROM "mis"."users" "u"
+LEFT JOIN "mis"."doctors" "d" ON d.id = u.employee_id
+ORDER BY "rolename" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\User.php (42)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\UsersController.php (52)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:57:08 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "rolename" не существует
+LINE 4: ORDER BY "rolename" DESC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT u.login, u.username, u.employee_id, u.id, CONCAT(d.last_name, ' ', d.first_name, ' ', d.middle_name) as employee
+FROM "mis"."users" "u"
+LEFT JOIN "mis"."doctors" "d" ON d.id = u.employee_id
+ORDER BY "rolename" DESC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\User.php (42)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\UsersController.php (52)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)
+2014/06/05 16:58:13 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::fetchAll(): SQLSTATE[42703]: Undefined column: 7 ОШИБКА:  колонка "rolename" не существует
+LINE 4: ORDER BY "rolename" ASC LIMIT 10
+                 ^. Выполнявшийся SQL-запрос: SELECT u.login, u.username, u.employee_id, u.id, CONCAT(d.last_name, ' ', d.first_name, ' ', d.middle_name) as employee
+FROM "mis"."users" "u"
+LEFT JOIN "mis"."doctors" "d" ON d.id = u.employee_id
+ORDER BY "rolename" ASC LIMIT 10.
+in Z:\home\moniiag.my\www\protected\models\User.php (42)
+in Z:\home\moniiag.my\www\protected\modules\admin\controllers\UsersController.php (59)
+in Z:\home\moniiag.my\www\protected\components\Controller.php (33)

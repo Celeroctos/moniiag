@@ -17,7 +17,7 @@ class ContactsController extends Controller {
 
             $enterprises = new Enterprise();
             $enterprisesArr = array('-1' => 'Нет');
-            foreach($enterprises->getRows(false) as $enterprise) {
+            foreach($enterprises->getRows(false, 'shortname', 'asc') as $enterprise) {
                 $enterprisesArr[$enterprise['id']] = $enterprise['shortname'];
             }
 
@@ -153,17 +153,23 @@ class ContactsController extends Controller {
                 $employeeId = false;
             }
 
-
             $model = new Contact();
             $num = $model->getRows($filters, false, false, false, false, $enterpriseId, $wardId, $employeeId);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
+            $order = array(
+                'fio' => 'last_name'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
+
             $contacts = $model->getRows($filters, $sidx, $sord, $start, $rows, $enterpriseId, $wardId, $employeeId);
 
             foreach($contacts as $key => &$contact) {
-                $contact['fio'] = $contact['first_name'].' '.$contact['middle_name'].' '.$contact['last_name'];
+                $contact['fio'] = $contact['last_name'].' '.$contact['first_name'].' '.$contact['middle_name'];
                 $contact['type'] = $this->contactTypes[$contact['type']];
             }
 

@@ -15,6 +15,7 @@ class EmployeesController extends Controller {
             $enterprisesListDb = $connection->createCommand()
                 ->select('ep.*')
                 ->from('mis.enterprise_params ep')
+                ->order('ep.shortname asc')
                 ->queryAll();
 
             $enterprisesList = array('-1' => 'Нет',
@@ -28,6 +29,7 @@ class EmployeesController extends Controller {
             $postsListDb = $connection->createCommand()
                 ->select('m.*')
                 ->from('mis.medpersonal m')
+                ->order('m.name asc')
                 ->queryAll();
 
             $postsList = array();
@@ -39,6 +41,7 @@ class EmployeesController extends Controller {
             $titulsListDb = $connection->createCommand()
                 ->select('t.*')
                 ->from('mis.tituls t')
+                ->order('t.name asc')
                 ->queryAll();
 
             $titulsList = array();
@@ -50,6 +53,7 @@ class EmployeesController extends Controller {
             $wardsListDb = $connection->createCommand()
                 ->select('w.*')
                 ->from('mis.wards w')
+                ->order('w.name asc')
                 ->queryAll();
 
             $wardsList = array('-1' => 'Нет');
@@ -62,6 +66,7 @@ class EmployeesController extends Controller {
             $degreesListDb = $connection->createCommand()
                 ->select('d.*')
                 ->from('mis.degrees d')
+                ->order('d.name asc')
                 ->queryAll();
 
             $degreesList = array();
@@ -208,6 +213,14 @@ class EmployeesController extends Controller {
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
+
+            $order = array(
+                'fio' => 'last_name, first_name, middle_name',
+                'display_in_callcenter_desc' => 'display_in_callcenter'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
 
             if(isset($_GET['enterpriseid'], $_GET['wardid'])) {
                 $employees = $model->getRows($_GET['enterpriseid'], $_GET['wardid'], $filters, $sidx, $sord, $start, $rows);

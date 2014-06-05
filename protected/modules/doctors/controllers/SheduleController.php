@@ -997,6 +997,7 @@ class SheduleController extends Controller {
             echo "Error! Not enough data for request.";
             exit();
         }
+
         $formatDate = $_GET['year'].'-'.$_GET['month'].'-'.$_GET['day'];
         $formatTime = $_GET['time'];
         // Вынимаем элемент расписания для записи кабинета, например
@@ -1100,11 +1101,18 @@ class SheduleController extends Controller {
 		$writedDoctor = Doctor::model()->findByPk($_GET['doctor_id']);
 		if($writedDoctor != null) {
 			
-		}		
-		
+		}
+
+        $msg = 'Пациент '.$writedOms->last_name.' '.$writedOms->first_name.' '.$writedOms->middle_name.' записан на приём к специалисту '.$writedDoctor->last_name.' '.$writedDoctor->first_name.' '.$writedDoctor->middle_name.' на '.$_GET['day'].'.'.$_GET['month'].' '.$_GET['year'];
+        if(!isset($_GET['order_number'])) {
+            $msg .= ' '.$_GET['time'].'.';
+        } else {
+            $msg .= ', в очереди под номером '.$_GET['order_number'].'.';
+        }
+
         echo CJSON::encode(array('success' => 'true',
                                  'greetingId' => $sheduleElement->id,
-                                 'data' => 'Пациент '.$writedOms->last_name.' '.$writedOms->first_name.' '.$writedOms->middle_name.' записан на приём к специалисту '.$writedDoctor->last_name.' '.$writedDoctor->first_name.' '.$writedDoctor->middle_name.' на '.$_GET['day'].'.'.$_GET['month'].' '.$_GET['year'].' '.$_GET['time'].'.'));
+                                 'data' => $msg));
     }
     // Отписать пациента от приёма
     public function actionUnwritePatient() {

@@ -13,6 +13,7 @@ class CabinetsController extends Controller {
             $enterprisesListDb = $connection->createCommand()
                 ->select('ep.*')
                 ->from('mis.enterprise_params ep')
+                ->order('ep.shortname')
                 ->queryAll();
 
             $enterprisesList = array('-1' => '');

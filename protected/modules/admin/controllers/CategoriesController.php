@@ -38,6 +38,14 @@ class CategoriesController extends Controller {
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
+            $order = array(
+                'is_dynamic_name' => 'is_dynamic',
+                'wrapped' => 'is_wrapped'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
+
             $categories = $model->getRows($filters, $sidx, $sord, $start, $rows);
 			foreach($categories as &$categorie) {
 				if($categorie['parent_id'] == null || $categorie['parent_id'] == -1) {

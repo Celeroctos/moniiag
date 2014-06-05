@@ -12,18 +12,25 @@ class Post extends CActiveRecord {
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
-        $oms = $connection->createCommand()
+        $post = $connection->createCommand()
             ->select('p.*')
             ->from('mis.medpersonal p');
 
         if($filters !== false) {
-            $this->getSearchConditions($oms, $filters, array(
+            $this->getSearchConditions($post, $filters, array(
             ), array(
                 'p' => array('id', 'name')
             ), array(
             ));
         }
-        return $oms->queryAll();
+
+        if($sidx !== false && $sord !== false ) {
+            $post->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
+            $post->limit($limit, $start);
+        }
+        return $post->queryAll();
     }
 }
 

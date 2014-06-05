@@ -5,7 +5,7 @@ class RolesController extends Controller {
 
     public function actionView() {
         $roleModel = new Role();
-        $roles = $roleModel->getRows(false);
+        $roles = $roleModel->getRows(false, 'name', 'asc');
         $rolesList = array('-1' => 'Нет');
         foreach($roles as $key => $role) {
             $rolesList[$role['id']] = $role['name'];
@@ -21,11 +21,11 @@ class RolesController extends Controller {
             $actions[$action['groupname']][$action['id']] = $action['name'];
         }
 
-        $pagesListDb = MenuPage::model()->findAll();
+        $pagesListDb = MenuPage::model()->getAll();
         $pagesList = array('-1' => 'Нет');
         foreach($pagesListDb as $page) {
-            if($page->priority != null) {
-                $pagesList[$page->id] = $page->name;
+            if($page['priority'] != null) {
+                $pagesList[$page['id']] = $page['name'];
             }
         }
 

@@ -23,6 +23,9 @@
             <ul class="nav navbar-nav">
                 <li><a href="#">Справка</a></li>
             </ul>
+            <div class="row" id="dateInfoCont">
+                Сегодня <?php echo $weekdayDesc; ?>, <br /> <?php echo $day; ?> <?php echo $monthDesc; ?> <?php echo $year; ?> года, <?php echo $time; ?>
+            </div>
             <ul class="nav navbar-nav alarm-button" style="width:50px;height:50px;">
                 <li><img src="/images/icons/alarm.png" width="50" height="50" class="no-display"></img></li>
             </ul>

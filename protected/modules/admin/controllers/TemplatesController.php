@@ -9,7 +9,7 @@ class TemplatesController extends Controller {
     public function actionView() {
         // Категории
         $categoriesModel = new MedcardCategorie();
-        $categories = $categoriesModel->getRows(false);
+        $categories = $categoriesModel->getRows(false, 'name', 'asc');
         $categoriesList = array();
         foreach($categories as $index => $categorie) {
             $categoriesList[$categorie['id']] = $categorie['name'];
@@ -53,6 +53,15 @@ class TemplatesController extends Controller {
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
+
+            $order = array(
+                'page' => 'page_id',
+                'primary_diagnosis_desc' => 'primary_diagnosis',
+                'categories' => 'categorie_ids'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
 
             $templates = $model->getRows($filters, $sidx, $sord, $start, $rows);
             foreach($templates as $key => &$template) {

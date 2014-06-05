@@ -33,6 +33,13 @@ class Shift extends MisActiveRecord  {
             ));
         }
 
+        if($sidx !== false && $sord !== false) {
+            $shifts->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
+            $shifts->limit($limit, $start);
+        }
+
         return $shifts->queryAll();
     }
 

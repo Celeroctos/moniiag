@@ -48,8 +48,10 @@ class Cabinet extends MisActiveRecord {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $cabinets->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
             $cabinets->limit($limit, $start);
         }
 

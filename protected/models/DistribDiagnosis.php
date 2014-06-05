@@ -25,8 +25,10 @@ class DistribDiagnosis extends MisActiveRecord  {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $mkb10->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
             $mkb10->limit($limit, $start);
         }
 

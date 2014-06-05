@@ -45,8 +45,10 @@ class Ward extends MisActiveRecord {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false ) {
             $wards->order($sidx.' '.$sord);
+        }
+        if($start !== false && $limit !== false) {
             $wards->limit($limit, $start);
         }
 
@@ -60,6 +62,7 @@ class Ward extends MisActiveRecord {
                 ->select('w.*')
                 ->from('mis.wards w')
                 ->where('w.enterprise_id = :id', array(':id' => $id))
+                ->order('w.name asc')
                 ->queryAll();
 
             return $wards;

@@ -13,6 +13,7 @@ class WardsController extends Controller {
             $enterprisesListDb = $connection->createCommand()
                 ->select('ep.*')
                 ->from('mis.enterprise_params ep')
+                ->order('ep.fullname asc')
                 ->queryAll();
 
             $enterprisesList = array();

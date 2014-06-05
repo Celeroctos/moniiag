@@ -24,6 +24,21 @@ class MenuPage extends MisActiveRecord {
 
     }
 
+    public function getAll() {
+        try {
+            $connection = Yii::app()->db;
+            $pages = $connection->createCommand()
+                ->select('t.*')
+                ->from(MenuPage::tableName().' t')
+                ->order('t.name asc');
+
+            return $pages->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
 }
 
 ?>

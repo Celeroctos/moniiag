@@ -126,6 +126,13 @@ class EnterprisesController extends Controller {
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
+            $order = array(
+                'requisits' => 'bank, bank_account, inn, kpp'
+            );
+            if(isset($order[$sidx])) {
+                $sidx = $order[$sidx];
+            }
+
             $enterprises = $model->getRows($filters, $sidx, $sord, $start, $rows);
 
             foreach($enterprises as $key => &$enterprise) {
