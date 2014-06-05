@@ -8,6 +8,14 @@ class LogsController extends Controller {
     public function actionGet() {
 
     }
+
+    public function actionDeleteTestCards() {
+        $testCards = Medcard::model()->getTestOmsWithCards();
+        foreach($testCards as $card) {
+            Oms::model()->deleteByPk($card['id']);
+            Medcard::model()->deleteByPk($card['card_number']);
+        }
+    }
 }
 
 ?>

@@ -167,7 +167,7 @@ class PatientController extends Controller {
                     'regPoint' => date('Y'),
                     'privilegesList' => $privilegesList,
                     'foundPriv' => false,
-                    'fio' => $oms->first_name.' '.$oms->last_name.' '.$oms->middle_name,
+                    'fio' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name,
                     'policy_number' => $oms->oms_number,
                     'actionAdd' => 'addcard'
                 ));
