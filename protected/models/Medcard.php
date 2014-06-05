@@ -106,4 +106,14 @@ class Medcard extends MisActiveRecord  {
         return $medcard->queryAll();
     }
 
+    public function getTestOmsWithCards() {
+        $connection = Yii::app()->db;
+        $medcards = $connection->createCommand()
+            ->select('m.*, o.*')
+            ->from('mis.medcards m')
+            ->leftJoin('mis.oms o', 'm.policy_id = o.id')
+            ->where('o.tasu_id IS NULL');
+        return $medcards->queryAll();
+    }
+
 }
