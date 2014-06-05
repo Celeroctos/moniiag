@@ -1,3 +1,22 @@
+<?php
+    // Вычислим, можно ли менять у приёма статус
+    $enableChangeStatus = false;
+    // Если у patientDay такой же месяц и год, как у текущей даты - поднимаем флаг
+
+    $monthOfGreeting = date('m',strtotime($patientsDay));
+    $yearOfGreeting = date('Y',strtotime($patientsDay));
+    $currentMonth = date('m');
+    $currentYear = date('Y');
+if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
+    {
+        $enableChangeStatus = true;
+    }
+
+    $disabledAttr = "";
+    if (!$enableChangeStatus)
+        $disabledAttr = "disabled";
+
+?>
 <table id="<?php echo $tableId; ?>" class="table table-condensed table-hover">
     <thead>
     <tr class="header">
@@ -9,6 +28,9 @@
             Время приёма
         </td>
         <?php } ?>
+        <td>
+            Статус приёма
+        </td>
         <td>
         </td>
         <!--<td>
@@ -70,6 +92,16 @@
             <?php echo $patient['patient_time']; ?>
         </td>
         <?php } ?>
+
+        <td class="greetingStatusCell">
+            <div id="status-container<?php echo $patient['id'];?>">
+            <input type="radio" id="greetingStatus<?php echo $patient['id'];?>"
+                   <?php echo $disabledAttr; ?> name="status<?php echo $patient['id'];?>" <?php if($patient['greetingStatus']==0) echo "checked"; ?> value="0">Да
+            <input type="radio" id="greetingStatus<?php echo $patient['id'];?>"
+                   <?php echo $disabledAttr; ?> name="status<?php echo $patient['id'];?>" <?php if($patient['greetingStatus']==1) echo "checked"; ?> value="1">Нет
+            <div>
+            <?php // echo $patient['greetingStatus']; ?>
+        </td>
         <td>
             <?php 
 				if($patient['medcard_id'] != null) {

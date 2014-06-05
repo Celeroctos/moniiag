@@ -191,8 +191,8 @@ class SheduleController extends Controller {
     public function actionUpdatePatientList() {
         $this->filterModel = new FormSheduleFilter();
         // Получим дату, на которую нужны пациенты
-        $curDate = $this->getCurrentDate();
-        $parts = explode('-', $curDate);
+        $curDateRaw = $this->getCurrentDate();
+        $parts = explode('-', $curDateRaw);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
         // Получим доктора
         $userId = Yii::app()->user->id;
@@ -236,7 +236,8 @@ class SheduleController extends Controller {
         $result = $patientsListWidget->getPatientList(
             $patients,
             $greeting,
-            $medcard
+            $medcard,
+            $curDateRaw
         );
         ob_end_clean();
         echo CJSON::encode(array(
@@ -828,7 +829,18 @@ class SheduleController extends Controller {
                                  'data' => $result['result']));
     }
 
-    
+    public function actionChangeGreetingStatus($greetingId=false,$newValue=false)
+    {
+        // Ищем приём по ИД
+        $greetingToEdit = SheduleByDay::model()->findByPk($greetingId);
+
+        // Меняем значение и сохраняем
+        $greetingToEdit->greeting_status = $newValue;
+        $greetingToEdit->save();
+        echo CJSON::encode(array('success' => true,
+            'data' => array()));
+    }
+
 	private function getPatientList($doctorId, $formatDate, $withMediate = true, $onlyWaitingLine = false) {
         $patientsList = array();
         $sheduleByDay = new SheduleByDay();
@@ -903,6 +915,7 @@ class SheduleController extends Controller {
 							$mediatePatient = MediatePatient::model()->findByPk($patient['mediate_id']);
 							if($mediatePatient != null) {
 								$patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
+                                $patient['greetingStatus'] = $patient['greeting_status'];
 							}
 						}
 
@@ -920,7 +933,8 @@ class SheduleController extends Controller {
                             'patient_time' => date('G:i', $i),
                             'comment' => $patient['comment'],
                             'greetingType' => $patient['greeting_type'],
-                            'orderNumber' => $patient['order_number']
+                            'orderNumber' => $patient['order_number'],
+                            'greetingStatus' => $patient['greeting_status'],
 					    );
                         if($patient['greeting_type'] == 1) {
                             $primaryGreetings++;

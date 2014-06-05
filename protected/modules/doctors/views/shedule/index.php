@@ -180,7 +180,8 @@
                             'currentPatient' => $currentPatient,
                             'filterModel' => $filterModel,
                             'isWaitingLine' => 0,
-                            'tableId' => 'doctorPatientList'
+                            'tableId' => 'doctorPatientList',
+                            'patientsDay' => $year.'-'.$month.'-'.$day
                         ));
                         ?>
                     </div>
@@ -198,7 +199,8 @@
                             'currentPatient' => $currentPatient,
                             'filterModel' => $filterModel,
                             'isWaitingLine' => 1,
-                            'tableId' => 'doctorWaitingList'
+                            'tableId' => 'doctorWaitingList',
+                            'patientsDay' => $year.'-'.$month.'-'.$day
                         ));
                         ?>
                     </div>

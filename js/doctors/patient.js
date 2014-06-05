@@ -110,6 +110,32 @@
         onStartSave();
     });
 
+    $('.greetingStatusCell input').on('change',function(){
+        idOfRadio = $(this).prop('id');
+        newValue = $('input[id=' + idOfRadio +  ']:checked')[0].value;
+        console.log('Статус поменялся '+ newValue);
+
+        // Читаем id приёма
+        idGreeting = idOfRadio.substr(14);
+        console.log('ИД приёма='+idGreeting);
+        // Вот теперь вообще всё хорошо и больше ничегоот жизни не надо!
+        //   Вернее больше ничего не надо для ajax-запроса!
+        //   Есть новое значение статуса приёма и ИД самого приёма
+        //  Самое время отправить ajax-запрос
+        $.ajax({
+            'url' : '/index.php/doctors/shedule/changegreetingstatus?greetingId='
+                +idGreeting
+                +'&newValue='
+                +newValue,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+
+            }
+        });
+    });
+
     function onStartSave()
     {
         // Берём кнопки с классом

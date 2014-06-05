@@ -7,6 +7,7 @@ class PatientListWidget extends CWidget {
     public $filterModel;
     public $isWaitingLine = false;
     public $tableId = 'doctorPatientList';
+    public $patientsDay = '';
 
     public function run() {
             echo $this->render('application.modules.doctors.components.widgets.views.PatientListWidget', array(
@@ -15,7 +16,8 @@ class PatientListWidget extends CWidget {
                 'currentPatient' => $this->currentPatient,
                 'filterModel'=> $this->filterModel,
                 'isWaitingLine' => $this->isWaitingLine,
-                'tableId' => $this->tableId
+                'tableId' => $this->tableId,
+                'patientsDay' => $this->patientsDay
             ));
     }
 
@@ -23,7 +25,7 @@ class PatientListWidget extends CWidget {
         $this->formModel = new FormTemplateDefault();
     }*/
 
-    public function getPatientList($patients, $currentSheduleId = false, $currentPatient = false)
+    public function getPatientList($patients, $currentSheduleId = false, $currentPatient = false, $patientsDate)
     {
 //        $this->filterModel = new FormSheduleFilter();
         $result = $this->render('application.modules.doctors.components.widgets.views.PatientListWidget', array(
@@ -32,7 +34,8 @@ class PatientListWidget extends CWidget {
             'currentPatient' => $currentPatient,
             'filterModel'=> $this->filterModel,
             'isWaitingLine' => $this->isWaitingLine,
-            'tableId' => $this->tableId
+            'tableId' => $this->tableId,
+            'patientsDay' => $patientsDate
         ),true);
 
         return $result;
