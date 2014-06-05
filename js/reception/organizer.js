@@ -101,28 +101,34 @@
                 var unwriteBlock = $('<div>');
                 var unwriteLink = $('<a>').text('Отписать пациента');
                 $(unwriteLink).on('click', function() {
-                    var params = {
-                        id: $(li).prop('id').substr(1)
-                    };
-                    // Отписать пациента
-                    $.ajax({
-                        'url' : '/index.php/doctors/shedule/unwritepatient',
-                        'data' : params,
-                        'cache' : false,
-                        'dataType' : 'json',
-                        'type' : 'GET',
-                        'success' : function(data, textStatus, jqXHR) {
-                            if(data.success == 'true') {
-                                $('#successPopup p').text(data.data);
-                                $('#successPopup').modal({
-                                });
-                                $('.organizer').trigger('reload');
-                            } else {
 
+
+                    if(window.confirm('Вы действительно хотите отменить приём?')) {
+
+
+                        var params = {
+                            id: $(li).prop('id').substr(1)
+                        };
+                        // Отписать пациента
+                        $.ajax({
+                            'url' : '/index.php/doctors/shedule/unwritepatient',
+                            'data' : params,
+                            'cache' : false,
+                            'dataType' : 'json',
+                            'type' : 'GET',
+                            'success' : function(data, textStatus, jqXHR) {
+                                if(data.success == 'true') {
+                                    $('#successPopup p').text(data.data);
+                                    $('#successPopup').modal({
+                                    });
+                                    $('.organizer').trigger('reload');
+                                } else {
+
+                                }
+                                return;
                             }
-                            return;
-                        }
-                    });
+                        });
+                    }
                 });
                 $(commentBlock).append($(unwriteBlock).append(unwriteLink));
                 return commentBlock;

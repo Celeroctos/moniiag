@@ -424,3 +424,11 @@ REQUEST_URI=/index.php/doctors/shedule/view?cardid=1/13&date=2014-6-11&rowid=560
 in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\views\PatientListWidget.php (6)
 in Z:\home\mis.my\www\protected\modules\doctors\components\widgets\PatientListWidget.php (21)
 in Z:\home\mis.my\www\protected\modules\doctors\views\shedule\index.php (185)
+2014/06/05 16:27:14 [warning] [application] Не удалось присвоить небезопасный атрибут "patientId" класса "FormValueAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (486)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/06/05 16:27:31 [warning] [application] Не удалось присвоить небезопасный атрибут "patientId" класса "FormValueAdd".
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (486)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
