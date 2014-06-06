@@ -123,7 +123,7 @@ class PatientController extends Controller {
                     'model' => $formModel,
                     'policy_number' => $patient->oms_number,
                     'policy_id' => $patient->id,
-                    'fio' => $patient->first_name.' '.$patient->last_name.' '.$patient->middle_name,
+                    'fio' => $patient->last_name.' '.$patient->first_name.' '.$patient->middle_name,
                     'regPoint' => date('Y'),
                     'privilegesList' => $privilegesList,
                     'foundPriv' => count($privileges) > 0,
