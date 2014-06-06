@@ -709,10 +709,13 @@
         });
     });
 
+    /*
     $('#patientDataPopup').on('hidden.bs.modal', function (e) {
         $('#patientDataPopup').find('#firstName, #lastName, #middleName, #comment').val('');
         $('#patientDataPopup').find('#phone').val('+7');
     });
+*/
+
 
     // Просмотр истории медкарты
     $(document).on('click', '.viewHistory', function() {
@@ -851,6 +854,8 @@
     $('#submitPatient').on('click', function(e) {
         $('#patientDataPopup').modal('hide');
         writePatient();
+        $('#patientDataPopup').find('#firstName, #lastName, #middleName, #comment').val('');
+        $('#patientDataPopup').find('#phone').val('+7');
     });
 
     $('#patient-search-form').on('keydown', function(e) {

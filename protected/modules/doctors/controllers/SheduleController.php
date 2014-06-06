@@ -1114,8 +1114,43 @@ class SheduleController extends Controller {
                                  'greetingId' => $sheduleElement->id,
                                  'data' => $msg));
     }
+
+    private function saveGreetingDataToSession($greeting)
+    {
+        $maxArraySize = 100;
+        if (!isset($_SESSION['unwritedGreetings']))
+        {
+            $_SESSION['unwritedGreetings'] = array();
+        }
+
+        // Проверим - если в сессии больше, чем 10 приёмов - то удалим старые с начала массива
+        if (count($_SESSION['unwritedGreetings'])>=$maxArraySize)
+        {
+            while (count($_SESSION['unwritedGreetings'])>=$maxArraySize)
+                array_shift($_SESSION['unwritedGreetings']);
+        }
+
+        array_push($_SESSION['unwritedGreetings'], $greeting);
+    }
+
     // Отписать пациента от приёма
     public function actionUnwritePatient() {
+       /* for ($i=0;$i<15;$i++)
+        {
+            $testGreeting = array(
+                'id' => $i+1000,
+                'data' => $i
+            );
+
+            $this->saveGreetingDataToSession($testGreeting);
+
+        }
+
+
+        var_dump($_SESSION['unwritedGreetings']);
+        exit();
+
+        return;*/
         if(!isset($_GET['id'])) {
             echo CJSON::encode(array('success' => 'false',
                 'data' => 'Не могу отписать пациента от приёма!'));
@@ -1123,7 +1158,29 @@ class SheduleController extends Controller {
         }
         $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
         if($sheduleElement != null) {
+            // Записываем данные об отписываемом приёме в сессию
+            $dataToWrite = array (
+                'id' => $sheduleElement['id'],
+                'comment' => $sheduleElement['comment']
+            );
+            // Проверим - если приём опосредованный, нужно прочитать данные, которые заносятся
+            //     при записи опосредованного пациента
+            if ($sheduleElement['mediate_id']!='')
+            {
+                $mediateData = MediatePatient::model()->findByPk($sheduleElement['mediate_id']);
+
+                //var_dump($mediateData);
+                //exit();
+
+                $dataToWrite['first_name'] = $mediateData['first_name'];
+                $dataToWrite['last_name'] = $mediateData['last_name'];
+                $dataToWrite['middle_name'] = $mediateData['middle_name'];
+                $dataToWrite['phone'] = $mediateData['phone'];
+            }
             $sheduleElement->delete();
+            $this->saveGreetingDataToSession($dataToWrite);
+           // var_dump($_SESSION['unwritedGreetings']);
+           // exit();
         }
 
         echo CJSON::encode(array('success' => 'true',
