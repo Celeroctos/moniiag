@@ -726,4 +726,14 @@ $('select[multiple="multiple"]').each(function(index, select) {
         }
     });
 
+    $('.modal').on('show.bs.modal', function(e) {
+        $(this).css('overflow-y', 'scroll');
+        $('html').css('overflow-y', 'hidden');
+    });
+    $('.modal').on('hide.bs.modal', function(e) {
+        $(this).css('overflow-y', 'hidden');
+        $('html').css('overflow-y', 'scroll');
+        $('.navbar-fixed-top').css('margin-right', 0);
+    });
+
 });
