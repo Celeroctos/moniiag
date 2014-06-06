@@ -1165,8 +1165,13 @@ class PatientController extends Controller {
 
     public function actionChangeOrDelete()
     {
+        if(isset($_GET['callcenter']) && $_GET['callcenter'] == 1) {
+            $callcenter = 1;
+        } else {
+            $callcenter = 0;
+        }
         $this->render('changeRecord', array(
-            'callcenter' => 1
+            'callcenter' => $callcenter
         ));
     }
 

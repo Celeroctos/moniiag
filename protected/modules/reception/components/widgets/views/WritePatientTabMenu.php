@@ -27,5 +27,8 @@
         <li <?php echo $controller == 'patient' && (($action == 'writepatientstepone' || $action == 'writepatientsteptwo') && $this->waitingLine) ? 'class="active"' : ''; ?>>
             <?php echo CHtml::link('Запись в живую очередь', array('/reception/patient/writepatientstepone?waitingline=1')); ?>
         </li>
+        <li <?php echo $controller == 'patient' && $action == 'changeordelete' ? 'class="active"' : ''; ?>>
+            <?php echo CHtml::link('Изменение / отмена записи', array('/reception/patient/changeordelete')) ?>
+        </li>
     <?php }?>
 </ul>
