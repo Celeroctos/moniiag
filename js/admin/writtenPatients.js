@@ -58,8 +58,9 @@ $(document).ready(function () {
 
     // Нажатие на ссылку "Отписать"
     $(document).on('click', '#writtenPatientsTimetable .unwrite-link', function (e) {
+        var idGreetingToUnwrite = $(this).attr('href').substr(1);
         var params = {
-            id: $(this).attr('href').substr(1)
+            id: idGreetingToUnwrite
         };
         $.ajax({
             'url': '/index.php/doctors/shedule/unwritepatient',
@@ -80,11 +81,11 @@ $(document).ready(function () {
                     // Проверим - опосредованный поциэнт или нет
                     if (medcardId=='')
                     {
-                        newLink = '<a href=\"/index.php/reception/patient/writepatientwithoutdata" target=\"_blank\">Перезаписать</a>';
+                        newLink = '<a href=\"/index.php/reception/patient/writepatientwithoutdata?unwritedGreetingId='+ idGreetingToUnwrite +'\" target=\"_blank\">Перезаписать</a>';
                     }
                     else
                     {
-                        newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
+                        newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?unwritedGreetingId='+ idGreetingToUnwrite +'&cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
                     }
 
                     //var newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';

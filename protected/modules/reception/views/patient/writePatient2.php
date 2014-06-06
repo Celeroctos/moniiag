@@ -358,7 +358,7 @@
                         <div class="form-group">
                             <label for="comment" class="col-xs-3 control-label">Комментарий</label>
                             <div class="col-xs-9">
-                                <textarea name="comment" placeholder="Комментарий" class="form-control" id="comment" value=""></textarea>
+                                <textarea name="comment" placeholder="Комментарий" class="form-control" id="comment" value=""><?php echo $commentToWrite; ?></textarea>
                             </div>
                         </div>
                     </div>

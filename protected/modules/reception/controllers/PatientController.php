@@ -1154,6 +1154,22 @@ class PatientController extends Controller {
                     'callcenter' => $callcenter,
                     'calendarType' => Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value
                 );
+
+
+                // Если есть параметр unwritedGreetingId, то надо вытащить параметры для подстановки в форму записи
+                $unwritedGreeting  = null;
+                if (isset($_GET['unwritedGreetingId']))
+                {
+                    $unwritedGreeting = $this->readUnwritedGreeting($_GET['unwritedGreetingId']);
+                }
+                if ($unwritedGreeting  !=null)
+                {
+                    $answer['commentToWrite'] = $unwritedGreeting['comment'];
+                }
+                else
+                {
+                    $answer['commentToWrite'] = '';
+                }
                 $this->render('writePatient2', $answer);
                 exit();
             }
@@ -1197,8 +1213,28 @@ class PatientController extends Controller {
         return $postsList;
     }
 
+    private function readUnwritedGreeting($greetingToFind)
+    {
+        $result = null;
+        // Перебираем массив сессии и проверяем на равенство $greetingToFind и id приёма
+        foreach($_SESSION['unwritedGreetings'] as $oneGreeting)
+        {
+            if ($oneGreeting['id']==$greetingToFind)
+            {
+                $result = $oneGreeting;
+            }
+
+        }
+
+
+        return $result;
+    }
+
     // Запись опосредованного пациента
     public function actionWritePatientWithoutData($callcenter = false) {
+        //var_dump($_SESSION);
+        //exit();
+
         $answer = array(
             'wardsList' => $this->getWardsList(),
             'postsList' => $this->getPostsList(),
@@ -1216,6 +1252,32 @@ class PatientController extends Controller {
                 $answer['doctorFio'] = '';
             }
         }
+        // Если есть параметр unwritedGreetingId, то надо вытащить параметры для подстановки в форму записи
+        $unwritedGreeting  = null;
+        if (isset($_GET['unwritedGreetingId']))
+        {
+            $unwritedGreeting = $this->readUnwritedGreeting($_GET['unwritedGreetingId']);
+        }
+        if ($unwritedGreeting  !=null)
+        {
+            $answer['fName'] = $unwritedGreeting['first_name'];
+            $answer['mName'] = $unwritedGreeting['middle_name'];
+            $answer['lName'] = $unwritedGreeting['last_name'];
+            $answer['phoneToWrite'] = $unwritedGreeting['phone'];
+            $answer['commentToWrite'] = $unwritedGreeting['comment'];
+           // var_dump($answer);
+           // exit();
+        }
+        else
+        {
+
+            $answer['fName'] = '';
+            $answer['mName'] = '';
+            $answer['lName'] = '';
+            $answer['phoneToWrite'] = '';
+            $answer['commentToWrite'] = '';
+        }
+
         $this->render('writepatientwithoutdata', $answer);
     }
 
