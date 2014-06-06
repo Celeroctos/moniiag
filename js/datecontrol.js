@@ -211,6 +211,20 @@ var dateControlConfigs =
             minView: 2,
             forceParse: 0
         });
+
+       $(DateField).on('show', function(e) {
+           var top = null;
+           $('.datetimepicker').each(function(index, element) {
+               if($(element).css('display') == 'block') { // Это тот календарь, который показывается сейчас
+                   var beginScrollTop = $('.modal').filter('.in').scrollTop();
+                   top = parseInt($(element).css('top')) + parseInt(beginScrollTop);
+                   $('.modal').on('scroll', function(e) {
+                       $(element).css('top', (top - parseInt($(this).scrollTop())) + 'px');
+                   });
+               }
+           });
+       });
+
        $(DateField).parents('.form-group').find('label').css({'padding-top' : '25px'});
         var ctrl = DateField.find('input.form-control:first');
         $(ctrl).on('change', function(e, type)
