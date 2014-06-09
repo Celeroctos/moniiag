@@ -815,4 +815,11 @@
     $('#createNewPatientBtn').on('click', function(e) {
         location.href = '/index.php/reception/patient/viewadd';
     });
+
+    $('#patient-search-form').on('keydown', function(e) {
+        // Обработка Enter
+        if(e.keyCode == 13) {
+            $('#patient-search-submit').trigger('click');
+        }
+    });
 });

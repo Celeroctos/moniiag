@@ -598,27 +598,22 @@
 
 
     $('#confirmPopup').on('hidden.bs.modal', function (e)
-    {
-        //
-        writePatientQuery();
-    }
+        {
+            if(globalVariables.hasOwnProperty('isMediateWrite') && globalVariables.isMediateWrite == 1) {
+                writeMediatePatient();
+            } else {
+                writePatientQuery();
+            }
+        }
     );
 
 
     function writePatient() {
-        if (globalVariables.greetingId!=undefined)
-        {
-
-
-           $('#confirmPopup').modal({ });
-
-        }
-        else
-        {
+        if(globalVariables.greetingId != undefined) {
+           $('#confirmPopup').modal({});
+        }  else {
             writePatientQuery();
         }
-
-
         return false;
     }
 
@@ -657,6 +652,15 @@
 
     // Подтвердить данные для опосредованного пациента
     $('#submitReservData').on('click', function() {
+        if(globalVariables.greetingId != undefined) {
+            globalVariables.isMediateWrite = 1;
+            $('#confirmPopup').modal({});
+        }  else {
+            writeMediatePatient();
+        }
+    });
+
+    function writeMediatePatient() {
         var params = {
             'firstName' : $('#firstName').val(),
             'lastName' : $('#lastName').val(),
@@ -671,6 +675,8 @@
             'mode' : 1, // Опосредованного пациента запись
             'time' : globalVariables.patientTime
         };
+
+        globalVariables.isMediateWrite = 0; // Это флаг опосредованной записи
 
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
@@ -707,7 +713,9 @@
                 return;
             }
         });
-    });
+    }
+
+
 
     /*
     $('#patientDataPopup').on('hidden.bs.modal', function (e) {
