@@ -9,11 +9,5 @@ foreach ($templates as $oneTemplate)
 		foreach($oneTemplate['cats']  as $index => $categorie) {
 		$this->drawPrintCategorie($categorie);
 	}
-	
 }
-?><br>
-<?php
-if (!isset($notPrintPrintBtn))
-{
-	?><button class="printBtn default-margin-left">Напечатать результаты приёма</button><?php
-}
+?>

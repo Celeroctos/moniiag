@@ -27,3 +27,72 @@ blockquote {margin:1.5em;padding:1em;font-style:italic;font-size:.9em;}
 .hide {display:none;}
 a:link, a:visited {background:transparent;font-weight:700;text-decoration:underline;}
 a:link:after, a:visited:after {content:" (" attr(href) ")";font-size:90%;}
+
+td {
+    padding: 3px 10px;
+    border: 1px solid #000000;
+
+}
+td.first {
+    /*width: 40%;*/
+    font-family: "Arial";
+    font-size: 12px;
+}
+strong {
+    font-weight: bold;
+}
+.big {
+    font-size: 16px;
+}
+.bigger {
+    font-size: 22px;
+    font-family: "Times New Roman";
+}
+.medium {
+    font-size: 18px;
+}
+@media print
+{
+    .big {
+        font-size: 16px;
+    }
+    .bigger {
+        font-size: 22px;
+        font-family: "Times New Roman";
+    }
+    .medium {
+        font-size: 18px;
+    }
+    td.first
+    {
+        /*width: 40%;*/
+        font-family: "Arial";
+        font-size: 12px;
+    }
+}
+
+.medcardIndex {
+    width: 100%;
+}
+div {
+    border: 0px solid red;
+    padding: 5px 10px;
+}
+h3 {
+    font-weight: bold;
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+    text-decoration: underline;
+    font-style: italic;
+}
+div.header {
+    margin: 0 0 10px 0;
+}
+.default-margin-left {
+    margin: 0 0 0 10px;
+}
+.bottom-border-dotted {
+    border-bottom: 1px dotted #000000;
+}
