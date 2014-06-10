@@ -481,9 +481,10 @@ class SheduleController extends Controller {
 			'history' => array()
 		);
 
+        /*
 		$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);		
 		$response['history'] = $newHistory;
-
+        */
 		ob_end_clean();
         echo CJSON::encode($response);
 		
