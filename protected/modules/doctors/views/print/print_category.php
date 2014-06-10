@@ -1,8 +1,4 @@
-<?php
-// Перебираем элементы категории - смотрим, если текущий узел дерева - элемент, то выводим его в соответствии с его типом
-//		Иначе вызываем функцию контроллера вызывающая отрисовку детей
-//var_dump($category);
-//exit();
+п»ї<?php
 foreach($category as $key => $child) 
 {	
 	if (!isset ($child['element'])) continue;
@@ -12,26 +8,17 @@ foreach($category as $key => $child)
 	//exit();	
 	if ($child['element']['element_id']==-1)
 	{
-		
-		
 		$this->drawPrintCategorie($child);			
 	}
 	else
 	{	
 		$element = $child['element'];
 			if (!isset ($element['element'])) continue;
-		
-		
-		
-		
-		
-		
 			if ($element['element']['value']!='' && $element['element']['value']!=null)
 			{
 				if ($element['element']['type']=='4')
 				{
 					$configOfTable =  CJSON::decode($element['element']['config']);
-					// Редактируемая таблица. Её надо раздербанить по ячейкам и вывести
 					?>
 					<br>
 					<table class="tableForPrint">
@@ -102,7 +89,6 @@ foreach($category as $key => $child)
 					</table>
                     <?php
 				}
-				// Всё, что кроме таблицы - выводим значение
 				else
 				{
                     if ($element['element']['is_wrapped']=='1')
@@ -121,14 +107,5 @@ foreach($category as $key => $child)
 					<?php
 				}
 			}
-		
-		
-		
-		
-		
-		
-		
-		 
-		
 	}
 }

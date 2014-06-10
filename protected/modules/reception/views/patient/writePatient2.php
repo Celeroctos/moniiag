@@ -41,7 +41,7 @@
     <?php } ?>
 </div>
 <h4>
-    Необходимо найти врача к которому следует записать пациента <?php echo $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name; ?> :
+    Необходимо найти врача к которому следует записать пациента <?php echo $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name; ?>, номер карты <?php echo $medcard['card_number']; ?>:
 </h4>
 <div class="row">
     <form class="form-horizontal col-xs-12" role="form" id="doctors-search-form">
@@ -326,25 +326,25 @@
         </div>
     </div>
 </div>
-        <div class="modal fade error-popup" id="confirmPopup">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <p>Нужно ли отменять приём на старое время?</p>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" id="deleteOldGreeting">Да</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
-                    </div>
+<div class="modal fade error-popup" id="confirmPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Нужно ли отменять приём на старое время?</p>
                 </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="deleteOldGreeting">Да</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Нет</button>
+            </div>
         </div>
+    </div>
+</div>
 <div class="modal fade error-popup" id="patientDataPopup">
     <div class="modal-dialog">
         <div class="modal-content">

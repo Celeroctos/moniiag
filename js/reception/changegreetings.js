@@ -197,9 +197,9 @@ $(document).ready(function() {
         // Опосредованных по одному адресу, обычных, с картами, - по другому
 
         if(!mediateData.isMediate) {
-            var url = '/index.php/reception/patient/writepatientsteptwo?callcenter=1&cardid=' + mediateData.cardNumber + '&greeting_id=' + mediateData.id
+            var url = '/index.php/reception/patient/writepatientsteptwo?callcenter=' + globalVariables.isCallCenter + '&cardid=' + mediateData.cardNumber + '&greeting_id=' + mediateData.id
         } else {
-            var url = '/index.php/reception/patient/writepatientwithoutdata?callcenter=1&greeting_id=' + mediateData.id;
+            var url = '/index.php/reception/patient/writepatientwithoutdata?callcenter=' + globalVariables.isCallCenter + '&greeting_id=' + mediateData.id;
         }
 
         location.href = 'http://' + location.host + url;

@@ -157,6 +157,19 @@
             </div>
         </div>
         <div class="form-group">
+            <?php echo $form->labelEx($model,'maxGreetingsInCallcenter', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="col-xs-4">
+                <?php echo $form->textField($model,'maxGreetingsInCallcenter', array(
+                    'id' => 'maxGreetingsInCallcenter',
+                    'class' => 'form-control',
+                    'placeholder' => 'Количество пациентов (в день) через Call-центр на врача'
+                )); ?>
+                <?php echo $form->error($model,'maxGreetingsInCallcenter'); ?>
+            </div>
+        </div>
+        <div class="form-group">
             <?php echo CHtml::ajaxSubmitButton(
                 'Сохранить',
                 CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/shedulesettingsedit'),

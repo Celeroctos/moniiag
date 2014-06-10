@@ -142,6 +142,7 @@ class DoctorsController extends Controller {
         // Вынимаем настройки для предельных времён: беременности и первичного приёма
         $primaryGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'primaryGreetingsLimit'));
         $pregnantGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'pregnantGreetingsLimit'));
+        $callCenterGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'maxGreetingsInCallcenter'));
         if($primaryGreetingsLimit != null) {
             $answer['primaryGreetingsLimit'] = $primaryGreetingsLimit->value;
         } else {
@@ -152,6 +153,12 @@ class DoctorsController extends Controller {
             $answer['pregnantGreetingsLimit'] = $pregnantGreetingsLimit->value;
         } else {
             $answer['pregnantGreetingsLimit'] = null;
+        }
+
+        if($callCenterGreetingsLimit != null) {
+            $answer['callCenterGreetingsLimit'] = $callCenterGreetingsLimit->value;
+        } else {
+            $answer['callCenterGreetingsLimit'] = null;
         }
 
         echo CJSON::encode($answer);

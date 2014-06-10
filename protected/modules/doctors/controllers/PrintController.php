@@ -76,7 +76,7 @@ class PrintController extends Controller {
     }
 
     // Печать результа приёма
-	public function actionPrintGreeting($greetingIn = false,$printRecom=false) {
+	public function actionPrintGreeting($greetingIn = false, $printRecom=false, $returnResult = false) {
         if($greetingIn === false && !isset($_GET['greetingid'])) {
             exit('Ошибка: не выбран приём.');
         } else {
@@ -148,15 +148,30 @@ class PrintController extends Controller {
         //exit();
 
 		if($greetingIn === false) {
-			$this->render('greeting', array(
-				'templates' => $sortedElements,
-				'greeting' => $greetingInfo
-				));
+            if(!$returnResult) {
+                $mPDF = Yii::app()->ePdf->mpdf();
+                $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+                $mPDF->WriteHTML($stylesheet, 1);
+                $mPDF->WriteHTML($this->render('greeting', array(
+                    'templates' => $sortedElements,
+                    'greeting' => $greetingInfo
+                ), true));
+
+                $this->render('greetingpdf', array(
+                    'pdfContent' => $mPDF->Output()
+                ));
+            } else {
+                return array(
+                    'templates' => $sortedElements,
+                    'greeting' => $greetingInfo
+                );
+            }
 		} else {
 			return array(
-				'templates' => $sortedElements,
-				'greeting' => $greetingInfo
-				);
+                'templates' => $sortedElements,
+                'greeting' => $greetingInfo
+            );
 		}
     }
 
@@ -195,6 +210,14 @@ class PrintController extends Controller {
     public function actionMakePrintListView() {
         $patients = CJSON::decode($_GET['patients']);
         $doctors = CJSON::decode($_GET['doctors']);
+
+        $resultArr = $this->makePrintListData($doctors, $patients);
+
+        echo CJSON::encode(array('success' => 'true',
+                                 'data' => $resultArr));
+    }
+
+    private function makePrintListData($doctors, $patients) {
         $numPatients = count($patients);
         $numDoctors = count($doctors);
         $resultArr = array();
@@ -202,9 +225,9 @@ class PrintController extends Controller {
             for($j = 0; $j < $numDoctors; $j++) {
                 // Теперь получаем все приёмы по врачу, пациенту и дате
                 if(isset($_GET['date']) && trim($_GET['date']) != '') {
-                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
+                    $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
                 } else {
-                   $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j]);
+                    $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j]);
                 }
                 if(count($greetings) > 0) {
                     foreach($greetings as &$greeting) {
@@ -218,9 +241,6 @@ class PrintController extends Controller {
                 }
             }
         }
-
-        echo CJSON::encode(array('success' => 'true',
-                                 'data' => $resultArr));
     }
 
     // Получить страницу массовой печати

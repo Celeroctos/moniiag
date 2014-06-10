@@ -2,7 +2,18 @@ $(document).ready(function(e) {
     var table = $('.medcardIndex');
     // Заполняем таблицу значениями
     $('.printBtn').on('click', function(e) {
-        window.print();
+        //window.print();
+        alert("!");
+        $.ajax({
+            'url' : '/index.php/doctors/print/makeprintpdf',
+            'data' : {},
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+
+            }
+        });
     });
 
     // Формирование документов на массовую печать

@@ -131,6 +131,13 @@
 @default-table-border: 1px solid #DDDDDD;
 @input-height: 30px;
 
+html {
+  overflow-y: scroll;
+}
+body.modal-open {
+  margin-right: 0;
+}
+
 .lightgreen-block {
   background: #DFF0D8;
 }
@@ -326,6 +333,11 @@ form span.required {
     width: 100px;
   }
 
+}
+#acceptGreetingPopup {
+  input[type='button'] {
+    margin-left: 17%;
+  }
 }
 #showPatientsSubmit-cont {
   position: relative;
@@ -1630,6 +1642,9 @@ a.accordion-toggle:hover {
             .popover {
               color: #000000;
             }
+          }
+          li.not-aviable {
+            opacity: 0.5;
           }
           li.withPatient:hover, li.withPatient-pressed {
             background: #6d0019; /* Old browsers */

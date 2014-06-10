@@ -9,6 +9,9 @@
         )
     ); ?>
 </div>
+<script type="text/javascript">
+    globalVariables.isCallCenter = <?php echo $callcenter; ?>;
+</script>
 <h4>
     Изменение или отмена записей
 </h4>
