@@ -397,93 +397,93 @@ class SheduleController extends Controller {
 		//    создаётся из них ассоциативный массив.
 		//     После этого перебираются снова поля из формы, для каждого поля выбирается его старое значение из того 
 		//    ассоциативного массива, который мы создали на первом этапе
-		if (!isset($_POST['FormTemplateDefault']))
-		{
-			ob_end_clean();
+        /*if (!isset($_POST['FormTemplateDefault']))
+        {
+            ob_end_clean();
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
-		}
-		// Ищем recordId 
-		$recordId = MedcardElementForPatient::getMaxRecordId(
-			$_POST['FormTemplateDefault']['medcardId']	
-		);
-		
-		// Для этого перебираем все элементы
-		$pathsOfElements = array();
-			
-		// Массив соответствия между путями и id-шниками элементов в модели
-		$pathsToFields = array(); 
-		
-		$controlsToSave = array(); // - Массив контролов, которые обрабатываем 
-		
+        }
+        // Ищем recordId
+        $recordId = MedcardElementForPatient::getMaxRecordId(
+            $_POST['FormTemplateDefault']['medcardId']
+        );
+
+        // Для этого перебираем все элементы
+        $pathsOfElements = array();
+
+        // Массив соответствия между путями и id-шниками элементов в модели
+        $pathsToFields = array();
+
+        $controlsToSave = array(); // - Массив контролов, которые обрабатываем
+
         // Перебираем весь входной массив, чтобы записать изменения в базу
         $currentDate = date('Y-m-d H:i');
         $answerCurrentDate = false;
        foreach($_POST['FormTemplateDefault'] as $field => $value)
-		{
+        {
             if ($field=='')
 
-			if($field == 'medcardId' || $field == 'greetingId') {
-				continue;
-			}
-			// Это для выпадающего списка с множественным выбором
-			if(is_array($value)) {
-				$value = CJSON::encode($value);
-			}
-			// Проверим, есть ли такое поле вообще
-			if(!preg_match('/^f(\d+\|)*\d+_(\d+)$/', $field, $resArr)) 
-			{
-				continue;
-			}
-			// Берём и тупо находим элемент по пути
-			// Смотрим: если в историю не занесена категория, то нужно занести с сохранением параметров
-			// Находим путь
-			$pathWithSeparators = mb_substr($field, 1, mb_strrpos($field, '_') - 1);
-			$arrPath =  explode('|', $pathWithSeparators);
-			$path = implode('.', $arrPath);
-			
-			$pathsToFields[$field] = $path;
-			$pathsOfElements[] = $path;
-			$controlsToSave[$field] = $value;
-		}
-		$historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
-		(
-					$_POST['FormTemplateDefault']['greetingId'],
-					$pathsOfElements
-					);
-				
-		$historyElementsPaths = array();
-		foreach ($historyElements as $oneHistoryElement)
-		{
-			$historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
-		}
-		foreach($controlsToSave as $field => $value) 
-        {
-			if(is_array($value)) {
-				$value = CJSON::encode($value);
+            if($field == 'medcardId' || $field == 'greetingId') {
+                continue;
             }
-			$historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
-			$historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
-			
+            // Это для выпадающего списка с множественным выбором
+            if(is_array($value)) {
+                $value = CJSON::encode($value);
+            }
+            // Проверим, есть ли такое поле вообще
+            if(!preg_match('/^f(\d+\|)*\d+_(\d+)$/', $field, $resArr))
+            {
+                continue;
+            }
+            // Берём и тупо находим элемент по пути
+            // Смотрим: если в историю не занесена категория, то нужно занести с сохранением параметров
+            // Находим путь
+            $pathWithSeparators = mb_substr($field, 1, mb_strrpos($field, '_') - 1);
+            $arrPath =  explode('|', $pathWithSeparators);
+            $path = implode('.', $arrPath);
+
+            $pathsToFields[$field] = $path;
+            $pathsOfElements[] = $path;
+            $controlsToSave[$field] = $value;
+        }
+        $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
+        (
+                    $_POST['FormTemplateDefault']['greetingId'],
+                    $pathsOfElements
+                    );
+
+        $historyElementsPaths = array();
+        foreach ($historyElements as $oneHistoryElement)
+        {
+            $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
+        }
+        foreach($controlsToSave as $field => $value)
+        {
+            if(is_array($value)) {
+                $value = CJSON::encode($value);
+            }
+            $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
+            $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
+
             $answerCurrentDate = true;
-            /*if(!$historyCategorieElementNext->save())
-			{
-				ob_end_clean();
+            if(!$historyCategorieElementNext->save())
+            {
+                ob_end_clean();
                 echo CJSON::encode(array('success' => true,
                                              'text' => 'Ошибка сохранения записи.'));
                 exit();
             }
-            */
-		}
+
+        }*/
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.',
 			'history' => array()
 		);
-				
+		/*
 		$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);		
 		$response['history'] = $newHistory;
-			
+		*/
 		ob_end_clean();
         echo CJSON::encode($response);
 		
