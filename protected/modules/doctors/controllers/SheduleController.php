@@ -457,7 +457,7 @@ class SheduleController extends Controller {
         {
             $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
         }
-        foreach($controlsToSave as $field => $value)
+        /*foreach($controlsToSave as $field => $value)
         {
             if(is_array($value)) {
                 $value = CJSON::encode($value);
@@ -466,15 +466,15 @@ class SheduleController extends Controller {
             $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 
             $answerCurrentDate = true;
-          /*  if(!$historyCategorieElementNext->save())
+            if(!$historyCategorieElementNext->save())
             {
                 ob_end_clean();
                 echo CJSON::encode(array('success' => true,
                                              'text' => 'Ошибка сохранения записи.'));
                 exit();
-            }*/
+            }
 
-        }
+        }*/
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.',
