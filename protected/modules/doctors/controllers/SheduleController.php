@@ -404,10 +404,10 @@ class SheduleController extends Controller {
                                      'text' => 'Ошибка запроса.'));
         }
         // Ищем recordId
-        $recordId = MedcardElementForPatient::getMaxRecordId(
+        /*$recordId = MedcardElementForPatient::getMaxRecordId(
             $_POST['FormTemplateDefault']['medcardId']
-        );
-
+        );*/
+        $recordId =1;
         // Для этого перебираем все элементы
         $pathsOfElements = array();
 
