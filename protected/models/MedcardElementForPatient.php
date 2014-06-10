@@ -180,7 +180,15 @@ class MedcardElementForPatient extends MisActiveRecord {
 	
 	public function getHistoryPointsByCardId($medcard) {
 		try {
-			$connection = Yii::app()->db;
+
+
+            // Достанем номер ОМС по медкарте
+            $medcardObject = Medcard::model()->find('card_number = :number', array( ':number' => $medcard ) );
+            $omsNumber = $medcardObject['policy_id'];
+            //var_dump($omsNumber);
+            //exit();
+
+            $connection = Yii::app()->db;
 			$points = $connection->createCommand()
 				->select('
 					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS date_change, 
@@ -196,10 +204,18 @@ class MedcardElementForPatient extends MisActiveRecord {
 					) as id_record,
 					mep.medcard_id,
 			
-					mep2.template_name')
+					mep2.template_name,
+					d.first_name,
+					d.last_name,
+					d.middle_name
+					')
 				->from('mis.medcard_elements_patient mep')
 				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
-				->where('mep.medcard_id = :medcard_id and mep.is_record=1
+                ->join('mis.medcards as mc', 'mep.medcard_id = mc.card_number')
+                ->join('mis.doctor_shedule_by_day dsbd', 'mep.greeting_id=dsbd.id')
+                ->join('mis.doctors d', 'dsbd.doctor_id=d.id')
+				//->where('mep.medcard_id = :medcard_id and mep.is_record=1
+				->where('mc.policy_id=:oms and mep.is_record=1
 					AND mep.record_id = 
 					(SELECT MAX(mep3.record_id)
 						FROM mis.medcard_elements_patient as mep3
@@ -207,12 +223,16 @@ class MedcardElementForPatient extends MisActiveRecord {
 							mep3.greeting_id=mep.greeting_id
 							AND mep3.element_id=mep.element_id
 					)
-					 GROUP BY mep.medcard_id,id_record,mep.greeting_id,mep2.template_name, date_change', array(':medcard_id' => $medcard))
+					 GROUP BY mep.medcard_id,id_record,mep.greeting_id,mep2.template_name, date_change, first_name,last_name,middle_name',
+                    array(':oms' => $omsNumber))
 				->order('date_change desc')
 			
 			;
 			
 			$result = $points->queryAll();
+
+          //  var_dump($result);
+          //  exit();
 			return $result;
 
 

@@ -236,7 +236,7 @@
             </script>
             <?php
 
-            $formM = $this->beginWidget('CActiveForm', array(
+           /* $formM = $this->beginWidget('CActiveForm', array(
                 'id' => 'template-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
@@ -256,7 +256,7 @@
                 'class' => 'form-control',
                 'value' => $currentSheduleId
             ));
-
+*/
             $counter = 0;
             foreach ($templatesList as $key => $template) {
                 ?>
@@ -273,13 +273,15 @@
                         'templatePrefix' => 'a' . $template['id'],
                         'medcardRecordId' => $medcardRecordId,
                         'isActiveTemplate' => $counter == 0,
-						'form' => $formM
+						//'form' => $formM
                     )); ?>
                 </div>
             <?php
                 $counter++;
             } ?>
-            <?php $this->endWidget(); ?>
+            <?php
+            //$this->endWidget();
+            ?>
 			<div class="modal fade error-popup" id="successEditPopup">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -439,7 +441,7 @@
                     'class' => 'print-recomendation-link'));
             ?>
             <?php
-			$formM = $this->beginWidget('CActiveForm', array(
+			/*$formM = $this->beginWidget('CActiveForm', array(
                 'id' => 'template-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
@@ -459,7 +461,7 @@
                 'class' => 'form-control',
                 'value' => $currentSheduleId
             ));
-
+*/
             $counter = 0;
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
@@ -476,11 +478,11 @@
                         'templatePrefix' => 'r' . $template['id'],
                         'medcardRecordId' => $medcardRecordId,
 						'isActiveTemplate' => $counter == 0,
-						'form' => $formM
+					//	'form' => $formM
                     )); ?>
                 </div>
             <?php }
-				$this->endWidget();
+			//	$this->endWidget();
 			?>
         <?php } ?>
     <?php } ?>

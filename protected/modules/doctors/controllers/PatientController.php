@@ -20,6 +20,22 @@ class PatientController extends Controller {
         $categorieWidget->createFormModel();
 		$historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid'],$_GET['historyPointId']); // Получаем поля для всех полей относительно хистори
 
+      /*  foreach ($historyArr as &$historyEl)
+        {
+            $historyDateTimeArr = explode(' ', $historyEl['date_change']);
+            $historyDateArr= explode('-', $historyDateTimeArr [0]);
+            $historyEl['date_change'] =	$historyDateArr[2].'.'
+                .$historyDateArr[1].'.'
+                .$historyDateArr[0].' '.$historyDateArr[1] ;
+        }*/
+
+
+     /*   $commentDateTimeArr = explode(' ', $oneComment['create_date']);
+        $commentDateArr= explode('-', $commentDateTimeArr [0]);
+        $oneComment['commentDate'] =	$commentDateArr[2].'.'
+            .$commentDateArr[1].'.'
+            .$commentDateArr[0].' '.$commentDateTimeArr[1] ;
+*/
 		ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));

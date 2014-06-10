@@ -279,6 +279,21 @@ class SheduleController extends Controller {
         }
 
         $historyPoints = MedcardElementForPatient::model()->getHistoryPoints($medcard);
+
+
+        foreach ($historyPoints  as &$historyEl)
+        {
+            $historyDateTimeArr = explode(' ', $historyEl['date_change']);
+            $historyDateArr= explode('-', $historyDateTimeArr [0]);
+
+
+
+            $historyEl['date_change'] =	$historyDateArr[2].'.'
+                .$historyDateArr[1].'.'
+                .$historyDateArr[0].' '.$historyDateTimeArr[1] ;
+        }
+
+
         return $historyPoints;
     }
 
@@ -406,6 +421,8 @@ class SheduleController extends Controller {
         $answerCurrentDate = false;
        foreach($_POST['FormTemplateDefault'] as $field => $value)
 		{
+            if ($field=='')
+
 			if($field == 'medcardId' || $field == 'greetingId') {
 				continue;
 			}

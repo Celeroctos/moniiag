@@ -113,7 +113,7 @@ $(document).ready(function() {
                     } else {
                         if(data.rows.length > 0) {
                             searchStatus.push(1);
-                            displayAllWithCard(data.rows);
+                            displayAllWithCard(data);
                             printPagination('omsSearchWithCardResult',data.total);
                             if(searchStatus.length == 3) {
                                 searchStatus = []; // Обнуляем количество статусов: поиск окончен
@@ -135,13 +135,25 @@ $(document).ready(function() {
 
     // Отобразить таблицу тех, кто с картами
     function displayAllWithCard(data) {
+        showGreetings = data.greetingsHistory;
+        data = data.rows;
         // Заполняем пришедшими данными таблицу тех, кто без карт
         var table = $('#omsSearchWithCardResult tbody');
         table.find('tr').remove();
         for(var i = 0; i < data.length; i++) {
+            linkCellValue = '';
+            // Проверяем - разрешено ли видеть историю приёмов пользователю
+            if (showGreetings)
+            {
+                linkCellValue = '<a href="#' + data[i].card_number + '" class="viewHistory" title="Посмотреть информацию по пациенту" target="_blank">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a>';
+            }
+            else
+            {
+                linkCellValue = data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name;
+            }
             table.append(
                 '<tr>' +
-                    '<td><a href="#' + data[i].card_number + '" class="viewHistory" title="Посмотреть информацию по пациенту" target="_blank">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a></td>' +
+                    '<td>' + linkCellValue + '</td>' +
                     '<td>' + data[i].birthday+ '</td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' + data[i].reg_date + '</td>' +
@@ -188,7 +200,7 @@ $(document).ready(function() {
 
     // Просмотр истории медкарты
     $('#omsSearchWithCardResult').on('click', '.viewHistory', function() {
-        $('#panelOfhistoryMedcard').parent().addClass('no-display');
+        $('#panelOfhistoryMedcard').addClass('no-display');
         var medcardId = $(this).attr('href').substr(1);
         $('#viewHistoryPopup .modal-title').text('История карты пациента ' + $(this).text() + ' (карта № ' + medcardId + ' )');
         $('#omsSearchWithCardResult tr').removeClass('active');
@@ -211,10 +223,22 @@ $(document).ready(function() {
                     var pointsPanel = $('#panelOfhistoryPoints .panel-body');
                     $(pointsPanel).find('div').remove();
                     for(var i = 0; i < data.length; i++) {
+
+                        doctorName = data[i].last_name;
+                        if (data[i].first_name!= '')
+                        {
+                            doctorName += ( ' '+data[i].first_name.substring(0,1) +'.' );
+                        }
+
+                        if (data[i].middle_name!= '')
+                        {
+                            doctorName += ( ' '+data[i].middle_name.substring(0,1) +'.' );
+                        }
+                        console.log(data[i]);
                         var div = $('<div>');
                         var a = $('<a>').prop({
-                            'href' : '#' + data[i].medcard_id
-                        }).text(data[i].change_date).appendTo(div);
+                            'href' : '#' + data[i].medcard_id+'_'+data[i].id_record
+                        }).prop('title',data[i].template_name ).text(data[i].date_change+ ' - ' + doctorName).appendTo(div);
                         $(div).appendTo(pointsPanel);
                     }
                     $('#viewHistoryPopup').modal({});
@@ -229,14 +253,22 @@ $(document).ready(function() {
 
     $('#panelOfhistoryPoints .panel-body').on('click', 'a', function(e) {
         $('#panelOfhistoryPoints .panel-body div.active').removeClass('active');
-        $('#panelOfhistoryMedcard').parents('.no-display').removeClass('no-display');
+        $('#panelOfhistoryMedcard').removeClass('no-display');
         $(this).parent().addClass('active');
         var panel = $('#panelOfhistoryMedcard .modal-body');
+
+        var historyPointCoordinate = $(this).attr('href').substr(1);
+        var coordinateStrings = historyPointCoordinate.split('_');
+
+        var medcardId = coordinateStrings[0];
+        var pointId = coordinateStrings[1];
+
 
         $.ajax({
             'url' : '/index.php/doctors/patient/gethistorymedcard',
             'data' : {
-                'medcardid' : $(this).attr('href').substr(1),
+                'medcardid' : medcardId,
+                'historyPointId': pointId,
                 'date' : $(this).text()
             },
             'cache' : false,
@@ -246,7 +278,7 @@ $(document).ready(function() {
                 if(data.success == 'true') {
                     // Заполняем медкарту-историю значениями
                     var data = data.data;
-                    $('#panelOfhistoryMedcard .panel-body').html(data);
+                    $('#panelOfhistoryMedcard').html(data);
                     /*var form = $('#panelOfhistoryMedcard #patient-edit-form');
                     // Сброс формы
                     $(form)[0].reset();

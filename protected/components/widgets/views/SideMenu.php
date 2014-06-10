@@ -69,7 +69,7 @@
                 <?php } ?>
                 <?php if(Yii::app()->user->checkAccess('menuDoctorEmk')) { ?>
                 <li <?php echo $controller == 'patient' && $module == 'doctors' && $action == 'viewsearch' ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/view_medcard.png" width="32" height="32" alt="" />ЭМК', array('/doctors/patient/viewsearch')) ?>
+                    <?php echo CHtml::link('<img src="/images/icons/view_medcard.png" width="32" height="32" alt="" />Архив приёмов', array('/doctors/patient/viewsearch')) ?>
                 </li>
                 <?php } ?>
                 <li <?php echo $controller == 'patient' && $module == 'doctors' && $action == 'viewmonitoring' ? 'class="active"' : ''; ?>>
