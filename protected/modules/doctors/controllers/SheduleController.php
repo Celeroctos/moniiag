@@ -404,9 +404,9 @@ class SheduleController extends Controller {
                                      'text' => 'Ошибка запроса.'));
         }
         // Ищем recordId
-        /*$recordId = MedcardElementForPatient::getMaxRecordId(
+        $recordId = MedcardElementForPatient::getMaxRecordId(
             $_POST['FormTemplateDefault']['medcardId']
-        );*/
+        );
         $recordId =1;
         // Для этого перебираем все элементы
         $pathsOfElements = array();
@@ -446,18 +446,17 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-        /*$historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
+        $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
         (
                     $_POST['FormTemplateDefault']['greetingId'],
                     $pathsOfElements
-                    );*/
-        $historyElements = array();
+                    );
         $historyElementsPaths = array();
         foreach ($historyElements as $oneHistoryElement)
         {
             $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
         }
-        /*foreach($controlsToSave as $field => $value)
+        foreach($controlsToSave as $field => $value)
         {
             if(is_array($value)) {
                 $value = CJSON::encode($value);
@@ -474,17 +473,17 @@ class SheduleController extends Controller {
                 exit();
             }
 
-        }*/
+        }
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.',
 			'history' => array()
 		);
 
-        /*
+
 		$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);		
 		$response['history'] = $newHistory;
-        */
+        
 		ob_end_clean();
         echo CJSON::encode($response);
 		
