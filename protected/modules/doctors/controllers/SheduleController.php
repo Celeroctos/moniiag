@@ -397,7 +397,7 @@ class SheduleController extends Controller {
 		//    создаётся из них ассоциативный массив.
 		//     После этого перебираются снова поля из формы, для каждого поля выбирается его старое значение из того 
 		//    ассоциативного массива, который мы создали на первом этапе
-        /*if (!isset($_POST['FormTemplateDefault']))
+        if (!isset($_POST['FormTemplateDefault']))
         {
             ob_end_clean();
             echo CJSON::encode(array('success' => false,
@@ -466,24 +466,24 @@ class SheduleController extends Controller {
             $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 
             $answerCurrentDate = true;
-            if(!$historyCategorieElementNext->save())
+          /*  if(!$historyCategorieElementNext->save())
             {
                 ob_end_clean();
                 echo CJSON::encode(array('success' => true,
                                              'text' => 'Ошибка сохранения записи.'));
                 exit();
-            }
+            }*/
 
-        }*/
+        }
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.',
 			'history' => array()
 		);
-		/*
+
 		$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);		
 		$response['history'] = $newHistory;
-		*/
+
 		ob_end_clean();
         echo CJSON::encode($response);
 		
