@@ -4,6 +4,7 @@
     var triggeredByLoad = true; // Это для вызова окна записанного пациента автоматом
     var pregnantGreetingsTimeLimit = null; // Настройка по предельному времени приёма для беременных
     var primaryGreetingsTimeLimit = null; // Настройка по предельному времени приёма для первичных приёмов
+    var callCenterGreetingsLimit = null; // Количество человек (предельное) по колл-центру
 
     $('.organizer').on('returnDate', function(e) {
         prevBeginDate(false);
@@ -246,6 +247,8 @@
 
         pregnantGreetingsTimeLimit = data.pregnantGreetingsLimit.split(':');
         primaryGreetingsTimeLimit = data.primaryGreetingsLimit.split(':');
+        callCenterGreetingsLimit = data.callCenterGreetingsLimit;
+
         // Заполняем список врачей
         var data = data.data;
 
@@ -405,10 +408,10 @@
                                                                     $(li).prop('id', 'i' + data.data[j].id);
                                                                 }
                                                             } else {
-                                                                $(li).prop('title', 'Записать пациента')
+                                                                $(li).prop('title', 'Записать пациента');
                                                             }
 
-                                                            if(!$(li).hasClass('withPatient')) {
+                                                            if(!$(li).hasClass('withPatient') && !$(li).hasClass('cantWrite')) {
                                                                 (function(timeBegin, li) {
                                                                     $(li).on('click', function() {
                                                                         // Если есть попап для записи пациента, то его нужно показать
@@ -463,6 +466,15 @@
                                                             });
                                                             $(li).appendTo(ulInPopover);
                                                         }
+
+                                                        // Ограничение на кол-во приёмов колл-центра
+                                                        if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1 && $(ulInPopover).find('li.withPatient').length >= callCenterGreetingsLimit) {
+// Логика неверна: здесь нужно считать количество записанных постфактум
+                                                            $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'});
+                                                        } else {
+
+                                                        }
+
                                                         return ulInPopover;
                                                     },
                                                     container: $(li)
@@ -513,7 +525,6 @@
                         if(!isPassedTime(data[i].shedule[j].endTime, dates[counter]) || (counter > 0 && globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1)) {
                             $(li).removeClass('notfull full empty').addClass('not-aviable').off('click');
                         }
-
                     } else {
                         $(li).addClass('not-aviable');
                     }
