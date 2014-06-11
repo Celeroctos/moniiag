@@ -465,13 +465,13 @@ class SheduleController extends Controller {
             $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 
             $answerCurrentDate = true;
-            if(!$historyCategorieElementNext->save())
+            /*if(!$historyCategorieElementNext->save())
             {
                 ob_end_clean();
                 echo CJSON::encode(array('success' => true,
                                              'text' => 'Ошибка сохранения записи.'));
                 exit();
-            }
+            }*/
 
         }
         $response = array(
