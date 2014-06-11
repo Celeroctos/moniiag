@@ -210,7 +210,8 @@ class MedcardElementForPatient extends MisActiveRecord {
 		try {
 
 
-            // Достанем номер ОМС по медкарте
+            return MedcardRecord::getHistoryMedcardByCardId($medcard);
+           /* // Достанем номер ОМС по медкарте
             $medcardObject = Medcard::model()->find('card_number = :number', array( ':number' => $medcard ) );
             $omsNumber = $medcardObject['policy_id'];
             //var_dump($omsNumber);
@@ -262,7 +263,7 @@ class MedcardElementForPatient extends MisActiveRecord {
           //  var_dump($result);
           //  exit();
 			return $result;
-
+*/
 
 		} catch(Exception $e) {
 			var_dump($e);

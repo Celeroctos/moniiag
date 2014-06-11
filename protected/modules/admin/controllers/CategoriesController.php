@@ -259,6 +259,7 @@ class CategoriesController extends Controller {
         MedcardElementForPatient::model()->deleteAll();
 		PatientDiagnosis::model()->deleteAll();
         ClinicalPatientDiagnosis::model()->deleteAll();
+        MedcardRecord::model()->deleteAll();
         echo CJSON::encode(array('success' => true,
                                  'data' => 'Таблицы данных приёмов успешно очищены.')
         );
