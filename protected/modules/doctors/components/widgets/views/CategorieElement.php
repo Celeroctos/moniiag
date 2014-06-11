@@ -72,7 +72,10 @@ if(isset($categorie['id'])) {
                                         " <span class=\"required\">*</span>");
                                 }
                                ?>
-                                <?php echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
+                                <?php
+
+
+                                    echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
                                     'class' => 'control-label label-before '.(($element['type'] == 6) ? 'medcard-date' : '')
                                 )); ?>
                         	<?php

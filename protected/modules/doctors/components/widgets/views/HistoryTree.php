@@ -16,12 +16,7 @@ $form = $this->beginWidget('CActiveForm', array(
 // Выводим список диагнозов
 if (count($primaryDiagnosis)>0)
 {
-	?>
-	<h4>
-        Диагноз:
-    </h4>
-    <ul>
-	<?php
+	?><h4>Диагноз:</h4><ul><?php
 	foreach ($primaryDiagnosis as $diag)
 	{
 		?><li><?php
@@ -34,12 +29,7 @@ if (count($primaryDiagnosis)>0)
 // Клинические диагнозы
 if (count($clinicalPrimaryDiagnosis)>0)
 {
-?>
-	<h4>
-	Клинический диагноз:
-	</h4>
-	<ul>
-	<?php
+    ?><h4>Клинический диагноз:</h4><ul><?php
 	foreach ($clinicalPrimaryDiagnosis as $diag)
 	{
 		?><li><?php
@@ -51,12 +41,7 @@ if (count($clinicalPrimaryDiagnosis)>0)
 
 if (count($secondaryDiagnosis)>0)
 {
-	?>
-	<h4>
-        Сопутствующие диагнозы
-    </h4>
- <ul>
-	<?php
+	?><h4>Сопутствующие диагнозы</h4><ul><?php
 	foreach ($secondaryDiagnosis as $diag)
 	{
 		?><li><?php
@@ -70,12 +55,7 @@ if (count($secondaryDiagnosis)>0)
 // Сопутсвующие клинические диагнозы
 if (count($clinicalSecondaryDiagnosis)>0)
 {
-?>
-	<h4>
-	Клинические сопутствующие диагнозы
-	</h4>
-	<ul>
-	<?php
+?><h4>Клинические сопутствующие диагнозы</h4><ul><?php
 	foreach ($clinicalSecondaryDiagnosis as $diag)
 	{
 		?><li><?php
@@ -87,11 +67,7 @@ if (count($clinicalSecondaryDiagnosis)>0)
 }
 
 foreach($dividedCats as $key => $template) {
-    ?>
-    <h4>
-        <?php echo $template['name']; ?>
-    </h4>
-    <?php
+    ?><h4><?php echo $template['name']; ?></h4><?php
     foreach($template['cats']  as $index => $categorie) {
         $this->drawHistoryCategorie($categorie, $index, $form, $model, 'h'.$key, $key, $lettersInPixel);
     }

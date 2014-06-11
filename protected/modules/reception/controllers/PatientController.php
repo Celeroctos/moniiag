@@ -820,8 +820,12 @@ class PatientController extends Controller {
                 $items = $model->getRows($filters, $sidx, $sord, $start, $rows);
             }
         }
+
+        $canViewGreetingHistory =  Yii::app()->user->checkAccess('canViewGreetingHistory');
+
         echo CJSON::encode(
            array(
+                'greetingsHistory' => $canViewGreetingHistory,
                 'success' => true,
                 'rows' => $items,
                 'total' => $totalPages,

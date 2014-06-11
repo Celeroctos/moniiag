@@ -125,6 +125,10 @@ class MedcardElementForPatient extends MisActiveRecord {
 
     public function getHistoryPoints($medcard) {
        try {
+           // Берём поле номер полиса
+
+           $policeId = $medcard['policy_id'];
+
             $connection = Yii::app()->db;
             $points = $connection->createCommand()
 				->selectDistinct('SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS change_date, mep.record_id, mep.medcard_id, mep2.template_name')

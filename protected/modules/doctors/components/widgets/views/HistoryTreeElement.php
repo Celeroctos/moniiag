@@ -1,5 +1,3 @@
-﻿<?php
-?>
 <div id="accordion<?php
  echo '_'.$prefix.'_'.$templateKey.'_'.implode('', explode('.', $categorie['element']['path'])).'_'.$cId; ?>" class="accordion medcard-accordion">
     <div class="accordion-group">

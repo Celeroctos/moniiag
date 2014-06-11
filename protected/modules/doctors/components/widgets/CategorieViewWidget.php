@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 class CategorieViewWidget extends CWidget {
     public $formModel = null;
     public $currentPatient = false;
@@ -19,6 +19,7 @@ class CategorieViewWidget extends CWidget {
     public $previewMode = false;
     public $isActiveTemplate = null; // Флаг активного шаблона (активной вкладки),
 	public $form = null;
+    public $model = null;
 
     public function run() {
         ini_set('max_execution_time', 60);
@@ -697,6 +698,7 @@ class CategorieViewWidget extends CWidget {
     }
 
     public function drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix) {
+        //var_dump("!");
         $this->render('CategorieElement', array(
             'categorie' => $categorie,
             'form' => $form,
@@ -1147,6 +1149,7 @@ class CategorieViewWidget extends CWidget {
         if($prefix === false) {
             $prefix = $this->prefix;
         }
+
         $this->render('HistoryTreeElement', array(
             'categorie' => $categorie,
             'prefix' => $prefix,
@@ -1156,6 +1159,7 @@ class CategorieViewWidget extends CWidget {
             'templateKey' => $templateKey,
             'lettersInPixel' => $lettersInPixel
         ));
+
     }
 
     private function getDependences($element) {

@@ -110,8 +110,8 @@ $(document).ready(function() {
     $('.templatesListNav a').click(function (e) {
         e.preventDefault();
         var tabId = $(this).prop('id').substr(1);
-        $('#template-edit-form').find('[id^=tab]').addClass('no-display');
-        $('#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
+        $('form#template-edit-form').find('[id^=tab]').addClass('no-display');
+        $('form#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
         $(this).tab('show')
     });
 });

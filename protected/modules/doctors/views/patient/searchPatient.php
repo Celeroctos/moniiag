@@ -196,21 +196,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-9 no-display">
-                        <h4>Категории</h4>
-                        <div class="panel panel-default" id="panelOfhistoryMedcard">
-                            <div class="panel-body">
+                   <div class="col-xs-9 no-display" id="panelOfhistoryMedcard">
+                       <!-- <h4>Категории</h4> -->
+                        <!--<div class="panel panel-default" id="panelOfhistoryMedcard">-->
+                        <!--<div id="panelOfhistoryMedcard">-->
+                           <!-- <div class="panel-body">-->
                                 <?php
-                                $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
+                               /* $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
                                     'currentPatient' => -1,
                                     'templateType' => 0,
                                     'prefix' => 'history',
                                     'withoutSave' => 1,
                                     'canEditMedcard' => 0
-                                )); ?>
-                            </div>
-                        </div>
-                    </div>
+                                )); */?>
+                         <!--   </div>-->
+                        <!--</div>-->
+                   </div>
                 </div>
             </div>
             <div class="modal-footer">

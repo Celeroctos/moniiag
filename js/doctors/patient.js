@@ -139,6 +139,7 @@
     function onStartSave()
     {
         // Берём кнопки с классом
+        var buttons = $('div.submitEditPatient');
         var buttonsContainers = $('div.submitEditPatient').parents('form#template-edit-form');
         var isError = false;
         // Очищаем поп-ап с ошибками
@@ -201,7 +202,7 @@
         }
         else {
             // Вызываем сабмит всех кнопок
-            $(buttonsContainers).find('input[type="submit"]').click();
+            $(buttons).find('input[type="submit"]').click();
             $('#submitDiagnosis').click();
         }
 
