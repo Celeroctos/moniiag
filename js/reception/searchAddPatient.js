@@ -782,9 +782,11 @@
         e.stopPropagation();
     });
 
-    $('.blockEdit').on('focus', function(e) {
-        $(this).blur();
-        return false;
+    $('.blockEdit').on('keydown', function(e) {
+        console.log(e.keyCode);
+        if(e.keyCode != 9) {
+            return false;
+        }
     });
 
     var cardNumber = false;

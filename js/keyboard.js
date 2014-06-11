@@ -1,10 +1,4 @@
-
-
 $(document).ready(function(e) {
-    
-    //var test = $('#timePerPatient1').focus();
-    //alert(test);
-    
     // Конфигурация только для левого меню
     MenuNode =
     {
@@ -14,8 +8,6 @@ $(document).ready(function(e) {
         { // Хандлер, исполняющийся при переходе на элемент
                             //alert(1);
         },
-        
-        
     };
     //   1.Надо определить по URL странице какую конфигурацию прочитать
     //   2.Прииготовить эту конфигурацию (создать индекс узлов, чтобы к ним можно было обращаться по id),
@@ -38,7 +30,6 @@ $(document).ready(function(e) {
                // Больше не хочу выполнять этот цикл (конфигурация же найдена)
                break;
         }
-        
     }
     
     // Если нашли конфигурацию, то делаем привязку
@@ -216,7 +207,7 @@ $(document).ready(function(e) {
     */
     function ChooseTabElementsInContainer(Container)
         {
-            var Result = 
+            var Result =
             //$(Container).find("a, input, select, button, textarea");
             $(Container).find("a, input[type!=hidden], select, button:not(.close), textarea");
             return Result;
@@ -653,8 +644,6 @@ $(document).ready(function(e) {
         //  то надо сбросить соответствующий флаг и удалить сообщения с подсказками из
         //    поп-апа обновить этот поп-ап
         $(document).on('keyup', function(e) {
-            console.log("?");
-            
             // Если был отпущен shift - это надо обработать
             if (e.keyCode==16) {
                 ShiftWasPressed = false;
@@ -733,8 +722,6 @@ $(document).ready(function(e) {
         // Если нажат таб
         if (Target.keyCode==9)
         {
-
-
                 ProhibitTabulation();
 
 
@@ -1081,10 +1068,6 @@ $(document).ready(function(e) {
         $(link).on('click', function(e) {
             WasPopupOpened = true;
             $(this).popover('show');
-        });        
-        
-        
-        
-
+        });
     }
 });
