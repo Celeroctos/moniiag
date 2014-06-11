@@ -26,7 +26,18 @@
 		'id' => 'greetingId',
 		'class' => 'form-control',
 		'value' => $greetingId
-	)); ?>
+	));
+    echo $form->hiddenField($model,'templateName', array(
+    'id' => 'templateName',
+    'class' => 'form-control',
+    'value' => $templateName
+    ));
+    echo $form->hiddenField($model,'templateId', array(
+    'id' => 'templateId',
+    'class' => 'form-control',
+    'value' => $templateId
+    )); ?>
+
 <?php if(!$this->previewMode && $this->templateType == 0) { ?>
 <div <?php echo !$isActiveTemplate ? 'class="no-display"' : ''; ?> id="tab<?php echo $templateId; ?>">
 <?php } ?>

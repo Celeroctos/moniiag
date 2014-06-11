@@ -392,6 +392,7 @@ class SheduleController extends Controller {
     // Редактирование данных пациента
     public function actionPatientEdit()
 	{
+
 		// Метод работает так: Сначала прочитываем из формы ид тех элементов, которые правятся в результате приёма.
 		//  Затем с помощью условия WHERE IN и id-шников из формы, они считываются сразу одним запросом, 
 		//    создаётся из них ассоциативный массив.
@@ -403,11 +404,24 @@ class SheduleController extends Controller {
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
         }
+
+        $transaction = Yii::app()->db->beginTransaction();
+
         // Ищем recordId
         $recordId = MedcardElementForPatient::getMaxRecordId(
             $_POST['FormTemplateDefault']['medcardId']
         );
-       // $recordId =1;
+        $user = User::model()->find('id=:id', array(':id' => Yii::app()->user->id));
+
+        $recordRow = new MedcardRecord();
+        $recordRow ->doctor_id = $user['employee_id'];
+        $recordRow ->medcard_id = $_POST['FormTemplateDefault']['medcardId'];
+        $recordRow ->greeting_id = $_POST['FormTemplateDefault']['greetingId'];
+        $recordRow ->template_name = $_POST['FormTemplateDefault']['templateName'];
+        $recordRow ->template_id = $_POST['FormTemplateDefault']['templateId'];
+        $recordRow ->record_id = $recordId+1;
+        $recordRow ->record_date =  date('Y-m-d H:i');
+
         // Для этого перебираем все элементы
         $pathsOfElements = array();
 
@@ -423,7 +437,7 @@ class SheduleController extends Controller {
         {
             if ($field=='')
 
-            if($field == 'medcardId' || $field == 'greetingId') {
+            if($field == 'medcardId' || $field == 'greetingId'|| $field == 'templateName' || $field == 'templateId') {
                 continue;
             }
             // Это для выпадающего списка с множественным выбором
@@ -446,34 +460,49 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-        $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
-        (
-                    $_POST['FormTemplateDefault']['greetingId'],
-                    $pathsOfElements
-                    );
-        $historyElementsPaths = array();
-        foreach ($historyElements as $oneHistoryElement)
-        {
-            $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
-        }
-        foreach($controlsToSave as $field => $value)
-        {
-            if(is_array($value)) {
-                $value = CJSON::encode($value);
-            }
-            $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
-            $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 
-            $answerCurrentDate = true;
-            if(!$historyCategorieElementNext->save())
+        //if (count($pathsOfElements)>0)
+        //{
+            $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
+            (
+                        $_POST['FormTemplateDefault']['greetingId'],
+                        $pathsOfElements
+                        );
+            $historyElementsPaths = array();
+            foreach ($historyElements as $oneHistoryElement)
             {
-                ob_end_clean();
-                echo CJSON::encode(array('success' => true,
-                                             'text' => 'Ошибка сохранения записи.'));
-                exit();
+                $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
             }
+            $wasSaved = false;
+            foreach($controlsToSave as $field => $value)
+            {
+                if(is_array($value)) {
+                    $value = CJSON::encode($value);
+                }
+                $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
+                $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 
+                $answerCurrentDate = true;
+                if(!$historyCategorieElementNext->save())
+                {
+                    ob_end_clean();
+                    echo CJSON::encode(array('success' => true,
+                                                 'text' => 'Ошибка сохранения записи.'));
+                    exit();
+                }
+                else
+                {
+                    $wasSaved = true;
+                }
+
+            }
+        if ($wasSaved)
+        {
+            $recordRow->save();
         }
+        //}
+        $transaction->commit();
+
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.',
@@ -481,8 +510,8 @@ class SheduleController extends Controller {
 		);
 
 
-		//$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);
-		//$response['history'] = $newHistory;
+		$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);
+		$response['history'] = $newHistory;
 
 		ob_end_clean();
         echo CJSON::encode($response);

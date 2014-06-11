@@ -15,7 +15,8 @@ class CategorieViewWidget extends CWidget {
     public $dividedCats = array(); // Поделённые категории
     public $templatePrefix = null;
     public $templateId = null; // Это айдишник шаблона
-	public $medcardRecordId = null;
+    public $templateName = null; // Это название шаблона
+    public $medcardRecordId = null;
     public $previewMode = false;
     public $isActiveTemplate = null; // Флаг активного шаблона (активной вкладки),
 	public $form = null;
@@ -24,6 +25,13 @@ class CategorieViewWidget extends CWidget {
     public function run() {
         ini_set('max_execution_time', 60);
         $this->createFormModel();
+        // Найдём имя шаблона
+        if (isset($this->templateId))
+        {
+            $this->templateName = MedcardTemplate::model()->findByPk($this->templateId);
+            $this->templateName = $this->templateName['name'];
+        }
+
         if($this->currentDate == null) {
             $this->currentDate = date('Y-m-d h:i');
         }
@@ -57,7 +65,8 @@ class CategorieViewWidget extends CWidget {
             'previewMode' => $this->previewMode,
             'isActiveTemplate' => $this->isActiveTemplate,
             'templateId' => $this->templateId,
-			'templateType' => $this->templateType
+			'templateType' => $this->templateType,
+            'templateName' => $this->templateName,
         ), true);
         if(!Yii::app()->request->isAjaxRequest) {
             echo $answer;
