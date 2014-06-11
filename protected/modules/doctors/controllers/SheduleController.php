@@ -446,11 +446,12 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-        $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
+       /* $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
         (
                     $_POST['FormTemplateDefault']['greetingId'],
                     $pathsOfElements
-                    );
+                    );*/
+        $historyElements = array();
         $historyElementsPaths = array();
         foreach ($historyElements as $oneHistoryElement)
         {
