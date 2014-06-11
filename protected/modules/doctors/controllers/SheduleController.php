@@ -446,18 +446,17 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-       /* $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
+        $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
         (
                     $_POST['FormTemplateDefault']['greetingId'],
                     $pathsOfElements
-                    );*/
-        $historyElements = array();
+                    );
         $historyElementsPaths = array();
         foreach ($historyElements as $oneHistoryElement)
         {
             $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
         }
-        /*foreach($controlsToSave as $field => $value)
+        foreach($controlsToSave as $field => $value)
         {
             if(is_array($value)) {
                 $value = CJSON::encode($value);
@@ -474,7 +473,7 @@ class SheduleController extends Controller {
                 exit();
             }
 
-        }*/
+        }
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.',
