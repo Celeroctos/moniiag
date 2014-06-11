@@ -407,7 +407,7 @@ class SheduleController extends Controller {
         $recordId = MedcardElementForPatient::getMaxRecordId(
             $_POST['FormTemplateDefault']['medcardId']
         );
-        $recordId =1;
+       // $recordId =1;
         // Для этого перебираем все элементы
         $pathsOfElements = array();
 
@@ -482,8 +482,8 @@ class SheduleController extends Controller {
 		);
 
 
-		$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);		
-		$response['history'] = $newHistory;
+		//$newHistory = MedcardElementForPatient::model()->getHistoryPointsByCardId($_POST['FormTemplateDefault']['medcardId']);
+		//$response['history'] = $newHistory;
 
 		ob_end_clean();
         echo CJSON::encode($response);
