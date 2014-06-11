@@ -28,6 +28,13 @@
         <script type="text/javascript">
             globalVariables.greetingId = <?php echo $greetingId; ?>;
             globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
+            globalVariables.patientData = {
+                'firstName' : '<?php echo $patientFirstName; ?>',
+                'lastName' : '<?php echo $patientLastName; ?>',
+                'middleName' : '<?php echo $patientMiddleName; ?>',
+                'comment' : '<?php echo $patientComment; ?>',
+                'phone' : '<?php echo $patientPhone; ?>'
+            };
         </script>
     <?php } ?>
 </div>

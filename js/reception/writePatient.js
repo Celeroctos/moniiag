@@ -695,6 +695,15 @@
                     // Перезагружаем календарь или органайзер
                     if($('.organizer').length > 0) {
                         globalVariables.greetingId = data.greetingId;
+                        // Переписываем данные на новые
+                        globalVariables.patientData = {
+                            'firstName' : params.firstName,
+                            'lastName' : params.lastName,
+                            'middleName' : params.middleName,
+                            'comment' : params.comment,
+                            'phone' : params.phone
+                        };
+
                         $('.organaizer').trigger('changeTriggerByLoad');
                         $('.organizer').trigger('returnDate');
                         globalVariables.resetBeginDate = false;

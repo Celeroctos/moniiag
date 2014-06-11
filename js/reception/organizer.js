@@ -412,7 +412,7 @@
                                                             }
 
                                                             if(!$(li).hasClass('withPatient') && !$(li).hasClass('cantWrite')) {
-                                                                (function(timeBegin, li) {
+                                                                (function(timeBegin, li, patientData) {
                                                                     $(li).on('click', function() {
                                                                         // Если есть попап для записи пациента, то его нужно показать
                                                                         if($(clickedTimeLi).prop('id') == $(li).prop('id')) {
@@ -430,6 +430,14 @@
                                                                         globalVariables.orderNumber = $(li).prop('id').substr(1);
                                                                         if($('#patientDataPopup').length > 0) {
                                                                             globalVariables.withWindow = 1;
+                                                                            if(globalVariables.hasOwnProperty('greetingId') && typeof globalVariables.greetingId != 'undefined') {
+
+                                                                                $('#patientDataPopup #comment').val(globalVariables.patientData.comment);
+                                                                                $('#patientDataPopup #phone').val(globalVariables.patientData.phone);
+                                                                                $('#patientDataPopup #lastName').val(globalVariables.patientData.lastName);
+                                                                                $('#patientDataPopup #firstName').val(globalVariables.patientData.firstName);
+                                                                                $('#patientDataPopup #middleName').val(globalVariables.patientData.middleName);
+                                                                            }
                                                                             $('#patientDataPopup').modal({});
                                                                         } else { // Должны быть данные для записи пациента
                                                                             var args = [timeBegin, date.getFullYear(), date.getMonth(), date.getDate(), li];
@@ -437,7 +445,7 @@
 
                                                                         }
                                                                     });
-                                                                })(data.data[j].timeBegin, li);
+                                                                })(data.data[j].timeBegin, li, data.data[j]);
                                                             } else {
                                                                 (function(patientData, li) {
                                                                     $(li).on('click', function(e) {
