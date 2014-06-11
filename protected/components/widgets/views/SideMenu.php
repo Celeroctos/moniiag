@@ -24,7 +24,7 @@
                 </li>
             <? } ?>
             <?php if(Yii::app()->user->checkAccess('menuPatientWrite')) { ?>
-                <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo' || $action == 'writepatientwithoutdata' || $action == 'changeordelete' || ($action == 'writepatientstepone' && isset($_GET['waitingline']) && $_GET['waitingline'] == 1)) ? 'class="active"' : ''; ?>>
+                <li <?php echo $controller == 'patient' && $module == 'reception' && ($action == 'writepatientstepone' || $action == 'writepatientsteptwo' || $action == 'writepatientwithoutdata' || $action == 'changeordelete' || ($action == 'writepatientstepone' && isset($_GET['waitingline']) && $_GET['waitingline'] == 1)) && (!isset($_GET['callcenter']) || $_GET['callcenter'] != 1) ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись', array('/reception/patient/writepatientstepone')) ?>
                 </li>
             <?php } ?>

@@ -311,6 +311,7 @@ console.log(checked);
     $('#print-submit').on('click', function() {
         var printWin = window.open('','','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         var sheduleTable = $('#sheduleTable');
+        var waitingLineTable = $('#writingLineTable');
      //   return false;
         printWin.focus();
         var document = $(printWin).document;
@@ -321,6 +322,19 @@ console.log(checked);
                 'border-collapse' : 'collapse',
                 'padding' : '3px 5px'
             });
+            $(tableClone).find('tr').each(function(index, element) {
+                $(element).find('td:last').remove();
+            });
+
+            var waitingLineTableClone = $(waitingLineTable).clone();
+            $(waitingLineTableClone).find('td').css({
+                'border' : '1px solid #D4D0C8',
+                'border-collapse' : 'collapse',
+                'padding' : '3px 5px'
+            });
+            $(waitingLineTableClone).find('tr').each(function(index, element) {
+                $(element).find('td:last').remove();
+            });
 
             // Дату в шапку
             var date = $('#greetingDate').val();
@@ -330,6 +344,11 @@ console.log(checked);
                 'font-size' : '16px'
             }).text('Расписание на ' + parts[2] + '.' + parts[1] + '.' + parts[0] + ' г.'));
 
+            var livingDiv = $('<div>').html($('<strong class="bold">').css({
+                'color' : '#FA5858',
+                'font-size' : '16px'
+            }).text('Живая очередь на ' + parts[2] + '.' + parts[1] + '.' + parts[0] + ' г.'));
+
             $(tableClone).find('button').remove();
             var printBtn = $('<button>').text('Распечатать расписание');
             $(printBtn).on('click', function() {
@@ -338,7 +357,7 @@ console.log(checked);
             $('body', printWin.document).append(dateDiv);
 
             //$('body', printWin.document).append(tableClone);
-            $('body', printWin.document).html(   $('body', printWin.document).html() + $(tableClone).outerHTML()  );
+            $('body', printWin.document).html($('body', printWin.document).html() + $(tableClone).outerHTML() + $(livingDiv).outerHTML() + $(waitingLineTableClone).outerHTML());
             /* Вот эта (^) гадость с аппендом не работала (поэтому добавляем через outerHTML).
                 При использовании аппенд сбрасывались края у таблице в родительской странице
             */
