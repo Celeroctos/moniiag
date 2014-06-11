@@ -149,6 +149,8 @@ class PrintController extends Controller {
 
 		if($greetingIn === false) {
             if(!$returnResult) {
+                //var_dump("!");
+                //exit();
                 $mPDF = Yii::app()->ePdf->mpdf();
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
