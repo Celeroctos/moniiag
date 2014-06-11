@@ -1145,8 +1145,37 @@ class PatientController extends Controller {
                             $answer['doctorFio'] = '';
                         }
 
+                        if($currentGreeting->mediate_id != null) { // Записан опосредованный
+                            $mediateModel = MediatePatient::model()->findByPk($currentGreeting->mediate_id);
+                            if($mediateModel != null) {
+                                $answer['patientFirstName'] = $mediateModel->first_name;
+                                $answer['patientLastName'] = $mediateModel->last_name;
+                                $answer['patientMiddleName'] = $mediateModel->middle_name != null ? $mediateModel->middle_name : '';
+                                $answer['patientComment'] = $currentGreeting->comment;
+                                $answer['patientPhone'] = $mediateModel->phone != null ? $mediateModel->phone : '';
+                            } else {
+                                $answer['patientFirstName'] = ''; // Хотя здесь могут быть данные
+                                $answer['patientLastName'] = '';
+                                $answer['patientMiddleName'] = '';
+                                $answer['patientComment'] = $currentGreeting->comment;
+                                $answer['patientPhone'] = '';
+                            }
+                        } else {
+                            $answer['patientFirstName'] = '';
+                            $answer['patientLastName'] = '';
+                            $answer['patientMiddleName'] = '';
+                            $answer['patientComment'] = '';
+                            $answer['patientPhone'] = '';
+                        }
                     }
+                } else {
+                    $answer['patientFirstName'] = '';
+                    $answer['patientLastName'] = '';
+                    $answer['patientMiddleName'] = '';
+                    $answer['patientComment'] = '';
+                    $answer['patientPhone'] = '';
                 }
+
                 $answer += array(
                     'wardsList' => $this->getWardsList(),
                     'postsList' => $this->getPostsList(),
@@ -1255,6 +1284,35 @@ class PatientController extends Controller {
             } else {
                 $answer['doctorFio'] = '';
             }
+
+            if($currentGreeting->mediate_id != null) { // Записан опосредованный
+                $mediateModel = MediatePatient::model()->findByPk($currentGreeting->mediate_id);
+                if($mediateModel != null) {
+                    $answer['patientFirstName'] = $mediateModel->first_name;
+                    $answer['patientLastName'] = $mediateModel->last_name;
+                    $answer['patientMiddleName'] = $mediateModel->middle_name != null ? $mediateModel->middle_name : '';
+                    $answer['patientComment'] = $currentGreeting->comment;
+                    $answer['patientPhone'] = $mediateModel->phone != null ? $mediateModel->phone : '';
+                } else {
+                    $answer['patientFirstName'] = ''; // Хотя здесь могут быть данные
+                    $answer['patientLastName'] = '';
+                    $answer['patientMiddleName'] = '';
+                    $answer['patientComment'] = $currentGreeting->comment;
+                    $answer['patientPhone'] = '';
+                }
+            } else {
+                $answer['patientFirstName'] = '';
+                $answer['patientLastName'] = '';
+                $answer['patientMiddleName'] = '';
+                $answer['patientComment'] = '';
+                $answer['patientPhone'] = '';
+            }
+        } else {
+            $answer['patientFirstName'] = '';
+            $answer['patientLastName'] = '';
+            $answer['patientMiddleName'] = '';
+            $answer['patientComment'] = '';
+            $answer['patientPhone'] = '';
         }
         // Если есть параметр unwritedGreetingId, то надо вытащить параметры для подстановки в форму записи
         $unwritedGreeting  = null;
