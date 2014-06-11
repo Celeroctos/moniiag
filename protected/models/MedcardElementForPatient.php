@@ -397,6 +397,21 @@ class MedcardElementForPatient extends MisActiveRecord {
                     }
                     $results = $tempResult;
                 }
+
+                // ПРоверка печати рекомендаций
+                if ($recommendationOnly)
+                {
+                    $tempResult = array();
+                    foreach ($results as $oneElement)
+                    {
+                        if ($oneElement['template_page_id']=='1')
+                        {
+                            array_push($tempResult,$oneElement);
+                        }
+                    }
+                    $results = $tempResult;
+                }
+
                 return $results;
         } catch(Exception $e) {
             echo $e->getMessage();
