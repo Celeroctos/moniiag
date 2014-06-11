@@ -136,6 +136,8 @@ class MedcardElementForPatient extends MisActiveRecord {
 			}
 
 			$connection = Yii::app()->db;
+
+            // Старый код. Скорее всего потом не нужен будет
 			/*$elements = $connection->createCommand()
 				->select('mep.*')
 				->from('mis.medcard_elements_patient mep')
@@ -152,18 +154,32 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
                 ->where('mep.path in ('. $pathsToSelect .')
-                        AND mep.greeting_id = :greeting_id
-						AND mep.history_id =
-							(SELECT MAX(mep2.history_id)
-							FROM mis.medcard_elements_patient mep2
-							WHERE mep.path=mep2.path
-							AND mep2.greeting_id = mep.greeting_id)',
+                        AND mep.greeting_id = :greeting_id',
                     array(':greeting_id' => $greetingId));
+            $elements->order('element_id, history_id desc');
 
-			$result =  $elements->queryAll();
-			//var_dump($result);
-			//exit();
 
+
+			$allElements =  $elements->queryAll();
+            $currentElement = false;
+            $result = array();
+
+            // Если есть элементы - берём его id для дальнейшего сравнения
+            if (count($allElements )>0)
+            {
+                $currentElement  = $allElements[0]['element_id'];
+                array_push($result,$allElements[0]);
+            }
+            // Дальше проверяем в цикле - если id элемента поменялся
+            //    о сравнению с предыдущими строками - то нужно запихать текущую строку в результат
+            foreach ($allElements as $oneRecord)
+            {
+                if ($oneRecord['element_id']!=$currentElement  )
+                {
+                    $currentElement  = $oneRecord['element_id'];
+                    array_push($result,$oneRecord);
+                }
+            }
 			return $result;
 		} catch(Exception $e) {
 			echo $e->getMessage();
