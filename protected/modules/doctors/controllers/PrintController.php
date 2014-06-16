@@ -129,7 +129,7 @@ class PrintController extends Controller {
 		
 		//var_dump($changedElements);
 		//exit();
-		
+
 		// Запихнём виджету те элементы, которые мы вытащили по приёму
 		$categorieWidget->setHistoryElements($changedElements);
 		
@@ -138,6 +138,7 @@ class PrintController extends Controller {
 		$categorieWidget->sortTree();
 		// Теперь поделим категории
 		$categorieWidget->divideTreebyCats();
+
 		//var_dump($categorieWidget->dividedCats);
 		//exit();
 		$sortedElements = $categorieWidget->dividedCats;

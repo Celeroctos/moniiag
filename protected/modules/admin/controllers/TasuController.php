@@ -1690,21 +1690,21 @@ class TasuController extends Controller {
 			'postindex' => $address['postindex_62744']
 		));
 		
-		if($address['addresstype_31280'] == 1) { // Адрес регистрации
+		//if($address['addresstype_31280'] == 1) { // Адрес регистрации
 			$medcard->address_reg = $addressData;
-		}
-		if($address['addresstype_31280'] == 2) { // Адрес проживания
+		//}
+		//if($address['addresstype_31280'] == 2) { // Адрес проживания
 			$medcard->address = $addressData;
-		}
+		//}
 		
 		$patientController = Yii::app()->createController('reception/patient');
 		$addressData = $patientController[0]->getAddressStr($addressData, true);
-		if($address['addresstype_31280'] == 1) { // Адрес регистрации
+		//if($address['addresstype_31280'] == 1) { // Адрес регистрации
 			$medcard->address_reg_str = $addressData['addressStr'];
-		}
-		if($address['addresstype_31280'] == 2) { // Адрес проживания
+		//}
+		//if($address['addresstype_31280'] == 2) { // Адрес проживания
 			$medcard->address_str = $addressData['addressStr'];
-		}
+		//}
 	}
 	
     /* Синхронизация врачей: ТАСУ в МИС */
