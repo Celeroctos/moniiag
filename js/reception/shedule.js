@@ -143,13 +143,14 @@
             $('#print-submit').prop('disabled', true);
         }*/
         for(var i = 0; i < shedule.length; i++) {
+            console.log(shedule[i].doctor_id);
             var tr = $('<tr>');
             var content = '';
             if(shedule[i].doctor_id != currentDoctorId || i + 1 >= shedule.length) {
                 currentDoctorId = shedule[i].doctor_id;
                 if(i + 1 != shedule.length || shedule.length == 1) {
                     var text = "<span class=\"bold\">" + shedule[i].d_last_name + ' ' + shedule[i].d_first_name + ' ' + shedule[i].d_middle_name + "</span>";
-                    if(typeof cabinets[shedule[i].doctor_id] != 'undefined' && cabinets[shedule[i].doctor_id].hasOwnProperty('cabNumber') && cabinets[shedule[i].doctor_id].cabNumber != null) {
+                    if(typeof cabinets[shedule[i].doctor_id] != 'undefined' && cabinets[shedule[i].doctor_id] != null && cabinets[shedule[i].doctor_id].hasOwnProperty('cabNumber') && cabinets[shedule[i].doctor_id].cabNumber != null) {
                         var cabinet = '<span class="bold text-danger">кабинет ' + cabinets[shedule[i].doctor_id].cabNumber + ' (' + cabinets[shedule[i].doctor_id].description + ')</span>';
                     } else {
                         var cabinet = '<span class="bold text-danger">кабинет неизвестен</span>';

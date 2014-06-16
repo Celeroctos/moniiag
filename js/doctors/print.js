@@ -18,23 +18,10 @@ $(document).ready(function(e) {
 
     // Формирование документов на массовую печать
     $('.print-submit button').on('click', function(e) {
-        $('#massPrintDocs').hide();
-        // Дата приёма
+
         var greetingDate = $('#greetingDate').val();
         var choosedDoctors = $.fn['doctorChooser'].getChoosed();
         var choosedPatients = $.fn['patientChooser'].getChoosed();
-        if(choosedDoctors.length == 0) {
-            $('#errorPopup .modal-body .row p').remove();
-            $('#errorPopup .modal-body .row').append($('<p>').text('Вы не выбрали ни одного врача!'));
-            $('#errorPopup').modal({});
-            return false;
-        }
-        if(choosedPatients.length == 0) {
-            $('#errorPopup .modal-body .row p').remove();
-            $('#errorPopup .modal-body .row').append($('<p>').text('Вы не выбрали ни одного пациента!'));
-            $('#errorPopup').modal({});
-            return false;
-        }
 
         var doctorsIds = [];
         var patientIds = [];
@@ -44,6 +31,17 @@ $(document).ready(function(e) {
         for(var i = 0; i < choosedPatients.length; i++) {
             patientIds.push(choosedPatients[i].id);
         }
+
+        if (greetingDate!='')
+        {
+            // Распилим дату и добавим ведущий ноль в месяц
+            dateArray = greetingDate.split('-');
+            if (dateArray[1].length==1 ) {  dateArray[1] = '0'+ dateArray[1];}
+            if (dateArray[2].length==1 ) {  dateArray[2] = '0'+ dateArray[2];}
+            greetingDate = dateArray[0]+'-'+dateArray[1]+'-'+dateArray[2];
+            console.log(greetingDate);
+        }
+        $('#massPrintDocs').hide();
 
         $.ajax({
             'url' : '/index.php/doctors/print/makeprintlistview',
