@@ -277,7 +277,7 @@
                         <div class="form-group">
                             <label for="phone" class="col-xs-3 control-label required">Контактный телефон <span class="required">*</span></label>
                             <div class="col-xs-9">
-                                <input type="text" name="phone" placeholder="Контактный телефон" value="<?php echo $phoneToWrite; ?>" class="form-control" id="phone" value="+7">
+                                <input type="text" name="phone" placeholder="Контактный телефон" value="<?php echo $phoneToWrite; ?>" class="form-control" id="phone" >
                             </div>
                         </div>
                         <div class="form-group">
