@@ -211,59 +211,6 @@ class MedcardElementForPatient extends MisActiveRecord {
 
 
             return MedcardRecord::getHistoryMedcardByCardId($medcard);
-           /* // Достанем номер ОМС по медкарте
-            $medcardObject = Medcard::model()->find('card_number = :number', array( ':number' => $medcard ) );
-            $omsNumber = $medcardObject['policy_id'];
-            //var_dump($omsNumber);
-            //exit();
-
-            $connection = Yii::app()->db;
-			$points = $connection->createCommand()
-				->select('
-					SUBSTR(CAST(mep.change_date AS text), 0, CHAR_LENGTH(CAST(mep.change_date AS text)) - 2) AS date_change, 
-					mep.greeting_id, 
-				
-					(SELECT MAX(mep3.record_id)
-						FROM mis.medcard_elements_patient as mep3
-						WHERE
-							mep3.greeting_id=mep.greeting_id
-							AND mep3.element_id=mep.element_id
-
-
-					) as id_record,
-					mep.medcard_id,
-			
-					mep2.template_name,
-					d.first_name,
-					d.last_name,
-					d.middle_name
-					')
-				->from('mis.medcard_elements_patient mep')
-				->join('mis.medcard_elements_patient as mep2', 'mep.categorie_id=mep2.real_categorie_id')
-                ->join('mis.medcards as mc', 'mep.medcard_id = mc.card_number')
-                ->join('mis.doctor_shedule_by_day dsbd', 'mep.greeting_id=dsbd.id')
-                ->join('mis.doctors d', 'dsbd.doctor_id=d.id')
-				//->where('mep.medcard_id = :medcard_id and mep.is_record=1
-				->where('mc.policy_id=:oms and mep.is_record=1
-					AND mep.record_id = 
-					(SELECT MAX(mep3.record_id)
-						FROM mis.medcard_elements_patient as mep3
-						WHERE
-							mep3.greeting_id=mep.greeting_id
-							AND mep3.element_id=mep.element_id
-					)
-					 GROUP BY mep.medcard_id,id_record,mep.greeting_id,mep2.template_name, date_change, first_name,last_name,middle_name',
-                    array(':oms' => $omsNumber))
-				->order('date_change desc')
-			
-			;
-			
-			$result = $points->queryAll();
-
-          //  var_dump($result);
-          //  exit();
-			return $result;
-*/
 
 		} catch(Exception $e) {
 			var_dump($e);
@@ -336,10 +283,13 @@ class MedcardElementForPatient extends MisActiveRecord {
 
     // Найти все конечные состояния полей, изменённых во время приёма
 	public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq', $recommendationOnly=false) {
-		//var_dump($greetingId);
-		//exit();
 			try {
-            $connection = Yii::app()->db;
+
+
+
+
+
+            /*$connection = Yii::app()->db;
             $values = $connection->createCommand()
 				->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
@@ -379,7 +329,90 @@ class MedcardElementForPatient extends MisActiveRecord {
                          ');
 
             return $values->queryAll();
+            */
+                $eqPath = ($pathForFind !== false) && ($operator == 'eq');
+                $likePath = ($pathForFind !== false) && ($operator == 'like');
+                $connection = Yii::app()->db;
+                $values = $connection->createCommand()
+                    ->select('mep.*')
+                    ->from('mis.medcard_elements_patient mep')
+                    ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
+                    ->order('element_id, history_id desc');
+                $elements = $values->queryAll();
+                $results = array();
 
+                $currentElementNumber = false;
+                $currentMaximum = false;
+                if (count($elements )>0)
+                {
+                    $currentElementNumber = $elements[0]['element_id'];
+                    $currentMaximum = $elements[0]['history_id'];
+                }
+                // Проверяем условие max history_id
+                foreach ($elements as $oneElement)
+                {
+                    if ($currentElementNumber!=$oneElement['element_id'])
+                    {
+                        $currentElementNumber=$oneElement['element_id'];
+                        $currentMaximum = $oneElement['history_id'];
+                        array_push($results,$oneElement);
+                    }
+                    else
+                    {
+                        if ($oneElement['history_id']==$currentMaximum)
+                        {
+                            array_push($results,$oneElement);
+                        }
+                    }
+
+
+                }
+
+                // Проверяем likePath
+                if ($likePath)
+                {
+                    $tempResult = array();
+                    foreach ($results as $oneElement)
+                    {
+                        // ПРоверяем на то, что путь начинается на подстроку pathForFind
+                        if (strpos($oneElement['path'],$pathForFind)===0)
+                        {
+                            array_push($tempResult,$oneElement);
+                        }
+                    }
+                    $results = $tempResult;
+
+                }
+
+                // ПРоверяем eqPath
+                if ($eqPath)
+                {
+                    $tempResult = array();
+                    foreach ($results as $oneElement)
+                    {
+                        if ($oneElement['path']==$pathForFind)
+                        {
+                            array_push($tempResult,$oneElement);
+                        }
+                    }
+                    $results = $tempResult;
+                }
+
+                // ПРоверка печати рекомендаций
+                if ($recommendationOnly)
+                {
+                    $tempResult = array();
+                    foreach ($results as $oneElement)
+                    {
+                        if ($oneElement['template_page_id']=='1')
+                        {
+                            array_push($tempResult,$oneElement);
+                        }
+                    }
+                    $results = $tempResult;
+                }
+
+                return $results;
         } catch(Exception $e) {
             echo $e->getMessage();
         }

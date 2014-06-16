@@ -19,26 +19,18 @@
     }
     );
 
-
-    //$(window).bind('beforeunload', function() { alert('Ура!');} );
-
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
     $("#template-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
         console.log(ajaxData);
         var ajaxData = $.parseJSON(ajaxData);
         if (ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
-            // if (!isThisPrint) {
-            //$('#successEditPopup').modal({});
-            //  }
-            // if (isThisPrint) {
             if ($(".submitEditPatient").length - 1 == numCalls) {
                 // Сбрасываем, что есть несохранённые данные
                 globalVariables.isUnsavedUserData = false
                 // Сбрасываем режим на дефолт
-                // isThisPrint = false;
                 numCalls = 0;
-
+                getNewHistory();
                 if (isThisPrint) {
                     if (printHandler == 'print-greeting-link') {
                         $('.activeGreeting .' + printHandler).trigger('print');
@@ -63,29 +55,6 @@
             } else {
                 ++numCalls;
             }
-            //}
-
-            // Выводим заново историю
-            if (ajaxData.hasOwnProperty('history')) {
-                var hisArr = ajaxData.history;
-                var historyContainer = $('#accordionH .accordion-inner div:first');
-                $('#accordionH .accordion-inner').text('');
-                for (i = hisArr.length - 1; i >= 0; i--) { // (идём в обратном порядке)
-                    var newDiv = $('<div>');
-                    $(newDiv).append($('<a>').prop('href',
-                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].id_record).attr(
-                    'class', 'medcard-history-showlink').text(hisArr[i].date_change + ' - ' + hisArr[i].template_name));
-                    var historyContainer = $('#accordionH .accordion-inner div:first');
-                    if (historyContainer.length == 0) {
-                        $('#accordionH .accordion-inner').append(newDiv);
-                    }
-                    else {
-                        $('#accordionH .accordion-inner div:first').before(newDiv);
-                    }
-
-
-                }
-            }
 
             // Вставляем новую запись в список истории
             if (ajaxData.hasOwnProperty('historyDate')) {
@@ -104,6 +73,48 @@
         }
     });
 
+    function getNewHistory()
+    {
+        // Достанем номер карты
+        cardNumber = $('#currentPatientId').val();
+
+        // Отправим аякс
+        $.ajax({
+            'url' : '/index.php/doctors/shedule/gethistorypoints',
+            'data' : {
+                'medcardid' : cardNumber
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    var data = data.data;
+                        var hisArr = data;
+                        var historyContainer = $('#accordionH .accordion-inner div:first');
+                        $('#accordionH .accordion-inner').text('');
+                        for (i = hisArr.length - 1; i >= 0; i--) { // (идём в обратном порядке)
+                            var newDiv = $('<div>');
+                            $(newDiv).append($('<a>').prop('href',
+                                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].id_record).attr(
+                                    'class', 'medcard-history-showlink').text(hisArr[i].date_change + ' - ' + hisArr[i].template_name));
+                            var historyContainer = $('#accordionH .accordion-inner div:first');
+                            if (historyContainer.length == 0) {
+                                $('#accordionH .accordion-inner').append(newDiv);
+                            }
+                            else {
+                                $('#accordionH .accordion-inner div:first').before(newDiv);
+                            }
+
+
+                        }
+                } else {
+
+                }
+                return;
+            }
+        });
+    }
     $('#medcardContentSave').on('click', function (e) {
        // $(this).trigger('begin');
         isThisPrint = false;
