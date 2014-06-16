@@ -1152,20 +1152,20 @@ class PatientController extends Controller {
                                 $answer['patientLastName'] = $mediateModel->last_name;
                                 $answer['patientMiddleName'] = $mediateModel->middle_name != null ? $mediateModel->middle_name : '';
                                 $answer['patientComment'] = $currentGreeting->comment;
-                                $answer['patientPhone'] = $mediateModel->phone != null ? $mediateModel->phone : '';
+                                $answer['patientPhone'] = $mediateModel->phone != null ? $mediateModel->phone : '+7';
                             } else {
                                 $answer['patientFirstName'] = ''; // Хотя здесь могут быть данные
                                 $answer['patientLastName'] = '';
                                 $answer['patientMiddleName'] = '';
                                 $answer['patientComment'] = $currentGreeting->comment;
-                                $answer['patientPhone'] = '';
+                                $answer['patientPhone'] = '+7';
                             }
                         } else {
                             $answer['patientFirstName'] = '';
                             $answer['patientLastName'] = '';
                             $answer['patientMiddleName'] = '';
                             $answer['patientComment'] = '';
-                            $answer['patientPhone'] = '';
+                            $answer['patientPhone'] = '+7';
                         }
                     }
                 } else {
@@ -1173,7 +1173,7 @@ class PatientController extends Controller {
                     $answer['patientLastName'] = '';
                     $answer['patientMiddleName'] = '';
                     $answer['patientComment'] = '';
-                    $answer['patientPhone'] = '';
+                    $answer['patientPhone'] = '+7';
                 }
 
                 $answer += array(
@@ -1292,27 +1292,27 @@ class PatientController extends Controller {
                     $answer['patientLastName'] = $mediateModel->last_name;
                     $answer['patientMiddleName'] = $mediateModel->middle_name != null ? $mediateModel->middle_name : '';
                     $answer['patientComment'] = $currentGreeting->comment;
-                    $answer['patientPhone'] = $mediateModel->phone != null ? $mediateModel->phone : '';
+                    $answer['patientPhone'] = $mediateModel->phone != null ? $mediateModel->phone : '+7';
                 } else {
                     $answer['patientFirstName'] = ''; // Хотя здесь могут быть данные
                     $answer['patientLastName'] = '';
                     $answer['patientMiddleName'] = '';
                     $answer['patientComment'] = $currentGreeting->comment;
-                    $answer['patientPhone'] = '';
+                    $answer['patientPhone'] = '+7';
                 }
             } else {
                 $answer['patientFirstName'] = '';
                 $answer['patientLastName'] = '';
                 $answer['patientMiddleName'] = '';
                 $answer['patientComment'] = '';
-                $answer['patientPhone'] = '';
+                $answer['patientPhone'] = '+7';
             }
         } else {
             $answer['patientFirstName'] = '';
             $answer['patientLastName'] = '';
             $answer['patientMiddleName'] = '';
             $answer['patientComment'] = '';
-            $answer['patientPhone'] = '';
+            $answer['patientPhone'] = '+7';
         }
         // Если есть параметр unwritedGreetingId, то надо вытащить параметры для подстановки в форму записи
         $unwritedGreeting  = null;
@@ -1336,7 +1336,7 @@ class PatientController extends Controller {
             $answer['fName'] = '';
             $answer['mName'] = '';
             $answer['lName'] = '';
-            $answer['phoneToWrite'] = '';
+            $answer['phoneToWrite'] = '+7';
             $answer['commentToWrite'] = '';
         }
 
