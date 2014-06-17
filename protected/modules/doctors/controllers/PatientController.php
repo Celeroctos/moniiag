@@ -173,18 +173,21 @@ class PatientController extends Controller {
 		$medcardCategorieClone->config = $historyCategorie->config;
         // Путь: бьём на составляющие и прибавляем к последнему элементу в позиции + 1 к максимальному номеру в иерархии в данной категории
         $pathParts = explode('.', $historyCategorie->path);
-        // Ищем все элементы в иерархии, которые по позиции больше, чем текущий. Составим путь категории-родителя
-        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $historyCategorie->path);
+        //
         $maxPosition = $pathParts[count($pathParts) - 1];
+        // Удаляем последний элемент в клонируемой категории
+        array_splice($pathParts,count($pathParts)-1);
+        // Ищем все элементы в иерархии, которые по позиции больше, чем текущий. Составим путь категории-родителя
+//        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $historyCategorie->path);
+        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], implode('.',$pathParts),'like');
         foreach($elementsInCategorie as $categorie) {
             $pathParts2 = explode('.', $categorie['path']);
             // Сравниваются пути с одинаковым количество элементов
-            if($maxPosition < $pathParts2[count($pathParts2) - 1]) {
-                $maxPosition = $pathParts2[count($pathParts2) - 1];
-            }
+            if (count($pathParts2)==count($pathParts)+1)
+                if($maxPosition < $pathParts2[count($pathParts2) - 1]) {
+                    $maxPosition = $pathParts2[count($pathParts2) - 1];
+                }
         }
-
-        array_pop($pathParts);
         $pathParts[] = $maxPosition + 1;
         $savedCategoriePosition = $maxPosition + 1; // Сохраняем позицию для изменения элементов пути
         $medcardCategorieClone->path = implode('.', $pathParts);

@@ -675,7 +675,11 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                 $(accClone).find('span.pr-key').text(data.data.pk_key);
                 console.log(accParent);
 
-                $(accClone).insertAfter($(accParent));
+                var children = $('[id^=' + accId + ']');
+
+                //$(accClone).insertAfter($(accParent));
+                unCollapseAccordion(accClone);
+                $(accClone).insertAfter($(children[children.length-1]));
                 // Теперь переименуем все элементы, согласно изменённым путям
                 var repath = data.data.repath;
                 for (var i in repath) {
@@ -708,18 +712,17 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                 // Надо скрыть все категории, кроме только что отклонированной
                 // Берём id родительской категории и ищем все аккордеоны, в поле ИД которых входит ИД-шник родительской
                 //   и посылаем сигнал "свернись!"
-                var children = $('[id^=' + accId + ']');
                 // Переберём детей
                 for (i = 0; i < children.length; i++) {
-                    //if ($(children[i]).prop('id') != $(accClone).prop('id')) {
-                    if (i != children.length - 1) {
-                        collapseAccordion(children[i]);
-                    }
-                    else {
-                        // Раскрываем клонированную категорию (она может быть скрыта)
-                        unCollapseAccordion(children[i]);
 
-                    }
+                   // if (i != children.length - 1) {
+                        collapseAccordion(children[i]);
+                  //  }
+                  //  else {
+                        // Раскрываем клонированную категорию (она может быть скрыта)
+                   //     unCollapseAccordion(children[i]);
+
+                    //}
                 }
                 // Сворачиваем родителя
                 //collapseAccordion(accParent);
@@ -855,7 +858,7 @@ function showControl(container, elementId) {
         if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).show();
         }
-        $('[id$="_' + elementId + '"]').val('');
+      //  $('[id$="_' + elementId + '"]').val('');
         $(elementWithWrapper).show();
     }
     else {
@@ -871,7 +874,7 @@ function showControl(container, elementId) {
         if (typeof prev != 'undefined' && $(prev).hasClass('label-before')) {
             $(prev).show();
         }
-        $(container).find('[id$="_' + elementId + '"]').val('');
+      //  $(container).find('[id$="_' + elementId + '"]').val('');
         $(elementWithWrapper).show();
     }
 }
@@ -908,6 +911,11 @@ function getDependenceElementWithWrapper(container, selectorString)
         {
             // Выбираем родителя div c классом twoColumnList
             result = $(targetElement).parents('div.twoColumnList');
+            // Если результат - пустой - ищем контейнер с датой
+            if ($(result).length==0)
+            {
+                result = $(targetElement).parents('div.date-control');
+            }
         }
         else
         {

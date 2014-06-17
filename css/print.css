@@ -51,19 +51,27 @@ strong {
 .medium {
     font-size: 18px;
 }
+.medium2{
+    font-size: 15px;
+    border: 0px;
+}
 @media print
 {
     .big {
-        font-size: 10px;
+        font-size: 12px;
         border: 0px;
     }
     .bigger {
-        font-size: 14px;
+        font-size: 16px;
         font-family: "Times New Roman";
         border: 0px;
     }
     .medium {
-        font-size: 12px;
+        font-size: 14px;
+        border: 0px;
+    }
+    .medium2{
+        font-size: 13px;
         border: 0px;
     }
     td.first

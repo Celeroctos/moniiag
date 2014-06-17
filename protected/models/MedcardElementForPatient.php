@@ -284,52 +284,6 @@ class MedcardElementForPatient extends MisActiveRecord {
     // Найти все конечные состояния полей, изменённых во время приёма
 	public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq', $recommendationOnly=false) {
 			try {
-
-
-
-
-
-            /*$connection = Yii::app()->db;
-            $values = $connection->createCommand()
-				->select('mep.*')
-                ->from('mis.medcard_elements_patient mep')
-                ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
-                ->andWhere('mep.history_id = (SELECT MAX(mep2.history_id)
-                                              FROM mis.medcard_elements_patient mep2
-                                              WHERE mep2.element_id = mep.element_id
-                                                    AND mep2.greeting_id = :greetingId)', array(':greetingId' => $greetingId));
-                if($pathForFind !== false) {
-                    if($operator == 'eq') {
-                        $values->andWhere('mep.categorie_id = (SELECT DISTINCT mep3.categorie_id
-                                                           FROM mis.medcard_elements_patient mep3
-                                                           WHERE
-                                                                mep3.path = :path
-                                                                AND mep3.greeting_id = :greetingId)', array(':greetingId' => $greetingId,
-                                                                                                            ':path' => $pathForFind));
-                    } elseif($operator == 'like') {
-                        $values->andWhere(array('like', 'mep.path', array($pathForFind.'%')));
-                    }
-                }
-				
-				// Если печатаем только рекоммендации
-				if ($recommendationOnly)
-				{
-				$values->andWhere('mep.template_page_id=1');
-				}
-				
-                $values->group('mep.element_id,
-                         mep.history_id,
-                         mep.medcard_id,
-                         mep.value,
-                         mep.change_date,
-                         mep.greeting_id,
-                         mep.categorie_name,
-                         mep.categorie_id,
-                         mep.path
-                         ');
-
-            return $values->queryAll();
-            */
                 $eqPath = ($pathForFind !== false) && ($operator == 'eq');
                 $likePath = ($pathForFind !== false) && ($operator == 'like');
                 $connection = Yii::app()->db;
@@ -364,8 +318,6 @@ class MedcardElementForPatient extends MisActiveRecord {
                             array_push($results,$oneElement);
                         }
                     }
-
-
                 }
 
                 // Проверяем likePath
@@ -383,7 +335,6 @@ class MedcardElementForPatient extends MisActiveRecord {
                     $results = $tempResult;
 
                 }
-
                 // ПРоверяем eqPath
                 if ($eqPath)
                 {
