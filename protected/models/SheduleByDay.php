@@ -307,6 +307,7 @@ class SheduleByDay extends MisActiveRecord {
                 ->join('mis.medpersonal mp', 'd.post_id = mp.id')
                 ->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
 
+
             if($filters !== false) {
                 $this->getSearchConditions($greetings, $filters, array(
                     'doctor_fio' => array(
@@ -349,7 +350,6 @@ class SheduleByDay extends MisActiveRecord {
                     'm_phone' => 'phone'
                 ));
             }
-
             if($mediateOnly) {
                 $greetings->andWhere('dsbd.mediate_id IS NOT NULL');
             }
@@ -361,7 +361,13 @@ class SheduleByDay extends MisActiveRecord {
                 $greetings->limit($limit, $start);
             }
 
-            return $greetings->queryAll();
+           // var_dump($greetings);
+           // exit();
+            $result = $greetings->queryAll();
+            return $result;
+          //  var_dump($result );
+          //  exit();
+
         } catch(Exception $e) {
             echo $e->getMessage();
         }

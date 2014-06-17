@@ -157,6 +157,7 @@ class MisActiveRecord extends CActiveRecord {
             case 'nc' :
                 $chainOp == 'AND' ? $conn->andWhere(array('not like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'].'%')) : $conn->orWhere(array('like', 'LOWER('.$alias.'.'.$filter['field'].')', '%'.$filter['data'].'%'));
             break;
+
             default:
                 exit('Неверный оператор поиска.');
         }

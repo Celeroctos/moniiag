@@ -54,25 +54,30 @@ strong {
 @media print
 {
     .big {
-        font-size: 16px;
+        font-size: 10px;
+        border: 0px;
     }
     .bigger {
-        font-size: 22px;
+        font-size: 14px;
         font-family: "Times New Roman";
+        border: 0px;
     }
     .medium {
-        font-size: 18px;
+        font-size: 12px;
+        border: 0px;
     }
     td.first
     {
         /*width: 40%;*/
         font-family: "Arial";
         font-size: 12px;
+        border: 0px;
     }
 }
 
 .medcardIndex {
     width: 100%;
+    border: 0px;
 }
 div {
     border: 0px solid red;

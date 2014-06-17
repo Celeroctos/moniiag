@@ -61,10 +61,22 @@ class PrintController extends Controller {
 		$addressRegData = $patientController[0]->getAddressStr($medcard['address_reg'],true);
         $medcard['address_reg'] = $addressData['addressStr'];
 
-        $this->render('index', array('medcard' => $medcard,
-                                     'oms' => $oms,
-                                     'enterprise' => $enterprise,
-                                     'privileges' => $privileges));
+
+        $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0, '', 8, 8, 8, 8, 0, 0);
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+        $mPDF->WriteHTML($stylesheet, 1);
+        $mPDF->WriteHTML(
+
+            $this->render('index', array('medcard' => $medcard,
+                'oms' => $oms,
+                'enterprise' => $enterprise,
+                'privileges' => $privileges),true)
+
+        );
+
+        $this->render('greetingpdf', array(
+            'pdfContent' => $mPDF->Output()
+        ));
     }
 
     public function formatDate($date) {
@@ -204,9 +216,37 @@ class PrintController extends Controller {
         }
 
 
-        $this->render('massprintonelist', array(
+      /*  $this->render('massprintonelist', array(
             'greetings' => $response
+        ));*/
+
+        //var_dump($response);
+        //exit();
+
+
+        $mPDF = Yii::app()->ePdf->mpdf();
+       // $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
+       // $mPDF = Yii::app()->ePdf->mpdf('', 'A0');
+       // $mPDF ->SetDisplayMode('fullpage');
+       // $mPDF->SetAutoPageBreak (true);
+      //  var_dump($mPDF->autoPageBreak);
+      //  exit();
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+        $mPDF->WriteHTML($stylesheet, 1);
+        $mPDF->WriteHTML($this->render('massprintonelist',
+            array(
+                'greetings' => $response
+            )
+            , true));
+
+        //var_dump($mPDF);
+        //exit();
+        //$mPDF->addPage();
+
+        $this->render('massgreetingspdf', array(
+            'pdfContent' => $mPDF->Output()
         ));
+
     }
 
     // Получить данные для вьюхи
@@ -215,7 +255,6 @@ class PrintController extends Controller {
         $doctors = CJSON::decode($_GET['doctors']);
 
         $resultArr = $this->makePrintListData($doctors, $patients);
-
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $resultArr));
     }
@@ -227,11 +266,48 @@ class PrintController extends Controller {
         for($i = 0; $i < $numPatients; $i++) {
             for($j = 0; $j < $numDoctors; $j++) {
                 // Теперь получаем все приёмы по врачу, пациенту и дате
+
+                // Вот тут надо сконструировать фильтр для пары врач-пациент
+                $filterObject = array(
+                    'groupOp' => 'AND',
+                    'rules' => array()
+                );
+
+                array_push($filterObject['rules'],
+                    array(
+                     'field' => 'patients_ids',
+                     'op' => 'in',
+                     'data' => array($patients[$i])
+                    )
+                );
+
+                array_push($filterObject['rules'],
+                    array(
+                        'field' => 'doctors_ids',
+                        'op' => 'in',
+                        'data' => array($doctors[$j])
+                    )
+                );
+
                 if(isset($_GET['date']) && trim($_GET['date']) != '') {
-                    $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
-                } else {
-                    $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j]);
+                   // $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
+                    array_push($filterObject['rules'],
+                        array(
+                            'field' => 'patient_day',
+                            'op' => 'eq',
+                            'data' => $_GET['date']
+                        )
+                    );
+
                 }
+                /*else {
+                  //  $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j]);
+
+
+                }*/
+
+                $greetings = SheduleByDay::model()->getGreetingsPerQrit($filterObject);
+
                 if(count($greetings) > 0) {
                     foreach($greetings as &$greeting) {
                         $parts = explode('-', $greeting['patient_day']);
@@ -244,6 +320,10 @@ class PrintController extends Controller {
                 }
             }
         }
+
+       // var_dump($resultArr);
+       // exit();
+        return $resultArr;
     }
 
     // Получить страницу массовой печати
