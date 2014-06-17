@@ -4,10 +4,10 @@
 <?php
 foreach ($templates as $oneTemplate)
 {
-	// Печатаем название шаблона
-	?><h3><?php echo $oneTemplate['name']; ?></h3><?php
-		foreach($oneTemplate['cats']  as $index => $categorie) {
-		$this->drawPrintCategorie($categorie);
-	}
+    // Печатаем название шаблона
+    ?><h3><?php echo $oneTemplate['name']; ?></h3><?php
+    foreach($oneTemplate['cats']  as $index => $categorie) {
+        $this->drawPrintCategorie($categorie);
+    }
 }
 ?>

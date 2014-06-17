@@ -246,6 +246,8 @@
         }
 
         globalVariables.resetBeginDate = true;
+        $('.organizer').trigger('resetClickedTime');
+        $('.organizer').trigger('resetClickedDay');
         // Делаем поиск
         $.ajax({
             'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
@@ -697,11 +699,11 @@
                         globalVariables.greetingId = data.greetingId;
                         // Переписываем данные на новые
                         globalVariables.patientData = {
-                            'firstName' : params.firstName,
-                            'lastName' : params.lastName,
-                            'middleName' : params.middleName,
-                            'comment' : params.comment,
-                            'phone' : params.phone
+                            'firstName' : '',
+                            'lastName' : '',
+                            'middleName' : '',
+                            'comment' : '',
+                            'phone' : '+7'
                         };
 
                         $('.organaizer').trigger('changeTriggerByLoad');

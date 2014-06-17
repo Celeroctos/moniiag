@@ -107,8 +107,6 @@
                 var unwriteLink = $('<a>').text('Отписать пациента');
                 $(unwriteLink).on('click', function() {
                     if(window.confirm('Вы действительно хотите отменить приём?')) {
-
-
                         var params = {
                             id: $(li).prop('id').substr(1)
                         };
@@ -146,6 +144,7 @@
 
         $(span).on('click', function(e) {
             $(li).popover('hide');
+            $('.organizer').trigger('resetClickedTime');
             $(li).removeClass('withPatient-pressed');
             e.stopPropagation();
         });
@@ -453,6 +452,7 @@
                                                                             e.stopPropagation();
                                                                             return false;
                                                                         }
+
                                                                         if(clickedTimeLi != null) {
                                                                             $(clickedTimeLi).find('.popover').remove();
                                                                             $(clickedTimeLi).removeClass('withPatient-pressed pressed');
@@ -499,7 +499,8 @@
                                                 $(span).on('click', function(e) {
                                                     $(li).popover('hide');
                                                     $(li).removeClass('full-pressed empty-pressed notfull-pressed');
-                                                    $('.organaizer').trigger('resetClickedDay');
+                                                    $('.organizer').trigger('resetClickedDay');
+                                                    $('.organizer').trigger('resetClickedTime');
                                                     e.stopPropagation();
                                                     return false;
                                                 });

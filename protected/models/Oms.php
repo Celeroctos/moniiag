@@ -268,7 +268,7 @@ class Oms extends MisActiveRecord {
     }
 
     public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
-                               $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false) {
+                               $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false, $withMediate = false) {
 
         $connection = Yii::app()->db;
         $oms = $connection->createCommand()

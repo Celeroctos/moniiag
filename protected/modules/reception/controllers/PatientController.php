@@ -741,6 +741,35 @@ class PatientController extends Controller {
         return $idPerYear.'/'.$code;
     }
 
+    public function actionSearchMediate() {
+        $filters = $this->checkFilters();
+
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        $model = new MediatePatient();
+        $num = $model->getRows($filters, false, false, false, false);
+
+        if(count($num) > 0) {
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows);
+        } else {
+            $items = array();
+        }
+
+        echo CJSON::encode(
+            array(
+                'success' => true,
+                'rows' => $items,
+                'total' => $totalPages,
+                'records' => count($num)
+            )
+        );
+    }
+
     // Поиск пациента и его запсь
     public function actionSearch() {
         // Проверим наличие фильтров
@@ -769,6 +798,13 @@ class PatientController extends Controller {
             $mediateOnly = false;
         }
 
+        if(isset($_GET['withmediate']) && $_GET['withmediate'] == 0) {
+            $withMediate = true;
+        } else {
+            $withMediate = false;
+        }
+
+
         if(isset($_GET['onlyingreetings']) && $_GET['onlyingreetings'] == 1) {
             $onlyInGreetings = true;
         } else {
@@ -779,7 +815,6 @@ class PatientController extends Controller {
             $model = new Oms();
             // Вычислим общее количество записей
             $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings);
-
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings);

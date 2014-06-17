@@ -43,9 +43,11 @@
     $('#patientCombo').on('change', function(e) {
         if($(this).val() == 0) {
             $('#patientChooser').addClass('no-display');
+            $('#mediateChooser').addClass('no-display');
             $('#status').prop('disabled', false);
         } else {
             $('#patientChooser').removeClass('no-display');
+            $('#mediateChooser').removeClass('no-display');
             $('#status').prop('disabled', true);
         }
     });
@@ -58,6 +60,7 @@
         var forPatients = $('#patientCombo').val();
         var doctorsIds = [];
         var patientIds = [];
+        var mediateIds = [];
 
         if(forDoctors == 1) { // Для конкретных врачей
             var choosedDoctors = $.fn['doctorChooser'].getChoosed();
@@ -70,6 +73,10 @@
             var choosedPatients = $.fn['patientChooser'].getChoosed();
             for(var i = 0; i < choosedPatients.length; i++) {
                 patientIds.push(choosedPatients[i].id);
+            }
+            var choosedMediate = $.fn['mediateChooser'].getChoosed();
+            for(var i = 0; i < choosedMediate.length; i++) {
+                mediateIds.push(choosedMediate[i].id);
             }
         }
 
@@ -87,6 +94,7 @@
             'data' : {
                 'doctors' : $.toJSON(doctorsIds),
                 'patients' : $.toJSON(patientIds),
+                'mediates' :  $.toJSON(mediateIds),
                 'date' : greetingDate,
                 'status' : checked ? 1 : 0,
                 'forDoctors' : forDoctors,
@@ -193,10 +201,13 @@
                 '<td>' +
                     (typeof shedule[i].phone != 'undefined' && shedule[i].phone != null ? shedule[i].phone : '') +
                     (typeof shedule[i].contact != 'undefined' && shedule[i].contact != null ? shedule[i].contact : '')
-                '</td>' +
-                '<td>' +
-                    (typeof shedule[i].comment != 'undefined' && shedule[i].comment != null ? shedule[i].comment : '') +
                 '</td>';
+
+            if(typeof shedule[i].comment != 'undefined' && shedule[i].comment != null) {
+                content += '<td>' + shedule[i].comment + '</td>';
+            } else {
+                content += '<td></td>';
+            }
 
             if(displayTime == 1) {
                 content += '<td>' +
@@ -273,7 +284,7 @@
         if(checked.length == 0 || $(this).prop('disabled')) {
             return false;
         } 
-console.log(checked);
+
         var ids = [];
         var numChecked = 0;
         for(var i = 0; i < checked.length; i++) {

@@ -283,7 +283,7 @@
                     '<td>' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</td>' +
                     '<td>' + data[i].phone + '</td>' +
                     '<td>' +
-                        '<a title="Регистрировать ОМС и ЭМК" href="http://' + location.host + '/index.php/reception/patient/addomsview/" target="_blank">' +
+                        '<a title="Регистрировать ОМС и ЭМК" href="http://' + location.host + '/index.php/reception/patient/addomsview/">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
@@ -310,7 +310,7 @@
                    /*  '<td>' + data[i].reg_date + '</td>' + */
                     '<td class="cardNumber">' + data[i].card_number + '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК" target="_blank">' +
+                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +

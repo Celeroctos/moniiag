@@ -108,14 +108,10 @@ class SheduleController extends Controller {
         if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
             $dataD = CJSON::decode($_GET['doctors']);
             $dataP = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
             $filters = array(
                 'groupOp' => 'AND',
                 'rules' => array(
-                    array(
-                        'field' => 'patient_day',
-                        'op' => 'eq',
-                        'data' => $_GET['date']
-                    ),
                     array(
                         'field' => 'doctors_ids',
                         'op' => 'in',
@@ -125,6 +121,16 @@ class SheduleController extends Controller {
                         'field' => 'patients_ids',
                         'op' => 'in',
                         'data' => $dataP
+                    ),
+                    array(
+                        'field' => 'mediates_ids',
+                        'op' => 'in',
+                        'data' => $dataM
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
                     )
                 )
             );
@@ -137,14 +143,14 @@ class SheduleController extends Controller {
                 'groupOp' => 'AND',
                 'rules' => array(
                     array(
-                        'field' => 'patient_day',
-                        'op' => 'eq',
-                        'data' => $_GET['date']
-                    ),
-                    array(
                         'field' => 'doctors_ids',
                         'op' => 'in',
                         'data' => $data
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
                     )
                 )
             );
@@ -152,18 +158,24 @@ class SheduleController extends Controller {
             $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
         } elseif($_GET['forDoctors'] == 0 && $_GET['forPatients'] == 1) {
             $data = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
             $filters = array(
                 'groupOp' => 'AND',
                 'rules' => array(
                     array(
-                        'field' => 'patient_day',
-                        'op' => 'eq',
-                        'data' => $_GET['date']
-                    ),
-                    array(
                         'field' => 'patients_ids',
                         'op' => 'in',
                         'data' => $data
+                    ),
+                    array(
+                        'field' => 'mediates_ids',
+                        'op' => 'in',
+                        'data' => $dataM
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
                     )
                 )
             );

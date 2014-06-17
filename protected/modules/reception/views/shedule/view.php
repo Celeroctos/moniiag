@@ -78,7 +78,7 @@
 			  </div>
 		  </div>
 		  <div class="form-group chooser no-display" id="patientChooser">
-			  <label for="categorie" class="col-xs-4 control-label">Пациент (Enter - добавить)</label>
+			  <label for="patient" class="col-xs-4 control-label">Обычный пациент (Enter - добавить)</label>
 			  <div class="col-xs-6">
 				  <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">
 				  <ul class="variants no-display">
@@ -87,6 +87,16 @@
 				  </div>
 			  </div>
 		  </div>
+            <div class="form-group chooser no-display" id="mediateChooser">
+                <label for="mediatePatient" class="col-xs-4 control-label">Опосредованный пациент (Enter - добавить)</label>
+                <div class="col-xs-6">
+                    <input type="text" class="form-control" autofocus id="mediatePatient" placeholder="ФИО пациента">
+                    <ul class="variants no-display">
+                    </ul>
+                    <div class="choosed">
+                    </div>
+                </div>
+            </div>
 		  <div class="form-group">
 			  <label for="status" class="col-xs-8 control-label required">Только опосредованные пациенты (без ЭМК)</label>
 			  <div class="col-xs-4">
@@ -341,12 +351,11 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, нажав на кнопку ниже, либо вернуться к поиску.</p>
+                    <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, перейдя по <?php echo CHtml::link('этой', array('/reception/patient/viewadd'), array('target' => '_blank')) ?> ссылке.</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="createNewPatientBtn">Завести нового пациента</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Вернуться в поиск</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </div>
     </div>
