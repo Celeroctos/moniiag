@@ -483,6 +483,26 @@ $(document).ready(function() {
                 ]
             }
         },
+        'mediateChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', телефон ' + row.phone));
+            },
+            'displayFunc' : function(row) {
+                return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+            },
+            'url' : '/index.php/reception/patient/searchmediate/?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'monPatientChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,

@@ -333,7 +333,7 @@ class SheduleByDay extends MisActiveRecord {
                     'd' => array('d_first_name', 'd_middle_name', 'd_last_name', 'doctor_fio', 'doctors_ids'),
                     'm' => array('contact'),
                     'mdp' => array('m_first_name', 'm_middle_name', 'm_last_name', 'patient_fio', 'm_phone'),
-                    'dsbd' => array('patient_day', 'medcard_id')
+                    'dsbd' => array('patient_day', 'medcard_id', 'mediates_ids')
                 ), array(
                     'phone' => 'contact',
                     'd_first_name' => 'first_name',
@@ -347,7 +347,13 @@ class SheduleByDay extends MisActiveRecord {
                     'm_middle_name' => 'middle_name',
                     'patients_ids' => 'id',
                     'doctors_ids' => 'id',
+                    'mediates_ids' => 'mediate_id',
                     'm_phone' => 'phone'
+                ), array(
+                    'OR' => array(
+                        'mediates_ids',
+                        'pateints_ids'
+                    )
                 ));
             }
             if($mediateOnly) {
@@ -361,8 +367,8 @@ class SheduleByDay extends MisActiveRecord {
                 $greetings->limit($limit, $start);
             }
 
-           // var_dump($greetings);
-           // exit();
+           //var_dump($greetings->text);
+            //exit();
             $result = $greetings->queryAll();
             return $result;
           //  var_dump($result );

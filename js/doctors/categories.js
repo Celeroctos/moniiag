@@ -4,7 +4,7 @@ $(document).ready(function() {
         var elementId = $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
         $('#controlId').val(elementId);
         globalVariables.elementId = elementId;
-        globalVariables.domElement = $(this).attr('id');
+        globalVariables.domElement = $(this).parents('.form-group').find('select');
         $('#addValuePopup').modal({
         });
     });
@@ -54,6 +54,7 @@ $(document).ready(function() {
             $('#addValuePopup').modal('hide');
             $("#add-value-form")[0].reset(); // Сбрасываем форму
             $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+            $(globalVariables.domElement).val(ajaxData.id);
         } else {
            showErrors(ajaxData);
         }
