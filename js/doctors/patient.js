@@ -908,6 +908,11 @@ function getDependenceElementWithWrapper(container, selectorString)
         {
             // Выбираем родителя div c классом twoColumnList
             result = $(targetElement).parents('div.twoColumnList');
+            // Если результат - пустой - ищем контейнер с датой
+            if ($(result).length==0)
+            {
+                result = $(targetElement).parents('div.date-control');
+            }
         }
         else
         {

@@ -67,3 +67,14 @@ Stack trace:
 REQUEST_URI=/index.php/doctors/print/makeprintpdf?_=1402986587483
 HTTP_REFERER=http://mis.my/index.php/doctors/print/printmainpage/?medcardid=12346/11
 ---
+2014/06/17 11:41:27 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "index".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/shedule')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/shedule/
+HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=12345/11&date=2014-06-17&rowid=2606
+---
