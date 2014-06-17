@@ -191,9 +191,10 @@
                 '</td>' +
                 '<td>' +
                     (typeof shedule[i].phone != 'undefined' && shedule[i].phone != null ? shedule[i].phone : '') +
+                    (typeof shedule[i].contact != 'undefined' && shedule[i].contact != null ? shedule[i].contact : '')
                 '</td>' +
                 '<td>' +
-                    (typeof shedule[i].phone != 'comment' && shedule[i].comment != null ? shedule[i].comment : '') +
+                    (typeof shedule[i].comment != 'undefined' && shedule[i].comment != null ? shedule[i].comment : '') +
                 '</td>';
 
             if(displayTime == 1) {

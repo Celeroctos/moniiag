@@ -1363,6 +1363,7 @@ class TasuController extends Controller {
         ));
     }
 
+    // --- Begin 17.06.2014 ---
     public function actionSyncOms() {
         if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
             echo CJSON::encode(array(
@@ -1397,6 +1398,9 @@ class TasuController extends Controller {
             $this->totalRows = $_GET['totalRows'];
         }
 
+        $conn = Yii::app()->db;
+        $sql = "INSERT INTO mis.oms (first_name, middle_name, last_name, oms_number, gender, birthday, type, givedate, enddate, status) VALUES";
+        $issetAnybody = false;
         foreach($omss as $oms) {
             $this->processed++;
 
@@ -1408,40 +1412,37 @@ class TasuController extends Controller {
                     ':oms_number' => $serie.' '.$number,
                 )
             );
-            /*$sql = "SELECT
-                        t.oms_number
-                    FROM mis.oms t
-                    WHERE t.oms_number = '".$serie." ".$number."'";*/
-            //$conn = Yii::app()->db;
-            //$issetOms = $conn->createCommand($sql)->queryRow();
-            //var_dump($issetOms);
-            //exit();
+            $issetOms = null;
             if($issetOms == null || $issetOms === false) {
+                if(!$issetAnybody) {
+                    $issetAnybody = true;
+                }
                 // Добавляем пациента, если его нет
                 try {
-                    $newOms = new Oms();
-                    $newOms->first_name = $oms['IM'];
-                    /*$newOms->last_name = implode('', array_reverse(preg_split('//u', $oms['FAM'], -1, PREG_SPLIT_NO_EMPTY)));*/
-                    $newOms->last_name = $oms['FAM'];
-                    $newOms->type = 0; // Пока временно так
-                    $newOms->middle_name = $oms['OT'];
-                    $newOms->oms_number = $serie.' '.$number;
-                    $newOms->gender = $oms['SEX'] == 1 ? 1 : 0;
-                    $newOms->birthday = $oms['BIRTHDAY'];
-                    $newOms->givedate = $oms['DATE_N'];
-                    $newOms->status = 0;
-                    $newOms->enddate = $oms['DATE_E'];
-                    if(!$newOms->save()) {
-                        $this->log[] = 'Невозможно импортировать полис с кодом '.$serie.' '.$number;
-                        $this->numErrors++;
-                    } else {
-                        $this->numAdded++;
-                    }
+                    $oms['FAM'] = str_replace("'", "`", $oms['FAM']);
+                    $sql .= "('".$oms['IM']."',".
+                        "'".$oms['OT']."',".
+                        "'".$oms['FAM']."',".
+                        "'".$serie.' '.$number."',".
+                        ($oms['SEX'] == 1 ? "1" : "0").",".
+                        "'".$oms['BIRTHDAY']."',".
+                        "0,".
+                        "'".$oms['DATE_N']."',".
+                        ($oms['DATE_E'] == '' ? 'NULL' : "'".$oms['DATE_E']."'").",
+						   0),";
+
+                    $this->numAdded++;
                 } catch(Exception $e) {
                     $this->numErrors++;
                 }
             }
         }
+
+        if($issetAnybody) {
+            $sql = mb_substr($sql, 0, mb_strlen($sql) - 1);
+            $result = $conn->createCommand($sql)->execute();
+        }
+
         echo CJSON::encode(array(
                 'success' => true,
                 'data' => array(
@@ -1454,6 +1455,7 @@ class TasuController extends Controller {
                 ))
         );
     }
+    // --- End 17.06.2014 ---
 
 
     /* Синхронизация пациентов: ТАСУ в МИС */

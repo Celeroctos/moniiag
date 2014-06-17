@@ -478,7 +478,7 @@
                                                         // Ограничение на кол-во приёмов колл-центра
                                                         if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1 && $(ulInPopover).find('li.withPatient').length >= callCenterGreetingsLimit) {
 // Логика неверна: здесь нужно считать количество записанных постфактум
-                                                            $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'});
+                                                            $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Center');
                                                         } else {
 
                                                         }

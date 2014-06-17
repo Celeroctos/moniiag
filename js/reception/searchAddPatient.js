@@ -689,6 +689,18 @@
         return false;
     });
 
+    // --- Begin 17.06.2014 ---
+    $('#editAddressPopup').on('hidden.bs.modal', function() {
+        if(clickedRow != null) {
+            $(clickedRow).find('input').focus();
+        }
+    });
+
+    $('#editAddressPopup').on('shown.bs.modal', function() {
+        $('#editAddressPopup #region').focus();
+    });
+    // --- End 17.06.2014 ---
+
     $('#editAddressPopup .editSubmit').on('click', function(e) {
         if($.fn['regionChooser'].getChoosed().length > 0) {
             var region = $.fn['regionChooser'].getChoosed()[0].name;
