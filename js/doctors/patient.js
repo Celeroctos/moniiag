@@ -1014,11 +1014,11 @@ function changeControlState(dep, elementValue, container) {
         for (var j = 0; j < dep.dependences.list.length; j++) {
             if (dep.dependences.list[j].value == elementValue) {
                 onEqualValue(container, dep.dependences.list[j]);
-                switchedOnElements[dep.dependences.list[j].value] = 1;
+                switchedOnElements[dep.dependences.list[j].elementId] = 1;
             }
             else {
                 // Противоположное действие экшену по дефолту
-                if (switchedOnElements[dep.dependences.list[j].value]==undefined)
+                if (switchedOnElements[dep.dependences.list[j].elementId]==undefined)
                 {
                     onNotEqualValue(container, dep.dependences.list[j]);
                 }
