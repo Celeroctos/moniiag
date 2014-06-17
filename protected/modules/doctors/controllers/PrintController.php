@@ -61,10 +61,22 @@ class PrintController extends Controller {
 		$addressRegData = $patientController[0]->getAddressStr($medcard['address_reg'],true);
         $medcard['address_reg'] = $addressData['addressStr'];
 
-        $this->render('index', array('medcard' => $medcard,
-                                     'oms' => $oms,
-                                     'enterprise' => $enterprise,
-                                     'privileges' => $privileges));
+
+        $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0, '', 8, 8, 8, 8, 0, 0);
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+        $mPDF->WriteHTML($stylesheet, 1);
+        $mPDF->WriteHTML(
+
+            $this->render('index', array('medcard' => $medcard,
+                'oms' => $oms,
+                'enterprise' => $enterprise,
+                'privileges' => $privileges),true)
+
+        );
+
+        $this->render('greetingpdf', array(
+            'pdfContent' => $mPDF->Output()
+        ));
     }
 
     public function formatDate($date) {

@@ -143,7 +143,7 @@
             $('#print-submit').prop('disabled', true);
         }*/
         for(var i = 0; i < shedule.length; i++) {
-            console.log(shedule[i].doctor_id);
+           // console.log(shedule[i].doctor_id);
             var tr = $('<tr>');
             var content = '';
             if(shedule[i].doctor_id != currentDoctorId || i + 1 >= shedule.length) {

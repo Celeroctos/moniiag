@@ -787,7 +787,9 @@ function checkElementsDependences() {
                 (function (select, dep) {
                    // console.log( $(select).attr('id') );
                     $(select).on('change', function (e) {
+                      //  console.log($(select));
                         var elementValue = $(select).val();
+                       // console.log(elementValue);
                         changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
                     });
                     $(select).trigger('change');

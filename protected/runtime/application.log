@@ -1,1 +1,69 @@
-﻿
+﻿2014/06/16 18:14:17 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcard_elements_patient_pkey"
+DETAIL:  Ключ "(medcard_id, history_id, path, greeting_id, categorie_id)=(12345/11, 1, 1.18.8, 2606, 12)" уже существует.. Выполнявшийся SQL-запрос: INSERT INTO "mis"."medcard_elements_patient" ("is_record", "medcard_id", "history_id", "record_id", "greeting_id", "categorie_name", "is_wrapped", "categorie_id", "element_id", "change_date", "type", "template_id", "template_name", "is_dynamic", "real_categorie_id", "config", "path") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16).
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (191)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/06/16 18:14:17 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcard_elements_patient_pkey"
+DETAIL:  Ключ "(medcard_id, history_id, path, greeting_id, categorie_id)=(12345/11, 1, 1.18.8, 2606, 12)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcard_elements_patient" ("is_record", "medcard_id", "history_id", "record_id", "greeting_id", "categorie_name", "is_wrapped", "categorie_id", "element_id", "change_date", "type", "template_id", "template_name", "is_dynamic", "real_categorie_id", "config", "path") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16)' in Z:\home\mis.my\yii\db\CDbCommand.php:358
+Stack trace:
+#0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php(191): CActiveRecord->save()
+#3 [internal function]: PatientController->actionCloneElement('12345/11|2606|1...', false, 0, Array)
+#4 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(PatientController), Array)
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(PatientController), Object(ReflectionMethod), Array)
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('cloneelement')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/patient/cloneelement?pr_key=12345%2F11%7C2606%7C1.18.7%7C12%7C13&_=1402928021049
+HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=12345/11&date=2014-6-17&rowid=2606
+---
+2014/06/16 18:14:18 [error] [system.db.CDbCommand] Не удалось выполнить CDbCommand::execute(): SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcard_elements_patient_pkey"
+DETAIL:  Ключ "(medcard_id, history_id, path, greeting_id, categorie_id)=(12345/11, 1, 1.18.8, 2606, 12)" уже существует.. Выполнявшийся SQL-запрос: INSERT INTO "mis"."medcard_elements_patient" ("is_record", "medcard_id", "history_id", "record_id", "greeting_id", "categorie_name", "is_wrapped", "categorie_id", "element_id", "change_date", "type", "template_id", "template_name", "is_dynamic", "real_categorie_id", "config", "path") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16).
+in Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php (191)
+in Z:\home\mis.my\www\protected\components\Controller.php (33)
+in Z:\home\mis.my\www\index.php (13)
+2014/06/16 18:14:18 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand не удалось исполнить SQL-запрос: SQLSTATE[23505]: Unique violation: 7 ОШИБКА:  повторяющееся значение ключа нарушает ограничение уникальности "medcard_elements_patient_pkey"
+DETAIL:  Ключ "(medcard_id, history_id, path, greeting_id, categorie_id)=(12345/11, 1, 1.18.8, 2606, 12)" уже существует.. The SQL statement executed was: INSERT INTO "mis"."medcard_elements_patient" ("is_record", "medcard_id", "history_id", "record_id", "greeting_id", "categorie_name", "is_wrapped", "categorie_id", "element_id", "change_date", "type", "template_id", "template_name", "is_dynamic", "real_categorie_id", "config", "path") VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5, :yp6, :yp7, :yp8, :yp9, :yp10, :yp11, :yp12, :yp13, :yp14, :yp15, :yp16)' in Z:\home\mis.my\yii\db\CDbCommand.php:358
+Stack trace:
+#0 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(1077): CDbCommand->execute()
+#1 Z:\home\mis.my\yii\db\ar\CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 Z:\home\mis.my\www\protected\modules\doctors\controllers\PatientController.php(191): CActiveRecord->save()
+#3 [internal function]: PatientController->actionCloneElement('12345/11|2606|1...', false, 0, Array)
+#4 Z:\home\mis.my\yii\web\actions\CAction.php(108): ReflectionMethod->invokeArgs(Object(PatientController), Array)
+#5 Z:\home\mis.my\yii\web\actions\CInlineAction.php(47): CAction->runWithParamsInternal(Object(PatientController), Object(ReflectionMethod), Array)
+#6 Z:\home\mis.my\yii\web\CController.php(308): CInlineAction->runWithParams(Array)
+#7 Z:\home\mis.my\yii\web\filters\CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#8 Z:\home\mis.my\www\protected\components\Controller.php(33): CFilterChain->run()
+#9 Z:\home\mis.my\yii\web\filters\CInlineFilter.php(58): Controller->filterGetAccessHierarchy(Object(CFilterChain))
+#10 Z:\home\mis.my\yii\web\filters\CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 Z:\home\mis.my\yii\web\CController.php(291): CFilterChain->run()
+#12 Z:\home\mis.my\yii\web\CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('cloneelement')
+#14 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/patient...')
+#15 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#16 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/index.php/doctors/patient/cloneelement?pr_key=12345%2F11%7C2606%7C1.18.7%7C12%7C13&_=1402928021050
+HTTP_REFERER=http://mis.my/index.php/doctors/shedule/view?cardid=12345/11&date=2014-6-17&rowid=2606
+---
+2014/06/17 10:29:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Системе не удалось найти запрашиваемое действие "makeprintpdf".' in Z:\home\mis.my\yii\web\CController.php:483
+Stack trace:
+#0 Z:\home\mis.my\yii\web\CController.php(270): CController->missingAction('makeprintpdf')
+#1 Z:\home\mis.my\yii\web\CWebApplication.php(282): CController->run('makeprintpdf')
+#2 Z:\home\mis.my\yii\web\CWebApplication.php(141): CWebApplication->runController('doctors/print/m...')
+#3 Z:\home\mis.my\yii\base\CApplication.php(180): CWebApplication->processRequest()
+#4 Z:\home\mis.my\www\index.php(13): CApplication->run()
+#5 {main}
+REQUEST_URI=/index.php/doctors/print/makeprintpdf?_=1402986587483
+HTTP_REFERER=http://mis.my/index.php/doctors/print/printmainpage/?medcardid=12346/11
+---

@@ -3,7 +3,6 @@ $(document).ready(function(e) {
     // Заполняем таблицу значениями
     $('.printBtn').on('click', function(e) {
         //window.print();
-        alert("!");
         $.ajax({
             'url' : '/index.php/doctors/print/makeprintpdf',
             'data' : {},

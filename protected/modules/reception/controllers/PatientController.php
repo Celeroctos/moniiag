@@ -460,7 +460,7 @@ class PatientController extends Controller {
         $address = $cladrController[0]->actionGetCladrData($data);
         $addressStr = '';
         $addressHidden = array();
-        if(isset($address['region']) && $address['region'] != null) {
+        if(isset($address['region']) && $address['region'] != null && $address['region'] != '') {
             $addressStr = $address['region'][0]['name'].', ';
             $addressHidden['regionId'] = $address['region'][0]['id'];
         } else {
@@ -469,7 +469,7 @@ class PatientController extends Controller {
             }
             $addressHidden['regionId'] = null;
         }
-        if(isset($address['district']) && $address['district'] != null) {
+        if(isset($address['district']) && $address['district'] != null && $address['district'] != '') {
             $addressStr .= $address['district'][0]['name'].', ';
             $addressHidden['districtId'] =  $address['district'][0]['id'];
         } else {
@@ -478,7 +478,7 @@ class PatientController extends Controller {
             }
             $addressHidden['districtId'] = null;
         }
-        if(isset($address['settlement']) && $address['settlement'] != null) {
+        if(isset($address['settlement']) && $address['settlement'] != null && $address['settlement'] != '') {
             $addressStr .= $address['settlement'][0]['name'].', ';
             $addressHidden['settlementId'] = $address['settlement'][0]['id'];
         } else {
@@ -487,7 +487,7 @@ class PatientController extends Controller {
             }
             $addressHidden['settlementId'] = null;
         }
-        if(isset($address['street']) && $address['street'] != null) {
+        if(isset($address['street']) && $address['street'] != null && $address['street'] != '') {
             $addressStr .= $address['street'][0]['name'].', ';
             $addressHidden['streetId'] = $address['street'][0]['id'];
         } else {
