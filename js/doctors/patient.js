@@ -783,7 +783,8 @@ function checkElementsDependences() {
         var deps = globalVariables.elementsDependences;
         for (var i = 0; i < deps.length; i++) {
             // По этому пути вынимаем контрол
-           // console.log(deps[i].elementId);
+            console.log(deps[i].elementId);
+            console.log(deps[i].dependences.list);
             var undottedPath = deps[i].path.split('.').join('|');
             if (deps[i].dependences.list.length > 0) {
                 filteredDeps.push(deps[i]);
@@ -1005,13 +1006,22 @@ function changeControlState(dep, elementValue, container) {
         }
     }
     else {
+        // Массив с [Номер элемента] = 1
+        // Сделан для того, чтобы если зависимость сработала, чтобы потом не
+        //      скрывать этот элемент при переборе остальных значений главного контрола
+        var switchedOnElements = [];
+
         for (var j = 0; j < dep.dependences.list.length; j++) {
             if (dep.dependences.list[j].value == elementValue) {
                 onEqualValue(container, dep.dependences.list[j]);
+                switchedOnElements[dep.dependences.list[j].elementId] = 1;
             }
             else {
                 // Противоположное действие экшену по дефолту
-                onNotEqualValue(container, dep.dependences.list[j]);
+                if (switchedOnElements[dep.dependences.list[j].elementId]==undefined)
+                {
+                    onNotEqualValue(container, dep.dependences.list[j]);
+                }
             }
         }
     }
