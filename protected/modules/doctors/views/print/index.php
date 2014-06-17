@@ -66,23 +66,23 @@
         </tr>
         <tr>
             <td colspan="6" class="first">10. Адрес постоянного места жительства</td>
-            
+
         </tr>
-		<tr>
-			<td colspan="6" class="medium"><strong class="medium"><?php echo $medcard->address_reg; ?></td>
-		</tr>
+        <tr>
+            <td colspan="6" class="first"><span  class="first"><?php echo $medcard->address_reg; ?></td>
+        </tr>
         <tr>
             <td colspan="6" class="first">11. Адрес регистрации по месту пребывания</td>
-           
+
         </tr>
-		<tr>
-			<td colspan="6" class="big"><span class="big"><?php echo $medcard->address; ?></td>
-		</tr>
+        <tr>
+            <td colspan="6" class="first"><span class="first"><?php echo $medcard->address; ?></td>
+        </tr>
         <tr>
             <td class="first">12. Телефон</td>
-            <td class="big"><span class="big"><?php echo $medcard->contact; ?></strong></td>
-            <td colspan="2" class="first">Номер паспорта</td>
-            <td class="big"><nobr><span class="big"><?php echo $medcard->serie; ?> <?php echo $medcard->docnumber; ?></nobr></td>
+            <td class="big" colspan="2"><span class="big"><?php echo $medcard->contact; ?></strong></td>
+            <td class="first">Номер паспорта</td>
+            <td class="big" colspan="2"><nobr><span class="big"><?php echo $medcard->serie; ?> <?php echo $medcard->docnumber; ?></nobr></td>
         </tr>
         <tr>
             <td class="first">13. Документ по льготе</td>
