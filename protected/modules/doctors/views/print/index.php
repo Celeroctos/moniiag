@@ -69,14 +69,14 @@
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><span  class="medium2"><?php echo $medcard->address_reg; ?></td>
+        <td colspan="6" class="medium2"><strong><span  class="medium2"><?php echo $medcard->address_reg_str; ?></strong></td>
     </tr>
     <tr>
         <td colspan="6" class="first">11. Адрес регистрации по месту пребывания</td>
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><span class="medium2"><?php echo $medcard->address; ?></td>
+        <td colspan="6" class="medium2"><span class="medium2"><?php echo $medcard->address_str; ?></td>
     </tr>
     <tr>
         <td class="first">12. Телефон</td>

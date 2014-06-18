@@ -151,28 +151,30 @@ class PrintController extends Controller {
 		// Теперь поделим категории
 		$categorieWidget->divideTreebyCats();
 
-		//var_dump($categorieWidget->dividedCats);
-		//exit();
 		$sortedElements = $categorieWidget->dividedCats;
-		
-		//ob_end_clean();
-		// Рендерится, если приём один, если приёмов несколько (массПечать), то просто возвращается
-        //var_dump($sortedElements);
-        //exit();
-
 		if($greetingIn === false) {
             if(!$returnResult) {
-                //var_dump("!");
-                //exit();
-                $mPDF = Yii::app()->ePdf->mpdf();
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
+
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
                 $mPDF->WriteHTML($stylesheet, 1);
-                $mPDF->WriteHTML($this->render('greeting', array(
-                    'templates' => $sortedElements,
-                    'greeting' => $greetingInfo
-                ), true));
 
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.less');
+                $mPDF->WriteHTML($stylesheet, 1);
+
+
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
+                $mPDF->WriteHTML($stylesheet, 1);
+                $htmlForPdf =
+                    $this->render('greeting', array(
+                        'templates' => $sortedElements,
+                        'greeting' => $greetingInfo
+                    ), true);
+                $mPDF->WriteHTML(
+                    $htmlForPdf
+                );
+
+                ob_end_clean();
                 $this->render('greetingpdf', array(
                     'pdfContent' => $mPDF->Output()
                 ));
@@ -189,14 +191,6 @@ class PrintController extends Controller {
             );
 		}
     }
-
-	public function drawPrintCategorie($oneCat)
-	{
-		 $this->render('application.modules.doctors.components.widgets.views.printCategory', array(
-            'category' => $oneCat,
-        ));
-	}
-
     // Массовая печать результатов приёма
     public function actionMassPrintGreetings() {
         if(!isset($_GET['greetingids'])) {

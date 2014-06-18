@@ -293,7 +293,13 @@ var dateControlConfigs =
        // Подвязываем обработчик события нажатия на верхние кнопки для контрола
        var btnPrevNext = $(Control).find('.date-ctrl-up-buttons .btn-group button, .date-ctrl-down-buttons .btn-group button');
        var lastNullEntered = false; // Чтобы считывать 01, 02...
-				
+
+       // Метод, вызываемый в конце события отпускания клавиши для подконтрола
+       function onCommonKeyUp()
+       {
+           $(Control).find('.subcontrol input').trigger('change');
+       }
+
 	   $(btnPrevNext).on('click',function (e) {
                     ArrowCalendarClickHandler(e, Control);
                 });
@@ -360,6 +366,7 @@ var dateControlConfigs =
                         // См. выше не сработает.
                         $(this).select();
                     }
+                    onCommonKeyUp();
                 }).on('keydown', function(e) {
                     $(this).css('background-color', '#ffffff');
                     // Вниз
@@ -454,6 +461,7 @@ var dateControlConfigs =
                     if(e.keyCode == 9 && $.trim($(this).val()) != '') {
                         $(this).select();
                     }
+                    onCommonKeyUp();
                 }).on('keydown', function(e) {
                     $(this).css('background-color', '#ffffff');
                     // Вниз
@@ -527,6 +535,7 @@ var dateControlConfigs =
                     if(e.keyCode == 9 && $.trim($(this).val()) != '' && (e.keyCode < 37 || e.keyCode > 40)) {
                         $(this).select();
                     }
+                    onCommonKeyUp();
                 }).on('keydown', function(e) {
                     $(this).css('background-color', '#ffffff');
                     // Вниз
@@ -544,7 +553,7 @@ var dateControlConfigs =
 
                     var selected = getSelected(this);
                     // Если год введён и нет выделения, то не давать больше вводить символы, кроме табуляции и бекспейса
-                    if($(this).val().length >= 4 && e.keyCode != 9 && e.keyCode != 8 && $.trim(selected) == '') {
+                    if($(this).val().length >= 4 && e.keyCode != 9 && e.keyCode != 13 && e.keyCode != 8 && $.trim(selected) == '') {
                         return false;
                     }
 

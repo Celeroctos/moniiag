@@ -1,47 +1,47 @@
 <?php
 //var_dump("!");
 		//exit();
-		// Ïåðåáèðàåì ýëåìåíòû êàòåãîðèè - ñìîòðèì, åñëè òåêóùèé óçåë äåðåâà - ýëåìåíò, òî âûâîäèì åãî â ñîîòâåòñòâèè ñ åãî òèïîì
-		//		Èíà÷å âûçûâàåì ôóíêöèþ êîíòðîëëåðà âûçûâàþùàÿ îòðèñîâêó äåòåé
+		// ÐŸÐµÑ€ÐµÐ±Ð¸Ñ€Ð°ÐµÐ¼ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸ - ÑÐ¼Ð¾Ñ‚Ñ€Ð¸Ð¼, ÐµÑÐ»Ð¸ Ñ‚ÐµÐºÑƒÑ‰Ð¸Ð¹ ÑƒÐ·ÐµÐ» Ð´ÐµÑ€ÐµÐ²Ð° - ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚, Ñ‚Ð¾ Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ ÐµÐ³Ð¾ Ð² ÑÐ¾Ð¾Ñ‚Ð²ÐµÑ‚ÑÑ‚Ð²Ð¸Ð¸ Ñ ÐµÐ³Ð¾ Ñ‚Ð¸Ð¿Ð¾Ð¼
+		//		Ð˜Ð½Ð°Ñ‡Ðµ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ð»ÐµÑ€Ð° Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÑŽÑ‰Ð°Ñ Ð¾Ñ‚Ñ€Ð¸ÑÐ¾Ð²ÐºÑƒ Ð´ÐµÑ‚ÐµÐ¹
 		//var_dump($category);
 		//exit();
+?>
+<?php
+        $elementNumber = 0;
 		foreach($category as $key => $child) 
 		{	
 			if (!isset ($child['element'])) continue;
-			//var_dump($child);
-			//exit();
-			//var_dump("!");
-			//exit();	
+            $elementNumber++;
 			if ($child['element']['element_id']==-1)
 			{
-				// Âûâîäèì íàçâàíèå êàòåãîðèè
+				// Ð’Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸
 				?>
 				<div style="margin-left:20px;">
-				<h4><?php echo $child['element']['name']; ?></h4>
+				<strong style="text-decoration: underline"><?php echo $child['element']['name']; ?></strong>
 				<p class ="print-elements">
 				<?php
-				$this->drawPrintCategorie($child);			
-				?></p>
+                // Ð’Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ð²Ð¸Ð´Ð¶ÐµÑ‚ Ð´Ð»Ñ Ð²Ð»Ð¾Ð¶ÐµÐ½Ð½Ð¾Ð¹ ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸
+                $printCategorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
+                    'categoryToPrint' => $child
+                ));
+                $printCategorieWidget->run();
+
+				?>
+                    </p>
 				</div>
 				<?php
 			}
 			else
-			{	
-				//var_dump("!");
-				//exit();
+			{
 				$element = $child['element'];
-					//if (!isset ($element['element'])) continue;
-					//var_dump("!");
-					//exit();
 					if ($element['value']!='' && $element['value']!=null)
 					{
 						if ($element['type']=='4')
 						{
-							//$configOfTable =  CJSON::decode($element['config']);
 							$configOfTable =  $element['config'];
-							// Ðåäàêòèðóåìàÿ òàáëèöà. Å¸ íàäî ðàçäåðáàíèòü ïî ÿ÷åéêàì è âûâåñòè
+							// Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€ÑƒÐµÐ¼Ð°Ñ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ð°. Ð•Ñ‘ Ð½Ð°Ð´Ð¾ Ñ€Ð°Ð·Ð´ÐµÑ€Ð±Ð°Ð½Ð¸Ñ‚ÑŒ Ð¿Ð¾ ÑÑ‡ÐµÐ¹ÐºÐ°Ð¼ Ð¸ Ð²Ñ‹Ð²ÐµÑÑ‚Ð¸
 							?>
-							<br>
+							<br></br>
 							<table class="tableForPrint">
 							<tbody>
 							<?php 
@@ -110,26 +110,19 @@
 							</table>
 							<?php
 						   }
-						   // Âñ¸, ÷òî êðîìå òàáëèöû - âûâîäèì çíà÷åíèå
+						   // Ð’ÑÑ‘, Ñ‡Ñ‚Ð¾ ÐºÑ€Ð¾Ð¼Ðµ Ñ‚Ð°Ð±Ð»Ð¸Ñ†Ñ‹ - Ð²Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ
 						   else
 						   {
-                   			if ($element['is_wrapped']=='1')
+                   			if ($element['is_wrapped']=='0' && $elementNumber!=1)
                    			{
-						   ?>
-								<br>
+
+						        ?>
+								<br></br>
 								<?php
+
 							}
-							
-							//var_dump($element);
-							//exit();
-							
 								?>
-							<!--<div class="field inline-element">-->
-							<!--<div class="inline-element">-->
 							<strong><?php echo $element['label']; ?></strong> <?php echo $element['value']; ?> <strong><?php echo $element['label_after']; ?></strong>
-					
-							<!--</div>-->
-					
 							<?php
 						}
 					}
