@@ -7,15 +7,17 @@
 		//exit();
 ?>
 <?php
+        $elementNumber = 0;
 		foreach($category as $key => $child) 
 		{	
 			if (!isset ($child['element'])) continue;
+            $elementNumber++;
 			if ($child['element']['element_id']==-1)
 			{
 				// Выводим название категории
 				?>
 				<div style="margin-left:20px;">
-				<h4><?php echo $child['element']['name']; ?></h4>
+				<strong style="text-decoration: underline"><?php echo $child['element']['name']; ?></strong>
 				<p class ="print-elements">
 				<?php
                 // Вызываем виджет для вложенной категории
@@ -111,11 +113,13 @@
 						   // Всё, что кроме таблицы - выводим значение
 						   else
 						   {
-                   			if ($element['is_wrapped']=='1')
+                   			if ($element['is_wrapped']=='0' && $elementNumber!=1)
                    			{
-						   ?>
+
+						        ?>
 								<br></br>
 								<?php
+
 							}
 								?>
 							<strong><?php echo $element['label']; ?></strong> <?php echo $element['value']; ?> <strong><?php echo $element['label_after']; ?></strong>
