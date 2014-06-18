@@ -32,6 +32,7 @@ $(document).ready(function() {
                 clearAll: function() {
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
+                    $(chooser).find('input').prop('disabled', false);
                 },
                 disable: function() {
                     $(chooser).find('input').prop('disabled', true);
@@ -45,9 +46,15 @@ $(document).ready(function() {
                     if($(chooser).find('.input-group-addon').length > 0) {
                         $(chooser).find('.input-group-addon').on('click', function() {
                             if(typeof choosersConfig[$(chooser).prop('id')].bindedWindowSelector != 'undefined' && $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).length > 0) {
-                                $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
-                                if(typeof choosersConfig[$(chooser).prop('id')].afterWindowShow != 'undefined') {
-                                    choosersConfig[$(chooser).prop('id')].afterWindowShow();
+                                if(typeof choosersConfig[$(chooser).prop('id')].beforeWindowShow != 'undefined') {
+                                    choosersConfig[$(chooser).prop('id')].beforeWindowShow(function() {
+                                        $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                                    });
+                                } else {
+                                    $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                                    if(typeof choosersConfig[$(chooser).prop('id')].afterWindowShow != 'undefined') {
+                                        choosersConfig[$(chooser).prop('id')].afterWindowShow();
+                                    }
                                 }
                             }
                         });
@@ -198,9 +205,15 @@ $(document).ready(function() {
 
             $(chooser).find('.input-group-addon').on('click', function(e) {
                 if(typeof choosersConfig[$(chooser).prop('id')].bindedWindowSelector != 'undefined' && $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).length > 0) {
-                    $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
-                    if(typeof choosersConfig[$(chooser).prop('id')].afterWindowShow != 'undefined') {
-                        choosersConfig[$(chooser).prop('id')].afterWindowShow();
+                    if(typeof choosersConfig[$(chooser).prop('id')].beforeWindowShow != 'undefined') {
+                        choosersConfig[$(chooser).prop('id')].beforeWindowShow(function() {
+                            $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                        });
+                    } else {
+                        $(choosersConfig[$(chooser).prop('id')].bindedWindowSelector).modal({});
+                        if(typeof choosersConfig[$(chooser).prop('id')].afterWindowShow != 'undefined') {
+                            choosersConfig[$(chooser).prop('id')].afterWindowShow();
+                        }
                     }
                 }
             });
@@ -459,6 +472,34 @@ $(document).ready(function() {
                 ]
             }
         },
+        'doctorChooser2' : {
+            'maxChoosed' : 1,
+            'primary' : 'id', // Первичный ключ у строки,
+            'extraparams' : {
+
+            },
+            'rowAddHandler' : function(ul, row) {
+                var text = row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+                if(row.ward != null) {
+                    text += ', ' + row.ward;
+                }
+                if(row.enterprise != null) {
+                    text += ', ' + row.enterprise;
+                }
+                $(ul).append($('<li>').text(text));
+            },
+            'url' : '/index.php/guides/employees/get?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'patientChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
@@ -664,6 +705,22 @@ $(document).ready(function() {
         'regionChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrRegion'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getregionform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
             'afterInsert' : function(chooser) {
                 if($.fn['regionChooser'].getChoosed().length > 0) {
                     var param = $.fn['regionChooser'].getChoosed()[0].code_cladr;
@@ -721,6 +778,22 @@ $(document).ready(function() {
         'districtChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrDistrict'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getdistrictform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
             'afterInsert' : function(chooser) {
                 if($.fn['districtChooser'].getChoosed().length > 0) {
                     var param = $.fn['districtChooser'].getChoosed()[0].code_cladr;
@@ -767,6 +840,22 @@ $(document).ready(function() {
         'settlementChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrSettlement'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getsettlementform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
             'extraparams' : {
                 //'region' : $.fn['regionChooser'].getChoosed(),
                 //'district' : $.fn['districtChooser'].getChoosed()
@@ -804,6 +893,22 @@ $(document).ready(function() {
         'streetChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrStreet'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getstreetform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
             },

@@ -87,6 +87,76 @@ class TasuController extends Controller {
         }
     }
 
+    public function actionAddFakeGreetingToBuffer() {
+        $model = new FormTasuFakeBufferAdd();
+        if(isset($_POST['FormTasuFakeBufferAdd'])) {
+            $model->attributes = $_POST['FormTasuFakeBufferAdd'];
+            if($model->validate()) {
+                // Проверка на существование такой медкарты
+                $medcard = Medcard::model()->findByPk($model->cardNumber);
+                if($medcard == null) {
+                    echo CJSON::encode(array(
+                        'success' => false,
+                        'errors' => array(
+                            'cardNumber' => array(
+                                'Пациент с такой картой не найден!'
+                            )
+                        )
+                    ));
+                    exit();
+                }
+                $fakeModel = new TasuFakeGreetingsBuffer();
+                $fakeModel->card_number = $model->cardNumber;
+                $fakeModel->doctor_id = $model->doctorId;
+                $fakeModel->primary_diagnosis_id = $model->primaryDiagnosis;
+                $fakeModel->greeting_date = $model->greetingDate;
+                if(!$fakeModel->save()) {
+                    echo CJSON::encode(array(
+                        'success' => false,
+                        'errors' => array(
+                            'fakeModel' => array(
+                                'Невозможно сохранить новый приём!'
+                            )
+                        )
+                    ));
+                    exit();
+                }
+
+                // Теперь добавление в таблицу обычного буфера
+                $buffer = new TasuGreetingsBuffer();
+                $lastImportId = $buffer->getLastImportId();
+
+                $buffer->greeting_id = null;
+                $buffer->import_id = $lastImportId;
+                $buffer->fake_id = $fakeModel->id;
+                $buffer->status = 0;
+
+                if(!$buffer->save()) {
+                    echo CJSON::encode(array(
+                        'success' => false,
+                        'errors' => array(
+                            'buffer' => array(
+                                'Невозможно добавить приём в буфер выгрузки!'
+                            )
+                        )
+                    ));
+                    exit();
+                }
+
+                echo CJSON::encode(array(
+                    'success' => true,
+                    'data' => 'Приём успешно добавлен!'
+                ));
+
+            } else {
+                echo CJSON::encode(array(
+                    'success' => false,
+                    'errors' => $model->errors
+                ));
+            }
+        }
+    }
+
     // Загрузка ОМС
     public function actionUploadOms() {
         // Файлы есть, будем грузить
@@ -554,7 +624,8 @@ class TasuController extends Controller {
         //$tasuTap = new TasuTap();
 
         $this->render('viewin', array(
-            'modelAdd' => new FormTasuBufferAdd()
+            'modelAdd' => new FormTasuBufferAdd(),
+            'modelAddFake' => new FormTasuFakeBufferAdd()
         ));
     }
 
@@ -579,7 +650,20 @@ class TasuController extends Controller {
         $start = $page * $rows - $rows;
 
         $buffer = $model->getLastBuffer($filters, $sidx, $sord, $start, $rows);
+        $resultBuffer = array();
+
         foreach($buffer as &$element) {
+            if($element['medcard'] == null) {
+                continue;
+            }
+
+            // Проведён в МИС или нет. По fake_id
+            if($element['fake_id'] == null) {
+                $element['in_mis_desc'] = 'Да';
+            } else {
+                $element['in_mis_desc'] = 'Нет';
+            }
+
             $parts = explode('-', $element['patient_day']);
             $element['patient_day'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
             if($element['is_beginned'] == null && $element['is_accepted'] == null) {
@@ -591,11 +675,13 @@ class TasuController extends Controller {
             } else {
                 $element['status'] = 'Неизвестно';
             }
+
+            array_push($resultBuffer, $element);
         }
 
         echo CJSON::encode(array(
             'success' => true,
-            'rows' => $buffer,
+            'rows' => $resultBuffer,
             'total' => $totalPages,
             'records' => count($num)));
     }
