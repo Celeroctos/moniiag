@@ -33,19 +33,19 @@ $(document).ready(function() {
                     }
                     $('.calendarTable').empty();
                     var calendarAll = $('.calendarTable');
-                    for (i=0;i<3;i++)
+                    for (rowMonths=0;rowMonths<3;rowMonths++)
                     {
                         var oneRow = $('<tr>')
                         $(calendarAll).append(oneRow);
 
-                        for (j=0;j<4;j++)
+                        for (colMonths=0;colMonths<4;colMonths++)
                         {
                             var oneCell = $('<td>');
                             $(oneCell).addClass('calendarTd');
                             $(oneCell).append( $('<h6>') );
                             oneRow.append(oneCell);
 
-                            $('.calendarTable').trigger('showCalendar',[i,j, globalVariables.currentYear])
+                            $('.calendarTable').trigger('showCalendar',[rowMonths,colMonths, globalVariables.currentYear])
                         }
                     }
                 }
