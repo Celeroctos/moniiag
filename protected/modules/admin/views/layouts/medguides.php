@@ -38,6 +38,8 @@
             font-size: <?php echo Yii::app()->user->fontSize + 2; ?>px;
         }
     </style>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
 </head>
 <body>
 <?php $this->widget('application.components.widgets.MainNavBar') ?>
