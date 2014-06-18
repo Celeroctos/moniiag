@@ -195,12 +195,17 @@ class PatientController extends Controller {
             if ($model->contact=="+7")
                 $model->contact = "";
             if($model->validate()) {
-                $this->checkUniqueOms($model);
-                $this->checkUniqueMedcard($model);
-                $oms = new Oms();
                 $medcard = new Medcard();
-
-                $this->addEditModelOms($oms, $model);
+                $oms = $this->checkUniqueOms($model);
+                // Если пациент с таким полисом найден, просто создаётся карта и подсоединяется полис
+                if($oms == null) {
+                    $oms = new Oms();
+                    $this->addEditModelOms($oms, $model);
+                } else {
+                    // Здесь нужно проверить: вдруг для пациента есть уже медкарта в этом году, для такого полиса
+                    $this->checkIssetMedcardInYear($oms, $medcard);
+                }
+                $this->checkUniqueMedcard($model);
                 $this->addEditModelMedcard($medcard, $model, $oms);;
                 if($model->privilege != -1) {
                     $patientPrivelege = new PatientPrivilegie();
@@ -209,7 +214,8 @@ class PatientController extends Controller {
 
                 echo CJSON::encode(array('success' => 'true',
                                          'msg' => 'Новая запись успешно добавлена!',
-                                         'cardNumber' => $medcard->card_number));
+                                         'cardNumber' => $medcard->card_number,
+                                         'fioBirthday' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', номер полиса '.$oms->oms_number.'.'));
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
@@ -245,16 +251,36 @@ class PatientController extends Controller {
 
     private function checkUniqueOms($model) {
         // Проверим, не существует ли уже такого ОМС
-        $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
+        // Три вида ОМС: с пробелом впереди, с пробелом посередине
+        if(mb_strlen($model->policy) != 16) {
+            $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
+        } else {
+            $omsNumber1 = $model->policy;
+            $omsNumber2 = ' '.$model->policy;
+            $omsNumber3 = mb_substr($model->policy, 0, 6).' '.mb_substr($model->policy, 6);
+            $omsSearched = Oms::model()->find(
+                'oms_number = :oms_number1 OR
+                oms_number = :oms_number2 OR
+                oms_number = :oms_number3',
+                array(
+                    ':oms_number1' => $omsNumber1,
+                    ':oms_number2' => $omsNumber2,
+                    ':oms_number3' => $omsNumber3
+                )
+            );
+        }
+
         if($omsSearched != null) {
-            echo CJSON::encode(array('success' => 'false',
+            /*echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
                     'policy' => array(
                         'Такой номер полиса ОМС уже существует в базе!'
                     )
                 )));
-            exit();
+            exit();*/
+            return $omsSearched;
         }
+        return null;
     }
 
     // Добавление карты к существующему пациенту
@@ -268,20 +294,8 @@ class PatientController extends Controller {
             if($model->validate()) {
                 $oms = Oms::model()->findByPk($model->policy);
                 // Проверим, нет ли карты с таким годом и с таким пациентом
-                $year = date('Y');
-                $code = substr($year, mb_strlen($year) - 2);
                 $medcard = new Medcard();
-                $medcardSearched = $medcard->getLastMedcardPerYear($code, $oms->id);
-                if($medcardSearched != null) {
-                    echo CJSON::encode(array('success' => 'false',
-                        'errors' => array(
-                            'id' => array(
-                                'Карта для данного пациента в этом году уже создана!'
-                            )
-                        )));
-                    exit();
-                }
-
+                $this->checkIssetMedcardInYear($oms, $medcard);
                 $medcard = $this->addEditModelMedcard($medcard, $model, $oms);
 
                 // Карта сделана из опосредованного пациента
@@ -306,6 +320,21 @@ class PatientController extends Controller {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
             }
+        }
+    }
+
+    private function checkIssetMedcardInYear($oms, $medcard) {
+        $year = date('Y');
+        $code = substr($year, mb_strlen($year) - 2);
+        $medcardSearched = $medcard->getLastMedcardPerYear($code, $oms->id);
+        if($medcardSearched != null) {
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array(
+                    'id' => array(
+                        'Карта для данного пациента в этом году уже создана!'
+                    )
+                )));
+            exit();
         }
     }
 

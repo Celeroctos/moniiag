@@ -356,8 +356,8 @@
                 }
                 $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
                 cardNumber = ajaxData.cardNumber;
-                console.log(cardNumber);
                 $('#successAddPopup').find('#successCardNumber').text(cardNumber);
+                $('#successAddPopup').find('#newPatientFio').text(ajaxData.fioBirthday);
                 $('#successAddPopup').modal({
 
                 });
