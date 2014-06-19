@@ -1,4 +1,12 @@
 <?php
+
+$printGreetingsWidget = CWidget::createWidget('application.modules.doctors.components.widgets.massPrint', array(
+    'greetings' => $greetings
+));
+$printGreetingsWidget->run();
+
+if (false)
+{
 foreach($greetings as $greeting) {
 
 
@@ -10,7 +18,11 @@ $this->render('greeting', array(
 	'notPrintPrintBtn' => '1'
 	));
 ?></div><?php
-
 }
+}
+
+if (!$notPrintButton)
+{
 ?>
 <button class="printBtn default-margin-left">Напечатать результаты приёма</button>
+<?php }?>
