@@ -209,40 +209,30 @@ class PrintController extends Controller {
             }
         }
 
-
-      /*  $this->render('massprintonelist', array(
-            'greetings' => $response
-        ));*/
-
-        //var_dump($response);
-        //exit();
-
-
         $mPDF = Yii::app()->ePdf->mpdf();
-       // $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
-       // $mPDF = Yii::app()->ePdf->mpdf('', 'A0');
-       // $mPDF ->SetDisplayMode('fullpage');
-       // $mPDF->SetAutoPageBreak (true);
-      //  var_dump($mPDF->autoPageBreak);
-      //  exit();
+        $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
+
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
         $mPDF->WriteHTML($stylesheet, 1);
+
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.less');
+        $mPDF->WriteHTML($stylesheet, 1);
+
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
+        $mPDF->WriteHTML($stylesheet, 1);
+
         $mPDF->WriteHTML($this->render('massprintonelist',
             array(
-                'greetings' => $response
+                'greetings' => $response,
+                'notPrintButton' => true
             )
             , true));
-
-        //var_dump($mPDF);
-        //exit();
-        //$mPDF->addPage();
 
         $this->render('massgreetingspdf', array(
             'pdfContent' => $mPDF->Output()
         ));
-
     }
-
+    
     // Получить данные для вьюхи
     public function actionMakePrintListView() {
         $patients = CJSON::decode($_GET['patients']);
