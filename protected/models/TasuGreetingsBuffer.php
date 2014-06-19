@@ -16,10 +16,10 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             $buffer = $connection->createCommand()
                 ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted, o.oms_number, o.id as oms_id, dsbd.doctor_id')
                 ->from(TasuGreetingsBuffer::tableName().' tgb')
-                ->join(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
-                ->join(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
-                ->join(Oms::tableName().' o', 'm.policy_id = o.id')
-                ->join(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
+                ->leftJoin(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
+                ->leftJoin(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
+                ->leftJoin(Oms::tableName().' o', 'm.policy_id = o.id')
+                ->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
                 ->where('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id)
                                           FROM '.TasuGreetingsBuffer::tableName().' tgb2)')
                 ->andWhere('tgb.status = 0'); // Получить всё то, что не выгружено
@@ -41,7 +41,28 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 $buffer->limit($limit, $start);
             }
 
-            return $buffer->queryAll();
+            $bufferResult = $buffer->queryAll();
+            foreach($bufferResult as &$bufferElement) {
+                if($bufferElement['fake_id'] != null) {
+                    $fakeModel = TasuFakeGreetingsBuffer::model()->findByPk($bufferElement['fake_id']);
+                    if($fakeModel != null) {
+                        $doctorModel = Doctor::model()->findByPk($fakeModel->doctor_id);
+                        $medcardModel = Medcard::model()->findByPk($fakeModel->card_number);
+                        $omsModel = Oms::model()->findByPk($medcardModel->policy_id);
+                        $bufferElement['greetingId'] = '-';
+                        $bufferElement['patient_fio'] = $omsModel->last_name.' '.$omsModel->first_name.' '.$omsModel->middle_name;
+                        $bufferElement['doctor_fio'] = $doctorModel->last_name.' '.$doctorModel->first_name.' '.$doctorModel->middle_name;
+                        $bufferElement['patient_day'] = $fakeModel->greeting_date;
+                        $bufferElement['medcard'] = $fakeModel->card_number;
+                        $bufferElement['is_beginned'] = $bufferElement['is_accepted'] = 1;
+                        $bufferElement['oms_number'] = $omsModel->oms_number;
+                        $bufferElement['oms_id'] = $omsModel->id;
+                        $bufferElement['doctor_id'] = $fakeModel->doctor_id;
+                    }
+                }
+            }
+
+            return $bufferResult;
         } catch(Exception $e) {
             echo $e->getMessage();
         }

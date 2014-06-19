@@ -134,19 +134,19 @@
 <div class="row">
     <table id="writingLineTable" class="col-xs-11">
         <thead>
-        <tr class="header">
-            <td>Врач</td>
-            <td>
-                <input type="checkbox" value="-1" title="Отметить все" class="checkAll">
-            </td>
-            <td>Пациент</td>
-            <td>Контактный телефон</td>
-            <td>Комментарий</td>
-            <td>Номер карты</td>
-            <td>Статус карты</td>
-            <td>Статус приёма</td>
-            <td></td>
-        </tr>
+            <tr class="header">
+                <td>Врач</td>
+                <td>
+                    <input type="checkbox" value="-1" title="Отметить все" class="checkAll">
+                </td>
+                <td>Пациент</td>
+                <td>Контактный телефон</td>
+                <td>Комментарий</td>
+                <td>Номер карты</td>
+                <td>Статус карты</td>
+                <td>Статус приёма</td>
+                <td></td>
+            </tr>
         </thead>
         <tbody>
 
@@ -342,25 +342,25 @@
         </div>
     </div>
 </div>
-    <div class="modal fade error-popup" id="notFoundPopup">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Сообщение</h4>
+<div class="modal fade error-popup" id="notFoundPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Сообщение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, нажав на кнопку ниже, либо вернуться к поиску.</p>
                 </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, нажав на кнопку ниже, либо вернуться к поиску.</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="createNewPatientBtn">Завести нового пациента</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Вернуться в поиск</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="createNewPatientBtn">Завести нового пациента</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Вернуться в поиск</button>
             </div>
         </div>
     </div>
+</div>
 <div class="modal fade error-popup" id="mediateOkPopup">
     <div class="modal-dialog">
         <div class="modal-content">

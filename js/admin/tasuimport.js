@@ -2,7 +2,7 @@
 	$("#greetings").jqGrid({
         url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings',
         datatype: "json",
-        colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус'],
+        colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус', 'Проведён в МИС'],
         colModel:[
             {
                 name:'id',
@@ -32,6 +32,11 @@
             {
                 name: 'status',
                 index: 'status',
+                width: 150
+            },
+            {
+                name: 'in_mis_desc',
+                index: 'in_mis_desc',
                 width: 150
             }
         ],
@@ -346,6 +351,10 @@
         });
     });
 
+    $('#addFakeGreeting').on('click', function(e) {
+        $('#addFakePopup').modal({});
+    });
+
     $('#editGreeting').on('click', function(e) {
 
     });
@@ -394,5 +403,71 @@
             $('#errorPopup').modal({
             });
         }
+    });
+
+    $("#greeting-addfake-submit").on('click', function(e) {
+        var doctors = $.fn["doctorChooser2"].getChoosed();
+        var primaryDiagnosis = $.fn["primaryDiagnosisChooser"].getChoosed();
+
+        if(doctors.length == 0) {
+            alert('Не выбран врач!');
+            return false;
+        }
+
+        if(primaryDiagnosis.length == 0) {
+            alert('Не выбран первичный диагноз!');
+            return false;
+        }
+
+        if($.trim($('#cardNumber').val()) == '') {
+            alert('Не введён номер медкарты!');
+            return false;
+        }
+
+        if($.trim($('#greetingDate').val()) == '') {
+            alert('Не введена дата приёма!');
+            return false;
+        }
+
+        $.ajax({
+            'url' : '/index.php/admin/tasu/addfakegreetingtobuffer',
+            'data' : {
+                'FormTasuFakeBufferAdd[cardNumber]' : $.trim($('#cardNumber').val()),
+                'FormTasuFakeBufferAdd[doctorId]' : doctors[0].id,
+                'FormTasuFakeBufferAdd[primaryDiagnosis]' : primaryDiagnosis[0].id,
+                'FormTasuFakeBufferAdd[greetingDate]' : $.trim($('#greetingDate').val())
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'POST',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success) {
+                    $('#addFakePopup').modal('hide');
+
+                    $('#cardNumber').val('');
+                    $('#greetingDate').val('');
+                    $.fn["doctorChooser2"].clearAll();
+                    $.fn["primaryDiagnosisChooser"].clearAll();
+
+                    $("#greetings").trigger("reloadGrid");
+                } else {
+                    // Удаляем предыдущие ошибки
+                    var popup = $('#errorPopup');
+                    $(popup).find('.modal-body .row p').remove();
+                    // Вставляем новые
+                    for(var i in data.errors) {
+                        for(var j = 0; j < data.errors[i].length; j++) {
+                            $(popup).find(' .modal-body .row').append("<p class=\"errorText\">" + data.errors[i][j] + "</p>")
+                        }
+                    }
+
+                    $(popup).css({
+                        'z-index' : '1051'
+                    }).modal({});
+                }
+            }
+        });
+
+        return false;
     });
 });

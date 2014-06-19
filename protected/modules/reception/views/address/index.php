@@ -1,0 +1,1 @@
+<?php echo $this->widget($widgetStr, $data); ?>
