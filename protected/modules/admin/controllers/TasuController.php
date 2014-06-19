@@ -907,6 +907,7 @@ class TasuController extends Controller {
             $result = $this->addTasuPatient($medcard, $oms);
             if($result === false) {
                 $this->numErrors++;
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить пациента с ОМС '.$oms->oms_number;
                 return false;
             } else {
                 $this->numAddedPatients++;
@@ -914,15 +915,19 @@ class TasuController extends Controller {
             $patients = $this->searchTasuPatient($greeting);
         }
 
-        $patient = $patients[0];
-        // Добавляем приём (талон, ТАП) к пациенту
-        $tap = $this->addTasuTap($patient, $greeting, $oms);
-        if($tap !== false) {
-            $this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' добавлен в базу ТАСУ.';
-            // Добавляем MKБ-10 диагнозы к приёму
-            $this->setMKB10ByTap($tap, $greeting, $oms);
+        if(count($patients) > 0) {
+            $patient = $patients[0];
+            // Добавляем приём (талон, ТАП) к пациенту
+            $tap = $this->addTasuTap($patient, $greeting, $oms);
+            if($tap !== false) {
+                $this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' добавлен в базу ТАСУ.';
+                // Добавляем MKБ-10 диагнозы к приёму
+                $this->setMKB10ByTap($tap, $greeting, $oms);
+            } else {
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' в базу: возможно, полис пациента записан в неправильном формате...?.';
+            }
         } else {
-            $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' в базу: возможно, полис пациента записан в неправильном формате...?.';
+            $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента для приёма с ID'.$greeting['greeting_id'].' в ТАСУ: возможно, пациент не создался в ТАСУ...?.';
         }
     }
 
@@ -930,10 +935,16 @@ class TasuController extends Controller {
         $conn = Yii::app()->db2;
         try {
             // Номер полиса состоит из двух частей: серия (пробел) номер
-            $policyParts = explode(' ', $greeting['oms_number']);
+            $policyParts = explode(' ', trim($greeting['oms_number']));
             // Неправильный номер полиса по формату
             if(count($policyParts) != 2) {
-                throw new Exception();
+                $policyParts = array();
+                if(mb_strlen(trim($greeting['oms_number'])) > 7) {
+                    $policyParts[0] = mb_substr(trim($greeting['oms_number']), 0, 6);
+                    $policyParts[1] = mb_substr(trim($greeting['oms_number']), 6);
+                } else {
+                    throw new Exception();
+                }
             }
 
             $sql = "SELECT DISTINCT
@@ -958,8 +969,10 @@ class TasuController extends Controller {
 	                  ((([p].[series_14820] = '".trim($policyParts[0])."') AND ([p].[number_12574] = '".trim($policyParts[1])."')
 	                  AND ([pat].[closeregistrationcause_59292] IS NULL)))
 	                  AND [pat].version_end = ".$this->version_end;
-
+//var_dump($sql);
             $resultPatient = $conn->createCommand($sql)->queryAll();
+            //		var_dump(   $resultPatient);
+
             return $resultPatient;
         } catch(Exception $e) {
             $this->numErrors++;
@@ -972,10 +985,16 @@ class TasuController extends Controller {
         $transaction = $conn->beginTransaction();
         try {
             // Номер полиса состоит из двух частей: серия (пробел) номер
-            $policyParts = explode(' ', $oms->oms_number);
+            $policyParts = explode(' ', trim($oms->oms_number));
             // Неправильный номер полиса по формату
             if(count($policyParts) != 2) {
-                throw new Exception();
+                $policyParts = array();
+                if(mb_strlen(trim($oms->oms_number)) > 7) {
+                    $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
+                    $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
+                } else {
+                    throw new Exception();
+                }
             }
 
             // Пациент такой должен быть всего один
@@ -1012,6 +1031,9 @@ class TasuController extends Controller {
                         '',
                         ''";
             $result = $conn->createCommand($sql)->execute();
+
+            $transaction->commit(); // ?!
+            $transaction = $conn->beginTransaction();
 
             $birthdayParts = explode('-', $oms->birthday);
 
@@ -1106,6 +1128,7 @@ class TasuController extends Controller {
                         NULL";
 
             $result = $conn->createCommand($sql)->execute();
+            //var_dump($sql);
             // Вынимаем данные об адресе из МИС-базы
 
             $addressData = $this->getAddressObjects(CJSON::decode($medcard->address));
@@ -1154,6 +1177,7 @@ class TasuController extends Controller {
 
             $conn->createCommand($sql)->execute();
             $transaction->commit();
+
             return $result;
         } catch(Exception $e) {
             $this->numErrors++;
@@ -1202,11 +1226,17 @@ class TasuController extends Controller {
             }
 
             // Номер полиса состоит из двух частей: серия (пробел) номер
-            $policyParts = explode(' ', $oms->oms_number);
+            $policyParts = explode(' ', trim($oms->oms_number));
             // Неправильный номер полиса по формату
 
             if(count($policyParts) != 2) {
-                throw new Exception();
+                $policyParts = array();
+                if(mb_strlen(trim($oms->oms_number)) > 7) {
+                    $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
+                    $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
+                } else {
+                    throw new Exception();
+                }
             }
 
             $omsRow = $sql = "SELECT
@@ -1220,6 +1250,7 @@ class TasuController extends Controller {
 
             $omsRow = $conn->createCommand($sql)->queryRow();
             if($omsRow == null) {
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти полис '.$policyParts[0].' '.$policyParts[1].'!';
                 return false;
             }
 
@@ -1233,6 +1264,7 @@ class TasuController extends Controller {
 
             $policyRow = $conn->createCommand($sql)->queryRow();
             if($policyRow == null) {
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].'!';
                 return false;
             }
 
@@ -1259,6 +1291,7 @@ class TasuController extends Controller {
 						AND [_unmdtbl13955].version_end = '.$this->version_end;
                 $addressRow = $conn->createCommand($sql)->queryAll();
                 if($addressRow == null) {
+                    $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].' по адресу регистрации!';
                     return false;
                 }
             }
@@ -1286,9 +1319,10 @@ class TasuController extends Controller {
             $tasuTap->dvnnumber_55059 = '';
 
             if(!$tasuTap->save()) {
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно сохранить TAP для пациента с ID '.$patient['PatientUID'].'!';
                 throw new Exception();
             }
-
+            $this->numAdded++;
             return $tasuTap;
         } catch(Exception $e) {
             $this->numErrors++;
@@ -1297,7 +1331,17 @@ class TasuController extends Controller {
     }
 
     private function setMKB10ByTap($tap, $greeting) {
-        $diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
+        // У фейковых приёмов диагноз ищется иначе
+        if($greeting['fake_id'] == null) {
+            $diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
+        } else {
+            $diagnosises = array(
+                array(
+                    'mkb10_id' => $greeting['primary_diagnosis_id'],
+                    'type' => 0 // Первичный
+                )
+            );
+        }
         foreach($diagnosises as $diagnosis) {
             $mkb10Diag = Mkb10::model()->findByPk($diagnosis['mkb10_id']);
             if($mkb10Diag == null) {
@@ -1409,7 +1453,12 @@ class TasuController extends Controller {
     private function getTasuProfessional($greeting) {
         $conn = Yii::app()->db2;
         $doctor = Doctor::model()->findByPk($greeting['doctor_id']);
-        if($doctor == null || $doctor->tasu_id != null) {
+        if($doctor == null || $doctor->tabel_number == null) {
+            if($doctor == null) {
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач для приёма '.$greeting['id'].' не существует!';
+            } elseif($doctor->tabel_number == null) {
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач для приёма '.$greeting['id'].' не имеет табельного номера!';
+            }
             return false;
         }
 
@@ -1587,13 +1636,16 @@ class TasuController extends Controller {
                 ':version_end' => $this->version_end,
                 ':state' => 1 // Полис активен
             ));
+
             if($tasuOms == null) {
                 continue;
             }
 
-            $issetPatient = Oms::model()->find('t.oms_number = :oms_number',
+            $issetPatient = Oms::model()->find('t.oms_number = :oms_number1 OR t.oms_number = :oms_number2 OR t.oms_number = :oms_number3',
                 array(
-                    ':oms_number' => $tasuOms['series_14820'].' '.$tasuOms['number_12574'],
+                    ':oms_number1' => $tasuOms['series_14820'].' '.$tasuOms['number_12574'],
+                    ':oms_number2' => ' '.$tasuOms['series_14820'].' '.$tasuOms['number_12574'],
+                    ':oms_number3' => $tasuOms['series_14820'].$tasuOms['number_12574']
                 )
             );
 
@@ -1627,69 +1679,73 @@ class TasuController extends Controller {
                 }
             }
 
-            $issetMedcard = TasuMedcard::model()->find('patientuid_37756 = :patient_uid AND version_end = :version_end',
+            $issetMedcards = TasuMedcard::model()->findAll('patientuid_37756 = :patient_uid AND version_end = :version_end',
                 array(
                     ':version_end' => $this->version_end,
                     ':patient_uid' => $patient['uid']
                 )
             );
 
-            $parts = explode('/', $issetMedcard['number_50713']);
-            if($issetMedcard != null && count($parts) == 2 && array_search($parts[1], array(11, 12, 13, 14)) !== false) {
-                // Создаём медкарту, если такой нет в базе
-                $misMedcard = Medcard::model()->findByPk($issetMedcard['number_50713']);
-                if($misMedcard == null) {
-                    $tasuDul = TasuDul::model()->find('patientuid_53984 = :patient_uid AND version_end = :version_end',
-                        array(
-                            ':version_end' => $this->version_end,
-                            ':patient_uid' => $patient['uid']
-                        )
-                    );
+            if(count($issetMedcards) > 0) {
+                foreach($issetMedcards as $issetMedcard) {
+                    $parts = explode('/', $issetMedcard['number_50713']);
+                    if(count($parts) == 2 && array_search($parts[1], array(11, 12, 13, 14)) !== false) {
+                        // Создаём медкарту, если такой нет в базе
+                        $misMedcard = Medcard::model()->findByPk($issetMedcard['number_50713']);
+                        if($misMedcard == null) {
+                            $tasuDul = TasuDul::model()->find('patientuid_53984 = :patient_uid AND version_end = :version_end',
+                                array(
+                                    ':version_end' => $this->version_end,
+                                    ':patient_uid' => $patient['uid']
+                                )
+                            );
 
-                    $misMedcard = new Medcard();
-                    $misMedcard->card_number = $issetMedcard['number_50713'];
-                    $misMedcard->enterprise_id = 1; // Монииаг
-                    $misMedcard->snils = $patient['snils_34985'];
-                    $tel = '';
-                    if($patient['homephone_02050'] != null && trim($patient['homephone_02050']) != '') {
-                        $tel .= $patient['homephone_02050'].' (домашний), ';
-                    }
-                    if($patient['workphone_39150'] != null && trim($patient['workphone_39150']) != '') {
-                        $tel .= $patient['workphone_39150'].' (рабочий), ';
-                    }
-                    $misMedcard->contact = $tel;
-                    $misMedcard->work_place = $patient['employmentplace_12520'];
-                    $misMedcard->snils = $patient['snils_34985'];
-                    $misMedcard->profession = $patient['profession_56032'];
-                    $misMedcard->post = $patient['position_61591'];
-                    if($tasuDul != null) {
-                        $misMedcard->serie = $tasuDul['dulseries_30145'];
-                        $misMedcard->docnumber = $tasuDul['dulnumber_50657'];
-                        $misMedcard->doctype = 1; // Паспорт
-                        $misMedcard->gived_date = $tasuDul['issuedate_42162'];
-                    }
-                    $misMedcard->policy_id = $issetPatient->id;
-                    if($patient['invgroup_59187'] != 4) { // Ребёнок-инвалид...? У нас такого нет
-                        $misMedcard->invalid_group = $patient['invgroup_59187'];
-                    }
-                    // Вынимаем адрес. Адрес, если нет о нём данных в КЛАДР в ТАСУ, добавляется в справочники
-                    $conn = Yii::app()->db2;
-                    $addresses = TasuAddress::model()->findAll('patientuid_32736 = :patient_uid AND version_end = :version_end',
-                        array(
-                            ':version_end' => $this->version_end,
-                            ':patient_uid' => $patient['uid']
-                        )
-                    );
+                            $misMedcard = new Medcard();
+                            $misMedcard->card_number = $issetMedcard['number_50713'];
+                            $misMedcard->enterprise_id = 1; // Монииаг
+                            $misMedcard->snils = $patient['snils_34985'];
+                            $tel = '';
+                            if($patient['homephone_02050'] != null && trim($patient['homephone_02050']) != '') {
+                                $tel .= $patient['homephone_02050'].' (домашний), ';
+                            }
+                            if($patient['workphone_39150'] != null && trim($patient['workphone_39150']) != '') {
+                                $tel .= $patient['workphone_39150'].' (рабочий), ';
+                            }
+                            $misMedcard->contact = $tel;
+                            $misMedcard->work_place = $patient['employmentplace_12520'];
+                            $misMedcard->snils = $patient['snils_34985'];
+                            $misMedcard->profession = $patient['profession_56032'];
+                            $misMedcard->post = $patient['position_61591'];
+                            if($tasuDul != null) {
+                                $misMedcard->serie = $tasuDul['dulseries_30145'];
+                                $misMedcard->docnumber = $tasuDul['dulnumber_50657'];
+                                $misMedcard->doctype = 1; // Паспорт
+                                $misMedcard->gived_date = $tasuDul['issuedate_42162'];
+                            }
+                            $misMedcard->policy_id = $issetPatient['id'];
+                            if($patient['invgroup_59187'] != 4) { // Ребёнок-инвалид...? У нас такого нет
+                                $misMedcard->invalid_group = $patient['invgroup_59187'];
+                            }
+                            // Вынимаем адрес. Адрес, если нет о нём данных в КЛАДР в ТАСУ, добавляется в справочники
+                            $conn = Yii::app()->db2;
+                            $addresses = TasuAddress::model()->findAll('patientuid_32736 = :patient_uid AND version_end = :version_end',
+                                array(
+                                    ':version_end' => $this->version_end,
+                                    ':patient_uid' => $patient['uid']
+                                )
+                            );
 
-                    // Два адреса только: адрес проживания и адрес регистрации
-                    foreach($addresses as $address) {
-                        $this->createPatientAddressFormTasu($misMedcard, $address);
-                    }
-                    if(!$misMedcard->save()) {
-                        $this->log[] = 'Невозможно создание / перенос медкарты пациента '.$tasuOms['uid'];
-                        $this->numErrors++;
-                    } else {
-                        $this->numAdded++;
+                            // Два адреса только: адрес проживания и адрес регистрации
+                            foreach($addresses as $address) {
+                                $this->createPatientAddressFormTasu($misMedcard, $address);
+                            }
+                            if(!$misMedcard->save()) {
+                                $this->log[] = 'Невозможно создание / перенос медкарты пациента '.$tasuOms['uid'];
+                                $this->numErrors++;
+                            } else {
+                                $this->numAdded++;
+                            }
+                        }
                     }
                 }
             }
