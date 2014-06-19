@@ -707,11 +707,11 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
                     }
 					// Устанавливаем тайм-аут
-					setTimeout(refreshIndicators,2000);
+					//setTimeout(refreshIndicators,2000);
                 }
             });
         }
-        setTimeout(refreshIndicators,2000);
+        //setTimeout(refreshIndicators,2000);
 
         // По клику на кнопку перенаправляемся на страницу со списком мониторингов
         $(document).on('click', '.is-patients-to-check', function()

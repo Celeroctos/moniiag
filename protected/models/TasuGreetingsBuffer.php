@@ -22,6 +22,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
                 ->where('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id)
                                           FROM '.TasuGreetingsBuffer::tableName().' tgb2)')
+                ->andWhere('EXISTS(SELECT * FROM '.SheduleByDay::tableName().' dsbd2 WHERE dsbd2.id = dsbd.id) OR tgb.fake_id IS NOT NULL')
                 ->andWhere('tgb.status = 0'); // Получить всё то, что не выгружено
             if($lastGreeting !== false) {
                 $buffer->andWhere('tgb.id > :last_greeting', array(':last_greeting' => $lastGreeting));
@@ -58,6 +59,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                         $bufferElement['oms_number'] = $omsModel->oms_number;
                         $bufferElement['oms_id'] = $omsModel->id;
                         $bufferElement['doctor_id'] = $fakeModel->doctor_id;
+                        $bufferElement['primary_diagnosis_id'] = $fakeModel->primary_diagnosis_id;
                     }
                 }
             }

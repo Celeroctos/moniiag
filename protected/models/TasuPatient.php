@@ -15,7 +15,7 @@ class TasuPatient extends MisActiveRecord {
     }
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
-        $connection = $this->getDbConnection();
+        /*$connection = $this->getDbConnection();
         $patients = $connection->createCommand()
             ->select('p.*')
             ->from(TasuPatient::tableName().' p')
@@ -35,7 +35,28 @@ class TasuPatient extends MisActiveRecord {
             $patients->limit($limit, $start);
         }
 
-        return $patients->queryAll();
+        return $patients->queryAll(); */
+        $connection = $this->getDbConnection();
+        $sql = "DECLARE @uid integer;
+
+		SET ROWCOUNT ".$start.";
+
+		SELECT @uid = p.uid
+		  FROM PDPStdStorage.".TasuPatient::tableName()." p
+		  WHERE p.version_end = '9223372036854775807'
+		  ORDER BY p.uid ASC;
+
+		SET ROWCOUNT ".$limit.";
+
+		SELECT p.*
+		  FROM PDPStdStorage.".TasuPatient::tableName()." p
+		  WHERE p.uid >= @uid
+		  AND p.version_end = '9223372036854775807'
+		  ORDER BY p.uid ASC;
+
+		SET ROWCOUNT 0;";
+
+        return $connection->createCommand($sql)->queryAll();
     }
 	
 	public function getNumRows() {
@@ -43,6 +64,7 @@ class TasuPatient extends MisActiveRecord {
         $numPatients = $connection->createCommand()
             ->select('COUNT(*) as num')
             ->from(TasuPatient::tableName().' tp')
+            ->where('p.version_end = :version_end', array(':version_end' => '9223372036854775807'))
             ->queryRow();
         return $numPatients['num'];
     }
