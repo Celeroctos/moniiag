@@ -228,25 +228,7 @@ $(document).ready(function() {
         }
     });
 
-    $("#street-add-form, #street-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
-        if($(this).prop('id') == 'street-add-form') {
-            if($.fn["regionChooser"].getChoosed().length == 0) {
-                alert('Не выбран регион!');
-                return false;
-            }
-            if($.fn["districtChooser"].getChoosed().length == 0) {
-                alert('Не выбран район!');
-                return false;
-            }
-            if($.fn["settlementChooser"].getChoosed().length == 0) {
-                alert('Не выбран населённый пункт!');
-                return false;
-            }
-            var region = $.fn["regionChooser"].getChoosed()[0].code_cladr;
-            var district = $.fn["districtChooser"].getChoosed()[0].code_cladr;
-            var settlement = $.fn["settlementChooser"].getChoosed()[0].code_cladr;
-            var strData =  'FormCladrStreetAdd[name]=' + $("#addStreetPopup #name").val() + '&FormCladrStreetAdd[codeCladr]=' + $("#addStreetPopup #codeCladr").val() + '&FormCladrStreetAdd[codeRegion]=' + region + '&FormCladrStreetAdd[codeDistrict]=' + district + '&FormCladrStreetAdd[id]=' + $("#addStreetPopup #id").val() + '&FormCladrStreetAdd[codeSettlement]=' + settlement;
-        } else {
+    $("#street-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
             if($.fn["regionChooser2"].getChoosed().length == 0) {
                 alert('Не выбран регион!');
                 return false;
@@ -263,7 +245,27 @@ $(document).ready(function() {
             var district = $.fn["districtChooser2"].getChoosed()[0].code_cladr;
             var settlement = $.fn["settlementChooser2"].getChoosed()[0].code_cladr;
             var strData =  'FormCladrStreetAdd[name]=' + $("#editStreetPopup #name").val() + '&FormCladrStreetAdd[codeCladr]=' + $("#editStreetPopup #codeCladr").val() + '&FormCladrStreetAdd[codeRegion]=' + region + '&FormCladrStreetAdd[codeDistrict]=' + district + '&FormCladrStreetAdd[id]=' + $("#editStreetPopup #id").val() + '&FormCladrStreetAdd[codeSettlement]=' + settlement;
-        }
         settings.data = strData;
     });
+
+    $("#street-add-form").on('beforesend', function(eventObj, settings, jqXHR) {
+            if($.fn["regionChooserForStreet"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            if($.fn["districtChooserForStreet"].getChoosed().length == 0) {
+                alert('Не выбран район!');
+                return false;
+            }
+            if($.fn["settlementChooserForStreet"].getChoosed().length == 0) {
+                alert('Не выбран населённый пункт!');
+                return false;
+            }
+            var region = $.fn["regionChooserForStreet"].getChoosed()[0].code_cladr;
+            var district = $.fn["districtChooserForStreet"].getChoosed()[0].code_cladr;
+            var settlement = $.fn["settlementChooserForStreet"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrStreetAdd[name]=' + $("#addStreetPopup #name").val() + '&FormCladrStreetAdd[codeCladr]=' + $("#addStreetPopup #codeCladr").val() + '&FormCladrStreetAdd[codeRegion]=' + region + '&FormCladrStreetAdd[codeDistrict]=' + district + '&FormCladrStreetAdd[id]=' + $("#addStreetPopup #id").val() + '&FormCladrStreetAdd[codeSettlement]=' + settlement;
+            settings.data = strData;
+    });
+
 });

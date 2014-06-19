@@ -775,6 +775,95 @@ $(document).ready(function() {
                 ]
             }
         },
+        'regionChooserForDistrict' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrRegion'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getregionform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+
+                // Переходим на следующий контрол на странице
+
+            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'regionChooserForSettlement' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrRegion'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getregionform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            'afterInsert' : function(chooser) {
+                if($.fn['regionChooserForSettlement'].getChoosed().length > 0) {
+                    var param = $.fn['regionChooserForSettlement'].getChoosed()[0].code_cladr;
+                    if($('#districtChooserForSettlement').length > 0) {
+                        $.fn['districtChooserForSettlement'].addExtraParam('region', param);
+                    }
+                }
+            },
+            'afterRemove' : function() {
+                if($('#districtChooserForSettlement').length > 0) {
+                    $.fn['districtChooserForSettlement'].clearAll();
+                    $.fn['districtChooserForSettlement'].enable();
+                    $.fn['districtChooserForSettlement'].deleteExtraParam('region');
+                }
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+
+                // Переходим на следующий контрол на странице
+
+            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'districtChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
@@ -837,6 +926,157 @@ $(document).ready(function() {
                 ]
             }
         },
+        'districtChooserForSettlement' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrDistrict'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getdistrictform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed()
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'districtChooserForStreet' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrDistrict'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getdistrictform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            'afterInsert' : function(chooser) {
+                if($.fn['districtChooserForStreet'].getChoosed().length > 0) {
+                    var param = $.fn['districtChooserForStreet'].getChoosed()[0].code_cladr;
+                    if($('#settlementChooserForStreet').length > 0) {
+                        $.fn['settlementChooserForStreet'].addExtraParam('district', param);
+                    }
+                }
+            },
+            'afterRemove' : function() {
+                if($('#settlementChooserForStreet').length > 0) {
+                    $.fn['settlementChooserForStreet'].clearAll();
+                    $.fn['settlementChooserForStreet'].enable();
+                    $.fn['settlementChooserForStreet'].deleteExtraParam('district');
+                }
+            },
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed()
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'regionChooserForStreet' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrRegion'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getregionform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            'afterInsert' : function(chooser) {
+                if($.fn['regionChooserForStreet'].getChoosed().length > 0) {
+                    var param = $.fn['regionChooserForStreet'].getChoosed()[0].code_cladr;
+                    if($('#districtChooserForStreet').length > 0) {
+                        $.fn['districtChooserForStreet'].addExtraParam('region', param);
+                    }
+                    if($('#settlementChooserForStreet').length > 0) {
+                        $.fn['settlementChooserForStreet'].addExtraParam('region', param);
+                    }
+                }
+            },
+            'afterRemove' : function() {
+                if($('#districtChooserForStreet').length > 0) {
+                    $.fn['districtChooserForStreet'].clearAll();
+                    $.fn['districtChooserForStreet'].enable();
+                    $.fn['districtChooserForStreet'].deleteExtraParam('region');
+                }
+
+                if($('#settlementChooserForStreet').length > 0) {
+                    $.fn['settlementChooserForStreet'].clearAll();
+                    $.fn['settlementChooserForStreet'].enable();
+                    $.fn['settlementChooserForStreet'].deleteExtraParam('region');
+                    $.fn['settlementChooserForStreet'].deleteExtraParam('district');
+                }
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+
+                // Переходим на следующий контрол на странице
+
+            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'settlementChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
@@ -874,6 +1114,44 @@ $(document).ready(function() {
                     $.fn['streetChooser'].enable();
                     $.fn['streetChooser'].deleteExtraParam('settlement');
                 }
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'settlementChooserForStreet' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'bindedWindowSelector' : $('#addNewCladrSettlement'),
+            'beforeWindowShow' : function(callback) {
+                $.ajax({
+                    'url' : '/index.php/reception/address/getsettlementform',
+                    'cache' : false,
+                    'dataType' : 'json',
+                    'type' : 'GET',
+                    'success' : function(data, textStatus, jqXHR) {
+                        if(data.success == true) {
+                            callback();
+                        } else {
+
+                        }
+                    }
+                });
+            },
+            'extraparams' : {
+                //'region' : $.fn['regionChooser'].getChoosed(),
+                //'district' : $.fn['districtChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
