@@ -232,7 +232,7 @@ class PrintController extends Controller {
             'pdfContent' => $mPDF->Output()
         ));
     }
-    
+
     // Получить данные для вьюхи
     public function actionMakePrintListView() {
         $patients = CJSON::decode($_GET['patients']);

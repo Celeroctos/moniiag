@@ -8,7 +8,7 @@ class massPrint extends CWidget {
         $arrayCount = 0;
         foreach($this->greetings as $greeting) {
 
-            // àòðèáóò ñî ñâîéñòâîì ðàçðûâà ñòðàíèöû. Åñëè ïðè¸ì ïîñëåäíèé - ïîñëå íåãî íå ñòàâèì ðàçðûâ ñòðàíèöû
+            // Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚ ÑÐ¾ ÑÐ²Ð¾Ð¹ÑÑ‚Ð²Ð¾Ð¼ Ñ€Ð°Ð·Ñ€Ñ‹Ð²Ð° ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹. Ð•ÑÐ»Ð¸ Ð¿Ñ€Ð¸Ñ‘Ð¼ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½Ð¸Ð¹ - Ð¿Ð¾ÑÐ»Ðµ Ð½ÐµÐ³Ð¾ Ð½Ðµ ÑÑ‚Ð°Ð²Ð¸Ð¼ Ñ€Ð°Ð·Ñ€Ñ‹Ð² ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹
             $pageBreaking = 'style="page-break-after:always"';
             //var_dump($arrayCount);
             //var_dump(count($greeting));
@@ -16,7 +16,7 @@ class massPrint extends CWidget {
                 $pageBreaking = '';
 
             ?><div <?php echo $pageBreaking; $arrayCount ?>><?php
-            // Âûçûâàåì âèäæåò ïå÷àòè îäíîãî ïðè¸ìà
+            // Ð’Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ð²Ð¸Ð´Ð¶ÐµÑ‚ Ð¿ÐµÑ‡Ð°Ñ‚Ð¸ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ð¿Ñ€Ð¸Ñ‘Ð¼Ð°
             $this->render('application.modules.doctors.views.print.greeting', array(
                 'templates' => $greeting['templates'],
                 'greeting' => $greeting['greeting'],
