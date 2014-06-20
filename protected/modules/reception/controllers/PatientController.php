@@ -249,25 +249,53 @@ class PatientController extends Controller {
         }
     }
 
-    private function checkUniqueOms($model) {
+    private function checkUniqueOms($model, $withoutCurrent = false) {
         // Проверим, не существует ли уже такого ОМС
         // Три вида ОМС: с пробелом впереди, с пробелом посередине
-        if(mb_strlen($model->policy) != 16) {
+        if(mb_strlen($model->policy) != 16 && !$withoutCurrent) {
             $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
         } else {
             $omsNumber1 = $model->policy;
             $omsNumber2 = ' '.$model->policy;
             $omsNumber3 = mb_substr($model->policy, 0, 6).' '.mb_substr($model->policy, 6);
-            $omsSearched = Oms::model()->find(
-                'oms_number = :oms_number1 OR
-                oms_number = :oms_number2 OR
-                oms_number = :oms_number3',
-                array(
-                    ':oms_number1' => $omsNumber1,
-                    ':oms_number2' => $omsNumber2,
-                    ':oms_number3' => $omsNumber3
-                )
-            );
+            if(!$withoutCurrent) {
+                $omsSearched = Oms::model()->find(
+                    'oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3
+                    )
+                );
+            } else {
+                if($model->id != null) {
+                    $omsSearched = Oms::model()->find(
+                        '(oms_number = :oms_number1 OR
+                        oms_number = :oms_number2 OR
+                        oms_number = :oms_number3)
+                        AND id != :policy_id',
+                        array(
+                            ':oms_number1' => $omsNumber1,
+                            ':oms_number2' => $omsNumber2,
+                            ':oms_number3' => $omsNumber3,
+                            ':policy_id' => $model->id
+                        )
+                    );
+                } else {
+                    $omsSearched = Oms::model()->find(
+                        'oms_number = :oms_number1 OR
+                        oms_number = :oms_number2 OR
+                        oms_number = :oms_number3',
+                        array(
+                            ':oms_number1' => $omsNumber1,
+                            ':oms_number2' => $omsNumber2,
+                            ':oms_number3' => $omsNumber3
+                        )
+                    );
+                }
+            }
         }
 
         if($omsSearched != null) {
@@ -494,7 +522,7 @@ class PatientController extends Controller {
             $addressHidden['regionId'] = $address['region'][0]['id'];
         } else {
             if(!$showEmpty) {
-                $addressStr = 'Регион неизвестен, ';
+                $addressStr = '';
             }
             $addressHidden['regionId'] = null;
         }
@@ -503,7 +531,7 @@ class PatientController extends Controller {
             $addressHidden['districtId'] =  $address['district'][0]['id'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'район неизвестен, ';
+                $addressStr .= '';
             }
             $addressHidden['districtId'] = null;
         }
@@ -512,7 +540,7 @@ class PatientController extends Controller {
             $addressHidden['settlementId'] = $address['settlement'][0]['id'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'населённый пункт неизвестен, ';
+                $addressStr .= '';
             }
             $addressHidden['settlementId'] = null;
         }
@@ -521,7 +549,7 @@ class PatientController extends Controller {
             $addressHidden['streetId'] = $address['street'][0]['id'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'улица неизвестна, ';
+                $addressStr .= '';
             }
             $addressHidden['streetId'] = null;
         }
@@ -531,7 +559,7 @@ class PatientController extends Controller {
             $addressHidden['house'] = $address['house'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'номера дома нет, ';
+                $addressStr .= '';
             }
             $addressHidden['house'] = '';
         }
@@ -541,7 +569,7 @@ class PatientController extends Controller {
             $addressHidden['building'] = $address['building'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'без корпуса / строения, ';
+                $addressStr .= '';
             }
             $addressHidden['building'] = '';
         }
@@ -551,7 +579,7 @@ class PatientController extends Controller {
             $addressHidden['flat'] = $address['flat'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'квартиры нет, ';
+                $addressStr .= '';
             }
             $addressHidden['flat'] = '';
         }
@@ -561,7 +589,7 @@ class PatientController extends Controller {
             $addressHidden['flat'] = $address['postindex'];
         } else {
             if(!$showEmpty) {
-                $addressStr .= 'без почтового индекса';
+                $addressStr .= '';
             }
             $addressHidden['postindex'] = '';
         }
@@ -702,9 +730,43 @@ class PatientController extends Controller {
             $model->attributes = $_POST['FormOmsEdit'];
             $model->insurance = $_POST['FormOmsEdit']['insurance'];
             if($model->validate()) {
-                $oms = Oms::model()->findByPk($_POST['FormOmsEdit']['id']);
-                $this->addEditModelOms($oms, $model);
+                // Проверяем на существование такого же полиса
+                $oms = $this->checkUniqueOms($model, true);
+                if($oms == null) {
+                    $oms = Oms::model()->findByPk($_POST['FormOmsEdit']['id']);
+                    $foundOmsMsg = null;
+                    $this->addEditModelOms($oms, $model);
+                } else {
+                    // В этом случае полис существует. Надо обновить на новые данные и удалить старый полис (для того, чтобы не было дубликатов
+                    Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
+                    $birthday = implode('.', array_reverse(explode('-', $model->birthday)));
+                    $foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', дата рождения '.$birthday.'</strong>)';
+                    // Ищем медкарты с таким ОМС и просто переставляем ID, только_если у того, кого удаляют, нет медкарт. В противном случае, ничего не делаем
+                    // Если у старого пациента нет карт (редактировали ОМС без карты), а у нового (совпавшего) есть - подцепляем карты
+                   /* $medcardsByDelete = Medcard::model()->findAll('policy_id = :policy_id', array(':policy_id' => $_POST['FormOmsEdit']['id']));
+                    if(count($medcardsByDelete) == 0) {
+                        $medcardsForReplace = Medcard::model()->findAll('policy_id = :policy_id', array(':policy_id' => $oms->id));
+                        foreach($medcardsForReplace as $medcardForReplace) {
+                            $medcardModel = Medcard::model()->findByPk($medcardForReplace['card_number']);
+                            if($medcardModel != null) {
+                                $medcardModel->policy_id = $oms->id;
+                                if(!$medcardModel->save()) {
+                                    echo CJSON::encode(array(
+                                        'success' => 'false',
+                                        'errors' => array(
+                                            'medcard' => array(
+                                                'Не могу прикрепить медкарту к найденному пациенту!'
+                                            )
+                                        )
+                                    ));
+                                    exit();
+                                }
+                            }
+                        }
+                    } */
+                }
                 echo CJSON::encode(array('success' => 'true',
+                                         'foundOmsMsg' => $foundOmsMsg,
                                          'msg' => 'Запись успешно отредактирована.'));
             } else {
                 echo CJSON::encode(array('success' => 'false',

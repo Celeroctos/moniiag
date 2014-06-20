@@ -579,6 +579,7 @@
                         globalVariables.greetingId = data.greetingId;
                     }
                     if($('.organizer').length > 0) {
+                        $('.organizer').trigger('resetTriggerByLoad');
                         $('.organizer').trigger('returnDate');
                         globalVariables.resetBeginDate = false;
                         $('.organizer').trigger('reload');
@@ -706,7 +707,7 @@
                             'phone' : '+7'
                         };
 
-                        $('.organaizer').trigger('changeTriggerByLoad');
+                        $('.organizer').trigger('resetTriggerByLoad');
                         $('.organizer').trigger('returnDate');
                         globalVariables.resetBeginDate = false;
                         $('.organizer').trigger('reload');

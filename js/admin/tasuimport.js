@@ -446,6 +446,7 @@
 
                     $('#cardNumber').val('');
                     $('#greetingDate').val('');
+                    $('#greetingDate-cont').find('.day, .month, .year').val('');
                     $.fn["doctorChooser2"].clearAll();
                     $.fn["primaryDiagnosisChooser"].clearAll();
 
