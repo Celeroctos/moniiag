@@ -79,6 +79,78 @@ class PrintController extends Controller {
         ));
     }
 
+    /*public function actionPrintMainPage() {
+        // Выбираем всю информацию о медкарте
+        if(isset($_GET['medcardid'])) {
+
+        }
+        $medcard = Medcard::model()->findByPk($_GET['medcardid']);
+        if($medcard == null) {
+            exit('Ошибка! Не выбрана медкарта.');
+        }
+        if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
+            $groups = array('I', 'II', 'III', 'IV');
+            $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
+        } else {
+            $medcard['invalid_group'] = 'Нет группы';
+        }
+        // Выбираем ОМС по медкарте
+        $oms = Oms::model()->findByPk($medcard->policy_id);
+        if($oms == null) {
+            exit('Ошибка! Полиса не существует!');
+        }
+        // Выбираем предприятие по коду заведения в медкарте
+        $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
+        if($enterprise == null) {
+            exit('Ошибка: учреждения не существует!');
+        }
+        // Выбираем льготы по ОМС
+        $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $oms->id));
+        if(count($privileges) == 0) {
+            $privileges = array();
+        }
+        // Приводим дату к виду
+        $oms['givedate'] = $this->formatDate($oms['givedate']);
+        $oms['birthday'] = $this->formatDate($oms['birthday']);
+        if($oms['enddate'] != null) {
+            $oms['enddate'] = $this->formatDate($oms['enddate']);
+        }
+        // Записываем insurance_name в oms
+        if ($oms['insurance']!='' && $oms['insurance']!=null)
+        {
+            $insurance = Insurance::model()->findByPk($oms->insurance);
+            $oms['insurance'] = $insurance->name;
+        }
+
+        foreach($privileges as &$priv) {
+            $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
+            $privModel = Privilege::model()->findByPk($priv->privilege_id);
+            $priv['docname'] = '(Код '.$privModel->code.') '.$priv['docname'];
+        }
+
+        // Превращаем адрес медкарты
+        $patientController = Yii::app()->createController('reception/patient');
+        $addressData = $patientController[0]->getAddressStr($medcard['address'],true);
+        $medcard['address'] = $addressData['addressStr'];
+
+        $addressRegData = $patientController[0]->getAddressStr($medcard['address_reg'],true);
+        $medcard['address_reg'] = $addressData['addressStr'];
+
+
+        $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0, '', 0, 0, 0, 0, 0, 0);
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+
+
+        $this->render('index', array('medcard' => $medcard,
+            'oms' => $oms,
+            'enterprise' => $enterprise,
+            'privileges' => $privileges)
+
+        );
+
+
+    }*/
+
     public function formatDate($date) {
         if($date == null) {
             return '';

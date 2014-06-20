@@ -194,22 +194,26 @@ $(document).ready(function() {
         }
     });
 
-    $("#district-add-form, #district-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
-        if($(this).prop('id') == 'district-add-form') {
-            if($.fn["regionChooser"].getChoosed().length == 0) {
-                alert('Не выбран регион!');
-                return false;
-            }
-            var region = $.fn["regionChooser"].getChoosed()[0].code_cladr;
-            var strData =  'FormCladrDistrictAdd[name]=' + $("#addDistrictPopup #name").val() + '&FormCladrDistrictAdd[codeCladr]=' + $("#addDistrictPopup #codeCladr").val() + '&FormCladrDistrictAdd[codeRegion]=' + region;
-        } else {
+    $("#district-edit-form").on('beforesend', function(eventObj, settings, jqXHR) {
             if($.fn["regionChooser2"].getChoosed().length == 0) {
                 alert('Не выбран регион!');
                 return false;
             }
             var region = $.fn["regionChooser2"].getChoosed()[0].code_cladr;
             var strData =  'FormCladrDistrictAdd[name]=' + $("#editDistrictPopup #name").val() + '&FormCladrDistrictAdd[codeCladr]=' + $("#editDistrictPopup #codeCladr").val() + '&FormCladrDistrictAdd[codeRegion]=' + region + '&FormCladrDistrictAdd[id]=' + $("#editDistrictPopup #id").val();
-        }
+            settings.data = strData;
+    });
+
+    $("#district-add-form").on('beforesend', function(eventObj, settings, jqXHR) {
+
+            if($.fn["regionChooserForDistrict"].getChoosed().length == 0) {
+                alert('Не выбран регион!');
+                return false;
+            }
+            var region = $.fn["regionChooserForDistrict"].getChoosed()[0].code_cladr;
+            var strData =  'FormCladrDistrictAdd[name]=' + $("#addDistrictPopup #name").val() + '&FormCladrDistrictAdd[codeCladr]=' + $("#addDistrictPopup #codeCladr").val() + '&FormCladrDistrictAdd[codeRegion]=' + region;
+
         settings.data = strData;
     });
+
 });

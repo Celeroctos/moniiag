@@ -205,7 +205,11 @@ class CladrController extends Controller {
 
             $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows);
             foreach($settlements as &$settlement) {
-                $district = CladrDistrict::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $settlement['code_district']));
+                $district = CladrDistrict::model()->find('code_cladr = :code_cladr  AND code_region = :code_region_settlement',
+                    array(
+                        ':code_cladr' => $settlement['code_district'],
+                        ':code_region_settlement' => $settlement['code_region']
+                    ));
                 if($district != null) {
                     $settlement['district'] = $district->name;
                 }
@@ -267,11 +271,20 @@ class CladrController extends Controller {
 
             $streets = $model->getRows($filters, $sidx, $sord, $start, $rows);
             foreach($streets as &$street) {
-                $district = CladrDistrict::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $street['code_district']));
+                $district = CladrDistrict::model()->find('code_cladr = :code_cladr AND code_region = :code_region_street',
+                    array(
+                        ':code_cladr' => $street['code_district'],
+                        ':code_region_street' => $street['code_region']
+                    ));
                 if($district != null) {
                     $street['district'] = $district->name;
                 }
-                $settlement = CladrSettlement::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $street['code_settlement']));
+                $settlement = CladrSettlement::model()->find('code_cladr = :code_cladr AND code_region = :code_region_street AND code_district= :code_district_street',
+                    array(
+                        ':code_cladr' => $street['code_settlement'],
+                        ':code_region_street' => $street['code_region'],
+                        ':code_district_street' => $street['code_district']
+                    ));
                 if($settlement != null) {
                     $street['settlement'] = $settlement->name;
                 }
