@@ -4,7 +4,7 @@ class PrintController extends Controller {
     public $responseData = array();
 
     // Печать главной страницы карты
-   /* public function actionPrintMainPage() {
+    public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
         if(isset($_GET['medcardid'])) {
 
@@ -77,9 +77,9 @@ class PrintController extends Controller {
         $this->render('greetingpdf', array(
             'pdfContent' => $mPDF->Output()
         ));
-    }*/
+    }
 
-    public function actionPrintMainPage() {
+    /*public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
         if(isset($_GET['medcardid'])) {
 
@@ -139,20 +139,17 @@ class PrintController extends Controller {
 
         $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0, '', 0, 0, 0, 0, 0, 0);
         $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
-        /*  $mPDF->WriteHTML($stylesheet, 1);
-          $mPDF->WriteHTML(*/
+
 
         $this->render('index', array('medcard' => $medcard,
             'oms' => $oms,
             'enterprise' => $enterprise,
-            'privileges' => $privileges)/*,true)*/
+            'privileges' => $privileges)
 
         );
 
-        /* $this->render('greetingpdf', array(
-             'pdfContent' => $mPDF->Output()
-         ));*/
-    }
+
+    }*/
 
     public function formatDate($date) {
         if($date == null) {

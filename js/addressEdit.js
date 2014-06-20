@@ -5,21 +5,25 @@ $(document).ready(function(){
     // Обработчики кнопок "Добавить строку в КЛАДР"
     $('.addNewRegionButton').on('click',function(){
         console.log('Была нажата клавиша добавления нового региона');
+        activeChooser = $(this).parents('div.chooser');
         $('#addRegionPopup').modal({});
     });
 
     $('.addNewDistrictButton').on('click',function(){
         console.log('Была нажата клавиша добавления нового района');
+        activeChooser = $(this).parents('div.chooser');
         $('#addDistrictPopup').modal({});
     });
 
     $('.addNewSettlementButton').on('click',function(){
         console.log('Была нажата клавиша добавления нового населённого пункта');
+        activeChooser = $(this).parents('div.chooser');
         $('#addSettlementPopup').modal({});
     });
 
     $('.addNewStreetButton').on('click',function(){
         console.log('Была нажата клавиша добавления новой улицы');
+        activeChooser = $(this).parents('div.chooser');
         $('#addStreetPopup').modal({});
     });
 
@@ -60,6 +64,21 @@ $(document).ready(function(){
         console.log(data);
         // Закрываем окно
         $($(sender).parents('.modal')[0]).modal('hide');
+
+        // Берём поле id=name
+        valForChooser = $(sender).find('#name').val();
+
+        // ставим в фокус текстовое поле чюзера
+        $(activeChooser).find('input[type=text]').focus();
+
+        // Ставим только что добавленное значение
+        $(activeChooser).find('input[type=text]').val(valForChooser);
+
+        // Триггерим событие onkeyup
+        e = $.Event('keyup');
+        $(activeChooser).find('input[type=text]').trigger(e);
+
+
         // Сбрасываем форму
         $(sender)[0].reset();
 

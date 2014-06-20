@@ -21,9 +21,9 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="regionChooser">
                     <label for="region" class="col-xs-4 control-label">Регион (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <div class="input-group" style = "width:100%;">
+                        <div class="input-group">
                             <input type="text" class="form-control" id="region" placeholder="Регион">
-                            <!--<span class="input-group-addon glyphicon glyphicon-plus addNewRegionButton no-display"></span>-->
+                            <span class="input-group-addon glyphicon glyphicon-plus addNewRegionButton"></span>
                         </div>
                         <ul class="variants no-display">
                         </ul>
@@ -34,9 +34,9 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="districtChooser">
                     <label for="district" class="col-xs-4 control-label">Район (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <div class="input-group" style = "width:100%;">
+                        <div class="input-group">
                             <input type="text" class="form-control" id="district" placeholder="Район" >
-                            <!--<span class="input-group-addon glyphicon glyphicon-plus addNewDistrictButton"></span>-->
+                            <span class="input-group-addon glyphicon glyphicon-plus addNewDistrictButton"></span>
                         </div>
                         <ul class="variants no-display">
                         </ul>
@@ -47,9 +47,9 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="settlementChooser">
                     <label for="settlement" class="col-xs-4 control-label">Населённый пункт (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <div class="input-group" style = "width:100%;">
+                        <div class="input-group">
                             <input type="text" class="form-control" id="settlement" placeholder="Населённый пункт">
-                         <!--   <span class="input-group-addon glyphicon glyphicon-plus addNewSettlementButton"></span>-->
+                            <span class="input-group-addon glyphicon glyphicon-plus addNewSettlementButton"></span>
                         </div>
                         <ul class="variants no-display">
                         </ul>
@@ -60,9 +60,9 @@ $form = $this->beginWidget('CActiveForm', array(
                 <div class="form-group chooser" id="streetChooser">
                     <label for="street" class="col-xs-4 control-label">Улица (Enter - добавить)</label>
                     <div class="col-xs-7">
-                        <div class="input-group" style = "width:100%;">
+                        <div class="input-group">
                             <input type="text" class="form-control" id="street" placeholder="Улица">
-                           <!-- <span class="input-group-addon glyphicon glyphicon-plus addNewStreetButton"></span>-->
+                            <span class="input-group-addon glyphicon glyphicon-plus addNewStreetButton"></span>
                         </div>
                         <ul class="variants no-display">
                         </ul>
