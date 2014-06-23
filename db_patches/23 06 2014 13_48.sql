@@ -12,3 +12,8 @@ ALTER TABLE mis.cladr_settlements ALTER COLUMN fake_cladr SET DEFAULT 0;
 
 ALTER TABLE mis.cladr_streets ADD COLUMN fake_cladr integer;
 ALTER TABLE mis.cladr_streets ALTER COLUMN fake_cladr SET DEFAULT 0;
+
+UPDATE mis.cladr_districts SET fake_cladr = 0;
+UPDATE mis.cladr_regions SET fake_cladr = 0;
+UPDATE mis.cladr_streets SET fake_cladr = 0;
+UPDATE mis.cladr_settlements SET fake_cladr = 0;
