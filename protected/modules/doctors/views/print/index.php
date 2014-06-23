@@ -69,18 +69,18 @@
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><strong><span  class="medium2"><?php echo $medcard->address_reg_str; ?></strong></td>
+        <td colspan="6" class="medium2"><strong><span  class="medium2"><?php echo $medcard->address_reg; ?></strong></td>
     </tr>
     <tr>
         <td colspan="6" class="first">11. Адрес регистрации по месту пребывания</td>
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><span class="medium2"><?php echo $medcard->address_str; ?></td>
+        <td colspan="6" class="medium2"><span class="medium2"><?php echo $medcard->address; ?></td>
     </tr>
     <tr>
         <td class="first">12. Телефон</td>
-        <td class="big" colspan="2"><span class="big"><?php echo $medcard->contact; ?></strong></td>
+        <td class="big" colspan="2"><span class="big"><?php echo $medcard->contact; ?></span></td>
         <td class="first">Номер паспорта</td>
         <td class="big" colspan="2"><nobr><span class="big"><?php echo $medcard->serie; ?> <?php echo $medcard->docnumber; ?></nobr></td>
     </tr>

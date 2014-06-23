@@ -359,11 +359,15 @@
                 $('#successAddPopup').find('#successCardNumber').text(cardNumber);
                 $('#successAddPopup').find('#newPatientFio').text(ajaxData.fioBirthday);
                 $('#successAddPopup').modal({
-
                 });
             } else { // Поиск пациента
                 $('#editMedcardPopup').modal('hide');
                 $('#editOmsPopup').modal('hide');
+                if(ajaxData.foundOmsMsg != null) {
+                    $('#foundPopup .modal-body .row p').remove();
+                    $('#foundPopup .modal-body .row').append("<p>" + ajaxData.foundOmsMsg + "</p>");
+                    $('#foundPopup').modal({});
+                }
                 $('#patient-search-submit').trigger('click');
             }
 
@@ -703,55 +707,61 @@
 
     $('#editAddressPopup .editSubmit').on('click', function(e) {
         if($.fn['regionChooser'].getChoosed().length > 0) {
-            var region = $.fn['regionChooser'].getChoosed()[0].name;
+            var region = $.fn['regionChooser'].getChoosed()[0].name + ', ';
             var regionId = $.fn['regionChooser'].getChoosed()[0].id;
         } else {
-            var region = 'Регион неизвестен';
+            var region = '';
             var regionId = null;
         }
 
         if($.fn['districtChooser'].getChoosed().length > 0) {
-            var district = $.fn['districtChooser'].getChoosed()[0].name;
+            var district = $.fn['districtChooser'].getChoosed()[0].name + ', ';
             var districtId = $.fn['districtChooser'].getChoosed()[0].id;
         } else {
-            var district = 'район неизвестен'
+            var district = ''
             var districtId = null;
         }
 
         if($.fn['settlementChooser'].getChoosed().length > 0) {
-            var settlement = $.fn['settlementChooser'].getChoosed()[0].name;
+            var settlement = $.fn['settlementChooser'].getChoosed()[0].name + ', ';
             var settlementId = $.fn['settlementChooser'].getChoosed()[0].id;
         } else {
-            var settlement = 'населённый пункт неизвестен';
+            var settlement = '';
             var settlementId = null;
         }
 
         if($.fn['streetChooser'].getChoosed().length > 0) {
-            var street = $.fn['streetChooser'].getChoosed()[0].name;
+            var street = $.fn['streetChooser'].getChoosed()[0].name + ', ';
             var streetId = $.fn['streetChooser'].getChoosed()[0].id;
         } else {
-            var street = 'улица неизвестна';
+            var street = '';
             var streetId = null;
         }
 
         var house = $('#house').val();
         if($.trim(house) == '') {
-            house = 'номера дома нет';
+            house = '';
+        } else {
+            house += ', '
         }
 
         var building = $('#building').val();
         if($.trim(building) == '') {
-            building = 'без корпуса / строения';
+            building = '';
+        } else {
+            building += ', ';
         }
 
         var flat = $('#flat').val();
         if($.trim(flat) == '') {
-            flat = 'квартиры нет';
+            flat = '';
+        } else {
+            flat += ', ';
         }
 
         var postindex = $('#postindex').val();
         if($.trim(postindex) == '') {
-            postindex = 'без почтового индекса';
+            postindex = '';
         }
 
         var dataToJson = {
@@ -764,7 +774,7 @@
             'flat' : $.trim($('#flat').val()),
             'postindex' : $.trim($('#postindex').val())
         };
-        var textStr = region + ', ' + district + ', ' + settlement + ', ' + street + ', ' + house + ', ' + building + ', ' + flat + ', ' + postindex;
+        var textStr = region + district + settlement + street + house + building + flat + postindex;
 
         $(clickedRow).find('input[type="text"]').val(textStr);
         $(clickedRow).find('input[type="hidden"]').val($.toJSON(dataToJson));

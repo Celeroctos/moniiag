@@ -92,6 +92,31 @@ class TasuController extends Controller {
         if(isset($_POST['FormTasuFakeBufferAdd'])) {
             $model->attributes = $_POST['FormTasuFakeBufferAdd'];
             if($model->validate()) {
+                // Проверка на существование такого приёма (дубликат)
+                $foundFakeGreeting = TasuFakeGreetingsBuffer::model()->find('
+                    t.card_number = :card_number
+                   AND t.doctor_id = :doctor_id
+                   AND t.primary_diagnosis_id = :primary_diagnosis_id
+                   AND t.greeting_date = :greeting_date
+                ', array(
+                    ':card_number' => $model->cardNumber,
+                    ':doctor_id' => $model->doctorId,
+                    ':primary_diagnosis_id' =>$model->primaryDiagnosis,
+                    ':greeting_date' => $model->greetingDate
+                ));
+
+                if($foundFakeGreeting != null) {
+                    echo CJSON::encode(array(
+                        'success' => false,
+                        'errors' => array(
+                            'cardNumber' => array(
+                                'Такой приём уже внесён в список выгружаемых!'
+                            )
+                        )
+                    ));
+                    exit();
+                }
+
                 // Проверка на существование такой медкарты
                 $medcard = Medcard::model()->findByPk($model->cardNumber);
                 if($medcard == null) {
@@ -1631,10 +1656,9 @@ class TasuController extends Controller {
 
         foreach($patients as $patient) {
             $this->processed++;
-            $tasuOms = TasuOms::model()->find('patientuid_09882 = :patient_uid AND version_end = :version_end AND t.state_19333 = :state', array(
+            $tasuOms = TasuOms::model()->find('patientuid_09882 = :patient_uid AND version_end = :version_end', array(
                 ':patient_uid' => $patient['uid'],
-                ':version_end' => $this->version_end,
-                ':state' => 1 // Полис активен
+                ':version_end' => $this->version_end
             ));
 
             if($tasuOms == null) {

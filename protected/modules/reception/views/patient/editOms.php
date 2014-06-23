@@ -85,7 +85,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Вы успешно отредактировали карту.</p>
+                    <p>Вы успешно отредактировали полис.</p>
                 </div>
             </div>
             <div class="modal-footer">

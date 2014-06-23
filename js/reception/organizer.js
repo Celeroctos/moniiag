@@ -19,6 +19,10 @@
         clickedDayLi = null;
     });
 
+    $('.organizer').on('resetTriggerByLoad', function(e) {
+        triggeredByLoad = false;
+    });
+
     $('.organizer').on('reload', function(e) {
         cleanOrganizier();
         $('.organizer').trigger('resetClickedTime');
@@ -27,9 +31,9 @@
         $('#doctor-search-submit').trigger('click');
     });
 
-    $('.organaizer').on('changeTriggerByLoad', function(e) {
+   /* $('.organizer').on('changeTriggerByLoad', function(e) {
         triggeredByLoad = true;
-    });
+    }); */
 
     $('.organizer').on('writePatientWithCard', function(e, beginTime, year, month, day, li) {
         var params = {
@@ -64,7 +68,10 @@
                         globalVariables.greetingId = data.greetingId;
                         prevBeginDate();
                     }
-                    $('.organaizer').trigger('changeTriggerByLoad');
+                    alert("0" + triggeredByLoad);
+                    $('.organizer').trigger('resetTriggerByLoad');
+                    alert("2" + triggeredByLoad);
+                   // $('.organizer').trigger('changeTriggerByLoad');
                     $('.organizer').trigger('reload');
                     $('.organizer').trigger('resetClickedTime');
                     $('.organizer').trigger('resetClickedDay');
@@ -417,6 +424,7 @@
                                                                         if($(clickedTimeLi).prop('id') == $(li).prop('id')) {
                                                                             return false;
                                                                         }
+
                                                                         if(clickedTimeLi != null) {
                                                                             $(clickedTimeLi).find('.popover').remove();
                                                                             $(clickedTimeLi).removeClass('pressed withPatient-pressed');
@@ -430,12 +438,24 @@
                                                                         if($('#patientDataPopup').length > 0) {
                                                                             globalVariables.withWindow = 1;
                                                                             if(globalVariables.hasOwnProperty('greetingId') && typeof globalVariables.greetingId != 'undefined') {
+                                                                                if(globalVariables.hasOwnProperty('patientData')) {
 
-                                                                                $('#patientDataPopup #comment').val(globalVariables.patientData.comment);
-                                                                                $('#patientDataPopup #phone').val(globalVariables.patientData.phone);
-                                                                                $('#patientDataPopup #lastName').val(globalVariables.patientData.lastName);
-                                                                                $('#patientDataPopup #firstName').val(globalVariables.patientData.firstName);
-                                                                                $('#patientDataPopup #middleName').val(globalVariables.patientData.middleName);
+                                                                                    if(globalVariables.patientData.hasOwnProperty('comment')) {
+                                                                                        $('#patientDataPopup #comment').val(globalVariables.patientData.comment);
+                                                                                    }
+                                                                                    if(globalVariables.patientData.hasOwnProperty('phone')) {
+                                                                                        $('#patientDataPopup #phone').val(globalVariables.patientData.phone);
+                                                                                    }
+                                                                                    if(globalVariables.patientData.hasOwnProperty('lastName')) {
+                                                                                        $('#patientDataPopup #lastName').val(globalVariables.patientData.lastName);
+                                                                                    }
+                                                                                    if(globalVariables.patientData.hasOwnProperty('firstName')) {
+                                                                                        $('#patientDataPopup #firstName').val(globalVariables.patientData.firstName);
+                                                                                    }
+                                                                                    if(globalVariables.patientData.hasOwnProperty('middleName')) {
+                                                                                        $('#patientDataPopup #middleName').val(globalVariables.patientData.middleName);
+                                                                                    }
+                                                                                }
                                                                             }
                                                                             $('#patientDataPopup').modal({});
                                                                         } else { // Должны быть данные для записи пациента
