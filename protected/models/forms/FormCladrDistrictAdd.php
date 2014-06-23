@@ -11,7 +11,8 @@ class FormCladrDistrictAdd extends CFormModel
     {
         return array(
             array(
-                'name, codeCladr, codeRegion', 'required'
+                //'name, codeCladr, codeRegion', 'required'
+                 'name, codeRegion', 'required'
             )
         );
     }

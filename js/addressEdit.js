@@ -3,25 +3,25 @@ $(document).ready(function(){
     activeChooser = null;
 
     // Обработчики кнопок "Добавить строку в КЛАДР"
-    $('.addNewRegionButton').on('click',function(){
+    $(document).on('click','.addNewRegionButton',function(){
         console.log('Была нажата клавиша добавления нового региона');
         activeChooser = $(this).parents('div.chooser');
         $('#addRegionPopup').modal({});
     });
 
-    $('.addNewDistrictButton').on('click',function(){
+    $(document).on('click','.addNewDistrictButton',function(){
         console.log('Была нажата клавиша добавления нового района');
         activeChooser = $(this).parents('div.chooser');
         $('#addDistrictPopup').modal({});
     });
 
-    $('.addNewSettlementButton').on('click',function(){
+    $(document).on('click','.addNewSettlementButton',function(){
         console.log('Была нажата клавиша добавления нового населённого пункта');
         activeChooser = $(this).parents('div.chooser');
         $('#addSettlementPopup').modal({});
     });
 
-    $('.addNewStreetButton').on('click',function(){
+    $(document).on('click','.addNewStreetButton',function(){
         console.log('Была нажата клавиша добавления новой улицы');
         activeChooser = $(this).parents('div.chooser');
         $('#addStreetPopup').modal({});
@@ -60,6 +60,10 @@ $(document).ready(function(){
     //   должна вызываться для всех форм добавления в КЛАДР
     function onCladdrAdd(sender,data)
     {
+        chooserId = $(activeChooser).attr('id');
+        // Разрешаем ввод данных для чюзера
+        $.fn[chooserId].enable();
+
         console.log(sender);
         console.log(data);
         // Закрываем окно
@@ -75,9 +79,31 @@ $(document).ready(function(){
         $(activeChooser).find('input[type=text]').val(valForChooser);
 
         // Триггерим событие onkeyup
-        e = $.Event('keyup');
+        /*e = $.Event('keyup');
         $(activeChooser).find('input[type=text]').trigger(e);
+        */
 
+        /*
+        var e = $.Event('keyup');
+        e.which = 0; // Character 'A'
+        $(activeChooser).find('input[type=text]').trigger(e);
+        */
+
+        // Очищаем активный чюзер
+        // Вообще-то здесь это делать не правильно. Нужно сделать специальный метод в чюзепре
+        //     Так что этот кусок надо будет переделать
+        $(activeChooser).find('div.choosed span').remove();
+
+        // Запускаем событие обновления чюзера
+        $(activeChooser).find('input[type=text]').one('keydown', function(e){
+            var e = $.Event('keyup');
+            e.which = 0; // null character
+            $(this).trigger(e);
+        });
+
+        var e = $.Event('keydown');
+        e.which = 0; // null character
+        $(activeChooser).find('input[type=text]').trigger(e);
 
         // Сбрасываем форму
         $(sender)[0].reset();

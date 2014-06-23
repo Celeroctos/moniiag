@@ -33,34 +33,44 @@
                                 )); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'codeCladr', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'codeCladr', array(
-                                    'id' => 'codeCladr',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Код'
+
+                        <?php
+                        if ($printCodeField==1)
+                        {
+                            ?>
+
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model,'codeCladr', array(
+                                    'class' => 'col-xs-3 control-label'
                                 )); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->textField($model,'codeCladr', array(
+                                        'id' => 'codeCladr',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Код'
+                                    )); ?>
+                                </div>
                             </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                         <div class="form-group chooser" id="regionChooserForStreet">
                             <?php echo $form->labelEx($model,'codeRegion', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->textField($model,'codeRegion', array(
-                                    'id' => 'codeRegion',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Регион'
+                            <?php echo $form->textField($model,'codeRegion', array(
+                                'id' => 'codeRegion',
+                                'class' => 'form-control',
+                                'placeholder' => 'Регион'
                                 )); ?>
                                 <ul class="variants no-display">
-                                </ul>
+                                /ul>
                                 <div class="choosed">
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-group chooser" id="districtChooserForStreet">
                             <?php echo $form->labelEx($model,'codeDistrict', array(
                                 'class' => 'col-xs-3 control-label'

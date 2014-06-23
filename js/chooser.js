@@ -1,4 +1,16 @@
 $(document).ready(function() {
+
+    function reduceCladrCode(codeToReduce)
+    {
+        result = '';
+
+        result = codeToReduce.substr(0,7);
+        if (codeToReduce.length>7)
+            result += '...';
+
+        return result;
+    }
+
     var choosers = $('.chooser');
     $(choosers).each(function() {
         (function(chooser) {
@@ -194,7 +206,7 @@ $(document).ready(function() {
                     }
                     searchByField(this);
                 }
-                if($(this).val().length == 1) {
+                if($(this).val().length >= 1) {
                     mode = 1;
                     if(e.keyCode != 37 && e.keyCode != 39) {
                         initPageParam(1);
@@ -758,7 +770,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -795,7 +807,7 @@ $(document).ready(function() {
                 });
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr ) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -847,7 +859,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -912,7 +924,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -949,7 +961,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr )+ '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1001,7 +1013,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1060,7 +1072,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr ) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -1116,7 +1128,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr ) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1154,7 +1166,7 @@ $(document).ready(function() {
                 //'district' : $.fn['districtChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1188,7 +1200,7 @@ $(document).ready(function() {
                 });
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr )+ '] ' + row.name));
             },
             'afterInsert': function() {
 
@@ -1253,7 +1265,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1299,7 +1311,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr )+ '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1336,7 +1348,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1354,7 +1366,7 @@ $(document).ready(function() {
             'primary' : 'id',
             'maxChoosed' : 1,
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'afterInsert': function() {
 

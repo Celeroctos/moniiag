@@ -105,17 +105,21 @@ $form = $this->beginWidget('CActiveForm', array(
 <?php $this->endWidget(); ?>
 <?php
 $this->widget('application.modules.guides.components.widgets.claddr.regionAdder', array(
+    'printCodeField' => 0
 ));
 ?>
 <?php
 $this->widget('application.modules.guides.components.widgets.claddr.settlementAdder', array(
+    'printCodeField' => 0
 ));
 ?>
 <?php
 $this->widget('application.modules.guides.components.widgets.claddr.streetAdder', array(
+    'printCodeField' => 0
 ));
 ?>
 <?php
 $this->widget('application.modules.guides.components.widgets.claddr.districtAdder', array(
+    'printCodeField' => 0
 ));
 ?>

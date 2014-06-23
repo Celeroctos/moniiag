@@ -357,6 +357,11 @@ class CladrController extends Controller {
         }
     }
 
+    private function create_guid()   //Генераци GUID
+    {
+         return com_create_guid ();
+    }
+
     public function actionSettlementEdit() {
         $model = new FormCladrSettlementAdd();
         if(isset($_POST['FormCladrSettlementAdd'])) {
@@ -402,6 +407,22 @@ class CladrController extends Controller {
         }
     }
 
+    // Выполняет действия с моделью строки из кладдр перед её добавлением в базу
+    private function onBeforeAddCladdr(&$claddrEntry)
+    {
+        // Генерируем гуид
+        $guid = $this->create_guid();
+        // Убираем из строки фигурный скобки и прочую гадость (дефисы)
+        $guid = str_replace('{','',$guid);
+        $guid = str_replace('}','',$guid);
+        $guid = str_replace('-','',$guid);
+
+        $claddrEntry->code_cladr = $guid;
+
+        // Пишем fake_cladr ля модели
+        $claddrEntry->fake_cladr = 1;
+    }
+
     public function actionStreetAdd() {
         $model = new FormCladrStreetAdd();
         if(isset($_POST['FormCladrStreetAdd'])) {
@@ -416,6 +437,8 @@ class CladrController extends Controller {
             }
         }
     }
+
+
 
     public function actionSettlementAdd() {
         $model = new FormCladrSettlementAdd();
@@ -522,7 +545,10 @@ class CladrController extends Controller {
         $street->code_cladr = $model->codeCladr;
         $street->code_settlement = $model->codeSettlement;
         $street->name = $model->name;
-
+        if ($street->code_cladr=='' || $street->code_cladr==null)
+        {
+            $this->onBeforeAddCladdr($street);
+        }
         if($street->save()) {
             echo CJSON::encode(array(
                 'success' => true,
@@ -536,7 +562,10 @@ class CladrController extends Controller {
         $settlement->code_district = $model->codeDistrict;
         $settlement->code_cladr = $model->codeCladr;
         $settlement->name = $model->name;
-
+        if ($settlement->code_cladr=='' || $settlement->code_cladr==null)
+        {
+            $this->onBeforeAddCladdr($settlement);
+        }
         if($settlement->save()) {
             echo CJSON::encode(array(
                 'success' => true,
@@ -549,7 +578,10 @@ class CladrController extends Controller {
         $district->code_region = $model->codeRegion;
         $district->code_cladr = $model->codeCladr;
         $district->name = $model->name;
-
+        if ($district->code_cladr=='' || $district->code_cladr==null)
+        {
+            $this->onBeforeAddCladdr($district);
+        }
         if($district->save()) {
             echo CJSON::encode(array(
                 'success' => true,
@@ -561,7 +593,10 @@ class CladrController extends Controller {
     private function addEditRegionModel($region, $model, $msg) {
         $region->code_cladr = $model->codeCladr;
         $region->name = $model->name;
-
+        if ($region->code_cladr=='' || $region->code_cladr==null)
+        {
+            $this->onBeforeAddCladdr($region);
+        }
         if($region->save()) {
             echo CJSON::encode(array(
                 'success' => true,

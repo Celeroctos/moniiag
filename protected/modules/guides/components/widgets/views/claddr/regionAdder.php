@@ -33,18 +33,25 @@
                                 )); ?>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'codeCladr', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'codeCladr', array(
-                                    'id' => 'codeCladr',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Код'
+                        <?php
+                        if ($printCodeField==1)
+                        {
+                            ?>
+                            <div class="form-group">
+                                <?php echo $form->labelEx($model,'codeCladr', array(
+                                    'class' => 'col-xs-3 control-label'
                                 )); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->textField($model,'codeCladr', array(
+                                        'id' => 'codeCladr',
+                                        'class' => 'form-control',
+                                        'placeholder' => 'Код'
+                                    )); ?>
+                                </div>
                             </div>
-                        </div>
+                            <?php
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
