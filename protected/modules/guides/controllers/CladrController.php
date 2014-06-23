@@ -590,7 +590,7 @@ class CladrController extends Controller {
         $street->code_cladr = $model->codeCladr;
         $street->code_settlement = $model->codeSettlement;
         $street->name = $model->name;
-        if (!isset($street->code_cladr) ||$street->code_cladr=='' || $street->code_cladr==null)
+        if (!isset($model->codeCladr) ||$street->code_cladr=='' || $street->code_cladr==null)
         {
             $this->onBeforeAddCladdr($street);
         }
@@ -607,7 +607,7 @@ class CladrController extends Controller {
         $settlement->code_district = $model->codeDistrict;
         $settlement->code_cladr = $model->codeCladr;
         $settlement->name = $model->name;
-        if (!isset($settlement->code_cladr) ||$settlement->code_cladr=='' || $settlement->code_cladr==null)
+        if (!isset($model->codeCladr) ||$settlement->code_cladr=='' || $settlement->code_cladr==null)
         {
             $this->onBeforeAddCladdr($settlement);
         }
@@ -623,7 +623,7 @@ class CladrController extends Controller {
         $district->code_region = $model->codeRegion;
         $district->code_cladr = $model->codeCladr;
         $district->name = $model->name;
-        if (!isset($district->code_cladr) || $district->code_cladr=='' || $district->code_cladr==null)
+        if (!isset($model->codeCladr) || $district->code_cladr=='' || $district->code_cladr==null)
         {
             $this->onBeforeAddCladdr($district);
         }
@@ -638,7 +638,7 @@ class CladrController extends Controller {
     private function addEditRegionModel($region, $model, $msg) {
         $region->code_cladr = $model->codeCladr;
         $region->name = $model->name;
-        if (!isset($region->code_cladr) || $region->code_cladr=='' || $region->code_cladr==null)
+        if (!isset($model->codeCladr) || $region->code_cladr=='' || $region->code_cladr==null)
         {
             $this->onBeforeAddCladdr($region);
         }
