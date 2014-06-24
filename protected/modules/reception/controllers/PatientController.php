@@ -780,6 +780,11 @@ class PatientController extends Controller {
         // Добавление карты: нет id
         if($medcard->card_number == null) {
             $medcard->card_number = $this->getCardNumber();
+            // Записываем текущую дату и ID пользователя, который создал медкарту
+            $medcard->date_created =  date('Y-m-d H:i:s');
+            $record = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
+            $medcard->user_created = $record['employee_id'];
+
         }
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;

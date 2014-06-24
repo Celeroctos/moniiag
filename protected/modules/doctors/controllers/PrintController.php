@@ -14,7 +14,7 @@ class PrintController extends Controller {
             exit('Ошибка! Не выбрана медкарта.');
         }
         if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
-            $groups = array('I', 'II', 'III', 'IV');
+            $groups = array('','I', 'II', 'III', 'IV');
             $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
         } else {
             $medcard['invalid_group'] = 'Нет группы';
@@ -89,7 +89,7 @@ class PrintController extends Controller {
             exit('Ошибка! Не выбрана медкарта.');
         }
         if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
-            $groups = array('I', 'II', 'III', 'IV');
+            $groups = array('','I', 'II', 'III', 'IV');
             $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
         } else {
             $medcard['invalid_group'] = 'Нет группы';
