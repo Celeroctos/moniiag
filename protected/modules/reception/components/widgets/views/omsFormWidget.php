@@ -1,3 +1,7 @@
+<?php
+  //  var_dump($model);
+  //  exit();
+?>
 <div class="form-group no-display" id="insuranceHidden">
     <?php echo $form->hiddenField($model,'insurance', array(
         'class' => 'col-xs-3 control-label'

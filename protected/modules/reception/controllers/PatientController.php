@@ -94,6 +94,7 @@ class PatientController extends Controller {
         $privilegesList = $this->getPrivileges();
 
         if(isset($_GET['patientid']) && !isset($_GET['mediateid'])) {
+
             $model = new Oms();
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
@@ -145,6 +146,7 @@ class PatientController extends Controller {
         } else {
             // Регистрация опосредованного пациента: сопоставление с сущестующими ОМС
             if(isset($_GET['mediateid'], $_GET['patientid'])) {
+
                 $oms = Oms::model()->findByPk($_GET['patientid']);
                 $mediate = MediatePatient::model()->findByPk($_GET['mediateid']);
                 $model = new FormPatientWithCardAdd();
@@ -173,7 +175,6 @@ class PatientController extends Controller {
                 ));
                 exit();
             }
-
             $model = new FormPatientAdd();
             $this->render('addPatientWithoutCard', array(
                 'model' => $model,

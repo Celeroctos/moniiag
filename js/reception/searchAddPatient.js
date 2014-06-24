@@ -835,9 +835,64 @@
         }
     );
 
+
+    function serializeParameters()
+    {
+        result = '';
+
+        if ( $('#omsNumber').length>0 && $('#omsNumber').val().length>0 )
+        {
+            result += '&newOmsNumber='+encodeURIComponent($('#omsNumber').val());
+        }
+
+
+        if ( $('#lastName').length>0 && $('#lastName').val().length>0)
+        {
+            result += '&newLastName='+encodeURIComponent($('#lastName').val());
+        }
+
+        if ( $('#firstName').length>0 && $('#firstName').val().length>0)
+        {
+            result += '&newFirstName='+encodeURIComponent($('#firstName').val());
+        }
+
+        if ( $('#middleName').length>0 && $('#middleName').val().length>0)
+        {
+            result += '&newMiddleName='+encodeURIComponent($('#middleName').val());
+        }
+
+
+        if ( $('#birthday2').length>0 && $('#birthday2').val().length>0)
+        {
+            result += '&newBirthday='+encodeURIComponent($('#birthday2').val());
+        }
+
+        if ( $('#serie').length>0 && $('#serie').val().length>0)
+        {
+            result += '&newSerie='+encodeURIComponent($('#serie').val());
+        }
+
+        if ( $('#docnumber').length>0 && $('#docnumber').val().length>0)
+        {
+            result += '&newDocnumber='+encodeURIComponent($('#docnumber').val());
+        }
+
+        if ( $('#snils').length>0 && $('#snils').val().length>0)
+        {
+            result += '&newSnils='+encodeURIComponent($('#snils').val());
+        }
+
+        if ( result.length>0)
+            result = ('?'+result.substr(1));
+
+        return result;
+    }
+
     // Переадресация на страницу создания нового пациента
     $('#createNewPatientBtn').on('click', function(e) {
-        location.href = '/index.php/reception/patient/viewadd';
+        // В запрос подаём данные из полей, которые мы ввели в форме, чтобы при создании пациента не вводить эти
+        //   данные заново
+        location.href = '/index.php/reception/patient/viewadd' + serializeParameters();
     });
 
     $('#patient-search-form').on('keydown', function(e) {
