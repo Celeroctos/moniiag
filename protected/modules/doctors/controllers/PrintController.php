@@ -2,7 +2,7 @@
 class PrintController extends Controller {
     public $layout = 'print';
     public $responseData = array();
-
+/*
     // Печать главной страницы карты
     public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
@@ -78,8 +78,8 @@ class PrintController extends Controller {
             'pdfContent' => $mPDF->Output()
         ));
     }
-
-    /*public function actionPrintMainPage() {
+*/
+    public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
         if(isset($_GET['medcardid'])) {
 
@@ -149,7 +149,7 @@ class PrintController extends Controller {
         );
 
 
-    }*/
+    }
 
     public function formatDate($date) {
         if($date == null) {
