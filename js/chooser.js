@@ -1225,6 +1225,31 @@ $(document).ready(function() {
                 ]
             }
         },
+        'regionPolicyChooser' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'afterInsert' : function()
+            {
+                $('#policyRegionHidden input').val($.fn['regionPolicyChooser'].getChoosed()[0].id);
+            },
+            'afterRemove' : function() {
+                $('#policyRegionHidden input').val('');
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr) + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'regionChooser2' : {
             'primary' : 'id',
             'maxChoosed' : 1,

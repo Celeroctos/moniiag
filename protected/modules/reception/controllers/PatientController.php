@@ -192,6 +192,7 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
             $model->insurance = $_POST['FormPatientAdd']['insurance'];
+            $model->region = $_POST['FormPatientAdd']['region'];
             // Если телефон равен +7, значит его не ввели
             if ($model->contact=="+7")
                 $model->contact = "";
@@ -379,9 +380,12 @@ class PatientController extends Controller {
         $oms->givedate = $model->policyGivedate;
         $oms->status = $model->status;
         $oms->insurance = $model->insurance;
+        $oms->region = $model->region;
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
+
+        //var_dump();
 
         if(!$oms->save()) {
             echo CJSON::encode(array('success' => 'false',
@@ -682,6 +686,13 @@ class PatientController extends Controller {
         $insuranceObject = $omsInsurance ->findByPk($oms['insurance']);
         $insuranceName = $insuranceObject['name'];
 
+        // Прочитаем регион
+
+        $omsRegion =  new CladrRegion();
+        $regionObject = $omsRegion ->findByPk($oms['region']);
+        $regionName = $regionObject['name'];
+
+
         $formModel = new FormOmsEdit();
         $formModel = $this->fillOmsModel($formModel, $oms);
         return array(
@@ -689,6 +700,8 @@ class PatientController extends Controller {
           'oms' => $oms,
           'insuranceId' => $oms['insurance'],
           'insuranceName' => $insuranceName,
+          'regionId' => $oms['region'],
+          'regionName' => $regionName
         );
     }
 
@@ -730,6 +743,7 @@ class PatientController extends Controller {
         if(isset($_POST['FormOmsEdit'])) {
             $model->attributes = $_POST['FormOmsEdit'];
             $model->insurance = $_POST['FormOmsEdit']['insurance'];
+            $model->region = $_POST['FormOmsEdit']['region'];
             if($model->validate()) {
                 // Проверяем на существование такого же полиса
                 $oms = $this->checkUniqueOms($model, true);
@@ -866,9 +880,6 @@ class PatientController extends Controller {
             )
         );
     }
-
-    // Тестовый комментарий
-    // Тестовый комментарий2
 
     // Поиск пациента и его запсь
     public function actionSearch() {

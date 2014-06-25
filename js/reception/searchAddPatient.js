@@ -601,6 +601,8 @@
                 if(data.success == true) {
                     var insId = data.data.insuranceId;
                     var insName = data.data.insuranceName;
+                    var regId = data.data.regionId;
+                    var regName = data.data.regionName;
                     var data = data.data.formModel;
 
                     var form = $('#patient-oms-edit-form');
@@ -627,6 +629,31 @@
                         // Заблочим чюзер
                         $('#insuranceChooser input').attr('disabled', '');
                     }
+                    else
+                    {
+                        $('#insuranceChooser .choosed').empty();
+                        $('#insuranceChooser input').removeAttr('disabled', '');
+                    }
+
+                    // Запишем в чюзер регион
+                    if (regId!='' && regId!=null)
+                    {
+                        $('#regionPolicyChooser .choosed').html(
+                            "<span class=\"item\"" +
+                                "id=\"r"+ regId +"\">" + regName +
+                                "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                        );
+
+                        // Заблочим чюзер
+                        $('#regionPolicyChooser input').attr('disabled', '');
+                    }
+                    else
+                    {
+                        $('#regionPolicyChooser .choosed').empty();
+                        $('#regionPolicyChooser input').removeAttr('disabled', '');
+                    }
+
+
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();

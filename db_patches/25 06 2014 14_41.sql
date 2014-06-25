@@ -1,0 +1,1 @@
+ALTER TABLE mis.oms ADD COLUMN region character varying(50);

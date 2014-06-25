@@ -3,6 +3,7 @@ class FormPatientAdd extends FormMisDefault
 {
     public $omsType;
     public $insurance;
+    public $region;
     public $policy;
     public $lastName;
     public $firstName;

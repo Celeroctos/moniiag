@@ -7,6 +7,11 @@
         'class' => 'col-xs-3 control-label'
     )); ?>
 </div>
+<div class="form-group no-display" id="policyRegionHidden">
+    <?php echo $form->hiddenField($model,'region', array(
+        'class' => 'col-xs-3 control-label'
+    )); ?>
+</div>
 <div class="form-group">
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
@@ -78,6 +83,18 @@
                     <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+<!-- чюзер с регионом для полиса -->
+<div class="form-group chooser" id="regionPolicyChooser">
+    <label for="doctor" class="col-xs-3 control-label">Регион: </label>
+    <div class="col-xs-9">
+        <input type="text" class="form-control" id="doctor"
+               placeholder="Начинайте вводить...">
+        <ul class="variants no-display">
+        </ul>
+        <div class="choosed">
         </div>
     </div>
 </div>

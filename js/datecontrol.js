@@ -252,7 +252,10 @@ var dateControlConfigs =
                         DayInt = newValues[0];
                         MonthInt = newValues[1];
                         YearInt =  newValues[2];
-                        $(this).val(YearInt  + '-' + MonthInt + '-' + DayInt);
+                        if (DayInt==DayInt && MonthInt==MonthInt && YearInt==YearInt)
+                        {
+                            $(this).val(YearInt  + '-' + MonthInt + '-' + DayInt);
+                        }
                     }
 
                     // Проверяем - выводим, если ни одна из компонент не равно NaN
@@ -272,15 +275,19 @@ var dateControlConfigs =
                 }
                 else
                 { // Из настоящего в суб
-                    // Надо проверить значения контролов year, month, year а минимакс
-                    if (config != undefined && typeof config == 'object')
+
+                    if (! ( (year.val()=='')|| (month.val()=='') || (day.val()=='')))
                     {
-                        var newValues = minMaxFilter(day.val(),month.val(),year.val(),config);
-                        day.val(newValues[0]);
-                        month.val(newValues[1]);
-                        year.val(newValues[2]);
+                        // Надо проверить значения контролов year, month, year а минимакс
+                        if (config != undefined && typeof config == 'object')
+                        {
+                            var newValues = minMaxFilter(day.val(),month.val(),year.val(),config);
+                            day.val(newValues[0]);
+                            month.val(newValues[1]);
+                            year.val(newValues[2]);
+                        }
+                        $(this).val(year.val() + '-' + month.val() + '-' + day.val());
                     }
-                    $(this).val(year.val() + '-' + month.val() + '-' + day.val());
                 }
             }
         });
