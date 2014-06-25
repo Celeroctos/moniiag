@@ -868,6 +868,7 @@ class PatientController extends Controller {
     }
 
     // Тестовый комментарий
+    // Тестовый комментарий2
 
     // Поиск пациента и его запсь
     public function actionSearch() {
