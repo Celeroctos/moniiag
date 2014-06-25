@@ -136,6 +136,7 @@ $(document).ready(function() {
     // Отобразить таблицу тех, кто с картами
     function displayAllWithCard(data) {
         showGreetings = data.greetingsHistory;
+        //console.log(showGreetings);
         data = data.rows;
         // Заполняем пришедшими данными таблицу тех, кто без карт
         var table = $('#omsSearchWithCardResult tbody');

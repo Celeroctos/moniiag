@@ -953,7 +953,7 @@ class PatientController extends Controller {
             }
         }
 
-        $canViewGreetingHistory =  Yii::app()->user->checkAccess('canViewGreetingHistory');
+        $canViewGreetingHistory =  Yii::app()->user->checkAccess('canViewGreetingArchive');
 
         echo CJSON::encode(
            array(
