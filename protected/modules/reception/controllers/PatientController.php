@@ -867,6 +867,8 @@ class PatientController extends Controller {
         );
     }
 
+    // Тестовый комментарий
+
     // Поиск пациента и его запсь
     public function actionSearch() {
         // Проверим наличие фильтров
