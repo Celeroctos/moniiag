@@ -20,6 +20,29 @@ class SheduleSetted extends MisActiveRecord {
     }
 
 
+    // Получить все смены для сотрудника
+    public static function getAllForEmployer ($employerId)
+    {
+        $connection = Yii::app()->db;
+        try {
+            $sheduleDays= $connection->createCommand()
+                ->select("*")
+                ->from(SheduleSetted::tableName().' dss')
+                ->leftJoin('mis.doctor_shedule_setted_be dssb', 'dss.date_id=dssb.id')
+                ->where(
+
+                    'dss.employee_id = :employee_id',
+                    array(
+                        ':employee_id' => $employerId
+                    )
+
+                );
+            return $sheduleDays->queryAll();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function getRows() {
 
     }

@@ -648,7 +648,8 @@ class SheduleController extends Controller {
             $doctorId = isset($_GET['doctorid']) ? (int)$_GET['doctorid'] : $doctorId;
             // Выбираем настройки расписания
             $settings = $this->getSettings();
-            $shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+            //$shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+            $shedule = SheduleSetted::getAllForEmployer($doctorId);
             // Здесь проверяем день, месяц, год..
             if(isset($_GET['year'])) {
                 $this->currentYear = $_GET['year'];
@@ -701,6 +702,9 @@ class SheduleController extends Controller {
             $usualData = array();
             $exps = array();
             $expsData = array();
+
+            //var_dump($shedule);
+            //exit();
             foreach($shedule as $key => $element) {
                 // Обычное расписание
                 if($element['type'] == 0) {
@@ -741,8 +745,9 @@ class SheduleController extends Controller {
 
             // Теперь смотрим по дням и составляем календарь
             $resultArr = array();
-            //var_dump($dayBegin);
-            //var_dump($dayEnd);
+           // var_dump($dayBegin);
+           // var_dump($dayEnd);
+           // exit();
             for($i = $dayBegin; $i <= $dayEnd; $i++) {
 
                 $resultArr[(string)$i - 1] = array();
@@ -765,8 +770,13 @@ class SheduleController extends Controller {
                 // 0 -> 0.. 1 -> 1..
                 $resultArr[(string)$i - 1]['weekday'] = $weekday;
                 $expsIndex = array_search($formatDate, $exps);
-                $usualIndex = array_search($weekday, $usual);
 
+                // Вот тут надо искать с учётом текущей даты
+               // var_dump($usualData);
+               // exit();
+                //$usualIndex = array_search($weekday, $usual);
+
+                $usualIndex = $this->getIndexWorkingDay($usualData,  $weekday,$formatDate);
                 if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($formatDate, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
                     $resultArr[(string)$i - 1]['worked'] = true;
@@ -840,6 +850,41 @@ class SheduleController extends Controller {
 
             return $resultArr;
         }
+    }
+
+    // Функция, которая прочёсывает массив рабочих дней в каждую из смен для одного врача и определяет
+    //      индекс строки с расписанием для конекретной даты, конкретного дня недели для конкретного врача
+    private function getIndexWorkingDay($workingDaysArray, $weekDay,$workingDate)
+    {
+        $result = false;
+
+        // Пробегаемся по массиву
+        for ($i=0;$i<count($workingDaysArray);$i++)
+        {
+
+            // 1. Если рабочий день из атрибута не равен рабочему дню из поданых параметров - то следующая
+            //    итерация
+            if ($workingDaysArray[$i]['weekday']!=$weekDay || $workingDaysArray[$i]['type']==1)
+            {
+                continue;
+            }
+            var_dump($workingDaysArray[$i]);
+            exit();
+
+            // 2. Если weekday таки равен - надо проверить на попадение даты в интервал beginDate и endDate
+            $currentDate = strtotime($workingDate);
+            $beginDate = strtotime($workingDaysArray[$i]['begin_date']);
+            $endDate = strtotime($workingDaysArray[$i]['end_date']);
+            // Если текущая дата попадает в промежуток между begin и date - то мы нашли искомый индекс
+            if ( ($currentDate >= $beginDate) && ($currentDate <= $endDate) )
+            {
+                $result = $i;
+                // Теоретически тут конечно можно поставить break - ибо мы нашли индекс.
+                //   Но острой необходимости в этом нет
+            }
+        }
+
+        return $result;
     }
 
     public function actionGetPatientsListByDate() {
