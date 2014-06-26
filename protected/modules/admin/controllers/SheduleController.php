@@ -251,9 +251,19 @@ class SheduleController extends Controller {
         // Разделим ИД приёмов
         foreach ($arrayOfGreetings as $oneGreeting)
         {
-            if ($oneGreeting['mediate_id']=='')
+
+            if ($oneGreeting['mediate_id']=='' || $oneGreeting['mediate_id']==null)
             {
+
+
+
                 array_push( $directIds,$oneGreeting['id']);
+
+               /* if ($oneGreeting['id']==2314)
+                {
+                    var_dump($directIds);
+                    exit();
+                }*/
             }
             else
             {
@@ -278,7 +288,6 @@ class SheduleController extends Controller {
             $mediateAssociation[$mediatesInfo [$i]['id']] = $i;
         }
 
-
         for($i=0;$i<count($directsInfo );$i++)
         {
             $directAssociation[$directsInfo [$i]['id']] = $i;
@@ -287,6 +296,7 @@ class SheduleController extends Controller {
         // Перебираем массив приёмов и добавляем в каждый элемент инфу о приёме в зависимости от того, опосредованный он или нет
         foreach ($arrayOfGreetings as &$oneGreeting)
         {
+
             // Определён ли этот ид в обычных приёмах
             if (isset  (    $directAssociation[$oneGreeting['id']]   )  )
             {

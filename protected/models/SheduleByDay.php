@@ -251,8 +251,8 @@ class SheduleByDay extends MisActiveRecord {
                     m.card_number AS card_number
  					')
             ->from('mis.doctor_shedule_by_day dsbd')
-            ->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
-            ->Join('mis.oms o', 'm.policy_id = o.id')
+            ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+            ->leftJoin('mis.oms o', 'm.policy_id = o.id')
             ->where('dsbd.id in ('.$greetingsIdsStr.')', array()
             );
         return $patients->queryAll();
