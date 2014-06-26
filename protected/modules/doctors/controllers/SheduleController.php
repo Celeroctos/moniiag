@@ -864,17 +864,17 @@ class SheduleController extends Controller {
 
             // 1. Если рабочий день из атрибута не равен рабочему дню из поданых параметров - то следующая
             //    итерация
-            if ($workingDaysArray[$i]['weekday']!=$weekDay || $workingDaysArray[$i]['type']==1)
+            if ($workingDaysArray[$i]['weekday']!=$weekDay )
             {
                 continue;
             }
-            var_dump($workingDaysArray[$i]);
-            exit();
 
             // 2. Если weekday таки равен - надо проверить на попадение даты в интервал beginDate и endDate
             $currentDate = strtotime($workingDate);
-            $beginDate = strtotime($workingDaysArray[$i]['begin_date']);
-            $endDate = strtotime($workingDaysArray[$i]['end_date']);
+            $beginDate = strtotime($workingDaysArray[$i]['date_begin']);
+            $endDate = strtotime($workingDaysArray[$i]['date_end']);
+
+
             // Если текущая дата попадает в промежуток между begin и date - то мы нашли искомый индекс
             if ( ($currentDate >= $beginDate) && ($currentDate <= $endDate) )
             {
