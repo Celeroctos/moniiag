@@ -1,4 +1,3 @@
-// 111111111
 $(document).ready(function(){
 
     activeChooser = null;
