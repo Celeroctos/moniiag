@@ -122,6 +122,13 @@ class PrintController extends Controller {
             $oms['insurance'] = $insurance->name;
         }
 
+        // Прочитаем регион
+        if ($oms['region']!='' && $oms['region']!=null)
+        {
+            $omsRegion =  new CladrRegion();
+            $regionObject = $omsRegion ->findByPk($oms['region']);
+            $oms['region'] = $regionObject['name'];
+        }
         foreach($privileges as &$priv) {
             $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
             $privModel = Privilege::model()->findByPk($priv->privilege_id);

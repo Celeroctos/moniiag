@@ -128,12 +128,18 @@ $(document).ready(function(){
             alert('Не выбран регион!');
             return false;
         }
-        if($.fn["districtChooserForSettlement"].getChoosed().length == 0) {
+        /*if($.fn["districtChooserForSettlement"].getChoosed().length == 0) {
             alert('Не выбран район!');
             return false;
-        }
+        }*/
+        var district = '';
         var region = $.fn["regionChooserForSettlement"].getChoosed()[0].code_cladr;
-        var district = $.fn["districtChooserForSettlement"].getChoosed()[0].code_cladr;
+
+        if ($.fn["districtChooserForSettlement"].getChoosed().length>0)
+        {
+            district = $.fn["districtChooserForSettlement"].getChoosed()[0].code_cladr;
+        }
+
         var strData =  'FormCladrSettlementAdd[name]=' + $("#addSettlementPopup #name").val() + '&FormCladrSettlementAdd[codeCladr]=' + $("#addSettlementPopup #codeCladr").val() + '&FormCladrSettlementAdd[codeRegion]=' + region + '&FormCladrSettlementAdd[codeDistrict]=' + district + '&FormCladrSettlementAdd[id]=' + $("#addSettlementPopup #id").val();
 
         settings.data = strData;
@@ -145,17 +151,31 @@ $(document).ready(function(){
             alert('Не выбран регион!');
             return false;
         }
-        if($.fn["districtChooserForStreet"].getChoosed().length == 0) {
+     /*   if($.fn["districtChooserForStreet"].getChoosed().length == 0) {
             alert('Не выбран район!');
             return false;
         }
         if($.fn["settlementChooserForStreet"].getChoosed().length == 0) {
             alert('Не выбран населённый пункт!');
             return false;
-        }
+        }*/
+
+        var district = '';
+        var settlement='';
+
+
         var region = $.fn["regionChooserForStreet"].getChoosed()[0].code_cladr;
-        var district = $.fn["districtChooserForStreet"].getChoosed()[0].code_cladr;
-        var settlement = $.fn["settlementChooserForStreet"].getChoosed()[0].code_cladr;
+
+        if ($.fn["districtChooserForStreet"].getChoosed().length>0)
+        {
+            district = $.fn["districtChooserForStreet"].getChoosed()[0].code_cladr;
+        }
+
+        if ($.fn["settlementChooserForStreet"].getChoosed().length>0)
+        {
+            settlement = $.fn["settlementChooserForStreet"].getChoosed()[0].code_cladr;
+        }
+
         var strData =  'FormCladrStreetAdd[name]=' + $("#addStreetPopup #name").val() + '&FormCladrStreetAdd[codeCladr]=' + $("#addStreetPopup #codeCladr").val() + '&FormCladrStreetAdd[codeRegion]=' + region + '&FormCladrStreetAdd[codeDistrict]=' + district + '&FormCladrStreetAdd[id]=' + $("#addStreetPopup #id").val() + '&FormCladrStreetAdd[codeSettlement]=' + settlement;
         settings.data = strData;
     });

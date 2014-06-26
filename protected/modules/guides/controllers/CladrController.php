@@ -193,6 +193,15 @@ class CladrController extends Controller {
                         'data' => $_GET['district']
                     );
                 }
+                // А если нет - то этот элемент надо создать
+                else
+                {
+                    $filters['rules'][] = array(
+                        'field' => 'code_district',
+                        'op' => 'eq',
+                        'data' => '000'
+                    );
+                }
             } else {
                 $filters = false;
             }
@@ -252,11 +261,28 @@ class CladrController extends Controller {
                         'data' => $_GET['district']
                     );
                 }
+                // А если нет - то этот элемент надо создать
+                else
+                {
+                    $filters['rules'][] = array(
+                        'field' => 'code_district',
+                        'op' => 'eq',
+                        'data' => '000'
+                    );
+                }
                 if(isset($_GET['settlement'])) {
                     $filters['rules'][] = array(
                         'field' => 'code_settlement',
                         'op' => 'eq',
                         'data' => $_GET['settlement']
+                    );
+                }
+                else
+                {
+                    $filters['rules'][] = array(
+                        'field' => 'code_settlement',
+                        'op' => 'eq',
+                        'data' => '000000'
                     );
                 }
             } else {
@@ -596,6 +622,23 @@ class CladrController extends Controller {
         $street->code_cladr = $model->codeCladr;
         $street->code_settlement = $model->codeSettlement;
         $street->name = $model->name;
+
+        // Если нет кода района или кода населённого пункта - вставляем нуль
+        if ($street->code_district == ''
+            ||$street->code_district == null
+            ||$street->code_district == "undefined")
+            {
+                $street->code_district = '000';
+            }
+
+        if ($street->code_settlement  == ''
+            ||$street->code_settlement == null
+            ||$street->code_settlement == "undefined")
+        {
+            $street->code_settlement = '000000';
+        }
+
+
         $this->onBeforeAddCladdr($street);
         if($street->save()) {
             echo CJSON::encode(array(
@@ -610,6 +653,13 @@ class CladrController extends Controller {
         $settlement->code_district = $model->codeDistrict;
         $settlement->code_cladr = $model->codeCladr;
         $settlement->name = $model->name;
+        // Если нету кода района - дописываем нули
+        if ($settlement->code_district == ''
+            ||$settlement->code_district == null
+            ||$settlement->code_district == "undefined")
+            {
+                $settlement->code_district = '000';
+            }
         $this->onBeforeAddCladdr($settlement);
         if($settlement->save()) {
             echo CJSON::encode(array(

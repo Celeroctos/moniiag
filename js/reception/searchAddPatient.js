@@ -628,11 +628,15 @@
 
                         // Заблочим чюзер
                         $('#insuranceChooser input').attr('disabled', '');
+
+                        // Добавим в поле insuranceHidden ид-шник
+                        $('#insuranceHidden input').val(insId);
                     }
                     else
                     {
                         $('#insuranceChooser .choosed').empty();
                         $('#insuranceChooser input').removeAttr('disabled', '');
+                        $('#insuranceHidden input').val('');
                     }
 
                     // Запишем в чюзер регион
@@ -646,11 +650,17 @@
 
                         // Заблочим чюзер
                         $('#regionPolicyChooser input').attr('disabled', '');
+
+
+                        $('#policyRegionHidden input').val(regId);
                     }
                     else
                     {
                         $('#regionPolicyChooser .choosed').empty();
                         $('#regionPolicyChooser input').removeAttr('disabled', '');
+
+
+                        $('#policyRegionHidden input').val('');
                     }
 
 

@@ -12,6 +12,9 @@ class FormCladrRegionAdd extends CFormModel
             array(
                 //'name, codeCladr', 'required'
                  'name', 'required'
+            ),
+            array(
+                'codeCladr', 'safe'
             )
         );
     }

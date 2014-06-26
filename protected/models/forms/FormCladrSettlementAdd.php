@@ -13,8 +13,12 @@ class FormCladrSettlementAdd extends CFormModel
         return array(
             array(
                 //'name, codeCladr, codeRegion, codeDistrict', 'required'
-                  'name, codeRegion, codeDistrict', 'required'
-            )
+                  'name, codeRegion', 'required'
+            ),
+            array(
+                //'name, codeCladr, codeRegion, codeDistrict', 'required'
+                'codeCladr, codeDistrict', 'safe'
+            ),
         );
     }
 

@@ -29,7 +29,7 @@
                                 <?php echo $form->textField($model,'name', array(
                                     'id' => 'name',
                                     'class' => 'form-control',
-                                    'placeholder' => 'Название района'
+                                    'placeholder' => 'Название улицы'
                                 )); ?>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                                 'placeholder' => 'Регион'
                                 )); ?>
                                 <ul class="variants no-display">
-                                /ul>
+                                </ul>
                                 <div class="choosed">
                                 </div>
                             </div>

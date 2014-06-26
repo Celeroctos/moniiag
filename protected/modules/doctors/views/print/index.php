@@ -11,7 +11,12 @@
     </tr>
     <tr>
         <td colspan="2" class="first">1. Страховая мед. организация</td>
-        <td colspan="4" strong class="big"><?php echo $oms->insurance; ?></td>
+        <td colspan="4" strong class="big"><?php echo $oms->insurance; ?><?php
+        if ($oms->region!='' && $oms->region!=null)
+        {
+            echo (' ('.$oms->region.')');
+        }
+        ?></td>
     </tr>
     <tr>
         <td colspan="2" class="first">2. Номер страхового полиса</td>

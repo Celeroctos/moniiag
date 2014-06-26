@@ -19,10 +19,20 @@ class CladrRegion extends MisActiveRecord {
         if($filters !== false) {
             $this->getSearchConditions($regions, $filters, array(
             ), array(
-                'cr' => array('name')
+                'cr' => array('name','code_cladr')
             ), array(
             ));
         }
+
+        // Если есть фильтр по полю name - то вставляем условие or where на код кладр
+        if (isset ($filters['rules'][0]['field']))
+        {
+            if ($filters['rules'][0]['field']=='name')
+            {
+                $regions->orWhere(array('like', 'LOWER(cr.code_cladr)', '%'.$filters['rules'][0]['data'].'%'));
+            }
+        }
+
 
         if($sidx !== false && $sord !== false) {
             $regions->order($sidx.' '.$sord);
