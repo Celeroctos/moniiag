@@ -753,7 +753,7 @@ class PatientController extends Controller {
                     $this->addEditModelOms($oms, $model);
                 } else {
                     // В этом случае полис существует. Надо обновить на новые данные и удалить старый полис (для того, чтобы не было дубликатов
-                    Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
+                   // Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
                     $birthday = implode('.', array_reverse(explode('-', $model->birthday)));
                     $foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', дата рождения '.$birthday.'</strong>)';
                     // Ищем медкарты с таким ОМС и просто переставляем ID, только_если у того, кого удаляют, нет медкарт. В противном случае, ничего не делаем
