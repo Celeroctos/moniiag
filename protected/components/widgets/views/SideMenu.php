@@ -28,6 +28,19 @@
                     <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Запись', array('/reception/patient/writepatientstepone')) ?>
                 </li>
             <?php } ?>
+            <?php if(Yii::app()->user->checkAccess('menuPatientRewrite')) { ?>
+                <?php
+                //var_dump($controller == 'patient' && $module == 'reception' && $action == 'viewrewrite');
+               /* var_dump($controller );
+                var_dump($module );
+                var_dump($action );
+                exit();*/
+                ?>
+                <li <?php echo $controller == 'patient' && $module == 'reception' && $action == 'viewrewrite' ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('<img src="/images/icons/write_patient.png" width="32" height="32" alt="" />Перезапись', array('/reception/patient/viewrewrite')) ?>
+                </li>
+            <?php } ?>
+
             <?php if(Yii::app()->user->checkAccess('menuRaspDoctor')) { ?>
                 <li <?php echo $controller == 'shedule' && $module == 'reception' && ($action == 'view') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('<img src="/images/icons/shedule.png" width="32" height="32" alt="" />Расписание', array('/reception/shedule/view')) ?>

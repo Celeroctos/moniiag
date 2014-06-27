@@ -678,7 +678,7 @@ class SheduleController extends Controller {
             // Расписание не установлено
             if(count($shedule) == 0 && $breakByErrors) {
                 echo CJSON::encode(array('success' => 'false',
-                                         'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
+                    'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
                 exit();
             } elseif(count($shedule) == 0) {
                 return array();
@@ -730,25 +730,25 @@ class SheduleController extends Controller {
             //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 8) = :date  AND doctor_id = :doctor',
             //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 5) = :date  AND doctor_id = :doctor',
             $restDaysLonely = SheduleRestDay::model()->findAll('doctor_id = :doctor',
-                    array(
-                 //   ':date' => $paramDate,
+                array(
+                    //   ':date' => $paramDate,
                     ':doctor' => $doctorId
                 ));
-           // var_dump($restDaysLonely);
+            // var_dump($restDaysLonely);
 
             $restDaysArrLonely = array();
             foreach($restDaysLonely as $dayLonely) {
-               // var_dump( substr($dayLonely->date,0,10));
-               // exit();
-               // $parts = explode('-', $dayLonely->date);
+                // var_dump( substr($dayLonely->date,0,10));
+                // exit();
+                // $parts = explode('-', $dayLonely->date);
                 $restDaysArrLonely[] = substr($dayLonely->date,0,10);
             }
 
             // Теперь смотрим по дням и составляем календарь
             $resultArr = array();
-           // var_dump($dayBegin);
-           // var_dump($dayEnd);
-           // exit();
+            // var_dump($dayBegin);
+            // var_dump($dayEnd);
+            // exit();
             for($i = $dayBegin; $i <= $dayEnd; $i++) {
 
                 $resultArr[(string)$i - 1] = array();
@@ -773,8 +773,8 @@ class SheduleController extends Controller {
                 $expsIndex = array_search($formatDate, $exps);
 
                 // Вот тут надо искать с учётом текущей даты
-               // var_dump($usualData);
-               // exit();
+                // var_dump($usualData);
+                // exit();
                 //$usualIndex = array_search($weekday, $usual);
 
                 $usualIndex = SheduleSetted::getIndexWorkingDay($usualData,  $weekday,$formatDate);
@@ -796,8 +796,8 @@ class SheduleController extends Controller {
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
-                        $timeStampCurrent = mktime(0, 0, 0);
-                        if(strtotime($formatDate) >= $timeStampCurrent) {
+                    $timeStampCurrent = mktime(0, 0, 0);
+                    if(strtotime($formatDate) >= $timeStampCurrent) {
                         $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day, true, $onlyWaitingLine);
                         $resultArr[(string)$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
                             return $element['id'] != null;
@@ -852,6 +852,7 @@ class SheduleController extends Controller {
             return $resultArr;
         }
     }
+
 
 
 

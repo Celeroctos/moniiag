@@ -27,7 +27,7 @@ class SheduleSettedBe extends MisActiveRecord {
 			->select('shedule.*')
 			->from('mis.doctor_shedule_setted_be shedule')
 			->where('employee_id = :id', array(':id' => $employeeId));
-
+/*
 		if($filters !== false) {
 			$this->getSearchConditions($shedules, $filters, array(
 
@@ -36,7 +36,7 @@ class SheduleSettedBe extends MisActiveRecord {
 				)
 					);
 		}
-
+*/
 		if($sidx !== false && $sord !== false) {
 			$shedules->order($sidx.' '.$sord);
 		}

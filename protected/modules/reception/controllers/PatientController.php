@@ -30,6 +30,13 @@ class PatientController extends Controller {
 	    ));
     }
 
+    public function actionViewRewrite()
+    {
+        $this->render('index', array());
+
+
+    }
+
     // Получить саму историю движения медкарты
     public function actionGetHistoryMotion() {
         $rows = $_GET['rows'];
