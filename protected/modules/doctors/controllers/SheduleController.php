@@ -728,9 +728,10 @@ class SheduleController extends Controller {
             //$paramDate =  $this->currentYear.'-'.($this->currentMonth > 9 ? $this->currentMonth : '0'.$this->currentMonth);
             $paramDate = $this->currentYear."";
             //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 8) = :date  AND doctor_id = :doctor',
-            $restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 5) = :date  AND doctor_id = :doctor',
+            //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 5) = :date  AND doctor_id = :doctor',
+            $restDaysLonely = SheduleRestDay::model()->findAll('doctor_id = :doctor',
                     array(
-                    ':date' => $paramDate,
+                 //   ':date' => $paramDate,
                     ':doctor' => $doctorId
                 ));
            // var_dump($restDaysLonely);
@@ -776,7 +777,7 @@ class SheduleController extends Controller {
                // exit();
                 //$usualIndex = array_search($weekday, $usual);
 
-                $usualIndex = $this->getIndexWorkingDay($usualData,  $weekday,$formatDate);
+                $usualIndex = SheduleSetted::getIndexWorkingDay($usualData,  $weekday,$formatDate);
                 if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($formatDate, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
                     $resultArr[(string)$i - 1]['worked'] = true;
@@ -852,40 +853,7 @@ class SheduleController extends Controller {
         }
     }
 
-    // Функция, которая прочёсывает массив рабочих дней в каждую из смен для одного врача и определяет
-    //      индекс строки с расписанием для конекретной даты, конкретного дня недели для конкретного врача
-    private function getIndexWorkingDay($workingDaysArray, $weekDay,$workingDate)
-    {
-        $result = false;
 
-        // Пробегаемся по массиву
-        for ($i=0;$i<count($workingDaysArray);$i++)
-        {
-
-            // 1. Если рабочий день из атрибута не равен рабочему дню из поданых параметров - то следующая
-            //    итерация
-            if ($workingDaysArray[$i]['weekday']!=$weekDay )
-            {
-                continue;
-            }
-
-            // 2. Если weekday таки равен - надо проверить на попадение даты в интервал beginDate и endDate
-            $currentDate = strtotime($workingDate);
-            $beginDate = strtotime($workingDaysArray[$i]['date_begin']);
-            $endDate = strtotime($workingDaysArray[$i]['date_end']);
-
-
-            // Если текущая дата попадает в промежуток между begin и date - то мы нашли искомый индекс
-            if ( ($currentDate >= $beginDate) && ($currentDate <= $endDate) )
-            {
-                $result = $i;
-                // Теоретически тут конечно можно поставить break - ибо мы нашли индекс.
-                //   Но острой необходимости в этом нет
-            }
-        }
-
-        return $result;
-    }
 
     public function actionGetPatientsListByDate() {
         if(Yii::app()->user->isGuest) {

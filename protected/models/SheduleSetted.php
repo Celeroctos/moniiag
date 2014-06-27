@@ -98,6 +98,42 @@ class SheduleSetted extends MisActiveRecord {
         }
     }
 
+    
+    // Функция, которая прочёсывает массив рабочих дней в каждую из смен для одного врача и определяет
+    //      индекс строки с расписанием для конекретной даты, конкретного дня недели для конкретного врача
+    public static function getIndexWorkingDay($workingDaysArray, $weekDay,$workingDate)
+    {
+        $result = false;
+
+        // Пробегаемся по массиву
+        for ($i=0;$i<count($workingDaysArray);$i++)
+        {
+
+            // 1. Если рабочий день из атрибута не равен рабочему дню из поданых параметров - то следующая
+            //    итерация
+            if ($workingDaysArray[$i]['weekday']!=$weekDay )
+            {
+                continue;
+            }
+
+            // 2. Если weekday таки равен - надо проверить на попадение даты в интервал beginDate и endDate
+            $currentDate = strtotime($workingDate);
+            $beginDate = strtotime($workingDaysArray[$i]['date_begin']);
+            $endDate = strtotime($workingDaysArray[$i]['date_end']);
+
+
+            // Если текущая дата попадает в промежуток между begin и date - то мы нашли искомый индекс
+            if ( ($currentDate >= $beginDate) && ($currentDate <= $endDate) )
+            {
+                $result = $i;
+                // Теоретически тут конечно можно поставить break - ибо мы нашли индекс.
+                //   Но острой необходимости в этом нет
+            }
+        }
+
+        return $result;
+    }
+
     // Получить всех id врачей, которые могут принмать по этой дате + на неделю вперёд
     public function getAllPerDates($date) {
         $connection = Yii::app()->db;

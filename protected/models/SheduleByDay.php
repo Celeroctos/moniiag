@@ -146,6 +146,7 @@ class SheduleByDay extends MisActiveRecord {
  			->where('dsbd.doctor_id in ('.$doctorStr.')
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
+ 					AND dsbd.patient_day >= current_date
  					', array(
  						':beginDate' => $dateBegin,
  						':endDate' => $dateEnd
@@ -280,8 +281,6 @@ class SheduleByDay extends MisActiveRecord {
     // Получить список приёмов по критериям
     public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false) {
         try {
-            //var_dump($filters);
-            //exit();
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
                 ->selectDistinct('dsbd.*,

@@ -46,8 +46,13 @@ if(isset($categorie['id'])) {
                         	$templatePrefix
                         );
 					} else {
+
 						$element = $categorie['elements'][$item['numberInArray']];
-						// Выведем зависимости, если они есть
+
+                        //var_dump($model);
+                        //exit();
+
+                        // Выведем зависимости, если они есть
 						if(isset($element['dependences'])) {
                         ?>
 	                        <script type="text/javascript">
@@ -64,6 +69,13 @@ if(isset($categorie['id'])) {
                         <div class="form-group col-xs-12">
                             <?php } ?>
                                 <?php
+
+
+                                // Заменяем пробелы на символ nbsp, чтобы они выводились
+                                $model->setAttributeLabels('f'.$element['undotted_path'].'_'.$element['id'],
+                                    str_replace(' ','&nbsp;',$model->attributeLabels['f'.$element['undotted_path'].'_'.$element['id']])
+                                );
+
                                 // Добавляем звёздочку к метке, если элемент обязателен для заполнения
                                 if ($element["is_required"] == 1)
                                 {
