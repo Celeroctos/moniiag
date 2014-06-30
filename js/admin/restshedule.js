@@ -305,12 +305,13 @@ $(document).ready(function() {
 
         // Если устанавливаем рабочие дни, то есть переменная needCancelWeekends = true,
         //   то делать аякс-запрос не нужно - сразу вызываем функцию изменения дня
-        if (needCancelWeekEnds)
-        {
+      //  if (needCancelWeekEnds)
+      //  {
             changeDay();
             return;
-        }
+      //  }
 
+        /*
         // Иначе делаем ajax-запрос и выясняем, можно ли
         $.ajax({
             'url': '/index.php/admin/shedule/isgreeting?begin=' + dateString + '&end=' + dateString,
@@ -334,7 +335,7 @@ $(document).ready(function() {
                     }
                 }
             }
-        });
+        });*/
 
     }
     $('.calendarTable').on('print', function(e) {
@@ -579,6 +580,17 @@ $(document).ready(function() {
             'success' : function(data, textStatus, jqXHR) {
 
                 dateChanged = new Array();
+
+                if (data.unwritedPatients <= 0)
+                {
+                    $('#successPopup #messageRewritePatients').addClass('no-display');
+                }
+                else
+                {
+                    $('#successPopup #numberPatientsToRewrite').text(data.unwritedPatients);
+                    $('#successPopup #messageRewritePatients').removeClass('no-display');
+                }
+
                 $('#successPopup').modal({
                 });
                 return;

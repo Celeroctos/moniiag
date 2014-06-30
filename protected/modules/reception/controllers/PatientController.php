@@ -32,10 +32,258 @@ class PatientController extends Controller {
 
     public function actionViewRewrite()
     {
-        $this->render('index', array());
+        $this->render('rewriting', array());
 
 
     }
+
+
+    public function actionGetPatientsToRewrite() {
+        $sheduleElements = array();
+        $mediateElements = array();
+
+        if(isset($_GET['status'])) {
+            $mediateOnly = $_GET['status'];
+        } else {
+            $mediateOnly = 0;
+        }
+
+        $filters = array(
+            'groupOp' => 'AND',
+            'rules' => array()
+        );
+
+        // Далее проверяем - если есть фильтрующие поля, то записываем их в фильтры
+        if (isset ( $_GET['date']) && $_GET['date']!='')
+        {
+            array_push($filters['rules'],
+                array(
+                    'field' => 'patient_day',
+                    'op' => 'eq',
+                    'data' => $_GET['date']
+                )
+            );
+        }
+        if($_GET['forDoctors'] == 1)
+        {
+            $dataD = CJSON::decode($_GET['doctors']);
+            array_push($filters['rules'],
+            array(
+                'field' => 'doctors_ids',
+                'op' => 'in',
+                'data' => $dataD
+            ));
+        }
+        if ($_GET['forPatients'] == 1)
+        {
+            $dataP = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
+            array_push($filters['rules'],
+                array(
+                    'field' => 'patients_ids',
+                    'op' => 'in',
+                    'data' => $dataP
+                ));
+            array_push($filters['rules'],
+                array(
+                    'field' => 'mediates_ids',
+                    'op' => 'in',
+                    'data' => $dataM
+                ));
+
+
+        }
+        $sheduleElements = CancelledGreeting::model()->getRows($filters, false, false,false,false, $mediateOnly);
+        $num = count($sheduleElements);
+        // Разбираем расписание на живую очередь и обычное раписание
+        $sheduleElementsWaitingLine = array();
+        $sheduleElementsWriting = array();
+        foreach($sheduleElements as $key => $element) {
+            if($element['order_number'] != null) {
+                $sheduleElementsWaitingLine[] = $element;
+            } else {
+                $sheduleElementsWriting[] = $element;
+            }
+        }
+        if($num > 0) {
+            // Первая сортировка идёт всегда по врачу
+            $sheduleElementsWaitingLine = SheduleByDay::sortSheduleElements($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = SheduleByDay::sortSheduleElements($sheduleElementsWriting);
+
+            // Вторая сортировка - по времени
+            $sheduleElementsWaitingLine = SheduleByDay::makeClusters($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = SheduleByDay::makeClusters($sheduleElementsWriting);
+        }
+        // Теперь выясняем кабинет для каждого пациента. Для этого смотрим дату, смотрим расписание врача
+        $cabinets = array();
+        foreach($sheduleElements as $element) {
+            if(!isset($cabinets[$element['doctor_id']])) {
+                $weekday = date('w', strtotime($_GET['date']));
+                $cabinetElement = SheduleSetted::model()->getCabinetPerWeekday($weekday, $element['doctor_id']);
+                if($cabinetElement != null) {
+                    $cabinets[$element['doctor_id']] = array('cabNumber' => $cabinetElement['cab_number'],
+                        'description' => $cabinetElement['description']);
+                } else {
+                    $cabinets[$element['doctor_id']] = null;
+                }
+            }
+        }
+        echo CJSON::encode(array('success' => true,
+            'data' => array('greetings' => $sheduleElements,
+                'cabinets' => $cabinets,
+                'greetingsOnlyByWriting' => $sheduleElementsWriting,
+                'greetingsOnlyWaitingLine' => $sheduleElementsWaitingLine)));
+
+
+
+        //var_dump($filters);
+        //exit();
+
+        // Если есть дата - записываем её в правила
+/*
+
+
+
+        if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
+            $dataD = CJSON::decode($_GET['doctors']);
+            $dataP = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'doctors_ids',
+                        'op' => 'in',
+                        'data' => $dataD
+                    ),
+                    array(
+                        'field' => 'patients_ids',
+                        'op' => 'in',
+                        'data' => $dataP
+                    ),
+                    array(
+                        'field' => 'mediates_ids',
+                        'op' => 'in',
+                        'data' => $dataM
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+
+
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        } elseif($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 0) {
+            $data = CJSON::decode($_GET['doctors']);
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'doctors_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        } elseif($_GET['forDoctors'] == 0 && $_GET['forPatients'] == 1) {
+            $data = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patients_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    ),
+                    array(
+                        'field' => 'mediates_ids',
+                        'op' => 'in',
+                        'data' => $dataM
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        } else {
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        }
+
+        $result = array();
+        $num = count($sheduleElements);
+        if(isset($mediateElements)) {
+            foreach($mediateElements as $element) {
+                array_push($sheduleElements, $element);
+            }
+        }
+
+        $num = count($sheduleElements);
+        // Разбираем расписание на живую очередь и обычное раписание
+        $sheduleElementsWaitingLine = array();
+        $sheduleElementsWriting = array();
+        foreach($sheduleElements as $key => $element) {
+            if($element['order_number'] != null) {
+                $sheduleElementsWaitingLine[] = $element;
+            } else {
+                $sheduleElementsWriting[] = $element;
+            }
+        }
+        if($num > 0) {
+            // Первая сортировка идёт всегда по врачу
+            $sheduleElementsWaitingLine = $this->sortSheduleElements($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = $this->sortSheduleElements($sheduleElementsWriting);
+
+            // Вторая сортировка - по времени
+            $sheduleElementsWaitingLine = $this->makeClusters($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = $this->makeClusters($sheduleElementsWriting);
+        }
+        // Теперь выясняем кабинет для каждого пациента. Для этого смотрим дату, смотрим расписание врача
+        $cabinets = array();
+        foreach($sheduleElements as $element) {
+            if(!isset($cabinets[$element['doctor_id']])) {
+                $weekday = date('w', strtotime($_GET['date']));
+                $cabinetElement = SheduleSetted::model()->getCabinetPerWeekday($weekday, $element['doctor_id']);
+                if($cabinetElement != null) {
+                    $cabinets[$element['doctor_id']] = array('cabNumber' => $cabinetElement['cab_number'],
+                        'description' => $cabinetElement['description']);
+                } else {
+                    $cabinets[$element['doctor_id']] = null;
+                }
+            }
+        }
+
+        echo CJSON::encode(array('success' => true,
+            'data' => array('shedule' => $sheduleElements,
+                'cabinets' => $cabinets,
+                'sheduleOnlyByWriting' => $sheduleElementsWriting,
+                'sheduleOnlyWaitingLine' => $sheduleElementsWaitingLine)));*/
+    }
+
 
     // Получить саму историю движения медкарты
     public function actionGetHistoryMotion() {

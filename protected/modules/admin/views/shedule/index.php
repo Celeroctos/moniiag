@@ -348,6 +348,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно добавили расписание для сотрудника</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -356,6 +357,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="successDeleteEmployeeShedule">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Вы успешно удалили расписание для сотрудника</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade error-popup" id="successEditEmployeeShedule">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -366,6 +387,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно отредактировали расписание для сотрудника.</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">

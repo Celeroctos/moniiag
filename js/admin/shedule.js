@@ -59,10 +59,20 @@ $(document).ready(function () {
             $('#addShedulePopup').find('form').trigger('reset');
             $('#addShedulePopup #dateBegin').val('');
             $('#addShedulePopup #dateEnd').val('');
-
             $('#successAddEmployeeShedule').modal({
 
             });
+
+            if (ajaxData.unwritedPatients <= 0)
+            {
+                $('#successAddEmployeeShedule #messageRewritePatients').addClass('no-display');
+            }
+            else
+            {
+                $('#successAddEmployeeShedule #numberPatientsToRewrite').text(ajaxData.unwritedPatients);
+                $('#successAddEmployeeShedule #messageRewritePatients').removeClass('no-display');
+            }
+
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddShedulePopup .modal-body .row p').remove();
@@ -88,9 +98,22 @@ $(document).ready(function () {
             $('#editSheduleEmployeePopup #dateBegin').val('');
             $('#editSheduleEmployeePopup #dateEnd').val('');
 
+
+
             $('#successEditEmployeeShedule').modal({
 
             });
+
+            if (ajaxData.unwritedPatients <= 0)
+            {
+                $('#successEditEmployeeShedule #messageRewritePatients').addClass('no-display');
+            }
+            else
+            {
+                $('#successEditEmployeeShedule #numberPatientsToRewrite').text(ajaxData.unwritedPatients);
+                $('#successEditEmployeeShedule #messageRewritePatients').removeClass('no-display');
+            }
+
         } else {
             // Удаляем предыдущие ошибки
             $('#errorEditShedulePopup .modal-body .row p').remove();
@@ -251,6 +274,18 @@ $(document).ready(function () {
                                 'success': function (data, textStatus, jqXHR) {
                                     if (data.success == 'true') {
                                         $('#shiftsEmployee').trigger("reloadGrid");
+                                        // Выводим сообщение об отписанных приёмах
+                                        if (data.unwritedPatients <= 0)
+                                        {
+                                            $('#successDeleteEmployeeShedule #messageRewritePatients').addClass('no-display');
+                                        }
+                                        else
+                                        {
+                                            $('#successDeleteEmployeeShedule #numberPatientsToRewrite').text(data.unwritedPatients);
+                                            $('#successDeleteEmployeeShedule #messageRewritePatients').removeClass('no-display');
+                                        }
+                                        $('#successDeleteEmployeeShedule').modal({});
+
                                     } else {
                                         // Удаляем предыдущие ошибки
                                         $('#errorPopup .modal-body .row p').remove();

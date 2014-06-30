@@ -124,6 +124,11 @@ class SheduleController extends Controller {
 
         $newCancelledGreeting->doctor_id = $greeting['doctor_id'];
         $newCancelledGreeting->medcard_id = $greeting['medcard_id'];
+        if ($greeting['medcard_id']!='' && $greeting['medcard_id']!=null)
+        {
+            $newCancelledGreeting->policy_id = $greeting['oms_id'];
+        }
+
         $newCancelledGreeting->patient_day = $greeting['patient_day'];
         $newCancelledGreeting->patient_time = $greeting['patient_time'];
         $newCancelledGreeting->mediate_id = $greeting['mediate_id'];
@@ -1298,23 +1303,44 @@ class SheduleController extends Controller {
 
     public function actionSaveRestDays()
     {
+        $greetingsUnwrited = 0;
+        $dateToDelete = array();
         // Получим данные для записи (они были заэнкожены, чтобы было проще передать)
         $dataToWrite = CJSON::decode($_POST['calendarData']);
-        // Теперь надо убить все строки с датами, которые указаны в пришедших данных
-
-        // Читаем ключи ассоциативного массива
-        $dateToDelete = array();
+        // С дат и докторов, которые мы хотим записать в базу необходимо
+        //   Во-первых отписать приёмы, во вторых посчитать их
+        // Перебираем даты, неа которые мы ставим выходные
         foreach ($dataToWrite as $key => $oneDate)
         {
+            // Прочитываем даты, которые мы изменяем. Для этих дат мы должны удалить все строки в базе, чтобы потом их
+            //    записать их по-новому
             $dateToDelete[] = $key;
+            // С даты надо собрать ид докторов, у которых надо поотменять приёмы
+            $doctorsForOneDay = array();
+            foreach($oneDate as $oneDoctor)
+            {
+                array_push($doctorsForOneDay,$oneDoctor['doctor']);
+            }
+            // Для даты $oneDate и врачей $doctorsForOneDay надо отменить приёмы и
+            //    прибавить число отменённых к $greetingsUnwrited
+            // Если есть доктора на дату
+            if (count($doctorsForOneDay)>0)
+            {
+                $greetingsUnwrited += ($this->unwriteWritedPatients($key,$key,$doctorsForOneDay));
+            }
         }
+        // Теперь надо убить все строки с датами, которые указаны в пришедших данных
+        //var_dump($dataToWrite);
+        //exit();
         // Удаляем
         SheduleRestDay::deleteDates($dateToDelete);
         // А теперь пишем обратно
         SheduleRestDay::writeAllRestDays($dataToWrite);
-
-        echo CJSON::encode(array('success' => true,
-            'data' => array()));
+        echo CJSON::encode(array(
+            'success' => true,
+            'unwritedPatients' => $greetingsUnwrited,
+            'data' => array()
+        ));
     }
 
 
