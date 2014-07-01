@@ -145,7 +145,149 @@
             }
         });
     }
-    
+
+    $('#patient-oms-edit-form #policy').on('blur',function(){
+        // Отправляем ajax, который должен вернуть количество полюсов с таким номером
+        //actionGetIsOmsWithNumber
+        $.ajax({
+            'url' : '/index.php/reception/patient/getisomswithnumber',
+            'data' : {
+                'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
+                'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if (data.newOms.id==undefined) return;
+                if (data.newOms.id >= 0)
+                {
+
+                    // Пишем в глобальные переменные Id полиса чтобы можно было карту перевязать на данный полис
+                    //globalVariables.medcardOmsToEdit
+                    globalVariables.newOmsId = data.newOms.id;
+                    // Нужно заполнить поп-ап значениями из полиса
+                    if ( $('#existOmsPopup').length>0 )
+                    {
+                        $('#existOmsPopup #fioExistingOms').text(
+                            data.newOms.first_name + ' ' + data.newOms.middle_name + ' ' + data.newOms.last_name
+                        );
+
+                        $('#existOmsPopup #birthdayExistingOms').text(
+                            data.newOms.birthday.split('-').reverse().join('.')
+                        );
+
+                        $('#existOmsPopup').modal({});
+                    }
+
+
+                    console.log($('#patient-oms-edit-form #policy').val());
+                }
+
+                return;
+            }
+        });
+    });
+
+    cancelSaving = false;
+    $('#patient-oms-edit-form #saveOms').on ('click', function (e){
+        //return false;
+        // Запрашиваем аяксом на существование данного полиса
+
+        $.ajax({
+            'url' : '/index.php/reception/patient/getisomswithnumber',
+            'data' : {
+                'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
+                'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'async': false,
+            'success' : function(data, textStatus, jqXHR) {
+                if (data.newOms.id==undefined) return;
+                if (data.newOms.id >= 0)
+                {
+
+                    // Пишем в глобальные переменные Id полиса чтобы можно было карту перевязать на данный полис
+                    //globalVariables.medcardOmsToEdit
+                    globalVariables.newOmsId = data.newOms.id;
+                    // Нужно заполнить поп-ап значениями из полиса
+                    if ( $('#existOmsPopup').length>0 )
+                    {
+                        $('#existOmsPopup #fioExistingOms').text(
+                            data.newOms.first_name + ' ' + data.newOms.middle_name + ' ' + data.newOms.last_name
+                        );
+
+                        $('#existOmsPopup #birthdayExistingOms').text(
+                            data.newOms.birthday.split('-').reverse().join('.')
+                        );
+
+                        $('#existOmsPopup').modal({});
+                        cancelSaving = true;
+                    }
+
+
+                    console.log($('#patient-oms-edit-form #policy').val());
+                }
+
+                return;
+            }
+        });
+
+        if (cancelSaving)
+        {
+            cancelSaving = false;
+            return false;
+        }
+
+
+
+    });
+
+    $('#existOmsPopup .btn-success').on('click', function(){
+        // Берём номер карты. Берём id нового ОМС и вызываем action смены полиса у карточки
+        medcard = globalVariables.medcardOmsToEdit;
+        oms = globalVariables.newOmsId;
+
+        $.ajax({
+            'url' : '/index.php/reception/patient/rebindomsmedcard',
+            'data' : {
+                //if (isset($_GET['cardNumber']) && isset($_GET['newOmsId']))
+                'cardNumber' : medcard,
+                'newOmsId' : oms
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+
+                if (data.success=='true')
+                {
+                    // Обновляем таблицу
+                    // Прячем поп-ап для редактирования
+                    $('#editOmsPopup').modal('hide');
+                    $("#patient-search-submit").trigger("click")
+                }
+                if (data.success=='false')
+                {
+                    $('#errorPopup .modal-body .row').html('');
+                    // Нужно вывести ошибки
+                    for(var i in data.errors) {
+                      //  for(var j = 0; j < data.errors[i].length; j++) {
+                            $('#errorPopup .modal-body .row').append("<p>" + data.errors[i]+ "</p>")
+                       // }
+                    }
+
+                    $('#errorPopup').modal({});
+
+                }
+            }
+        });
+
+    });
+
+
     function updatePatientWithoutCardsList() {
         var filters = getFilters();
         var PaginationData=getPaginationParameters('omsSearchWithoutCardResult');
@@ -589,6 +731,9 @@
 
     // Редактирование полиса в попапе
     $(document).on('click', '.editOms', function(e) {
+        // Запишем в глобальную переменную номер карты. Это может пригодится при редактировании ОМС при его перепривязки
+        globalVariables.medcardOmsToEdit = $($(this).parents('tr')[0]).find('.cardNumber').text();
+
         $.ajax({
             'url' : '/index.php/reception/patient/getomsdata',
             'data' : {

@@ -388,7 +388,8 @@ $form = $this->beginWidget('CActiveForm', array(
                                 }'
                     ),
                     array(
-                        'class' => 'btn btn-success'
+                        'class' => 'btn btn-success',
+                        'id' => 'saveOms'
                     )
                 ); ?>
             </div>
@@ -405,6 +406,45 @@ $this->widget('application.modules.reception.components.widgets.MedcardFormWidge
     'template' => 'application.modules.reception.components.widgets.views.addressEditPopup'
 ));
 ?>
+<div class="modal fade error-popup" id="existOmsPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Полис с таким номером уже существует</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>ФИО: <strong><span id="fioExistingOms"></span></strong></p>
+                    <p>Дата рождения: <strong><span id="birthdayExistingOms"></span></strong></p>
+                    <p>Использовать этот полис для данной медкарты?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="errorPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade error-popup" id="foundPopup">
     <div class="modal-dialog">
         <div class="modal-content">
