@@ -211,7 +211,9 @@ $(document).ready(function() {
             '</a></td>');
 
             // Вставляем кнопку Перезаписи
-
+            content += ('<td><a class="rewrite-link" href="#'+greetings[i].id+'">'+
+                '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
+                '</a></td>');
 
             if(!added || greetings.length == 1) {
                 $(tr).append(firstTd, content);

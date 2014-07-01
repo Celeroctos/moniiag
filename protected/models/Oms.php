@@ -313,6 +313,8 @@ class Oms extends MisActiveRecord {
             $oms->andWhere("coalesce(m.card_number,'')!=''");
         }
 
+        //var_dump($oms);
+        //exit();
         $result = $oms->queryRow();
 
         //var_dump($result);
