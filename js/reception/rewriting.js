@@ -26,14 +26,70 @@ $(document).ready(function() {
 
     $('#patientCombo').on('change', function(e) {
         if($(this).val() == 0) {
-            $('#patientChooser').addClass('no-display');
+            $('#cancelledPatientChooser').addClass('no-display');
             $('#mediateChooser').addClass('no-display');
             $('#status').prop('disabled', false);
         } else {
-            $('#patientChooser').removeClass('no-display');
+            $('#cancelledPatientChooser').removeClass('no-display');
             $('#mediateChooser').removeClass('no-display');
             $('#status').prop('disabled', true);
         }
+    });
+
+
+    $.fn.hasAttr = function(name) {
+        return this.attr(name) !== undefined;
+    };
+
+    $(document).on('click','.unwrite-link',function(e){
+        // Берём id из атрибута href
+        rowId = $(this).attr('href').substr(1);
+
+
+        // ПОлучаем родительский tr
+        parentTr = $($(this).parents('tr')[0]).remove();
+        // Смотрим - имеет ли первая ячейка класс doctorCellCancelled
+        firstTd =  $(parentTr).find('td:eq(0)');
+        if ( $(firstTd).hasClass('doctorCellCancelled') )
+        {
+            // Нужно посмотреть - сколько у него rowspan. Если есть и он не равен 1, то нужно уменьшить у него rowspan
+            //    и перенести первую ячейку в следующую строку
+            if ($(firstTd).hasAttr('rowspan') && $(firstTd).attr('rowspan')!=1)
+            {
+                $(firstTd).attr('rowspan', $(firstTd).attr('rowspan')-1);
+                $($(parentTr).next()).append($(firstTd));
+            }
+            // Иначе можно безболезненно удалить первую ячейку
+        }
+        else
+        {
+            // Вот тут надо найти этот элемент. Обычно он располагается выше удаляемого, затем нужно уменьшить значение
+            //     rowspan-а у него
+            currentElement = parentTr;
+            // Пока currentElement не хэзит класс doctorCellCancelled
+            while (! $(currentElement).find('td:eq(0)').hasClass('doctorCellCancelled') )
+            {
+                currentElement = $(currentElement).prev();
+            }
+            // Нашли элемент, который хэзит doctorCellCancelled. Уменьшим у него rowspan на единицу
+            $(currentElement).find('td:eq(0)').attr('rowspan', $(currentElement).find('td:eq(0)').attr('rowspan')-1);
+
+
+        }
+
+        // вызываем action удаления приёма
+        //DeleteCancelledGreeting
+        $.ajax({
+            'url' : '/index.php/reception/patient/deletecancelledgreeting',
+            'data' : {
+                'greetingId' : rowId
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {}});
+
+        return false;
     });
 
     // Формирование документов на массовую печать
@@ -54,7 +110,7 @@ $(document).ready(function() {
         }
 
         if(forPatients == 1) {
-            var choosedPatients = $.fn['patientChooser'].getChoosed();
+            var choosedPatients = $.fn['cancelledPatientChooser'].getChoosed();
             for(var i = 0; i < choosedPatients.length; i++) {
                 patientIds.push(choosedPatients[i].id);
             }
@@ -147,7 +203,7 @@ $(document).ready(function() {
                     } else {
                         var cabinet = '<span class="bold text-danger">кабинет неизвестен</span>';
                     }
-                    firstTd = $('<td>').html(text + ', ' + cabinet);
+                    firstTd = $('<td class="doctorCellCancelled">').html(text + ', ' + cabinet);
                     numRows = 1;
                     added = false;
                 }

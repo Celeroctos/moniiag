@@ -76,7 +76,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group chooser no-display" id="patientChooser">
+            <div class="form-group chooser no-display" id="cancelledPatientChooser">
                 <label for="patient" class="col-xs-4 control-label">Обычный пациент (Enter - добавить)</label>
                 <div class="col-xs-6">
                     <input type="text" class="form-control" autofocus id="patient" placeholder="ФИО пациента">

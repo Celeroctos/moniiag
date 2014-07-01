@@ -536,6 +536,30 @@ $(document).ready(function() {
                 ]
             }
         },
+        'cancelledPatientChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                if(row.card_number != null) {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', номер карты ' + row.card_number));
+                } else {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
+                }
+            },
+            'displayFunc' : function(row) {
+                return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+            },
+            'url' : '/index.php/reception/patient/search?cancelled=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'mediateChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {

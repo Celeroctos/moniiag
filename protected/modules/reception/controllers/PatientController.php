@@ -1177,14 +1177,22 @@ class PatientController extends Controller {
             $onlyInGreetings = false;
         }
 
+        if(isset($_GET['cancelled']) && $_GET['cancelled'] == 1) {
+            $cancelledGreetings = true;
+
+        } else {
+            $cancelledGreetings = false;
+        }
+
         if(!$mediateOnly) {
             $model = new Oms();
             // Вычислим общее количество записей
-            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings);
+
+            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings,$cancelledGreetings);
+
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
-            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings);
-
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings,$cancelledGreetings);
             // Обрабатываем результат
             foreach($items as $index => &$item) {
                 if($item['reg_date'] != null) {
@@ -1659,9 +1667,20 @@ class PatientController extends Controller {
             }
 
         }
-
-
         return $result;
+    }
+
+    public function actionDeleteCancelledGreeting()
+    {
+        // Вытаскиваем из запроса ИД приёма
+        if (isset($_GET['greetingId']))
+        {
+            $greetingToDelete = CancelledGreeting::model()->findByPk($_GET['greetingId']);
+            $greetingToDelete['deleted'] = 1;
+            $greetingToDelete->save();
+
+        }
+
     }
 
     // Запись опосредованного пациента

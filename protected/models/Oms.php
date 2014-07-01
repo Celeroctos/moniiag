@@ -122,7 +122,7 @@ class Oms extends MisActiveRecord {
     */
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false) {
+                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings=false) {
 
         $result = array();
 
@@ -134,6 +134,13 @@ class Oms extends MisActiveRecord {
 
         if($onlyInGreetings) {
             $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
+        }
+
+        if ($cancelledGreetings)
+        {
+
+            $oms->join(CancelledGreeting::model()->tableName().' cg', 'm.card_number = cg.medcard_id');
+            $oms->andWhere('cg.deleted = 0 AND cg.patient_day<current_date'  );
         }
 
         if($filters !== false) {
@@ -268,58 +275,70 @@ class Oms extends MisActiveRecord {
     }
 
     public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
-                               $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false, $withMediate = false) {
+                               $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings = false/*, $withMediate = false*/) {
 
-        $connection = Yii::app()->db;
-        $oms = $connection->createCommand()
-            ->select('COUNT(DISTINCT o.id) as num')
-            ->from('mis.oms o')
-            ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
-
-        if($onlyInGreetings) {
-            $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
-        }
-
-        if($filters !== false) {
-            $this->getSearchConditions($oms, $filters, array(
-                'fio' => array(
-                    'first_name',
-                    'last_name',
-                    'middle_name'
-                )
-            ), array(
-                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
-                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
-            ), array(
-                'e_oms_number' => 'oms_number',
-                'k_oms_number' => 'oms_number'
-            ), array(
-                'OR' => array(
-                    'e_oms_number',
-                    'k_oms_number',
-                    'oms_number'
-                )
-            ));
-        }
-
-        // WHERE card_number==null
-        if ($onlyWithoutCards)
+        try
         {
-            $oms->andWhere("coalesce(m.card_number,'')=''");
-        }
-        // WHERE card_number!=null
-        if ($onlyWithCards)
-        {
-            $oms->andWhere("coalesce(m.card_number,'')!=''");
-        }
+            $connection = Yii::app()->db;
+            $oms = $connection->createCommand()
+                ->select('COUNT(DISTINCT o.id) as num')
+                ->from('mis.oms o')
+                ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
 
-        //var_dump($oms);
-        //exit();
-        $result = $oms->queryRow();
+            if($onlyInGreetings) {
+                $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
+            }
 
-        //var_dump($result);
-        //exit();
-        return $result;
+
+            if ($cancelledGreetings)
+            {
+
+                $oms->join(CancelledGreeting::model()->tableName().' cg', 'm.card_number = cg.medcard_id');
+                $oms->andWhere('cg.deleted = 0 AND cg.patient_day<current_date'  );
+            }
+
+            if($filters !== false) {
+                $this->getSearchConditions($oms, $filters, array(
+                    'fio' => array(
+                        'first_name',
+                        'last_name',
+                        'middle_name'
+                    )
+                ), array(
+                    'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
+                    'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
+                ), array(
+                    'e_oms_number' => 'oms_number',
+                    'k_oms_number' => 'oms_number'
+                ), array(
+                    'OR' => array(
+                        'e_oms_number',
+                        'k_oms_number',
+                        'oms_number'
+                    )
+                ));
+            }
+
+            // WHERE card_number==null
+            if ($onlyWithoutCards)
+            {
+                $oms->andWhere("coalesce(m.card_number,'')=''");
+            }
+            // WHERE card_number!=null
+            if ($onlyWithCards)
+            {
+                $oms->andWhere("coalesce(m.card_number,'')!=''");
+            }
+
+           // var_dump($oms);
+           // exit();
+            $result = $oms->queryRow();
+
+            return $result;
+        }
+        catch(Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function getDistinctRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
