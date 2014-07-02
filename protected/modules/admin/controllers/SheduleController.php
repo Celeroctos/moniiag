@@ -135,6 +135,7 @@ class SheduleController extends Controller {
         $newCancelledGreeting->shedule_id = $greeting['shedule_id'];
         $newCancelledGreeting->greeting_type = $greeting['greeting_type'];
         $newCancelledGreeting->order_number = $greeting['order_number'];
+        $newCancelledGreeting->comment = $greeting['comment'];
         $newCancelledGreeting->save();
     }
 

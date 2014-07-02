@@ -1612,6 +1612,32 @@ class PatientController extends Controller {
                 {
                     $answer['commentToWrite'] = '';
                 }
+                $answer['cancelledGreeting'] = '';
+
+                if (isset ($_GET['cancelledGreetingId']))
+                {
+                    // Нужно подать данные о приёме, который отменён
+                    $answer['cancelledGreeting'] = $_GET['cancelledGreetingId'];
+                    // Читаем данные об отменённом приёме по Id
+                    $cancelledGreeting = CancelledGreeting::model()->findByPk($_GET['cancelledGreetingId']);
+
+                    if ($cancelledGreeting['mediate_id']!='' && $cancelledGreeting['mediate_id']!=null)
+                    {
+                        // Читаем посредованного пациента
+                        $mPatient = MediatePatient::model()->findByPk($cancelledGreeting['mediate_id']);
+                        // Записываем ФИО опосредованного пациента и его телефон
+                        $answer['patientFirstName'] = $mPatient['first_name'];
+                        $answer['patientLastName'] = $mPatient['last_name'];
+                        $answer['patientMiddleName'] = $mPatient['middle_name'];
+                        $answer['patientPhone'] = $mPatient['phone'];
+                    }
+                    // Иначе нужен только комментарий, а мы его протаскиваем в обоих случаях
+                    $answer['patientComment'] = $cancelledGreeting['comment'];
+
+                }
+
+
+
                 $this->render('writePatient2', $answer);
                 exit();
             }
@@ -1670,15 +1696,13 @@ class PatientController extends Controller {
         return $result;
     }
 
+
     public function actionDeleteCancelledGreeting()
     {
         // Вытаскиваем из запроса ИД приёма
         if (isset($_GET['greetingId']))
         {
-            $greetingToDelete = CancelledGreeting::model()->findByPk($_GET['greetingId']);
-            $greetingToDelete['deleted'] = 1;
-            $greetingToDelete->save();
-
+            CancelledGreeting::deleteCancelledGreeting($_GET['greetingId']);
         }
 
     }
@@ -1742,23 +1766,48 @@ class PatientController extends Controller {
         }
         if ($unwritedGreeting  !=null)
         {
-            $answer['fName'] = $unwritedGreeting['first_name'];
-            $answer['mName'] = $unwritedGreeting['middle_name'];
-            $answer['lName'] = $unwritedGreeting['last_name'];
-            $answer['phoneToWrite'] = $unwritedGreeting['phone'];
-            $answer['commentToWrite'] = $unwritedGreeting['comment'];
+            $answer['patientFirstName'] = $unwritedGreeting['first_name'];
+            $answer['patientMiddleName'] = $unwritedGreeting['middle_name'];
+            $answer['patientLastName'] = $unwritedGreeting['last_name'];
+            $answer['patientPhone'] = $unwritedGreeting['phone'];
+            $answer['patientComment'] = $unwritedGreeting['comment'];
            // var_dump($answer);
            // exit();
         }
         else
         {
 
-            $answer['fName'] = '';
-            $answer['mName'] = '';
-            $answer['lName'] = '';
-            $answer['phoneToWrite'] = '+7';
-            $answer['commentToWrite'] = '';
+            $answer['patientFirstName'] = '';
+            $answer['patientMiddleName'] = '';
+            $answer['patientLastName'] = '';
+            $answer['patientPhone'] = '+7';
+            $answer['patientComment'] = '';
         }
+
+        $answer['cancelledGreeting'] = '';
+
+        if (isset ($_GET['cancelledGreetingId']))
+        {
+            // Нужно подать данные о приёме, который отменён
+            $answer['cancelledGreeting'] = $_GET['cancelledGreetingId'];
+            // Читаем данные об отменённом приёме по Id
+            $cancelledGreeting = CancelledGreeting::model()->findByPk($_GET['cancelledGreetingId']);
+
+            if ($cancelledGreeting['mediate_id']!='' && $cancelledGreeting['mediate_id']!=null)
+            {
+                // Читаем посредованного пациента
+                $mPatient = MediatePatient::model()->findByPk($cancelledGreeting['mediate_id']);
+                // Записываем ФИО опосредованного пациента и его телефон
+                $answer['patientFirstName'] = $mPatient['first_name'];
+                $answer['patientLastName'] = $mPatient['last_name'];
+                $answer['patientMiddleName'] = $mPatient['middle_name'];
+                $answer['patientPhone'] = $mPatient['phone'];
+            }
+            // Иначе нужен только комментарий, а мы его протаскиваем в обоих случаях
+            $answer['patientComment'] = $cancelledGreeting['comment'];
+
+        }
+
 
         $this->render('writepatientwithoutdata', $answer);
     }

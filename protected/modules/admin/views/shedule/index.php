@@ -348,7 +348,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно добавили расписание для сотрудника</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -367,7 +367,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно удалили расписание для сотрудника</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -387,7 +387,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно отредактировали расписание для сотрудника.</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">

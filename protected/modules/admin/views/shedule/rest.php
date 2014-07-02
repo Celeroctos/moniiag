@@ -127,7 +127,7 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
             <div class="modal-body">
                 <div class="row">
                     <p>Расписание успешно изменено.</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a>сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">

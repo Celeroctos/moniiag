@@ -17,6 +17,13 @@ class CancelledGreeting extends MisActiveRecord {
         // return array('pk1', 'pk2');
     }
 
+    public static function deleteCancelledGreeting($idToDelete)
+    {
+        $greetingToDelete = CancelledGreeting::model()->findByPk($idToDelete);
+        $greetingToDelete['deleted'] = 1;
+        $greetingToDelete->save();
+    }
+
     public function getRows($filters,$sidx = false, $sord = false, $start = false, $limit = false, $mediateOnly = false,$afterToday = true)
     {
         try {

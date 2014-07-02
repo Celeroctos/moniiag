@@ -1164,6 +1164,12 @@ class SheduleController extends Controller {
             $msg .= ', в очереди под номером '.$_GET['order_number'].'.';
         }
 
+        // Если есть id отменённого приёма - надо удалить старый приём в таблице (поставить ему delete=1)
+        if (isset($_GET['cancelledGreetingId']) && ($_GET['cancelledGreetingId']!=''))
+        {
+            CancelledGreeting::deleteCancelledGreeting($_GET['cancelledGreetingId']);
+        }
+
         echo CJSON::encode(array('success' => 'true',
                                  'greetingId' => $sheduleElement->id,
                                  'data' => $msg));

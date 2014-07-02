@@ -47,7 +47,7 @@ $(document).ready(function() {
 
 
         // ПОлучаем родительский tr
-        parentTr = $($(this).parents('tr')[0]).remove();
+        parentTr = $($(this).parents('tr')[0]);
         // Смотрим - имеет ли первая ячейка класс doctorCellCancelled
         firstTd =  $(parentTr).find('td:eq(0)');
         if ( $(firstTd).hasClass('doctorCellCancelled') )
@@ -57,7 +57,7 @@ $(document).ready(function() {
             if ($(firstTd).hasAttr('rowspan') && $(firstTd).attr('rowspan')!=1)
             {
                 $(firstTd).attr('rowspan', $(firstTd).attr('rowspan')-1);
-                $($(parentTr).next()).append($(firstTd));
+                $($(parentTr).next()).prepend($(firstTd));
             }
             // Иначе можно безболезненно удалить первую ячейку
         }
@@ -77,6 +77,7 @@ $(document).ready(function() {
 
         }
 
+        $(parentTr).remove();
         // вызываем action удаления приёма
         //DeleteCancelledGreeting
         $.ajax({
@@ -148,8 +149,8 @@ $(document).ready(function() {
                     var data = data.data;
                     var cabinets = data.cabinets;
                     $('#todoctor-submit').prop('disabled', true);
-                    makeSheduleTable('#sheduleTable', data.greetingsOnlyByWriting, cabinets, /*'Расписание на ' + greetingDate.split('-').reverse().join('.') + ' года ', */'#sheduleInfoH4', 1);
-                    makeSheduleTable('#writingLineTable', data.greetingsOnlyWaitingLine, cabinets, /*'Живая очередь на ' + greetingDate.split('-').reverse().join('.') + ' года ',*/ '#writingLineInfoH4', 0);
+                    makeSheduleTable('#sheduleTable', data.greetingsOnlyByWriting, cabinets, 'Пациенты по записи','#sheduleInfoH4', 1);
+                    makeSheduleTable('#writingLineTable', data.greetingsOnlyWaitingLine, cabinets, 'Пациенты в живой очереди','#writingLineInfoH4', 0);
                     if (data.greetingsOnlyByWriting.length>0 || data.greetingsOnlyWaitingLine.length>0)
                     {
                         $('#print-submit').prop('disabled', false);
@@ -176,7 +177,7 @@ $(document).ready(function() {
     });
 
     // Отобразить таблицу для расписания
-    function makeSheduleTable(tableId, greetings, cabinets, /*title,*/ hCont, displayTime) {
+    function makeSheduleTable(tableId, greetings, cabinets, title, hCont, displayTime) {
         console.log('11');
         var table = $(tableId);
         $(table).find('tbody tr').remove();
@@ -184,12 +185,18 @@ $(document).ready(function() {
         var numRows = 1; // Для rowspan
         var firstTd = null;
         var added = false; // Добавлена или нет первая ячейка
-        //$(hCont).html(title);
+        $(hCont).html(title);
         /*if(shedule.length > 0) {
          $('#print-submit').prop('disabled', false);
          } else {
          $('#print-submit').prop('disabled', true);
          }*/
+        waitingLineUrl = '';
+
+        if (displayTime==0)
+        {
+            waitingLineUrl = '&waitingline=1';
+        }
         for(var i = 0; i < greetings.length; i++) {
             // console.log(shedule[i].doctor_id);
             var tr = $('<tr>');
@@ -237,7 +244,7 @@ $(document).ready(function() {
                 content += '<td></td>';
             }
 
-            if(displayTime == 1) {
+            /*if(displayTime == 1) {
                 content += '<td><nobr>' +
                     ((typeof greetings[i].patient_time != 'undefined' && greetings[i].patient_time != null) ?
                         greetings[i].patient_time.substr(0, greetings[i].patient_time.lastIndexOf(':')) : '') +
@@ -245,8 +252,19 @@ $(document).ready(function() {
                         greetings[i].patient_day.split('-').reverse().join('.')
                         +
                     '</nobr></td>';
-            }
+            }*/
+            timeString = '';
+            if(displayTime == 1) {
 
+                timeString +=
+                    ((typeof greetings[i].patient_time != 'undefined' && greetings[i].patient_time != null) ?
+                        greetings[i].patient_time.substr(0, greetings[i].patient_time.lastIndexOf(':')) : '');
+            }
+            if (timeString!='')  {timeString = timeString+' ';}
+            // День выводим всегда
+            timeString += (greetings[i].patient_day.split('-').reverse().join('.'));
+
+            content += ('<td><nobr>' + timeString + '</nobr></td>');
             content += '<td>' +
                 ((greetings[i].medcard_id != null) ?  '<a href="#" class="cardNumber">' + greetings[i].medcard_id + '</a>' : '-') +
                 '</td>';
@@ -267,10 +285,21 @@ $(document).ready(function() {
             '</a></td>');
 
             // Вставляем кнопку Перезаписи
-            content += ('<td><a class="rewrite-link" href="#'+greetings[i].id+'">'+
-                '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
-                '</a></td>');
-
+            // Смотрим - если пациент опосредованный
+            console.log(greetings[i].mediate_id);
+            if (greetings[i].mediate_id != '' && greetings[i].mediate_id != null)
+            {
+                content += ('<td><a class="rewrite-link" target="_blank" href="/index.php/reception/patient/writepatientwithoutdata?cancelledGreetingId='+ greetings[i].id+'">'+
+                    '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
+                    '</a></td>');
+            }
+            else
+            {
+                //writepatientsteptwo
+                content += ('<td><a class="rewrite-link" target="_blank" href="/index.php/reception/patient/writepatientsteptwo?cancelledGreetingId='+ greetings[i].id+'&cardid='+ greetings[i].medcard_id + waitingLineUrl +'">'+
+                    '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
+                    '</a></td>');
+            }
             if(!added || greetings.length == 1) {
                 $(tr).append(firstTd, content);
                 added = true;

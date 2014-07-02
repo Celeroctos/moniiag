@@ -50,6 +50,10 @@
             params.order_number = $(li).prop('id').substr(1);
         }
 
+        if(globalVariables.hasOwnProperty('cancelledGreeting')) {
+            params.cancelledGreetingId = globalVariables.cancelledGreeting;
+        }
+
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
             'data' : params,

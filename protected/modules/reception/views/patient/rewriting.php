@@ -43,7 +43,7 @@
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-success" id="sheduleViewSubmit">Посмотреть пациентов</button>
-                <input type="button" class="btn btn-success" name="print-submit" value="Печать" id="print-submit" disabled="disabled">
+                <!--<input type="button" class="btn btn-success" name="print-submit" value="Печать" id="print-submit" disabled="disabled">-->
             </div>
         </div>
 
@@ -135,6 +135,7 @@
             <td>Пациент</td>
             <td>Контактный телефон</td>
             <td>Комментарий</td>
+            <td>Дата</td>
             <td>Номер карты</td>
             <td>История движения</td>
             <td></td>
