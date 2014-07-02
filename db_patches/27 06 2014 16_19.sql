@@ -14,16 +14,16 @@
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE mis.doctor_shedule_by_day
+ALTER TABLE mis.cancelled_greetings
   OWNER TO moniiag;
-COMMENT ON TABLE mis.doctor_shedule_by_day
+COMMENT ON TABLE mis.cancelled_greetings
   IS 'Расписание врачей по дням';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.doctor_id IS 'Доктор';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.medcard_id IS 'Медкарта';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.patient_day IS 'Дата приёма';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.patient_time IS 'Время приёма';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.mediate_id IS 'ID опосредованного пациента (если есть. В противном случае - NULL)';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.shedule_id IS 'ID элемента расписания';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.comment IS 'Комментарий к приёму';
-COMMENT ON COLUMN mis.doctor_shedule_by_day.greeting_type IS 'Тип приёма (первичный-вторичный)';
+COMMENT ON COLUMN mis.cancelled_greetings.doctor_id IS 'Доктор';
+COMMENT ON COLUMN mis.cancelled_greetings.medcard_id IS 'Медкарта';
+COMMENT ON COLUMN mis.cancelled_greetings.patient_day IS 'Дата приёма';
+COMMENT ON COLUMN mis.cancelled_greetings.patient_time IS 'Время приёма';
+COMMENT ON COLUMN mis.cancelled_greetings.mediate_id IS 'ID опосредованного пациента (если есть. В противном случае - NULL)';
+COMMENT ON COLUMN mis.cancelled_greetings.shedule_id IS 'ID элемента расписания';
+COMMENT ON COLUMN mis.cancelled_greetings.comment IS 'Комментарий к приёму';
+COMMENT ON COLUMN mis.cancelled_greetings.greeting_type IS 'Тип приёма (первичный-вторичный)';
 
