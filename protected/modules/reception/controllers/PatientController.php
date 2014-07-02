@@ -16,6 +16,65 @@ class PatientController extends Controller {
         ));
     }
 
+    // Привязать карту к другому полису
+    public function actionRebindOmsMedcard()
+    {
+        $cardNumber = '';
+        $newPolicyId = 0;
+
+        if (isset($_GET['cardNumber']) && isset($_GET['newOmsId']))
+        {
+            $cardNumber = $_GET['cardNumber'];
+            $newPolicyId = $_GET['newOmsId'];
+
+            // Сначала проверим - есть ли у полиса, на который мы перекидываем карта с тем же годом. если она есть - то
+            //   перекидывать нельзя, нужно использовать ту карту
+
+            $yearOfCard = substr($cardNumber, count($cardNumber)-3);
+
+           // var_dump($yearOfCard );
+         //   exit();
+
+            // Найдём карту с номером полиса, равным тому, на который мы перекидываем и с тем же годом
+            $oldMedcards = Medcard::model()->find("policy_id = :oms AND card_number like '%".$yearOfCard."'",
+                array(':oms' => $newPolicyId)
+            );
+
+            if ($oldMedcards!=null)
+            {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => array (
+                                             'Для данного полиса уже есть карта данного года.'
+
+                                         )
+                ));
+                exit();
+            }
+
+            // 1. Выполняем перепривязку медкарты
+            $cardToRebind = Medcard::model()->find('card_number = :card', array ( ':card' =>  $cardNumber ) );
+            $oldPolicyId = $cardToRebind['policy_id'];
+            $cardToRebind['policy_id'] = $newPolicyId;
+            $cardToRebind->save();
+
+            // 2. Пишем в таблицу rebinded_cards о смене полиса у карты
+            $rebindLog = new RebindedMedcard();
+            $rebindLog->card_number = $cardNumber;
+            $rebindLog->old_policy = $oldPolicyId;
+            $rebindLog->new_policy = $newPolicyId;
+            $rebindLog->changing_timestamp =  date('Y-m-d H:i:s');
+            $userToWrite = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
+            $rebindLog->worker_id = $userToWrite['employee_id'];
+            $rebindLog->save();
+            echo CJSON::encode(array('success' => 'true'));
+        }
+        else
+        {
+            echo CJSON::encode(array('success' => 'false'));
+        }
+
+    }
+
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()
     {
@@ -330,7 +389,25 @@ class PatientController extends Controller {
         );
 	    
     }
-    
+
+    public function actionGetIsOmsWithNumber()
+    {
+        $result = array('id' => -1);
+        if (isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck']))
+        {
+            $oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
+            // Если омс!=нуль, то значит, что полис с таким номером существует в базе
+            if ($oms!=null)
+            {
+                $result = $oms;
+            }
+        }
+
+        echo CJSON::encode(
+            array('newOms' => $result)
+        );
+    }
+
     // Получить список льгот
     private function getPrivileges() {
         // Льготы
@@ -507,7 +584,8 @@ class PatientController extends Controller {
     }
 
     private function checkUniqueOms($model, $withoutCurrent = false) {
-        // Проверим, не существует ли уже такого ОМС
+
+        /*// Проверим, не существует ли уже такого ОМС
         // Три вида ОМС: с пробелом впереди, с пробелом посередине
         if(mb_strlen($model->policy) != 16 && !$withoutCurrent) {
             $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
@@ -538,6 +616,71 @@ class PatientController extends Controller {
                             ':oms_number2' => $omsNumber2,
                             ':oms_number3' => $omsNumber3,
                             ':policy_id' => $model->id
+                        )
+                    );
+                } else {
+                    $omsSearched = Oms::model()->find(
+                        'oms_number = :oms_number1 OR
+                        oms_number = :oms_number2 OR
+                        oms_number = :oms_number3',
+                        array(
+                            ':oms_number1' => $omsNumber1,
+                            ':oms_number2' => $omsNumber2,
+                            ':oms_number3' => $omsNumber3
+                        )
+                    );
+                }
+            }
+        }
+
+        if($omsSearched != null) {
+
+            return $omsSearched;
+        }
+        return null;*/
+        $IdOfOms = null;
+        if (isset($model->id))
+        {
+            $IdOfOms = $model->id;
+        }
+
+        return $this->checkUnickueOmsInternal($model->policy,$IdOfOms,$withoutCurrent);
+    }
+
+
+    private function checkUnickueOmsInternal($omsNumber,$omsId,$withoutCurrent)
+    {
+        // Проверим, не существует ли уже такого ОМС
+        // Три вида ОМС: с пробелом впереди, с пробелом посередине
+        if(mb_strlen($omsNumber) != 16 && !$withoutCurrent) {
+            $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $omsNumber));
+        } else {
+            $omsNumber1 = $omsNumber;
+            $omsNumber2 = ' '.$omsNumber;
+            $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
+            if(!$withoutCurrent) {
+                $omsSearched = Oms::model()->find(
+                    'oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3
+                    )
+                );
+            } else {
+                if($omsId != null) {
+                    $omsSearched = Oms::model()->find(
+                        '(oms_number = :oms_number1 OR
+                        oms_number = :oms_number2 OR
+                        oms_number = :oms_number3)
+                        AND id != :policy_id',
+                        array(
+                            ':oms_number1' => $omsNumber1,
+                            ':oms_number2' => $omsNumber2,
+                            ':oms_number3' => $omsNumber3,
+                            ':policy_id' => $omsId
                         )
                     );
                 } else {
@@ -1008,7 +1151,7 @@ class PatientController extends Controller {
                     $this->addEditModelOms($oms, $model);
                 } else {
                     // В этом случае полис существует. Надо обновить на новые данные и удалить старый полис (для того, чтобы не было дубликатов
-                    Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
+                   // Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
                     $birthday = implode('.', array_reverse(explode('-', $model->birthday)));
                     $foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', дата рождения '.$birthday.'</strong>)';
                     // Ищем медкарты с таким ОМС и просто переставляем ID, только_если у того, кого удаляют, нет медкарт. В противном случае, ничего не делаем
