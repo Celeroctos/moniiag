@@ -24,6 +24,5 @@ COMMENT ON COLUMN mis.cancelled_greetings.patient_day IS 'Дата приёма'
 COMMENT ON COLUMN mis.cancelled_greetings.patient_time IS 'Время приёма';
 COMMENT ON COLUMN mis.cancelled_greetings.mediate_id IS 'ID опосредованного пациента (если есть. В противном случае - NULL)';
 COMMENT ON COLUMN mis.cancelled_greetings.shedule_id IS 'ID элемента расписания';
-COMMENT ON COLUMN mis.cancelled_greetings.comment IS 'Комментарий к приёму';
 COMMENT ON COLUMN mis.cancelled_greetings.greeting_type IS 'Тип приёма (первичный-вторичный)';
 
