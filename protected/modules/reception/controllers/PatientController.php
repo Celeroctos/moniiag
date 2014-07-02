@@ -383,8 +383,13 @@ class PatientController extends Controller {
             return $omsSearched;
         }
         return null;*/
+        $IdOfOms = null;
+        if (isset($model->id))
+        {
+            $IdOfOms = $model->id;
+        }
 
-        return $this->checkUnickueOmsInternal($model->policy,$model->id,$withoutCurrent);
+        return $this->checkUnickueOmsInternal($model->policy,$IdOfOms,$withoutCurrent);
     }
 
 
