@@ -615,12 +615,6 @@ class SheduleController extends Controller {
     {
         try {
 
-
-            /*$dayBegin = $_GET['date_begin'];
-            $dayEnd = $_GET['date_end'];
-            $doctorId= $_GET['doctor_id'];
-            $times = CJSON::decode($_GET['times']);
-            $sheduleId = $_GET['shedule_id'];*/
             $idGreetingToCancel = array();
             //------------------
             // Дальше нужно собрать id тех приёмов, которые нужно отменить
@@ -733,7 +727,11 @@ class SheduleController extends Controller {
             }
 
             $model = new SheduleByDay();
-            $greetings = $model->getGreetingsByIds(false, $idsString);
+            $greetings = array();
+            if ($idsString!='')
+            {
+                $greetings = $model->getGreetingsByIds(false, $idsString);
+            }
             // Приведём дату в приличный вид и запишем ссылку для отписывания
             foreach($greetings as &$element) {
                 // Берём и отписываем каждый приём по id-шнику
@@ -744,6 +742,7 @@ class SheduleController extends Controller {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+
     }
 
     /*
