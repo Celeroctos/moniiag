@@ -282,6 +282,23 @@
             <?php
             //$this->endWidget();
             ?>
+            <?php $counter = 0; if (false){ ?>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs templatesListNav">
+                    <?php foreach($templatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="t<?php echo $template['id']; ?>">
+                                <strong>
+                                    <?php echo $template['name']; ?>
+                                </strong>
+                            </a>
+                        </li>
+                        <?php
+                        $counter++;
+                    } ?>
+                </ul>
+            </div>
+                <?php } ?>
 			<div class="modal fade error-popup" id="successEditPopup">
 				<div class="modal-dialog">
 					<div class="modal-content">
