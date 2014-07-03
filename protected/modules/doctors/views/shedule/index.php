@@ -282,7 +282,7 @@
             <?php
             //$this->endWidget();
             ?>
-            <?php $counter = 0; if (false){ ?>
+            <?php $counter = 0; if (true){ ?>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs templatesListNav templatesListNavBottom">
                     <?php foreach($templatesList as $key => $template) { ?>

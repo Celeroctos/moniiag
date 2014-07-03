@@ -123,8 +123,33 @@ $(document).ready(function() {
     $('.templatesListNav a').click(function (e) {
         e.preventDefault();
         var tabId = $(this).prop('id').substr(1);
+        heightBefore = $(document).height();
+        scrollHeightTopDifference = $(document).height() - $(document).scrollTop();
+        console.log('Высота сначала '+$(document).height());
         $('form#template-edit-form').find('[id^=tab]').addClass('no-display');
         $('form#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
+        console.log('Высота потом '+$(document).height());
+        heightAfter = $(document).height();
+        heightDifference = heightAfter - heightBefore;
+        console.log(heightDifference);
+        console.log('ScrollTOp до '+$(document).scrollTop());
+
+        if ( ($(this).parents('.templatesListNav').hasClass('templatesListNavBottom'))  )
+        {
+            if (heightDifference>0)
+            {
+                $(document).scrollTop($(document).scrollTop()+heightDifference);
+            }
+            else
+            {
+                $(document).scrollTop(   $(document).height() -  scrollHeightTopDifference );
+            }
+        }
+
+        console.log('ScrollTOp после '+$(document).scrollTop());
+        // Теперь нужно сдвинуть scrollTop в плюс на разницу heightDifference
+
+
         //$(this).tab('show')
 
         /*allTabs = $('templatesListNav a[id^=t]');
