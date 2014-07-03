@@ -284,7 +284,7 @@
             ?>
             <?php $counter = 0; if (false){ ?>
             <div class="row col-xs-12">
-                <ul class="nav nav-tabs templatesListNav">
+                <ul class="nav nav-tabs templatesListNav templatesListNavBottom">
                     <?php foreach($templatesList as $key => $template) { ?>
                         <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
                             <a href="#" id="t<?php echo $template['id']; ?>">

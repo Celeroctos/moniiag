@@ -125,6 +125,17 @@ $(document).ready(function() {
         var tabId = $(this).prop('id').substr(1);
         $('form#template-edit-form').find('[id^=tab]').addClass('no-display');
         $('form#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
-        $(this).tab('show')
+        //$(this).tab('show')
+
+        /*allTabs = $('templatesListNav a[id^=t]');
+        // Снимаем всем класс active
+        $(allTabs).parents('li').removeClass('active');
+
+        return;*/
+        tabs = $('[id=t'+ tabId +']');
+        for (i=0;i<tabs.length;i++)
+        {
+            $(tabs[i]).tab('show');
+        }
     });
 });
