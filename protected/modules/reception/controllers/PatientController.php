@@ -1267,6 +1267,7 @@ class PatientController extends Controller {
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows);
         } else {
             $items = array();
+            $totalPages = 0;
         }
 
         echo CJSON::encode(
