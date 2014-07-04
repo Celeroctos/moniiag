@@ -239,6 +239,24 @@ class PrintController extends Controller {
 		$categorieWidget->divideTreebyCats();
 
 		$sortedElements = $categorieWidget->dividedCats;
+
+        // Вытащим диагнозы
+        $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
+        $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
+        $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+
+        // Соберём их в об'ект
+        $diagnosises = array(
+            'primary' => $pd,
+            'secondary' => $sd,
+            'clinicalPrimary' => $cpd,
+            'clinicalSecondary' => $csd
+
+        );
+
+       // var_dump($diagnosises );
+       // exit();
 		if($greetingIn === false) {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
@@ -255,7 +273,8 @@ class PrintController extends Controller {
                 $htmlForPdf =
                     $this->render('greeting', array(
                         'templates' => $sortedElements,
-                        'greeting' => $greetingInfo
+                        'greeting' => $greetingInfo,
+                        'diagnosises' => $diagnosises
                     ), true);
                 $mPDF->WriteHTML(
                     $htmlForPdf
@@ -268,13 +287,15 @@ class PrintController extends Controller {
             } else {
                 return array(
                     'templates' => $sortedElements,
-                    'greeting' => $greetingInfo
+                    'greeting' => $greetingInfo,
+                    'diagnosises' => $diagnosises
                 );
             }
 		} else {
 			return array(
                 'templates' => $sortedElements,
-                'greeting' => $greetingInfo
+                'greeting' => $greetingInfo,
+                'diagnosises' => $diagnosises
             );
 		}
     }
