@@ -12,11 +12,23 @@
             // Печатаем название шаблона
             ?><h3><?php echo $oneTemplate['name']; ?></h3><?php
             foreach($oneTemplate['cats']  as $index => $categorie) {
+                // Печатаем название категории
+                ?>
+                    <div style="margin-left:20px;">
+                    <strong style="text-decoration: underline"><?php echo $categorie['element']['name']; ?></strong>
+                    <p class ="print-elements">
+                <?php
+
                 // Вызываем виджет категории
                 $printCategorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
                     'categoryToPrint' => $categorie
                 ));
                 $printCategorieWidget->run();
+                ?>
+                    </p>
+                    </div>
+                <?php
+
             }
         }
 ?>
