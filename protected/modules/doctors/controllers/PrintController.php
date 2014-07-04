@@ -202,8 +202,16 @@ class PrintController extends Controller {
 		{
 			$changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId,false,'eq',true);
 		}
-		
-		if(count($changedElements) == 0) {
+
+        //var_dump($changedElements );
+        //exit();
+
+      //  foreach ($changedElements as $oneEl)
+     //   {
+    //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
+  //      }
+//exit();
+        if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
 				//var_dump($changedElements);

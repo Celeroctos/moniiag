@@ -113,17 +113,28 @@
 						   // Всё, что кроме таблицы - выводим значение
 						   else
 						   {
-                   			if ($element['is_wrapped']=='0' && $elementNumber!=1)
-                   			{
+                               // Если дата - то её нужно перевернуть.
+                               if ($element['type']==6 && $element['value']!='' && $element['value']!=NULL)
+                               {
+                                   $dateParts = array();
+                                   $dateParts = explode('-',$element['value']);
+                                   if (count($dateParts)==3)
+                                   {
+                                        $element['value'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
+                                   }
+                               }
 
-						        ?>
-								<br></br>
-								<?php
+                                if ($element['is_wrapped']=='0' && $elementNumber!=1)
+                                {
 
-							}
-								?>
-							<strong><?php echo $element['label']; ?></strong> <?php echo $element['value']; ?> <strong><?php echo $element['label_after']; ?></strong>
-							<?php
+                                    ?>
+                                    <br></br>
+                                    <?php
+
+                                }
+                                    ?>
+                                <strong><?php echo $element['label']; ?></strong> <?php echo $element['value']; ?> <strong><?php echo $element['label_after']; ?></strong>
+                                <?php
 						}
 					}
 				}

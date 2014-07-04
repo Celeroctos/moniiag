@@ -4,6 +4,11 @@
 <?php
         foreach ($templates as $oneTemplate)
         {
+            // Если у шаблона empty = true, то переходим на следующую итерацию цикла
+           // var_dump($oneTemplate['empty']);
+            if ($oneTemplate['empty']==true)
+                continue;
+
             // Печатаем название шаблона
             ?><h3><?php echo $oneTemplate['name']; ?></h3><?php
             foreach($oneTemplate['cats']  as $index => $categorie) {
