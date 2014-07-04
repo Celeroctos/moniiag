@@ -7,7 +7,7 @@
         // Выводим диагнозы
         if (count($diagnosises['primary'])>0)
         {
-            ?><div><strong>Первичный диагноз: </strong><?php
+            ?><div><strong>Основной диагноз (МКБ-10): </strong><?php
             foreach ($diagnosises['primary'] as $oneDiagnosis)
             {
                 echo $oneDiagnosis['description'];
@@ -18,7 +18,7 @@
 
         if (count($diagnosises['secondary'])>0)
         {
-            ?><div><strong>Сопутствующие диагнозы: </strong><?php
+            ?><div><strong>Сопутствующие диагнозы (МКБ-10): </strong><?php
             foreach ($diagnosises['secondary'] as $oneDiagnosis)
             {
                 ?><br> - <?php
@@ -39,7 +39,7 @@
 
         if (count($diagnosises['clinicalSecondary'])>0)
         {
-            ?><div><strong>Сопутствующие клинические диагнозы: </strong><?php
+            ?><div><strong>Клинические диагноз/диагнозы: </strong><?php
             foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
             {
                 ?><br> - <?php
