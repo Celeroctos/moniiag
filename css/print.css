@@ -51,6 +51,9 @@ strong {
 .medium {
     font-size: 18px;
 }
+.medium3 {
+    font-size: 17px;
+}
 .medium2{
     font-size: 15px;
     border: 0px;
@@ -68,6 +71,10 @@ strong {
     }
     .medium {
         font-size: 14px;
+        border: 0px;
+    }
+    .medium3 {
+        font-size: 13px;
         border: 0px;
     }
     .medium2{

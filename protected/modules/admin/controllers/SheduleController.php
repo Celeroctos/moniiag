@@ -615,12 +615,6 @@ class SheduleController extends Controller {
     {
         try {
 
-
-            /*$dayBegin = $_GET['date_begin'];
-            $dayEnd = $_GET['date_end'];
-            $doctorId= $_GET['doctor_id'];
-            $times = CJSON::decode($_GET['times']);
-            $sheduleId = $_GET['shedule_id'];*/
             $idGreetingToCancel = array();
             //------------------
             // Дальше нужно собрать id тех приёмов, которые нужно отменить
@@ -628,13 +622,13 @@ class SheduleController extends Controller {
             $oldShedule = SheduleSettedBe::model()->find('id = :id', array(':id'=>$sheduleId));
 
             // Выбираем приёмы, которые попадали раньше в промежуток
-            $oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end AND patient_day>=current_date',
+            $oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end AND patient_day>=current_date',
                 array(':doctor_id' => $doctorId,':date_begin' => $oldShedule['date_begin'],
                     ':date_end' => $oldShedule['date_end']
                 )
             );
             // Выбираем приёмы, которые попадают в промежуток теперь
-            $newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day > :date_begin AND patient_day < :date_end AND patient_day>=current_date',
+            $newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end AND patient_day>=current_date',
                 array(':doctor_id' => $doctorId,':date_begin' => $dayBegin,
                     ':date_end' => $dayEnd
                 )
@@ -704,7 +698,7 @@ class SheduleController extends Controller {
                     }
 
                     // Если время приёма не попадает в новый промежуток времени
-                    if (!(strtotime($oneOldGreeting['patient_time'])>strtotime($times['timesBegin'][$weekday]))
+                    if (!(strtotime($oneOldGreeting['patient_time'])>=strtotime($times['timesBegin'][$weekday]))
                         &&
                         (strtotime($oneOldGreeting['patient_time'])<strtotime($times['timesEnd'][$weekday])))
                     {
@@ -733,7 +727,11 @@ class SheduleController extends Controller {
             }
 
             $model = new SheduleByDay();
-            $greetings = $model->getGreetingsByIds(false, $idsString);
+            $greetings = array();
+            if ($idsString!='')
+            {
+                $greetings = $model->getGreetingsByIds(false, $idsString);
+            }
             // Приведём дату в приличный вид и запишем ссылку для отписывания
             foreach($greetings as &$element) {
                 // Берём и отписываем каждый приём по id-шнику
@@ -744,6 +742,7 @@ class SheduleController extends Controller {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+
     }
 
     /*

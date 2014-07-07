@@ -20,6 +20,7 @@ class massPrint extends CWidget {
             $this->render('application.modules.doctors.views.print.greeting', array(
                 'templates' => $greeting['templates'],
                 'greeting' => $greeting['greeting'],
+                'diagnosises' => $greeting['diagnosises'],
                 'notPrintPrintBtn' => '1'
             ));
             ?></div><?php
