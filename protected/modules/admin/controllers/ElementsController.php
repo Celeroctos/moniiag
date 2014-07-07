@@ -340,6 +340,7 @@ class ElementsController extends Controller {
         $dependences = MedcardElementDependence::model()->getRows($id, $categorieId);
         $dependencesArr = array();
         foreach($dependences as $dependence) {
+            $dependence['actionId'] = $dependence['action'];
             $dependence['action'] = $dependence['action'] == 1 ? 'Скрыть' : 'Показать';
             if($dependence['me_display_label'] != null) {
                 $dependence['element'] .= ' ('.$dependence['me_display_label'].')';
