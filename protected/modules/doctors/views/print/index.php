@@ -10,13 +10,13 @@
         <td class="first" colspan="6">Медицинская карта амбулаторного больного № <strong class="bigger"><?php echo $medcard->card_number; ?></strong></td>
     </tr>
     <tr>
-        <td colspan="2" class="first">1. Страховая мед. организация</td>
-        <td colspan="4" strong class="big"><?php echo $oms->insurance; ?><?php
+        <td class="first">1. Страховая мед. организация</td>
+        <td colspan="5" strong class="big2"><?php echo $oms->insurance; ?><nobr><?php
         if ($oms->region!='' && $oms->region!=null)
         {
             echo (' ('.$oms->region.')');
         }
-        ?></td>
+        ?></nobr></td>
     </tr>
     <tr>
         <td colspan="2" class="first">2. Номер страхового полиса</td>
@@ -45,7 +45,7 @@
 
     <tr>
         <td colspan="1" class="first"></td>
-        <td class="first">4. СНИЛС</td>
+        <td class="first"><nobr>4. СНИЛС</nobr></td>
         <td colspan="1" class="big"><nobr><strong class="big"><?php echo $medcard->snils; ?><nobr></td>
         <td class="first">Участок</td>
         <td class="big"><strong class="big"></td>
@@ -74,14 +74,14 @@
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><strong><span  class="medium2"><?php echo $medcard->address_reg; ?></strong></td>
+        <td colspan="6" class="medium3"><strong><span  class="medium3"><?php echo $medcard->address_reg; ?></strong></td>
     </tr>
     <tr>
         <td colspan="6" class="first">11. Адрес регистрации по месту пребывания</td>
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><span class="medium2"><?php echo $medcard->address; ?></td>
+        <td colspan="6" class="medium3"><span class="medium3"><?php echo $medcard->address; ?></td>
     </tr>
     <tr>
         <td class="first">12. Телефон</td>
