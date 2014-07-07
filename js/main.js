@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿// git test
+$(document).ready(function () {
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
