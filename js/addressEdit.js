@@ -5,24 +5,28 @@ $(document).ready(function(){
     // Обработчики кнопок "Добавить строку в КЛАДР"
     $(document).on('click','.addNewRegionButton',function(){
         console.log('Была нажата клавиша добавления нового региона');
+        swapCladdrFields('addRegionPopup');
         activeChooser = $(this).parents('div.chooser');
         $('#addRegionPopup').modal({});
     });
 
     $(document).on('click','.addNewDistrictButton',function(){
         console.log('Была нажата клавиша добавления нового района');
+        swapCladdrFields('addDistrictPopup');
         activeChooser = $(this).parents('div.chooser');
         $('#addDistrictPopup').modal({});
     });
 
     $(document).on('click','.addNewSettlementButton',function(){
         console.log('Была нажата клавиша добавления нового населённого пункта');
+        swapCladdrFields('addSettlementPopup');
         activeChooser = $(this).parents('div.chooser');
         $('#addSettlementPopup').modal({});
     });
 
     $(document).on('click','.addNewStreetButton',function(){
         console.log('Была нажата клавиша добавления новой улицы');
+        swapCladdrFields('addStreetPopup');
         activeChooser = $(this).parents('div.chooser');
         $('#addStreetPopup').modal({});
     });
@@ -30,31 +34,143 @@ $(document).ready(function(){
     // Обработчики успешного добавления в КЛАДР
     $("#region-add-form").on("success",function(e,data)
         {
-            console.log('Регион добавился');
-            onCladdrAdd(this,data);
+            //console.log('Регион добавился');
+            //onCladdrAdd(this,data);
+
+            // Смотрим - надо вывести ошибки
+            result = jQuery.parseJSON(data);
+            if (result.success==false || result.success=="false")
+            {
+                console.log('Произошла ошибка :-(');
+                alert ('Произошла ошибка. '+result.errors.name[0]);
+            }
+            else
+            {
+                console.log('Регион добавился');
+                onCladdrAdd(this,data);
+            }
+
         }
     );
 
     $("#district-add-form").on("success",function(e,data)
         {
-            console.log('Район добавился');
-            onCladdrAdd(this,data);
+            //console.log('Район добавился');
+            //onCladdrAdd(this,data);
+
+            // Смотрим - надо вывести ошибки
+            result = jQuery.parseJSON(data);
+            if (result.success==false || result.success=="false")
+            {
+                console.log('Произошла ошибка :-(');
+                alert ('Произошла ошибка. '+result.errors.name[0]);
+            }
+            else
+            {
+                console.log('Район добавился');
+                onCladdrAdd(this,data);
+            }
+
+
         }
     );
 
     $("#settlement-add-form").on("success",function(e,data)
         {
-            console.log('Населённый пункт добавился');
-            onCladdrAdd(this,data);
+            //console.log('Населённый пункт добавился');
+            //onCladdrAdd(this,data);
+
+            // Смотрим - надо вывести ошибки
+            result = jQuery.parseJSON(data);
+            if (result.success==false || result.success=="false")
+            {
+                console.log('Произошла ошибка :-(');
+                alert ('Произошла ошибка. '+result.errors.name[0]);
+            }
+            else
+            {
+                console.log('Населённый пункт добавился');
+                onCladdrAdd(this,data);
+            }
         }
     );
 
     $("#street-add-form").on("success",function(e,data)
         {
-            console.log('Улица добавилась');
-            onCladdrAdd(this,data);
+            // Смотрим - надо вывести ошибки
+            result = jQuery.parseJSON(data);
+            if (result.success==false || result.success=="false")
+            {
+                console.log('Произошла ошибка :-(');
+                alert ('Произошла ошибка. '+result.errors.name[0]);
+            }
+            else
+            {
+                console.log('Улица добавилась');
+                onCladdrAdd(this,data);
+            }
         }
     );
+
+    // Перекачивает значения полей из формы редактирования адреса в форму добавления
+    function swapCladdrFields(activeFormName)
+    {
+        // Если нет видимого поп-апа, в котором редактируется адрес
+        if ( (editAddrObject = $('#editAddressPopup:visible').length)<=0)
+            return;
+
+        // Перекачиваем регион
+        // Проверяем - есть ли внутри регион если да - то перекачиваем его
+        if ( $('#'+activeFormName + ' div[id^=regionChooser]').length>0 )
+        {
+            console.log('Протаскиваем регион');
+            //$('#'+activeFormName + ' div[id^=regionChooser]').attr('id').clearAll();
+            //regionValue = $(editAddrObject).find('regionChooser').getChoosed();
+            toChooser = $('#'+activeFormName + ' div[id^=regionChooser]').attr('id');
+            $.fn[toChooser].clearAll();
+            regionValue = $.fn['regionChooser'].getChoosed();
+            console.log(regionValue);
+
+            $.fn[toChooser].addChoosed(
+                $('<li>').prop('id', 'r' + regionValue[0].id).text(regionValue[0].name), regionValue[0]
+            );
+        }
+
+        // Перекачиваем район
+        if ( $('#'+activeFormName + ' div[id^=districtChooser]').length>0 )
+        {
+            console.log('Протаскиваем район');
+            toChooser = $('#'+activeFormName + ' div[id^=districtChooser]').attr('id');
+            $.fn[toChooser].clearAll();
+            //$('#'+activeFormName + ' div[id^=districtChooser]').clearAll();
+            districtValue = $.fn['districtChooser'].getChoosed();
+            console.log(districtValue);
+
+
+            $.fn[toChooser].addChoosed(
+                $('<li>').prop('id', 'r' + districtValue[0].id).text(districtValue[0].name), districtValue[0]
+            );
+        }
+
+        // Перекачиваем населённый пункт
+        if ( $('#'+activeFormName + ' div[id^=settlementChooser]').length>0 )
+        {
+            console.log('Протаскиваем населённый пункт');
+            //$('#'+activeFormName + ' div[id^=settlementChooser]').clearAll();
+            toChooser = $('#'+activeFormName + ' div[id^=settlementChooser]').attr('id');
+            $.fn[toChooser].clearAll();
+            settlementValue = $.fn['settlementChooser'].getChoosed();
+            console.log(settlementValue);
+
+
+            $.fn[toChooser].addChoosed(
+                $('<li>').prop('id', 'r' + settlementValue[0].id).text(settlementValue[0].name), settlementValue[0]
+            );
+        }
+
+        // Улицу перекачивать не нужно (не бывает такого, что в окне добавления объекта КЛАДР есть улица)
+
+    }
 
     // Функция-обработчик успешного добавления в кладр строки
     //   должна вызываться для всех форм добавления в КЛАДР
@@ -78,19 +194,10 @@ $(document).ready(function(){
         // Ставим только что добавленное значение
         $(activeChooser).find('input[type=text]').val(valForChooser);
 
-        // Триггерим событие onkeyup
-        /*e = $.Event('keyup');
-        $(activeChooser).find('input[type=text]').trigger(e);
-        */
 
-        /*
-        var e = $.Event('keyup');
-        e.which = 0; // Character 'A'
-        $(activeChooser).find('input[type=text]').trigger(e);
-        */
 
         // Очищаем активный чюзер
-        // Вообще-то здесь это делать не правильно. Нужно сделать специальный метод в чюзепре
+        // Вообще-то здесь это делать не правильно. Нужно использовать специальный метод в чюзепре
         //     Так что этот кусок надо будет переделать
         $(activeChooser).find('div.choosed span').remove();
 
@@ -128,10 +235,6 @@ $(document).ready(function(){
             alert('Не выбран регион!');
             return false;
         }
-        /*if($.fn["districtChooserForSettlement"].getChoosed().length == 0) {
-            alert('Не выбран район!');
-            return false;
-        }*/
         var district = '';
         var region = $.fn["regionChooserForSettlement"].getChoosed()[0].code_cladr;
 
@@ -151,14 +254,6 @@ $(document).ready(function(){
             alert('Не выбран регион!');
             return false;
         }
-     /*   if($.fn["districtChooserForStreet"].getChoosed().length == 0) {
-            alert('Не выбран район!');
-            return false;
-        }
-        if($.fn["settlementChooserForStreet"].getChoosed().length == 0) {
-            alert('Не выбран населённый пункт!');
-            return false;
-        }*/
 
         var district = '';
         var settlement='';
