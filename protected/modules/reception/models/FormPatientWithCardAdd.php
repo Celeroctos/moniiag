@@ -32,7 +32,8 @@ class FormPatientWithCardAdd extends FormMisDefault
         return array(
             array(
                 //'doctype, serie, docnumber, documentGivedate, addressReg, address, contact, whoGived, privilege', 'required'
-                'doctype, serie, docnumber, addressReg, address, contact, privilege', 'required'
+                //'doctype, serie, docnumber, addressReg, address, contact, privilege', 'required'
+                  'doctype, addressReg, address, contact, privilege', 'required'
             ),
             array(
                 'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId, addressRegHidden, addressHidden', 'safe'

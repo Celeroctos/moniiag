@@ -17,9 +17,11 @@ class OmsFormWidget extends CWidget {
         if (isset($_GET['newBirthday']))
             $this->model['birthday'] = $_GET['newBirthday'];
 
+
+
         $this->render('application.modules.reception.components.widgets.views.OmsFormWidget', array(
             'form' => $this->form,
-            'model' => $this->model,
+            'model' => $this->model
         ));
     }
 }

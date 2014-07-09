@@ -8,7 +8,7 @@
         'class' => 'col-xs-3 control-label'
     )); ?>
     <div class="col-xs-5">
-        <?php echo $form->dropDownList($model, 'doctype', array(1 => 'Паспорт'), array(
+        <?php echo $form->dropDownList($model, 'doctype', $docTypesList, array(
             'id' => 'doctype',
             'class' => 'form-control'
         )); ?>
