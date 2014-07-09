@@ -809,8 +809,11 @@ checkElementsDependences();
 function hideControl(container, elementId) {
     var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
     if (typeof container == 'undefined') {
+        //var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+        //var prev = $(   $(elementWithWrapper)[0]    ).prev();
         var next = $(elementWithWrapper).next();
         var prev = $(elementWithWrapper).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
@@ -825,8 +828,11 @@ function hideControl(container, elementId) {
         $(elementWithWrapper).hide();
     }
     else {
-        var next = $(elementWithWrapper).next();
-        var prev = $(elementWithWrapper).prev();
+//        var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+  //      var prev = $(   $(elementWithWrapper)[0]    ).prev();
+        var next = $(   elementWithWrapper   ).next();
+        var prev = $(   elementWithWrapper   ).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
@@ -846,8 +852,11 @@ function hideControl(container, elementId) {
 function showControl(container, elementId) {
     var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
     if (typeof container == 'undefined') {
-        var next = $(elementWithWrapper).next();
-        var prev = $(elementWithWrapper).prev();
+        //var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+        //var prev = $(   $(elementWithWrapper)[0]    ).prev();
+        var next = $(   elementWithWrapper   ).next();
+        var prev = $(   elementWithWrapper   ).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).show();
             // + у комбо
@@ -863,8 +872,13 @@ function showControl(container, elementId) {
         $(elementWithWrapper).show();
     }
     else {
-        var next = $(elementWithWrapper).next();
-        var prev = $(elementWithWrapper).prev();
+        //var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+        //var prev = $(   $(elementWithWrapper)[0]    ).prev();
+
+
+        var next = $(   elementWithWrapper   ).next();
+        var prev = $(   elementWithWrapper ).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             var next = $(next).next();
             if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
@@ -899,11 +913,11 @@ function getDependenceElementWithWrapper(container, selectorString)
 
     if (container==undefined)
     {
-        targetElement = $('[id$="_' + selectorString + '"]');
+        targetElement = $('[id$="_' + selectorString + '"]:not(.btn-sm)');
     }
     else
     {
-        targetElement = $(container).find('[id$="_' + selectorString + '"]');
+        targetElement = $(container).find('[id$="_' + selectorString + '"]:not(.btn-sm)');
     }
     if (targetElement!=undefined)
     {

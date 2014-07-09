@@ -165,13 +165,20 @@ class GuidesController extends Controller {
                     $id = $control->guide_id;
                 }
             }
+            else
+            {
+                echo CJSON::encode(array('success' => 'false',
+                    'error' => 'Без указания справочника.'));
+                exit();
+            }
         }
-
+        // Старый код. Потом надо будет убрать, наверное
+/*
         if($id == false) {
             echo CJSON::encode(array('success' => 'false',
-                                     'error' => 'Без указания справочника.'));
+                'error' => 'Без указания справочника.'));
             exit();
-        }
+        }*/
         $model = new FormValueAdd();
         if(isset($_POST['FormValueAdd'])) {
             $model->attributes = $_POST['FormValueAdd'];

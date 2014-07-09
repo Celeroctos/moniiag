@@ -4,7 +4,8 @@ $(document).ready(function() {
         var elementId = $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
         $('#controlId').val(elementId);
         globalVariables.elementId = elementId;
-        globalVariables.domElement = $(this).parents('.form-group').find('select');
+       // globalVariables.domElement = $(this).parents('.form-group').find('select');
+        globalVariables.domElement = $('select[id$=_' + elementId + ']');
         $('#addValuePopup').modal({
         });
     });

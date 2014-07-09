@@ -215,7 +215,10 @@ if(isset($categorie['id'])) {
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
-                                        <button type="button" id="ba<?php echo '_'.$prefix.'_'.$element['guide_id']; ?>" class="btn btn-default btn-sm">
+                                        <button type="button" id="ba<?php
+                                            //echo '_'.$prefix.'_'.$element['guide_id'];
+                                            echo '_'.$prefix.'_'.$element['id'];
+                                        ?>" class="btn btn-default btn-sm">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     <?php
