@@ -41,8 +41,8 @@ $(document).ready(function(){
             result = jQuery.parseJSON(data);
             if (result.success==false || result.success=="false")
             {
-                console.log('Произошла ошибка :-(');
-                alert ('Произошла ошибка. '+result.errors.name[0]);
+            //    console.log('Произошла ошибка :-(');
+            //    alert ('Произошла ошибка. '+result.errors.name[0]);
             }
             else
             {
@@ -62,8 +62,8 @@ $(document).ready(function(){
             result = jQuery.parseJSON(data);
             if (result.success==false || result.success=="false")
             {
-                console.log('Произошла ошибка :-(');
-                alert ('Произошла ошибка. '+result.errors.name[0]);
+             //   console.log('Произошла ошибка :-(');
+              //  alert ('Произошла ошибка. '+result.errors.name[0]);
             }
             else
             {
@@ -84,8 +84,8 @@ $(document).ready(function(){
             result = jQuery.parseJSON(data);
             if (result.success==false || result.success=="false")
             {
-                console.log('Произошла ошибка :-(');
-                alert ('Произошла ошибка. '+result.errors.name[0]);
+             //   console.log('Произошла ошибка :-(');
+             //   alert ('Произошла ошибка. '+result.errors.name[0]);
             }
             else
             {
@@ -101,8 +101,8 @@ $(document).ready(function(){
             result = jQuery.parseJSON(data);
             if (result.success==false || result.success=="false")
             {
-                console.log('Произошла ошибка :-(');
-                alert ('Произошла ошибка. '+result.errors.name[0]);
+            //    console.log('Произошла ошибка :-(');
+            //    alert ('Произошла ошибка. '+result.errors.name[0]);
             }
             else
             {
@@ -130,10 +130,12 @@ $(document).ready(function(){
             $.fn[toChooser].clearAll();
             regionValue = $.fn['regionChooser'].getChoosed();
             console.log(regionValue);
-
-            $.fn[toChooser].addChoosed(
-                $('<li>').prop('id', 'r' + regionValue[0].id).text(regionValue[0].name), regionValue[0]
-            );
+            if ($(regionValue).length>0)
+            {
+                $.fn[toChooser].addChoosed(
+                    $('<li>').prop('id', 'r' + regionValue[0].id).text(regionValue[0].name), regionValue[0]
+                );
+            }
         }
 
         // Перекачиваем район
@@ -146,10 +148,12 @@ $(document).ready(function(){
             districtValue = $.fn['districtChooser'].getChoosed();
             console.log(districtValue);
 
-
-            $.fn[toChooser].addChoosed(
-                $('<li>').prop('id', 'r' + districtValue[0].id).text(districtValue[0].name), districtValue[0]
-            );
+            if ($(districtValue).length>0)
+            {
+                $.fn[toChooser].addChoosed(
+                    $('<li>').prop('id', 'r' + districtValue[0].id).text(districtValue[0].name), districtValue[0]
+                );
+            }
         }
 
         // Перекачиваем населённый пункт
@@ -162,10 +166,12 @@ $(document).ready(function(){
             settlementValue = $.fn['settlementChooser'].getChoosed();
             console.log(settlementValue);
 
-
-            $.fn[toChooser].addChoosed(
-                $('<li>').prop('id', 'r' + settlementValue[0].id).text(settlementValue[0].name), settlementValue[0]
-            );
+            if ($(settlementValue).length>0)
+            {
+                $.fn[toChooser].addChoosed(
+                    $('<li>').prop('id', 'r' + settlementValue[0].id).text(settlementValue[0].name), settlementValue[0]
+                );
+            }
         }
 
         // Улицу перекачивать не нужно (не бывает такого, что в окне добавления объекта КЛАДР есть улица)
