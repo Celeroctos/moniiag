@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿// Test
+$(document).ready(function () {
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
