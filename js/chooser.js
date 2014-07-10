@@ -316,6 +316,13 @@ $(document).ready(function() {
                                     }
                                     $(_field).focus();
                                     $(ajaxGif).remove();
+                                    // Вызываем обработчик завершения загрузки, если он указан в конфигурации
+                                    chooserLoadComplete = choosersConfig[$(chooser).prop('id')].loadCompleteHandler;
+                                    if (chooserLoadComplete!=undefined && chooserLoadComplete!=null)
+                                    {
+                                        chooserLoadComplete($(chooser).prop('id'));
+                                    }
+
                                 } else {
 
                                 }
@@ -795,9 +802,10 @@ $(document).ready(function() {
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr) + '] ' + row.name));
-
-                // Переходим на следующий контрол на странице
-
+            },
+            'loadCompleteHandler' : function (chooserId)
+            {
+                $(  '#'+chooserId).trigger('rowadd');
             },
             'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -949,6 +957,10 @@ $(document).ready(function() {
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr) + '] ' + row.name));
+            },
+            'loadCompleteHandler' : function (chooserId)
+            {
+                $(  '#'+chooserId).trigger('rowadd');
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1154,6 +1166,10 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + reduceCladrCode(row.code_cladr ) + '] ' + row.name));
             },
+            'loadCompleteHandler' : function (chooserId)
+            {
+                $(  '#'+chooserId).trigger('rowadd');
+            },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
@@ -1225,6 +1241,11 @@ $(document).ready(function() {
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + reduceCladrCode( row.code_cladr )+ '] ' + row.name));
+            //    $(  '#'+$($(ul).parents('.chooser')[0]).prop('id')   ).trigger('rowadd');
+            },
+            'loadCompleteHandler' : function (chooserId)
+            {
+                $(  '#'+chooserId).trigger('rowadd');
             },
             'afterInsert': function() {
 

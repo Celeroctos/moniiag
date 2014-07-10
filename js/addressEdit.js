@@ -218,6 +218,17 @@ $(document).ready(function(){
         e.which = 0; // null character
         $(activeChooser).find('input[type=text]').trigger(e);
 
+        $('#'+$(activeChooser).prop('id')).one('rowadd', function(){
+           // Имитируем нажатие на первый элемент
+           //    списка
+
+            // Ищем внутри this список с вариантами
+            variants = $(this).find('ul.variants li');
+            // Берём первый элемент и триггерим событие click
+            $(variants[0]).trigger('click');
+
+        });
+
         // Сбрасываем форму
         $(sender)[0].reset();
 
