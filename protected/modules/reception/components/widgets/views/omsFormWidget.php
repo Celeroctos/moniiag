@@ -16,7 +16,7 @@
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
-    <div class="col-xs-5">
+    <div class="col-xs-9">
         <?php echo $form->textField($model,'policy', array(
             'id' => 'policy',
             'class' => 'form-control',
@@ -32,8 +32,10 @@
     <?php echo $form->labelEx($model,'status', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
-    <div class="col-xs-5">
-        <?php echo $form->dropDownList($model, 'status', array('Активен', 'Погашен'), array(
+    <div class="col-xs-9">
+        <?php
+        //echo $form->dropDownList($model, 'status', array('Активен', 'Погашен'), array(
+        echo $form->dropDownList($model, 'status', $statusesOms, array(
             'id' => 'status',
             'class' => 'form-control'
         )); ?>
@@ -43,8 +45,10 @@
     <?php echo $form->labelEx($model,'omsType', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
-    <div class="col-xs-5">
-        <?php echo $form->dropDownList($model, 'omsType', array('Постоянный', 'Временный'), array(
+    <div class="col-xs-9">
+        <?php
+        //echo $form->dropDownList($model, 'omsType', array('Постоянный', 'Временный'), array(
+        echo $form->dropDownList($model, 'omsType', $typesOms, array(
             'id' => 'omsType',
             'class' => 'form-control'
         )); ?>

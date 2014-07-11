@@ -2,6 +2,8 @@
 class OmsFormWidget extends CWidget {
     public $model;
     public $form;
+    public $typesOms = array();
+    public $statusesOms = array();
 
     public function run() {
 
@@ -17,11 +19,15 @@ class OmsFormWidget extends CWidget {
         if (isset($_GET['newBirthday']))
             $this->model['birthday'] = $_GET['newBirthday'];
 
+        $this->typesOms = OmsType::getForSelect();
+        $this->statusesOms = OmsStatus::getForSelect();
 
 
         $this->render('application.modules.reception.components.widgets.views.OmsFormWidget', array(
             'form' => $this->form,
-            'model' => $this->model
+            'model' => $this->model,
+            'typesOms' => $this->typesOms,
+            'statusesOms' => $this->statusesOms
         ));
     }
 }

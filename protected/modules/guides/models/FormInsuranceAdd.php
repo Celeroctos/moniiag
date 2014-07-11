@@ -4,6 +4,7 @@ class FormInsuranceAdd extends FormMisDefault
 {
     public $name;
     public $id;
+    public $regionsHidden;
 
 
     public function rules()
@@ -11,6 +12,9 @@ class FormInsuranceAdd extends FormMisDefault
         return array(
             array(
                 'name', 'required'
+            ),
+            array(
+                'regionsHidden', 'safe'
             )
         );
     }

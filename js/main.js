@@ -748,4 +748,15 @@ $('select[multiple="multiple"]').each(function(index, select) {
         $('html').css('overflow-y', 'scroll');
         $('.navbar-fixed-top').css('margin-right', 0);
     });
+
+    $.fn.reduceCladrCode = function (codeToReduce){
+        result = '';
+
+        result = codeToReduce.substr(0,7);
+        if (codeToReduce.length>7)
+            result += '...';
+
+        return result;
+    };
+
 });
