@@ -42,7 +42,7 @@ class FormOmsEdit extends FormMisDefault
             'birthday' => 'Дата рождения',
             'omsType' => 'Тип ОМС',
             'policyGivedate' => 'Дата выдачи',
-            'policyEnddate' => 'Дата окончания действия',
+            'policyEnddate' => 'Дата погашения полиса',
             'status' => 'Статус'
         );
     }

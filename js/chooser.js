@@ -1306,9 +1306,14 @@ $(document).ready(function() {
             'afterInsert' : function()
             {
                 $('#policyRegionHidden input').val($.fn['regionPolicyChooser'].getChoosed()[0].id);
+                // Добавляем в поле доп параметров чюююзера "Страховая компания" id региона
+                $.fn['insuranceChooser'].addExtraParam('region_insurance',
+                    $.fn['regionPolicyChooser'].getChoosed()[0].id);
             },
             'afterRemove' : function() {
                 $('#policyRegionHidden input').val('');
+                $.fn['insuranceChooser'].deleteExtraParam('region_insurance');
+                // Зануляем поле дополнительных параметров чюююзера "Страховая компания"
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));

@@ -13,6 +13,45 @@
     )); ?>
 </div>
 <div class="form-group">
+    <?php echo $form->labelEx($model,'omsType', array(
+        'class' => 'col-xs-3 control-label'
+    )); ?>
+    <div class="col-xs-9">
+        <?php
+        //echo $form->dropDownList($model, 'omsType', array('Постоянный', 'Временный'), array(
+        echo $form->dropDownList($model, 'omsType', $typesOms, array(
+            'id' => 'omsType',
+            'class' => 'form-control'
+        )); ?>
+    </div>
+</div>
+<!-- чюзер с регионом для полиса -->
+<div class="form-group chooser" id="regionPolicyChooser">
+    <label for="doctor" class="col-xs-3 control-label">Регион: </label>
+    <div class="col-xs-9">
+        <input type="text" class="form-control" id="doctor"
+               placeholder="Начинайте вводить...">
+        <ul class="variants no-display">
+        </ul>
+        <div class="choosed">
+        </div>
+    </div>
+</div>
+<!-- Здесь будет большой, красивы чюзер с выбором страховой компании -->
+<div class="form-group chooser" id="insuranceChooser">
+    <label for="doctor" class="col-xs-3 control-label">Страховая компания: </label>
+
+    <div class="col-xs-9">
+        <input type="text" class="form-control" id="doctor"
+               placeholder="Начинайте вводить...">
+        <ul class="variants no-display">
+        </ul>
+        <div class="choosed">
+        </div>
+    </div>
+</div>
+<!-- -->
+<div class="form-group">
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
@@ -41,19 +80,7 @@
         )); ?>
     </div>
 </div>
-<div class="form-group">
-    <?php echo $form->labelEx($model,'omsType', array(
-        'class' => 'col-xs-3 control-label'
-    )); ?>
-    <div class="col-xs-9">
-        <?php
-        //echo $form->dropDownList($model, 'omsType', array('Постоянный', 'Временный'), array(
-        echo $form->dropDownList($model, 'omsType', $typesOms, array(
-            'id' => 'omsType',
-            'class' => 'form-control'
-        )); ?>
-    </div>
-</div>
+
 <div class="form-group">
     <?php echo $form->labelEx($model,'policyGivedate', array(
         'class' => 'col-xs-3 control-label'
@@ -90,33 +117,6 @@
         </div>
     </div>
 </div>
-<!-- чюзер с регионом для полиса -->
-<div class="form-group chooser" id="regionPolicyChooser">
-    <label for="doctor" class="col-xs-3 control-label">Регион: </label>
-    <div class="col-xs-9">
-        <input type="text" class="form-control" id="doctor"
-               placeholder="Начинайте вводить...">
-        <ul class="variants no-display">
-        </ul>
-        <div class="choosed">
-        </div>
-    </div>
-</div>
-<!-- Здесь будет большой, красивы чюзер с выбором страховой компании -->
-<div class="form-group chooser" id="insuranceChooser">
-    <label for="doctor" class="col-xs-3 control-label">Страховая компания: </label>
-
-    <div class="col-xs-9">
-        <input type="text" class="form-control" id="doctor"
-               placeholder="Начинайте вводить...">
-        <ul class="variants no-display">
-        </ul>
-        <div class="choosed">
-        </div>
-    </div>
-</div>
-<!-- -->
-
 <div class="form-group no-display policy-enddate">
     <?php echo $form->labelEx($model,'policyEnddate', array(
         'class' => 'col-xs-3 control-label'
@@ -198,17 +198,7 @@
         )); ?>
     </div>
 </div>
-<div class="form-group">
-    <?php echo $form->labelEx($model,'gender', array(
-        'class' => 'col-xs-3 control-label'
-    )); ?>
-    <div class="col-xs-5">
-        <?php echo $form->dropDownList($model, 'gender', array('Женский', 'Мужской'), array(
-            'id' => 'gender',
-            'class' => 'form-control'
-        )); ?>
-    </div>
-</div>
+
 <div class="form-group">
     <?php echo $form->labelEx($model,'birthday', array(
         'class' => 'col-xs-3 control-label'
@@ -243,5 +233,16 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="form-group">
+    <?php echo $form->labelEx($model,'gender', array(
+        'class' => 'col-xs-3 control-label'
+    )); ?>
+    <div class="col-xs-5">
+        <?php echo $form->dropDownList($model, 'gender', array('Женский', 'Мужской'), array(
+            'id' => 'gender',
+            'class' => 'form-control'
+        )); ?>
     </div>
 </div>

@@ -98,11 +98,17 @@ class InsurancesController extends Controller {
     }
 
     public function actionGet() {
+        //var_dump($_GET);
+        //exit();
         try {
+
+
+
             $rows = $_GET['rows'];
             $page = $_GET['page'];
             $sidx = $_GET['sidx'];
             $sord = $_GET['sord'];
+
 
             if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
                 $filters = CJSON::decode($_GET['filters']);
@@ -110,13 +116,20 @@ class InsurancesController extends Controller {
                 $filters = false;
             }
 
+            $regionId = false;
+            if (isset($_GET['region_insurance']))
+            {
+                $regionId = $_GET['region_insurance'];
+            }
+
+
             $model = new Insurance();
-            $num = $model->getRows($filters);
+            $num = $model->getRows($filters,false,false,false,false,$regionId);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $insurances = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $insurances = $model->getRows($filters, $sidx, $sord, $start, $rows,$regionId);
             echo CJSON::encode(
                 array(
                     'success' => true,

@@ -99,7 +99,7 @@ class FormPatientAdd extends FormMisDefault
             'privDocGivedate' => 'Дата выдачи',
             'profession' => 'Профессия',
             'policyGivedate' => 'Дата выдачи',
-            'policyEnddate' => 'Дата окончания действия',
+            'policyEnddate' => 'Дата погашения полиса',
             'status' => 'Статус'
         );
     }
