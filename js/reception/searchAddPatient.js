@@ -812,7 +812,9 @@
                     }
                     else
                     {
-                        $('#regionPolicyChooser .choosed').empty();
+                        //$('#regionPolicyChooser .choosed').empty();
+                        $.fn['regionPolicyChooser'].clearAll();
+
                         $('#regionPolicyChooser input').removeAttr('disabled', '');
 
 
