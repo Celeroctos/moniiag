@@ -51,7 +51,7 @@
     </div>
 </div>
 <!-- -->
-<div class="form-group">
+<div class="form-group no-display">
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
@@ -67,6 +67,53 @@
         )); ?>
     </div>
 </div>
+
+<div class="form-group territorialOmsNumber">
+    <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
+    <div class="col-xs-9">
+        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+    </div>
+</div>
+<div class="form-group dmsOmsNumber">
+    <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
+    <div class="col-xs-9">
+        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+    </div>
+</div>
+<div class="form-group temporaryOmsNumber">
+    <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
+    <div class="col-xs-9">
+        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+    </div>
+</div>
+<div class="form-group petitionOmsNumber">
+    <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
+    <div class="col-xs-9">
+        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+    </div>
+</div>
+<div class="form-group constantlyOmsNumber">
+    <label class="col-xs-3 control-label required">Номер<span class="required">*</span></label>
+    <div class="col-xs-9">
+        <input class="col-xs-3" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+        <input class="col-xs-9" data-toggle="tooltip" data-placement="right" type="text">
+        </input>
+    </div>
+</div>
+
 <div class="form-group">
     <?php echo $form->labelEx($model,'status', array(
         'class' => 'col-xs-3 control-label'
