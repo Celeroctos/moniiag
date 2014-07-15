@@ -1,3 +1,4 @@
+<script type="text/javascript" src="/js/reception/omsNumber.js"></script>
 <?php
   //  var_dump($model);
   //  exit();
@@ -51,6 +52,7 @@
     </div>
 </div>
 <!-- -->
+<?php if (false) {?>
 <div class="form-group no-display">
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
@@ -67,49 +69,59 @@
         )); ?>
     </div>
 </div>
+<?php } ?>
+<!-- Выведем скрытое поле "номер омс, в которое будем подкачивать данные из интерфейса обратно" -->
+<?php echo $form->hiddenField($model,'policy', array(
+    'id' => 'policy',
+    'class' => 'form-control',
+    //'placeholder' => 'ОМС',
+    //'autofocus'=> '1',
+    //'data-toggle' => 'tooltip',
+    //'data-placement' => 'right',
+    //'title' => 'Номер полиса ОМС может состоять из цифр и пробелов'
+)); ?>
 
-<div class="form-group territorialOmsNumber">
+
+<div class="form-group territorialOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
     <div class="col-xs-9">
-        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
         </input>
-        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
         </input>
     </div>
 </div>
-<div class="form-group dmsOmsNumber">
+<div class="form-group dmsOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
     <div class="col-xs-9">
-        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
         </input>
-        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
         </input>
     </div>
 </div>
-<div class="form-group temporaryOmsNumber">
+<div class="form-group temporaryOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
     <div class="col-xs-9">
-        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
         </input>
-        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
         </input>
     </div>
 </div>
-<div class="form-group petitionOmsNumber">
+<div class="form-group petitionOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
     <div class="col-xs-9">
-        <input class="col-xs-3" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
         </input>
-        <input class="col-xs-9" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
         </input>
     </div>
 </div>
-<div class="form-group constantlyOmsNumber">
+<div class="form-group constantlyOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Номер<span class="required">*</span></label>
     <div class="col-xs-9">
-        <input class="col-xs-3" data-toggle="tooltip" data-placement="right" type="text">
-        </input>
-        <input class="col-xs-9" data-toggle="tooltip" data-placement="right" type="text">
+        <input class="col-xs-12" data-toggle="tooltip" data-placement="right" type="text">
         </input>
     </div>
 </div>
