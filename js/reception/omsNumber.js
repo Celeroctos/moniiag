@@ -1,61 +1,5 @@
 $(document).ready(function() {
-
-   /* var config = {
-        '1':
-            [
-                {
-                    rule: /^[0-9A-Za-zА-Яа-я\s\-]*$/
-                },
-                {
-                    rule: /^[0-9A-Za-zА-Яа-я\s\-]+$/
-                }
-            ],
-        '2':
-            [
-                {
-                    rule: /^[0-9A-Za-zА-Яа-я\s\-]*$/
-                },
-                {
-                    rule: /^[0-9A-Za-zА-Яа-я\s\-]+$/
-                }
-            ],
-        '3':
-            [
-                {
-                    rule: /^[0-9]{3}$/
-                },
-                {
-                    rule: /^[0-9]{6}$/
-                }
-            ],
-        '4':
-            [
-                {
-                    rule: /^[0-9A-Za-zА-Яа-я\s\-]*$/
-                },
-                {
-                    rule: /^[0-9A-Za-zА-Яа-я\s\-]+$/
-                }
-            ],
-        '5':
-            [
-                {
-                    rule: /^[0-9]{16}$/
-                },
-            ]
-
-    };*/
-
     // Устанавливаем keyfilter на ОМС номер
-  /*  <div class="form-group territorialOmsNumber omsNumberContainer">
-        <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
-        <div class="col-xs-9">
-            <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
-            </input>
-            <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
-            </input>
-        </div>
-    </div>*/
     $('.territorialOmsNumber input.omsSeriaPart').keyfilter(/^[0-9A-Za-zА-Яа-я\s\-]*$/);
     $('.territorialOmsNumber input.omsNumberPart').keyfilter(/^[0-9A-Za-zА-Яа-я\s\-]+$/);
 
@@ -69,42 +13,6 @@ $(document).ready(function() {
     $('.petitionOmsNumber input.omsNumberPart').keyfilter(/^[0-9A-Za-zА-Яа-я\s\-]+$/);
 
     $('.constantlyOmsNumber input').keyfilter(/^[0-9]{1,16}$/);
-
-    /*
-    <div class="form-group dmsOmsNumber omsNumberContainer">
-        <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
-        <div class="col-xs-9">
-        <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
-        </input>
-        <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
-        </input>
-        </div>
-        </div>
-        <div class="form-group temporaryOmsNumber omsNumberContainer">
-            <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
-            <div class="col-xs-9">
-                <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
-                </input>
-                <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
-                </input>
-            </div>
-        </div>
-    <div class="form-group petitionOmsNumber omsNumberContainer">
-        <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
-        <div class="col-xs-9">
-        <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
-        </input>
-        <input class="col-xs-9 omsNumberPart" placeholder="Номер" data-toggle="tooltip" data-placement="right" type="text">
-        </input>
-        </div>
-        </div>
-    <div class="form-group constantlyOmsNumber omsNumberContainer">
-        <label class="col-xs-3 control-label required">Номер<span class="required">*</span></label>
-        <div class="col-xs-9">
-            <input class="col-xs-12" data-toggle="tooltip" data-placement="right" type="text">
-            </input>
-        </div>
-    </div>*/
 
     // Функция определяет, какой контейнер контролов с номером ОМС нужно показать и показывает его
     function omsContainerShow()
@@ -155,7 +63,6 @@ $(document).ready(function() {
 
         // Вызываем смену видимости контейнеров
         omsContainerShow();
-
     });
 
     // Обработчик события изменения номера ОМС. Задача этой функции взять компоненты номера из контейнера
@@ -239,6 +146,15 @@ $(document).ready(function() {
     $('.temporaryOmsNumber input.omsNumberPart').on('keydown', function (e) {
         var value = $(this).val();
         var pressedKey = e.keyCode;
+        // Смотрим - если нажатая клавиша бекспейс или стрелка назад и selectionStart = 0 - надо поставить в фокус поле "Серия"
+        if ((pressedKey==37 || pressedKey==8)&& this.selectionStart==0)
+        {
+            $('.temporaryOmsNumber input.omsSeriaPart').focus();
+            ($('.temporaryOmsNumber input.omsSeriaPart')[0]).selectionStart =
+                ($('.temporaryOmsNumber input.omsSeriaPart').val().length)
+            return true;
+        }
+
         return isPlaceInInput(6,pressedKey,value);
     });
 
@@ -263,12 +179,45 @@ $(document).ready(function() {
                 );
             }
             $('.temporaryOmsNumber input.omsNumberPart').focus();
-            $('.temporaryOmsNumber input.omsNumberPart')[0].selectionStart = 0;
-            $('.temporaryOmsNumber input.omsNumberPart')[0].selectionEnd = 0;
+            // Проверим - является ли вводимый символ цифрой
+            if (String.fromCharCode(pressedKey)>='0' && String.fromCharCode(pressedKey)<='9')
+            {
+                $('.temporaryOmsNumber input.omsNumberPart').val( String.fromCharCode(pressedKey)+
+                    $('.temporaryOmsNumber input.omsNumberPart').val()
+                );
+                $('.temporaryOmsNumber input.omsNumberPart')[0].selectionStart = 1;
+                $('.temporaryOmsNumber input.omsNumberPart')[0].selectionEnd = 1;
+            }
+            else
+            {
+                $('.temporaryOmsNumber input.omsNumberPart')[0].selectionStart = 0;
+                $('.temporaryOmsNumber input.omsNumberPart')[0].selectionEnd = 0;
+            }
+
             // Триггерим событие нажатия клавиши на серию
-            var newEvent = $.Event('keydown');
+          /*  var newEvent = $.Event('keydown');
             newEvent.which = pressedKey; // null character
             $('.temporaryOmsNumber input.omsNumberPart').trigger(newEvent);
+*/
+
+            //---------->
+            /*
+            $('.temporaryOmsNumber input.omsNumberPart').one('keydown', function(e){
+                var e = $.Event('keyup');
+                e.which = pressedKey; // null character
+                $(this).trigger(e);
+            });
+
+            var e = $.Event('keydown');
+            e.which = pressedKey; // null character
+            $('.temporaryOmsNumber input.omsNumberPart').trigger(e);
+            */
+            /*var newEvent = $.Event('keypress');
+            newEvent.which = pressedKey; // null character
+            $('.temporaryOmsNumber input.omsNumberPart').trigger(newEvent);
+*/
+
+            //---------->
 
             return false;
 

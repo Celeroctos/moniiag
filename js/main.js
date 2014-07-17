@@ -16,10 +16,10 @@
             }
         });
     };
-/*
-    $('#omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
+
+   /* $('#patient-search-form #omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
     // --- Begin 17.06.2014 ---
-    $('#omsNumber, #policy').on('keydown', function(e) {
+    $('#patient-search-form #omsNumber, #policy').on('keydown', function(e) {
         if($(this).val().length >= 16 && e.keyCode != 8 && e.keyCode != 46) {
             if($(this).val().length == 16 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
                 return true;
@@ -27,6 +27,8 @@
             return false;
         }
     });*/
+
+
   /*  $('#docnumber').on('keydown', function(e) {
         if($(this).val().length >= 6 && e.keyCode != 8 && e.keyCode != 46) {
             if($(this).val().length == 6 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
