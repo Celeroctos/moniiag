@@ -52,8 +52,8 @@
     </div>
 </div>
 <!-- -->
-<?php if (false) {?>
-<div class="form-group no-display">
+<?php if (true) { ?>
+<div class="form-group">
     <?php echo $form->labelEx($model,'policy', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
@@ -71,17 +71,23 @@
 </div>
 <?php } ?>
 <!-- Выведем скрытое поле "номер омс, в которое будем подкачивать данные из интерфейса обратно" -->
-<?php echo $form->hiddenField($model,'policy', array(
-    'id' => 'policy',
-    'class' => 'form-control',
-    //'placeholder' => 'ОМС',
-    //'autofocus'=> '1',
-    //'data-toggle' => 'tooltip',
-    //'data-placement' => 'right',
-    //'title' => 'Номер полиса ОМС может состоять из цифр и пробелов'
-)); ?>
+<?php
 
+if (false)
+{
+    echo $form->hiddenField($model,'policy', array(
+        'id' => 'policy',
+        'class' => 'form-control',
+        //'placeholder' => 'ОМС',
+        //'autofocus'=> '1',
+        //'data-toggle' => 'tooltip',
+        //'data-placement' => 'right',
+        //'title' => 'Номер полиса ОМС может состоять из цифр и пробелов'
+    ));
+}
+?>
 
+<?php if (false) {?>
 <div class="form-group territorialOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
     <div class="col-xs-9">
@@ -125,6 +131,7 @@
         </input>
     </div>
 </div>
+<?php } ?>
 
 <div class="form-group">
     <?php echo $form->labelEx($model,'status', array(
