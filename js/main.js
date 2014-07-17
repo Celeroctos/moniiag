@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿// NextRelease
+
+$(document).ready(function () {
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
