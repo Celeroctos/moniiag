@@ -380,7 +380,9 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <?php echo CHtml::ajaxSubmitButton(
+                <?php
+                //echo CHtml::submitButton(
+                echo CHtml::ajaxSubmitButton(
                     'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
                     array(

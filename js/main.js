@@ -73,6 +73,7 @@
 
         var value = $(this).val();
         if (value.length == 14 && e.keyCode != 8) {
+            $.fn.switchFocusToNext();
             isAllow = false;
         } else {
             if (!(e.keyCode > 47 && e.keyCode < 58) && !(e.keyCode > 95 && e.keyCode < 106) && e.keyCode != 8) {
@@ -114,6 +115,8 @@
         {
             //разрешаем длину в 14 символов
             if (value.length == 14 && !(pressedKey == 8 || pressedKey == 46)) {
+                // Переводим фокус на следующий элемент
+                $.fn.switchFocusToNext();
                 return false;
             }
         }
@@ -760,5 +763,34 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
         return result;
     };
+
+    // Поменять элемент в фокусе. Вызывается если нельзя больше печатать в элемент, если уже заполнен
+    $.fn.switchFocusToNext = function()
+    {
+        // Выбираем все focus-able элементы
+        var focusables = $(':focusable');
+        for (i=0;i<focusables.length;i++)
+        {
+            // Проверяем - является ли и-тый элемент из фокусабельных элементом,
+            //    на котором сейчас стоит фокус
+            if ($(focusables[i])[0] == $(document.activeElement)[0])
+            {
+                // Тут может быть две ситуации - либо элемент последний в массиве
+                //   либо нет
+                if (i==focusables.length-1)
+                {
+                    // Фокусируемся на первый элемент
+                    $(focusables[0]).focus();
+                }
+                else
+                {
+                    // Фокусируемся на следующий по номеру элемент
+                    $(focusables[i+1]).focus();
+                }
+                break;
+            }
+        }
+    }
+
 
 });

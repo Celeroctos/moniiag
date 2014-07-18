@@ -163,6 +163,97 @@ $(document).ready(function() {
     //    $(this).one('controlvaluechanged',onControlValueChanged);
     });
 
+    // По сабмиту форм, в которых редактируется номер мы должны проверить номер полюсов
+    /*$('form#patient-withoutcard-form, form#patient-oms-edit-form').submit(function(e){
+        alert('Меня засабмитили! Прощайте!');
+        return false;
+
+    });*/
+
+    $.fn.checkOmsNumber = function()
+    {
+        serialHidden = $('#omsSeries').val();
+        numberHidden = $('#policy').val();
+        omsTypeValue = $('#omsType').val();
+        result = true;
+
+        switch(omsTypeValue)
+        {
+            case '1':
+
+            case '2':
+                if (numberHidden=='')
+                {
+                    result = false;
+                    printOmsNumberError('Для выбранного типа полюсов номер должен быть заполнен');
+
+                }
+
+                break;
+
+
+            case '3':
+                //$('.temporaryOmsNumber input.omsSeriaPart').keyfilter(/^[0-9]{1,3}$/);
+                //$('.temporaryOmsNumber input.omsNumberPart').keyfilter(/^[0-9]{1,6}$/);
+
+                if (serialHidden=='' && numberHidden=='')
+                {
+                    result = false;
+                    printOmsNumberError('Для данного типа полиса обязательно должны быть заполнены Серия и Номер');
+                    break;
+                }
+
+                if (serialHidden=='')
+                {
+                    result = false;
+                    printOmsNumberError('Для данного типа полиса обязательно должны быть заполнена Серия');
+                    break;
+                }
+
+                if (numberHidden=='')
+                {
+                    result = false;
+                    printOmsNumberError('Для данного типа полиса обязательно должен быть заполнен Номер');
+                    break;
+                }
+
+                if ((serialHidden.match(/^[0-9]{3}$/)==null) || (numberHidden.match(/^[0-9]{6}$/)==null))
+                {
+                    result = false;
+                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полюсов предполагается наличие трёх цифр в серии и шести - в номере.');
+                }
+
+                break;
+
+
+            case '4':
+                // $('.petitionOmsNumber').removeClass('no-display');
+                break;
+
+
+            case '5':
+                ///^[0-9]{1,16}$/
+                if (numberHidden.match(/^[0-9]{16}$/)==null)
+                {
+                    result = false;
+                    printOmsNumberError('Не правильно введён номер ОМС. Для данного типа полюсов предполагается наличие шестнадцати цифр в номере.');
+                }
+
+                break;
+        }
+        return result;
+    }
+
+    function printOmsNumberError(errorText)
+    {
+        // Сначала трём все старые ошибки
+        $('#omsNumberErrorPopup .modal-body .row p').remove();
+        $('#omsNumberErrorPopup .modal-body .row').append('<p class="errorText">' + errorText + '</p>')
+        $('#omsNumberErrorPopup').modal({
+        });
+
+    }
+
     $('.temporaryOmsNumber input.omsNumberPart').on('keydown', function (e) {
         var value = $(this).val();
         var pressedKey = e.keyCode;
@@ -175,7 +266,11 @@ $(document).ready(function() {
             return true;
         }
 
-        return isPlaceInInput(6,pressedKey,value);
+        //return isPlaceInInput(6,pressedKey,value);
+        result = isPlaceInInput(6,pressedKey,value);
+        if (!result){$.fn.switchFocusToNext(); }
+
+        return result;
     });
 
     $('.temporaryOmsNumber input.omsSeriaPart').on('keydown', function (e) {
@@ -248,10 +343,17 @@ $(document).ready(function() {
     });
 
 
+
+
     $('.constantlyOmsNumber input').on('keydown', function (e) {
         var value = $(this).val();
         var pressedKey = e.keyCode;
-        return isPlaceInInput(16,pressedKey,value);
+        //return isPlaceInInput(16,pressedKey,value);
+        result = isPlaceInInput(16,pressedKey,value);
+        // Если результат = false, то
+
+        if (!result){ $.fn.switchFocusToNext();}
+        return result;
     });
 
     // Возвращает false,если в контроле закончилось место (в том случае, если есть ограничение на количество символов)

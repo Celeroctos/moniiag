@@ -119,7 +119,7 @@
     </div>
 </div>
 <div class="form-group petitionOmsNumber omsNumberContainer">
-    <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>
+    <label class="col-xs-3 control-label required">Серия, номер</label>
     <div class="col-xs-9">
         <input class="col-xs-3 omsSeriaPart" placeholder="Серия" data-toggle="tooltip" data-placement="right" type="text">
         </input>
@@ -312,5 +312,23 @@
             'id' => 'gender',
             'class' => 'form-control'
         )); ?>
+    </div>
+</div>
+<div class="modal fade error-popup" id="omsNumberErrorPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
     </div>
 </div>

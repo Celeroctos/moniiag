@@ -418,7 +418,9 @@ $(document).ready(function() {
                             /* Логика работы: если есть настройка о количестве добавляемых максмально вариантов, то нужно блокировать строку, если количество вариантов достигло максимума */
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
                                 // Сначала поменяем фокус - вызовем для чюзера событие нажатия таба
-                                // Выбираем все focus-able элементы
+
+                                $.fn.switchFocusToNext();
+                                /*// Выбираем все focus-able элементы
                                 var focusables = $(':focusable');
                                 for (i=0;i<focusables.length;i++)
                                 {
@@ -440,7 +442,7 @@ $(document).ready(function() {
                                         }
                                         break;
                                     }
-                                }
+                                }*/
                                 // А вот теперь со спокойной совестью блокируем чюзер
                                 $.fn[$(chooser).attr('id')].disable();
                             }

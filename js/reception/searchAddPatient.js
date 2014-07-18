@@ -190,8 +190,25 @@
         });
     });
 
+    $('.add-patient-submit input').on('click', function(e){
+        // Сначала проверим полис
+        isRightOmsNumber = $.fn.checkOmsNumber();
+        if (!isRightOmsNumber)
+        {
+            return false;
+        }
+    });
+
     cancelSaving = false;
     $('#patient-oms-edit-form #saveOms').on ('click', function (e){
+
+        // Сначала проверим полис
+        isRightOmsNumber = $.fn.checkOmsNumber();
+        if (!isRightOmsNumber)
+        {
+            return false;
+        }
+
         //return false;
         // Запрашиваем аяксом на существование данного полиса
 
