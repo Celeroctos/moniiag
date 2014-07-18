@@ -153,6 +153,7 @@
             'url' : '/index.php/reception/patient/getisomswithnumber',
             'data' : {
                 'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
+                'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
                 'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
             },
             'cache' : false,
@@ -198,6 +199,7 @@
             'url' : '/index.php/reception/patient/getisomswithnumber',
             'data' : {
                 'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
+                'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
                 'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
             },
             'cache' : false,
@@ -821,7 +823,7 @@
                         $('#policyRegionHidden input').val('');
                     }
 
-
+                    $(document).trigger('omsnumberpopulate');
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();

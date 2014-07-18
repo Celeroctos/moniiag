@@ -3,6 +3,7 @@
 class FormOmsEdit extends FormMisDefault
 {
     public $policy;
+    public $omsSeries;
     public $lastName;
     public $firstName;
     public $middleName;

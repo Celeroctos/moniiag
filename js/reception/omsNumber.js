@@ -46,6 +46,7 @@ $(document).ready(function() {
 
             case '5':
                 $('.constantlyOmsNumber').removeClass('no-display');
+                $('#omsSeries').val('');
                 break;
         }
 
@@ -58,42 +59,57 @@ $(document).ready(function() {
         // Сбрасываем значение номера
         //   из контейнеров номеров разных типов
         $('.omsNumberContainer input').val('');
-
-        // А затем и из скрытого поля (TODO)
+        // Сбрасываем скрытое поле серии, номера
 
         // Вызываем смену видимости контейнеров
         omsContainerShow();
+        $(document).trigger ('omsnumberpopulate');
     });
 
     // Обработчик события изменения номера ОМС. Задача этой функции взять компоненты номера из контейнера
     //   соединить их и записать в специальное скрытое поле. Событие должно генерироваться при удачном пропеча
     //    тывании символа в компоненте номера
     $('.omsNumberContainer').on('omsnumberchanged', function(){
-        // Берём все input-ы из контейнера
-        omsNumberInputs = $(this).find('input');
-        newHiddenValue = '';
-        // Перебираем компоненты
-        for (i=0;i<omsNumberInputs.length;i++)
+        // Проверяем - есть ли в об'екте this инпут, отвечающий за серию
+        if ( $(this).find('input.omsSeriaPart').length>0 )
         {
-            // Если текущий элемент имеет класс "номер" и у него не пустое значение - перед ним нужно поставить пробел
-            if (   $(omsNumberInputs[i]).hasClass('omsNumberPart')  && $(omsNumberInputs[i]).val()!=''  )
-            {
-                newHiddenValue += ' ';
-            }
-            if ($(omsNumberInputs[i]).val()!='')
-            {
-                newHiddenValue += $(omsNumberInputs[i]).val();
-            }
+            // Перекачиваем в hidden
+            $('#omsSeries').val(  $(this).find('input.omsSeriaPart').val()  );
+        }
+        // Смотрим - если есть в this-е input c классом "Номер", то читаем значение из него в поле "номер"
+        if ( $(this).find('input.omsNumberPart').length>0 )
+        {
+            $('#policy').val(  $(this).find('input.omsNumberPart').val()  );
+        }
+        else
+        {
+            // Прочитываем
+            $('#policy').val(  $(this).find('input').val()  );
         }
 
-        // Собрали по кусочкам номер - теперь надо занести в скрытое поле policy
-        $('#policy').val(newHiddenValue);
     });
 
     // Обработчик события, которое возникает при необходимости заполнить видимый шаблон номера
-    $('#policy').on ('omsnumberpopulate', function(){
+    $(document).on ('omsnumberpopulate', function(){
         omsContainerShow();
+        // Берём видимы контейнер номера
+        inputsToPut = $('.omsNumberContainer:not(.no-display)');
+        // Смотрим - если в контейнре есть "серия", то переносим в видимое поле "Серия"
+        if (  $(inputsToPut).find('.omsSeriaPart').length>0 )
+        {
+            $(inputsToPut).find('input.omsSeriaPart').val( $('#omsSeries').val() );
+            $(inputsToPut).find('input.omsNumberPart').val( $('#policy').val() );
+        }
+        else
+        {
+            // Иначе загружаем в поле input
+            $(inputsToPut).find('input').val( $('#policy').val() );
+        }
+
+
+        /*
         // Берём скрытое поле "номер ОМС"
+
         hiddenOmsNumber = $('#policy').val();
         omsNumberParts = new Array();
         // Разделим номер ОМС на части.
@@ -128,8 +144,12 @@ $(document).ready(function() {
             $(inputsToPut[i]).val(  omsNumberParts [i] );
         }
         // Занесли.
+        */
+
+
 
     });
+
 
     // На keydown поля поставим обработчик, в котором сохраним старое значение этого поля и позицию
     $('.omsNumberContainer input').on('keydown',function(e){
@@ -174,9 +194,12 @@ $(document).ready(function() {
             if ($('.temporaryOmsNumber input.omsNumberPart').val().length>=6)
             {
                 // Отрезаем первый символ
-                $('.temporaryOmsNumber input.omsNumberPart').val(
+                /*$('.temporaryOmsNumber input.omsNumberPart').val(
                     $('.temporaryOmsNumber input.omsNumberPart').val().substr(1)
-                );
+                );*/
+
+                // Ничего не делаем, возвращаем false
+                return false;
             }
             $('.temporaryOmsNumber input.omsNumberPart').focus();
             // Проверим - является ли вводимый символ цифрой
@@ -234,21 +257,15 @@ $(document).ready(function() {
     // Возвращает false,если в контроле закончилось место (в том случае, если есть ограничение на количество символов)
     function isPlaceInInput(maximal,pressedKey,valString)
     {
-        if (valString.length == maximal && !(pressedKey == 8 || pressedKey == 46)) {
+        if (valString.length >= maximal && !(pressedKey == 8 || pressedKey == 46)) {
             return false;
         }
         return true;
     }
 
-    $(".omsNumberContainer input").on("propertychange change keyup paste input", function(e){
-        if (globalVariables.omsStateTreated!=undefined)
-        {
-            if (globalVariables.omsStateTreated == false)
-            {
-                globalVariables.omsStateTreated = true;
-                $(this).trigger ('controlvaluechanged', [e]);
-            }
-        }
+    $(".omsNumberContainer input").on("propertychange change paste input", function(e){
+        // Вызываем событие "Номер полюса изменился"
+        $(this).parents('.omsNumberContainer').trigger('omsnumberchanged');
     });
 
     // Проверить можно ли было вводить символ, который ввёлся последний раз

@@ -4,6 +4,7 @@ class FormOmsEdit extends FormMisDefault
 {
     public $policy;
     public $lastName;
+    public $omsSeries;
     public $firstName;
     public $middleName;
     public $gender;
@@ -26,7 +27,7 @@ class FormOmsEdit extends FormMisDefault
                 'id', 'numerical'
             ),
             array(
-                'middleName, policyEnddate', 'safe'
+                'middleName, policyEnddate, omsSeries', 'safe'
             )
         );
     }

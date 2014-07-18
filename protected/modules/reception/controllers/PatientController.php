@@ -392,10 +392,31 @@ class PatientController extends Controller {
 
     public function actionGetIsOmsWithNumber()
     {
+        $oms = null;
         $result = array('id' => -1);
         if (isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck']))
         {
-            $oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
+            //var_dump($_GET['omsIdToCheck']);
+            //exit();
+            if ( isset ($_GET['omsSeriesToCheck']) && $_GET['omsSeriesToCheck']!='' )
+            {
+                // Сначала без пробела
+                $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].$_GET['omsNumberToCheck'],
+                    $_GET['omsIdToCheck'],true);
+                // Если ничего не нашли - пробуем с пробелом
+                if ($oms==null)
+                {
+                    $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
+                        $_GET['omsIdToCheck'],true);
+                    var_dump($oms);
+                    exit();
+                }
+            }
+            else
+            {
+                $oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
+            }
+            //$oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
             // Если омс!=нуль, то значит, что полис с таким номером существует в базе
             if ($oms!=null)
             {
@@ -585,71 +606,33 @@ class PatientController extends Controller {
 
     private function checkUniqueOms($model, $withoutCurrent = false) {
 
-        /*// Проверим, не существует ли уже такого ОМС
-        // Три вида ОМС: с пробелом впереди, с пробелом посередине
-        if(mb_strlen($model->policy) != 16 && !$withoutCurrent) {
-            $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
-        } else {
-            $omsNumber1 = $model->policy;
-            $omsNumber2 = ' '.$model->policy;
-            $omsNumber3 = mb_substr($model->policy, 0, 6).' '.mb_substr($model->policy, 6);
-            if(!$withoutCurrent) {
-                $omsSearched = Oms::model()->find(
-                    'oms_number = :oms_number1 OR
-                    oms_number = :oms_number2 OR
-                    oms_number = :oms_number3',
-                    array(
-                        ':oms_number1' => $omsNumber1,
-                        ':oms_number2' => $omsNumber2,
-                        ':oms_number3' => $omsNumber3
-                    )
-                );
-            } else {
-                if($model->id != null) {
-                    $omsSearched = Oms::model()->find(
-                        '(oms_number = :oms_number1 OR
-                        oms_number = :oms_number2 OR
-                        oms_number = :oms_number3)
-                        AND id != :policy_id',
-                        array(
-                            ':oms_number1' => $omsNumber1,
-                            ':oms_number2' => $omsNumber2,
-                            ':oms_number3' => $omsNumber3,
-                            ':policy_id' => $model->id
-                        )
-                    );
-                } else {
-                    $omsSearched = Oms::model()->find(
-                        'oms_number = :oms_number1 OR
-                        oms_number = :oms_number2 OR
-                        oms_number = :oms_number3',
-                        array(
-                            ':oms_number1' => $omsNumber1,
-                            ':oms_number2' => $omsNumber2,
-                            ':oms_number3' => $omsNumber3
-                        )
-                    );
-                }
-            }
-        }
-
-        if($omsSearched != null) {
-
-            return $omsSearched;
-        }
-        return null;*/
         $IdOfOms = null;
         if (isset($model->id))
         {
             $IdOfOms = $model->id;
         }
+        // Если в моделе есть поле $omsSeries - надо проверить номер вместе с ним
+        //  причём в двух вариантах - с прбелом и без
+        $seriesSubstringWithSpace = '';
+        $seriesSubstringWOSpace = '';
+        if (isset($model->omsSeries))
+        {
+            $seriesSubstringWOSpace = $model->omsSeries;
+            $seriesSubstringWithSpace = $model->omsSeries. ' ';
+        }
 
-        return $this->checkUnickueOmsInternal($model->policy,$IdOfOms,$withoutCurrent);
+        $comarisonResult = $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
+        if ($comarisonResult===true)
+            return $comarisonResult;
+
+        return $this->checkUnickueOmsInternal($seriesSubstringWOSpace.$model->policy,$IdOfOms,$withoutCurrent);
     }
 
 
     private function checkUnickueOmsInternal($omsNumber,$omsId,$withoutCurrent)
     {
+        // Старый код. Возможно потом понадобится
+        /*
         // Проверим, не существует ли уже такого ОМС
         // Три вида ОМС: с пробелом впереди, с пробелом посередине
         if(mb_strlen($omsNumber) != 16 && !$withoutCurrent) {
@@ -697,15 +680,73 @@ class PatientController extends Controller {
                 }
             }
         }
+        */
+        $omsNumber1 = $omsNumber;
+        $omsNumber2 = ' '.$omsNumber;
+        $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
+        // Для поиска по нормализованному номеру
+        $omsNumberNormalized =  str_replace(array('-',' '), '', $omsNumber);
+        //var_dump($withoutCurrent);
+        //exit();
+        if(!$withoutCurrent) {
+            $omsSearched = Oms::model()->find(
+                'oms_number = :oms_number1 OR
+                oms_number = :oms_number2 OR
+                oms_number = :oms_number3 OR
+                oms_series_number = :oms_norm_number
+                ',
+                array(
+                    ':oms_number1' => $omsNumber1,
+                    ':oms_number2' => $omsNumber2,
+                    ':oms_number3' => $omsNumber3,
+                    ':oms_norm_number' => $omsNumberNormalized
+                )
+            );
+        } else {
+            //var_dump($omsId);
+            //exit();
+
+            if($omsId != null) {
+
+                $omsSearched = Oms::model()->find(
+                    '(oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number)
+                    AND id != :policy_id',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized,
+                        ':policy_id' => $omsId
+                    )
+                );
+                //var_dump($omsSearched);
+                //exit();
+
+            } else {
+                $omsSearched = Oms::model()->find(
+                    'oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized
+                    )
+                );
+            }
+        }
+
+
+         // var_dump($omsSearched);
+        //  exit();
+
 
         if($omsSearched != null) {
-            /*echo CJSON::encode(array('success' => 'false',
-                'errors' => array(
-                    'policy' => array(
-                        'Такой номер полиса ОМС уже существует в базе!'
-                    )
-                )));
-            exit();*/
             return $omsSearched;
         }
         return null;
@@ -779,6 +820,14 @@ class PatientController extends Controller {
         $oms->status = $model->status;
         $oms->insurance = $model->insurance;
         $oms->region = $model->region;
+        $oms->oms_series= $model->omsSeries;
+        // Добавляем поле oms_series_number
+        $seriesNumber = $model->omsSeries . $model->policy;
+        // Убиваем пробелы, дефисы из seriesNumber
+        $seriesNumber = str_replace(array(' ', '-'), '',  $seriesNumber);
+        $oms->oms_series_number = $seriesNumber;
+
+
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
@@ -1034,6 +1083,7 @@ class PatientController extends Controller {
         $formModel->lastName = $oms->last_name;
         $formModel->middleName = $oms->middle_name;
         $formModel->policy = $oms->oms_number;
+        $formModel->omsSeries = $oms->oms_series;
         $formModel->gender = $oms->gender;
         $formModel->birthday = $oms->birthday;
         $formModel->id = $oms->id;
@@ -1041,6 +1091,12 @@ class PatientController extends Controller {
         $formModel->policyGivedate = $oms->givedate;
         $formModel->policyEnddate = $oms->enddate;
         $formModel->status = $oms->status;
+
+        // Если омс - 0, то подтягиваем его в тип 1
+        if ($formModel->omsType == 0)
+            $formModel->omsType = 1;
+
+        // Если тип = 0, то
         return $formModel;
     }
 
@@ -1403,7 +1459,18 @@ class PatientController extends Controller {
             if(isset($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;
             }
+
+
+
             if($filter['field'] == 'oms_number' && trim($filter['data']) != '') {
+                //---->
+                // Нужно добавить поле к фильтру для поиска по конкатенированному полю серии и номера
+                $filters['rules'][] = array(
+                    'field' => 'normalized_oms_number',
+                    'op' => 'eq',
+                    'data' => str_replace(array('-',' '), '', $filter['data'])
+                );
+                //---->
                 if(mb_strlen($filter['data']) != 16) {
                     unset($filter);
                     continue;

@@ -80,7 +80,16 @@
     //'data-placement' => 'right',
     //'title' => 'Номер полиса ОМС может состоять из цифр и пробелов'
 )); ?>
-
+<!-- Выведем скрытое поле "серия омс, в которое будем подкачивать данные из интерфейса обратно" -->
+<?php echo $form->hiddenField($model,'omsSeries', array(
+    'id' => 'omsSeries',
+    'class' => 'form-control',
+    //'placeholder' => 'ОМС',
+    //'autofocus'=> '1',
+    //'data-toggle' => 'tooltip',
+    //'data-placement' => 'right',
+    //'title' => 'Номер полиса ОМС может состоять из цифр и пробелов'
+)); ?>
 
 <div class="form-group territorialOmsNumber omsNumberContainer">
     <label class="col-xs-3 control-label required">Серия, номер <span class="required">*</span></label>

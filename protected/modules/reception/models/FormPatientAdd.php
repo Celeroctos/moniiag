@@ -5,6 +5,7 @@ class FormPatientAdd extends FormMisDefault
     public $insurance;
     public $region;
     public $policy;
+    public $omsSeries;
     public $lastName;
     public $firstName;
     public $middleName;
@@ -48,7 +49,7 @@ class FormPatientAdd extends FormMisDefault
                                 'policy, lastName, firstName, gender, birthday, doctype, addressReg, address, contact, omsType, policyGivedate, status, privilege', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden, omsSeries', 'safe'
             ),
 			array(
 				'snils', 'SNILSValidator'
