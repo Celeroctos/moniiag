@@ -400,6 +400,9 @@ class PatientController extends Controller {
             //exit();
             if ( isset ($_GET['omsSeriesToCheck']) && $_GET['omsSeriesToCheck']!='' )
             {
+                $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
+                    $_GET['omsIdToCheck'],true);
+                /*
                 // Сначала без пробела
                 $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].$_GET['omsNumberToCheck'],
                     $_GET['omsIdToCheck'],true);
@@ -411,6 +414,7 @@ class PatientController extends Controller {
                     var_dump($oms);
                     exit();
                 }
+                */
             }
             else
             {
@@ -617,15 +621,19 @@ class PatientController extends Controller {
         $seriesSubstringWOSpace = '';
         if (isset($model->omsSeries))
         {
-            $seriesSubstringWOSpace = $model->omsSeries;
+            //$seriesSubstringWOSpace = $model->omsSeries;
             $seriesSubstringWithSpace = $model->omsSeries. ' ';
         }
 
+        /*
         $comarisonResult = $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
         if ($comarisonResult===true)
             return $comarisonResult;
 
+
         return $this->checkUnickueOmsInternal($seriesSubstringWOSpace.$model->policy,$IdOfOms,$withoutCurrent);
+        */
+        return $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
     }
 
 
@@ -681,6 +689,7 @@ class PatientController extends Controller {
             }
         }
         */
+        /*
         $omsNumber1 = $omsNumber;
         $omsNumber2 = ' '.$omsNumber;
         $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
@@ -750,6 +759,85 @@ class PatientController extends Controller {
             return $omsSearched;
         }
         return null;
+
+        */
+
+        $omsSearched = null;
+        $omsNumber1 = $omsNumber;
+        $omsNumber2 = ' '.$omsNumber;
+        $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
+        // Для поиска по нормализованному номеру
+        $omsNumberNormalized =  str_replace(array('-',' '), '', $omsNumber);
+        //var_dump($withoutCurrent);
+        //exit();
+        if(!$withoutCurrent) {
+            /*$omsSearched = Oms::model()->find(
+                'oms_number = :oms_number1 OR
+                oms_number = :oms_number2 OR
+                oms_number = :oms_number3 OR
+                oms_series_number = :oms_norm_number
+                ',
+                array(
+                    ':oms_number1' => $omsNumber1,
+                    ':oms_number2' => $omsNumber2,
+                    ':oms_number3' => $omsNumber3,
+                    ':oms_norm_number' => $omsNumberNormalized
+                )
+            );*/
+            $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized);
+
+        } else {
+            //var_dump($omsId);
+            //exit();
+
+            if($omsId != null) {
+
+               /* $omsSearched = Oms::model()->find(
+                    '(oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number)
+                    AND id != :policy_id',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized,
+                        ':policy_id' => $omsId
+                    )
+                );
+                //var_dump($omsSearched);
+                //exit();
+                */
+
+                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized,$omsId);
+            } else {
+              /*  $omsSearched = Oms::model()->find(
+                    'oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized
+                    )
+                );*/
+                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized);
+            }
+        }
+
+
+        // var_dump($omsSearched);
+        //  exit();
+
+
+        if($omsSearched != null) {
+            return $omsSearched;
+        }
+        return null;
+
     }
 
     // Добавление карты к существующему пациенту

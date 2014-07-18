@@ -281,6 +281,40 @@ class Oms extends MisActiveRecord {
         return $result;
     }
 
+    public static function findOmsByNumbers($number1,$number2,$number3,$numberNorm,$id=false)
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $oms = $connection->createCommand()
+                ->select('o.*')
+                ->from('mis.oms o')
+                ->where('(oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number)',
+                array(
+                    ':oms_number1' => $number1,
+                    ':oms_number2' => $number2,
+                    ':oms_number3' => $number3,
+                    ':oms_norm_number' => $numberNorm)
+            );
+
+            // Если ид не равно false - то прихреначиваем ещё одно условие к where
+            if ($id!=false)
+            {
+                $oms->andWhere('id != :policy_id', array(':policy_id'=>$id));
+            }
+
+            $result = $oms->queryRow();
+
+            return $result;
+        }
+        catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
                                $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings = false/*, $withMediate = false*/) {
 
