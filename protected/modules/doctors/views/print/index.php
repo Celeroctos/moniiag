@@ -19,8 +19,11 @@
         ?></nobr></td>
     </tr>
     <tr>
-        <td colspan="2" class="first">2. Номер страхового полиса</td>
-        <td colspan="4" class="big"><span class="big"><?php echo $oms->oms_number; ?></td>
+        <td class="first">2. Номер страхового полиса</td>
+        <td colspan="2" class="big"><nobr><span class="big"><?php echo $oms->oms_number; ?></span></nobr></td>
+        <td colspan="3" class="big"><nobr><span class="big2"><strong>
+                        <?php echo $oms->type; ?>
+                    </strong> Статус: <strong><?php echo $oms->status; ?></strong></span></nobr></td>
     </tr>
     <tr>
 

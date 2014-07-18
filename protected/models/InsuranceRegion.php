@@ -13,6 +13,8 @@ class InsuranceRegion extends MisActiveRecord  {
     public static function findRegions($insuranceId)
     {
         try {
+           // var_dump($insuranceId);
+           // exit();
             $connection = Yii::app()->db;
             $regions = $connection->createCommand()
                 ->select('ir.*, r.*')

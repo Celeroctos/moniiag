@@ -10,6 +10,13 @@ class OmsType extends MisActiveRecord  {
         return 'mis.oms_types';
     }
 
+    public function primaryKey()
+    {
+        return 'id';
+        // Для составного первичного ключа следует использовать массив:
+        // return array('pk1', 'pk2');
+    }
+
     public static function getForSelect ()
     {
         $omsTypeObject = new OmsType();

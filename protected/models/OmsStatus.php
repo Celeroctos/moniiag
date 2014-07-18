@@ -10,6 +10,13 @@ class OmsStatus extends MisActiveRecord  {
         return 'mis.oms_statuses';
     }
 
+    public function primaryKey()
+    {
+        return 'id';
+        // Для составного первичного ключа следует использовать массив:
+        // return array('pk1', 'pk2');
+    }
+
     public static function getForSelect ()
     {
         $omsStatusObject = new OmsStatus();

@@ -119,16 +119,47 @@ class PrintController extends Controller {
         if ($oms['insurance']!='' && $oms['insurance']!=null)
         {
             $insurance = Insurance::model()->findByPk($oms->insurance);
+            $regions = InsuranceRegion::findRegions($oms['insurance']);
+           // var_dump($regions );
+           // exit();
+            if ($regions != null && count($regions)>0)
+            {
+                $regionId = $regions[0]['id'];
+                $omsRegion =  new CladrRegion();
+                $regionObject = $omsRegion ->findByPk($regionId );
+                $oms['region'] = $regionObject['name'];
+            }
+            else
+            {
+                $oms['region'] = '';
+            }
             $oms['insurance'] = $insurance->name;
         }
 
+        // Смотрим - какой тип и статус у полиса
+        $statusId = $oms['status'];
+        if ($statusId == 0)
+            $statusId = 1;
+
+        $status = OmsStatus::model()->findByPk($statusId);
+        $oms['status'] = $status['name'];
+
+        $typeId = $oms['status'];
+        if ($typeId == 0)
+            $typeId = 1;
+
+        $type = OmsType::model()->findByPk($typeId);
+        $oms['type'] = $type ['name'];
+        //var_dump($oms);
+        //exit();
         // Прочитаем регион
-        if ($oms['region']!='' && $oms['region']!=null)
+        /*if ($oms['region']!='' && $oms['region']!=null)
         {
             $omsRegion =  new CladrRegion();
             $regionObject = $omsRegion ->findByPk($oms['region']);
             $oms['region'] = $regionObject['name'];
-        }
+        }*/
+
         foreach($privileges as &$priv) {
             $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
             $privModel = Privilege::model()->findByPk($priv->privilege_id);
