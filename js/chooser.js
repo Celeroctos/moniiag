@@ -139,8 +139,10 @@ $(document).ready(function() {
                     // Нажатие Enter переносит в список выбранных
                     if(e.keyCode == 13) {
                         // Если в чюююузер ничего не вбито - переходим в другой контрол
+                        wasChangedFocus = false;
                         if ($(chooser).find('input').val()=='')
                         {
+                            wasChangedFocus = true;
                             $.fn.switchFocusToNext();
                         }
                         if(current != null) {
@@ -156,7 +158,10 @@ $(document).ready(function() {
                         else
                         {
                             // Переводим фокус на следующий элемент
-                            $.fn.switchFocusToNext();
+                            if (!wasChangedFocus)
+                            {
+                                $.fn.switchFocusToNext();
+                            }
                         }
                         e.preventDefault();
                         return false;
