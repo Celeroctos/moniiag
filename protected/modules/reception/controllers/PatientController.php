@@ -555,9 +555,15 @@ class PatientController extends Controller {
                 $model->contact = "";
             if($model->validate()) {
                 $medcard = new Medcard();
+               // var_dump('!');
                 $oms = $this->checkUniqueOms($model);
+               // var_dump('?');
+               // var_dump($oms);
+               // exit();
                 // Если пациент с таким полисом найден, просто создаётся карта и подсоединяется полис
                 if($oms == null) {
+                    //var_dump('!');
+                    //exit();
                     $oms = new Oms();
                     $this->addEditModelOms($oms, $model);
                 } else {
@@ -571,10 +577,15 @@ class PatientController extends Controller {
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
                 }
 
+                $fioBirthdayStr = $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name;
+                if ($oms->oms_number!='')
+                {
+                    $fioBirthdayStr .=(', номер полиса: '.$oms->oms_number);
+                }
                 echo CJSON::encode(array('success' => 'true',
                                          'msg' => 'Новая запись успешно добавлена!',
                                          'cardNumber' => $medcard->card_number,
-                                         'fioBirthday' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', номер полиса '.$oms->oms_number.'.'));
+                                         'fioBirthday' => $fioBirthdayStr));
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
@@ -639,6 +650,12 @@ class PatientController extends Controller {
 
     private function checkUnickueOmsInternal($omsNumber,$omsId,$withoutCurrent)
     {
+        // Если номер ОМС - пустая строка - то возвращаем сразу нуль
+        if (  str_replace(array (' ','-'),'',$omsNumber)   == '')
+        {
+            return null;
+        }
+
         // Старый код. Возможно потом понадобится
         /*
         // Проверим, не существует ли уже такого ОМС
@@ -922,6 +939,10 @@ class PatientController extends Controller {
 
         //var_dump();
 
+        // Надо перевести ФИО в верхний регистр
+        $oms->first_name = mb_strtoupper($oms->first_name, 'utf-8');
+        $oms->last_name = mb_strtoupper($oms->last_name, 'utf-8');
+        $oms->middle_name = mb_strtoupper($oms->middle_name, 'utf-8');
         if(!$oms->save()) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи нового полиса.'));
@@ -1426,6 +1447,9 @@ class PatientController extends Controller {
 
     // Поиск пациента и его запсь
     public function actionSearch() {
+       // var_dump($_GET);
+       // exit();
+
         // Проверим наличие фильтров
         $filters = $this->checkFilters();
 

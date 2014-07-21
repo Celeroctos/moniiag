@@ -2,10 +2,9 @@
 	var buttonSelectors = [
 		'#patient-search-submit',
 		'#doctor-search-submit',
-		'.add-patient-submit input',
+		//'.add-patient-submit input',
         '#medcardContentSave',
         '#printContentButton',
-		'.add-patient-submit input',
         '#greetings-search-submit'
 	];
 	

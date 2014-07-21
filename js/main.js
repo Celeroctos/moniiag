@@ -113,7 +113,7 @@
         if (value.substr(0,2)=='+7')
         {
             //разрешаем длину в 14 символов
-            if (value.length == 14 && !(pressedKey == 8 || pressedKey == 46)) {
+            if (value.length == 14 && !(pressedKey == 8 ||pressedKey == 37 || pressedKey == 39|| pressedKey == 46)) {
                 // Переводим фокус на следующий элемент
                 $.fn.switchFocusToNext();
                 return false;

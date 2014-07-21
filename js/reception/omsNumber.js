@@ -267,6 +267,7 @@ $(document).ready(function() {
         }
 
         //return isPlaceInInput(6,pressedKey,value);
+
         result = isPlaceInInput(6,pressedKey,value);
         if (!result){$.fn.switchFocusToNext(); }
 
@@ -359,7 +360,7 @@ $(document).ready(function() {
     // Возвращает false,если в контроле закончилось место (в том случае, если есть ограничение на количество символов)
     function isPlaceInInput(maximal,pressedKey,valString)
     {
-        if (valString.length >= maximal && !(pressedKey == 8 || pressedKey == 46)) {
+        if (valString.length >= maximal && !(pressedKey == 8 || pressedKey == 46 || pressedKey == 37|| pressedKey == 39)) {
             return false;
         }
         return true;

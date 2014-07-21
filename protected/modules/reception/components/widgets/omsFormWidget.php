@@ -22,6 +22,13 @@ class OmsFormWidget extends CWidget {
         $this->typesOms = OmsType::getForSelect();
         $this->statusesOms = OmsStatus::getForSelect();
 
+        // Прочитать настройку "тип полиса по умолчанию"
+        $omsTypeSetting = Setting::model()->find('name=\'defaultOmsType\'');
+
+        if ($this->model['omsType']==NULL)
+        {
+            $this->model['omsType'] = $omsTypeSetting['value'];
+        }
 
         $this->render('application.modules.reception.components.widgets.views.OmsFormWidget', array(
             'form' => $this->form,

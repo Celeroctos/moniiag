@@ -157,23 +157,7 @@ $(document).ready(function() {
                         {
                             // Переводим фокус на следующий элемент
                             $.fn.switchFocusToNext();
-                           // e.preventDefault();
                         }
-                        /*
-                        // Если чюзер не заблочен и длина вбитых в него символов не больше нуля
-                        //       - то возвращаем true
-                        // Иначе возвращаем false
-                        if ($(chooser).find('input').val()=='' || $(chooser).find('input').prop("disabled")==true)
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            $.fn.switchFocusToNext();
-                            e.preventDefault();
-                            return false;
-                        }
-                        */
                         e.preventDefault();
                         return false;
                     }
@@ -451,32 +435,7 @@ $(document).ready(function() {
                             choosedElements.push(currentElements[i]);
                             /* Логика работы: если есть настройка о количестве добавляемых максмально вариантов, то нужно блокировать строку, если количество вариантов достигло максимума */
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
-                                // Сначала поменяем фокус - вызовем для чюзера событие нажатия таба
 
-                                // $.fn.switchFocusToNext();
-                                /*// Выбираем все focus-able элементы
-                                var focusables = $(':focusable');
-                                for (i=0;i<focusables.length;i++)
-                                {
-                                    // Проверяем - является ли и-тый элемент из фокусабельных элементом,
-                                    //    на котором сейчас стоит фокус
-                                    if ($(focusables[i])[0] == $(document.activeElement)[0])
-                                    {
-                                        // Тут может быть две ситуации - либо элемент последний в массиве
-                                        //   либо нет
-                                        if (i==focusables.length-1)
-                                        {
-                                            // Фокусируемся на первый элемент
-                                            $(focusables[0]).focus();
-                                        }
-                                        else
-                                        {
-                                            // Фокусируемся на следующий по номеру элемент
-                                            $(focusables[i+1]).focus();
-                                        }
-                                        break;
-                                    }
-                                }*/
                                 // А вот теперь со спокойной совестью блокируем чюзер
                                 $.fn[$(chooser).attr('id')].disable();
                             }
@@ -1348,8 +1307,14 @@ $(document).ready(function() {
             },
             'afterRemove' : function() {
                 $('#policyRegionHidden input').val('');
-                $.fn['insuranceChooser'].deleteExtraParam('region_insurance');
+                //$.fn['insuranceChooser'].deleteExtraParam('region_insurance');
                 // Зануляем поле дополнительных параметров чюююзера "Страховая компания"
+                if($('#insuranceChooser').length > 0) {
+                    $.fn['insuranceChooser'].clearAll();
+                    $.fn['insuranceChooser'].enable();
+                    $.fn['insuranceChooser'].deleteExtraParam('region');
+                }
+
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));

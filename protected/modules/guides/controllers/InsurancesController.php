@@ -117,10 +117,20 @@ class InsurancesController extends Controller {
             }
 
             $regionId = false;
-            if (isset($_GET['region_insurance']))
+
+            // Если флаг is_chooser - то снимаем ИД региона
+            if (isset($_GET['is_chooser']))
             {
-                $regionId = $_GET['region_insurance'];
+                if (isset($_GET['region_insurance']))
+                {
+                    $regionId = $_GET['region_insurance'];
+                }
+                else
+                {
+                    $regionId = -1;
+                }
             }
+
 
 
             $model = new Insurance();
