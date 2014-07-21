@@ -2,7 +2,6 @@
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
-
     this.initColorFields = function (colorPickerFields) {
         $(function () {
             // Маркировка анкет
@@ -768,7 +767,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
     $.fn.switchFocusToNext = function()
     {
         // Выбираем все focus-able элементы
-        var focusables = $(':focusable');
+        var focusables = $(':tabbable');
         for (i=0;i<focusables.length;i++)
         {
             // Проверяем - является ли и-тый элемент из фокусабельных элементом,
@@ -792,5 +791,76 @@ $('select[multiple="multiple"]').each(function(index, select) {
         }
     }
 
+    // Переходы по Enter-у
+    // ------------------>
+    enterButtonsSelector =
+    [
+    ];
+    $(document).on('keydown' ,function(e){
+        if (e.keyCode==13)
+        {
+            //console.log('Нажата клавиша Enter');
+            //console.log(e.currentTarget);
+            //console.log($(':focus'));
+
+
+            // Смотрим что в фокусе - если
+            focusedElement = $($(':focus')[0]);
+            // Дальше может быть следующее развитие ситуации.
+            //   Если в фокусе такой элемент, который не должен засабмитить форму, то нужно перекинуть
+            //     фокус на следующий focusable элемент.
+            //    Если элемент сабмитит форму, то надо затриггерить на нём клик
+            //   Нужно определить является ли элемент таким, который сабмитит форму
+            // По умолчанию - не сабмитит
+            submittable = false;
+            // Если кнопка в форме одна - и она в фокусе то она вызывает сабмит
+            containingForm = $(focusedElement).parents('form');
+            buttons = $(containingForm).find('input[type=submit], input[type=button], button');
+            if ($(buttons).length = 1 && buttons[0]==focusedElement[0])
+            {
+                $(buttons[0]).trigger('click');
+                e.preventDefault();
+                return;
+            }
+            // Если у сфокусированного элемента есть класс "btn-success" и она одна на форме - её сабмитим
+            classedButtons = $(containingForm).find('.btn-success');
+            if ($(classedButtons).length = 1 && classedButtons[0]==focusedElement[0])
+            {
+                $(classedButtons[0]).trigger('click');
+                e.preventDefault();
+                return;
+            }
+            // Если у кнопки Value = "Найти" - сабмитим её.
+            //   Это конечно криминал (проверять кнопку по ей тексту в интерфейсе),
+            //    но пока другого выхода не вижу
+            if ( $(focusedElement).is('input[type=submit], input[type=button], button') )
+            {
+                if ($(focusedElement).val()=='Найти')
+                {
+                    $(buttons[0]).trigger('click');
+                    e.preventDefault();
+                    return;
+                }
+            }
+
+            // Ну и совсем на худой конец - берём массив и проверяем, входит ли фокусированный элемент в него
+            submitButtons = enterButtonsSelector.join(', ');
+            submitButtonsSelected = $(submitButtons);
+            // Если is выдаст true на фокусированные элементы и на выбранные по селектору
+            if ($(submitButtonsSelected).is(  $(focusedElement)   ))
+            {
+                $(buttons[0]).trigger('click');
+                e.preventDefault();
+                return;
+            }
+            // Ну если мы ничего не затриггерили и попали в эту точку - то можно переводить фокус
+            $.fn.switchFocusToNext();
+            // Дальше выключаем обработку этого события
+            e.preventDefault();
+            return;
+        }
+    });
+    //   Конец блока переходов по Enter-у
+    // <-----------------
 
 });

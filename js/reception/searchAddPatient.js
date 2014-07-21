@@ -675,7 +675,7 @@
 
     $('#addressReg, #address').on('keydown', function(e) {
         if(e.keyCode == 13) {
-            return false;
+            //return false;
         }
     });
 
@@ -1020,7 +1020,7 @@
 
     $('.blockEdit').on('keydown', function(e) {
         console.log(e.keyCode);
-        if(e.keyCode != 9) {
+        if(e.keyCode != 9 && e.keyCode != 13) {
             return false;
         }
     });

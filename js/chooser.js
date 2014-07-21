@@ -138,9 +138,43 @@ $(document).ready(function() {
 
                     // Нажатие Enter переносит в список выбранных
                     if(e.keyCode == 13) {
+                        // Если в чюююузер ничего не вбито - переходим в другой контрол
+                        if ($(chooser).find('input').val()=='')
+                        {
+                            $.fn.switchFocusToNext();
+                        }
                         if(current != null) {
+                            // Смотрим - если текущая длина больше
+                            if (choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed'))
+                            {
+                                if ($.fn[$(chooser).prop('id')].getChoosed().length+1>= choosersConfig[$(chooser).prop('id')]['maxChoosed'] ){
+                                    $.fn.switchFocusToNext();
+                                }
+                            }
                             addVariantToChoosed($(chooser).find('.variants li.active'));
                         }
+                        else
+                        {
+                            // Переводим фокус на следующий элемент
+                            $.fn.switchFocusToNext();
+                           // e.preventDefault();
+                        }
+                        /*
+                        // Если чюзер не заблочен и длина вбитых в него символов не больше нуля
+                        //       - то возвращаем true
+                        // Иначе возвращаем false
+                        if ($(chooser).find('input').val()=='' || $(chooser).find('input').prop("disabled")==true)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            $.fn.switchFocusToNext();
+                            e.preventDefault();
+                            return false;
+                        }
+                        */
+                        e.preventDefault();
                         return false;
                     }
 
@@ -419,7 +453,7 @@ $(document).ready(function() {
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
                                 // Сначала поменяем фокус - вызовем для чюзера событие нажатия таба
 
-                                $.fn.switchFocusToNext();
+                                // $.fn.switchFocusToNext();
                                 /*// Выбираем все focus-able элементы
                                 var focusables = $(':focusable');
                                 for (i=0;i<focusables.length;i++)
