@@ -382,10 +382,10 @@
                                                     html: true,
                                                     placement: 'bottom',
                                                     title: title + 'врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
-                                                    delay: {
+                                                    /*delay: {
                                                         show: 300,
                                                         hide: 300
-                                                    },
+                                                    },*/
                                                     content: function() {
                                                         var ulInPopover = $('<ul>').addClass('patientList');
                                                         for(var j = 0; j < data.data.length; j++) {
@@ -432,6 +432,7 @@
                                                                         if(clickedTimeLi != null) {
                                                                             $(clickedTimeLi).find('.popover').remove();
                                                                             $(clickedTimeLi).removeClass('pressed withPatient-pressed');
+                                                                            $(clickedTimeLi).removeClass('pressed');
                                                                         }
 
                                                                         clickedTimeLi = $(li);
@@ -480,6 +481,7 @@
                                                                         if(clickedTimeLi != null) {
                                                                             $(clickedTimeLi).find('.popover').remove();
                                                                             $(clickedTimeLi).removeClass('withPatient-pressed pressed');
+                                                                           // $(clickedTimeLi).removeClass('pressed');
                                                                         }
 
                                                                         clickedTimeLi = $(li);
