@@ -1,0 +1,2 @@
+UPDATE mis.oms o SET first_name = upper(first_name), last_name = upper(last_name), middle_name = upper(middle_name)
+WHERE Exists (SELECT * FROM mis.medcards mc WHERE mc.policy_id = o.id AND mc.card_number like '%/14')
