@@ -154,12 +154,19 @@
         });
 
         $(span).on('click', function(e) {
-            $(li).popover('hide');
+            //$(li).popover('hide');
+            $(li).popover('destroy');
             $('.organizer').trigger('resetClickedTime');
             $(li).removeClass('withPatient-pressed');
             e.stopPropagation();
         });
 
+        // Перед этим вызовом popover('show') надо вызвать destroy для всех предыдущих поповеров
+        // ------------------>
+        //$($('.popover').parents()[0]).popover('destroy');
+
+        //$($(li).parents('ul.patientList').find('.popover').parents()[0]).popover('destroy');
+        // ------------------>
         $(li).popover('show');
         $(li).find('.popover span.glyphicon').remove();
         $(li).find('.popover').css({
@@ -523,7 +530,8 @@
                                                 });
 
                                                 $(span).on('click', function(e) {
-                                                    $(li).popover('hide');
+                                                    //$(li).popover('hide');
+                                                    $(li).popover('destroy');
                                                     $(li).removeClass('full-pressed empty-pressed notfull-pressed');
                                                     $('.organizer').trigger('resetClickedDay');
                                                     $('.organizer').trigger('resetClickedTime');
