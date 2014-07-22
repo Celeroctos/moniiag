@@ -26,6 +26,10 @@ class PatientDiagnosis extends MisActiveRecord {
 
     public function findDiagnosis($greetingId, $type) {
         try {
+            var_dump($greetingId);
+            var_dump($type);
+            exit();
+
             $connection = Yii::app()->db;
             $diagnosis = $connection->createCommand()
                 ->select('dpp.*, m.*')

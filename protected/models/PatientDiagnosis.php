@@ -26,6 +26,11 @@ class PatientDiagnosis extends MisActiveRecord {
 
     public function findDiagnosis($greetingId, $type) {
         try {
+            //var_dump($greetingId);
+            //var_dump($type);
+            //exit();
+
+
             $connection = Yii::app()->db;
             $diagnosis = $connection->createCommand()
                 ->select('dpp.*, m.*')
@@ -33,10 +38,16 @@ class PatientDiagnosis extends MisActiveRecord {
                 ->join(Mkb10::tableName().' m', 'dpp.mkb10_id = m.id')
                 ->where('dpp.greeting_id = :greeting_id AND dpp.type = :type', array(':greeting_id' => $greetingId, ':type' => $type));
 
-            return $diagnosis->queryAll();
+            //var_dump($diagnosis);
+            //exit();
+            $result = $diagnosis->queryAll();
+            //var_dump($result);
+            //exit();
+            return $result;
 
         } catch(Exception $e) {
             echo $e->getMessage();
+            exit();
         }
     }
 

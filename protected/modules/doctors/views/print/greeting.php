@@ -16,6 +16,19 @@
 
         }
 
+
+        if (count($diagnosises['complicating'])>0)
+        {
+            ?><div><strong>Осложнения основного диагноза по МКБ-10: </strong><?php
+            foreach ($diagnosises['complicating'] as $oneDiagnosis)
+            {
+                ?><br> - <?php
+                echo $oneDiagnosis['description'];
+            }
+            ?></div><?php
+        }
+
+
         if (count($diagnosises['secondary'])>0)
         {
             ?><div><strong>Сопутствующие диагнозы (МКБ-10): </strong><?php

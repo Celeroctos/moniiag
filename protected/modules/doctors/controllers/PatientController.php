@@ -114,7 +114,23 @@ class PatientController extends Controller {
 				}
 			}
 		}
-		
+
+        // Сохраним диагнозы осложнений
+        if(isset($_GET['complicating'])) {
+            $complicatingDiag = CJSON::decode($_GET['complicating']);
+            foreach($complicatingDiag as $id) {
+                $row = new PatientDiagnosis();
+                $row->mkb10_id = $id;
+                $row->greeting_id = $_GET['greeting_id'];
+                $row->type = 2; // Диагноз осложнений
+                if(!$row->save()) {
+                    echo CJSON::encode(array('success' => false,
+                        'error' => 'Не могу сохранить диагноз осложнений!'));
+                    exit();
+                }
+            }
+        }
+
         if(isset($_GET['note']) && trim($_GET['note']) != '') {
             $greeting = SheduleByDay::model()->findByPk($_GET['greeting_id']);
             if($greeting != null) {

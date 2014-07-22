@@ -755,13 +755,16 @@ class CategorieViewWidget extends CWidget {
 		{
 			$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
-			$cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
+            $cd = PatientDiagnosis::model()->findDiagnosis($greeting, 2);
+            $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
+
 		}
 		else
 		{
 			$pd = array();
 			$sd = array();
+            $cd = array();
 			$cpd = array();
 			$csd = array();
 			
@@ -770,6 +773,7 @@ class CategorieViewWidget extends CWidget {
             'categories' => $this->historyTree,
             'primaryDiagnosis' => $pd,
             'secondaryDiagnosis' => $sd,
+            'complicatingDiagnosis' => $cd,
 			'clinicalPrimaryDiagnosis' => $cpd,
 			'clinicalSecondaryDiagnosis' => $csd,
             'model' => $this->formModel,

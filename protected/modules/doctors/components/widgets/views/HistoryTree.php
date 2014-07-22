@@ -26,6 +26,20 @@ if (count($primaryDiagnosis)>0)
 	?></ul><?php
 }
 
+
+// Осложнения:
+if (count($complicating)>0)
+{
+    ?><h4>Осложнения основного диагноза по МКБ-10:</h4><ul><?php
+    foreach ($complicating as $diag)
+    {
+        ?><li><?php
+        echo $diag['description'];
+        ?></li><?php
+    }
+    ?></ul><?php
+}
+
 // Клинические диагнозы
 if (count($clinicalPrimaryDiagnosis)>0)
 {
@@ -65,6 +79,8 @@ if (count($clinicalSecondaryDiagnosis)>0)
 	?></ul><?php
 	
 }
+
+
 
 foreach($dividedCats as $key => $template) {
     ?><h4><?php echo $template['name']; ?></h4><?php

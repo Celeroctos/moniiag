@@ -272,17 +272,25 @@ class PrintController extends Controller {
 		$sortedElements = $categorieWidget->dividedCats;
 
         // Вытащим диагнозы
+        //var_dump($greetingId);
+        //exit();
+
         $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $cd = PatientDiagnosis::model()->findDiagnosis($greetingId, 2);
         $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+
+        //var_dump($cd);
+        //exit();
 
         // Соберём их в об'ект
         $diagnosises = array(
             'primary' => $pd,
             'secondary' => $sd,
             'clinicalPrimary' => $cpd,
-            'clinicalSecondary' => $csd
+            'clinicalSecondary' => $csd,
+            'complicating' => $cd
 
         );
 
