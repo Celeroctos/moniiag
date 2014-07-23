@@ -107,6 +107,7 @@ $(document).ready(function() {
             // Если тип полиса - постоянный - убираем пробелы
             if ($('#omsType').val()== 5)
             {
+                $('#policy').val(    $('#policy').val().replace(' ','')    );
                 $(inputsToPut).find('input').val(    $(inputsToPut).find('input').val().replace(' ','')    );
             }
         }

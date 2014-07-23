@@ -932,6 +932,12 @@ class PatientController extends Controller {
         $seriesNumber = str_replace(array(' ', '-'), '',  $seriesNumber);
         $oms->oms_series_number = $seriesNumber;
 
+        // Это скорее всего не надо будет
+        // Если у полиса тип постоянный - надо вставить пробел между 6-ым и 7-ым символом
+        /*if ($oms->type == 5)
+        {
+            $oms->oms_number = substr($oms->oms_number,0,6).' '.substr($oms->oms_number,6,10);
+        }*/
 
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;

@@ -143,6 +143,10 @@ class PrintController extends Controller {
             }
             $oms['insurance'] = $insurance->name;
         }
+        else
+        {
+            $oms['region'] = '';
+        }
 
         // Смотрим - какой тип и статус у полиса
         $statusId = $oms['status'];
