@@ -5,9 +5,22 @@
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+
+
+
+$siteName = '';
+if (  strpos( $_SERVER['HTTP_HOST'], 'moniiag')!==false && strpos( $_SERVER['HTTP_HOST'], 'moniiag')>=0 )
+{
+    $siteName = 'МИС Notum Тестовый сервер';
+}
+else
+{
+    $siteName = 'МИС Notum';
+}
+
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'МИС Notum',
+	'name'=>$siteName,
     'defaultController' => 'index',
     'layout' => 'index',
     'language' => 'ru',

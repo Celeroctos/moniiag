@@ -1332,11 +1332,14 @@ $(document).ready(function() {
             },
             'afterRemove' : function() {
                 $('#policyRegionHidden input').val('');
-                //$.fn['insuranceChooser'].deleteExtraParam('region_insurance');
+                $.fn['insuranceChooser'].deleteExtraParam('region_insurance');
                 // Зануляем поле дополнительных параметров чюююзера "Страховая компания"
                 if($('#insuranceChooser').length > 0) {
                     $.fn['insuranceChooser'].clearAll();
                     $.fn['insuranceChooser'].enable();
+                    $('#insuranceChooser input').val('');
+                    $('#insuranceChooser .variants').addClass('no-display');
+                    $('#insuranceChooser .variants').css('display', '');
                     $.fn['insuranceChooser'].deleteExtraParam('region');
                 }
 

@@ -793,6 +793,15 @@
                     id="r<?php echo $ins['id']; ?>"><?php echo $dia['name']; ?>
                         <span class="glyphicon glyphicon-remove"></span></span>
                        */
+                    // Закроем у чюююууузеров блок "variants" и очистим поля ввода
+                    $('#insuranceChooser input').val('');
+                    $('#regionPolicyChooser input').val('');
+
+                    $('#insuranceChooser .variants').addClass('no-display');
+                    $('#insuranceChooser .variants').css('display', '');
+                    $('#regionPolicyChooser .variants').addClass('no-display');
+                    $('#regionPolicyChooser .variants').css('display', '');
+
                     if (insId!='' && insId!=null)
                     {
                         $('#insuranceChooser .choosed').html(
@@ -875,14 +884,22 @@
                             $.fn['regionChooser'].addChoosed($('<li>').prop('id', 'r' + data.region[0].id).text(data.region[0].name), data.region[0]);
                         }
                         if(data.district != null) {
-                            $.fn['districtChooser'].addChoosed($('<li>').prop('id', 'r' + data.district[0].id).text(data.district[0].name), data.district[0]);
+                            if (data.district [0]!=undefined && data.district [0]['code_cladr']!='000')
+                            {
+                                $.fn['districtChooser'].addChoosed($('<li>').prop('id', 'r' + data.district[0].id).text(data.district[0].name), data.district[0]);
+                            }
                         }
                         if(data.settlement != null) {
-                            $.fn['settlementChooser'].addChoosed($('<li>').prop('id', 'r' + data.settlement[0].id).text(data.settlement[0].name), data.settlement[0]);
+                            if (data.settlement[0]!=undefined && data.settlement[0]['code_cladr']!='000000')
+                            {
+                                $.fn['settlementChooser'].addChoosed($('<li>').prop('id', 'r' + data.settlement[0].id).text(data.settlement[0].name), data.settlement[0]);
+                            }
                         }
                         if(data.street != null) {
                             $.fn['streetChooser'].addChoosed($('<li>').prop('id', 'r' + data.street[0].id).text(data.street[0].name), data.street[0]);
                         }
+
+                        console.log(data);
 
                         if(data.house != null) {
                             $('#editAddressPopup #house').val(data.house);

@@ -99,6 +99,14 @@ class PrintController extends Controller {
         if($oms == null) {
             exit('Ошибка! Полиса не существует!');
         }
+
+        // Если у полиса есть поле "серия" - конкатэнируем его с номером через пробел и выводим.
+        //         Иначе выводим только номер без конкатенации
+        if ($oms->oms_series != '' && $oms->oms_series!= null)
+        {
+            $oms->oms_number = $oms->oms_series. " " .$oms->oms_number;
+        }
+
         // Выбираем предприятие по коду заведения в медкарте
         $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
         if($enterprise == null) {
@@ -144,7 +152,7 @@ class PrintController extends Controller {
         $status = OmsStatus::model()->findByPk($statusId);
         $oms['status'] = $status['name'];
 
-        $typeId = $oms['status'];
+        $typeId = $oms['type'];
         if ($typeId == 0)
             $typeId = 1;
 

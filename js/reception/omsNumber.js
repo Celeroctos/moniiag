@@ -104,50 +104,12 @@ $(document).ready(function() {
         {
             // Иначе загружаем в поле input
             $(inputsToPut).find('input').val( $('#policy').val() );
-        }
-
-
-        /*
-        // Берём скрытое поле "номер ОМС"
-
-        hiddenOmsNumber = $('#policy').val();
-        omsNumberParts = new Array();
-        // Разделим номер ОМС на части.
-        //   --------
-        //    Этот кусок надо будет полностью переделать
-        // Если тип полюса 1 или 2
-        //   отрезаем первые 4 символа
-        if ($('#omsType').val()=='1' || $('#omsType').val()=='2' || $('#omsType').val()=='4')
-        {
-            omsNumberParts[0] =  hiddenOmsNumber.substr(0,4);
-            omsNumberParts[1] =  hiddenOmsNumber.substr(5);
-        }
-        else
-        {
-            if ($('#omsType').val()=='3')
+            // Если тип полиса - постоянный - убираем пробелы
+            if ($('#omsType').val()== 5)
             {
-                omsNumberParts[0] =  hiddenOmsNumber.substr(0,3);
-                omsNumberParts[1] =  hiddenOmsNumber.substr(4);
-            }
-            else
-            {
-                omsNumberParts[0] = hiddenOmsNumber;
+                $(inputsToPut).find('input').val(    $(inputsToPut).find('input').val().replace(' ','')    );
             }
         }
-        //  >--------
-        // Перенесём части номера в input-ы
-        // Берём видимы контейнер номера
-        inputsToPut = $('.omsNumberContainer:not(.no-display) input');
-        // Перебираем input-ы и заносим массив в эти инпуты
-        for (i=0;i<omsNumberParts.length;i++)
-        {
-            $(inputsToPut[i]).val(  omsNumberParts [i] );
-        }
-        // Занесли.
-        */
-
-
-
     });
 
 
@@ -162,13 +124,6 @@ $(document).ready(function() {
         globalVariables.omsStateTreated = false;
     //    $(this).one('controlvaluechanged',onControlValueChanged);
     });
-
-    // По сабмиту форм, в которых редактируется номер мы должны проверить номер полюсов
-    /*$('form#patient-withoutcard-form, form#patient-oms-edit-form').submit(function(e){
-        alert('Меня засабмитили! Прощайте!');
-        return false;
-
-    });*/
 
     $.fn.checkOmsNumber = function()
     {
@@ -227,12 +182,10 @@ $(document).ready(function() {
 
 
             case '4':
-                // $('.petitionOmsNumber').removeClass('no-display');
                 break;
 
 
             case '5':
-                ///^[0-9]{1,16}$/
                 if (numberHidden.match(/^[0-9]{16}$/)==null)
                 {
                     result = false;
@@ -313,30 +266,6 @@ $(document).ready(function() {
                 $('.temporaryOmsNumber input.omsNumberPart')[0].selectionEnd = 0;
             }
 
-            // Триггерим событие нажатия клавиши на серию
-          /*  var newEvent = $.Event('keydown');
-            newEvent.which = pressedKey; // null character
-            $('.temporaryOmsNumber input.omsNumberPart').trigger(newEvent);
-*/
-
-            //---------->
-            /*
-            $('.temporaryOmsNumber input.omsNumberPart').one('keydown', function(e){
-                var e = $.Event('keyup');
-                e.which = pressedKey; // null character
-                $(this).trigger(e);
-            });
-
-            var e = $.Event('keydown');
-            e.which = pressedKey; // null character
-            $('.temporaryOmsNumber input.omsNumberPart').trigger(e);
-            */
-            /*var newEvent = $.Event('keypress');
-            newEvent.which = pressedKey; // null character
-            $('.temporaryOmsNumber input.omsNumberPart').trigger(newEvent);
-*/
-
-            //---------->
 
             return false;
 
@@ -389,85 +318,15 @@ $(document).ready(function() {
         newValue = $(this).val();
         needRevese = false;
 
-        // Проверяем выражение по регулярке
-
-        // Вынести в отдельный метод
-        /*if (newValue.match(/^[А-л]*$/)==null) {
-            needRevese = true;
-        }*/
-
-
-
         if (needRevese)
         {
             // Возвращаем назад значение
             if (globalVariables.lastOmsState!=undefined)
             {
                 $(this).val( globalVariables.lastOmsState.lastValue   );
-                // $(this)[0].selectionStart = globalVariables.lastOmsState.lastStart;
-                //  $(this)[0].selectionEnd = globalVariables.lastOmsState.lastEnd;
                 console.log($(this));
             }
         }
     }
 
 });
-
-
-
-
-// Ценный кусок кода!!! Здесь хранится метод обработки допустимых символов в поле ввода номера ОМС
-/*if (false)
-$(document).ready(function() {
-
-    // На keydown поля поставим обработчик, в котором сохраним старое значение этого поля и позицию
-    $('#lastName').on('keydown',function(e){
-        globalVariables.lastOmsState =
-        {
-            lastValue: $(this).val(),
-            lastStart: $(this)[0].selectionStart,
-            lastEnd: $(this)[0].selectionEnd
-        };
-        globalVariables.omsStateTreated = false;
-        $("#lastName").one('controlvaluechanged',onControlValueChanged);
-    });
-
-    // По событиям изменения значения проверяем это значение и если оно не соответвует - откатываем назад контрол
-    $("#lastName").on("propertychange change keyup paste input", function(e){
-        if (globalVariables.omsStateTreated!=undefined)
-        {
-            if (globalVariables.omsStateTreated == false)
-            {
-                globalVariables.omsStateTreated = true;
-                $(this).trigger ('controlvaluechanged', [e]);
-            }
-        }
-    });
-
-    function onControlValueChanged(e)
-    {
-        $(this).off('controlvaluechanged');
-        // Вот тут надо проверить значение контрола
-        //   Если оно не соответствует - надо вернуть обратно то значение, которое было до изменения
-
-        newValue = $(this).val();
-        needRevese = false;
-
-        // Проверяем выражение по регулярке
-        if (newValue.match(/^[А-л]*$/)==null) {
-            needRevese = true;
-        }
-
-        if (needRevese)
-        {
-            // Возвращаем назад значение
-            if (globalVariables.lastOmsState!=undefined)
-            {
-                $(this).val( globalVariables.lastOmsState.lastValue   );
-               // $(this)[0].selectionStart = globalVariables.lastOmsState.lastStart;
-              //  $(this)[0].selectionEnd = globalVariables.lastOmsState.lastEnd;
-                console.log($(this));
-            }
-        }
-    }
-});*/
