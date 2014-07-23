@@ -146,7 +146,7 @@ class SheduleByDay extends MisActiveRecord {
  			->where('dsbd.doctor_id in ('.$doctorStr.')
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
- 					AND dsbd.patient_day >= current_date
+ 					AND ((dsbd.patient_day > current_date) OR ((dsbd.patient_day=current_date) AND (dsbd.patient_time >= current_time)))
  					', array(
  						':beginDate' => $dateBegin,
  						':endDate' => $dateEnd
