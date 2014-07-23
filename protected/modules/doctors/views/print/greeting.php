@@ -4,10 +4,51 @@
 <?php
 //var_dump($diagnosises);
 //exit();
+
+        // Сначала печатаем шаблоны, у которых template_page_id = 0
+        // Потом выводим диагнозы
+        // Потом выводим шаблоны, у которых template_page_id = 1
+        foreach ($templates as $oneTemplate)
+        {
+            // Если у шаблона empty = true, то переходим на следующую итерацию цикла
+            // var_dump($oneTemplate['empty']);
+            if ($oneTemplate['empty']==true)
+                continue;
+
+            // Если шаблон не основной (а рекомендации)
+            if ($oneTemplate['template_page_id']!=0)
+            {
+                continue;
+            }
+
+            // Печатаем название шаблона
+            ?><h3><?php echo $oneTemplate['name']; ?></h3><?php
+            foreach($oneTemplate['cats']  as $index => $categorie) {
+                // Печатаем название категории
+                ?>
+                <div style="margin-left:20px;">
+                    <strong style="text-decoration: underline"><?php echo $categorie['element']['name']; ?></strong>
+                    <p class ="print-elements">
+                        <?php
+
+                        // Вызываем виджет категории
+                        $printCategorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
+                            'categoryToPrint' => $categorie
+                        ));
+                        $printCategorieWidget->run();
+                        ?>
+                    </p>
+                </div>
+            <?php
+
+            }
+        }
+
+
         // Выводим диагнозы
         if (count($diagnosises['primary'])>0)
         {
-            ?><div><strong>Основной диагноз (МКБ-10): </strong><?php
+            ?><div><strong><h3>Основной диагноз (МКБ-10): </h3></strong><?php
             foreach ($diagnosises['primary'] as $oneDiagnosis)
             {
                 echo $oneDiagnosis['description'];
@@ -19,7 +60,7 @@
 
         if (count($diagnosises['complicating'])>0)
         {
-            ?><div><strong>Осложнения основного диагноза по МКБ-10: </strong><?php
+            ?><div><strong><h3>Осложнения основного диагноза по МКБ-10: </h3></strong><?php
             foreach ($diagnosises['complicating'] as $oneDiagnosis)
             {
                 ?><br> - <?php
@@ -31,7 +72,7 @@
 
         if (count($diagnosises['secondary'])>0)
         {
-            ?><div><strong>Сопутствующие диагнозы (МКБ-10): </strong><?php
+            ?><div><strong><h3>Сопутствующие диагнозы (МКБ-10): </h3></strong><?php
             foreach ($diagnosises['secondary'] as $oneDiagnosis)
             {
                 ?><br> - <?php
@@ -52,7 +93,7 @@
 
         if (count($diagnosises['clinicalSecondary'])>0)
         {
-            ?><div><strong>Клинические диагноз/диагнозы: </strong><?php
+            ?><div><strong><h3>Клинические диагноз/диагнозы: </h3></strong><?php
             foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
             {
                 ?><br> - <?php
@@ -67,6 +108,11 @@
            // var_dump($oneTemplate['empty']);
             if ($oneTemplate['empty']==true)
                 continue;
+            // Если шаблон не рекомендации(а основной, например)
+            if ($oneTemplate['template_page_id']!=1)
+            {
+                continue;
+            }
 
             // Печатаем название шаблона
             ?><h3><?php echo $oneTemplate['name']; ?></h3><?php

@@ -294,8 +294,11 @@ class PrintController extends Controller {
 
         );
 
-       // var_dump($diagnosises );
-       // exit();
+        //var_dump($diagnosises );
+        //exit();
+
+        //var_dump($sortedElements);
+        //exit();
 		if($greetingIn === false) {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');

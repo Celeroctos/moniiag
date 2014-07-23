@@ -290,6 +290,7 @@ class MedcardElementForPatient extends MisActiveRecord {
                 $values = $connection->createCommand()
                     ->select('mep.*')
                     ->from('mis.medcard_elements_patient mep')
+                //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
                     ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
                     ->order('element_id, history_id desc');
                 $elements = $values->queryAll();

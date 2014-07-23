@@ -613,7 +613,12 @@ $('#onlyLikeDiagnosis').click(function (e) {
             }
         }
     }
-})(['primaryDiagnosisChooser', 'secondaryDiagnosisChooser']);
+})([
+        'primaryDiagnosisChooser',
+        'secondaryDiagnosisChooser',
+        'complicationsDiagnosisChooser',
+        'clinicalSecondaryDiagnosis'
+    ]);
 
 
 // Просмотр медкарты в попапе
