@@ -446,7 +446,8 @@
 
 
                             <div class="form-group">
-                                <label for="doctor" class="col-xs-3 control-label">Примечание:</label>
+                                <label for="doctor" class="col-xs-3 control-label">Клинические
+                                    диагноз / диагнозы:</label>
 
                                 <div class="col-xs-9">
                                 <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>
