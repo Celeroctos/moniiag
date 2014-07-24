@@ -1238,6 +1238,8 @@ class PatientController extends Controller {
         }
 
         $data = $this->prepareOms($_GET['omsid']);
+        //var_dump($data);
+        //exit();
         echo CJSON::encode(array('success' => true,
                                  'data' => $data));
     }
@@ -1249,6 +1251,10 @@ class PatientController extends Controller {
             $req = new CHttpRequest();
             $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
         }
+
+        // Если статус = 0, то поправить на статус = 0
+        if ($oms['status']=='0')
+            $oms['status']=='1';
 
         // Прочитаем название страховой компании
         $omsInsurance =  new Insurance();
