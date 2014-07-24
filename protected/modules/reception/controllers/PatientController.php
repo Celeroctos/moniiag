@@ -1253,9 +1253,10 @@ class PatientController extends Controller {
         }
 
         // Если статус = 0, то поправить на статус = 0
-        if ($oms['status']=='0')
-            $oms['status']=='1';
-
+        if ($oms['status']==0)
+        {
+            $oms['status']=1;
+        }
         // Прочитаем название страховой компании
         $omsInsurance =  new Insurance();
         $insuranceObject = $omsInsurance ->findByPk($oms['insurance']);
