@@ -1,0 +1,1 @@
+UPDATE mis.oms_types SET name = 'Единый полис ОМС' WHERE id = 5
