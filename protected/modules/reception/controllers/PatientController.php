@@ -1450,6 +1450,8 @@ class PatientController extends Controller {
             $totalPages = 0;
         }
 
+        //var_dump($items);
+        //exit();
         echo CJSON::encode(
             array(
                 'success' => true,

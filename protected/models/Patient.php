@@ -71,8 +71,8 @@ class Patient
         //exit();
 
         $result = $allPatients->queryAll();
-        var_dump($result);
-        exit();
+        //var_dump($result);
+        //exit();
         return $result;
     }
 
@@ -158,7 +158,9 @@ class Patient
             //у результирующего набора и добавим перед каждым »ƒ признак опосредованности 0 - не опосредованный
             //    1 - опосредованный
 
-            $onePatientResult['id'] = ($onePatientResult['is_mediate'].'_'.$onePatientResult['id']);
+            //var_dump($onePatientResult);
+            //exit();
+            $onePatientResult['id'] = ($onePatientResult['is_mediate'].'_'.$onePatientResult['link_id']);
 
             if ($onePatientResult['is_mediate']==1)
             {

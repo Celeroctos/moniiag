@@ -1,17 +1,5 @@
 $(document).ready(function() {
 
-    // Перенесено, убрать потом
-    /*function reduceCladrCode(codeToReduce)
-    {
-        result = '';
-
-        result = codeToReduce.substr(0,7);
-        if (codeToReduce.length>7)
-            result += '...';
-
-        return result;
-    }*/
-
     var choosers = $('.chooser');
     $(choosers).each(function() {
         (function(chooser) {
