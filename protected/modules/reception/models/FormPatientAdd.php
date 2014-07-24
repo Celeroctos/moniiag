@@ -5,6 +5,7 @@ class FormPatientAdd extends FormMisDefault
     public $insurance;
     public $region;
     public $policy;
+    public $omsSeries;
     public $lastName;
     public $firstName;
     public $middleName;
@@ -45,10 +46,11 @@ class FormPatientAdd extends FormMisDefault
         return array(
             array(
                 //'policy, lastName, firstName, gender, birthday, doctype, serie, docnumber, addressReg, address, contact, omsType, policyGivedate, status, privilege', 'required'
-                                'policy, lastName, firstName, gender, birthday, doctype, addressReg, address, contact, omsType, policyGivedate, status, privilege', 'required'
+                                //'policy, lastName, firstName, gender, birthday, doctype, addressReg, address, contact, omsType, policyGivedate, status, privilege', 'required'
+                                'lastName, firstName, gender, birthday, doctype, addressReg, address, contact, omsType, policyGivedate, status, privilege', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden', 'safe'
+                'policy, workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden, omsSeries', 'safe'
             ),
 			array(
 				'snils', 'SNILSValidator'
@@ -99,7 +101,7 @@ class FormPatientAdd extends FormMisDefault
             'privDocGivedate' => 'Дата выдачи',
             'profession' => 'Профессия',
             'policyGivedate' => 'Дата выдачи',
-            'policyEnddate' => 'Дата окончания действия',
+            'policyEnddate' => 'Дата погашения полиса',
             'status' => 'Статус'
         );
     }

@@ -151,16 +151,18 @@ class Oms extends MisActiveRecord {
                     'middle_name'
                 )
             ), array(
-                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
+                'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'normalized_oms_number', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
                 'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
             ), array(
                 'e_oms_number' => 'oms_number',
-                'k_oms_number' => 'oms_number'
+                'k_oms_number' => 'oms_number',
+                'normalized_oms_number' => 'oms_series_number'
             ), array(
                 'OR' => array(
                     'e_oms_number',
                     'k_oms_number',
-                    'oms_number'
+                    'oms_number',
+                    'normalized_oms_number'
                 )
             ));
         }
@@ -183,6 +185,8 @@ class Oms extends MisActiveRecord {
             $oms->limit($limit, $start);
         }
 
+        //var_dump($oms);
+        //exit();
         $omsPolices = $oms->queryAll();
 
         // ������ �������. ������ �� ������ ������ ���� ��������� �� ���������
@@ -212,6 +216,9 @@ class Oms extends MisActiveRecord {
            // exit();
             $oms2 = $connection->createCommand()
                 ->select('o.*,
+                            CASE WHEN COALESCE(o.oms_series,null) is null THEN oms_number
+                            ELSE o.oms_series || ' .  "' '"  . ' || o.oms_number
+                            END AS oms_number,
                             (
                                     SELECT
                                     m.card_number
@@ -274,6 +281,40 @@ class Oms extends MisActiveRecord {
         return $result;
     }
 
+    public static function findOmsByNumbers($number1,$number2,$number3,$numberNorm,$id=false)
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $oms = $connection->createCommand()
+                ->select('o.*')
+                ->from('mis.oms o')
+                ->where('(oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number)',
+                array(
+                    ':oms_number1' => $number1,
+                    ':oms_number2' => $number2,
+                    ':oms_number3' => $number3,
+                    ':oms_norm_number' => $numberNorm)
+            );
+
+            // Если ид не равно false - то прихреначиваем ещё одно условие к where
+            if ($id!=false)
+            {
+                $oms->andWhere('id != :policy_id', array(':policy_id'=>$id));
+            }
+
+            $result = $oms->queryRow();
+
+            return $result;
+        }
+        catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
                                $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings = false/*, $withMediate = false*/) {
 
@@ -305,16 +346,18 @@ class Oms extends MisActiveRecord {
                         'middle_name'
                     )
                 ), array(
-                    'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
+                    'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'normalized_oms_number' ,'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
                     'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
                 ), array(
                     'e_oms_number' => 'oms_number',
-                    'k_oms_number' => 'oms_number'
+                    'k_oms_number' => 'oms_number',
+                    'normalized_oms_number' => 'oms_series_number'
                 ), array(
                     'OR' => array(
                         'e_oms_number',
                         'k_oms_number',
-                        'oms_number'
+                        'oms_number',
+                        'normalized_oms_number'
                     )
                 ));
             }

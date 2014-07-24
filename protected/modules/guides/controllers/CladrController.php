@@ -115,12 +115,12 @@ class CladrController extends Controller {
             }
 
             $model = new CladrDistrict();
-            $num = $model->getRows($filters);
+            $num = $model->getRows($filters,false,false,false,false,false);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $districts = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $districts = $model->getRows($filters, $sidx, $sord, $start, $rows,false);
 
             echo CJSON::encode(
                 array(
@@ -207,12 +207,12 @@ class CladrController extends Controller {
             }
 
             $model = new CladrSettlement();
-            $num = $model->getNumRows($filters);
+            $num = $model->getNumRows($filters,false,false,false,false,false);
 
             $totalPages = ceil($num / $rows);
             $start = $page * $rows - $rows;
 
-            $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows,false);
             foreach($settlements as &$settlement) {
                 $district = CladrDistrict::model()->find('code_cladr = :code_cladr  AND code_region = :code_region_settlement',
                     array(

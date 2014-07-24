@@ -38,12 +38,18 @@ class SheduleController extends Controller {
                    $openedTab = 0; // Обычная запись
                 }
                 if(isset($_POST['templatesList'])) {
+                    //var_dump('!');
+                    //exit();
+                    // Шаблоны выбраны. Нужно их обработать.
+                    //$diagnosisRequare = false;
                     $templatesChoose = 0;
                     // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
                     $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
                     $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
-					$primaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);					
+                    $complicatingDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 2);
+                    $primaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
 					$secondaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
+
                     $medcardTemplates = new MedcardTemplate();
                     $referenceTemplatesList =  $medcardTemplates->getTemplatesByEmployee(Yii::app()->user->medworkerId, 1);
                     // Если приём был, то можно вынуть примечание к диагнозам
@@ -104,11 +110,12 @@ class SheduleController extends Controller {
         }
 
         // Если они не создались, это значит, что диагнозы пустые
-        if(!isset($primaryDiagnosis, $secondaryDiagnosis,$primaryClinicalDiagnosis, $secondaryClinicalDiagnosis)) {
+        if(!isset($primaryDiagnosis, $secondaryDiagnosis,$primaryClinicalDiagnosis, $secondaryClinicalDiagnosis,$complicatingDiagnosis)) {
             $primaryDiagnosis = array();
             $secondaryDiagnosis = array();
 			$primaryClinicalDiagnosis = array();
             $secondaryClinicalDiagnosis = array();
+            $complicatingDiagnosis = array();
         }
 
         $this->filterModel = new FormSheduleFilter();
@@ -154,6 +161,7 @@ class SheduleController extends Controller {
             'numberDoctorComments' => $doctorNumberComments,
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
+            'complicatingDiagnosis' => $complicatingDiagnosis,
 			'primaryClinicalDiagnosis' => $primaryClinicalDiagnosis,
 			'secondaryClinicalDiagnosis' => $secondaryClinicalDiagnosis,
             'note' => isset($note) ? $note : '',
@@ -554,13 +562,15 @@ class SheduleController extends Controller {
         if(isset($_GET['id']) && trim($_GET['id']) != '') {
             // Записать, что пациент принят
             $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
+            //var_dump($sheduleElement );
+            //exit();
             if($sheduleElement != null) {
                 // Проверим - установлен ли первичый диагноз. Если нет - выводим сообщение
                 $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
                 //var_dump($primaryDiagnosis);
                 //exit();
                 
-                if (count($primaryDiagnosis) == 0)
+                /*if (count($primaryDiagnosis) == 0)
                 {
                     echo CJSON::encode(array('success' => false,
 											'needMainDiagnosis' => '1',
@@ -568,7 +578,7 @@ class SheduleController extends Controller {
 					return;
                 }
                 else
-                {
+                {*/
                     $sheduleElement->is_accepted = 1;
                     $sheduleElement->time_end = date('h:j');
                     // Записать статус медкарты: медкарта вернулась обратно в регистратуру
@@ -597,7 +607,7 @@ class SheduleController extends Controller {
                                                      'text' => 'Ошибка сохранения буфера выгрузки ТАСУ.'));
                         }
                     }
-                }
+                //}
 
             }
         }

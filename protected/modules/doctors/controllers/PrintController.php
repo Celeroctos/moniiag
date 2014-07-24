@@ -99,6 +99,14 @@ class PrintController extends Controller {
         if($oms == null) {
             exit('Ошибка! Полиса не существует!');
         }
+
+        // Если у полиса есть поле "серия" - конкатэнируем его с номером через пробел и выводим.
+        //         Иначе выводим только номер без конкатенации
+        if ($oms->oms_series != '' && $oms->oms_series!= null)
+        {
+            $oms->oms_number = $oms->oms_series. " " .$oms->oms_number;
+        }
+
         // Выбираем предприятие по коду заведения в медкарте
         $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
         if($enterprise == null) {
@@ -119,16 +127,51 @@ class PrintController extends Controller {
         if ($oms['insurance']!='' && $oms['insurance']!=null)
         {
             $insurance = Insurance::model()->findByPk($oms->insurance);
+            $regions = InsuranceRegion::findRegions($oms['insurance']);
+           // var_dump($regions );
+           // exit();
+            if ($regions != null && count($regions)>0)
+            {
+                $regionId = $regions[0]['id'];
+                $omsRegion =  new CladrRegion();
+                $regionObject = $omsRegion ->findByPk($regionId );
+                $oms['region'] = $regionObject['name'];
+            }
+            else
+            {
+                $oms['region'] = '';
+            }
             $oms['insurance'] = $insurance->name;
         }
+        else
+        {
+            $oms['region'] = '';
+        }
 
+        // Смотрим - какой тип и статус у полиса
+        $statusId = $oms['status'];
+        if ($statusId == 0)
+            $statusId = 1;
+
+        $status = OmsStatus::model()->findByPk($statusId);
+        $oms['status'] = $status['name'];
+
+        $typeId = $oms['type'];
+        if ($typeId == 0)
+            $typeId = 1;
+
+        $type = OmsType::model()->findByPk($typeId);
+        $oms['type'] = $type ['name'];
+        //var_dump($oms);
+        //exit();
         // Прочитаем регион
-        if ($oms['region']!='' && $oms['region']!=null)
+        /*if ($oms['region']!='' && $oms['region']!=null)
         {
             $omsRegion =  new CladrRegion();
             $regionObject = $omsRegion ->findByPk($oms['region']);
             $oms['region'] = $regionObject['name'];
-        }
+        }*/
+
         foreach($privileges as &$priv) {
             $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
             $privModel = Privilege::model()->findByPk($priv->privilege_id);
@@ -241,22 +284,33 @@ class PrintController extends Controller {
 		$sortedElements = $categorieWidget->dividedCats;
 
         // Вытащим диагнозы
+        //var_dump($greetingId);
+        //exit();
+
         $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $cd = PatientDiagnosis::model()->findDiagnosis($greetingId, 2);
         $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+
+        //var_dump($cd);
+        //exit();
 
         // Соберём их в об'ект
         $diagnosises = array(
             'primary' => $pd,
             'secondary' => $sd,
             'clinicalPrimary' => $cpd,
-            'clinicalSecondary' => $csd
+            'clinicalSecondary' => $csd,
+            'complicating' => $cd
 
         );
 
-       // var_dump($diagnosises );
-       // exit();
+        //var_dump($diagnosises );
+        //exit();
+
+        //var_dump($sortedElements);
+        //exit();
 		if($greetingIn === false) {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');

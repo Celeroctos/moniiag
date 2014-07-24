@@ -42,6 +42,20 @@ $(document).ready(function() {
     );
 
 
+    function getSelectedRegionsIds(chooserId)
+    {
+        result = new Array();
+        ids = $.fn[chooserId].getChoosed();
+        console.log(ids);
+        // Перебираем массив ids и записываем ид-шники из него в массив result
+        for (i=0;i<ids.length;i++)
+        {
+            result.push(ids[i].id);
+        }
+
+        return result;
+    }
+
     $("#insurance-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
@@ -49,6 +63,10 @@ $(document).ready(function() {
             // Перезагружаем таблицу
             $("#insurances").trigger("reloadGrid");
             $("#insurance-add-form")[0].reset(); // Сбрасываем форму
+            // очищаем чюююююузер
+            $('#insuranceRegionsChooserAdd .choosed').empty();
+            // очищаем варианты
+            $('#insuranceRegionsChooserAdd .variants').empty();
         } else {
 
             // Удаляем предыдущие ошибки
@@ -66,7 +84,21 @@ $(document).ready(function() {
         }
     });
 
+    $('#insuranceRegionsChooserAdd').on('change', function(){
+        console.log('Значение чюзера изменилось');
+        valuesArray = getSelectedRegionsIds('insuranceRegionsChooserAdd');
+        console.log(valuesArray);
+        $('#insuranceRegionsHiddenAdd').val(   $.toJSON(valuesArray) );
+        // Теперь надо заэнкодить значение чюзера и записать в специальное скрытое поле
+    });
 
+    $('#insuranceRegionsChooserEdit').on('change', function(){
+        console.log('Значение чюзера изменилось');
+        valuesArray = getSelectedRegionsIds('insuranceRegionsChooserEdit');
+        console.log(valuesArray);
+        // Теперь надо заэнкодить значение чюзера и записать в специальное скрытое поле
+        $('#insuranceRegionsHiddenEdit').val(   $.toJSON(valuesArray) );
+    });
 
     $("#insurance-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
@@ -124,6 +156,29 @@ $(document).ready(function() {
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+                        }
+
+                        // Очищаем чюююузер
+                        $('#insuranceRegionsChooserEdit .choosed').empty();
+                        // очищаем варианты
+                        $('#insuranceRegionsChooserEdit .variants').empty();
+
+                        // Вставляем регионы в чюююююузер
+                        if (data.data.regions!=undefined)
+                        {
+                            regionsArr = data.data.regions;
+                            // Перебираем регионы
+                            for (i=0;i<regionsArr.length;i++)
+                            {
+                               // $('#insuranceRegionsChooserEdit .choosed ul').append($('<li>').text('[' + reduceCladrCode( row.code_cladr ) + '] ' +row.name));
+                                $('#insuranceRegionsChooserEdit .choosed').html(
+                                    $('#insuranceRegionsChooserEdit .choosed').html()+
+                                    "<span class=\"item\"" +
+                                        "id=\"r"+ regionsArr[i].region_id +"\">" + '['+$.fn.reduceCladrCode( regionsArr[i].code_cladr )+ '] ' +
+                                        regionsArr[i].name +
+                                        "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                                );
+                            }
                         }
                         $("#editInsurancePopup").modal({
 

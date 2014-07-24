@@ -622,13 +622,15 @@ class SheduleController extends Controller {
             $oldShedule = SheduleSettedBe::model()->find('id = :id', array(':id'=>$sheduleId));
 
             // Выбираем приёмы, которые попадали раньше в промежуток
-            $oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end AND patient_day>=current_date',
+            $oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end
+                AND (patient_day>=current_date OR ((patient_time>=current_time)AND(patient_day=current_date)))',
                 array(':doctor_id' => $doctorId,':date_begin' => $oldShedule['date_begin'],
                     ':date_end' => $oldShedule['date_end']
                 )
             );
             // Выбираем приёмы, которые попадают в промежуток теперь
-            $newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end AND patient_day>=current_date',
+            $newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end
+                AND (patient_day>=current_date OR ((patient_time>=current_time)AND(patient_day=current_date)))',
                 array(':doctor_id' => $doctorId,':date_begin' => $dayBegin,
                     ':date_end' => $dayEnd
                 )

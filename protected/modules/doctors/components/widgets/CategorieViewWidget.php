@@ -755,13 +755,16 @@ class CategorieViewWidget extends CWidget {
 		{
 			$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
-			$cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
+            $cd = PatientDiagnosis::model()->findDiagnosis($greeting, 2);
+            $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
+
 		}
 		else
 		{
 			$pd = array();
 			$sd = array();
+            $cd = array();
 			$cpd = array();
 			$csd = array();
 			
@@ -770,6 +773,7 @@ class CategorieViewWidget extends CWidget {
             'categories' => $this->historyTree,
             'primaryDiagnosis' => $pd,
             'secondaryDiagnosis' => $sd,
+            'complicating' => $cd,
 			'clinicalPrimaryDiagnosis' => $cpd,
 			'clinicalSecondaryDiagnosis' => $csd,
             'model' => $this->formModel,
@@ -794,6 +798,9 @@ class CategorieViewWidget extends CWidget {
 			//     него template_name и templateid
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
+
+
+
 			// Если в templates нет ИД шаблона - добавляем
 			if (!isset($templates[$tId]))
 			{
@@ -801,6 +808,13 @@ class CategorieViewWidget extends CWidget {
 					'name' => $tName,
 					'cats' => array()
 				);
+
+                // Если у верхнего элемента есть template_page_id - берём его в шаблон
+                if (isset($nodeTopLevel['element']['template_page_id']))
+                {
+                    $templates[$tId]['template_page_id'] = $nodeTopLevel['element']['template_page_id'];
+                }
+
 			}
 			// Теперь добавим категорию в соответвующий шаблон
 			$templates[$tId]['cats'][] = $nodeTopLevel;
@@ -1008,7 +1022,8 @@ class CategorieViewWidget extends CWidget {
 			$nodeContent['name'] = $historyElement['categorie_name'];
 			$nodeContent['template_id'] = $historyElement['template_id'];
 			$nodeContent['template_name'] = $historyElement['template_name'];
-			$nodeContent['element_id'] = -1;
+            $nodeContent['template_page_id'] = $historyElement['template_page_id'];
+            $nodeContent['element_id'] = -1;
             $nodeContent['empty'] = true;
 
         }

@@ -153,6 +153,7 @@
             'url' : '/index.php/reception/patient/getisomswithnumber',
             'data' : {
                 'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
+                'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
                 'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
             },
             'cache' : false,
@@ -189,8 +190,25 @@
         });
     });
 
+    $('.add-patient-submit input').on('click', function(e){
+        // Сначала проверим полис
+        isRightOmsNumber = $.fn.checkOmsNumber();
+        if (!isRightOmsNumber)
+        {
+            return false;
+        }
+    });
+
     cancelSaving = false;
     $('#patient-oms-edit-form #saveOms').on ('click', function (e){
+
+        // Сначала проверим полис
+        isRightOmsNumber = $.fn.checkOmsNumber();
+        if (!isRightOmsNumber)
+        {
+            return false;
+        }
+
         //return false;
         // Запрашиваем аяксом на существование данного полиса
 
@@ -198,6 +216,7 @@
             'url' : '/index.php/reception/patient/getisomswithnumber',
             'data' : {
                 'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
+                'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
                 'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
             },
             'cache' : false,
@@ -558,7 +577,18 @@
 
     // Дата окончания действия полиса: только для временных полисов
     $('#omsType').on('change', function(e) {
-        if($(this).val() == 1) {
+        if($(this).val() == 3 || $('#status').val()==3) { // Если тип не временный, но статус может быть погашен,
+            // поэтому проверка на поле статус
+            $('.policy-enddate').show();
+        } else {
+            $('.policy-enddate').hide();
+        }
+    });
+
+    // Дата окончания действия полиса: только для погашенных полисов
+    $('#status').on('change', function(e) {
+        if($(this).val() == 3 || $('#omsType').val()==3) { // Если статус не временный, но тип может быть временный -
+            //    поэтому вставлено второе условие
             $('.policy-enddate').show();
         } else {
             $('.policy-enddate').hide();
@@ -645,7 +675,7 @@
 
     $('#addressReg, #address').on('keydown', function(e) {
         if(e.keyCode == 13) {
-            return false;
+            //return false;
         }
     });
 
@@ -763,6 +793,15 @@
                     id="r<?php echo $ins['id']; ?>"><?php echo $dia['name']; ?>
                         <span class="glyphicon glyphicon-remove"></span></span>
                        */
+                    // Закроем у чюююууузеров блок "variants" и очистим поля ввода
+                    $('#insuranceChooser input').val('');
+                    $('#regionPolicyChooser input').val('');
+
+                    $('#insuranceChooser .variants').addClass('no-display');
+                    $('#insuranceChooser .variants').css('display', '');
+                    $('#regionPolicyChooser .variants').addClass('no-display');
+                    $('#regionPolicyChooser .variants').css('display', '');
+
                     if (insId!='' && insId!=null)
                     {
                         $('#insuranceChooser .choosed').html(
@@ -801,14 +840,16 @@
                     }
                     else
                     {
-                        $('#regionPolicyChooser .choosed').empty();
+                        //$('#regionPolicyChooser .choosed').empty();
+                        $.fn['regionPolicyChooser'].clearAll();
+
                         $('#regionPolicyChooser input').removeAttr('disabled', '');
 
 
                         $('#policyRegionHidden input').val('');
                     }
 
-
+                    $(document).trigger('omsnumberpopulate');
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
@@ -843,14 +884,22 @@
                             $.fn['regionChooser'].addChoosed($('<li>').prop('id', 'r' + data.region[0].id).text(data.region[0].name), data.region[0]);
                         }
                         if(data.district != null) {
-                            $.fn['districtChooser'].addChoosed($('<li>').prop('id', 'r' + data.district[0].id).text(data.district[0].name), data.district[0]);
+                            if (data.district [0]!=undefined && data.district [0]['code_cladr']!='000')
+                            {
+                                $.fn['districtChooser'].addChoosed($('<li>').prop('id', 'r' + data.district[0].id).text(data.district[0].name), data.district[0]);
+                            }
                         }
                         if(data.settlement != null) {
-                            $.fn['settlementChooser'].addChoosed($('<li>').prop('id', 'r' + data.settlement[0].id).text(data.settlement[0].name), data.settlement[0]);
+                            if (data.settlement[0]!=undefined && data.settlement[0]['code_cladr']!='000000')
+                            {
+                                $.fn['settlementChooser'].addChoosed($('<li>').prop('id', 'r' + data.settlement[0].id).text(data.settlement[0].name), data.settlement[0]);
+                            }
                         }
                         if(data.street != null) {
                             $.fn['streetChooser'].addChoosed($('<li>').prop('id', 'r' + data.street[0].id).text(data.street[0].name), data.street[0]);
                         }
+
+                        console.log(data);
 
                         if(data.house != null) {
                             $('#editAddressPopup #house').val(data.house);
@@ -988,7 +1037,7 @@
 
     $('.blockEdit').on('keydown', function(e) {
         console.log(e.keyCode);
-        if(e.keyCode != 9) {
+        if(e.keyCode != 9 && e.keyCode != 13) {
             return false;
         }
     });

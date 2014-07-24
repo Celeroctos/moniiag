@@ -2,6 +2,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/ajaxbutton.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/motionHistory.js" ></script>
+<!--<script type="text/javascript" src="<?php /* echo Yii::app()->request->baseUrl; */?>/js/reception/omsNumber.js" ></script>-->
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
 <h4>Поиск пациента</h4>
@@ -379,7 +380,9 @@ $form = $this->beginWidget('CActiveForm', array(
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <?php echo CHtml::ajaxSubmitButton(
+                <?php
+                //echo CHtml::submitButton(
+                echo CHtml::ajaxSubmitButton(
                     'Сохранить',
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
                     array(
