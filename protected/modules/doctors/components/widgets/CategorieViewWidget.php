@@ -773,7 +773,7 @@ class CategorieViewWidget extends CWidget {
             'categories' => $this->historyTree,
             'primaryDiagnosis' => $pd,
             'secondaryDiagnosis' => $sd,
-            'complicatingDiagnosis' => $cd,
+            'complicating' => $cd,
 			'clinicalPrimaryDiagnosis' => $cpd,
 			'clinicalSecondaryDiagnosis' => $csd,
             'model' => $this->formModel,

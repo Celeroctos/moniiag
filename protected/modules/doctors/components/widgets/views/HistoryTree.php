@@ -26,7 +26,6 @@ if (count($primaryDiagnosis)>0)
 	?></ul><?php
 }
 
-
 // Осложнения:
 if (count($complicating)>0)
 {
