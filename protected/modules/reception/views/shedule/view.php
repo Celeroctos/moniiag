@@ -87,8 +87,8 @@
 				  </div>
 			  </div>
 		  </div>
-            <div class="form-group chooser no-display" id="mediateChooser">
-                <label for="mediatePatient" class="col-xs-4 control-label">Опосредованный пациент (Enter - добавить)</label>
+            <div class="form-group chooser no-display" id="writtenPatientChooser">
+                <label for="mediatePatient" class="col-xs-4 control-label">Пациенты: </label>
                 <div class="col-xs-6">
                     <input type="text" class="form-control" autofocus id="mediatePatient" placeholder="ФИО пациента">
                     <ul class="variants no-display">

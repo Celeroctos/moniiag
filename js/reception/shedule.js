@@ -42,12 +42,12 @@
 
     $('#patientCombo').on('change', function(e) {
         if($(this).val() == 0) {
-            $('#patientChooser').addClass('no-display');
-            $('#mediateChooser').addClass('no-display');
+           // $('#patientChooser').addClass('no-display');
+            $('#writtenPatientChooser').addClass('no-display');
             $('#status').prop('disabled', false);
         } else {
-            $('#patientChooser').removeClass('no-display');
-            $('#mediateChooser').removeClass('no-display');
+          //  $('#patientChooser').removeClass('no-display');
+            $('#writtenPatientChooser').removeClass('no-display');
             $('#status').prop('disabled', true);
         }
     });

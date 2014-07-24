@@ -1428,6 +1428,38 @@ class PatientController extends Controller {
         return $idPerYear.'/'.$code;
     }
 
+    // Ищет всех записанных
+    public function actionSearchAllWritten() {
+        $filters = $this->checkFilters();
+
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+
+        $somePatientToSelect = new Patient();
+        $num = $somePatientToSelect->getNumRowsWritten($filters, false, false, false, false);
+
+        if(count($num) > 0) {
+            $totalPages = ceil($num / $rows);
+            $start = $page * $rows - $rows;
+            $items = $somePatientToSelect->getRowsWritten($filters, $sidx, $sord, $start, $rows);
+        } else {
+            $items = array();
+            $totalPages = 0;
+        }
+
+        echo CJSON::encode(
+            array(
+                'success' => true,
+                'rows' => $items,
+                'total' => $totalPages,
+                'records' => count($num)
+            )
+        );
+    }
+
     public function actionSearchMediate() {
         $filters = $this->checkFilters();
 
