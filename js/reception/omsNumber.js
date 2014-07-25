@@ -107,8 +107,10 @@ $(document).ready(function() {
             // Если тип полиса - постоянный - убираем пробелы
             if ($('#omsType').val()== 5)
             {
-                $('#policy').val(    $('#policy').val().replace(' ','')    );
-                $(inputsToPut).find('input').val(    $(inputsToPut).find('input').val().replace(' ','')    );
+
+
+                $('#policy').val(    $('#policy').val().trim().replace(/\s/g,'')    );
+                $(inputsToPut).find('input').val(    $(inputsToPut).find('input').val().trim().replace(/\s/g,'')    );
             }
         }
     });
@@ -330,4 +332,6 @@ $(document).ready(function() {
         }
     }
 
+    // Вызываем omsnumberpopulate, чтобы вывести значение номера, если оно протащено
+    $(document).trigger ('omsnumberpopulate');
 });

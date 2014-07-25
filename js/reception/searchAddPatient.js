@@ -1132,4 +1132,6 @@
             $('#patient-search-submit').trigger('click');
         }
     });
+
+
 });
