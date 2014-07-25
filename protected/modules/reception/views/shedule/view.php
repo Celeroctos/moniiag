@@ -97,7 +97,7 @@
                     </div>
                 </div>
             </div>
-		  <div class="form-group">
+		  <div class="form-group onlyWithoutMedcardContainer">
 			  <label for="status" class="col-xs-8 control-label required">Только опосредованные пациенты (без ЭМК)</label>
 			  <div class="col-xs-4">
 				  <input type="checkbox" name="status" id="status">

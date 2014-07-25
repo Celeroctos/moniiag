@@ -45,10 +45,12 @@
            // $('#patientChooser').addClass('no-display');
             $('#writtenPatientChooser').addClass('no-display');
             $('#status').prop('disabled', false);
+            $('.onlyWithoutMedcardContainer').removeClass('no-display');
         } else {
           //  $('#patientChooser').removeClass('no-display');
             $('#writtenPatientChooser').removeClass('no-display');
             $('#status').prop('disabled', true);
+            $('.onlyWithoutMedcardContainer').addClass('no-display');
         }
     });
 
@@ -70,13 +72,22 @@
         }
 
         if(forPatients == 1) {
-            var choosedPatients = $.fn['patientChooser'].getChoosed();
-            for(var i = 0; i < choosedPatients.length; i++) {
-                patientIds.push(choosedPatients[i].id);
-            }
-            var choosedMediate = $.fn['mediateChooser'].getChoosed();
-            for(var i = 0; i < choosedMediate.length; i++) {
-                mediateIds.push(choosedMediate[i].id);
+            // Все выбранные пациенты
+            var allChoosedPatients = $.fn['writtenPatientChooser'].getChoosed();
+
+            // Перебираем пациентов
+            for (var i = 0; i < allChoosedPatients.length; i++)
+            {
+                // Смотрим - если второй символ в поле id - 1, то поциэнт опосредованный и его нужно запихнуть в массив
+                //     опосредованных, иначе - в массив обычных
+                if ( allChoosedPatients[i].id.substr(0,1) == '1' )
+                {
+                    mediateIds.push(   allChoosedPatients[i].id.substr(2)  );
+                }
+                else
+                {
+                    patientIds.push(   allChoosedPatients[i].id.substr(2)  );
+                }
             }
         }
 

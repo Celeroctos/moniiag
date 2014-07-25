@@ -83,7 +83,7 @@ class Patient
     }
 
     public function getRowsWritten($filters = false, $sidx = false, $sord = false, $start = false, $limit = false) {
-        $allPatients = $this->getPatientFromShedule($filters, $sidx = false, $sord = false, $start = false, $limit = false);
+        $allPatients = $this->getPatientFromShedule($filters, $sidx, $sord, $start, $limit);
 
         // Теперь имея ссылку на пациентов (номер карты или номер опосредованного пациента) и ссылку на таблицу -
         //   Запрашиваем данные из разных таблиц

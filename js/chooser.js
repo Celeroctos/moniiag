@@ -107,9 +107,9 @@ $(document).ready(function() {
                         $(chooser).find('.variants li:eq(' + current + ')').addClass('active');
                         if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('displayFunc')) {
                             var toDisplay = choosersConfig[$(chooser).prop('id')].displayFunc(currentElements[current]);
-                            //$(chooser).find('input').val(toDisplay);
+                           // $(chooser).find('input').val(toDisplay);
                         } else {
-                            //$(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                          //  $(chooser).find('input').val($(chooser).find('.variants li.active').text());
                         }
                     }
 
@@ -579,12 +579,29 @@ $(document).ready(function() {
         'writtenPatientChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', телефон ' + row.phone));
+                if (row.is_mediate == 0)
+                {
+                    // Не опосредованный пациент
+                    if(row.card_number != null) {
+                        $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', номер карты ' + row.card_number));
+                    } else {
+                        $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
+                    }
+                }
+                else
+                {
+                    // Опосредованный пациент
+                    if (row.is_mediate == 1)
+                    {
+                        $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', телефон ' + row.phone));
+                    }
+
+                }
             },
             'displayFunc' : function(row) {
-                return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+                    return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/SearchAllWritten/?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'url' : '/index.php/reception/patient/SearchAllWritten/?page=1&rows=10&sidx=last_name&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
