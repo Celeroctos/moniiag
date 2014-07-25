@@ -35,7 +35,40 @@ $(document).ready(function() {
                 $(this).find('input').focus();
             };
 
+            var keyDownFunc = function(e) {
+                // Смотрим - если нажали на таб - надо прейти на следующую ячейку
+                if (e.keyCode == 9)
+                {
+                    // Ищем родителя у текущего элемента
+                    currentControlTable =  $(this).parents('.controltable')[0];
+
+                    // Дальше надо найти следующий элемент с контентом в таблице и затриггерить событие click для ячейки
+                    tdFromTable = $(currentControlTable).find('td[class^="content"]');
+                    // Найдём ячейку, в котором мы находимся
+                    i = 0;
+                    while ( $(tdFromTable[i]).find('input').length<=0 && (i<tdFromTable.length) )
+                    {
+                        i++;
+                    }
+
+                    // Мы находимся в i-ой ячейке
+                    // Если i = length-1, то идём в первую. Иначе - в следующую (i+1)
+                    if (i == tdFromTable.length -1 )
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        $(tdFromTable[i+1]).click();
+                    }
+
+                    e.preventDefault();
+                    return false;
+                }
+            };
+
             $(control).find('td[class^="content"]').on('click', clickFunc);
+            $(control).find('td[class^="content"]').on('keydown', keyDownFunc);
 
             // Если при инициализации в контрол было что-то вписано, нужно вписать в эту таблицу
             var jsonValue = $(control).parent().find('input[type="hidden"]').val();
