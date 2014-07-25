@@ -367,6 +367,7 @@ class MedcardElementForPatient extends MisActiveRecord {
                 return $results;
         } catch(Exception $e) {
             echo $e->getMessage();
+            exit();
         }
     }
 }
