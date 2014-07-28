@@ -10,12 +10,20 @@
         <td class="first" colspan="6">Медицинская карта амбулаторного больного № <strong class="bigger"><?php echo $medcard->card_number; ?></strong></td>
     </tr>
     <tr>
-        <td colspan="2" class="first">1. Страховая мед. организация</td>
-        <td colspan="4" strong class="big"><?php echo $oms->insurance; ?></td>
+        <td class="first">1. Страховая мед. организация</td>
+        <td colspan="5" strong class="big2"><?php echo $oms->insurance; ?><nobr><?php
+        if ($oms->region!='' && $oms->region!=null)
+        {
+            echo (' ('.$oms->region.')');
+        }
+        ?></nobr></td>
     </tr>
     <tr>
-        <td colspan="2" class="first">2. Номер страхового полиса</td>
-        <td colspan="4" class="big"><span class="big"><?php echo $oms->oms_number; ?></td>
+        <td class="first">2. Номер страхового полиса</td>
+        <td colspan="2" class="big"><nobr><span class="big"><?php echo $oms->oms_number; ?></span></nobr></td>
+        <td colspan="3" class="big"><nobr><span class="big2"><strong>
+                        <?php echo $oms->type; ?>
+                    </strong> Статус: <strong><?php echo $oms->status; ?></strong></span></nobr></td>
     </tr>
     <tr>
 
@@ -40,7 +48,7 @@
 
     <tr>
         <td colspan="1" class="first"></td>
-        <td class="first">4. СНИЛС</td>
+        <td class="first"><nobr>4. СНИЛС</nobr></td>
         <td colspan="1" class="big"><nobr><strong class="big"><?php echo $medcard->snils; ?><nobr></td>
         <td class="first">Участок</td>
         <td class="big"><strong class="big"></td>
@@ -69,14 +77,14 @@
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><strong><span  class="medium2"><?php echo $medcard->address_reg; ?></strong></td>
+        <td colspan="6" class="medium3"><strong><span  class="medium3"><?php echo $medcard->address_reg; ?></strong></td>
     </tr>
     <tr>
         <td colspan="6" class="first">11. Адрес регистрации по месту пребывания</td>
 
     </tr>
     <tr>
-        <td colspan="6" class="medium2"><span class="medium2"><?php echo $medcard->address; ?></td>
+        <td colspan="6" class="medium3"><span class="medium3"><?php echo $medcard->address; ?></td>
     </tr>
     <tr>
         <td class="first">12. Телефон</td>

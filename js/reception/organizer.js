@@ -50,6 +50,10 @@
             params.order_number = $(li).prop('id').substr(1);
         }
 
+        if(globalVariables.hasOwnProperty('cancelledGreeting')) {
+            params.cancelledGreetingId = globalVariables.cancelledGreeting;
+        }
+
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
             'data' : params,
@@ -150,12 +154,19 @@
         });
 
         $(span).on('click', function(e) {
-            $(li).popover('hide');
+            //$(li).popover('hide');
+            $(li).popover('destroy');
             $('.organizer').trigger('resetClickedTime');
             $(li).removeClass('withPatient-pressed');
             e.stopPropagation();
         });
 
+        // Перед этим вызовом popover('show') надо вызвать destroy для всех предыдущих поповеров
+        // ------------------>
+        //$($('.popover').parents()[0]).popover('destroy');
+
+        //$($(li).parents('ul.patientList').find('.popover').parents()[0]).popover('destroy');
+        // ------------------>
         $(li).popover('show');
         $(li).find('.popover span.glyphicon').remove();
         $(li).find('.popover').css({
@@ -378,10 +389,10 @@
                                                     html: true,
                                                     placement: 'bottom',
                                                     title: title + 'врача ' + fio + ' на ' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear(),
-                                                    delay: {
+                                                    /*delay: {
                                                         show: 300,
                                                         hide: 300
-                                                    },
+                                                    },*/
                                                     content: function() {
                                                         var ulInPopover = $('<ul>').addClass('patientList');
                                                         for(var j = 0; j < data.data.length; j++) {
@@ -428,6 +439,7 @@
                                                                         if(clickedTimeLi != null) {
                                                                             $(clickedTimeLi).find('.popover').remove();
                                                                             $(clickedTimeLi).removeClass('pressed withPatient-pressed');
+                                                                            $(clickedTimeLi).removeClass('pressed');
                                                                         }
 
                                                                         clickedTimeLi = $(li);
@@ -476,6 +488,7 @@
                                                                         if(clickedTimeLi != null) {
                                                                             $(clickedTimeLi).find('.popover').remove();
                                                                             $(clickedTimeLi).removeClass('withPatient-pressed pressed');
+                                                                           // $(clickedTimeLi).removeClass('pressed');
                                                                         }
 
                                                                         clickedTimeLi = $(li);
@@ -517,7 +530,8 @@
                                                 });
 
                                                 $(span).on('click', function(e) {
-                                                    $(li).popover('hide');
+                                                    //$(li).popover('hide');
+                                                    $(li).popover('destroy');
                                                     $(li).removeClass('full-pressed empty-pressed notfull-pressed');
                                                     $('.organizer').trigger('resetClickedDay');
                                                     $('.organizer').trigger('resetClickedTime');

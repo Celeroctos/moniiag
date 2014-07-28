@@ -1,6 +1,6 @@
 <?php
 class SheduleByDay extends MisActiveRecord {
-    public static function model($className=__CLASS__)
+    /*public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
@@ -174,7 +174,7 @@ public function getGreetingsByIds(
         } catch(Exception $e) {
             echo $e->getMessage();
         }
-    }
+    }*/
 }
 
 ?>

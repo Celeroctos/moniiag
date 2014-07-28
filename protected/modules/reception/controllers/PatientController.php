@@ -16,6 +16,65 @@ class PatientController extends Controller {
         ));
     }
 
+    // Привязать карту к другому полису
+    public function actionRebindOmsMedcard()
+    {
+        $cardNumber = '';
+        $newPolicyId = 0;
+
+        if (isset($_GET['cardNumber']) && isset($_GET['newOmsId']))
+        {
+            $cardNumber = $_GET['cardNumber'];
+            $newPolicyId = $_GET['newOmsId'];
+
+            // Сначала проверим - есть ли у полиса, на который мы перекидываем карта с тем же годом. если она есть - то
+            //   перекидывать нельзя, нужно использовать ту карту
+
+            $yearOfCard = substr($cardNumber, count($cardNumber)-3);
+
+           // var_dump($yearOfCard );
+         //   exit();
+
+            // Найдём карту с номером полиса, равным тому, на который мы перекидываем и с тем же годом
+            $oldMedcards = Medcard::model()->find("policy_id = :oms AND card_number like '%".$yearOfCard."'",
+                array(':oms' => $newPolicyId)
+            );
+
+            if ($oldMedcards!=null)
+            {
+                echo CJSON::encode(array('success' => 'false',
+                                         'errors' => array (
+                                             'Для данного полиса уже есть карта данного года.'
+
+                                         )
+                ));
+                exit();
+            }
+
+            // 1. Выполняем перепривязку медкарты
+            $cardToRebind = Medcard::model()->find('card_number = :card', array ( ':card' =>  $cardNumber ) );
+            $oldPolicyId = $cardToRebind['policy_id'];
+            $cardToRebind['policy_id'] = $newPolicyId;
+            $cardToRebind->save();
+
+            // 2. Пишем в таблицу rebinded_cards о смене полиса у карты
+            $rebindLog = new RebindedMedcard();
+            $rebindLog->card_number = $cardNumber;
+            $rebindLog->old_policy = $oldPolicyId;
+            $rebindLog->new_policy = $newPolicyId;
+            $rebindLog->changing_timestamp =  date('Y-m-d H:i:s');
+            $userToWrite = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
+            $rebindLog->worker_id = $userToWrite['employee_id'];
+            $rebindLog->save();
+            echo CJSON::encode(array('success' => 'true'));
+        }
+        else
+        {
+            echo CJSON::encode(array('success' => 'false'));
+        }
+
+    }
+
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()
     {
@@ -29,6 +88,261 @@ class PatientController extends Controller {
 		    'omsid' => $omsId
 	    ));
     }
+
+    public function actionViewRewrite()
+    {
+        $this->render('rewriting', array());
+
+
+    }
+
+
+    public function actionGetPatientsToRewrite() {
+        $sheduleElements = array();
+        $mediateElements = array();
+
+        if(isset($_GET['status'])) {
+            $mediateOnly = $_GET['status'];
+        } else {
+            $mediateOnly = 0;
+        }
+
+        $filters = array(
+            'groupOp' => 'AND',
+            'rules' => array()
+        );
+
+        // Далее проверяем - если есть фильтрующие поля, то записываем их в фильтры
+        if (isset ( $_GET['date']) && $_GET['date']!='')
+        {
+            array_push($filters['rules'],
+                array(
+                    'field' => 'patient_day',
+                    'op' => 'eq',
+                    'data' => $_GET['date']
+                )
+            );
+        }
+        if($_GET['forDoctors'] == 1)
+        {
+            $dataD = CJSON::decode($_GET['doctors']);
+            array_push($filters['rules'],
+            array(
+                'field' => 'doctors_ids',
+                'op' => 'in',
+                'data' => $dataD
+            ));
+        }
+        if ($_GET['forPatients'] == 1)
+        {
+            $dataP = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
+            array_push($filters['rules'],
+                array(
+                    'field' => 'patients_ids',
+                    'op' => 'in',
+                    'data' => $dataP
+                ));
+            array_push($filters['rules'],
+                array(
+                    'field' => 'mediates_ids',
+                    'op' => 'in',
+                    'data' => $dataM
+                ));
+
+
+        }
+        $sheduleElements = CancelledGreeting::model()->getRows($filters, false, false,false,false, $mediateOnly);
+        $num = count($sheduleElements);
+        // Разбираем расписание на живую очередь и обычное раписание
+        $sheduleElementsWaitingLine = array();
+        $sheduleElementsWriting = array();
+        foreach($sheduleElements as $key => $element) {
+            if($element['order_number'] != null) {
+                $sheduleElementsWaitingLine[] = $element;
+            } else {
+                $sheduleElementsWriting[] = $element;
+            }
+        }
+        if($num > 0) {
+            // Первая сортировка идёт всегда по врачу
+            $sheduleElementsWaitingLine = SheduleByDay::sortSheduleElements($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = SheduleByDay::sortSheduleElements($sheduleElementsWriting);
+
+            // Вторая сортировка - по времени
+            $sheduleElementsWaitingLine = SheduleByDay::makeClusters($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = SheduleByDay::makeClusters($sheduleElementsWriting);
+        }
+        // Теперь выясняем кабинет для каждого пациента. Для этого смотрим дату, смотрим расписание врача
+        $cabinets = array();
+        foreach($sheduleElements as $element) {
+            if(!isset($cabinets[$element['doctor_id']])) {
+                $weekday = date('w', strtotime($_GET['date']));
+                $cabinetElement = SheduleSetted::model()->getCabinetPerWeekday($weekday, $element['doctor_id']);
+                if($cabinetElement != null) {
+                    $cabinets[$element['doctor_id']] = array('cabNumber' => $cabinetElement['cab_number'],
+                        'description' => $cabinetElement['description']);
+                } else {
+                    $cabinets[$element['doctor_id']] = null;
+                }
+            }
+        }
+        echo CJSON::encode(array('success' => true,
+            'data' => array('greetings' => $sheduleElements,
+                'cabinets' => $cabinets,
+                'greetingsOnlyByWriting' => $sheduleElementsWriting,
+                'greetingsOnlyWaitingLine' => $sheduleElementsWaitingLine)));
+
+
+
+        //var_dump($filters);
+        //exit();
+
+        // Если есть дата - записываем её в правила
+/*
+
+
+
+        if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
+            $dataD = CJSON::decode($_GET['doctors']);
+            $dataP = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'doctors_ids',
+                        'op' => 'in',
+                        'data' => $dataD
+                    ),
+                    array(
+                        'field' => 'patients_ids',
+                        'op' => 'in',
+                        'data' => $dataP
+                    ),
+                    array(
+                        'field' => 'mediates_ids',
+                        'op' => 'in',
+                        'data' => $dataM
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+
+
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        } elseif($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 0) {
+            $data = CJSON::decode($_GET['doctors']);
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'doctors_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        } elseif($_GET['forDoctors'] == 0 && $_GET['forPatients'] == 1) {
+            $data = CJSON::decode($_GET['patients']);
+            $dataM = CJSON::decode($_GET['mediates']);
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patients_ids',
+                        'op' => 'in',
+                        'data' => $data
+                    ),
+                    array(
+                        'field' => 'mediates_ids',
+                        'op' => 'in',
+                        'data' => $dataM
+                    ),
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        } else {
+            $filters = array(
+                'groupOp' => 'AND',
+                'rules' => array(
+                    array(
+                        'field' => 'patient_day',
+                        'op' => 'eq',
+                        'data' => $_GET['date']
+                    )
+                )
+            );
+
+            $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
+        }
+
+        $result = array();
+        $num = count($sheduleElements);
+        if(isset($mediateElements)) {
+            foreach($mediateElements as $element) {
+                array_push($sheduleElements, $element);
+            }
+        }
+
+        $num = count($sheduleElements);
+        // Разбираем расписание на живую очередь и обычное раписание
+        $sheduleElementsWaitingLine = array();
+        $sheduleElementsWriting = array();
+        foreach($sheduleElements as $key => $element) {
+            if($element['order_number'] != null) {
+                $sheduleElementsWaitingLine[] = $element;
+            } else {
+                $sheduleElementsWriting[] = $element;
+            }
+        }
+        if($num > 0) {
+            // Первая сортировка идёт всегда по врачу
+            $sheduleElementsWaitingLine = $this->sortSheduleElements($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = $this->sortSheduleElements($sheduleElementsWriting);
+
+            // Вторая сортировка - по времени
+            $sheduleElementsWaitingLine = $this->makeClusters($sheduleElementsWaitingLine);
+            $sheduleElementsWriting = $this->makeClusters($sheduleElementsWriting);
+        }
+        // Теперь выясняем кабинет для каждого пациента. Для этого смотрим дату, смотрим расписание врача
+        $cabinets = array();
+        foreach($sheduleElements as $element) {
+            if(!isset($cabinets[$element['doctor_id']])) {
+                $weekday = date('w', strtotime($_GET['date']));
+                $cabinetElement = SheduleSetted::model()->getCabinetPerWeekday($weekday, $element['doctor_id']);
+                if($cabinetElement != null) {
+                    $cabinets[$element['doctor_id']] = array('cabNumber' => $cabinetElement['cab_number'],
+                        'description' => $cabinetElement['description']);
+                } else {
+                    $cabinets[$element['doctor_id']] = null;
+                }
+            }
+        }
+
+        echo CJSON::encode(array('success' => true,
+            'data' => array('shedule' => $sheduleElements,
+                'cabinets' => $cabinets,
+                'sheduleOnlyByWriting' => $sheduleElementsWriting,
+                'sheduleOnlyWaitingLine' => $sheduleElementsWaitingLine)));*/
+    }
+
 
     // Получить саму историю движения медкарты
     public function actionGetHistoryMotion() {
@@ -75,7 +389,50 @@ class PatientController extends Controller {
         );
 	    
     }
-    
+
+    public function actionGetIsOmsWithNumber()
+    {
+        $oms = null;
+        $result = array('id' => -1);
+        if (isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck']))
+        {
+            //var_dump($_GET['omsIdToCheck']);
+            //exit();
+            if ( isset ($_GET['omsSeriesToCheck']) && $_GET['omsSeriesToCheck']!='' )
+            {
+                $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
+                    $_GET['omsIdToCheck'],true);
+                /*
+                // Сначала без пробела
+                $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].$_GET['omsNumberToCheck'],
+                    $_GET['omsIdToCheck'],true);
+                // Если ничего не нашли - пробуем с пробелом
+                if ($oms==null)
+                {
+                    $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
+                        $_GET['omsIdToCheck'],true);
+                    var_dump($oms);
+                    exit();
+                }
+                */
+            }
+            else
+            {
+                $oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
+            }
+            //$oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
+            // Если омс!=нуль, то значит, что полис с таким номером существует в базе
+            if ($oms!=null)
+            {
+                $result = $oms;
+            }
+        }
+
+        echo CJSON::encode(
+            array('newOms' => $result)
+        );
+    }
+
     // Получить список льгот
     private function getPrivileges() {
         // Льготы
@@ -94,6 +451,7 @@ class PatientController extends Controller {
         $privilegesList = $this->getPrivileges();
 
         if(isset($_GET['patientid']) && !isset($_GET['mediateid'])) {
+
             $model = new Oms();
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
@@ -145,6 +503,7 @@ class PatientController extends Controller {
         } else {
             // Регистрация опосредованного пациента: сопоставление с сущестующими ОМС
             if(isset($_GET['mediateid'], $_GET['patientid'])) {
+
                 $oms = Oms::model()->findByPk($_GET['patientid']);
                 $mediate = MediatePatient::model()->findByPk($_GET['mediateid']);
                 $model = new FormPatientWithCardAdd();
@@ -173,7 +532,6 @@ class PatientController extends Controller {
                 ));
                 exit();
             }
-
             $model = new FormPatientAdd();
             $this->render('addPatientWithoutCard', array(
                 'model' => $model,
@@ -191,14 +549,21 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
             $model->insurance = $_POST['FormPatientAdd']['insurance'];
+            $model->region = $_POST['FormPatientAdd']['region'];
             // Если телефон равен +7, значит его не ввели
             if ($model->contact=="+7")
                 $model->contact = "";
             if($model->validate()) {
                 $medcard = new Medcard();
+               // var_dump('!');
                 $oms = $this->checkUniqueOms($model);
+               // var_dump('?');
+               // var_dump($oms);
+               // exit();
                 // Если пациент с таким полисом найден, просто создаётся карта и подсоединяется полис
                 if($oms == null) {
+                    //var_dump('!');
+                    //exit();
                     $oms = new Oms();
                     $this->addEditModelOms($oms, $model);
                 } else {
@@ -212,10 +577,15 @@ class PatientController extends Controller {
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
                 }
 
+                $fioBirthdayStr = $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name;
+                if ($oms->oms_number!='')
+                {
+                    $fioBirthdayStr .=(', номер полиса: '.$oms->oms_number);
+                }
                 echo CJSON::encode(array('success' => 'true',
                                          'msg' => 'Новая запись успешно добавлена!',
                                          'cardNumber' => $medcard->card_number,
-                                         'fioBirthday' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', номер полиса '.$oms->oms_number.'.'));
+                                         'fioBirthday' => $fioBirthdayStr));
             } else {
                 echo CJSON::encode(array('success' => 'false',
                                          'errors' => $model->errors));
@@ -250,14 +620,52 @@ class PatientController extends Controller {
     }
 
     private function checkUniqueOms($model, $withoutCurrent = false) {
+
+        $IdOfOms = null;
+        if (isset($model->id))
+        {
+            $IdOfOms = $model->id;
+        }
+        // Если в моделе есть поле $omsSeries - надо проверить номер вместе с ним
+        //  причём в двух вариантах - с прбелом и без
+        $seriesSubstringWithSpace = '';
+        $seriesSubstringWOSpace = '';
+        if (isset($model->omsSeries))
+        {
+            //$seriesSubstringWOSpace = $model->omsSeries;
+            $seriesSubstringWithSpace = $model->omsSeries. ' ';
+        }
+
+        /*
+        $comarisonResult = $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
+        if ($comarisonResult===true)
+            return $comarisonResult;
+
+
+        return $this->checkUnickueOmsInternal($seriesSubstringWOSpace.$model->policy,$IdOfOms,$withoutCurrent);
+        */
+        return $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
+    }
+
+
+    private function checkUnickueOmsInternal($omsNumber,$omsId,$withoutCurrent)
+    {
+        // Если номер ОМС - пустая строка - то возвращаем сразу нуль
+        if (  str_replace(array (' ','-'),'',$omsNumber)   == '')
+        {
+            return null;
+        }
+
+        // Старый код. Возможно потом понадобится
+        /*
         // Проверим, не существует ли уже такого ОМС
         // Три вида ОМС: с пробелом впереди, с пробелом посередине
-        if(mb_strlen($model->policy) != 16 && !$withoutCurrent) {
-            $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $model->policy));
+        if(mb_strlen($omsNumber) != 16 && !$withoutCurrent) {
+            $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $omsNumber));
         } else {
-            $omsNumber1 = $model->policy;
-            $omsNumber2 = ' '.$model->policy;
-            $omsNumber3 = mb_substr($model->policy, 0, 6).' '.mb_substr($model->policy, 6);
+            $omsNumber1 = $omsNumber;
+            $omsNumber2 = ' '.$omsNumber;
+            $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
             if(!$withoutCurrent) {
                 $omsSearched = Oms::model()->find(
                     'oms_number = :oms_number1 OR
@@ -270,7 +678,7 @@ class PatientController extends Controller {
                     )
                 );
             } else {
-                if($model->id != null) {
+                if($omsId != null) {
                     $omsSearched = Oms::model()->find(
                         '(oms_number = :oms_number1 OR
                         oms_number = :oms_number2 OR
@@ -280,7 +688,7 @@ class PatientController extends Controller {
                             ':oms_number1' => $omsNumber1,
                             ':oms_number2' => $omsNumber2,
                             ':oms_number3' => $omsNumber3,
-                            ':policy_id' => $model->id
+                            ':policy_id' => $omsId
                         )
                     );
                 } else {
@@ -297,18 +705,156 @@ class PatientController extends Controller {
                 }
             }
         }
+        */
+        /*
+        $omsNumber1 = $omsNumber;
+        $omsNumber2 = ' '.$omsNumber;
+        $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
+        // Для поиска по нормализованному номеру
+        $omsNumberNormalized =  str_replace(array('-',' '), '', $omsNumber);
+        //var_dump($withoutCurrent);
+        //exit();
+        if(!$withoutCurrent) {
+            $omsSearched = Oms::model()->find(
+                'oms_number = :oms_number1 OR
+                oms_number = :oms_number2 OR
+                oms_number = :oms_number3 OR
+                oms_series_number = :oms_norm_number
+                ',
+                array(
+                    ':oms_number1' => $omsNumber1,
+                    ':oms_number2' => $omsNumber2,
+                    ':oms_number3' => $omsNumber3,
+                    ':oms_norm_number' => $omsNumberNormalized
+                )
+            );
+        } else {
+            //var_dump($omsId);
+            //exit();
+
+            if($omsId != null) {
+
+                $omsSearched = Oms::model()->find(
+                    '(oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number)
+                    AND id != :policy_id',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized,
+                        ':policy_id' => $omsId
+                    )
+                );
+                //var_dump($omsSearched);
+                //exit();
+
+            } else {
+                $omsSearched = Oms::model()->find(
+                    'oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized
+                    )
+                );
+            }
+        }
+
+
+         // var_dump($omsSearched);
+        //  exit();
+
 
         if($omsSearched != null) {
-            /*echo CJSON::encode(array('success' => 'false',
-                'errors' => array(
-                    'policy' => array(
-                        'Такой номер полиса ОМС уже существует в базе!'
-                    )
-                )));
-            exit();*/
             return $omsSearched;
         }
         return null;
+
+        */
+
+        $omsSearched = null;
+        $omsNumber1 = $omsNumber;
+        $omsNumber2 = ' '.$omsNumber;
+        $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
+        // Для поиска по нормализованному номеру
+        $omsNumberNormalized =  str_replace(array('-',' '), '', $omsNumber);
+        //var_dump($withoutCurrent);
+        //exit();
+        if(!$withoutCurrent) {
+            /*$omsSearched = Oms::model()->find(
+                'oms_number = :oms_number1 OR
+                oms_number = :oms_number2 OR
+                oms_number = :oms_number3 OR
+                oms_series_number = :oms_norm_number
+                ',
+                array(
+                    ':oms_number1' => $omsNumber1,
+                    ':oms_number2' => $omsNumber2,
+                    ':oms_number3' => $omsNumber3,
+                    ':oms_norm_number' => $omsNumberNormalized
+                )
+            );*/
+            $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized);
+
+        } else {
+            //var_dump($omsId);
+            //exit();
+
+            if($omsId != null) {
+
+               /* $omsSearched = Oms::model()->find(
+                    '(oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number)
+                    AND id != :policy_id',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized,
+                        ':policy_id' => $omsId
+                    )
+                );
+                //var_dump($omsSearched);
+                //exit();
+                */
+
+                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized,$omsId);
+            } else {
+              /*  $omsSearched = Oms::model()->find(
+                    'oms_number = :oms_number1 OR
+                    oms_number = :oms_number2 OR
+                    oms_number = :oms_number3 OR
+                    oms_series_number = :oms_norm_number',
+                    array(
+                        ':oms_number1' => $omsNumber1,
+                        ':oms_number2' => $omsNumber2,
+                        ':oms_number3' => $omsNumber3,
+                        ':oms_norm_number' => $omsNumberNormalized
+                    )
+                );*/
+                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized);
+            }
+        }
+
+
+        // var_dump($omsSearched);
+        //  exit();
+
+
+        if($omsSearched != null) {
+            return $omsSearched;
+        }
+        return null;
+
     }
 
     // Добавление карты к существующему пациенту
@@ -378,10 +924,31 @@ class PatientController extends Controller {
         $oms->givedate = $model->policyGivedate;
         $oms->status = $model->status;
         $oms->insurance = $model->insurance;
+        $oms->region = $model->region;
+        $oms->oms_series= $model->omsSeries;
+        // Добавляем поле oms_series_number
+        $seriesNumber = $model->omsSeries . $model->policy;
+        // Убиваем пробелы, дефисы из seriesNumber
+        $seriesNumber = str_replace(array(' ', '-'), '',  $seriesNumber);
+        $oms->oms_series_number = $seriesNumber;
+
+        // Это скорее всего не надо будет
+        // Если у полиса тип постоянный - надо вставить пробел между 6-ым и 7-ым символом
+        /*if ($oms->type == 5)
+        {
+            $oms->oms_number = substr($oms->oms_number,0,6).' '.substr($oms->oms_number,6,10);
+        }*/
+
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
 
+        //var_dump();
+
+        // Надо перевести ФИО в верхний регистр
+        $oms->first_name = mb_strtoupper($oms->first_name, 'utf-8');
+        $oms->last_name = mb_strtoupper($oms->last_name, 'utf-8');
+        $oms->middle_name = mb_strtoupper($oms->middle_name, 'utf-8');
         if(!$oms->save()) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи нового полиса.'));
@@ -631,6 +1198,7 @@ class PatientController extends Controller {
         $formModel->lastName = $oms->last_name;
         $formModel->middleName = $oms->middle_name;
         $formModel->policy = $oms->oms_number;
+        $formModel->omsSeries = $oms->oms_series;
         $formModel->gender = $oms->gender;
         $formModel->birthday = $oms->birthday;
         $formModel->id = $oms->id;
@@ -638,6 +1206,12 @@ class PatientController extends Controller {
         $formModel->policyGivedate = $oms->givedate;
         $formModel->policyEnddate = $oms->enddate;
         $formModel->status = $oms->status;
+
+        // Если омс - 0, то подтягиваем его в тип 1
+        if ($formModel->omsType == 0)
+            $formModel->omsType = 1;
+
+        // Если тип = 0, то
         return $formModel;
     }
 
@@ -664,6 +1238,8 @@ class PatientController extends Controller {
         }
 
         $data = $this->prepareOms($_GET['omsid']);
+        //var_dump($data);
+        //exit();
         echo CJSON::encode(array('success' => true,
                                  'data' => $data));
     }
@@ -676,10 +1252,22 @@ class PatientController extends Controller {
             $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
         }
 
+        // Если статус = 0, то поправить на статус = 0
+        if ($oms['status']==0)
+        {
+            $oms['status']=1;
+        }
         // Прочитаем название страховой компании
         $omsInsurance =  new Insurance();
         $insuranceObject = $omsInsurance ->findByPk($oms['insurance']);
         $insuranceName = $insuranceObject['name'];
+
+        // Прочитаем регион
+
+        $omsRegion =  new CladrRegion();
+        $regionObject = $omsRegion ->findByPk($oms['region']);
+        $regionName = $regionObject['name'];
+
 
         $formModel = new FormOmsEdit();
         $formModel = $this->fillOmsModel($formModel, $oms);
@@ -688,6 +1276,8 @@ class PatientController extends Controller {
           'oms' => $oms,
           'insuranceId' => $oms['insurance'],
           'insuranceName' => $insuranceName,
+          'regionId' => $oms['region'],
+          'regionName' => $regionName
         );
     }
 
@@ -729,6 +1319,7 @@ class PatientController extends Controller {
         if(isset($_POST['FormOmsEdit'])) {
             $model->attributes = $_POST['FormOmsEdit'];
             $model->insurance = $_POST['FormOmsEdit']['insurance'];
+            $model->region = $_POST['FormOmsEdit']['region'];
             if($model->validate()) {
                 // Проверяем на существование такого же полиса
                 $oms = $this->checkUniqueOms($model, true);
@@ -738,7 +1329,7 @@ class PatientController extends Controller {
                     $this->addEditModelOms($oms, $model);
                 } else {
                     // В этом случае полис существует. Надо обновить на новые данные и удалить старый полис (для того, чтобы не было дубликатов
-                    Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
+                   // Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
                     $birthday = implode('.', array_reverse(explode('-', $model->birthday)));
                     $foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', дата рождения '.$birthday.'</strong>)';
                     // Ищем медкарты с таким ОМС и просто переставляем ID, только_если у того, кого удаляют, нет медкарт. В противном случае, ничего не делаем
@@ -780,6 +1371,11 @@ class PatientController extends Controller {
         // Добавление карты: нет id
         if($medcard->card_number == null) {
             $medcard->card_number = $this->getCardNumber();
+            // Записываем текущую дату и ID пользователя, который создал медкарту
+            $medcard->date_created =  date('Y-m-d H:i:s');
+            $record = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
+            $medcard->user_created = $record['employee_id'];
+
         }
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
@@ -832,6 +1428,40 @@ class PatientController extends Controller {
         return $idPerYear.'/'.$code;
     }
 
+    // Ищет всех записанных
+    public function actionSearchAllWritten() {
+        $filters = $this->checkFilters();
+
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+
+        $somePatientToSelect = new Patient();
+        $num = $somePatientToSelect->getNumRowsWritten($filters, false, false, false, false);
+
+        if(count($num) > 0) {
+            $totalPages = ceil($num / $rows);
+            $start = $page * $rows - $rows;
+            $items = $somePatientToSelect->getRowsWritten($filters, $sidx, $sord, $start, $rows);
+        } else {
+            $items = array();
+            $totalPages = 0;
+        }
+
+        //var_dump($items);
+        //exit();
+        echo CJSON::encode(
+            array(
+                'success' => true,
+                'rows' => $items,
+                'total' => $totalPages,
+                'records' => count($num)
+            )
+        );
+    }
+
     public function actionSearchMediate() {
         $filters = $this->checkFilters();
 
@@ -849,6 +1479,7 @@ class PatientController extends Controller {
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows);
         } else {
             $items = array();
+            $totalPages = 0;
         }
 
         echo CJSON::encode(
@@ -863,6 +1494,9 @@ class PatientController extends Controller {
 
     // Поиск пациента и его запсь
     public function actionSearch() {
+       // var_dump($_GET);
+       // exit();
+
         // Проверим наличие фильтров
         $filters = $this->checkFilters();
 
@@ -902,14 +1536,22 @@ class PatientController extends Controller {
             $onlyInGreetings = false;
         }
 
+        if(isset($_GET['cancelled']) && $_GET['cancelled'] == 1) {
+            $cancelledGreetings = true;
+
+        } else {
+            $cancelledGreetings = false;
+        }
+
         if(!$mediateOnly) {
             $model = new Oms();
             // Вычислим общее количество записей
-            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings);
+
+            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings,$cancelledGreetings);
+
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
-            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings);
-
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings,$cancelledGreetings);
             // Обрабатываем результат
             foreach($items as $index => &$item) {
                 if($item['reg_date'] != null) {
@@ -947,7 +1589,7 @@ class PatientController extends Controller {
             }
         }
 
-        $canViewGreetingHistory =  Yii::app()->user->checkAccess('canViewGreetingHistory');
+        $canViewGreetingHistory =  Yii::app()->user->checkAccess('canViewGreetingArchive');
 
         echo CJSON::encode(
            array(
@@ -976,7 +1618,18 @@ class PatientController extends Controller {
             if(isset($filter['data']) && trim($filter['data']) != '') {
                 $allEmpty = false;
             }
+
+
+
             if($filter['field'] == 'oms_number' && trim($filter['data']) != '') {
+                //---->
+                // Нужно добавить поле к фильтру для поиска по конкатенированному полю серии и номера
+                $filters['rules'][] = array(
+                    'field' => 'normalized_oms_number',
+                    'op' => 'eq',
+                    'data' => str_replace(array('-',' '), '', $filter['data'])
+                );
+                //---->
                 if(mb_strlen($filter['data']) != 16) {
                     unset($filter);
                     continue;
@@ -1329,6 +1982,32 @@ class PatientController extends Controller {
                 {
                     $answer['commentToWrite'] = '';
                 }
+                $answer['cancelledGreeting'] = '';
+
+                if (isset ($_GET['cancelledGreetingId']))
+                {
+                    // Нужно подать данные о приёме, который отменён
+                    $answer['cancelledGreeting'] = $_GET['cancelledGreetingId'];
+                    // Читаем данные об отменённом приёме по Id
+                    $cancelledGreeting = CancelledGreeting::model()->findByPk($_GET['cancelledGreetingId']);
+
+                    if ($cancelledGreeting['mediate_id']!='' && $cancelledGreeting['mediate_id']!=null)
+                    {
+                        // Читаем посредованного пациента
+                        $mPatient = MediatePatient::model()->findByPk($cancelledGreeting['mediate_id']);
+                        // Записываем ФИО опосредованного пациента и его телефон
+                        $answer['patientFirstName'] = $mPatient['first_name'];
+                        $answer['patientLastName'] = $mPatient['last_name'];
+                        $answer['patientMiddleName'] = $mPatient['middle_name'];
+                        $answer['patientPhone'] = $mPatient['phone'];
+                    }
+                    // Иначе нужен только комментарий, а мы его протаскиваем в обоих случаях
+                    $answer['patientComment'] = $cancelledGreeting['comment'];
+
+                }
+
+
+
                 $this->render('writePatient2', $answer);
                 exit();
             }
@@ -1384,9 +2063,18 @@ class PatientController extends Controller {
             }
 
         }
-
-
         return $result;
+    }
+
+
+    public function actionDeleteCancelledGreeting()
+    {
+        // Вытаскиваем из запроса ИД приёма
+        if (isset($_GET['greetingId']))
+        {
+            CancelledGreeting::deleteCancelledGreeting($_GET['greetingId']);
+        }
+
     }
 
     // Запись опосредованного пациента
@@ -1448,23 +2136,48 @@ class PatientController extends Controller {
         }
         if ($unwritedGreeting  !=null)
         {
-            $answer['fName'] = $unwritedGreeting['first_name'];
-            $answer['mName'] = $unwritedGreeting['middle_name'];
-            $answer['lName'] = $unwritedGreeting['last_name'];
-            $answer['phoneToWrite'] = $unwritedGreeting['phone'];
-            $answer['commentToWrite'] = $unwritedGreeting['comment'];
+            $answer['patientFirstName'] = $unwritedGreeting['first_name'];
+            $answer['patientMiddleName'] = $unwritedGreeting['middle_name'];
+            $answer['patientLastName'] = $unwritedGreeting['last_name'];
+            $answer['patientPhone'] = $unwritedGreeting['phone'];
+            $answer['patientComment'] = $unwritedGreeting['comment'];
            // var_dump($answer);
            // exit();
         }
         else
         {
 
-            $answer['fName'] = '';
-            $answer['mName'] = '';
-            $answer['lName'] = '';
-            $answer['phoneToWrite'] = '+7';
-            $answer['commentToWrite'] = '';
+            $answer['patientFirstName'] = '';
+            $answer['patientMiddleName'] = '';
+            $answer['patientLastName'] = '';
+            $answer['patientPhone'] = '+7';
+            $answer['patientComment'] = '';
         }
+
+        $answer['cancelledGreeting'] = '';
+
+        if (isset ($_GET['cancelledGreetingId']))
+        {
+            // Нужно подать данные о приёме, который отменён
+            $answer['cancelledGreeting'] = $_GET['cancelledGreetingId'];
+            // Читаем данные об отменённом приёме по Id
+            $cancelledGreeting = CancelledGreeting::model()->findByPk($_GET['cancelledGreetingId']);
+
+            if ($cancelledGreeting['mediate_id']!='' && $cancelledGreeting['mediate_id']!=null)
+            {
+                // Читаем посредованного пациента
+                $mPatient = MediatePatient::model()->findByPk($cancelledGreeting['mediate_id']);
+                // Записываем ФИО опосредованного пациента и его телефон
+                $answer['patientFirstName'] = $mPatient['first_name'];
+                $answer['patientLastName'] = $mPatient['last_name'];
+                $answer['patientMiddleName'] = $mPatient['middle_name'];
+                $answer['patientPhone'] = $mPatient['phone'];
+            }
+            // Иначе нужен только комментарий, а мы его протаскиваем в обоих случаях
+            $answer['patientComment'] = $cancelledGreeting['comment'];
+
+        }
+
 
         $this->render('writepatientwithoutdata', $answer);
     }

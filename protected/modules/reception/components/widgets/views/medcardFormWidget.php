@@ -1,10 +1,14 @@
+<?php
+   // var_dump($model);
+//exit();
+?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <div class="form-group">
     <?php echo $form->labelEx($model,'doctype', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
     <div class="col-xs-5">
-        <?php echo $form->dropDownList($model, 'doctype', array(1 => 'Паспорт'), array(
+        <?php echo $form->dropDownList($model, 'doctype', $docTypesList, array(
             'id' => 'doctype',
             'class' => 'form-control'
         )); ?>

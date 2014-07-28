@@ -114,7 +114,23 @@ class PatientController extends Controller {
 				}
 			}
 		}
-		
+
+        // Сохраним диагнозы осложнений
+        if(isset($_GET['complicating'])) {
+            $complicatingDiag = CJSON::decode($_GET['complicating']);
+            foreach($complicatingDiag as $id) {
+                $row = new PatientDiagnosis();
+                $row->mkb10_id = $id;
+                $row->greeting_id = $_GET['greeting_id'];
+                $row->type = 2; // Диагноз осложнений
+                if(!$row->save()) {
+                    echo CJSON::encode(array('success' => false,
+                        'error' => 'Не могу сохранить диагноз осложнений!'));
+                    exit();
+                }
+            }
+        }
+
         if(isset($_GET['note']) && trim($_GET['note']) != '') {
             $greeting = SheduleByDay::model()->findByPk($_GET['greeting_id']);
             if($greeting != null) {
@@ -191,6 +207,7 @@ class PatientController extends Controller {
         $pathParts[] = $maxPosition + 1;
         $savedCategoriePosition = $maxPosition + 1; // Сохраняем позицию для изменения элементов пути
         $medcardCategorieClone->path = implode('.', $pathParts);
+
         if(!$medcardCategorieClone->save()) {
             echo CJSON::encode(array('success' => false,
                                      'data' => array()));
@@ -198,7 +215,13 @@ class PatientController extends Controller {
         }
 
         // Теперь смотрим все то, что находится в категории. И тоже клонируем, причём рекурсивно: там могут быть вложенные категории
-        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $keyParts[2], 'like');
+       // var_dump($keyParts[2]);
+       // exit();
+        $elementsInCategorie = MedcardElementForPatient::model()->findAllPerGreeting($keyParts[1], $keyParts[2].'.', 'like');
+        //    (сконкатенируем точку, т.к. при количестве категорий > 10
+        //         функция выдаёт категории, которые находятся внутри этого же шаблона)
+       // var_dump($elementsInCategorie );
+       // exit();
         $historyTransform = array();
         $historyTransformToId = array();
         $dependencesAnswer = array();
@@ -231,6 +254,7 @@ class PatientController extends Controller {
 			$historyCategorieElementNext->allow_add = $element['allow_add'];
             $historyCategorieElementNext->real_categorie_id = $element['real_categorie_id'];
             $historyCategorieElementNext->config = $element['config'];
+
 
             if(!$historyCategorieElementNext->save()) {
                 exit('Не могу отклонировать элемент '.$element['path']);

@@ -2,7 +2,6 @@
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
-
     this.initColorFields = function (colorPickerFields) {
         $(function () {
             // Маркировка анкет
@@ -17,24 +16,27 @@
         });
     };
 
-    $('#omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
+   /* $('#patient-search-form #omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
     // --- Begin 17.06.2014 ---
-    $('#omsNumber, #policy').on('keydown', function(e) {
+    $('#patient-search-form #omsNumber, #policy').on('keydown', function(e) {
         if($(this).val().length >= 16 && e.keyCode != 8 && e.keyCode != 46) {
             if($(this).val().length == 16 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
                 return true;
             }
             return false;
         }
-    });
-    $('#docnumber').on('keydown', function(e) {
+    });*/
+
+
+  /*  $('#docnumber').on('keydown', function(e) {
         if($(this).val().length >= 6 && e.keyCode != 8 && e.keyCode != 46) {
             if($(this).val().length == 6 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
                 return true;
             }
             return false;
         }
-    });
+    });*/
+    /*
     $('#serie').on('keydown', function(e) {
         if($(this).val().length >= 4 && e.keyCode != 8 && e.keyCode != 46) {
             if($(this).val().length == 4 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
@@ -42,11 +44,11 @@
             }
             return false;
         }
-    });
+    });*/
     // --- End 17.06.2014 ---
 
     $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁёa-zA-Z\-]*$/);
-    $('#serie, #docnumber').keyfilter(/^[А-Яа-яЁёa-zA-Z\-\d\s]*$/);
+  //  $('#serie, #docnumber').keyfilter(/^[А-Яа-яЁёa-zA-Z\-\d\s]*$/);
 
     $('#snils').on('keyup', function (e) {
         var value = $(this).val();
@@ -70,6 +72,7 @@
 
         var value = $(this).val();
         if (value.length == 14 && e.keyCode != 8) {
+            $.fn.switchFocusToNext();
             isAllow = false;
         } else {
             if (!(e.keyCode > 47 && e.keyCode < 58) && !(e.keyCode > 95 && e.keyCode < 106) && e.keyCode != 8) {
@@ -110,7 +113,9 @@
         if (value.substr(0,2)=='+7')
         {
             //разрешаем длину в 14 символов
-            if (value.length == 14 && !(pressedKey == 8 || pressedKey == 46)) {
+            if (value.length == 14 && !(pressedKey == 8 ||pressedKey == 37 || pressedKey == 39|| pressedKey == 46)) {
+                // Переводим фокус на следующий элемент
+                $.fn.switchFocusToNext();
                 return false;
             }
         }
@@ -207,7 +212,7 @@
     });
 
     // Паспорт (номер)
-    $('#docnumber').keyfilter(/^[\d]+$/);
+  //  $('#docnumber').keyfilter(/^[\d]+$/);
     // Номер карты
    // $('#cardNumber').keyfilter(/[\d\\]+/);
     $('#cardNumber').keyfilter(/^[\d]*([\\\/][\d]*){0,1}$/);
@@ -707,7 +712,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
                     }
 					// Устанавливаем тайм-аут
-					//setTimeout(refreshIndicators,2000);
+				//	setTimeout(refreshIndicators,2000);
                 }
             });
         }
@@ -747,4 +752,158 @@ $('select[multiple="multiple"]').each(function(index, select) {
         $('html').css('overflow-y', 'scroll');
         $('.navbar-fixed-top').css('margin-right', 0);
     });
+
+    $.fn.reduceCladrCode = function (codeToReduce){
+        result = '';
+
+        result = codeToReduce.substr(0,7);
+        if (codeToReduce.length>7)
+            result += '...';
+
+        return result;
+    };
+
+    // Поменять элемент в фокусе. Вызывается если нельзя больше печатать в элемент, если уже заполнен
+    $.fn.switchFocusToNext = function()
+    {
+        // Выбираем все focus-able элементы
+        var focusables = $(':tabbable');
+        for (i=0;i<focusables.length;i++)
+        {
+            // Проверяем - является ли и-тый элемент из фокусабельных элементом,
+            //    на котором сейчас стоит фокус
+            if ($(focusables[i])[0] == $(document.activeElement)[0])
+            {
+                // Тут может быть две ситуации - либо элемент последний в массиве
+                //   либо нет
+                if (i==focusables.length-1)
+                {
+                    // Фокусируемся на первый элемент
+                    $(focusables[0]).focus();
+                }
+                else
+                {
+                    // Фокусируемся на следующий по номеру элемент
+                    $(focusables[i+1]).focus();
+                }
+                break;
+            }
+        }
+    }
+
+    // Переходы по Enter-у
+    // ------------------>
+    enterButtonsSelector =
+    [
+    ];
+    $(document).on('keydown' ,function(e){
+        if (e.keyCode==13 || e.keyCode==9)
+        {
+            //console.log('Нажата клавиша Enter');
+            //console.log(e.currentTarget);
+            //console.log($(':focus'));
+
+
+            // Смотрим что в фокусе - если
+            focusedElement = $($(':focus')[0]);
+            // Дальше может быть следующее развитие ситуации.
+            //   Если в фокусе такой элемент, который не должен засабмитить форму, то нужно перекинуть
+            //     фокус на следующий focusable элемент.
+            //    Если элемент сабмитит форму, то надо затриггерить на нём клик
+            //   Нужно определить является ли элемент таким, который сабмитит форму
+            // По умолчанию - не сабмитит
+            submittable = false;
+            // Если кнопка в форме одна - и она в фокусе то она вызывает сабмит
+            containingForm = $(focusedElement).parents('form');
+
+            if (e.keyCode==13)
+            {
+
+                buttons = $(containingForm).find('input[type=submit], input[type=button], button');
+                if ($(buttons).length = 1 && buttons[0]==focusedElement[0])
+                {
+                    $(buttons[0]).trigger('click');
+                    e.preventDefault();
+                    return;
+                }
+                // Если у сфокусированного элемента есть класс "btn-success" и она одна на форме - её сабмитим
+                classedButtons = $(containingForm).find('.btn-success');
+                if ($(classedButtons).length = 1 && classedButtons[0]==focusedElement[0])
+                {
+                    $(classedButtons[0]).trigger('click');
+                    e.preventDefault();
+                    return;
+                }
+                // Если у кнопки Value = "Найти" - сабмитим её.
+                //   Это конечно криминал (проверять кнопку по ей тексту в интерфейсе),
+                //    но пока другого выхода не вижу
+                if ( $(focusedElement).is('input[type=submit], input[type=button], button') )
+                {
+                    if ($(focusedElement).val()=='Найти')
+                    {
+                        $(buttons[0]).trigger('click');
+                        e.preventDefault();
+                        return;
+                    }
+                }
+
+                // Ну и совсем на худой конец - берём массив и проверяем, входит ли фокусированный элемент в него
+                submitButtons = enterButtonsSelector.join(', ');
+                submitButtonsSelected = $(submitButtons);
+                // Если is выдаст true на фокусированные элементы и на выбранные по селектору
+                if ($(submitButtonsSelected).is(  $(focusedElement)   ))
+                {
+                    $(buttons[0]).trigger('click');
+                    e.preventDefault();
+                    return;
+                }
+
+            }
+
+
+            // Ну если мы ничего не затриггерили и попали в эту точку - то можно переводить фокус
+            // Берём форму, в которой находится элемент.
+            //   Если формы нет - перещёлкиваем на новый элемент
+
+            if ($(containingForm).length==0)
+            {
+                $.fn.switchFocusToNext();
+            }
+            else
+            {
+                // Иначе берём таббабельные элементы из формы и
+                tabblesElements = $(containingForm).find(':tabbable');
+                for (i=0;i<tabblesElements.length;i++)
+                {
+                    // Проверяем - является ли и-тый элемент из фокусабельных элементом,
+                    //    на котором сейчас стоит фокус
+                    if ($(tabblesElements[i])[0] == $(document.activeElement)[0])
+                    {
+                        // Тут может быть две ситуации - либо элемент последний в массиве
+                        //   либо нет
+                        if (i==tabblesElements.length-1)
+                        {
+                            // Фокусируемся на первый элемент
+                            $(tabblesElements[0]).focus();
+                        }
+                        else
+                        {
+                            // Фокусируемся на следующий по номеру элемент
+                            $(tabblesElements[i+1]).focus();
+                        }
+                        break;
+                    }
+                }
+            }
+
+
+            //$.fn.switchFocusToNext();
+            // Дальше выключаем обработку этого события
+            e.preventDefault();
+            return;
+        }
+    });
+    //   Конец блока переходов по Enter-у
+    // <-----------------
+
 });

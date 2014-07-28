@@ -26,11 +26,20 @@
         </script>
     <?php } ?>
     <?php
-    if(isset($greetingId)) {
+    if(isset($greetingId) || isset($cancelledGreeting)) {
     ?>
         <script type="text/javascript">
-            globalVariables.greetingId = <?php echo $greetingId; ?>;
-            globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
+
+            <?php
+            if (isset($greetingId))
+            {
+                ?>
+                globalVariables.greetingId = <?php echo $greetingId; ?>;
+                globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
+                <?php
+            }
+            ?>
+            globalVariables.cancelledGreeting = '<?php echo $cancelledGreeting; ?>';
             globalVariables.patientData = {
                 'firstName' : '<?php echo $patientFirstName; ?>',
                 'lastName' : '<?php echo $patientLastName; ?>',
@@ -365,7 +374,7 @@
                         <div class="form-group">
                             <label for="comment" class="col-xs-3 control-label">Комментарий</label>
                             <div class="col-xs-9">
-                                <textarea name="comment" placeholder="Комментарий" class="form-control" id="comment" value=""><?php echo $commentToWrite; ?></textarea>
+                                <textarea name="comment" placeholder="Комментарий" class="form-control" id="comment" value=""><?php echo $patientComment; ?></textarea>
                             </div>
                         </div>
                     </div>

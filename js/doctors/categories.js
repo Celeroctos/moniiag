@@ -4,7 +4,8 @@ $(document).ready(function() {
         var elementId = $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
         $('#controlId').val(elementId);
         globalVariables.elementId = elementId;
-        globalVariables.domElement = $(this).parents('.form-group').find('select');
+       // globalVariables.domElement = $(this).parents('.form-group').find('select');
+        globalVariables.domElement = $('select[id$=_' + elementId + ']');
         $('#addValuePopup').modal({
         });
     });
@@ -15,9 +16,23 @@ $(document).ready(function() {
         });
     });
 
+
+
     $('input[type="number"]').on('keydown', function(e) {
-        if((!(e.keyCode >= 48 && e.keyCode < 58) && !(e.keyCode >= 96 && e.keyCode < 106)) && e.keyCode != 8 && e.keyCode != 9 && e.keyCode != 46) {
+        if((!(e.keyCode >= 48 && e.keyCode < 58) && !(e.keyCode >= 96 && e.keyCode < 106)) && e.keyCode != 8 && e.keyCode != 190 && e.keyCode != 188 && e.keyCode != 9 && e.keyCode != 46) {
             return false;
+        }
+        else
+        {
+            // Проверим - если мы вводим точку или запятую и если в значении уже есть точка или запятая - надо запретить ввод
+            if ( (e.keyCode == 190 || e.keyCode == 188)&&
+                ($(this).val().indexOf('.')>=0
+                    ||
+                    $(this).val().indexOf(',')>=0)
+                )
+            {
+                return false;
+            }
         }
     });
 
@@ -111,8 +126,44 @@ $(document).ready(function() {
     $('.templatesListNav a').click(function (e) {
         e.preventDefault();
         var tabId = $(this).prop('id').substr(1);
+        heightBefore = $(document).height();
+        scrollHeightTopDifference = $(document).height() - $(document).scrollTop();
+        console.log('Высота сначала '+$(document).height());
         $('form#template-edit-form').find('[id^=tab]').addClass('no-display');
         $('form#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
-        $(this).tab('show')
+        console.log('Высота потом '+$(document).height());
+        heightAfter = $(document).height();
+        heightDifference = heightAfter - heightBefore;
+        console.log(heightDifference);
+        console.log('ScrollTOp до '+$(document).scrollTop());
+
+        if ( ($(this).parents('.templatesListNav').hasClass('templatesListNavBottom'))  )
+        {
+            if (heightDifference>0)
+            {
+                $(document).scrollTop($(document).scrollTop()+heightDifference);
+            }
+            else
+            {
+                $(document).scrollTop(   $(document).height() -  scrollHeightTopDifference );
+            }
+        }
+
+        console.log('ScrollTOp после '+$(document).scrollTop());
+        // Теперь нужно сдвинуть scrollTop в плюс на разницу heightDifference
+
+
+        //$(this).tab('show')
+
+        /*allTabs = $('templatesListNav a[id^=t]');
+        // Снимаем всем класс active
+        $(allTabs).parents('li').removeClass('active');
+
+        return;*/
+        tabs = $('[id=t'+ tabId +']');
+        for (i=0;i<tabs.length;i++)
+        {
+            $(tabs[i]).tab('show');
+        }
     });
 });

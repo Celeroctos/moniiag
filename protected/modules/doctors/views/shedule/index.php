@@ -282,6 +282,23 @@
             <?php
             //$this->endWidget();
             ?>
+            <?php $counter = 0; if (true){ ?>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs templatesListNav templatesListNavBottom">
+                    <?php foreach($templatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="t<?php echo $template['id']; ?>">
+                                <strong>
+                                    <?php echo $template['name']; ?>
+                                </strong>
+                            </a>
+                        </li>
+                        <?php
+                        $counter++;
+                    } ?>
+                </ul>
+            </div>
+                <?php } ?>
 			<div class="modal fade error-popup" id="successEditPopup">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -344,6 +361,23 @@
                                               id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?>
                                             <span class="glyphicon glyphicon-remove"></span></span>
                                         <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group chooser" id="complicationsDiagnosisChooser">
+                                <label for="doctor" class="col-xs-3 control-label">Осложнения основного диагноза по МКБ-10:</label>
+
+                                <div class="col-xs-9">
+                                    <input type="text" class="form-control" id="doctor"
+                                           placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php  foreach ($complicatingDiagnosis as $dia) { ?>
+                                            <span class="item"
+                                                  id="r<?php echo $dia['mkb10_id']; ?>"><?php echo $dia['description']; ?>
+                                                <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php  }?>
                                     </div>
                                 </div>
                             </div>
@@ -412,7 +446,8 @@
 
 
                             <div class="form-group">
-                                <label for="doctor" class="col-xs-3 control-label">Примечание:</label>
+                                <label for="doctor" class="col-xs-3 control-label">Клинические
+                                    диагноз / диагнозы:</label>
 
                                 <div class="col-xs-9">
                                 <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>

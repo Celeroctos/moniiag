@@ -10,12 +10,18 @@ class CladrDistrict extends MisActiveRecord {
         return 'mis.cladr_districts';
     }
 
-    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false,$nullCodeCladrShow=true) {
         $connection = Yii::app()->db;
         $districts = $connection->createCommand()
             ->select('cd.*, cr.id as region_id, cr.name as region')
             ->from(CladrDistrict::tableName().' cd')
             ->leftJoin(CladrRegion::tableName(). ' cr', 'cd.code_region = cr.code_cladr');
+           // ->where('code_cladr!=\'000\'');
+
+        if (!$nullCodeCladrShow)
+        {
+            $districts = $districts -> andWhere ( 'not (cd.code_cladr=\'000\')', array()  );
+        }
 
         if($filters !== false) {
             $this->getSearchConditions($districts, $filters, array(

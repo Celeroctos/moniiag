@@ -4,6 +4,7 @@ class FormOmsEdit extends FormMisDefault
 {
     public $policy;
     public $lastName;
+    public $omsSeries;
     public $firstName;
     public $middleName;
     public $gender;
@@ -14,6 +15,7 @@ class FormOmsEdit extends FormMisDefault
     public $policyEnddate;
     public $status;
     public $insurance;
+    public $region;
 
     public function rules()
     {
@@ -25,7 +27,7 @@ class FormOmsEdit extends FormMisDefault
                 'id', 'numerical'
             ),
             array(
-                'middleName, policyEnddate', 'safe'
+                'middleName, policyEnddate, omsSeries', 'safe'
             )
         );
     }
@@ -41,7 +43,7 @@ class FormOmsEdit extends FormMisDefault
             'birthday' => 'Дата рождения',
             'omsType' => 'Тип полиса',
             'policyGivedate' => 'Дата выдачи',
-            'policyEnddate' => 'Дата окончания действия',
+            'policyEnddate' => 'Дата погашения полиса',
             'status' => 'Статус'
         );
     }

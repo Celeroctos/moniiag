@@ -38,12 +38,18 @@ class SheduleController extends Controller {
                    $openedTab = 0; // Обычная запись
                 }
                 if(isset($_POST['templatesList'])) {
+                    //var_dump('!');
+                    //exit();
+                    // Шаблоны выбраны. Нужно их обработать.
+                    //$diagnosisRequare = false;
                     $templatesChoose = 0;
                     // Установленные диагнозы: первичный и сопутствующие. Это может быть просмотр приёма, который уже был, типа
                     $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
                     $secondaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
-					$primaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);					
+                    $complicatingDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 2);
+                    $primaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 0);
 					$secondaryClinicalDiagnosis = ClinicalPatientDiagnosis::model()->findDiagnosis($_GET['rowid'], 1);
+
                     $medcardTemplates = new MedcardTemplate();
                     $referenceTemplatesList =  $medcardTemplates->getTemplatesByEmployee(Yii::app()->user->medworkerId, 1);
                     // Если приём был, то можно вынуть примечание к диагнозам
@@ -104,11 +110,12 @@ class SheduleController extends Controller {
         }
 
         // Если они не создались, это значит, что диагнозы пустые
-        if(!isset($primaryDiagnosis, $secondaryDiagnosis,$primaryClinicalDiagnosis, $secondaryClinicalDiagnosis)) {
+        if(!isset($primaryDiagnosis, $secondaryDiagnosis,$primaryClinicalDiagnosis, $secondaryClinicalDiagnosis,$complicatingDiagnosis)) {
             $primaryDiagnosis = array();
             $secondaryDiagnosis = array();
 			$primaryClinicalDiagnosis = array();
             $secondaryClinicalDiagnosis = array();
+            $complicatingDiagnosis = array();
         }
 
         $this->filterModel = new FormSheduleFilter();
@@ -154,6 +161,7 @@ class SheduleController extends Controller {
             'numberDoctorComments' => $doctorNumberComments,
             'primaryDiagnosis' => $primaryDiagnosis,
             'secondaryDiagnosis' => $secondaryDiagnosis,
+            'complicatingDiagnosis' => $complicatingDiagnosis,
 			'primaryClinicalDiagnosis' => $primaryClinicalDiagnosis,
 			'secondaryClinicalDiagnosis' => $secondaryClinicalDiagnosis,
             'note' => isset($note) ? $note : '',
@@ -554,13 +562,15 @@ class SheduleController extends Controller {
         if(isset($_GET['id']) && trim($_GET['id']) != '') {
             // Записать, что пациент принят
             $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
+            //var_dump($sheduleElement );
+            //exit();
             if($sheduleElement != null) {
                 // Проверим - установлен ли первичый диагноз. Если нет - выводим сообщение
                 $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
                 //var_dump($primaryDiagnosis);
                 //exit();
                 
-                if (count($primaryDiagnosis) == 0)
+                /*if (count($primaryDiagnosis) == 0)
                 {
                     echo CJSON::encode(array('success' => false,
 											'needMainDiagnosis' => '1',
@@ -568,7 +578,7 @@ class SheduleController extends Controller {
 					return;
                 }
                 else
-                {
+                {*/
                     $sheduleElement->is_accepted = 1;
                     $sheduleElement->time_end = date('h:j');
                     // Записать статус медкарты: медкарта вернулась обратно в регистратуру
@@ -597,7 +607,7 @@ class SheduleController extends Controller {
                                                      'text' => 'Ошибка сохранения буфера выгрузки ТАСУ.'));
                         }
                     }
-                }
+                //}
 
             }
         }
@@ -648,7 +658,8 @@ class SheduleController extends Controller {
             $doctorId = isset($_GET['doctorid']) ? (int)$_GET['doctorid'] : $doctorId;
             // Выбираем настройки расписания
             $settings = $this->getSettings();
-            $shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+            //$shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
+            $shedule = SheduleSetted::getAllForEmployer($doctorId);
             // Здесь проверяем день, месяц, год..
             if(isset($_GET['year'])) {
                 $this->currentYear = $_GET['year'];
@@ -677,7 +688,7 @@ class SheduleController extends Controller {
             // Расписание не установлено
             if(count($shedule) == 0 && $breakByErrors) {
                 echo CJSON::encode(array('success' => 'false',
-                                         'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
+                    'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
                 exit();
             } elseif(count($shedule) == 0) {
                 return array();
@@ -701,6 +712,9 @@ class SheduleController extends Controller {
             $usualData = array();
             $exps = array();
             $expsData = array();
+
+            //var_dump($shedule);
+            //exit();
             foreach($shedule as $key => $element) {
                 // Обычное расписание
                 if($element['type'] == 0) {
@@ -724,25 +738,27 @@ class SheduleController extends Controller {
             //$paramDate =  $this->currentYear.'-'.($this->currentMonth > 9 ? $this->currentMonth : '0'.$this->currentMonth);
             $paramDate = $this->currentYear."";
             //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 8) = :date  AND doctor_id = :doctor',
-            $restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 5) = :date  AND doctor_id = :doctor',
-                    array(
-                    ':date' => $paramDate,
+            //$restDaysLonely = SheduleRestDay::model()->findAll('substr(cast(date as text), 0, 5) = :date  AND doctor_id = :doctor',
+            $restDaysLonely = SheduleRestDay::model()->findAll('doctor_id = :doctor',
+                array(
+                    //   ':date' => $paramDate,
                     ':doctor' => $doctorId
                 ));
-           // var_dump($restDaysLonely);
+            // var_dump($restDaysLonely);
 
             $restDaysArrLonely = array();
             foreach($restDaysLonely as $dayLonely) {
-               // var_dump( substr($dayLonely->date,0,10));
-               // exit();
-               // $parts = explode('-', $dayLonely->date);
+                // var_dump( substr($dayLonely->date,0,10));
+                // exit();
+                // $parts = explode('-', $dayLonely->date);
                 $restDaysArrLonely[] = substr($dayLonely->date,0,10);
             }
 
             // Теперь смотрим по дням и составляем календарь
             $resultArr = array();
-            //var_dump($dayBegin);
-            //var_dump($dayEnd);
+            // var_dump($dayBegin);
+            // var_dump($dayEnd);
+            // exit();
             for($i = $dayBegin; $i <= $dayEnd; $i++) {
 
                 $resultArr[(string)$i - 1] = array();
@@ -765,8 +781,13 @@ class SheduleController extends Controller {
                 // 0 -> 0.. 1 -> 1..
                 $resultArr[(string)$i - 1]['weekday'] = $weekday;
                 $expsIndex = array_search($formatDate, $exps);
-                $usualIndex = array_search($weekday, $usual);
 
+                // Вот тут надо искать с учётом текущей даты
+                // var_dump($usualData);
+                // exit();
+                //$usualIndex = array_search($weekday, $usual);
+
+                $usualIndex = SheduleSetted::getIndexWorkingDay($usualData,  $weekday,$formatDate);
                 if(($usualIndex !== false && array_search($weekday, $restDaysArr) === false && array_search($formatDate, $restDaysArrLonely) === false) || $expsIndex !== false) {
                     // День существует, врач работает
                     $resultArr[(string)$i - 1]['worked'] = true;
@@ -785,8 +806,8 @@ class SheduleController extends Controller {
                     // Дальше, исходя из настроек, смотрим: полностью свободный, частично свободный или полностью занятый день
                     // TODO: в цикле очень плохо делать выборку. 31 выборка максимум за раз.
                     // Более глубокое сканирование: необходимо посмотреть, какие пациенты вообще есть в расписании по данным датам. Может получиться так, что при изменённом расписании потеряются пациенты
-                        $timeStampCurrent = mktime(0, 0, 0);
-                        if(strtotime($formatDate) >= $timeStampCurrent) {
+                    $timeStampCurrent = mktime(0, 0, 0);
+                    if(strtotime($formatDate) >= $timeStampCurrent) {
                         $numPatients = $this->getPatientList($doctorId, $this->currentYear.'-'.$month.'-'.$day, true, $onlyWaitingLine);
                         $resultArr[(string)$i - 1]['numPatients'] = count(array_filter($numPatients['result'], function($element) {
                             return $element['id'] != null;
@@ -841,6 +862,9 @@ class SheduleController extends Controller {
             return $resultArr;
         }
     }
+
+
+
 
     public function actionGetPatientsListByDate() {
         if(Yii::app()->user->isGuest) {
@@ -1148,6 +1172,12 @@ class SheduleController extends Controller {
             $msg .= ' '.$_GET['time'].'.';
         } else {
             $msg .= ', в очереди под номером '.$_GET['order_number'].'.';
+        }
+
+        // Если есть id отменённого приёма - надо удалить старый приём в таблице (поставить ему delete=1)
+        if (isset($_GET['cancelledGreetingId']) && ($_GET['cancelledGreetingId']!=''))
+        {
+            CancelledGreeting::deleteCancelledGreeting($_GET['cancelledGreetingId']);
         }
 
         echo CJSON::encode(array('success' => 'true',

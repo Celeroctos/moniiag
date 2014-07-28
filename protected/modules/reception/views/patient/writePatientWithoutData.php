@@ -23,11 +23,19 @@
         globalVariables.isCallCenter = <?php echo $callcenter; ?>;
     </script>
     <?php
-    if(isset($greetingId)) {
+    if(isset($greetingId) || isset($cancelledGreeting)) {
         ?>
         <script type="text/javascript">
-            globalVariables.greetingId = <?php echo $greetingId; ?>;
-            globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
+
+            <?php
+            if (isset($greetingId))
+            {
+                ?>
+                globalVariables.greetingId = <?php echo $greetingId; ?>;
+                globalVariables.greetingDate = '<?php echo $greetingDate; ?>';
+                <?php
+            }
+            ?>
             globalVariables.patientData = {
                 'firstName' : '<?php echo $patientFirstName; ?>',
                 'lastName' : '<?php echo $patientLastName; ?>',
@@ -259,31 +267,31 @@
                         <div class="form-group">
                             <label for="lastName" class="col-xs-3 control-label required">Фамилия <span class="required">*</span></label>
                             <div class="col-xs-9">
-                                <input type="text" name="lastName" placeholder="Фамилия" value="<?php echo $lName; ?>" class="form-control" id="lastName">
+                                <input type="text" name="lastName" placeholder="Фамилия" value="<?php echo $patientLastName; ?>" class="form-control" id="lastName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="firstName" class="col-xs-3 control-label required">Имя <span class="required">*</span></label>
                             <div class="col-xs-9">
-                                <input type="text" name="firstName" placeholder="Имя" value="<?php echo $fName; ?>" class="form-control" id="firstName">
+                                <input type="text" name="firstName" placeholder="Имя" value="<?php echo $patientFirstName; ?>" class="form-control" id="firstName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="middleName" class="col-xs-3 control-label required">Отчество</label>
                             <div class="col-xs-9">
-                                <input type="text" name="middleName" placeholder="Отчество" value="<?php echo $mName; ?>" class="form-control" id="middleName">
+                                <input type="text" name="middleName" placeholder="Отчество" value="<?php echo $patientMiddleName; ?>" class="form-control" id="middleName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="phone" class="col-xs-3 control-label required">Контактный телефон <span class="required">*</span></label>
                             <div class="col-xs-9">
-                                <input type="text" name="phone" placeholder="Контактный телефон" value="<?php echo $phoneToWrite; ?>" class="form-control" id="phone" >
+                                <input type="text" name="phone" placeholder="Контактный телефон" value="<?php echo $patientPhone; ?>" class="form-control" id="phone" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="comment" class="col-xs-3 control-label">Комментарий</label>
                             <div class="col-xs-9">
-                                <textarea name="comment" placeholder="Комментарий" class="form-control" value="" id="comment"><?php echo $commentToWrite; ?></textarea>
+                                <textarea name="comment" placeholder="Комментарий" class="form-control" value="" id="comment"><?php echo $patientComment; ?></textarea>
                             </div>
                         </div>
                     </div>

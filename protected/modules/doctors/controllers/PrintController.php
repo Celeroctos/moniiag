@@ -2,7 +2,7 @@
 class PrintController extends Controller {
     public $layout = 'print';
     public $responseData = array();
-
+/*
     // Печать главной страницы карты
     public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
@@ -14,7 +14,7 @@ class PrintController extends Controller {
             exit('Ошибка! Не выбрана медкарта.');
         }
         if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
-            $groups = array('I', 'II', 'III', 'IV');
+            $groups = array('','I', 'II', 'III', 'IV');
             $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
         } else {
             $medcard['invalid_group'] = 'Нет группы';
@@ -78,8 +78,8 @@ class PrintController extends Controller {
             'pdfContent' => $mPDF->Output()
         ));
     }
-
-    /*public function actionPrintMainPage() {
+*/
+    public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
         if(isset($_GET['medcardid'])) {
 
@@ -89,7 +89,7 @@ class PrintController extends Controller {
             exit('Ошибка! Не выбрана медкарта.');
         }
         if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
-            $groups = array('I', 'II', 'III', 'IV');
+            $groups = array('','I', 'II', 'III', 'IV');
             $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
         } else {
             $medcard['invalid_group'] = 'Нет группы';
@@ -99,6 +99,14 @@ class PrintController extends Controller {
         if($oms == null) {
             exit('Ошибка! Полиса не существует!');
         }
+
+        // Если у полиса есть поле "серия" - конкатэнируем его с номером через пробел и выводим.
+        //         Иначе выводим только номер без конкатенации
+        if ($oms->oms_series != '' && $oms->oms_series!= null)
+        {
+            $oms->oms_number = $oms->oms_series. " " .$oms->oms_number;
+        }
+
         // Выбираем предприятие по коду заведения в медкарте
         $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
         if($enterprise == null) {
@@ -119,8 +127,50 @@ class PrintController extends Controller {
         if ($oms['insurance']!='' && $oms['insurance']!=null)
         {
             $insurance = Insurance::model()->findByPk($oms->insurance);
+            $regions = InsuranceRegion::findRegions($oms['insurance']);
+           // var_dump($regions );
+           // exit();
+            if ($regions != null && count($regions)>0)
+            {
+                $regionId = $regions[0]['id'];
+                $omsRegion =  new CladrRegion();
+                $regionObject = $omsRegion ->findByPk($regionId );
+                $oms['region'] = $regionObject['name'];
+            }
+            else
+            {
+                $oms['region'] = '';
+            }
             $oms['insurance'] = $insurance->name;
         }
+        else
+        {
+            $oms['region'] = '';
+        }
+
+        // Смотрим - какой тип и статус у полиса
+        $statusId = $oms['status'];
+        if ($statusId == 0)
+            $statusId = 1;
+
+        $status = OmsStatus::model()->findByPk($statusId);
+        $oms['status'] = $status['name'];
+
+        $typeId = $oms['type'];
+        if ($typeId == 0)
+            $typeId = 1;
+
+        $type = OmsType::model()->findByPk($typeId);
+        $oms['type'] = $type ['name'];
+        //var_dump($oms);
+        //exit();
+        // Прочитаем регион
+        /*if ($oms['region']!='' && $oms['region']!=null)
+        {
+            $omsRegion =  new CladrRegion();
+            $regionObject = $omsRegion ->findByPk($oms['region']);
+            $oms['region'] = $regionObject['name'];
+        }*/
 
         foreach($privileges as &$priv) {
             $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
@@ -149,7 +199,7 @@ class PrintController extends Controller {
         );
 
 
-    }*/
+    }
 
     public function formatDate($date) {
         if($date == null) {
@@ -195,8 +245,16 @@ class PrintController extends Controller {
 		{
 			$changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId,false,'eq',true);
 		}
-		
-		if(count($changedElements) == 0) {
+
+        //var_dump($changedElements );
+        //exit();
+
+      //  foreach ($changedElements as $oneEl)
+     //   {
+    //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
+  //      }
+//exit();
+        if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
 				//var_dump($changedElements);
@@ -224,6 +282,35 @@ class PrintController extends Controller {
 		$categorieWidget->divideTreebyCats();
 
 		$sortedElements = $categorieWidget->dividedCats;
+
+        // Вытащим диагнозы
+        //var_dump($greetingId);
+        //exit();
+
+        $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
+        $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $cd = PatientDiagnosis::model()->findDiagnosis($greetingId, 2);
+        $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
+        $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+
+        //var_dump($cd);
+        //exit();
+
+        // Соберём их в об'ект
+        $diagnosises = array(
+            'primary' => $pd,
+            'secondary' => $sd,
+            'clinicalPrimary' => $cpd,
+            'clinicalSecondary' => $csd,
+            'complicating' => $cd
+
+        );
+
+        //var_dump($diagnosises );
+        //exit();
+
+        //var_dump($sortedElements);
+        //exit();
 		if($greetingIn === false) {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
@@ -240,7 +327,8 @@ class PrintController extends Controller {
                 $htmlForPdf =
                     $this->render('greeting', array(
                         'templates' => $sortedElements,
-                        'greeting' => $greetingInfo
+                        'greeting' => $greetingInfo,
+                        'diagnosises' => $diagnosises
                     ), true);
                 $mPDF->WriteHTML(
                     $htmlForPdf
@@ -253,13 +341,15 @@ class PrintController extends Controller {
             } else {
                 return array(
                     'templates' => $sortedElements,
-                    'greeting' => $greetingInfo
+                    'greeting' => $greetingInfo,
+                    'diagnosises' => $diagnosises
                 );
             }
 		} else {
 			return array(
                 'templates' => $sortedElements,
-                'greeting' => $greetingInfo
+                'greeting' => $greetingInfo,
+                'diagnosises' => $diagnosises
             );
 		}
     }

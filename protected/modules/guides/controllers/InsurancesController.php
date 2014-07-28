@@ -25,8 +25,30 @@ class InsurancesController extends Controller {
     }
 
     private function addEditModel($insurance, $model, $msg) {
+        // Раскодируем id регионов
+        $regionsIds = CJSON::decode($model->regionsHidden);
         $insurance->name = $model->name;
         if($insurance->save()) {
+
+            // Записываем id регионов.
+            // Сначала убиваем всё для данной страховой компании
+            InsuranceRegion::model()->deleteAll('insurance_id=:ins_id', array(':ins_id' => $insurance->id));
+
+            // Перебираем массив regionsIds
+            if ($regionsIds!=null)
+            {
+                foreach($regionsIds as $oneRegionId)
+                {
+                    //Создаём новый об'ект insuranceRegion, наполняем его данными и сохраняем в базу
+
+                    $newLinkObject = new InsuranceRegion();
+                    $newLinkObject->insurance_id = $insurance->id;
+                    $newLinkObject->region_id = $oneRegionId;
+                    // А теперь надо сохранить регион
+                    $newLinkObject->save();
+                }
+            }
+
             echo CJSON::encode(array('success' => true,
                     'text' =>  $msg
                 )
@@ -63,19 +85,30 @@ class InsurancesController extends Controller {
     }
 
     public function actionGetOne($id) {
+        // Надо добавить чтение регионов компании
         $model = new Insurance();
         $insurance = $model->getOne($id);
+        // По id ищем список регионов
+
+        $regions = InsuranceRegion::findRegions($id);
+        $insurance['regions'] = $regions;
         echo CJSON::encode(array('success' => true,
                 'data' => $insurance )
         );
     }
 
     public function actionGet() {
+        //var_dump($_GET);
+        //exit();
         try {
+
+
+
             $rows = $_GET['rows'];
             $page = $_GET['page'];
             $sidx = $_GET['sidx'];
             $sord = $_GET['sord'];
+
 
             if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
                 $filters = CJSON::decode($_GET['filters']);
@@ -83,13 +116,30 @@ class InsurancesController extends Controller {
                 $filters = false;
             }
 
+            $regionId = false;
+
+            // Если флаг is_chooser - то снимаем ИД региона
+            if (isset($_GET['is_chooser']))
+            {
+                if (isset($_GET['region_insurance']))
+                {
+                    $regionId = $_GET['region_insurance'];
+                }
+                else
+                {
+                    $regionId = -1;
+                }
+            }
+
+
+
             $model = new Insurance();
-            $num = $model->getRows($filters);
+            $num = $model->getRows($filters,false,false,false,false,$regionId);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $insurances = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $insurances = $model->getRows($filters, $sidx, $sord, $start, $rows,$regionId);
             echo CJSON::encode(
                 array(
                     'success' => true,

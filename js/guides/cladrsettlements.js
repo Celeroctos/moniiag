@@ -223,14 +223,18 @@ $(document).ready(function() {
                 alert('Не выбран регион!');
                 return false;
             }
-            if($.fn["districtChooser2"].getChoosed().length == 0) {
+           /* if($.fn["districtChooser2"].getChoosed().length == 0) {
                 alert('Не выбран район!');
                 return false;
-            }
+            }*/
+            var district = ''
             var region = $.fn["regionChooser2"].getChoosed()[0].code_cladr;
-            var district = $.fn["districtChooser2"].getChoosed()[0].code_cladr;
+            if ($.fn["districtChooser2"].getChoosed().length>0)
+            {
+                district = $.fn["districtChooser2"].getChoosed()[0].code_cladr;
+            }
             var strData =  'FormCladrSettlementAdd[name]=' + $("#editSettlementPopup #name").val() + '&FormCladrSettlementAdd[codeCladr]=' + $("#editSettlementPopup #codeCladr").val() + '&FormCladrSettlementAdd[codeRegion]=' + region + '&FormCladrSettlementAdd[codeDistrict]=' + district + '&FormCladrSettlementAdd[id]=' + $("#editSettlementPopup #id").val();
-        settings.data = strData;
+            settings.data = strData;
     });
 
     $("#settlement-add-form").on('beforesend', function(eventObj, settings, jqXHR) {
@@ -238,13 +242,18 @@ $(document).ready(function() {
                 alert('Не выбран регион!');
                 return false;
             }
-            if($.fn["districtChooserForSettlement"].getChoosed().length == 0) {
+            /*if($.fn["districtChooserForSettlement"].getChoosed().length == 0) {
                 alert('Не выбран район!');
                 return false;
-            }
+            }*/
+        var district = '';
             var region = $.fn["regionChooserForSettlement"].getChoosed()[0].code_cladr;
-            var district = $.fn["districtChooserForSettlement"].getChoosed()[0].code_cladr;
-            var strData =  'FormCladrSettlementAdd[name]=' + $("#addSettlementPopup #name").val() + '&FormCladrSettlementAdd[codeCladr]=' + $("#addSettlementPopup #codeCladr").val() + '&FormCladrSettlementAdd[codeRegion]=' + region + '&FormCladrSettlementAdd[codeDistrict]=' + district + '&FormCladrSettlementAdd[id]=' + $("#addSettlementPopup #id").val();
+
+        if ($.fn["districtChooserForSettlement"].getChoosed().length>0)
+        {
+            district = $.fn["districtChooserForSettlement"].getChoosed()[0].code_cladr;
+        }
+        var strData =  'FormCladrSettlementAdd[name]=' + $("#addSettlementPopup #name").val() + '&FormCladrSettlementAdd[codeCladr]=' + $("#addSettlementPopup #codeCladr").val() + '&FormCladrSettlementAdd[codeRegion]=' + region + '&FormCladrSettlementAdd[codeDistrict]=' + district + '&FormCladrSettlementAdd[id]=' + $("#addSettlementPopup #id").val();
 
         settings.data = strData;
     });

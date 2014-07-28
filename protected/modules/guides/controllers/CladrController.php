@@ -115,12 +115,12 @@ class CladrController extends Controller {
             }
 
             $model = new CladrDistrict();
-            $num = $model->getRows($filters);
+            $num = $model->getRows($filters,false,false,false,false,false);
 
             $totalPages = ceil(count($num) / $rows);
             $start = $page * $rows - $rows;
 
-            $districts = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $districts = $model->getRows($filters, $sidx, $sord, $start, $rows,false);
 
             echo CJSON::encode(
                 array(
@@ -193,17 +193,26 @@ class CladrController extends Controller {
                         'data' => $_GET['district']
                     );
                 }
+                // А если нет - то этот элемент надо создать
+                else
+                {
+                    $filters['rules'][] = array(
+                        'field' => 'code_district',
+                        'op' => 'eq',
+                        'data' => '000'
+                    );
+                }
             } else {
                 $filters = false;
             }
 
             $model = new CladrSettlement();
-            $num = $model->getNumRows($filters);
+            $num = $model->getNumRows($filters,false,false,false,false,false);
 
             $totalPages = ceil($num / $rows);
             $start = $page * $rows - $rows;
 
-            $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            $settlements = $model->getRows($filters, $sidx, $sord, $start, $rows,false);
             foreach($settlements as &$settlement) {
                 $district = CladrDistrict::model()->find('code_cladr = :code_cladr  AND code_region = :code_region_settlement',
                     array(
@@ -252,11 +261,28 @@ class CladrController extends Controller {
                         'data' => $_GET['district']
                     );
                 }
+                // А если нет - то этот элемент надо создать
+                else
+                {
+                    $filters['rules'][] = array(
+                        'field' => 'code_district',
+                        'op' => 'eq',
+                        'data' => '000'
+                    );
+                }
                 if(isset($_GET['settlement'])) {
                     $filters['rules'][] = array(
                         'field' => 'code_settlement',
                         'op' => 'eq',
                         'data' => $_GET['settlement']
+                    );
+                }
+                else
+                {
+                    $filters['rules'][] = array(
+                        'field' => 'code_settlement',
+                        'op' => 'eq',
+                        'data' => '000000'
                     );
                 }
             } else {
@@ -357,6 +383,56 @@ class CladrController extends Controller {
         }
     }
 
+    /**
+     * Generates a Universally Unique IDentifier, version 4.
+     *
+     * RFC 4122 (http://www.ietf.org/rfc/rfc4122.txt) defines a special type of Globally
+     * Unique IDentifiers (GUID), as well as several methods for producing them. One
+     * such method, described in section 4.4, is based on truly random or pseudo-random
+     * number generators, and is therefore implementable in a language like PHP.
+     *
+     * We choose to produce pseudo-random numbers with the Mersenne Twister, and to always
+     * limit single generated numbers to 16 bits (ie. the decimal value 65535). That is
+     * because, even on 32-bit systems, PHP's RAND_MAX will often be the maximum *signed*
+     * value, with only the equivalent of 31 significant bits. Producing two 16-bit random
+     * numbers to make up a 32-bit one is less efficient, but guarantees that all 32 bits
+     * are random.
+     *
+     * The algorithm for version 4 UUIDs (ie. those based on random number generators)
+     * states that all 128 bits separated into the various fields (32 bits, 16 bits, 16 bits,
+     * 8 bits and 8 bits, 48 bits) should be random, except : (a) the version number should
+     * be the last 4 bits in the 3rd field, and (b) bits 6 and 7 of the 4th field should
+     * be 01. We try to conform to that definition as efficiently as possible, generating
+     * smaller values where possible, and minimizing the number of base conversions.
+     *
+     * @copyright  Copyright (c) CFD Labs, 2006. This function may be used freely for
+     *              any purpose ; it is distributed without any form of warranty whatsoever.
+     * @author      David Holmes <dholmes@cfdsoftware.net>
+     *
+     * @return  string  A UUID, made up of 32 hex digits and 4 hyphens.
+     */
+
+    private function uuid() {
+
+        // The field names refer to RFC 4122 section 4.1.2
+
+        return sprintf('%04x%04x-%04x-%03x4-%04x-%04x%04x%04x',
+            mt_rand(0, 65535), mt_rand(0, 65535), // 32 bits for "time_low"
+            mt_rand(0, 65535), // 16 bits for "time_mid"
+            mt_rand(0, 4095),  // 12 bits before the 0100 of (version) 4 for "time_hi_and_version"
+            bindec(substr_replace(sprintf('%016b', mt_rand(0, 65535)), '01', 6, 2)),
+            // 8 bits, the last two of which (positions 6 and 7) are 01, for "clk_seq_hi_res"
+            // (hence, the 2nd hex digit after the 3rd hyphen can only be 1, 5, 9 or d)
+            // 8 bits for "clk_seq_low"
+            mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535) // 48 bits for "node"
+        );
+    }
+
+    private function create_guid()   //Генераци GUID
+    {
+         return mb_convert_case($this->uuid(), MB_CASE_UPPER, "UTF-8");
+    }
+
     public function actionSettlementEdit() {
         $model = new FormCladrSettlementAdd();
         if(isset($_POST['FormCladrSettlementAdd'])) {
@@ -402,6 +478,28 @@ class CladrController extends Controller {
         }
     }
 
+    // Выполняет действия с моделью строки из кладдр перед её добавлением в базу
+    private function onBeforeAddCladdr(&$claddrEntry)
+    {
+        // За такое надо расстреливать без суда и следствия, но как по-другому сделать я не знаю :(
+        if ($claddrEntry->code_cladr=='undefined') {$claddrEntry->code_cladr = '';}
+
+        if ($claddrEntry->code_cladr == '' || $claddrEntry->code_cladr == null)
+        {
+            // Генерируем гуид
+            $guid = $this->create_guid();
+            // Убираем из строки фигурный скобки и прочую гадость (дефисы)
+            $guid = str_replace('{','',$guid);
+            $guid = str_replace('}','',$guid);
+            $guid = str_replace('-','',$guid);
+
+            $claddrEntry->code_cladr = $guid;
+
+            // Пишем fake_cladr ля модели
+            $claddrEntry->fake_cladr = 1;
+        }
+    }
+
     public function actionStreetAdd() {
         $model = new FormCladrStreetAdd();
         if(isset($_POST['FormCladrStreetAdd'])) {
@@ -416,6 +514,8 @@ class CladrController extends Controller {
             }
         }
     }
+
+
 
     public function actionSettlementAdd() {
         $model = new FormCladrSettlementAdd();
@@ -523,6 +623,23 @@ class CladrController extends Controller {
         $street->code_settlement = $model->codeSettlement;
         $street->name = $model->name;
 
+        // Если нет кода района или кода населённого пункта - вставляем нуль
+        if ($street->code_district == ''
+            ||$street->code_district == null
+            ||$street->code_district == "undefined")
+            {
+                $street->code_district = '000';
+            }
+
+        if ($street->code_settlement  == ''
+            ||$street->code_settlement == null
+            ||$street->code_settlement == "undefined")
+        {
+            $street->code_settlement = '000000';
+        }
+
+
+        $this->onBeforeAddCladdr($street);
         if($street->save()) {
             echo CJSON::encode(array(
                 'success' => true,
@@ -536,7 +653,14 @@ class CladrController extends Controller {
         $settlement->code_district = $model->codeDistrict;
         $settlement->code_cladr = $model->codeCladr;
         $settlement->name = $model->name;
-
+        // Если нету кода района - дописываем нули
+        if ($settlement->code_district == ''
+            ||$settlement->code_district == null
+            ||$settlement->code_district == "undefined")
+            {
+                $settlement->code_district = '000';
+            }
+        $this->onBeforeAddCladdr($settlement);
         if($settlement->save()) {
             echo CJSON::encode(array(
                 'success' => true,
@@ -549,7 +673,7 @@ class CladrController extends Controller {
         $district->code_region = $model->codeRegion;
         $district->code_cladr = $model->codeCladr;
         $district->name = $model->name;
-
+        $this->onBeforeAddCladdr($district);
         if($district->save()) {
             echo CJSON::encode(array(
                 'success' => true,
@@ -561,7 +685,7 @@ class CladrController extends Controller {
     private function addEditRegionModel($region, $model, $msg) {
         $region->code_cladr = $model->codeCladr;
         $region->name = $model->name;
-
+        $this->onBeforeAddCladdr($region);
         if($region->save()) {
             echo CJSON::encode(array(
                 'success' => true,

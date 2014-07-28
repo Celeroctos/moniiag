@@ -561,6 +561,9 @@
             params.order_number = globalVariables.orderNumber;
         }
 
+        if(globalVariables.hasOwnProperty('cancelledGreeting')) {
+            params.cancelledGreetingId = globalVariables.cancelledGreeting;
+        }
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
             'data' : params,
@@ -628,6 +631,7 @@
 
     function unWritePatient(greetingId)
     {
+        // Если определён
         var params = {
             id : greetingId
         };
@@ -678,9 +682,11 @@
             'mode' : 1, // Опосредованного пациента запись
             'time' : globalVariables.patientTime
         };
-
         globalVariables.isMediateWrite = 0; // Это флаг опосредованной записи
 
+        if(globalVariables.hasOwnProperty('cancelledGreeting')) {
+            params.cancelledGreetingId = globalVariables.cancelledGreeting;
+        }
         $.ajax({
             'url' : '/index.php/doctors/shedule/writepatient',
             'data' : params,

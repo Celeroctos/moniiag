@@ -85,15 +85,15 @@ class SheduleByDay extends MisActiveRecord {
 
         $connection = Yii::app()->db;
         $patients = $connection->createCommand()
-            ->select('dsbd.*, d.first_name,d.middle_name,d.last_name,
+            ->select('dsbd.*, o.id as oms_id, d.first_name,d.middle_name,d.last_name,
  					SUBSTR(
  						CAST(dsbd.patient_time AS text),
  						0,
  						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
  					) AS patient_time')
             ->from('mis.doctor_shedule_by_day dsbd')
-         //   ->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
-         //   ->Join('mis.oms o', 'm.policy_id = o.id')
+            ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+            ->leftJoin('mis.oms o', 'm.policy_id = o.id')
             ->leftJoin('mis.doctors d', 'dsbd.doctor_id = d.id')
             ->where('dsbd.id in ('.$idsString.')
  					'
@@ -133,19 +133,20 @@ class SheduleByDay extends MisActiveRecord {
  					m.card_number AS card_number
                     m.contact
         */
- 			->select('dsbd.*, d.first_name,d.middle_name,d.last_name,
+ 			->select('dsbd.*, o.id as oms_id, d.first_name,d.middle_name,d.last_name,
  					SUBSTR(
  						CAST(dsbd.patient_time AS text),
  						0, 
  						CHAR_LENGTH(CAST(dsbd.patient_time AS text)) - 2
  					) AS patient_time')
  			->from('mis.doctor_shedule_by_day dsbd')
- 			//->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
- 			//->Join('mis.oms o', 'm.policy_id = o.id')
+ 			->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+ 			->leftJoin('mis.oms o', 'm.policy_id = o.id')
             ->leftJoin('mis.doctors d', 'dsbd.doctor_id = d.id')
  			->where('dsbd.doctor_id in ('.$doctorStr.')
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
+ 					AND ((dsbd.patient_day > current_date) OR ((dsbd.patient_day=current_date) AND (dsbd.patient_time >= current_time)))
  					', array(
  						':beginDate' => $dateBegin,
  						':endDate' => $dateEnd
@@ -251,8 +252,8 @@ class SheduleByDay extends MisActiveRecord {
                     m.card_number AS card_number
  					')
             ->from('mis.doctor_shedule_by_day dsbd')
-            ->Join('mis.medcards m', 'dsbd.medcard_id = m.card_number')
-            ->Join('mis.oms o', 'm.policy_id = o.id')
+            ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
+            ->leftJoin('mis.oms o', 'm.policy_id = o.id')
             ->where('dsbd.id in ('.$greetingsIdsStr.')', array()
             );
         return $patients->queryAll();
@@ -277,11 +278,63 @@ class SheduleByDay extends MisActiveRecord {
         return $dates->queryAll();
     }
 
+    public static function sortSheduleElements($sheduleElements) {
+        usort($sheduleElements, function($element1, $element2) {
+            if($element1['doctor_id'] == $element2['doctor_id']) {
+                return 0;
+            } elseif($element1['doctor_id'] < $element2['doctor_id']) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+        return $sheduleElements;
+    }
+
+
+    public static function makeClusters($sheduleElements) {
+        $num = count($sheduleElements);
+        // Делим на кластеры. Каждый кластер сортируем по времени (по дефолту) или по заданному полю
+        // Сортируем по времени
+        if(count($sheduleElements) > 1) {
+            $sheduleElementsSorted = array();
+            $currentDoctorId = $sheduleElements[0]['doctor_id'];
+            $cluster = array($sheduleElements[0]);
+            for($i = 1; $i < $num; $i++) {
+                if($sheduleElements[$i]['doctor_id'] == $currentDoctorId && $i < $num - 1) {
+                    $cluster[] = $sheduleElements[$i];
+                } else {
+                    if($i == $num - 1) {
+                        array_push($cluster, $sheduleElements[$i]);
+                    }
+                    usort($cluster, function($element1, $element2) {
+                        $time1 = strtotime($_GET['date'].' '.$element1['patient_time']);
+                        $time2 = strtotime($_GET['date'].' '.$element2['patient_time']);
+                        if($time1 < $time2) {
+                            return -1;
+                        } elseif($time1 > $time2) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    });
+
+                    foreach($cluster as $element) {
+                        array_push($sheduleElementsSorted, $element);
+                    }
+
+                    $cluster = array($sheduleElements[$i]);
+                    $currentDoctorId = $sheduleElements[$i]['doctor_id'];
+                }
+            }
+            $sheduleElements = $sheduleElementsSorted;
+        }
+        return $sheduleElements;
+    }
+
     // Получить список приёмов по критериям
     public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false) {
         try {
-            //var_dump($filters);
-            //exit();
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
                 ->selectDistinct('dsbd.*,

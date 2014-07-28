@@ -46,8 +46,13 @@ if(isset($categorie['id'])) {
                         	$templatePrefix
                         );
 					} else {
+
 						$element = $categorie['elements'][$item['numberInArray']];
-						// Выведем зависимости, если они есть
+
+                        //var_dump($model);
+                        //exit();
+
+                        // Выведем зависимости, если они есть
 						if(isset($element['dependences'])) {
                         ?>
 	                        <script type="text/javascript">
@@ -64,6 +69,13 @@ if(isset($categorie['id'])) {
                         <div class="form-group col-xs-12">
                             <?php } ?>
                                 <?php
+
+
+                                // Заменяем пробелы на символ nbsp, чтобы они выводились
+                                $model->setAttributeLabels('f'.$element['undotted_path'].'_'.$element['id'],
+                                    str_replace(' ','&nbsp;',$model->attributeLabels['f'.$element['undotted_path'].'_'.$element['id']])
+                                );
+
                                 // Добавляем звёздочку к метке, если элемент обязателен для заполнения
                                 if ($element["is_required"] == 1)
                                 {
@@ -203,7 +215,10 @@ if(isset($categorie['id'])) {
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
-                                        <button type="button" id="ba<?php echo '_'.$prefix.'_'.$element['guide_id']; ?>" class="btn btn-default btn-sm">
+                                        <button type="button" id="ba<?php
+                                            //echo '_'.$prefix.'_'.$element['guide_id'];
+                                            echo '_'.$prefix.'_'.$element['id'];
+                                        ?>" class="btn btn-default btn-sm">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     <?php

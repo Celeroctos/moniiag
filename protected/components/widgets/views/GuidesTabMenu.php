@@ -32,4 +32,8 @@
     <li <?php echo $controller == 'cladr' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('КЛАДР', array('/guides/cladr/viewregions')) ?>
     </li>
+    <li <?php echo $controller == 'doctype' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Удостоверения личности', array('/guides/doctype/view')) ?>
+    </li>
+
 </ul>

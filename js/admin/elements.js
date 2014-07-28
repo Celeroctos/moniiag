@@ -136,7 +136,7 @@ $(document).ready(function () {
     $("#dependences").jqGrid({
         url: url,
         datatype: "local",
-        colNames: ['Код', 'Элемент ("метка до")', 'Значение', 'Зависимый элемент', 'Действие'],
+        colNames: ['Код', 'Элемент ("метка до")', 'Значение', 'Зависимый элемент', 'Действие','',''],
         colModel: [
             {
                 name: 'id',
@@ -163,8 +163,18 @@ $(document).ready(function () {
                 index: 'action',
                 width: 120
             },
+            {
+                name: 'dep_element_id',
+                index: 'dep_element_id',
+                hidden:true
+            },
+            {
+                name: 'actionId',
+                index: 'actionId',
+                hidden:true
+            }
         ],
-        rowNum: 10,
+        rowNum: 0,
         rowList: [10, 20, 30],
         pager: '#dependencesPager',
         sortname: 'id',
@@ -771,6 +781,46 @@ $('#controlDependencesList').on('change', function (e) {
     if ($(this).val().length > 0) {
         $('#controlDependencesPanel').find('h5:eq(1), .row:eq(1)').removeClass('no-display');
         $('#controlActions').val([]);
+
+        // Вот тут надо проверить - есть ли этот элемент, к которому создаётся зависимость в списке зависимостей. Если есть -
+        //     надо проверить, какое у него действие (Спрятать или показать)
+        //     в зависимости от того, какое действие на него поставлено, нужно прятать действие, противоположное по смыслу
+
+        selectedValue = $(this).find(':selected');
+        console.log('Выбранный номер элемента в списке возможных зависимых равен: '+selectedValue);
+        // Перебираем выборку
+        for(i = 0;i<selectedValue.length;i++)
+        {
+            oneOptionValue = selectedValue[i].value;
+
+            // Снимаем выбор у элементов списка
+            $('#controlActions').val('');
+            // ПОказываем все опции у контрола
+            $('#controlActions option').removeClass('no-display');
+            // Теперь перебираем строки грида
+            var rows = jQuery("#dependences").getDataIDs();
+            for(j=0;j<rows.length;j++)
+            {
+                row=jQuery("#dependences").getRowData(rows[j]);
+                // Если oneOptionValue равно dep_element_id
+                if (oneOptionValue==row.dep_element_id)
+                {
+                    // Если у элемента экшн "1" - прячем у controlAction действие с номером 2
+                    //    иначе - с цифрой 1
+                    if (row.actionId==1)
+                    {
+                        $('#controlActions option[value=2]').addClass('no-display');
+                    }
+                    else
+                    {
+                        $('#controlActions option[value=1]').addClass('no-display');
+                    }
+                    break; // Т.к. дальше не нужно проверять
+                }
+            }
+
+        }
+
     } else {
         $('#controlDependencesPanel').find('h5:eq(1), .row:eq(1)').addClass('no-display');
     }
@@ -780,6 +830,10 @@ $('#controlDependencesList').on('change', function (e) {
 $('#controlActions').on('change', function () {
     $('#saveDependencesBtn').removeClass('no-display');
 })
+
+    /*$('#controlDependencesList').on('change',function(e){
+        console.log('Значение в списке возможных зависимых элементов поменялось');
+     });*/
 
 $('#saveDependencesBtn').on('click', function (e) {
     var controlValues = $('#controlValues').val();

@@ -13,7 +13,11 @@ class FormCladrStreetAdd extends CFormModel
     {
         return array(
             array(
-                'name, codeCladr, codeRegion, codeDistrict, codeSettlement', 'required'
+                //'name, codeCladr, codeRegion, codeDistrict, codeSettlement', 'required'
+                   'name, codeRegion', 'required'
+            ),
+            array(
+                'codeCladr, codeDistrict, codeSettlement', 'safe'
             )
         );
     }

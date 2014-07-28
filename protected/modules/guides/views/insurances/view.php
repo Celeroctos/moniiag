@@ -1,3 +1,5 @@
+<script type="text/javascript" src="/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/insurances.js"></script>
 <table id="insurances"></table>
 <div id="insurancesPager"></div>
@@ -31,6 +33,10 @@
                 <div class="row">
                     <div class="col-xs-12">
                         <div class="form-group">
+                            <?php echo $form->hiddenField($model,'regionsHidden', array(
+                                'id' => 'insuranceRegionsHiddenAdd',
+                                'class' => 'form-control'
+                            )); ?>
                             <?php echo $form->labelEx($model,'name', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -43,6 +49,20 @@
                                 <?php echo $form->error($model,'value'); ?>
                             </div>
                         </div>
+                        <div class="form-group chooser" id="insuranceRegionsChooserAdd">
+                            <label for="doctor" class="col-xs-3 control-label">Регион</label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control" id="doctor"
+                                       placeholder="Начинайте вводить...">
+                                <ul class="variants no-display">
+                                </ul>
+                                <div class="choosed">
+
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -93,6 +113,11 @@
                                 'id' => 'id',
                                 'class' => 'form-control'
                             )); ?>
+                            <?php echo $form->hiddenField($model,'regionsHidden', array(
+                                'id' => 'insuranceRegionsHiddenEdit',
+                                'class' => 'form-control'
+                            )); ?>
+
                             <?php echo $form->labelEx($model,'name', array(
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
@@ -105,6 +130,21 @@
                                 <?php echo $form->error($model,'value'); ?>
                             </div>
                         </div>
+
+                        <div class="form-group chooser" id="insuranceRegionsChooserEdit">
+                            <label for="doctor" class="col-xs-3 control-label">Регион</label>
+
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control" id="doctor"
+                                       placeholder="Начинайте вводить...">
+                                <ul class="variants no-display">
+                                </ul>
+                                <div class="choosed">
+
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

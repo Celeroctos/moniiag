@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     var choosers = $('.chooser');
     $(choosers).each(function() {
         (function(chooser) {
@@ -106,9 +107,9 @@ $(document).ready(function() {
                         $(chooser).find('.variants li:eq(' + current + ')').addClass('active');
                         if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('displayFunc')) {
                             var toDisplay = choosersConfig[$(chooser).prop('id')].displayFunc(currentElements[current]);
-                            //$(chooser).find('input').val(toDisplay);
+                           // $(chooser).find('input').val(toDisplay);
                         } else {
-                            //$(chooser).find('input').val($(chooser).find('.variants li.active').text());
+                          //  $(chooser).find('input').val($(chooser).find('.variants li.active').text());
                         }
                     }
 
@@ -125,9 +126,32 @@ $(document).ready(function() {
 
                     // Нажатие Enter переносит в список выбранных
                     if(e.keyCode == 13) {
+                        // Если в чюююузер ничего не вбито - переходим в другой контрол
+                        wasChangedFocus = false;
+                        if ($(chooser).find('input').val()=='')
+                        {
+                            wasChangedFocus = true;
+                            $.fn.switchFocusToNext();
+                        }
                         if(current != null) {
+                            // Смотрим - если текущая длина больше
+                            if (choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed'))
+                            {
+                                if ($.fn[$(chooser).prop('id')].getChoosed().length+1>= choosersConfig[$(chooser).prop('id')]['maxChoosed'] ){
+                                    $.fn.switchFocusToNext();
+                                }
+                            }
                             addVariantToChoosed($(chooser).find('.variants li.active'));
                         }
+                        else
+                        {
+                            // Переводим фокус на следующий элемент
+                            if (!wasChangedFocus)
+                            {
+                                $.fn.switchFocusToNext();
+                            }
+                        }
+                        e.preventDefault();
                         return false;
                     }
 
@@ -194,7 +218,7 @@ $(document).ready(function() {
                     }
                     searchByField(this);
                 }
-                if($(this).val().length == 1) {
+                if($(this).val().length >= 1) {
                     mode = 1;
                     if(e.keyCode != 37 && e.keyCode != 39) {
                         initPageParam(1);
@@ -304,6 +328,13 @@ $(document).ready(function() {
                                     }
                                     $(_field).focus();
                                     $(ajaxGif).remove();
+                                    // Вызываем обработчик завершения загрузки, если он указан в конфигурации
+                                    chooserLoadComplete = choosersConfig[$(chooser).prop('id')].loadCompleteHandler;
+                                    if (chooserLoadComplete!=undefined && chooserLoadComplete!=null)
+                                    {
+                                        chooserLoadComplete($(chooser).prop('id'));
+                                    }
+
                                 } else {
 
                                 }
@@ -404,30 +435,7 @@ $(document).ready(function() {
                             choosedElements.push(currentElements[i]);
                             /* Логика работы: если есть настройка о количестве добавляемых максмально вариантов, то нужно блокировать строку, если количество вариантов достигло максимума */
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('maxChoosed') && choosedElements.length >= choosersConfig[$(chooser).prop('id')].maxChoosed) {
-                                // Сначала поменяем фокус - вызовем для чюзера событие нажатия таба
-                                // Выбираем все focus-able элементы
-                                var focusables = $(':focusable');
-                                for (i=0;i<focusables.length;i++)
-                                {
-                                    // Проверяем - является ли и-тый элемент из фокусабельных элементом,
-                                    //    на котором сейчас стоит фокус
-                                    if ($(focusables[i])[0] == $(document.activeElement)[0])
-                                    {
-                                        // Тут может быть две ситуации - либо элемент последний в массиве
-                                        //   либо нет
-                                        if (i==focusables.length-1)
-                                        {
-                                            // Фокусируемся на первый элемент
-                                            $(focusables[0]).focus();
-                                        }
-                                        else
-                                        {
-                                            // Фокусируемся на следующий по номеру элемент
-                                            $(focusables[i+1]).focus();
-                                        }
-                                        break;
-                                    }
-                                }
+
                                 // А вот теперь со спокойной совестью блокируем чюзер
                                 $.fn[$(chooser).attr('id')].disable();
                             }
@@ -524,6 +532,30 @@ $(document).ready(function() {
                 ]
             }
         },
+        'cancelledPatientChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                if(row.card_number != null) {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', номер карты ' + row.card_number));
+                } else {
+                    $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
+                }
+            },
+            'displayFunc' : function(row) {
+                return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+            },
+            'url' : '/index.php/reception/patient/search?cancelled=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'mediateChooser' : {
             'primary' : 'id',
             'rowAddHandler' : function(ul, row) {
@@ -533,6 +565,43 @@ $(document).ready(function() {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
             'url' : '/index.php/reception/patient/searchmediate/?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'fio',
+                        'op' : 'bw',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'writtenPatientChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                if (row.is_mediate == 0)
+                {
+                    // Не опосредованный пациент
+                    if(row.card_number != null) {
+                        $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', номер карты ' + row.card_number));
+                    } else {
+                        $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', дата рождения ' + row.birthday + ', номер ОМС ' + row.oms_number + ', карты нет '));
+                    }
+                }
+                else
+                {
+                    // Опосредованный пациент
+                    if (row.is_mediate == 1)
+                    {
+                        $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name + ', телефон ' + row.phone));
+                    }
+
+                }
+            },
+            'displayFunc' : function(row) {
+                    return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
+            },
+            'url' : '/index.php/reception/patient/SearchAllWritten/?page=1&rows=10&sidx=last_name&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -659,6 +728,76 @@ $(document).ready(function() {
                 ]
             }
         },
+        'complicationsDiagnosisChooser' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
+                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'insuranceRegionsChooserAdd' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr ) + '] ' +row.name));
+            },
+            'afterInsert': function()
+            {
+                $('#insuranceRegionsChooserAdd').trigger('change');
+            },
+            'afterRemove': function()
+            {
+                $('#insuranceRegionsChooserAdd').trigger('change');
+            },
+            'url' :'/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'insuranceRegionsChooserEdit' : {
+            'primary' : 'id',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr ) + '] ' +row.name));
+            },
+            'afterInsert': function()
+            {
+                $('#insuranceRegionsChooserEdit').trigger('change');
+            },
+            'afterRemove': function()
+            {
+                $('#insuranceRegionsChooserEdit').trigger('change');
+            },
+            'url' :'/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'secondaryClinicalDiagnosisChooser': {
             'primary': 'id',
             'bindedWindowSelector' : '#addClinicalDiagnosisPopup',
@@ -758,10 +897,9 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
-
             },
             'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -795,7 +933,7 @@ $(document).ready(function() {
                 });
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr ) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -847,7 +985,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -912,7 +1050,11 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr) + '] ' + row.name));
+            },
+            'loadCompleteHandler' : function (chooserId)
+            {
+                $(  '#'+chooserId).trigger('rowadd');
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -949,7 +1091,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr )+ '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1001,7 +1143,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1060,7 +1202,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr ) + '] ' + row.name));
 
                 // Переходим на следующий контрол на странице
 
@@ -1116,7 +1258,11 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr ) + '] ' + row.name));
+            },
+            'loadCompleteHandler' : function (chooserId)
+            {
+                $(  '#'+chooserId).trigger('rowadd');
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1154,7 +1300,7 @@ $(document).ready(function() {
                 //'district' : $.fn['districtChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1188,7 +1334,7 @@ $(document).ready(function() {
                 });
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr )+ '] ' + row.name));
             },
             'afterInsert': function() {
 
@@ -1202,6 +1348,45 @@ $(document).ready(function() {
                // 'district' : $.fn['districtChooser'].getChoosed(),
                // 'settlement' : $.fn['settlementChooser'].getChoosed()
             },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+        'regionPolicyChooser' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+            'afterInsert' : function()
+            {
+                $('#policyRegionHidden input').val($.fn['regionPolicyChooser'].getChoosed()[0].id);
+                // Добавляем в поле доп параметров чюююзера "Страховая компания" id региона
+                $.fn['insuranceChooser'].addExtraParam('region_insurance',
+                    $.fn['regionPolicyChooser'].getChoosed()[0].id);
+            },
+            'afterRemove' : function() {
+                $('#policyRegionHidden input').val('');
+                $.fn['insuranceChooser'].deleteExtraParam('region_insurance');
+                // Зануляем поле дополнительных параметров чюююзера "Страховая компания"
+                if($('#insuranceChooser').length > 0) {
+                    $.fn['insuranceChooser'].clearAll();
+                    $.fn['insuranceChooser'].enable();
+                    $('#insuranceChooser input').val('');
+                    $('#insuranceChooser .variants').addClass('no-display');
+                    $('#insuranceChooser .variants').css('display', '');
+                    $.fn['insuranceChooser'].deleteExtraParam('region');
+                }
+
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
+            },
+            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1253,7 +1438,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1299,7 +1484,7 @@ $(document).ready(function() {
                 //'region' : $.fn['regionChooser'].getChoosed()
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr )+ '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1336,7 +1521,7 @@ $(document).ready(function() {
                 }
             },
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
@@ -1354,7 +1539,7 @@ $(document).ready(function() {
             'primary' : 'id',
             'maxChoosed' : 1,
             'rowAddHandler' : function(ul, row) {
-                $(ul).append($('<li>').text('[' + row.code_cladr + '] ' + row.name));
+                $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
             'afterInsert': function() {
 

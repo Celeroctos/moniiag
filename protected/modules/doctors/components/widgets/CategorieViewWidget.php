@@ -724,7 +724,7 @@ class CategorieViewWidget extends CWidget {
 		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId,$recordId);
         // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
 		//var_dump($this->historyElements);
-		//exit();
+		///exit();
 		
 		$this->makeTree('getTreeNode');
         $this->sortTree();
@@ -755,13 +755,16 @@ class CategorieViewWidget extends CWidget {
 		{
 			$pd = PatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$sd = PatientDiagnosis::model()->findDiagnosis($greeting, 1);
-			$cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
+            $cd = PatientDiagnosis::model()->findDiagnosis($greeting, 2);
+            $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
+
 		}
 		else
 		{
 			$pd = array();
 			$sd = array();
+            $cd = array();
 			$cpd = array();
 			$csd = array();
 			
@@ -770,6 +773,7 @@ class CategorieViewWidget extends CWidget {
             'categories' => $this->historyTree,
             'primaryDiagnosis' => $pd,
             'secondaryDiagnosis' => $sd,
+            'complicating' => $cd,
 			'clinicalPrimaryDiagnosis' => $cpd,
 			'clinicalSecondaryDiagnosis' => $csd,
             'model' => $this->formModel,
@@ -794,6 +798,9 @@ class CategorieViewWidget extends CWidget {
 			//     него template_name и templateid
 			$tName = $nodeTopLevel['element']['template_name'];
 			$tId = $nodeTopLevel['element']['template_id'];
+
+
+
 			// Если в templates нет ИД шаблона - добавляем
 			if (!isset($templates[$tId]))
 			{
@@ -801,6 +808,13 @@ class CategorieViewWidget extends CWidget {
 					'name' => $tName,
 					'cats' => array()
 				);
+
+                // Если у верхнего элемента есть template_page_id - берём его в шаблон
+                if (isset($nodeTopLevel['element']['template_page_id']))
+                {
+                    $templates[$tId]['template_page_id'] = $nodeTopLevel['element']['template_page_id'];
+                }
+
 			}
 			// Теперь добавим категорию в соответвующий шаблон
 			$templates[$tId]['cats'][] = $nodeTopLevel;
@@ -808,7 +822,48 @@ class CategorieViewWidget extends CWidget {
 		//var_dump($num);
 		//exit();
     	// В dividedCats - добавляем собранные категории
+        //----->
+        //  После распределения шаблонов пробегаемся по шаблонам, внутри пробегаемся по категориям верхнего уровня,
+        //     смотрим - есть ли в шаблоне хотя бы одна не пустая категория
+        //    Если её нет - то удаляем шаблон из вывода
+        $keysTpDelete = array();
+        foreach ($templates as $templateKey => &$oneTemplate)
+        {
+            $isNotEmptyCategory = false;
+            foreach ($oneTemplate['cats'] as $categoryKey => $oneCategory)
+            {
+
+                // Если категория не пуста - поднимаем флаг $isNotEmptyCategory
+                //var_dump($oneCategory['element']['empty']);
+                if ($oneCategory['element']['empty']==false)
+                {
+
+                    $isNotEmptyCategory = true;
+                    // Дальше не имеет смысла прогонять цикл
+                    break;
+                }
+            }
+
+            if ($isNotEmptyCategory)
+            {
+                //var_dump('!');
+                //exit();
+                // Ставим флаг "empty" = false
+              //  var_dump('1');
+                $oneTemplate['empty'] = false;
+            }
+            // Иначе "empty" = true
+            else
+            {
+               // var_dump('2');
+                $oneTemplate['empty'] = true;
+            }
+
+        }
+//exit();
     	$this->dividedCats = $templates;
+     //   var_dump($templates);
+      //  exit();
     }
 
     // Получить дерево актуальных категорий (не используется)
@@ -840,8 +895,9 @@ class CategorieViewWidget extends CWidget {
 			$nodeContent['template_name'] = $historyElement['template_name'];
 			$nodeContent['path'] = $historyElement['path'];
 			$nodeContent['element_id'] = -1;
-			
-		}
+            $nodeContent['empty'] = true;
+
+        }
 		else
 		{
 			$nodeContent = array(
@@ -966,9 +1022,11 @@ class CategorieViewWidget extends CWidget {
 			$nodeContent['name'] = $historyElement['categorie_name'];
 			$nodeContent['template_id'] = $historyElement['template_id'];
 			$nodeContent['template_name'] = $historyElement['template_name'];
-			$nodeContent['element_id'] = -1;
-			
-		}
+            $nodeContent['template_page_id'] = $historyElement['template_page_id'];
+            $nodeContent['element_id'] = -1;
+            $nodeContent['empty'] = true;
+
+        }
 		else
 		{
 			$nodeContent = array(
@@ -1093,7 +1151,35 @@ class CategorieViewWidget extends CWidget {
 			{
 				// Если свойство NULL или пустое значение - берём следующий элемент
 				if ($element['value']=='' || $element['value']==NULL)
+                {
+
+                   //exit();
 					continue;
+                }
+                else
+                {
+                    // Попытаемся преобразовать value JSON-объект
+                    try
+                    {
+                        $JSONObject = CJSON::decode($element['value']);
+                        // Если объект - массив и он пустой, то
+                        if (is_array($JSONObject))
+                        {
+                            if (count($JSONObject)==0)
+                            {
+                                continue;
+                            }
+                        }
+
+                    }
+                    catch (Exception $e)
+                    {
+
+                    }
+                }
+                //var_dump("!");
+                //exit();
+               // var_dump($element['value']/*. ' ' . $element['label_before']*/);
 				// Делим путь 
 				$pathArr = explode('.', $element['path']);
 				$currentResultTree = &$this->historyTree;
@@ -1120,6 +1206,9 @@ class CategorieViewWidget extends CWidget {
 						$currentResultTree['element'] =
                             $this->$getTreeNodeFunction($this->getTreeNodeCategory($pathArr , $i+1 ));
 					}
+                    // Сбрасываем флаг empty у текущего узла
+                    $currentResultTree['element']['empty'] = false;
+
 				}
 				// Нашли местечко для элемента - вставили в текущий узел
 				// Проверим - есть ли в узле путь к узлу, который мы добавляем
@@ -1134,6 +1223,7 @@ class CategorieViewWidget extends CWidget {
 
 			}
 		}
+
 	}
 	
 	public function sortTree(&$node = false) {

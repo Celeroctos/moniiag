@@ -22,10 +22,17 @@
     var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
     $("#template-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
-        console.log(ajaxData);
         var ajaxData = $.parseJSON(ajaxData);
+        onSectionSave(ajaxData);
+    });
+
+    // Вызывается при событии сохранения одной секции приёма (шаблона или диагнозов)
+    function onSectionSave(ajaxData)
+    {
+        console.log(ajaxData);
         if (ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
-            if ($(".submitEditPatient").length - 1 == numCalls) {
+            //if ($(".submitEditPatient").length - 1 == numCalls) {
+            if ($(".submitEditPatient").length == numCalls) {
                 // Сбрасываем, что есть несохранённые данные
                 globalVariables.isUnsavedUserData = false
                 // Сбрасываем режим на дефолт
@@ -34,7 +41,7 @@
                 if (isThisPrint) {
                     if (printHandler == 'print-greeting-link') {
                         $('.activeGreeting .' + printHandler).trigger('print');
-                      //  $('#printContentButton').trigger('end');
+                        //  $('#printContentButton').trigger('end');
                     }
                     else {
                         if (printHandler == 'print-recomendation-link') {
@@ -48,7 +55,7 @@
 
                 }
                 else {
-                  //  $('#medcardContentSave').trigger('end');
+                    //  $('#medcardContentSave').trigger('end');
                     $('#successEditPopup').modal({});
                 }
 
@@ -71,7 +78,7 @@
         } else {
 
         }
-    });
+    }
 
     function getNewHistory()
     {
@@ -147,6 +154,7 @@
         });
     });
 
+    // Метод, который выполняет только сохранение. Его использовать при вызове сохранения
     function onStartSave()
     {
         // Берём кнопки с классом
@@ -253,11 +261,17 @@
         printHandler = 'accept-greeting-link';
         isThisPrint = true;
         onStartSave();
-        $(this).trigger('accept');
+       // $(this).trigger('accept');
     });
 
 // Закрытие приёма
 $(document).on('accept', '.accept-greeting-link', function(e) {
+
+    // Старый код. Поидее на сервере можно не проверять наличие диагноза, потому что перед процессом закрытия приёма
+    //    выполняется сохранение приёма, поэтому в данной точке что на сервере - что на клиенте,
+    // диагноз должен быть одинаков
+
+    /*
     // Берём id-шник приёма
     var greetingId = $(this).attr('href').substr(1);
     // Теперь смотрим, заполнен ли основной диагноз. Для этого нужно делать ajax-запрос, потому что отображение диагнозов не означает их сохранённость на стороне сервера
@@ -285,6 +299,8 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
                         return false;
                     }
                 }
+                // Теперь снимаем флаг обязательности диагноза. Перебираем шаблоны и если хотя бы в олдном из них
+
                 // Дёргаем Ajax
                 $.ajax({
                     'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
@@ -314,6 +330,49 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
             return;
         }
     });
+    */
+    var isError = '';
+    for(var i in globalVariables.reqDiagnosis) {
+        if(globalVariables.reqDiagnosis[i].isReq) {
+            isError += globalVariables.reqDiagnosis[i].name + ', ';
+        }
+    }
+    if($.trim(isError) != '') {
+        isError = isError.substr(0, isError.length - 2);
+        isError = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + isError + '</strong>';
+        // Выводим сообщение об ошибке
+        $('#errorPopup .modal-body .row').html("<p>" + isError + "</p>");
+        $('#errorPopup').modal({
+        });
+        return false;
+    }
+    // Вызываем закрытие приёма
+    // Дёргаем Ajax
+    //return false;
+    var greetingId = $(this).attr('href').substr(1);
+    $.ajax({
+        'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
+        'cache' : false,
+        'dataType' : 'json',
+        'type' : 'GET',
+        'success' : function(data, textStatus, jqXHR) {
+            // Поидее сейчас здесь не может быть ошибок
+
+
+            if(data.success == true) {
+                // Перезагружаем страницу
+                location.reload();
+            } else {
+                // Выводим сообщение об ошибке
+                $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
+                $('#errorPopup').modal({
+
+                });
+            }
+            return;
+        }
+    });
+
 
 });
 
@@ -395,7 +454,8 @@ $('.print-greeting-link').on('click', function (e) {
         else
         {
             // Иначе вызываем процедуру сохранения
-            $('.submitEditPatient input').trigger('click');
+            //$('.submitEditPatient input').trigger('click');
+            onStartSave();
         }
 });
 
@@ -403,8 +463,8 @@ $('.print-recomendation-link').on('click', function (e) {
     // $('#noticePopup').modal({});
     printHandler = 'print-recomendation-link';
     isThisPrint = true;
-    $('.submitEditPatient input').trigger('click');
-
+    // $('.submitEditPatient input').trigger('click');
+    onStartSave();
 });
 
 var isThisPrint = false;
@@ -476,6 +536,8 @@ $('#submitDiagnosis').on('click', function (e) {
     var choosedClinPrimary = $.fn['primaryClinicalDiagnosisChooser'].getChoosed();
     var choosedClinSecondary = $.fn['secondaryClinicalDiagnosisChooser'].getChoosed();
 
+    var choosedComplicating = $.fn['complicationsDiagnosisChooser'].getChoosed();
+
     var primaryIds = [];
     var secondaryIds = [];
     for (var i = 0; i < choosedPrimary.length; i++) {
@@ -495,6 +557,11 @@ $('#submitDiagnosis').on('click', function (e) {
         clinSecondaryIds.push(choosedClinSecondary[i].id);
     }
 
+    var complicatingIds = [];
+    for (var i = 0; i < choosedComplicating.length; i++) {
+        complicatingIds.push(choosedComplicating[i].id);
+    }
+
     $.ajax({
         'url': '/index.php/doctors/patient/savediagnosis',
         'data': {
@@ -502,6 +569,7 @@ $('#submitDiagnosis').on('click', function (e) {
             'secondary': $.toJSON(secondaryIds),
             'clinPrimary': $.toJSON(clinPrimaryIds),
             'clinSecondary': $.toJSON(clinSecondaryIds),
+            'complicating': $.toJSON(complicatingIds),
             'note': $('#diagnosisNote').val(),
             'greeting_id': $('#greetingId').val()
         },
@@ -511,6 +579,7 @@ $('#submitDiagnosis').on('click', function (e) {
         'success': function (data, textStatus, jqXHR) {
             if (data.success == true) {
                 //   $('#successDiagnosisPopup').modal({});
+                onSectionSave(data);
             }
             else
                 console.log(data);
@@ -544,7 +613,12 @@ $('#onlyLikeDiagnosis').click(function (e) {
             }
         }
     }
-})(['primaryDiagnosisChooser', 'secondaryDiagnosisChooser']);
+})([
+        'primaryDiagnosisChooser',
+        'secondaryDiagnosisChooser',
+        'complicationsDiagnosisChooser',
+        'clinicalSecondaryDiagnosis'
+    ]);
 
 
 // Просмотр медкарты в попапе
@@ -709,6 +783,9 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                 // Надо сбросить все значения в склонированной категории,
                 //     чтобы новая категория была девственно чиста :)
                 $(accClone).find('input,textarea,select').val('');
+
+                // Сбрасываем значения в редактируемых таблицах
+
                 // Надо скрыть все категории, кроме только что отклонированной
                 // Берём id родительской категории и ищем все аккордеоны, в поле ИД которых входит ИД-шник родительской
                 //   и посылаем сигнал "свернись!"
@@ -809,8 +886,11 @@ checkElementsDependences();
 function hideControl(container, elementId) {
     var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
     if (typeof container == 'undefined') {
+        //var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+        //var prev = $(   $(elementWithWrapper)[0]    ).prev();
         var next = $(elementWithWrapper).next();
         var prev = $(elementWithWrapper).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
@@ -825,8 +905,11 @@ function hideControl(container, elementId) {
         $(elementWithWrapper).hide();
     }
     else {
-        var next = $(elementWithWrapper).next();
-        var prev = $(elementWithWrapper).prev();
+//        var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+  //      var prev = $(   $(elementWithWrapper)[0]    ).prev();
+        var next = $(   elementWithWrapper   ).next();
+        var prev = $(   elementWithWrapper   ).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).hide();
             var next = $(next).next();
@@ -846,8 +929,11 @@ function hideControl(container, elementId) {
 function showControl(container, elementId) {
     var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
     if (typeof container == 'undefined') {
-        var next = $(elementWithWrapper).next();
-        var prev = $(elementWithWrapper).prev();
+        //var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+        //var prev = $(   $(elementWithWrapper)[0]    ).prev();
+        var next = $(   elementWithWrapper   ).next();
+        var prev = $(   elementWithWrapper   ).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             $(next).show();
             // + у комбо
@@ -863,8 +949,13 @@ function showControl(container, elementId) {
         $(elementWithWrapper).show();
     }
     else {
-        var next = $(elementWithWrapper).next();
-        var prev = $(elementWithWrapper).prev();
+        //var next = $(   $(elementWithWrapper)[$(elementWithWrapper).lenth-1]    ).next();
+        //var prev = $(   $(elementWithWrapper)[0]    ).prev();
+
+
+        var next = $(   elementWithWrapper   ).next();
+        var prev = $(   elementWithWrapper ).prev();
+
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
             var next = $(next).next();
             if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
@@ -899,11 +990,11 @@ function getDependenceElementWithWrapper(container, selectorString)
 
     if (container==undefined)
     {
-        targetElement = $('[id$="_' + selectorString + '"]');
+        targetElement = $('[id$="_' + selectorString + '"]:not(.btn-sm)');
     }
     else
     {
-        targetElement = $(container).find('[id$="_' + selectorString + '"]');
+        targetElement = $(container).find('[id$="_' + selectorString + '"]:not(.btn-sm)');
     }
     if (targetElement!=undefined)
     {
