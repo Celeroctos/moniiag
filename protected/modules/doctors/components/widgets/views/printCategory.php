@@ -124,7 +124,7 @@
                                    }
                                }
 
-                                if ($element['is_wrapped']=='0' && $elementNumber!=1)
+                                if ($element['is_wrapped']=='1' && $elementNumber!=1)
                                 {
 
                                     ?>

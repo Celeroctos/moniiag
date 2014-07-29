@@ -957,6 +957,7 @@ function showControl(container, elementId) {
         var prev = $(   elementWithWrapper ).prev();
 
         if (typeof next != 'undefined' && ($(next).hasClass('label-after') || $(next).hasClass('btn-sm'))) {
+            $(next).show();
             var next = $(next).next();
             if (typeof next != 'undefined' && $(next).hasClass('btn-sm')) {
                 $(next).show();
