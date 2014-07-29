@@ -145,51 +145,6 @@
             }
         });
     }
-
-    $('#patient-oms-edit-form #policy').on('blur',function(){
-        // Отправляем ajax, который должен вернуть количество полюсов с таким номером
-        //actionGetIsOmsWithNumber
-        $.ajax({
-            'url' : '/index.php/reception/patient/getisomswithnumber',
-            'data' : {
-                'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
-                'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
-                'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
-            },
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if (data.newOms.id==undefined) return;
-                if (data.newOms.id >= 0)
-                {
-
-                    // Пишем в глобальные переменные Id полиса чтобы можно было карту перевязать на данный полис
-                    //globalVariables.medcardOmsToEdit
-                    globalVariables.newOmsId = data.newOms.id;
-                    // Нужно заполнить поп-ап значениями из полиса
-                    if ( $('#existOmsPopup').length>0 )
-                    {
-                        $('#existOmsPopup #fioExistingOms').text(
-                            data.newOms.first_name + ' ' + data.newOms.middle_name + ' ' + data.newOms.last_name
-                        );
-
-                        $('#existOmsPopup #birthdayExistingOms').text(
-                            data.newOms.birthday.split('-').reverse().join('.')
-                        );
-
-                        $('#existOmsPopup').modal({});
-                    }
-
-
-                    console.log($('#patient-oms-edit-form #policy').val());
-                }
-
-                return;
-            }
-        });
-    });
-
     $('.add-patient-submit input').on('click', function(e){
         // Сначала проверим полис
         isRightOmsNumber = $.fn.checkOmsNumber();
@@ -200,8 +155,23 @@
     });
 
     cancelSaving = false;
+
+    $('#patient-oms-edit-form #policy').on('blur',function(){
+        isAlreadyOmsNumber();
+    });
+
     $('#patient-oms-edit-form #saveOms').on ('click', function (e){
 
+        isAlreadyOmsNumber();
+        if (cancelSaving)
+        {
+            cancelSaving = false;
+            return false;
+        }
+    });
+
+    function isAlreadyOmsNumber()
+    {
         // Сначала проверим полис
         isRightOmsNumber = $.fn.checkOmsNumber();
         if (!isRightOmsNumber)
@@ -223,6 +193,7 @@
             'dataType' : 'json',
             'type' : 'GET',
             'async': false,
+            'error': function(){  return false; },
             'success' : function(data, textStatus, jqXHR) {
                 if (data.newOms.id==undefined) return;
                 if (data.newOms.id >= 0)
@@ -242,6 +213,35 @@
                             data.newOms.birthday.split('-').reverse().join('.')
                         );
 
+                        // Проверим - есть ли флаг о том, что данные по полюсам не совпадают
+                        if (data.newOms.nonCoincides!=undefined)
+                        {
+                            // Делаем видимым сообщение, о том, что данные по старому и по новому ОМС не совпадают
+                            $('.nonCoidenceOmsMessage').removeClass('no-display');
+
+                        }
+                        else
+                        {
+                            // А если всё-таки равно undefined - прячем сообщение
+                            $('.nonCoidenceOmsMessage').addClass('no-display');
+                        }
+
+                        // Если есть поле старой карты в ответе - выводим в интерфейс
+                        if (data.newOms.oldMedcard!=undefined)
+                        {
+                            $('.oldCardOnNewOmsMessage').html(
+                                'Этот полис пользуется для карты №: <strong>'+data.newOms.oldMedcard + '</strong>'
+                            );
+                        }
+                        // иначе - стираем
+                        else
+                        {
+                            $('.oldCardOnNewOmsMessage').text(
+                                ''
+                            );
+                        }
+                        // иначе - стираем
+
                         $('#existOmsPopup').modal({});
                         cancelSaving = true;
                     }
@@ -253,16 +253,7 @@
                 return;
             }
         });
-
-        if (cancelSaving)
-        {
-            cancelSaving = false;
-            return false;
-        }
-
-
-
-    });
+    }
 
     $('#existOmsPopup .btn-success').on('click', function(){
         // Берём номер карты. Берём id нового ОМС и вызываем action смены полиса у карточки

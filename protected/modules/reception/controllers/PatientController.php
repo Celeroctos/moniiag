@@ -392,6 +392,9 @@ class PatientController extends Controller {
 
     public function actionGetIsOmsWithNumber()
     {
+       // var_dump($_GET['omsIdToCheck']);
+       // exit();
+
         $oms = null;
         $result = array('id' => -1);
         if (isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck']))
@@ -402,28 +405,41 @@ class PatientController extends Controller {
             {
                 $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
                     $_GET['omsIdToCheck'],true);
-                /*
-                // Сначала без пробела
-                $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].$_GET['omsNumberToCheck'],
-                    $_GET['omsIdToCheck'],true);
-                // Если ничего не нашли - пробуем с пробелом
-                if ($oms==null)
-                {
-                    $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
-                        $_GET['omsIdToCheck'],true);
-                    var_dump($oms);
-                    exit();
-                }
-                */
             }
             else
             {
                 $oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
             }
-            //$oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
             // Если омс!=нуль, то значит, что полис с таким номером существует в базе
             if ($oms!=null)
             {
+                // Вытащим ОМС по ИД и сравним: если ФИО и дата рождения не совпадает - выводим флаг, который скажет,
+                //     нужно вывести сообщение, чтобы оператор проверил все данные
+
+                $oldOms = Oms::model()->findByPk( $_GET['omsIdToCheck'] );
+
+                // Сравним данные по $oms и $oldOms
+                if (
+                    (mb_strtolower($oms['first_name'], 'UTF-8') != mb_strtolower($oldOms['first_name'], 'UTF-8'))||
+                    (mb_strtolower($oms['last_name'], 'UTF-8') != mb_strtolower($oldOms['last_name'], 'UTF-8'))||
+                    (mb_strtolower($oms['middle_name'], 'UTF-8') != mb_strtolower($oldOms['middle_name'], 'UTF-8'))||
+                    (mb_strtolower($oms['birthday'], 'UTF-8') != mb_strtolower($oldOms['birthday'], 'UTF-8'))
+
+                )
+                {
+                    // Совпадения нет
+                    $oms['nonCoincides'] = true;
+                }
+
+                // вытащим номер карты, у которой максимален номер по данному полису
+              //  $medcardsOnOldOms = Medcard::model()->findAllBySql('SELECT * FROM ');
+
+                $medcardObject = new Medcard();
+                $lastMedcardOms = $medcardObject->getLastByPatient(  $oms['id']  );
+                if ($lastMedcardOms!=null && count($lastMedcardOms)!=0)
+                {
+                    $oms['oldMedcard'] = $lastMedcardOms['card_number'] ;
+                }
                 $result = $oms;
             }
         }

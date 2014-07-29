@@ -420,9 +420,17 @@ $this->widget('application.modules.reception.components.widgets.MedcardFormWidge
                 <div class="row">
                     <p>ФИО: <strong><span id="fioExistingOms"></span></strong></p>
                     <p>Дата рождения: <strong><span id="birthdayExistingOms"></span></strong></p>
+                    <p class="oldCardOnNewOmsMessage"></p>
                     <p>Использовать этот полис для данной медкарты?</p>
+                    <!-- Сообщение о том, что неплохо было перепроверить данные по ОМС -->
+                    <p class="red-color nonCoidenceOmsMessage no-display"><strong>Внимание!
+                        Данные старого полиса для этой карты и полиса, номер которого вы ввели при редактировании не совпадают!
+                        Пожалуйста, перепроверьте ФИО пациента и номер карты. Если всё правильно - нажмите "Да" или "Нет" - чтобы проверить.
+                    </strong></p>
+                    <!-- -->
                 </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">Да</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
