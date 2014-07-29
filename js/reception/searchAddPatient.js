@@ -146,6 +146,8 @@
         });
     }
 
+    // Потом удалить - скорее всего не нужно будет
+    /*
     $('#patient-oms-edit-form #policy').on('blur',function(){
         // Отправляем ajax, который должен вернуть количество полюсов с таким номером
         //actionGetIsOmsWithNumber
@@ -159,6 +161,7 @@
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
+            'error': function(){  return false; },
             'success' : function(data, textStatus, jqXHR) {
                 if (data.newOms.id==undefined) return;
                 if (data.newOms.id >= 0)
@@ -188,7 +191,7 @@
                 return;
             }
         });
-    });
+    });*/
 
     $('.add-patient-submit input').on('click', function(e){
         // Сначала проверим полис
@@ -200,8 +203,23 @@
     });
 
     cancelSaving = false;
+
+    $('#patient-oms-edit-form #policy').on('blur',function(){
+        isAlreadyOmsNumber();
+    });
+
     $('#patient-oms-edit-form #saveOms').on ('click', function (e){
 
+        isAlreadyOmsNumber();
+        if (cancelSaving)
+        {
+            cancelSaving = false;
+            return false;
+        }
+    });
+
+    function isAlreadyOmsNumber()
+    {
         // Сначала проверим полис
         isRightOmsNumber = $.fn.checkOmsNumber();
         if (!isRightOmsNumber)
@@ -223,6 +241,7 @@
             'dataType' : 'json',
             'type' : 'GET',
             'async': false,
+            'error': function(){  return false; },
             'success' : function(data, textStatus, jqXHR) {
                 if (data.newOms.id==undefined) return;
                 if (data.newOms.id >= 0)
@@ -242,6 +261,20 @@
                             data.newOms.birthday.split('-').reverse().join('.')
                         );
 
+                        // Проверим - есть ли флаг о том, что данные по полюсам не совпадают
+                        if (data.newOms.nonCoincides!=undefined)
+                        {
+                            // Делаем видимым сообщение, о том, что данные по старому и по новому ОМС не совпадают
+                            $('.nonCoidenceOmsMessage').removeClass('no-display');
+
+                        }
+                        else
+                        {
+                            // А если всё-таки равно undefined - прячем сообщение
+                            $('.nonCoidenceOmsMessage').addClass('no-display');
+                        }
+
+
                         $('#existOmsPopup').modal({});
                         cancelSaving = true;
                     }
@@ -253,16 +286,7 @@
                 return;
             }
         });
-
-        if (cancelSaving)
-        {
-            cancelSaving = false;
-            return false;
-        }
-
-
-
-    });
+    }
 
     $('#existOmsPopup .btn-success').on('click', function(){
         // Берём номер карты. Берём id нового ОМС и вызываем action смены полиса у карточки
