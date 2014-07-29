@@ -959,17 +959,22 @@ class TasuController extends Controller {
     private function searchTasuPatient($greeting) {
         $conn = Yii::app()->db2;
         try {
-            // Номер полиса состоит из двух частей: серия (пробел) номер
-            $policyParts = explode(' ', trim($greeting['oms_number']));
-            // Неправильный номер полиса по формату
-            if(count($policyParts) != 2) {
-                $policyParts = array();
-                if(mb_strlen(trim($greeting['oms_number'])) > 7) {
-                    $policyParts[0] = mb_substr(trim($greeting['oms_number']), 0, 6);
-                    $policyParts[1] = mb_substr(trim($greeting['oms_number']), 6);
-                } else {
-                    throw new Exception();
+            if($oms->oms_series == null) { // Старый тип структуры базы
+                // Номер полиса состоит из двух частей: серия (пробел) номер
+                $policyParts = explode(' ', trim($greeting['oms_number']));
+                // Неправильный номер полиса по формату
+                if(count($policyParts) != 2) {
+                    $policyParts = array();
+                    if(mb_strlen(trim($greeting['oms_number'])) > 7) {
+                        $policyParts[0] = mb_substr(trim($greeting['oms_number']), 0, 6);
+                        $policyParts[1] = mb_substr(trim($greeting['oms_number']), 6);
+                    } else {
+                        throw new Exception();
+                    }
                 }
+            } else {
+                $policyParts[0] = $oms->oms_series;
+                $policyParts[1] = $oms->oms_number;
             }
 
             $sql = "SELECT DISTINCT
@@ -1009,17 +1014,22 @@ class TasuController extends Controller {
         $conn = Yii::app()->db2;
         $transaction = $conn->beginTransaction();
         try {
-            // Номер полиса состоит из двух частей: серия (пробел) номер
-            $policyParts = explode(' ', trim($oms->oms_number));
-            // Неправильный номер полиса по формату
-            if(count($policyParts) != 2) {
-                $policyParts = array();
-                if(mb_strlen(trim($oms->oms_number)) > 7) {
-                    $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
-                    $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
-                } else {
-                    throw new Exception();
+            if($oms->oms_series == null) {
+                // Номер полиса состоит из двух частей: серия (пробел) номер
+                $policyParts = explode(' ', trim($oms->oms_number));
+                // Неправильный номер полиса по формату
+                if(count($policyParts) != 2) {
+                    $policyParts = array();
+                    if(mb_strlen(trim($oms->oms_number)) > 7) {
+                        $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
+                        $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
+                    } else {
+                        throw new Exception();
+                    }
                 }
+            } else {
+                $policyParts[0] = $oms->oms_series;
+                $policyParts[1] = $oms->oms_number;
             }
 
             // Пациент такой должен быть всего один
@@ -1251,17 +1261,22 @@ class TasuController extends Controller {
             }
 
             // Номер полиса состоит из двух частей: серия (пробел) номер
-            $policyParts = explode(' ', trim($oms->oms_number));
-            // Неправильный номер полиса по формату
+            if($oms->oms_series == null) {
+                $policyParts = explode(' ', trim($oms->oms_number));
+                // Неправильный номер полиса по формату
 
-            if(count($policyParts) != 2) {
-                $policyParts = array();
-                if(mb_strlen(trim($oms->oms_number)) > 7) {
-                    $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
-                    $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
-                } else {
-                    throw new Exception();
+                if(count($policyParts) != 2) {
+                    $policyParts = array();
+                    if(mb_strlen(trim($oms->oms_number)) > 7) {
+                        $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
+                        $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
+                    } else {
+                        throw new Exception();
+                    }
                 }
+            } else {
+                $policyParts[0] = $oms->oms_series;
+                $policyParts[1] = $oms->oms_number;
             }
 
             $omsRow = $sql = "SELECT
@@ -1557,6 +1572,12 @@ class TasuController extends Controller {
 
         $this->log = array();
 
+        $omsStatuses = OmsStatus::model()->findAll();
+        $omsStatusesSorted = array();
+        foreach($omsStatuses as $omsStatus) {
+            $omsStatusesSorted[(string)$omsStatus['tasu_id']] = $omsStatus['id'];
+        }
+
         $omss = TasuAllOms::model()->getRows(false, 'ENP', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
         if($_GET['totalRows'] == null || $_GET['totalRows'] == 0) {
             $this->totalRows = TasuAllOms::model()->getNumRows();
@@ -1574,38 +1595,73 @@ class TasuController extends Controller {
             $this->totalRows = $_GET['totalRows'];
         }
 
+        $omsTypes = OmsType::model()->findAll();
+        $omsTypesSorted = array();
+        foreach($omsTypes as $omsType) {
+            $omsTypesSorted[(string)$omsType['tasu_id']] = $omsType['id'];
+        }
+
+        $omsStatuses = OmsStatus::model()->findAll();
+        $omsStatusesSorted = array();
+        foreach($omsStatuses as $omsStatus) {
+            $omsStatusesSorted[(string)$omsStatus['tasu_id']] = $omsStatus['id'];
+        }
+
         $conn = Yii::app()->db;
-        $sql = "INSERT INTO mis.oms (first_name, middle_name, last_name, oms_number, gender, birthday, type, givedate, enddate, status) VALUES";
+        $sql = "INSERT INTO mis.oms (first_name, middle_name, last_name, oms_number, oms_series, gender, birthday, type, givedate, enddate, status, oms_series_number) VALUES";
         $issetAnybody = false;
+
         foreach($omss as $oms) {
             $this->processed++;
 
             $serie = mb_substr($oms['ENP'], 0, 6);
             $number = mb_substr($oms['ENP'], 6);
 
-            $issetOms = Oms::model()->find('t.oms_number = :oms_number',
+            $issetOms = Oms::model()->find('
+				t.oms_number = :oms_number
+				AND t.oms_series = :oms_series',
                 array(
-                    ':oms_number' => $serie.' '.$number,
+                    ':oms_series' => $serie,
+                    ':oms_number' => $number
                 )
             );
-            $issetOms = null;
+
             if($issetOms == null || $issetOms === false) {
                 if(!$issetAnybody) {
                     $issetAnybody = true;
                 }
+
+                $omsNumber = $serie.' '.$number;
+                $omsNumber = str_replace('-', '', $omsNumber);
+                $omsNumber = str_replace(' ', '', $omsNumber);
+
+                /*if($oms['DATE_E'] != null && $oms['DATE_E'] != '') {
+                    if(strtotime($oms['DATE_E']) < strtotime(date('Y-m-d'))) {
+                        // Активен - 1, погашен - 3.
+                        $omsStatus = $omsStatusesSorted[3];
+                    } else {
+                        $omsStatus = $omsStatusesSorted[1];
+                    }
+                } else {
+                    $omsStatus = $omsStatusesSorted[5];
+                }*/
+                $omsStatus = $omsStatusesSorted[5];
+
                 // Добавляем пациента, если его нет
                 try {
                     $oms['FAM'] = str_replace("'", "`", $oms['FAM']);
                     $sql .= "('".$oms['IM']."',".
                         "'".$oms['OT']."',".
                         "'".$oms['FAM']."',".
-                        "'".$serie.' '.$number."',".
+                        "'".$serie."',".
+                        "'".$number."',".
                         ($oms['SEX'] == 1 ? "1" : "0").",".
-                        "'".$oms['BIRTHDAY']."',".
-                        "0,".
+                        "'".$oms['BIRTHDAY']."',
+						6,".
                         "'".$oms['DATE_N']."',".
                         ($oms['DATE_E'] == '' ? 'NULL' : "'".$oms['DATE_E']."'").",
-						   0),";
+						".$omsStatus.",".
+                        "'".$omsNumber."'),";
 
                     $this->numAdded++;
                 } catch(Exception $e) {
@@ -1670,6 +1726,18 @@ class TasuController extends Controller {
             $this->totalRows = $_GET['totalRows'];
         }
 
+        $omsTypes = OmsType::model()->findAll();
+        $omsTypesSorted = array();
+        foreach($omsTypes as $omsType) {
+            $omsTypesSorted[(string)$omsType['tasu_id']] = $omsType['id'];
+        }
+
+        $omsStatuses = OmsStatus::model()->findAll();
+        $omsStatusesSorted = array();
+        foreach($omsStatuses as $omsStatus) {
+            $omsStatusesSorted[(string)$omsStatus['tasu_id']] = $omsStatus['id'];
+        }
+
         foreach($patients as $patient) {
             $this->processed++;
             $tasuOms = TasuOms::model()->find('patientuid_09882 = :patient_uid AND version_end = :version_end', array(
@@ -1681,28 +1749,37 @@ class TasuController extends Controller {
                 continue;
             }
 
-            $issetPatient = Oms::model()->find('t.oms_number = :oms_number1 OR t.oms_number = :oms_number2 OR t.oms_number = :oms_number3',
+            $issetPatient = Oms::model()->find('t.oms_series = :oms_series AND t.oms_number = :oms_number',
                 array(
-                    ':oms_number1' => $tasuOms['series_14820'].' '.$tasuOms['number_12574'],
-                    ':oms_number2' => ' '.$tasuOms['series_14820'].' '.$tasuOms['number_12574'],
-                    ':oms_number3' => $tasuOms['series_14820'].$tasuOms['number_12574']
+                    ':oms_series' => trim($tasuOms['series_14820']),
+                    ':oms_number' => trim($tasuOms['number_12574'])
                 )
             );
 
             if($issetPatient == null) {
                 // Добавляем пациента, если его нет
                 try {
+
+                    $omsNumber = $tasuOms['series_14820'].$tasuOms['number_12574'];
+                    $omsNumber = str_replace('-', '', $omsNumber);
+                    $omsNumber = str_replace(' ', '', $omsNumber);
+
                     $newOms = new Oms();
                     $newOms->first_name = $patient['im_53316'];
                     /*$newOms->last_name = implode('', array_reverse(preg_split('//u', $patient['fam_18565'], -1, PREG_SPLIT_NO_EMPTY)));*/
                     $newOms->last_name = $patient['fam_18565'];
-                    $newOms->type = 0; // Пока временно так
+                    $newOms->type = 0;
                     $newOms->middle_name = $patient['ot_48206'];
-                    $newOms->oms_number = $tasuOms['series_14820'].' '.$tasuOms['number_12574'];
+                    //$newOms->oms_number = $tasuOms['series_14820'].' '.$tasuOms['number_12574'];
+                    $newOms->oms_number = $tasuOms['number_12574'];
+                    $newOms->oms_series = $tasuOms['series_14820'];
+                    $newOms->oms_series_number = $omsNumber;
                     $newOms->gender = $patient['sex_40994'] == 1 ? 1 : 0;
                     $newOms->birthday = $patient['birthday_38523'];
                     $newOms->givedate = $tasuOms['issuedate_60296'];
-                    $newOms->status = $tasuOms['state_19333'];
+                    if($tasuOms['state_19333'] != null) {
+                        $newOms->status = $omsStatusesSorted[$tasuOms['state_19333']];
+                    }
                     $newOms->enddate = $tasuOms['voiddate_10849'];
                     $newOms->tasu_id = $patient['uid'];
                     if(!$newOms->save()) {
@@ -1715,6 +1792,13 @@ class TasuController extends Controller {
                     $issetPatient = $newOms;
 
                 } catch(Exception $e) {
+                    $this->numErrors++;
+                }
+            } else { // Fix: update номеров полисов: разнос на два поля
+                $issetPatient->oms_number = $tasuOms['number_12574'];
+                $issetPatient->oms_series = $tasuOms['series_14820'];
+                if(!$issetPatient->save()) {
+                    $this->log[] = 'Невозможно проапдейтить пациента с кодом '.$issetPatient['id'];
                     $this->numErrors++;
                 }
             }
@@ -2014,7 +2098,6 @@ class TasuController extends Controller {
                 continue;
             }
 
-            // Добавляем пациента, если его нет
             try {
                 $newInsurance = new Insurance();
                 $newInsurance->name = $insurance['shortname_50023'];
@@ -2025,6 +2108,20 @@ class TasuController extends Controller {
                 } else {
                     $this->numAdded++;
                 }
+
+                // Добавляем связку страховая компания-регион
+                $newInsuranceRegion = new InsuranceRegion();
+                $newInsuranceRegion->insurance_id = $newInsurance->id;
+                $region = CladrRegion::model()->find('code_cladr = :code_cladr', array(':code_cladr' => $insurance['coderegion_54021']));
+                if($region != null) {
+                    $newInsuranceRegion->region_id = $region->id;
+                }
+
+                if(!$newInsuranceRegion->save()) {
+                    $this->log[] = 'Невозможно импортировать регион для страховой компании '.$insurance['uid'];
+                    $this->numErrors++;
+                }
+
             } catch(Exception $e) {
                 $this->numErrors++;
             }
@@ -2042,5 +2139,58 @@ class TasuController extends Controller {
                 ))
         );
     }
+
+    /* Утилита для создания поисковых полей из полиса: без дефисов и пробелов, только символы */
+    /*public function actionCreateOmsSearchField() {
+        if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
+            echo CJSON::encode(array(
+                    'success' => false,
+                    'data' => array(
+                        'error' => 'Недостаточно информации о считывании данных!'
+                    ))
+            );
+            exit();
+        }
+
+        $this->processed = 0;
+        $this->numErrors = 0;
+        $this->numAdded = 0;
+
+        $this->log = array();
+        $omss = Oms::model()->getRows(false, 'id', 'asc', $_GET['totalMaked'], $_GET['rowsPerQuery']);
+
+        if($_GET['totalRows'] == null || $_GET['totalRows'] == 0) {
+            $this->totalRows = Oms::model()->getNumRows(false);
+        } else {
+            $this->totalRows = $_GET['totalRows'];
+        }
+
+		// TODO tomorrow
+        foreach($omss as $oms) {
+
+			$oms['oms_number'] = str_replace('-', '', $oms['oms_number']);
+			$oms['oms_number'] = str_replace(' ', '', $oms['oms_number']);
+			
+			$modelOms = Oms::model()->findByPk($oms['id']);
+			if($modelOms != null) {
+				$modelOms->oms_series_number = $oms['oms_number'];
+				if(!$modelOms->save()) {
+					$this->log[] = 'Невозможно сохранить преобразованный ОМС с ID'.$oms['id'];
+				}
+			}
+        }
+
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'log' => $this->log,
+                    'successMsg' => 'Успешно изменено '.($_GET['totalRows'] + $this->processed).' поисковых полей полисов.',
+                    'processed' => $this->processed,
+                    'totalRows' => $this->totalRows,
+                    'numErrors' => $this->numErrors,
+                    'numAdded' => $this->numAdded
+                ))
+        );
+    } */
 }
 ?>
