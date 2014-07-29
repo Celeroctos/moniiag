@@ -785,6 +785,24 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                 $(accClone).find('input,textarea,select').val('');
 
                 // Сбрасываем значения в редактируемых таблицах
+                $(accClone).find('.controltable td.controlTableContentCell').text('');
+
+                // Теперь надо подцепить замыкания для контролов, у которых оно есть
+                // Выбираем все даты
+                dates = $(accClone).find('div.date');
+                controltables = $(accClone).find('table.controltable');
+
+                // Для каждого элемента из dates вызываем функцию
+                for (i=0;i<dates.length;i++)
+                {
+                    InitOneDateControl($(dates[i]));
+                }
+
+                // Для каждого элемента из dates вызываем функцию
+                for (i=0;i<controltables.length;i++)
+                {
+                    $.fn['tableControl'].init($(controltables[i]));
+                }
 
                 // Надо скрыть все категории, кроме только что отклонированной
                 // Берём id родительской категории и ищем все аккордеоны, в поле ИД которых входит ИД-шник родительской

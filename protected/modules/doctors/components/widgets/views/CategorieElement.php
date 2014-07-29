@@ -270,7 +270,7 @@ if(isset($categorie['id'])) {
                                                     if($canEditMedcard)
 													{
 														?>
-														<td class="content-<?php echo $i.'_'.$j; ?>"><?php
+														<td class="controlTableContentCell content-<?php echo $i.'_'.$j; ?>"><?php
 														echo $cellDefaultVal;
 														?></td>
 														<?php
