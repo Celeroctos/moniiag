@@ -1523,6 +1523,22 @@ class TasuController extends Controller {
         ));
     }
 
+    /* Посмотреть страницу обсуживания связки МИС <-> ТАСУ */
+    public function actionViewService() {
+        $timestamps = Syncdate::model()->findAll();
+        $toTempl = array();
+        foreach($timestamps as &$timestamp) {
+            $parts = explode(' ', $timestamp['syncdate']);
+            $parts2 = explode('-', $parts[0]);
+            $timestamp['syncdate'] = $parts2[2].'.'.$parts2[1].'.'.$parts2[0].' '.$parts[1];
+            $toTempl[$timestamp['name']] = $timestamp['syncdate'];
+        }
+
+        $this->render('viewservice', array(
+            'timestamps' => $toTempl
+        ));
+    }
+
     // --- Begin 17.06.2014 ---
     public function actionSyncOms() {
         if(!isset($_GET['rowsPerQuery'], $_GET['totalMaked'], $_GET['totalRows'])) {
