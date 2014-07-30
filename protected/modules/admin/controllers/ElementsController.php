@@ -85,6 +85,32 @@ class ElementsController extends Controller {
         $model = new FormElementAdd();
         if(isset($_POST['FormElementAdd'])) {
             $model->attributes = $_POST['FormElementAdd'];
+            // Проверим - изменился ли тип у элемента,
+
+            if ($_POST['FormElementAdd']['id']!='')
+            {
+
+                // Найдём по id элемент
+                $oldElementState = MedcardElement::model()->findByPk($_POST['FormElementAdd']['id']);
+                // Вытащим зависимости
+                // Проверить - есть ли зависимости на элементе (причём и в ту и в другую сторону)
+
+                $existanceDependencies = MedcardElementDependence::model()->findAll(
+                    'element_id = :ahead_element OR dep_element_id = :back_element',
+                    array( ':ahead_element'=>$_POST['FormElementAdd']['id'], ':back_element' => $_POST['FormElementAdd']['id'] )
+                );
+               // var_dump($existanceDependencies);
+               // exit();
+                // Если счёт зависимостей больше нуля и тип изменился - выводим сообщение об ошибке
+                if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['type']!=$oldElementState['type']))
+                {
+                    echo CJSON::encode(array('success' => 'false',
+                        'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён тип элемента. Если на элементе заданы зависимости, то нельзя менять его тип.')) ));
+                    exit();
+                }
+
+            }
+
             if($model->validate()) {
                 $element = MedcardElement::model()->find('id=:id', array(':id' => $_POST['FormElementAdd']['id']));
                 $this->addEditModel($element, $model, 'Категория успешно добавлена.');
