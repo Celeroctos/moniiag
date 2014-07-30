@@ -171,6 +171,8 @@ class TemplatesController extends Controller {
     }
 
     public function actionDelete($id) {
+        $errorTextMessage = 'На данную запись есть ссылки!';
+
         try {
             $template = MedcardTemplate::model()->findByPk($id);
             $template->delete();
@@ -179,7 +181,7 @@ class TemplatesController extends Controller {
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
-                                     'error' => 'На данную запись есть ссылки!'));
+                                     'error' => $errorTextMessage ));
         }
     }
 

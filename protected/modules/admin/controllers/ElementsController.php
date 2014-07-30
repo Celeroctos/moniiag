@@ -142,15 +142,18 @@ class ElementsController extends Controller {
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
         }
-        if($model->type == 2 || $model->type == 3) {
+        if($model->type == 2 || $model->type == 3 || $model->type == 7) {
             $element->allow_add = $model->allowAdd;
+        }
+        if($model->type == 2 || $model->type == 3) {
+            //$element->allow_add = $model->allowAdd;
             if($model->defaultValue != -1) {
                 $element->default_value = $model->defaultValue;
             } else {
                 $element->default_value = null;
             }
         } else {
-            $element->allow_add = 0;
+          //  $element->allow_add = 0;
             // Если текст или текстовая область - берём другое поле модели
             if ($model->type == 0 || $model->type == 1)
             {
@@ -258,15 +261,29 @@ class ElementsController extends Controller {
     }
 
     public function actionDelete($id) {
+
+        $errorMessageText = 'На данную запись есть ссылки!';
         try {
             $element = MedcardElement::model()->findByPk($id);
+            // Проверить - есть ли зависимости на элементе (причём и в ту и в другую сторону)
+            $oneWayDependencies = MedcardElementDependence::model()->findAll(
+                'element_id = :ahead_element OR dep_element_id = :back_element',
+                array( ':ahead_element'=>$id, ':back_element' => $id )
+            );
+
+            if (count ($oneWayDependencies) > 0 )
+            {
+                $errorMessageText = 'Нельзя удалить элемент - на него поставлены зависимости.';
+                throw new Exception($errorMessageText);
+            }
+
             $element->delete();
             echo CJSON::encode(array('success' => 'true',
                 'text' => 'Категория успешно удалена.'));
         } catch(Exception $e) {
-            // Это нарушение целостности FK
+            // Ааааашипка
             echo CJSON::encode(array('success' => 'false',
-                'error' => 'На данную запись есть ссылки!'));
+                'error' => $errorMessageText));
         }
     }
 

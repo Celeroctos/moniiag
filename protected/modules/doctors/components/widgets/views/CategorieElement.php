@@ -463,10 +463,23 @@ if(isset($categorie['id'])) {
                                         <?php
 
 
-                                        if($element['label_after'] != null) {
+                                        if($element['allow_add'] && $canEditMedcard) {
                                             ?>
-                                            <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
-                                            <?php
+                                            <button type="button" id="ba<?php
+                                            //echo '_'.$prefix.'_'.$element['guide_id'];
+                                            echo '_'.$prefix.'_'.$element['id'];
+                                            ?>" class="btn btn-default btn-sm">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        <?php
+                                        }
+                                        else
+                                        {
+                                            if($element['label_after'] != null) {
+                                                ?>
+                                                <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
+                                                <?php
+                                            }
                                         }
 
 

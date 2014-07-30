@@ -226,16 +226,32 @@ class GuidesController extends Controller {
         );
     }
 
+    private function isDependenciesOnElement($guidId, $valueId)
+    {
+        $existingDependencies  = MedcardElementDependence::getDependenciesGuidVal($guidId, $valueId);
+        return (count($existingDependencies)>0);
+    }
+
     public function actionDeleteInGuide($id) {
+        $errorMessageText = 'На данную запись есть ссылки!';
         try {
+
+
             $guideValue = MedcardGuideValue::model()->findByPk($id);
+            // Проверяем - нет ли на этот элемент зависимостей
+            $isDependencies = $this->isDependenciesOnElement($guideValue['guide_id'], $id);
+            if ($isDependencies)
+            {
+                $errorMessageText  = 'Нельзя удалить значение из справочника, так как на него поставлена зависимость';
+                throw new Exception($errorMessageText );
+            }
             $guideValue->delete();
             echo CJSON::encode(array('success' => 'true',
                                      'text' => 'Значение справочника успешно удалено.'));
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
-                                     'error' => 'На данную запись есть ссылки!'));
+                                     'error' => $errorMessageText ));
         }
     }
 }
