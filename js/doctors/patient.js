@@ -892,7 +892,7 @@ function checkElementsDependences() {
                         changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
                     });
                     $(select).trigger('change');
-
+                    checkCategoriesVisibility();
                 })(getElementForDependences(undottedPath), deps[i]);
                 //})($('[id*="_' + undottedPath + '_"]'), deps[i]);
             }
@@ -900,6 +900,7 @@ function checkElementsDependences() {
     }
 }
 checkElementsDependences();
+checkCategoriesVisibility();
 
 function hideControl(container, elementId) {
     var elementWithWrapper = getDependenceElementWithWrapper(container,elementId);
@@ -1153,6 +1154,38 @@ $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     return false;
 });
 
+function checkCategoriesVisibility()
+{
+/*
+    // Метод перебирает все категории и проверяет - есть ли в них хотя бы один form-group,
+    //       в котором есть хотя бы что-то видимое
+    //   Пока ограничиваемся только одним уровнем (не залезаем во вложенные категории)
+    // Берём все аккордиончики в медкарте
+    medAccordions = $('.medcard-accordion');
+
+    // Перебираем эти аккордионы
+    for (i=0;i<medAccordions.length;i++)
+    {
+        // Проверяем - если в категории есть хотя бы один аккордиончик medcard-accordion, то выходим
+        if (  $(medAccordions[i]).find('.accordion-inner .medcard-accordion').length > 0 )
+        {
+            $(medAccordions[i]).show();
+            continue;
+        }
+        // В противном случае - проверяем, есть ли в категории в элементах .form-group хотя бы один видимы элемент.
+        if (   $(medAccordions[i]).find('.form-group :not(.no-display,script,[style ~= "display: none"])').length>0   )
+        {
+            $(medAccordions[i]).show();
+        }
+        else
+        {
+            $(medAccordions[i]).hide();
+        }
+
+    }
+*/
+
+}
 
 $('#addClinicalDiagnosisSubmit').on('click', function (e) {
     var diagnosisName = $('#diagnosisName').val();

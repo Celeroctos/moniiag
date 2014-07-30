@@ -417,6 +417,11 @@ if(isset($categorie['id'])) {
                                             ?>
                                             <select multiple="multiple" class="form-control twoColumnListFrom" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
                                                 <?php
+                                              /*  if (!isset($element['guide']))
+                                                {
+                                                    var_dump($element);
+                                                    exit();
+                                                }*/
                                                 foreach ($element['guide'] as $optionId => $oneOption)
                                                 {
                                                     // Проверим - если ли в списке выбранных текущиий опшн
