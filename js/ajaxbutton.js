@@ -2,6 +2,7 @@
 	var buttonSelectors = [
 		'#patient-search-submit',
 		'#doctor-search-submit',
+        '#logs-search-submit',
 		//'.add-patient-submit input',
         '#medcardContentSave',
         '#printContentButton',

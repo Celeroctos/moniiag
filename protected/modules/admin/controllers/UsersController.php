@@ -60,6 +60,7 @@ class UsersController extends Controller {
 
             echo CJSON::encode(
                 array('rows' => $users,
+                      'success' => true,
                       'total' => $totalPages,
                       'records' => count($num))
             );

@@ -145,6 +145,7 @@
             }
         });
     }
+
     $('.add-patient-submit input').on('click', function(e){
         // Сначала проверим полис
         isRightOmsNumber = $.fn.checkOmsNumber();

@@ -1591,6 +1591,31 @@ $(document).ready(function() {
             'afterRemove' : function() {
                 $('#insuranceHidden input').val('');
             }
+        },
+        'userChooser' : {
+            'primary' : 'id',
+            'url' : '/index.php/admin/users/get?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'extraparams' : {
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'login',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text('ID ' + row.id + ', логин ' + row.login));
+            },
+            'afterInsert' : function() {
+
+            },
+            'afterRemove' : function() {
+
+            }
         }
     };
 });
