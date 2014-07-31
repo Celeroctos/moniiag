@@ -23,6 +23,31 @@ class MedcardElementDependence extends MisActiveRecord {
         return $this->typesList;
     }
 
+    public static function getDependenciesGuidVal($guidId, $valueId)
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $dependences = $connection->createCommand()
+                ->select('med.*')
+                ->from('mis.medcard_elements_dependences med')
+                ->where(
+                    'med.element_id in (SELECT id FROM mis.medcard_elements me WHERE me.guide_id = :guid) AND med.value_id = :value_code',
+                    array(
+                        ':guid' => $guidId,
+                        ':value_code' => $valueId
+                    )
+                );
+
+            return $dependences->queryAll();
+        }
+        catch (Exception $e)
+        {
+
+        }
+
+    }
+
     public function getRows($id = false, $categorieId = false) {
         $connection = Yii::app()->db;
         $dependences = $connection->createCommand()

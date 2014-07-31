@@ -487,6 +487,8 @@ class SheduleController extends Controller {
                 if(is_array($value)) {
                     $value = CJSON::encode($value);
                 }
+                //var_dump($historyElementsPaths);
+                //exit();
                 $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
                 $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 

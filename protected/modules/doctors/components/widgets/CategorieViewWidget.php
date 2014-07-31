@@ -347,7 +347,8 @@ class CategorieViewWidget extends CWidget {
                             ':medcard_id' => $this->medcard['card_number'],
                             ':history_id' => 1,
                             ':categorie_id' => $categorieResult['id'],
-                            ':path' => $path.'%'
+                            //':path' => $path.'%'
+                            ':path' => $path.'.%'
                         )
                     );
                 }
@@ -544,7 +545,7 @@ class CategorieViewWidget extends CWidget {
                                 ':greeting_id' => $this->greetingId,
                                 ':medcard_id' => $this->medcard['card_number'],
                                 ':history_id' => 1,
-                                ':path' => $categorieResult['path'].'%'
+                                ':path' => $categorieResult['path'].'.%'
                             )
                         );
                     }

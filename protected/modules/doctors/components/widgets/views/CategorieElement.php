@@ -270,7 +270,7 @@ if(isset($categorie['id'])) {
                                                     if($canEditMedcard)
 													{
 														?>
-														<td class="content-<?php echo $i.'_'.$j; ?>"><?php
+														<td class="controlTableContentCell content-<?php echo $i.'_'.$j; ?>"><?php
 														echo $cellDefaultVal;
 														?></td>
 														<?php
@@ -417,6 +417,11 @@ if(isset($categorie['id'])) {
                                             ?>
                                             <select multiple="multiple" class="form-control twoColumnListFrom" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
                                                 <?php
+                                              /*  if (!isset($element['guide']))
+                                                {
+                                                    var_dump($element);
+                                                    exit();
+                                                }*/
                                                 foreach ($element['guide'] as $optionId => $oneOption)
                                                 {
                                                     // Проверим - если ли в списке выбранных текущиий опшн
@@ -463,10 +468,23 @@ if(isset($categorie['id'])) {
                                         <?php
 
 
-                                        if($element['label_after'] != null) {
+                                        if($element['allow_add'] && $canEditMedcard) {
                                             ?>
-                                            <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
-                                            <?php
+                                            <button type="button" id="ba<?php
+                                            //echo '_'.$prefix.'_'.$element['guide_id'];
+                                            echo '_'.$prefix.'_'.$element['id'];
+                                            ?>" class="btn btn-default btn-sm">
+                                                <span class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        <?php
+                                        }
+                                        else
+                                        {
+                                            if($element['label_after'] != null) {
+                                                ?>
+                                                <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
+                                                <?php
+                                            }
                                         }
 
 

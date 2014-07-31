@@ -2,6 +2,18 @@ $(document).ready(function() {
     var controls = $('.twoColumnList');
     $(controls).each(function() {
         (function(control) {
+
+            $.fn[  $(control).find('input').attr('id')  ] = {
+                addSelected: function(id, displayValue){
+                    // Берём control, ищем в нём правый селект и добавляем впереди option
+                   // twoColumnListTo
+                    $(control).find('select.twoColumnListTo').prepend(
+                        '<option value="'+ id +'">' +displayValue+ '</option>'
+                    );
+                }
+
+            };
+
             // Функция читает выбранное в двухколоночном списке значение
             //   и записывает его в специальное спрятанное поле
             function refreshValue(control)

@@ -5,7 +5,8 @@ $(document).ready(function() {
         $('#controlId').val(elementId);
         globalVariables.elementId = elementId;
        // globalVariables.domElement = $(this).parents('.form-group').find('select');
-        globalVariables.domElement = $('select[id$=_' + elementId + ']');
+        // Выбираем
+        globalVariables.domElement = $('select[id$=_' + elementId + '], input[id$=_' + elementId + ']');
         $('#addValuePopup').modal({
         });
     });
@@ -68,8 +69,24 @@ $(document).ready(function() {
         if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#addValuePopup').modal('hide');
             $("#add-value-form")[0].reset(); // Сбрасываем форму
-            $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
-            $(globalVariables.domElement).val(ajaxData.id);
+            //$(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+            //$(globalVariables.domElement).val(ajaxData.id);
+            // Проверим - чем является элемент, который сохранён в globalVariables.domElement. Если - select - обрабатываем
+            //    одним образом - иначе, другим
+            if (  $(globalVariables.domElement).is('select') )
+            {
+                $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+                $(globalVariables.domElement).val(ajaxData.id);
+            }
+            else
+            {
+                if (  $(globalVariables.domElement).is('input') )
+                {
+                    // Ищем таблицу
+                    $.fn[ $(globalVariables.domElement).attr('id') ].addSelected(ajaxData.id,ajaxData.display);
+                }
+            }
+
         } else {
            showErrors(ajaxData);
         }
