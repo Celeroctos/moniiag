@@ -819,7 +819,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
             if (e.keyCode==13)
             {
 
-                buttons = $(containingForm).find('input[type=submit], input[type=button], button');
+                buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
                 if ($(buttons).length = 1 && buttons[0]==focusedElement[0])
                 {
                     $(buttons[0]).trigger('click');
@@ -837,7 +837,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
                 // Если у кнопки Value = "Найти" - сабмитим её.
                 //   Это конечно криминал (проверять кнопку по ей тексту в интерфейсе),
                 //    но пока другого выхода не вижу
-                if ( $(focusedElement).is('input[type=submit], input[type=button], button') )
+                if ( $(focusedElement).is('input[type=submit], input[type=button], button:not(.accordion-clone-btn)') )
                 {
                     if ($(focusedElement).val()=='Найти')
                     {

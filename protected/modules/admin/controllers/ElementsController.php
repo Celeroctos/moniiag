@@ -108,7 +108,13 @@ class ElementsController extends Controller {
                         'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён тип элемента. Если на элементе заданы зависимости, то нельзя менять его тип.')) ));
                     exit();
                 }
-
+                // Если счёт зависимостей больше нуля и изменился ИД справочника - также выводим сообщение об ошибке
+                if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['guideId']!=$oldElementState['guide_id']))
+                {
+                    echo CJSON::encode(array('success' => 'false',
+                        'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён справочник элемента. Если на элементе заданы зависимости, то нельзя менять его справочник.')) ));
+                    exit();
+                }
             }
 
             if($model->validate()) {

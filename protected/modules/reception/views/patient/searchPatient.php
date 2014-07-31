@@ -418,16 +418,31 @@ $this->widget('application.modules.reception.components.widgets.MedcardFormWidge
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>ФИО: <strong><span id="fioExistingOms"></span></strong></p>
-                    <p>Дата рождения: <strong><span id="birthdayExistingOms"></span></strong></p>
-                    <p class="oldCardOnNewOmsMessage"></p>
-                    <p>Использовать этот полис для данной медкарты?</p>
+                    <span class = 'concidesOmsDataMessage no-display'>
+                        <p>ФИО: <strong><span id="fioExistingOms"></span></strong></p>
+                        <p>Дата рождения: <strong><span id="birthdayExistingOms"></span></strong></p>
+                        <p class="oldCardOnNewOmsMessage"></p>
+                        <p>Использовать этот полис для данной медкарты?</p>
+                    </span>
                     <!-- Сообщение о том, что неплохо было перепроверить данные по ОМС -->
-                    <p class="red-color nonCoidenceOmsMessage no-display"><strong>Внимание!
+                    <!--<p class="red-color nonCoidenceOmsMessage no-display"><strong>Внимание!
                         Данные старого полиса для этой карты и полиса, номер которого вы ввели при редактировании не совпадают!
                         Пожалуйста, перепроверьте ФИО пациента и номер карты. Если всё правильно - нажмите "Да" или "Нет" - чтобы проверить.
                     </strong></p>
-                    <!-- -->
+                     -->
+                    <span class="red-color nonConcidesOmsDataMessage no-display">
+                        <strong>
+                            <p>Вы хотите присвоить номер полиса, принадлежащий</p>
+                            <p>ФИО: <strong><span id="fioNewOms"></span></strong></p>
+                            <p>Дата рождения: <strong><span id="birthdayNewOms"></span></strong></p>
+                            <p class="newCardOmsMessage"></p>
+                            <p>пациенту:</p>
+                            <p>ФИО: <strong><span id="fioOldOms"></span></strong></p>
+                            <p>Дата рождения: <strong><span id="birthdayOldOms"></span></strong></p>
+                            <p class="oldCardOmsMessage"></p>
+                            <p>Присвоить полис другому лицу?</p>
+                        </strong>
+                    </span>
                 </div>
             </div>
 

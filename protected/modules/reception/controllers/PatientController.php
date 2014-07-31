@@ -395,57 +395,69 @@ class PatientController extends Controller {
        // var_dump($_GET['omsIdToCheck']);
        // exit();
 
-        $oms = null;
-        $result = array('id' => -1);
+        $newOms = null;
+        $oldOms = null;
+        $result = array();
         if (isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck']))
         {
             //var_dump($_GET['omsIdToCheck']);
             //exit();
             if ( isset ($_GET['omsSeriesToCheck']) && $_GET['omsSeriesToCheck']!='' )
             {
-                $oms = $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
+                $newOms= $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
                     $_GET['omsIdToCheck'],true);
             }
             else
             {
-                $oms = $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
+                $newOms= $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
             }
             // Если омс!=нуль, то значит, что полис с таким номером существует в базе
-            if ($oms!=null)
+            if ($newOms!=null)
             {
                 // Вытащим ОМС по ИД и сравним: если ФИО и дата рождения не совпадает - выводим флаг, который скажет,
                 //     нужно вывести сообщение, чтобы оператор проверил все данные
 
                 $oldOms = Oms::model()->findByPk( $_GET['omsIdToCheck'] );
 
+                $result['oldOms'] = $oldOms;
+                $result['newOms'] = $newOms;
+
                 // Сравним данные по $oms и $oldOms
                 if (
-                    (mb_strtolower($oms['first_name'], 'UTF-8') != mb_strtolower($oldOms['first_name'], 'UTF-8'))||
-                    (mb_strtolower($oms['last_name'], 'UTF-8') != mb_strtolower($oldOms['last_name'], 'UTF-8'))||
-                    (mb_strtolower($oms['middle_name'], 'UTF-8') != mb_strtolower($oldOms['middle_name'], 'UTF-8'))||
-                    (mb_strtolower($oms['birthday'], 'UTF-8') != mb_strtolower($oldOms['birthday'], 'UTF-8'))
+                    (mb_strtolower($newOms['first_name'], 'UTF-8') != mb_strtolower($oldOms['first_name'], 'UTF-8'))||
+                    (mb_strtolower($newOms['last_name'], 'UTF-8') != mb_strtolower($oldOms['last_name'], 'UTF-8'))||
+                    (mb_strtolower($newOms['middle_name'], 'UTF-8') != mb_strtolower($oldOms['middle_name'], 'UTF-8'))||
+                    (mb_strtolower($newOms['birthday'], 'UTF-8') != mb_strtolower($oldOms['birthday'], 'UTF-8'))
 
                 )
                 {
                     // Совпадения нет
-                    $oms['nonCoincides'] = true;
+                    $result['nonCoincides'] = true;
                 }
 
                 // вытащим номер карты, у которой максимален номер по данному полису
-              //  $medcardsOnOldOms = Medcard::model()->findAllBySql('SELECT * FROM ');
-
                 $medcardObject = new Medcard();
-                $lastMedcardOms = $medcardObject->getLastByPatient(  $oms['id']  );
-                if ($lastMedcardOms!=null && count($lastMedcardOms)!=0)
+                $lastMedcardNewOms = $medcardObject->getLastByPatient(  $newOms['id']  );
+
+                // Вытащим номер карты по старому полису (т.е. медкарты,
+                //    которая в настоящий момент привязана к полису, номер которого меняется)
+                $lastMedcardOldOms = $medcardObject->getLastByPatient(  $_GET['omsIdToCheck']  );
+
+                // Записываем номера медкарт для нового и для старого полиса
+                if ($lastMedcardOldOms!=null && count($lastMedcardOldOms)!=0)
                 {
-                    $oms['oldMedcard'] = $lastMedcardOms['card_number'] ;
+                    $result['oldMedcard'] = $lastMedcardOldOms ['card_number'] ;
                 }
-                $result = $oms;
+
+                if ($lastMedcardNewOms!=null && count($lastMedcardNewOms)!=0)
+                {
+                    $result['newMedcard'] = $lastMedcardNewOms ['card_number'] ;
+                }
             }
         }
 
         echo CJSON::encode(
-            array('newOms' => $result)
+            array('answer' => $result)
         );
     }
 

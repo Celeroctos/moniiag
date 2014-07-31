@@ -195,60 +195,93 @@
             'async': false,
             'error': function(){  return false; },
             'success' : function(data, textStatus, jqXHR) {
-                if (data.newOms.id==undefined) return;
-                if (data.newOms.id >= 0)
-                {
+                data = data.answer;
+
+                if (data.newOms==undefined) return;
+                //if (data.newOms.id >= 0)
+                //{
 
                     // Пишем в глобальные переменные Id полиса чтобы можно было карту перевязать на данный полис
                     //globalVariables.medcardOmsToEdit
                     globalVariables.newOmsId = data.newOms.id;
-                    // Нужно заполнить поп-ап значениями из полиса
-                    if ( $('#existOmsPopup').length>0 )
+
+                    if (data.nonCoincides!=undefined)
                     {
-                        $('#existOmsPopup #fioExistingOms').text(
+                        $('.concidesOmsDataMessage').addClass('no-display');
+                        $('.nonConcidesOmsDataMessage').removeClass('no-display');
+
+                        // Выводим данные по новому полису
+                        $('.nonConcidesOmsDataMessage #fioNewOms').text(
                             data.newOms.first_name + ' ' + data.newOms.middle_name + ' ' + data.newOms.last_name
                         );
 
-                        $('#existOmsPopup #birthdayExistingOms').text(
+                        $('.nonConcidesOmsDataMessage #birthdayNewOms').text(
                             data.newOms.birthday.split('-').reverse().join('.')
                         );
 
-                        // Проверим - есть ли флаг о том, что данные по полюсам не совпадают
-                        if (data.newOms.nonCoincides!=undefined)
-                        {
-                            // Делаем видимым сообщение, о том, что данные по старому и по новому ОМС не совпадают
-                            $('.nonCoidenceOmsMessage').removeClass('no-display');
+                        // Выводим данные по старому полису
+                        $('.nonConcidesOmsDataMessage #fioOldOms').text(
+                            data.oldOms.first_name + ' ' + data.oldOms.middle_name + ' ' + data.oldOms.last_name
+                        );
 
-                        }
-                        else
-                        {
-                            // А если всё-таки равно undefined - прячем сообщение
-                            $('.nonCoidenceOmsMessage').addClass('no-display');
-                        }
+                        $('.nonConcidesOmsDataMessage #birthdayOldOms').text(
+                            data.oldOms.birthday.split('-').reverse().join('.')
+                        );
 
-                        // Если есть поле старой карты в ответе - выводим в интерфейс
-                        if (data.newOms.oldMedcard!=undefined)
+
+                        // Выводим данные по картам (если каждая из них существует)
+                        if (data.oldMedcard!=undefined)
                         {
-                            $('.oldCardOnNewOmsMessage').html(
-                                'Этот полис пользуется для карты №: <strong>'+data.newOms.oldMedcard + '</strong>'
+                            $('.nonConcidesOmsDataMessage .oldCardOmsMessage').text('Номер карты: '+data.oldMedcard);
+                        }
+                        if (data.newMedcard!=undefined)
+                        {
+                            $('.nonConcidesOmsDataMessage .newCardOmsMessage').text('Номер карты: '+data.newMedcard);
+                        }
+                    }
+                    else
+                    {
+                        // nonCoincides не определено
+                        // Закрываем блок который мы выводим при несовпадении и открываем,
+                        //      который мы выводим при совпадении
+
+                        $('.concidesOmsDataMessage').removeClass('no-display');
+                        $('.nonConcidesOmsDataMessage').addClass('no-display');
+
+                        // Нужно заполнить поп-ап значениями из полиса
+                        if ( $('#existOmsPopup').length>0 )
+                        {
+                            $('.concidesOmsDataMessage #fioExistingOms').text(
+                                data.newOms.first_name + ' ' + data.newOms.middle_name + ' ' + data.newOms.last_name
                             );
-                        }
-                        // иначе - стираем
-                        else
-                        {
-                            $('.oldCardOnNewOmsMessage').text(
-                                ''
-                            );
-                        }
-                        // иначе - стираем
 
+                            $('.concidesOmsDataMessage #birthdayExistingOms').text(
+                                data.newOms.birthday.split('-').reverse().join('.')
+                            );
+
+                            // Если есть поле старой карты в ответе - выводим в интерфейс
+                            if (data.newOms.oldMedcard!=undefined)
+                            {
+                                $('.oldCardOnNewOmsMessage').html(
+                                    'Этот полис пользуется для карты №: <strong>'+data.newOms.oldMedcard + '</strong>'
+                                );
+                            }
+                            // иначе - стираем
+                            else
+                            {
+                                $('.oldCardOnNewOmsMessage').text(
+                                    ''
+                                );
+                            }
+                        }
+                    }
                         $('#existOmsPopup').modal({});
                         cancelSaving = true;
-                    }
+                   // }
 
 
                     console.log($('#patient-oms-edit-form #policy').val());
-                }
+                //}
 
                 return;
             }
@@ -411,7 +444,7 @@
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="#' + data[i].id + '" class="editOms" title="Редактировать ОМС">' +
+                        '<a href="#' + data[i].id + '" class="editOms omsWOCard" title="Редактировать ОМС">' +
                             '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
@@ -754,6 +787,20 @@
     $(document).on('click', '.editOms', function(e) {
         // Запишем в глобальную переменную номер карты. Это может пригодится при редактировании ОМС при его перепривязки
         globalVariables.medcardOmsToEdit = $($(this).parents('tr')[0]).find('.cardNumber').text();
+
+        // Если у this есть класс "омс без карты" - то надо заблокировать поле "тип" и "номер"
+        //  иначе разблокировать
+        if ( $(this).hasClass('omsWOCard') )
+        {
+            $('#omsType').attr('disabled', true);
+            $('.omsNumberContainer input').attr('disabled', true);
+        }
+        else
+        {
+            $('#omsType').attr('disabled', false);
+            $('.omsNumberContainer input').attr('disabled', false);
+        }
+
 
         $.ajax({
             'url' : '/index.php/reception/patient/getomsdata',

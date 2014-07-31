@@ -43,13 +43,13 @@ $(document).ready(function() {
 
         var keyDownFunc = function(e) {
             // Смотрим - если нажали на таб - надо прейти на следующую ячейку
-            if (e.keyCode == 9)
+            if (e.keyCode == 9  || e.keyCode == 13)
             {
                 // Ищем родителя у текущего элемента
                 currentControlTable =  $(this).parents('.controltable')[0];
 
                 // Дальше надо найти следующий элемент с контентом в таблице и затриггерить событие click для ячейки
-                tdFromTable = $(currentControlTable).find('td[class^="content"]');
+                tdFromTable = $(currentControlTable).find('td.controlTableContentCell');
                 // Найдём ячейку, в котором мы находимся
                 i = 0;
                 while ( $(tdFromTable[i]).find('input').length<=0 && (i<tdFromTable.length) )
