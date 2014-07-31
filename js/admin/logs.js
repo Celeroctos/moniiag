@@ -1,52 +1,62 @@
 $(document).ready(function() {
-    $("#logs").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/logs/get',
-        datatype: "json",
-        colNames:['Дата', 'Пользователь', 'Дополнительные данные', 'Действие'],
-        colModel:[
-            {
-                name:'date',
-                index:'date',
-                width: 150
-            },
-            {
-                name: 'user',
-                index:'user',
-                width: 250
-            },
-            {
-                name: 'description',
-                index: 'description',
-                width: 250
-            },
-            {
-                name: 'action',
-                index: 'action',
-                hidden: true
-            }
-        ],
-        rowNum: 10,
-        rowList:[10,20,30],
-        pager: '#logsPager',
-        sortname: 'date',
-        viewrecords: true,
-        sortorder: "desc",
-        caption: "Логи",
-        height: 300
+    InitPaginationList('logsSearchResult', 'changedate', 'desc', updateLogsTable);
+
+    $('#logs-search-submit').click(function(e) {
+        $(this).trigger('begin');
+        updateLogsTable();
+        return false;
     });
 
-    $("#logs").jqGrid('navGrid','#logsPager',{
-            edit: false,
-            add: false,
-            del: false
-        },
-        {},
-        {},
-        {},
-        {
-            closeOnEscape:true,
-            multipleSearch :true,
-            closeAfterSearch: true
+    function getFilters() {
+        var usersIds = [];
+        var choosedUsers = $.fn['userChooser'].getChoosed();
+        for(var i = 0; i < choosedUsers.length; i++) {
+            usersIds.push(choosedUsers[i].id);
         }
-    );
+
+        var Result =
+        {
+            'groupOp' : 'AND',
+            'rules' : [
+                {
+                    'field' : 'oms_number',
+                    'op' : 'eq',
+                    'data' :  $('#date').val()
+                },
+                {
+                    'field' : 'first_name',
+                    'op' : 'in',
+                    'data' : usersIds
+                }
+            ]
+        };
+
+        return Result;
+    }
+
+    function updateLogsTable() {
+        var filters = getFilters();
+        var PaginationData = getPaginationParameters('logsSearchResult');
+        if (PaginationData != '') {
+            PaginationData = '&'+PaginationData;
+        }
+        $.ajax({
+            'url' : '/index.php/admin/logs/search/?filters=' + $.toJSON(filters)+PaginationData,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+                    $('#logs-search-submit').trigger('end');
+                } else {
+                    $('#errorSearchPopup .modal-body .row p').remove();
+                    $('#errorSearchPopup .modal-body .row').append('<p class="errorText">' + data.data + '</p>')
+                    $('#errorSearchPopup').modal({
+                    });
+                    $('#logs-search-submit').trigger('end');
+                }
+                return;
+            }
+        });
+    }
 });
