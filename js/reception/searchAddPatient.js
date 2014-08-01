@@ -889,6 +889,9 @@
                     }
 
                     $(document).trigger('omsnumberpopulate');
+
+                    $('select#omsType').trigger('change');
+                    $('select#status').trigger('change');
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();

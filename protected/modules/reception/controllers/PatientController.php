@@ -944,7 +944,13 @@ class PatientController extends Controller {
     private function addEditModelOms($oms, $model) {
         $oms->first_name = $model->firstName;
         $oms->last_name = $model->lastName;
-        $oms->type = $model->omsType;
+        // Если c с клиента было подано значение типа омс, то не считываем его из модели
+        if ($model->omsType!=-1)
+        {
+            $oms->type = $model->omsType;
+        }
+        // Иначе не меняем значение поля "тип" в моделе
+
         $oms->middle_name = $model->middleName;
         $oms->oms_number = $model->policy;
         $oms->gender = $model->gender;
@@ -1348,6 +1354,17 @@ class PatientController extends Controller {
             $model->attributes = $_POST['FormOmsEdit'];
             $model->insurance = $_POST['FormOmsEdit']['insurance'];
             $model->region = $_POST['FormOmsEdit']['region'];
+            //var_dump($_POST['FormOmsEdit']['omsType']);
+            //exit();
+
+            //var_dump($model);
+            //exit();
+            // Если не задан номер полиса, то нужно занести в поле "тип" модели недействительный ИД
+            if (!isset($_POST['FormOmsEdit']['omsType']))
+            {
+                $model->omsType = -1;
+            }
+
             if($model->validate()) {
                 // Проверяем на существование такого же полиса
                 $oms = $this->checkUniqueOms($model, true);

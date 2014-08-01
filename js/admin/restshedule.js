@@ -185,7 +185,7 @@ $(document).ready(function() {
         }
     });
 
-    $(document).on('click', 'td.clickableCell', function() {
+    $(document).on('dblclick', 'td.clickableCell', function() {
         //onChangeHolidays();
         onCellClick(this);
         //refreshExceptionalDays();
