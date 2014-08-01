@@ -46,6 +46,13 @@
                     <?php echo CHtml::link('<img src="/images/icons/shedule.png" width="32" height="32" alt="" />Расписание', array('/reception/shedule/view')) ?>
                 </li>
             <?php } ?>
+
+            <?php if(Yii::app()->user->checkAccess('menuReports')) { ?>
+                <li <?php echo $controller == 'shedule' && $module == 'reception' && ($action == 'view') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('<img src="/images/icons/3.3.jpg" width="32" height="32" alt="" />Отчёты', array('/reception/shedule/view')) ?>
+                </li>
+            <?php } ?>
+
         </ul>
     </li>
 <?php } ?>
