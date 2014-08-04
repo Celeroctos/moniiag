@@ -64,7 +64,7 @@ class TasuPatient extends MisActiveRecord {
         $numPatients = $connection->createCommand()
             ->select('COUNT(*) as num')
             ->from(TasuPatient::tableName().' tp')
-            ->where('p.version_end = :version_end', array(':version_end' => '9223372036854775807'))
+			->where('tp.version_end = :version_end', array(':version_end' => '9223372036854775807'))
             ->queryRow();
         return $numPatients['num'];
     }

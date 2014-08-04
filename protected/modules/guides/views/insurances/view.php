@@ -48,6 +48,16 @@
                                 )); ?>
                                 <?php echo $form->error($model,'value'); ?>
                             </div>
+							<?php echo $form->labelEx($model,'code', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+							<div class="col-xs-9">
+                                <?php echo $form->textField($model,'code', array(
+                                    'id' => 'code',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Код СМО'
+                                )); ?>
+                            </div>
                         </div>
                         <div class="form-group chooser" id="insuranceRegionsChooserAdd">
                             <label for="doctor" class="col-xs-3 control-label">Регион</label>
@@ -128,6 +138,16 @@
                                     'placeholder' => 'Название'
                                 )); ?>
                                 <?php echo $form->error($model,'value'); ?>
+                            </div>
+							<?php echo $form->labelEx($model,'code', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+							<div class="col-xs-9">
+                                <?php echo $form->textField($model,'code', array(
+                                    'id' => 'code',
+                                    'class' => 'form-control',
+                                    'placeholder' => 'Код СМО'
+                                )); ?>
                             </div>
                         </div>
 

@@ -102,7 +102,7 @@ $(document).ready(function() {
         }
         else
         {
-            // Иначе загружаем в поле input
+			// Иначе загружаем в поле input
             $(inputsToPut).find('input').val( $('#policy').val() );
             // Если тип полиса - постоянный - убираем пробелы
             if ($('#omsType').val()== 5)

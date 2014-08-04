@@ -4,7 +4,7 @@ $(document).ready(function(e) {
     $('.progressBox').each(function(index, element) {
         var current = 0;
         var rowsPerQuery = 500;
-        var totalMaked = 0; // Сколько уже обработано строк
+        var totalMaked = 50000; // Сколько уже обработано строк
         var totalRows = null;
         var isPaused = false;
         var numAdded = 0;
@@ -25,7 +25,7 @@ $(document).ready(function(e) {
                 current : current,
                 rowsPerQuery : rowsPerQuery,
                 totalMaked : totalMaked,
-                totalRows : totalRows
+                totalRows : totalRows == null ? 0 : totalRows
             };
             data = currentConfig.hasOwnProperty('extraParams') ? data + currentConfig.extraParams : data;
 
@@ -53,7 +53,7 @@ $(document).ready(function(e) {
                             totalMaked += data.processed;
                             $(element).find('.numStrings').text(totalMaked);
                             if(totalRows == null) {
-                                totalRows = data.totalRows;
+                                totalRows = parseInt(data.totalRows);
                                 $(element).find('.numStringsAll').text(totalRows);
                             }
 
@@ -84,6 +84,9 @@ $(document).ready(function(e) {
                                 if(currentConfig.hasOwnProperty('successFunc')) {
                                     currentConfig.successFunc();
                                 }
+								current = 0;
+								totalMaked = 0;
+								totalRows = 0;
                                 $(element).trigger('end');
                             }
                         }
@@ -201,7 +204,21 @@ $(document).ready(function(e) {
                 'successFunc' : function() {
 
                 }
-            }
+            },
+			'#syncInsurances' : {
+                'url' : '/index.php/admin/tasu/syncinsurances',
+                'successMsg' : 'Синхронизация с ТАСУ завершена!',
+                'successFunc' : function() {
+
+                }
+            },
+			'#genPoliciesOnlySymbols' : {
+				'url' : '/index.php/admin/tasu/createomssearchfield',
+                'successMsg' : 'Создание поисковых полей завершено!',
+                'successFunc' : function() {
+
+                }
+			}
         };
         return config;
     }

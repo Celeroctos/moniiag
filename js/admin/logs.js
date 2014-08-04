@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    InitPaginationList('logsSearchResult', 'changedate', 'desc', updateLogsTable);
+    InitPaginationList('logsSearchResult', 'id', 'desc', updateLogsTable);
 
     $('#logs-search-submit').click(function(e) {
         $(this).trigger('begin');
@@ -19,12 +19,12 @@ $(document).ready(function() {
             'groupOp' : 'AND',
             'rules' : [
                 {
-                    'field' : 'oms_number',
+                    'field' : 'changedate',
                     'op' : 'eq',
-                    'data' :  $('#date').val()
+                    'data' :  $.trim($('#date').val())
                 },
                 {
-                    'field' : 'first_name',
+                    'field' : 'user_id',
                     'op' : 'in',
                     'data' : usersIds
                 }
@@ -47,6 +47,8 @@ $(document).ready(function() {
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
+					displayLogs(data.rows);
+					printPagination('logsSearchResult',data.total);
                     $('#logs-search-submit').trigger('end');
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
@@ -58,5 +60,23 @@ $(document).ready(function() {
                 return;
             }
         });
+    }
+	
+	// Отобазить таблицу тех, кто без карт
+    function displayLogs(data) {
+        // Заполняем пришедшими данными таблицу тех, кто без карт
+        var table = $('#logsSearchResult tbody');
+        table.find('tr').remove();
+        for(var i = 0; i < data.length; i++) {
+            table.append(
+                '<tr>' +
+                    '<td>' + data[i].id + '</td>' +
+                    '<td>' + data[i].login + '</td>' +
+					'<td>' + data[i].url + '</td>' +
+					'<td>' + data[i].changedate + ' '+ data[i].changetime + '</td>' +
+                '</tr>'
+            );
+        }
+        table.parents('div.no-display').removeClass('no-display');
     }
 });

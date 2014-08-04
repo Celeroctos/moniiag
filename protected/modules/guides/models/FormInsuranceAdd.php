@@ -5,13 +5,14 @@ class FormInsuranceAdd extends FormMisDefault
     public $name;
     public $id;
     public $regionsHidden;
+	public $code;
 
 
     public function rules()
     {
         return array(
             array(
-                'name', 'required'
+                'name, code', 'required'
             ),
             array(
                 'regionsHidden', 'safe'
@@ -23,7 +24,8 @@ class FormInsuranceAdd extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'name'=> 'Название'
+            'name'=> 'Название',
+			'code' => 'Код СМО'
         );
     }
 }

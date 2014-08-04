@@ -5,7 +5,6 @@
     var pregnantGreetingsTimeLimit = null; // Настройка по предельному времени приёма для беременных
     var primaryGreetingsTimeLimit = null; // Настройка по предельному времени приёма для первичных приёмов
     var callCenterGreetingsLimit = null; // Количество человек (предельное) по колл-центру
-    var firstDayIsToDay = false;
 
     $('.organizer').on('returnDate', function(e) {
         prevBeginDate(false);
@@ -93,16 +92,6 @@
         });
         return false;
     });
-
-    function isWaitingLineMode()
-    {
-        result = false;
-        if (globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1)
-        {
-            result = true;
-        }
-        return result;
-    }
 
     $('.organizer').on('showPatientData', function(e, patientData, li, year, month, day) {
         var title = 'Пациент ' + patientData.fio + ', записан на ' + day + '.' + month + '.' + year + ', на ' + patientData.patient_time;
@@ -232,14 +221,13 @@
         var dates = [];
         var today = new Date();
         var wasToday = false;
-        firstDayIsToDay = false;
+
         for(var i = 0; i < 7; i++) {
             var headerTd = $('<td>');
             var d = new Date(year, month, parseInt(day) + i);
             dates.push(d);
             var isToday = (today.getDate() == d.getDate() && today.getFullYear() == d.getFullYear() && today.getMonth() == d.getMonth());
             if(isToday) {
-                firstDayIsToDay = true;
                 $(headerTd).addClass('current');
                 wasToday = true;
             }
@@ -277,8 +265,6 @@
         pregnantGreetingsTimeLimit = data.pregnantGreetingsLimit.split(':');
         primaryGreetingsTimeLimit = data.primaryGreetingsLimit.split(':');
         callCenterGreetingsLimit = data.callCenterGreetingsLimit;
-        waitingLineTimeWriting = data.waitingLineTimeWriting;
-        waitingLineDateWriting = data.waitingLineDateWriting;
 
         // Заполняем список врачей
         var data = data.data;
@@ -578,50 +564,8 @@
                             });
                         })(i, li, counter, dayData);
 
-/*
                         // Де-факто после того, как полностью сформирован список, может получиться так, что в нём ни одного элемента. В первую очередь это выясняется по времени окончания смены
                         if(!isPassedTime(data[i].shedule[j].endTime, dates[counter]) || (counter > 0 && globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1)) {
-                            $(li).removeClass('notfull full empty').addClass('not-aviable').off('click');
-                        }
-*/
-
-                        blockThisDay = false;
-                        // Прошло ли время приёма у врача
-                        if (!isPassedTime(data[i].shedule[j].endTime, dates[counter]))
-                        {
-                            // Если живая очередь
-                            if (isWaitingLineMode())
-                            {
-                                if (waitingLineTimeWriting==1)
-                                {
-                                    // Учитываем время (блокируем день)
-                                    blockThisDay = true;
-                                }
-                            }
-                            else
-                            {
-                                blockThisDay = true;
-                            }
-                        }
-                        else
-                        {
-                            // Время не прошло, но надо проверить - если запись в живую очередь, то надо обработать
-                            //     настройку по формированию
-                            if (waitingLineDateWriting==1)
-                            {
-                                // Смотрим - текущее ли число мы обрабатываем. Если нет - надо заблокировать данный день
-                                //    Если первый день не сегодняшний или день по счёту больше, чем первый - то блокируем
-                                if ((!firstDayIsToDay) || (counter>0))
-                                {
-                                    blockThisDay = true;
-                                }
-                            }
-
-
-                        }
-
-                        if (blockThisDay)
-                        {
                             $(li).removeClass('notfull full empty').addClass('not-aviable').off('click');
                         }
                     } else {

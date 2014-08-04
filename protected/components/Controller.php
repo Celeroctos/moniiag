@@ -17,7 +17,7 @@ class Controller extends CController {
         } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
             $this->redirect(Yii::app()->request->baseUrl.'/index.php'.Yii::app()->user->startpageUrl);
         }
-
+		
         $roleModel = new Role();
         $currentRoles = $roleModel->getCurrentUserRoles();
 
@@ -29,7 +29,15 @@ class Controller extends CController {
             $auth->createOperation($action);
             $role->addChild($action);
         }
-
+		
+		// Теперь пишем лог
+		$logModel = new Log();
+		$logModel->user_id = Yii::app()->user->id;
+		$logModel->url = Yii::app()->request->url;
+		$logModel->changedate = date('Y-n-j');
+		$logModel->changetime = date('h:i:s');
+		$logModel->save();
+		
         $filterChain->run();
     }
 

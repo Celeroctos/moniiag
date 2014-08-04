@@ -66,46 +66,29 @@
     <?php $this->endWidget(); ?>
 </div>
 <div class="row no-display" id="logsSearchCont">
-    <h5>Найденные пациенты с картами:</h5>
     <div class="col-xs-12 borderedBox">
         <table class="table table-condensed table-hover" id="logsSearchResult">
             <thead>
             <tr class="header">
-                <td></td>
                 <td>
-                    ФИО
+                    ID
                 </td>
                 <td>
-                    Дата рождения
+                    Логин
                 </td>
                 <td>
-                    Номер полиса ОМС
-                </td>
-                <!--<td>
-                    Год регистрации карты
-                </td>-->
-                <td>
-                    Номер карты
+                    Запрос
                 </td>
                 <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
-                <td>
-                </td>
+                    Дата изменения
+                </td>   
             </tr>
             </thead>
             <tbody>
             </tbody>
         </table>
     </div>
-    <div class="row no-display">
+    <div class="row">
         <ul class="pagination content-pagination">
         </ul>
     </div>
