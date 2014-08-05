@@ -198,68 +198,6 @@ $(document).ready(function () {
         return modeTimes;
     }
 
-   /* $("#doctor-shedule-edit-submit").on('click',
-        function () {
-            var cancelation;
-            cancelation = false;
-            var begin = '';
-            if ($("#editSheduleEmployeePopup #dateBegin").val() != '' && $("#editSheduleEmployeePopup #dateBegin").val() != undefined) {
-                begin = $("#editSheduleEmployeePopup #dateBegin").val();
-            }
-
-            var end = '';
-            if ($("#editSheduleEmployeePopup #dateEnd").val() != '' && $("#editSheduleEmployeePopup #dateEnd").val() != undefined) {
-                end = $("#editSheduleEmployeePopup #dateEnd").val();
-            }
-            var doctorId = '';
-            if ($("#editSheduleEmployeePopup #doctorId").val() != '' && $("#editSheduleEmployeePopup #doctorId").val() != undefined) {
-                doctorId = $("#editSheduleEmployeePopup #doctorId").val();
-            }
-
-            var employeeId = '';
-            if ($("#editSheduleEmployeePopup #sheduleEmployeeId").val() != '' && $("#editSheduleEmployeePopup #sheduleEmployeeId").val() != undefined) {
-                employeeId = $("#editSheduleEmployeePopup #sheduleEmployeeId").val();
-            }
-
-            if (begin != '' && end != '') {
-                urlStr = '/index.php/admin/shedule/isgreetingedit' +
-                    '?date_begin=' + begin +
-                    '&date_end=' + end +
-                    '&doctor_id=' + doctorId +
-                    '&shedule_id=' + employeeId +
-                    '&times=' + $.toJSON(getTimesObject($("#editSheduleEmployeePopup")));
-
-                $.ajax({
-                    'url': urlStr,
-                    'cache': false,
-                    'dataType': 'json',
-                    'type': 'GET',
-                    'async': false,
-                    'success': function (data, textStatus, jqXHR) {
-
-                        if (data.success == true) {
-                            if (data.data > 0) {
-                                console.log(data.data);
-                                // Выводим список пациентов
-                                //     alert('Есть записанные паценты');
-                                openViewWritedPatientEdit(doctorId, employeeId, begin, end, $.toJSON(getTimesObject($("#editSheduleEmployeePopup"))));
-                                // Поднимаем флаг отмены.
-                                cancelation = true;
-                            }
-                            // Если всё нормально - ничего не делаем. Зачем что-то делать, если всё нормально?
-                            //   Всё будет идти своим чередом и раписание благополучно сохраниться :)
-
-                        }
-
-                    }
-                });
-            }
-
-            return !cancelation;
-
-        }
-    );*/
-
     $("#deleteSheduleEmployee").click(function () {
         var currentRow = $('#shiftsEmployee').jqGrid('getGridParam', 'selrow');
         if (currentRow != null) {

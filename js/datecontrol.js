@@ -24,7 +24,7 @@
 	    '#addElementPopup #date-min-field-cont',
         '#editElementPopup #date-max-field-cont',
 	    '#editElementPopup #date-min-field-cont',
-
+        '#reportDate-cont'
 
     ];
 

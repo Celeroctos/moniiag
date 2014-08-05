@@ -1,0 +1,1 @@
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('"ќтчЄты за день"', 7, 'menuReceptionReportsForDay');
