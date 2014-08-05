@@ -1963,9 +1963,9 @@ class TasuController extends Controller {
 	// Получить данные по полису
 	public function getTasuPatientByPolicy($oms) {
 		// Если серии нет, то нужно брать номер полиса в качестве опоры
-		$conn2 = Yii::app()->db2;
+        //return true;
+        $conn2 = Yii::app()->db2;
 		$conn3 = Yii::app()->db3;
-
 		if($oms->oms_series == null) {
 			$policyParts = explode(' ', trim($oms->oms_number));
 			// Неправильный номер полиса по формату....?

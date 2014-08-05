@@ -143,6 +143,8 @@ class DoctorsController extends Controller {
         $primaryGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'primaryGreetingsLimit'));
         $pregnantGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'pregnantGreetingsLimit'));
         $callCenterGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'maxGreetingsInCallcenter'));
+        $waitingLineTimeWriting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'waitingLineTimeWriting'));
+        $waitingLineDateWriting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'waitingLineDateWriting'));
         if($primaryGreetingsLimit != null) {
             $answer['primaryGreetingsLimit'] = $primaryGreetingsLimit->value;
         } else {
@@ -161,6 +163,16 @@ class DoctorsController extends Controller {
             $answer['callCenterGreetingsLimit'] = null;
         }
 
+        if($waitingLineTimeWriting != null) {
+            $answer['waitingLineTimeWriting'] = $waitingLineTimeWriting->value;
+        } else {
+            $answer['waitingLineTimeWriting'] = null;
+        }
+        if($waitingLineDateWriting != null) {
+            $answer['waitingLineDateWriting'] = $waitingLineDateWriting->value;
+        } else {
+            $answer['waitingLineDateWriting'] = null;
+        }
         echo CJSON::encode($answer);
     }
     
