@@ -9,8 +9,7 @@ class FormCladrRegionAdd extends CFormModel
     public function rules()
     {
         return array(
-            array(
-                //'name, codeCladr', 'required'
+           array(
                  'name', 'required'
             ),
             array(

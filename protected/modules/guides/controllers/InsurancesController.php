@@ -28,6 +28,7 @@ class InsurancesController extends Controller {
         // Раскодируем id регионов
         $regionsIds = CJSON::decode($model->regionsHidden);
         $insurance->name = $model->name;
+		$insurance->code = $model->code;
         if($insurance->save()) {
 
             // Записываем id регионов.

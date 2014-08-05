@@ -484,6 +484,12 @@ class PatientController extends Controller {
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
             if($patient != null) {
+				// Если нет региона и страховой компании, то подгрузить их
+				if($patient->region == null || $patient->insurance == null) {
+					$tasuController = Yii::app()->createController('admin/tasu');
+					$tasuController[0]->getTasuPatientByPolicy($patient);
+				}
+				
                 // Нужно найти последнюю медкарту, чтобы по ней заполнить данными
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getLastByPatient($patient->id);
@@ -1054,9 +1060,14 @@ class PatientController extends Controller {
         }
         $modelOms = new Oms();
         $oms = $modelOms->findByPk($medcard->policy_id);
-        if($oms == null) {
+	    if($oms == null) {
             exit('Такого пациента не существует!');
         }
+		// Подгрузка из ТАСУ
+		if($oms->region == null || $oms->insurance == null) {
+			$tasuController = Yii::app()->createController('admin/tasu');
+			$tasuController[0]->getTasuPatientByPolicy($oms);
+		}
 
         $formModel = new FormPatientWithCardAdd();
         $this->fillFormMedcardModel($formModel, $medcard);
@@ -1231,7 +1242,7 @@ class PatientController extends Controller {
         $formModel->firstName = $oms->first_name;
         $formModel->lastName = $oms->last_name;
         $formModel->middleName = $oms->middle_name;
-        $formModel->policy = $oms->oms_number;
+        $formModel->policy = ($oms->oms_series != null) ? $oms->oms_series.$oms->oms_number : $oms->oms_number;
         $formModel->omsSeries = $oms->oms_series;
         $formModel->gender = $oms->gender;
         $formModel->birthday = $oms->birthday;
@@ -1285,12 +1296,25 @@ class PatientController extends Controller {
             $req = new CHttpRequest();
             $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
         }
-
-        // Если статус = 0, то поправить на статус = 0
-        if ($oms['status']==0)
-        {
-            $oms['status']=1;
-        }
+		
+		// Подгружаем на всякий случай данные из ТАСУ
+		try {
+			$tasuController = Yii::app()->createController('admin/tasu');
+			$tasuOmsData = $tasuController[0]->getTasuPatientByPolicy($oms);
+			
+		} catch(Exception $e) {
+		
+		}
+        if($oms['status'] != 6) {
+			// Если статус = 0, то поправить на статус = 0
+			if ($oms['status']==0)
+			{
+				$oms['status']=1;
+			}
+		} else { // Иначе подгружаем из ТАСУ
+		
+		}
+		
         // Прочитаем название страховой компании
         $omsInsurance =  new Insurance();
         $insuranceObject = $omsInsurance ->findByPk($oms['insurance']);
@@ -1926,6 +1950,15 @@ class PatientController extends Controller {
             $medcard = Medcard::model()->findByPk($_GET['cardid']);
             if($medcard != null) {
                 $oms = Oms::model()->findByPk($medcard['policy_id']);
+				if($oms != null) {
+					// Подгрузка из ТАСУ, если нужно
+					if($oms->region == null || $oms->insurance == null) {
+						$tasuController = Yii::app()->createController('admin/tasu');
+						$tasuController[0]->getTasuPatientByPolicy($oms);
+					}
+				} else {
+					throw new Exception('Не найден полис!');
+				}
             } else {
                 throw new Exception('Не найдена медкарта!');
             }
@@ -2236,9 +2269,21 @@ class PatientController extends Controller {
         $medcard = Medcard::model()->findByPk($_GET['medcardid']);
         if($medcard == null) {
             echo CJSON::encode(array('success' => 'false',
-                                     'data' => 'Нехватка данных!'));
+                                     'data' => 'Нехватка данных: нет медкарты в базе!'));
             exit();
         }
+		
+		$oms = Oms::model()->findByPk($medcard->policy_id);
+		if($oms == null) {
+			echo CJSON::encode(array('success' => 'false',
+                                     'data' => 'Нехватка данных: нет полиса в базе!'));
+            exit();
+		}
+		// Если нет данных по полису (региона и страховой компании), то их надо подгрузить
+		if($oms->region == null || $oms->insurance == null) {
+			$tasuController = Yii::app()->createController('admin/tasu');
+			$tasuController[0]->getTasuPatientByPolicy($oms);
+		}
 
         $sheduleList = SheduleByDay::model()->findAll('t.mediate_id = :mediate_id', array(':mediate_id' => $_GET['mediateid']));
         foreach($sheduleList as $element) {

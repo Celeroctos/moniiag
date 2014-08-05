@@ -892,6 +892,7 @@
 
                     $('select#omsType').trigger('change');
                     $('select#status').trigger('change');
+
                     $('#editOmsPopup').modal({});
                 } else {
                     $('#errorSearchPopup .modal-body .row p').remove();
@@ -1015,22 +1016,22 @@
         if($.trim(house) == '') {
             house = '';
         } else {
-            house += ', '
-        }
+			house += ', '
+		}
 
         var building = $('#building').val();
         if($.trim(building) == '') {
             building = '';
         } else {
-            building += ', ';
-        }
+			building += ', ';
+		}
 
         var flat = $('#flat').val();
         if($.trim(flat) == '') {
             flat = '';
         } else {
-            flat += ', ';
-        }
+			flat += ', ';
+		}
 
         var postindex = $('#postindex').val();
         if($.trim(postindex) == '') {

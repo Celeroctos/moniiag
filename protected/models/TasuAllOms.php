@@ -16,24 +16,6 @@ class TasuAllOms extends MisActiveRecord {
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = $this->getDbConnection();
-       /* $oms = $connection->createCommand()
-            ->select('upu.*')
-            ->from(TasuAllOms::tableName().' upu')
-			->where("REPLACE([upu].[ENP], CHAR(32), '') != ''");
-
-        if($filters !== false) {
-            $this->getSearchConditions($oms, $filters, array(
-            ), array(
-            ), array(
-            ));
-        }
-
-        if($sidx !== false && $sord !== false ) {
-            $oms->order($sidx.' '.$sord);
-        }
-        if($start !== false && $limit !== false) {
-            $oms->limit($limit, $start);
-        } */
 		$sql = "DECLARE @env char(50);
  
 		SET ROWCOUNT ".$start.";
@@ -50,7 +32,6 @@ class TasuAllOms extends MisActiveRecord {
 		  ORDER BY O.ENP ASC;
 
 		SET ROWCOUNT 0;";
-		
         return $connection->createCommand($sql)->queryAll();
     }
 	

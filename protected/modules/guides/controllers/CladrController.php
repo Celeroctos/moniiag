@@ -430,7 +430,7 @@ class CladrController extends Controller {
 
     private function create_guid()   //Генераци GUID
     {
-         return mb_convert_case($this->uuid(), MB_CASE_UPPER, "UTF-8");
+		return mb_convert_case($this->uuid(), MB_CASE_UPPER, "UTF-8");
     }
 
     public function actionSettlementEdit() {
@@ -548,11 +548,17 @@ class CladrController extends Controller {
     }
 
     public function actionRegionAdd() {
+		//var_dump(Yii::app());
+		//exit();
         $model = new FormCladrRegionAdd();
+
         if(isset($_POST['FormCladrRegionAdd'])) {
             $model->attributes = $_POST['FormCladrRegionAdd'];
+			//					var_dump($model);
+			//	exit();		
             if($model->validate()) {
                 $region = new CladrRegion();
+
                 $this->addEditRegionModel($region, $model, 'Новый регион успешно добавлен.');
             } else {
                 echo CJSON::encode(array(

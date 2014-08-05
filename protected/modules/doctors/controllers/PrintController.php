@@ -99,6 +99,11 @@ class PrintController extends Controller {
         if($oms == null) {
             exit('Ошибка! Полиса не существует!');
         }
+		// Подгрузка из ТАСУ
+		if($oms->region == null || $oms->insurance == null) {
+			$tasuController = Yii::app()->createController('admin/tasu');
+			$tasuController[0]->getTasuPatientByPolicy($oms);
+		}
 
         // Если у полиса есть поле "серия" - конкатэнируем его с номером через пробел и выводим.
         //         Иначе выводим только номер без конкатенации

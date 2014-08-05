@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#insurances").jqGrid({
         url: globalVariables.baseUrl + '/index.php/guides/insurances/get',
         datatype: "json",
-        colNames:['Код', 'Наименование'],
+        colNames:['Код', 'Наименование', 'Код СМО'],
         colModel:[
             {
                 name:'id',
@@ -13,7 +13,12 @@ $(document).ready(function() {
                 name: 'name',
                 index: 'name',
                 width: 200
-            }
+            },
+			{
+				name: 'code',
+                index: 'code',
+                width: 200
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],
