@@ -23,22 +23,6 @@ class Patient
         $allPatients = $connection->createCommand()
             ->select('subselect.*')
             ->from($fromPart);
-
-       /* if($filters !== false) {
-            $MAR = new MisActiveRecord();
-            $MAR->getSearchConditions($allPatients, $filters, array(
-                'fio' => array(
-                    'first_name',
-                    'last_name',
-                    'middle_name'
-                )
-            ), array(
-            ), array(
-
-            ));
-        }
-*/
-
         // Ищем в фильтрах поле "fio"
         if ($filters && isset($filters['rules']))
         {
@@ -46,8 +30,6 @@ class Patient
             {
                 if ($oneFilter['field']=='fio')
                 {
-                    //var_dump($oneFilter['data']);
-                    //exit();
                     $allPatients = $allPatients->andWhere(
                         "upper(first_name) like '".mb_strtoupper($oneFilter['data'], 'utf-8').
                         "%' OR upper(last_name) like '".
@@ -66,13 +48,7 @@ class Patient
             $allPatients->order($sidx.' '.$sord);
             $allPatients->limit($limit, $start);
         }
-
-        //var_dump($allPatients);
-        //exit();
-
         $result = $allPatients->queryAll();
-        //var_dump($result);
-        //exit();
         return $result;
     }
 
@@ -80,6 +56,132 @@ class Patient
         // Выбираем пациентов и считаем их количество
         return count($this->getPatientFromShedule($filters, $sidx = false, $sord = false, $start = false, $limit = false));
 
+    }
+
+    public function getCardNumbersByDate($dateToReport){
+        $connection = Yii::app()->db;
+        $result= $connection->createCommand()
+            ->select('mc.*')
+            ->from('mis.medcards mc')
+            ->where('reg_date = :rd', array(':rd'=>$dateToReport));
+        $result = $result->queryAll();
+        return $result;
+    }
+
+    public function getRegistryWorkForDay($dateToReport,$sidx = false, $sord = false, $start = false, $limit = false)
+    {
+        $connection = Yii::app()->db;
+        // Заберём сначала все карты, которые были зарегистрированы в данный день
+        //   Затем у найденных карт нужно найти их предыдущие карты (вторым этапом)
+
+        $result = $this->getCardNumbersByDate($dateToReport);
+
+        //var_dump($result);
+        //exit();
+
+        // Вторым этапом нужно вытащить остальные данные по данной медкарте и врач, к которому пациент записан
+        // Читаем из результатов запроса номера карт
+        $cardNumbers = array();
+        foreach ($result as $oneCard)
+        {
+            array_push($cardNumbers, $oneCard['card_number']);
+        }
+
+        //  Имеем массив номеров карт. Теперь нужно вытащить вторым этапом
+        // Если массив cardNumbers - выходим
+        if (count ($cardNumbers)==0)
+            return array();
+
+        $cardNumbersStr = '';
+
+        foreach ($cardNumbers as $oneCardNumber)
+        {
+            // Если строка-накопитель не пустой - добавляем впереди запятулю
+            if (($cardNumbersStr ) != '')
+                $cardNumbersStr = $cardNumbersStr.',';
+
+            $cardNumbersStr = ($cardNumbersStr . ( "'".$oneCardNumber."'" ));
+        }
+
+        $addingData = $connection->createCommand()
+            // Селект внутри селекта - ему так теплее :)
+            ->select('
+                        mc.*,
+                                (
+                        SELECT card_number FROM mis.medcards mc1 WHERE
+                        mc1.policy_id = mc.policy_id
+                        AND
+                        (
+                                 CAST(SUBSTRING(mc1."card_number", (CHAR_LENGTH(mc1."card_number") - 1)) as INTEGER)
+                                 <
+                                 CAST(SUBSTRING(mc."card_number", (CHAR_LENGTH(mc."card_number") - 1)) as INTEGER)
+
+                        )
+                        ORDER BY CAST(SUBSTRING(mc1."card_number", (CHAR_LENGTH(mc1."card_number") - 1)) as INTEGER)
+                         LIMIT 1
+                    )
+                    old_card_number,
+                    (
+                        SELECT (d.last_name || \' \' ||  substring (d.first_name,0,2)  || \' \' || substring (d.middle_name,0,2))
+                        FROM mis.doctor_shedule_by_day dsbd
+                        LEFT JOIN mis.doctors d ON d.id = dsbd.doctor_id
+                        WHERE medcard_id = mc.card_number AND patient_day = \''.$dateToReport.'\' order by patient_time
+                        LIMIT 1
+                    ) fio_doctor,
+                   -- mc.card_number,
+                    o.last_name || \' \' ||  substring (o.first_name,0,2)  || \' \' || substring (o.middle_name,0,2) as fio,
+                    registrator.last_name || \' \' ||  substring (registrator.first_name,0,2)  || \' \' || substring (registrator.middle_name,0,2) as fio_registrator,
+                    concat (o.oms_series, \' \',  o.oms_number) as oms
+            ')
+            ->from('mis.medcards mc')
+            ->join ('mis.oms o', 'o.id = mc.policy_id')
+            ->leftJoin ('mis.doctors registrator', 'registrator.id = mc.user_created')
+            ->where('mc.card_number in (' .  $cardNumbersStr . ")", array());
+
+            if($sidx !== false && $sord !== false )
+            {
+                $addingData->order($sidx.' '.$sord);
+            }
+
+            if ($start !== false && $limit !== false)
+            {
+                $addingData->limit($limit, $start);
+            }
+
+            $result = $addingData -> queryAll();
+
+            foreach ($result as &$oneResult)
+            {
+                $oneResult ['oms'] = trim($oneResult ['oms']);
+            }
+        /*
+        //var_dump($addingData);
+        //exit();
+        // Теперь надо сшить результаты двух запросов
+        // Перебираем результаты запроса
+        $cardsAssociate = array();
+        foreach ($addingData as $oneAddingInfo)
+        {
+            $cardsAssociate[$oneAddingInfo['card_number']]['old_card'] = $oneAddingInfo['old_card'];
+            $cardsAssociate[$oneAddingInfo['card_number']]['doctor'] = $oneAddingInfo['fio_doctor'];
+            $cardsAssociate[$oneAddingInfo['card_number']]['patient'] = $oneAddingInfo['fio'];
+            $cardsAssociate[$oneAddingInfo['card_number']]['registrator'] = $oneAddingInfo['registrator_fio'];
+            $cardsAssociate[$oneAddingInfo['card_number']]['oms'] = trim($oneAddingInfo['osm']);
+        }
+
+        // Перебираем результат и дописываем туды дополнительные поля
+        var_dump($cardsAssociate);
+        exit();
+
+        foreach ($result as &$oneCard)
+        {
+            $oneCard['fio'] = $cardsAssociate[$oneCard['card_number']]['patient'];
+            $oneCard['old_card_number'] = $cardsAssociate[$oneCard['card_number']]['old_card'];
+            $oneCard['oms'] = $cardsAssociate[$oneCard['card_number']]['oms'];
+            $oneCard['fio_registrator'] = $cardsAssociate[$oneCard['card_number']]['registrator'];
+            $oneCard['fio_doctor'] = $cardsAssociate[$oneCard['card_number']]['doctor'];
+        }*/
+        return $result ;
     }
 
     public function getRowsWritten($filters = false, $sidx = false, $sord = false, $start = false, $limit = false) {
@@ -119,9 +221,6 @@ class Patient
             }
 
         }
-
-        //$directPatients =
-
         if (count($directIds)!=0)
         {
             $directPatients = $connection->createCommand()
@@ -145,7 +244,6 @@ class Patient
                     'oms_number' => $oneDirectPatient['oms_number'],
                     'birthday' => $oneDirectPatient['birthday']
                 );
-                    //$oneMediatePatient['phone'];
             }
 
         }
@@ -157,9 +255,6 @@ class Patient
         {
             //у результирующего набора и добавим перед каждым ИД признак опосредованности 0 - не опосредованный
             //    1 - опосредованный
-
-            //var_dump($onePatientResult);
-            //exit();
             $onePatientResult['id'] = ($onePatientResult['is_mediate'].'_'.$onePatientResult['link_id']);
 
             if ($onePatientResult['is_mediate']==1)
@@ -177,9 +272,6 @@ class Patient
 
         // Просканируем id у результирующего набора и добавим перед каждым ИД признак опосредованности 0 - не опосредованный
         //    1 - опосредованный
-
-
-        //return array();
         return $allPatients;
     }
 }

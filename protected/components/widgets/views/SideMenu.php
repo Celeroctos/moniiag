@@ -48,8 +48,17 @@
             <?php } ?>
 
             <?php if(Yii::app()->user->checkAccess('menuReports')) { ?>
-                <li <?php echo $controller == 'shedule' && $module == 'reception' && ($action == 'view') ? 'class="active"' : ''; ?>>
-                    <?php echo CHtml::link('<img src="/images/icons/3.3.jpg" width="32" height="32" alt="" />Отчёты', array('/reception/shedule/view')) ?>
+                <li <?php echo $controller == 'reports' && $module == 'reception' && ($action == 'view') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('<img src="/images/icons/3.3.jpg" width="32" height="32" alt="" />Отчёты', array('#')) ?>
+
+                    <ul class="nav">
+                        <?php if(Yii::app()->user->checkAccess('menuReceptionReportsForDay')) { ?>
+                            <li <?php echo $module == 'reception' ? 'class="active"' : ''; ?>>
+                                <?php echo CHtml::link('Отчёт за день', array('/reception/reports/fordayview')) ?>
+                            </li>
+                        <?php } ?>
+                    </ul>
+
                 </li>
             <?php } ?>
 
