@@ -732,6 +732,12 @@
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
+					// Проверка статуса ТАСУ
+					if(typeof data.data.tasuStatus != 'undefined' && !data.data.tasuStatus) {
+						$('.noTasuConnection').removeClass('no-display');
+					} else {
+						$('.noTasuConnection').addClass('no-display');
+					}
                     var data = data.data.formModel;
                     var form = $('#patient-medcard-edit-form');
                     for(var i in data) {
@@ -813,6 +819,13 @@
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
                 if(data.success == true) {
+					// Проверка статуса ТАСУ
+					if(typeof data.data.tasuStatus != 'undefined' && !data.data.tasuStatus) {
+						$('.noTasuConnection').removeClass('no-display');
+					} else {
+						$('.noTasuConnection').addClass('no-display');
+					}
+				
                     var insId = data.data.insuranceId;
                     var insName = data.data.insuranceName;
                     var regId = data.data.regionId;

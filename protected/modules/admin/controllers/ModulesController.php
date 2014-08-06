@@ -12,9 +12,12 @@ class ModulesController extends Controller {
     public function actionSheduleSettings() {
         $this->formModel = new FormSheduleSettings();
         $this->fillSheduleModel();
+        $omsTypes = OmsType::getForSelect();
+
         $this->render('shedule', array(
             'model' => $this->formModel,
-            'shiftModel' => new FormShiftAdd()
+            'shiftModel' => new FormShiftAdd(),
+            'defaultTypes' => $omsTypes
         ));
     }
 
@@ -23,10 +26,14 @@ class ModulesController extends Controller {
         if(isset($_POST['FormSheduleSettings'])) {
             $this->formModel->attributes = $_POST['FormSheduleSettings'];
             if($this->formModel->validate()) {
+                //var_dump($this->formModel);
+                //exit();
                 foreach($this->formModel->attributes as $key => $settingForm) {
                     $setting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => $key));
                     if($setting != null) {
                         $setting->value = $settingForm;
+                        //var_dump();
+                        //exit();
                         if(!$setting->save()) {
                             echo CJSON::encode(array('success' => 'false',
                                                      'errors' => $setting->errors));

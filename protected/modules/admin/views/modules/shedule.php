@@ -170,6 +170,44 @@
             </div>
         </div>
         <div class="form-group">
+            <?php echo $form->labelEx($model,'waitingLineDateWriting', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="col-xs-4">
+                <?php echo $form->dropDownList($model, 'waitingLineDateWriting', array('Да', 'Нет'), array(
+                    'id' => 'waitingLineDateWriting',
+                    'class' => 'form-control'
+                )); ?>
+                <?php echo $form->error($model,'waitingLineDateWriting'); ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?php echo $form->labelEx($model,'waitingLineTimeWriting', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="col-xs-4">
+                <?php echo $form->dropDownList($model, 'waitingLineTimeWriting', array('Да', 'Нет'), array(
+                    'id' => 'waitingLineTimeWriting',
+                    'class' => 'form-control'
+                )); ?>
+                <?php echo $form->error($model,'waitingLineTimeWriting'); ?>
+            </div>
+        </div>
+        <!-- -->
+        <div class="form-group">
+            <?php echo $form->labelEx($model,'defaultOmsType', array(
+                'class' => 'col-xs-2 control-label'
+            )); ?>
+            <div class="col-xs-4">
+                <?php echo $form->dropDownList($model, 'defaultOmsType', $defaultTypes, array(
+                    'id' => 'defaultOmsType',
+                    'class' => 'form-control'
+                )); ?>
+                <?php echo $form->error($model,'defaultOmsType'); ?>
+            </div>
+        </div>
+        <!-- -->
+        <div class="form-group">
             <?php echo CHtml::ajaxSubmitButton(
                 'Сохранить',
                 CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/shedulesettingsedit'),

@@ -1091,6 +1091,37 @@ class TasuController extends Controller {
 
             $patientRow = $conn->createCommand($sql)->queryRow();
 			
+			// Максимальный UID
+			$sql = "(SELECT MAX(uid) + 1 as nextUid FROM [PDPStdStorage].[dbo].[t_book_65067])";
+		    $nextUidRow = $conn->createCommand($sql)->queryRow();
+		
+			// Крафтим медкарту
+			$sql = "INSERT INTO PDPStdStorage.dbo.t_book_65067 (
+				[uid],
+				[version_begin],
+				[version_end], 
+				[is_top], 
+				[created_by], 
+				[deleted_by], 
+				[patientuid_37756],
+				[booktype_55473],
+				[number_50713],
+				[disabled_11186])
+				VALUES(
+					".$nextUidRow['nextUid'].",
+					1,
+					".$this->version_end.",
+					1,
+					2,
+					NULL,
+					".$patientRow['PatientUID'].",
+					'01',
+					'".$medcard->card_number."',
+					0
+				)";
+
+			$result = $conn->createCommand($sql)->execute();
+			
 			// Если не подгружены данные по полису из ТАСУ, самое время это сделать
 			if($oms->insurance == null || $oms->region == null) {
 				$this->getTasuPatientByPolicy($oms);
@@ -1149,8 +1180,36 @@ class TasuController extends Controller {
                         NULL,
                         NULL,
                         NULL";
+			try {
+				$result = $conn->createCommand($sql)->execute();
+			} catch(Exception $e) {
 
-            $result = $conn->createCommand($sql)->execute();
+			}
+			
+			// Выберем последнюю добавленную строку (UID)
+			
+			// UID полиса
+			$sql = "SELECT uid as lastUid 
+					FROM [PDPStdStorage].[dbo].[t_policy_43176]
+					WHERE [series_14820] = '".$policyParts[0]."' AND 
+						  [number_12574] = '".$policyParts[1]."' AND
+						  [version_end] = '".$this->version_end."'";
+						  
+		    $currentUidRow = $conn->createCommand($sql)->queryRow();
+
+			// Апдейтим полис: статус и тип
+			$sql = "UPDATE
+						[PDPStdStorage].[dbo].[t_policy_43176]
+					SET 
+						[state_19333] = ".$oms->status.", 
+						[type_07731] = ".$oms->type."
+					WHERE
+						[uid] = ".$currentUidRow['lastUid'];
+						
+			try {
+				$result = $conn->createCommand($sql)->execute();
+			} catch(Exception $e) {
+			}
 
 			$sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
                         ".$patientRow['PatientUID'].",
@@ -1246,7 +1305,7 @@ class TasuController extends Controller {
             $answer['settlement'] = null;
         }
         if(isset($addressDataJson['streetId']) && $addressDataJson['streetId'] != null) {
-            $answer['street'] = CladrSettlement::model()->findByPk($addressDataJson['streetId']);
+            $answer['street'] = CladrStreet::model()->findByPk($addressDataJson['streetId']);
         } else {
             $answer['street'] = null;
         }
@@ -1963,9 +2022,22 @@ class TasuController extends Controller {
 	// Получить данные по полису
 	public function getTasuPatientByPolicy($oms) {
 		// Если серии нет, то нужно брать номер полиса в качестве опоры
-		$conn2 = Yii::app()->db2;
+        //return true;
+        $conn2 = Yii::app()->db2;
 		$conn3 = Yii::app()->db3;
+		if($oms->region != null && $oms->insurance != null) {
+			return true;
+		}		
 
+		/*if(!$conn2->getActive() || !$conn3->getActive()) {
+			return -1; // Нет соединения
+		}*/
+
+		// Меняем тактику: если режим работы без тасу, делаем его автономным
+		$tasuMode = Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'tasuMode'));
+		if($tasuMode->value == 1) { // Режим неработы с ТАСУ
+			return -1;
+		}
 		if($oms->oms_series == null) {
 			$policyParts = explode(' ', trim($oms->oms_number));
 			// Неправильный номер полиса по формату....?
@@ -2140,7 +2212,7 @@ class TasuController extends Controller {
         $street = CladrStreet::model()->find('code_cladr = :code_cladr AND code_region = :code_region AND code_district = :code_district AND code_settlement = :code_settlement', array(':code_cladr' => $address['codestreet_11408'], ':code_district' => $address['codedistrict_63369'], ':code_region' => $address['coderegion_37290'], ':code_settlement' => $address['codesettlement_46311']));
         if($street == null) {
             $street = new CladrStreet();
-            $street->name = $address['streetname_22113'];
+            $street->name = $address['str00eetname_22113'];
             $street->code_region = $address['coderegion_37290'];
             $street->code_district = $address['codedistrict_63369'];
             $street->code_settlement = $address['codesettlement_46311'];

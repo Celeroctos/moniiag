@@ -3,6 +3,7 @@
   //  var_dump($model);
   //  exit();
 ?>
+<p class="bold text-danger no-display noTasuConnection">ВНИМАНИЕ! ТАСУ недоступна: внимательно проверьте реквизиты полиса перед сохранением данных.</p>
 <div class="form-group no-display" id="insuranceHidden">
     <?php echo $form->hiddenField($model,'insurance', array(
         'class' => 'col-xs-3 control-label'

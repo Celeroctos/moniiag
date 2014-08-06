@@ -128,8 +128,8 @@ $(document).ready(function() {
                 // Дальше делаем таблицу ^_^
                 var tableToOut =
                     $('<table>');
-                $(tableToOut).append('<thead>');
-                $(tableToOut).append('<tbody>');
+                $(tableToOut).append('<thead style="font-size:14px;font-weight:bold;">');
+                $(tableToOut).append('<tbody style="font-size:12px;">');
                 $(tableToOut).find('thead').append('<tr>');
                 $(tableToOut).find('thead tr').append('<td>ЭМК (Новый)</td>');
                 $(tableToOut).find('thead tr').append('<td>ФИО</td>');

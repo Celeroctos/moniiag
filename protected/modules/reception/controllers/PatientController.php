@@ -485,11 +485,17 @@ class PatientController extends Controller {
             // Скрыть частично поля, которые не нужны при первичной регистрации
             if($patient != null) {
 				// Если нет региона и страховой компании, то подгрузить их
-				if($patient->region == null || $patient->insurance == null) {
+				$tasuStatus = true;
+				try {
 					$tasuController = Yii::app()->createController('admin/tasu');
-					$tasuController[0]->getTasuPatientByPolicy($patient);
+					$result = $tasuController[0]->getTasuPatientByPolicy($patient);
+					if($result === -1) {
+						$tasuStatus = false;
+					}
+				} catch(Exception $e) {
+					$tasuStatus = false;
 				}
-				
+
                 // Нужно найти последнюю медкарту, чтобы по ней заполнить данными
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getLastByPatient($patient->id);
@@ -520,7 +526,8 @@ class PatientController extends Controller {
                     'privilegesList' => $privilegesList,
                     'foundPriv' => count($privileges) > 0,
                     'id' => -1,
-                    'actionAdd' => 'addcard'
+                    'actionAdd' => 'addcard',
+					'tasuStatus' => $tasuStatus
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -1064,9 +1071,17 @@ class PatientController extends Controller {
             exit('Такого пациента не существует!');
         }
 		// Подгрузка из ТАСУ
+		$tasuStatus = true;
 		if($oms->region == null || $oms->insurance == null) {
-			$tasuController = Yii::app()->createController('admin/tasu');
-			$tasuController[0]->getTasuPatientByPolicy($oms);
+			try {
+				$tasuController = Yii::app()->createController('admin/tasu');
+				$result = $tasuController[0]->getTasuPatientByPolicy($oms);
+				if($result === -1) {
+					$tasuStatus = false;
+				}
+			} catch(Exception $e) {
+				$tasuStatus = false;
+			}
 		}
 
         $formModel = new FormPatientWithCardAdd();
@@ -1085,7 +1100,8 @@ class PatientController extends Controller {
             'oms' => $oms,
             'medcard' => $medcard,
             'privilegesList' => $privilegesList,
-            'privileges' => $privileges
+            'privileges' => $privileges,
+			'tasuStatus' => $tasuStatus
         );
     }
 
@@ -1242,7 +1258,7 @@ class PatientController extends Controller {
         $formModel->firstName = $oms->first_name;
         $formModel->lastName = $oms->last_name;
         $formModel->middleName = $oms->middle_name;
-        $formModel->policy = ($oms->oms_series != null) ? $oms->oms_series.$oms->oms_number : $oms->oms_number;
+        $formModel->policy = ($oms->oms_series != null  && $oms->type == 5) ? $oms->oms_series.$oms->oms_number : $oms->oms_number;
         $formModel->omsSeries = $oms->oms_series;
         $formModel->gender = $oms->gender;
         $formModel->birthday = $oms->birthday;
@@ -1298,12 +1314,15 @@ class PatientController extends Controller {
         }
 		
 		// Подгружаем на всякий случай данные из ТАСУ
+		$tasuStatus = true;
 		try {
 			$tasuController = Yii::app()->createController('admin/tasu');
 			$tasuOmsData = $tasuController[0]->getTasuPatientByPolicy($oms);
-			
+			if($tasuOmsData === -1) {
+				$tasuStatus = false;
+			}
 		} catch(Exception $e) {
-		
+			$tasuStatus = false;
 		}
         if($oms['status'] != 6) {
 			// Если статус = 0, то поправить на статус = 0
@@ -1335,7 +1354,8 @@ class PatientController extends Controller {
           'insuranceId' => $oms['insurance'],
           'insuranceName' => $insuranceName,
           'regionId' => $oms['region'],
-          'regionName' => $regionName
+          'regionName' => $regionName,
+		  'tasuStatus' => $tasuStatus
         );
     }
 
@@ -1948,13 +1968,21 @@ class PatientController extends Controller {
         if(isset($_GET['cardid'])) {
             // Проверим, что такая карта реально есть
             $medcard = Medcard::model()->findByPk($_GET['cardid']);
-            if($medcard != null) {
+            $tasuStatus = true;
+			if($medcard != null) {
                 $oms = Oms::model()->findByPk($medcard['policy_id']);
 				if($oms != null) {
 					// Подгрузка из ТАСУ, если нужно
 					if($oms->region == null || $oms->insurance == null) {
-						$tasuController = Yii::app()->createController('admin/tasu');
-						$tasuController[0]->getTasuPatientByPolicy($oms);
+						try {
+							$tasuController = Yii::app()->createController('admin/tasu');
+							$result = $tasuController[0]->getTasuPatientByPolicy($oms);
+							if($result === -1) {
+								$tasuStatus = false;
+							}
+						} catch(Exception $e) {
+							$tasuStatus = false;
+						}
 					}
 				} else {
 					throw new Exception('Не найден полис!');
@@ -2085,7 +2113,11 @@ class PatientController extends Controller {
                 }
 
 
-
+				if(isset($tasuStatus)) {
+					$answer['tasuStatus'] = $tasuStatus;
+				} else {
+					$answer['tasuStatus'] = false;
+				}
                 $this->render('writePatient2', $answer);
                 exit();
             }
@@ -2280,9 +2312,17 @@ class PatientController extends Controller {
             exit();
 		}
 		// Если нет данных по полису (региона и страховой компании), то их надо подгрузить
+		$tasuStatus = true;
 		if($oms->region == null || $oms->insurance == null) {
-			$tasuController = Yii::app()->createController('admin/tasu');
-			$tasuController[0]->getTasuPatientByPolicy($oms);
+			try {
+				$tasuController = Yii::app()->createController('admin/tasu');
+				$result = $tasuController[0]->getTasuPatientByPolicy($oms);
+				if($result === -1) {
+					$tasuStatus = false;	
+				}
+			} catch(Exception $e) {
+				$tasuStatus = false;
+			}
 		}
 
         $sheduleList = SheduleByDay::model()->findAll('t.mediate_id = :mediate_id', array(':mediate_id' => $_GET['mediateid']));
@@ -2298,6 +2338,7 @@ class PatientController extends Controller {
         MediatePatient::model()->deleteByPk($_GET['mediateid']);
         // TODO: дальше нужно переадресовать на экшн записи таким образом, чтобы автоматом раскрыть расписание к этому пациенту
         echo CJSON::encode(array('success' => 'true',
+								 'tasuStatus' => $tasuStatus,
                                  'data' => 'Пациент успешно сопоставлен и записан на приём!'));
     }
 

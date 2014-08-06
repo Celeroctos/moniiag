@@ -60,10 +60,13 @@ class Patient
 
     public function getCardNumbersByDate($dateToReport){
         $connection = Yii::app()->db;
+        // Надо отфильтровать карты, год которых в номере не равен году в $dateToReport
         $result= $connection->createCommand()
             ->select('mc.*')
             ->from('mis.medcards mc')
-            ->where('reg_date = :rd', array(':rd'=>$dateToReport));
+            ->where('reg_date = :rd
+            AND substring (card_number, length(card_number)-1,2 ) =  substring ( CAST (reg_date AS CHARACTER VARYING), 3,2 )
+            ', array(':rd'=>$dateToReport));
         $result = $result->queryAll();
         return $result;
     }
@@ -76,8 +79,8 @@ class Patient
 
         $result = $this->getCardNumbersByDate($dateToReport);
 
-        //var_dump($result);
-        //exit();
+       // var_dump($result);
+       // exit();
 
         // Вторым этапом нужно вытащить остальные данные по данной медкарте и врач, к которому пациент записан
         // Читаем из результатов запроса номера карт
