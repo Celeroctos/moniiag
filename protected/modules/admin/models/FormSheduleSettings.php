@@ -11,12 +11,15 @@ class FormSheduleSettings extends CFormModel
     public $pregnantGreetingsLimit;
     public $maxInWaitingLine;
     public $maxGreetingsInCallcenter;
+    public $defaultOmsType;
+    public $waitingLineDateWriting;
+    public $waitingLineTimeWriting;
 
     public function rules()
     {
         return array(
             array(
-                'timePerPatient, firstVisit, quote, shiftType, pregnantGreetingsLimit, primaryGreetingsLimit, maxInWaitingLine, maxGreetingsInCallcenter', 'required'
+                'timePerPatient, firstVisit, quote, shiftType, pregnantGreetingsLimit, primaryGreetingsLimit, maxInWaitingLine, maxGreetingsInCallcenter,defaultOmsType,waitingLineDateWriting,waitingLineTimeWriting', 'required'
             ),
 			array(
                 'timePerPatient, firstVisit, quote, shiftType, calendarType, maxInWaitingLine, maxGreetingsInCallcenter', 'numerical'
@@ -35,7 +38,10 @@ class FormSheduleSettings extends CFormModel
             'pregnantGreetingsLimit' => 'Крайнее время записи для беременных',
             'primaryGreetingsLimit' => 'Крайнее время записи на первичный приём',
             'maxInWaitingLine' => 'Количество пациентов по живой очереди',
-            'maxGreetingsInCallcenter' => 'Количество пациентов (в день) через Call-центр на врача'
+            'maxGreetingsInCallcenter' => 'Количество пациентов (в день) через Call-центр на врача',
+            'defaultOmsType' => 'Тип полиса по умолчанию',
+            'waitingLineDateWriting' => 'Запись в живую очередь на будущие даты',
+            'waitingLineTimeWriting' => 'Запись в живую очередь после окончания приёма'
         );
     }
 }
