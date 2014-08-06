@@ -3,15 +3,16 @@
 class FormSystemEdit extends FormMisDefault
 {
     public $lettersInPixel;
+	public $tasuMode;
 
     public function rules()
     {
         return array(
             array(
-                'lettersInPixel', 'required'
+                'lettersInPixel, tasuMode', 'required'
             ),
             array(
-                'lettersInPixel', 'numerical'
+                'lettersInPixel, tasuMode', 'numerical'
             )
         );
     }
@@ -19,7 +20,8 @@ class FormSystemEdit extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-            'lettersInPixel' => 'Количество пикселей в символе'
+            'lettersInPixel' => 'Количество пикселей в символе',
+			'tasuMode' => 'ТАСУ включена'
         );
     }
 }

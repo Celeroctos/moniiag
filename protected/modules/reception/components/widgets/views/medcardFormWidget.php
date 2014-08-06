@@ -3,6 +3,7 @@
 //exit();
 ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<p class="bold text-danger no-display noTasuConnection">ВНИМАНИЕ! ТАСУ недоступна: внимательно проверьте реквизиты полиса перед сохранением данных.</p>
 <div class="form-group">
     <?php echo $form->labelEx($model,'doctype', array(
         'class' => 'col-xs-3 control-label'

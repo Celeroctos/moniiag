@@ -29,6 +29,19 @@
             <?php echo $form->error($model,'lettersInPixel'); ?>
         </div>
     </div>
+	<div class="form-group">
+		<?php echo $form->labelEx($model,'tasuMode', array(
+			'class' => 'col-xs-2 control-label'
+		)); ?>
+		<div class="col-xs-4">
+			<?php
+			echo $form->dropDownList($model, 'tasuMode', array('Да','Нет'), array(
+				'id' => 'tasuMode',
+				'class' => 'form-control'
+			)); 
+			?>
+		</div>
+	</div>
     <div class="form-group">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить настройки',

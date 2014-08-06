@@ -6,8 +6,6 @@
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 
-
-
 $siteName = '';
 // Вот за такое надо расстреливать на месте. Но автор сего шедевра не знает как сделать что-то более правильное
 //          относительно быстро (( а времени нет((
@@ -132,7 +130,7 @@ return array(
 			'connectionString' => 'sqlsrv:Server=212.42.63.62\HISSQLEE,1433;Database=PDPStdStorage',
 			'username' => 'sa',
 			'password' => 'system54@nof',
-			'charset' => 'utf8',
+			'charset' => 'utf8'
 		),
 		
 		'db3' => array(
@@ -140,7 +138,7 @@ return array(
 			'connectionString' => 'sqlsrv:Server=212.42.63.62\HISSQLEE,1433;Database=PDPRegStorage',
 			'username' => 'sa',
 			'password' => 'system54@nof',
-			'charset' => 'utf8',
+			'charset' => 'utf8'
 		),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors

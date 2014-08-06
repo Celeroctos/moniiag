@@ -6,6 +6,9 @@
 <p class="text-left">
     Заполните поля формы, чтобы зарегистрировать / перерегистрировать карту пациента <span class="text-danger bold">(<?php echo $fio; ?>, полис №<?php echo $policy_number; ?>)</span>
 </p>
+<?php if(isset($tasuStatus) && !$tasuStatus) { ?>
+<p class="bold text-danger noTasuConnection">ВНИМАНИЕ! ТАСУ недоступна: внимательно проверьте реквизиты перед сохранением данных.</p>
+<?php } ?>
 <div class="row default-padding">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
