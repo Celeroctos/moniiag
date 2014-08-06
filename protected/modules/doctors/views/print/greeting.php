@@ -81,16 +81,6 @@
             ?></div><?php
         }
 
-     /*   if (count($diagnosises['clinicalPrimary'])>0)
-        {
-            ?><div><strong>Первичный клинический диагноз: </strong><?php
-            foreach ($diagnosises['clinicalPrimary'] as $oneDiagnosis)
-            {
-                echo $oneDiagnosis['description'];
-            }
-            ?></div><?php
-        }*/
-
         if (count($diagnosises['clinicalSecondary'])>0)
         {
             ?><div><strong><h3>Клинические диагноз/диагнозы: </h3></strong><?php
@@ -99,6 +89,13 @@
                 ?><br> - <?php
                 echo $oneDiagnosis['description'];
             }
+            ?></div><?php
+        }
+
+        if (strlen($diagnosises['noteGreeting'])>0)
+        {
+            ?><div><strong><h3>Клинические диагноз/диагнозы: </h3></strong><?php
+                echo $diagnosises['noteGreeting'];
             ?></div><?php
         }
 

@@ -297,6 +297,7 @@ class PrintController extends Controller {
         $cd = PatientDiagnosis::model()->findDiagnosis($greetingId, 2);
         $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $noteDiagnosis = $greeting['note'];
 
         //var_dump($cd);
         //exit();
@@ -307,8 +308,8 @@ class PrintController extends Controller {
             'secondary' => $sd,
             'clinicalPrimary' => $cpd,
             'clinicalSecondary' => $csd,
-            'complicating' => $cd
-
+            'complicating' => $cd,
+            'noteGreeting' => $noteDiagnosis
         );
 
         //var_dump($diagnosises );
