@@ -976,6 +976,14 @@ class TasuController extends Controller {
                 $policyParts[0] = $oms->oms_series;
                 $policyParts[1] = $oms->oms_number;
             }
+			
+			if($oms->type == 5) { // Единый полис ОМС в одном поле, в номере
+				$serie = '';
+				$number = trim($policyParts[0]).trim($policyParts[1]);
+			} else {
+				$serie = $policyParts[0];
+				$number = $policyParts[1];
+			}
 
             $sql = "SELECT DISTINCT
 	                  [pat].[uid] AS [PatientUID],
@@ -996,12 +1004,16 @@ class TasuController extends Controller {
                     INNER JOIN PDPStdStorage.dbo.t_smo_30821 AS [s] ON (([p].[smouid_25976] =
 [s].[uid])) AND ([s].version_end = ".$this->version_end.")
                     WHERE
-	                  ((([p].[series_14820] = '".trim($policyParts[0])."') AND ([p].[number_12574] = '".trim($policyParts[1])."')
+	                  ((([p].[series_14820] = '".$serie."') AND ([p].[number_12574] = '".$number."')
 	                  AND ([pat].[closeregistrationcause_59292] IS NULL)))
 	                  AND [pat].version_end = ".$this->version_end;
 //var_dump($sql);
+		
             $resultPatient = $conn->createCommand($sql)->queryAll();
             //		var_dump(   $resultPatient);
+		//	if($greeting['id'] == 6638) {
+				//var_dump($sql);
+			//}
 
             return $resultPatient;
         } catch(Exception $e) {
@@ -1096,7 +1108,19 @@ class TasuController extends Controller {
 		    $nextUidRow = $conn->createCommand($sql)->queryRow();
 		
 			// Крафтим медкарту
-			$sql = "INSERT INTO PDPStdStorage.dbo.t_book_65067 (
+			// Посмотрим, есть ли такая медкарта, с таким номером. Если есть - создавать не надо
+			$sql = "SELECT * 
+					FROM PDPStdStorage.dbo.t_book_65067
+					WHERE [number_50713] = '".$medcard->card_number."'
+						  AND [version_end] = '".$this->version_end."'";
+			try {
+				$medcardRow = $conn->createCommand($sql)->queryRow();
+			} catch(Exception $e) {
+				var_dump($e);
+				exit();
+			}
+			if($medcardRow == null) {
+				$sql = "INSERT INTO PDPStdStorage.dbo.t_book_65067 (
 				[uid],
 				[version_begin],
 				[version_end], 
@@ -1120,8 +1144,9 @@ class TasuController extends Controller {
 					0
 				)";
 
-			$result = $conn->createCommand($sql)->execute();
-			
+				$result = $conn->createCommand($sql)->execute();
+			}
+
 			// Если не подгружены данные по полису из ТАСУ, самое время это сделать
 			if($oms->insurance == null || $oms->region == null) {
 				$this->getTasuPatientByPolicy($oms);
@@ -1161,13 +1186,22 @@ class TasuController extends Controller {
             if($smoRow == null) {
                 return false;
             }
-
+			
+			// В едином номере всё пишется в одно поле
+			if($oms->type == 5) {
+				$serie = '';
+				$number = $policyParts[0].$policyParts[1];
+			} else {
+				$serie = $policyParts[0];
+				$number = $policyParts[1];
+			}
+			
             $sql = "EXEC PDPStdStorage.dbo.p_patsetpol_48135
                         ".$patientRow['PatientUID'].",
                         0,
                         ".$smoRow['SMOUID'].",
-                        '".$policyParts[0]."',
-                        '".$policyParts[1]."',
+                        '".$serie."',
+                        '".$number."',
                         '".$smoRow['ShortName']."',
                         '".(($oms->status == 0) ? 1 : 3)."',
                         '1',
@@ -1191,8 +1225,8 @@ class TasuController extends Controller {
 			// UID полиса
 			$sql = "SELECT uid as lastUid 
 					FROM [PDPStdStorage].[dbo].[t_policy_43176]
-					WHERE [series_14820] = '".$policyParts[0]."' AND 
-						  [number_12574] = '".$policyParts[1]."' AND
+					WHERE [series_14820] = '".$serie."' AND 
+						  [number_12574] = '".$number."' AND
 						  [version_end] = '".$this->version_end."'";
 						  
 		    $currentUidRow = $conn->createCommand($sql)->queryRow();
@@ -1344,19 +1378,28 @@ class TasuController extends Controller {
                 $policyParts[0] = $oms->oms_series;
                 $policyParts[1] = $oms->oms_number;
             }
+			
+			// В едином номере всё пишется в одно поле
+			if($oms->type == 5) {
+				$serie = '';
+				$number = $policyParts[0].$policyParts[1];
+			} else {
+				$serie = $policyParts[0];
+				$number = $policyParts[1];
+			}
 
             $omsRow = $sql = "SELECT
 						[a].[uid]
 					FROM
 						PDPStdStorage.dbo.t_policy_43176 AS [a]
 					WHERE
-						[a].[series_14820] = '".$policyParts[0]."'
-						AND [a].[number_12574] = '".$policyParts[1]."'
+						[a].[series_14820] = '".$serie."'
+						AND [a].[number_12574] = '".$number."'
 						AND [a].version_end = ".$this->version_end;
 
             $omsRow = $conn->createCommand($sql)->queryRow();
             if($omsRow == null) {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти полис '.$policyParts[0].' '.$policyParts[1].'!';
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти полис '.$serie.' '.$number.'!';
                 return false;
             }
 
@@ -2022,7 +2065,7 @@ class TasuController extends Controller {
 	// Получить данные по полису
 	public function getTasuPatientByPolicy($oms) {
 		// Если серии нет, то нужно брать номер полиса в качестве опоры
-        //return true;
+       // return true;
         $conn2 = Yii::app()->db2;
 		$conn3 = Yii::app()->db3;
 		if($oms->region != null && $oms->insurance != null) {
