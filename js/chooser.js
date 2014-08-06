@@ -312,13 +312,15 @@ $(document).ready(function() {
                                             }).append(
                                                 $('<a>').prop({
                                                     'href' : '#',
-                                                    'class' : 'prev'
+                                                    'class' : 'prev',
+                                                    'tabindex': '-1'
                                                 }).append($('<span>').prop({
                                                     'class' : 'glyphicon glyphicon-arrow-left'
                                                 })),
                                                 $('<a>').prop({
                                                     'href' : '#',
-                                                    'class' : 'next'
+                                                    'class' : 'next',
+                                                    'tabindex': '-1'
                                                 }).append($('<span>').prop({
                                                     'class' : 'glyphicon glyphicon-arrow-right'
                                                 }))

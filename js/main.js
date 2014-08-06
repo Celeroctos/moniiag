@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿// Test
+$(document).ready(function () {
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
@@ -796,12 +797,15 @@ $('select[multiple="multiple"]').each(function(index, select) {
     enterButtonsSelector =
     [
     ];
+
     $(document).on('keydown' ,function(e){
         if (e.keyCode==13 || e.keyCode==9)
         {
             //console.log('Нажата клавиша Enter');
             //console.log(e.currentTarget);
             //console.log($(':focus'));
+
+
 
 
             // Смотрим что в фокусе - если
@@ -812,14 +816,27 @@ $('select[multiple="multiple"]').each(function(index, select) {
             //    Если элемент сабмитит форму, то надо затриггерить на нём клик
             //   Нужно определить является ли элемент таким, который сабмитит форму
             // По умолчанию - не сабмитит
+
+
             submittable = false;
             // Если кнопка в форме одна - и она в фокусе то она вызывает сабмит
             containingForm = $(focusedElement).parents('form');
 
+
             if (e.keyCode==13)
             {
 
-                buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
+                // Если в фокусе форма логина пароля
+                if ($(containingForm).length>0)
+                {
+                    if ( $($(containingForm)[0]).attr('id')=='login-form' )
+                    {
+                        $($(containingForm)[0]).find('input[type=submit]').click();
+                    }
+                }
+
+                buttons = $(containingForm).find('input[type=submit], input[type=button], button');
+
                 if ($(buttons).length = 1 && buttons[0]==focusedElement[0])
                 {
                     $(buttons[0]).trigger('click');
