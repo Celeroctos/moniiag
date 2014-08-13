@@ -3,6 +3,7 @@
     globalVariables.isUnsavedUserData = false;  // Есть ли несохранённые данные у пользователя
     globalVariables.wasUserFocused = false; // Был ли фокус на каком-то элементе
     //    флаги isUnsavedUserData и wasUserFocused работают в связке
+	showMsgs = true;
 
     $(window).on(
     'beforeunload',
@@ -56,7 +57,12 @@
                 }
                 else {
                     //  $('#medcardContentSave').trigger('end');
-                    $('#successEditPopup').modal({});
+					if(showMsgs) {
+						$('#successEditPopup').modal({});
+					} else {
+						showMsgs = true
+						setTimeout(autoSave, 30000);
+					}
                 }
 
             } else {
@@ -122,11 +128,22 @@
             }
         });
     }
-    $('#medcardContentSave').on('click', function (e) {
+    $('#medcardContentSave, #sideMedcardContentSave').on('click', function (e) {
        // $(this).trigger('begin');
         isThisPrint = false;
         onStartSave();
+		e.stopPropagation();
     });
+	
+	
+	/* Автосохранение */
+	setTimeout(autoSave, 30000);
+	
+	function autoSave() {
+		isThisPrint = false;
+		showMsgs = false;
+		onStartSave();
+	}
 
     $('.greetingStatusCell input').on('change',function(){
         idOfRadio = $(this).prop('id');
@@ -215,7 +232,9 @@
         // Если есть ошибки
         if (isError) {
             // Показываем поп-ап с ошибками
-            $('#errorPopup').modal({});
+			if(showMsgs) {
+				$('#errorPopup').modal({});
+			}
             // Давим событие нажатия клавиши
             return false;
         }

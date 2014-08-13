@@ -6,7 +6,9 @@ class FormTasuFakeBufferAdd extends CFormModel
     public $cardNumber;
     public $doctorId;
     public $primaryDiagnosis;
+	public $secondaryDiagnosis;
     public $greetingDate;
+	public $wardId;
 
     public function rules()
     {
@@ -15,7 +17,7 @@ class FormTasuFakeBufferAdd extends CFormModel
                 'cardNumber, doctorId, primaryDiagnosis, greetingDate', 'required'
             ),
             array(
-                'id', 'safe'
+                'id, secondaryDiagnosis, wardId', 'safe'
             )
         );
     }
@@ -26,7 +28,9 @@ class FormTasuFakeBufferAdd extends CFormModel
             'cardNumber' => 'Номер карты',
             'doctorId' => 'Врач',
             'primaryDiagnosis' => 'Первичный диагноз',
-            'greetingDate' => 'Дата приёма'
+			'secondaryDiagnosis' => 'Вторичные диагнозы',
+            'greetingDate' => 'Дата приёма',
+			'wardId' => 'Отделение'
         );
     }
 }

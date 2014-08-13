@@ -546,6 +546,20 @@ $('select[multiple="multiple"]').each(function(index, select) {
 });
 
  globalVariables.notChangeNavButton = false;
+ // Кнопка закрытия приёма в панели 
+ if($('#medcardContentSave').length > 0) {
+	$('.buttonUpContainer').append($('#medcardContentSave').clone().prop({
+		'id' : 'sideMedcardContentSave',
+		'value' : 'Сохранить',
+		'title' : 'Сохранить текущий приём'
+		}).css(
+		{
+			'marginTop': '100px',
+			'width' : '85px',
+			'marginLeft' : '8px'
+		})
+	);
+ }
  $('.buttonUpContainer').click(function () {
  // Смотрим - есть ли у this класс "backWardButton"
  if ($(this).hasClass('backWardButton'))

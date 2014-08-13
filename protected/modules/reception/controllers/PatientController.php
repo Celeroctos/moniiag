@@ -617,12 +617,20 @@ class PatientController extends Controller {
                     $patientPrivelege = new PatientPrivilegie();
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
                 }
-
-                $fioBirthdayStr = $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name;
-                if ($oms->oms_number!='')
-                {
-                    $fioBirthdayStr .=(', номер полиса: '.$oms->oms_number);
-                }
+				
+				if(is_array($oms)) {
+					$fioBirthdayStr = $oms['last_name'].' '.$oms['first_name'].' '.$oms['middle_name'];
+					if ($oms['oms_number'] !='') 
+					{
+						$fioBirthdayStr .=(', номер полиса: '.$oms['oms_number']);
+					}
+				} else {
+					$fioBirthdayStr = $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name;
+					if ($oms->oms_number!='')
+					{
+						$fioBirthdayStr .=(', номер полиса: '.$oms->oms_number);
+					}
+				}
                 echo CJSON::encode(array('success' => 'true',
                                          'msg' => 'Новая запись успешно добавлена!',
                                          'cardNumber' => $medcard->card_number,
@@ -941,7 +949,13 @@ class PatientController extends Controller {
     private function checkIssetMedcardInYear($oms, $medcard) {
         $year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
-        $medcardSearched = $medcard->getLastMedcardPerYear($code, $oms->id);
+	
+		if(is_array($oms)) {
+			$id = $oms['id'];
+		} else {
+			$id = $oms->id;
+		}
+        $medcardSearched = $medcard->getLastMedcardPerYear($code, $id);
         if($medcardSearched != null) {
             echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
@@ -1486,7 +1500,11 @@ class PatientController extends Controller {
         $medcard->enterprise_id = 1; // TODO: сделать выборку из учреждений, сейчас ставим мониаг жёстко
 
         if($oms) {
-            $medcard->policy_id = $oms->id;
+			if(is_array($oms)) {
+				$medcard->policy_id = $oms['id'];
+			} else {
+				$medcard->policy_id = $oms->id;
+			}
         }
 
         if(!$medcard->save()) {
