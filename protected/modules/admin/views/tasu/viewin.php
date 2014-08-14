@@ -284,7 +284,7 @@
 					</div>
 					<div class="col-xs-7">
 						<table id="preGreetings"></table>
-						<div class="btn-group default-margin-top">
+						<div class="btn-group" id="preGreetings-controls">
 							<button type="button" class="btn btn-default" id="deletePreGreeting">Удалить</button>
 							<button type="button" class="btn btn-default" id="clearPreGreetings">Очистить</button>
 						</div>

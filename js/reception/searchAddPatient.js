@@ -449,6 +449,11 @@
                             '<span class="glyphicon glyphicon-pencil"></span>' +
                         '</a>' +
                     '</td>' +
+					'<td>' +
+                        '<a href="#' + data[i].id + '" class="deleteOms" title="Удалить ОМС">' +
+                            '<span class="glyphicon glyphicon-remove text-danger"></span>' +
+                        '</a>' +
+                    '</td>' +
                 '</tr>'
             );
         }
@@ -789,6 +794,32 @@
         });
         return false;
     });
+	
+	// Редактирование полиса в попапе
+    $(document).on('click', '.deleteOms', function(e) {
+		var link = $(this);
+		if(!window.confirm('Вы действительно хотите удалить этот ОМС?')) {
+			return false;
+		}
+		
+		$.ajax({
+            'url' : '/index.php/reception/patient/deleteoms',
+            'data' : {
+                'omsid' : $(link).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
+            },
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if(data.success == true) {
+					$(link).parents('tr').fadeOut(500, function() {
+						$(link).parents('tr').remove();
+					});
+				}	
+			}
+		});
+		
+	});
 
     // Редактирование полиса в попапе
     $(document).on('click', '.editOms', function(e) {

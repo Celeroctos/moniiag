@@ -74,6 +74,16 @@ class PatientController extends Controller {
         }
 
     }
+	
+	// Удалить ОМС
+	public function actionDeleteOms() {
+		if(!isset($_GET['omsid'])) {
+			echo CJSON::encode(array('success' => false));
+			exit();
+		}
+		Oms::model()->deleteByPk($_GET['omsid']);
+		echo CJSON::encode(array('success' => true));
+	}
 
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()

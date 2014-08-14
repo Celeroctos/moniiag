@@ -2638,12 +2638,25 @@ class TasuController extends Controller {
     }
 	
 	public function actionGetFios() {
-		if(!isset($_GET['doctor_id']) || !isset($_GET['card_number'])) {
+		if(!isset($_GET['doctor_id']) || !isset($_GET['card_number']) || !isset($_GET['greeting_date'])) {
 			echo CJSON::encode(array(
                 'success' => false,
                 'data' => array(
 				)
 			));
+		}
+		
+		// Проверка даты на то, что она не больше текущей
+		if(time() < strtotime($_GET['greeting_date'])) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'errors' => array(
+					'greetingDate' => array(
+						'Дата добавляемого приёма больше текущей!'
+					)
+				)
+			));
+			exit();
 		}
 			
 		// Проверка на существование такого приёма (дубликат)

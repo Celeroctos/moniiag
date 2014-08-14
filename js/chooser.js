@@ -34,6 +34,9 @@ $(document).ready(function() {
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
                     $(chooser).find('input').prop('disabled', false);
+					if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('hideEmpty') && choosersConfig[$(chooser).prop('id')].hideEmpty) {
+						$(chooser).find('.choosed').css('display', 'none');
+					}
                 },
                 disable: function() {
                     $(chooser).find('input').prop('disabled', true);
@@ -65,6 +68,7 @@ $(document).ready(function() {
                     choosersConfig[$(chooser).prop('id')][param] = value;
                 }
             };
+			
             $(chooser).find('input').val('');
             $(chooser).find('input').on('keydown', function(e) {
                 // Стрелка "Вверх"
@@ -151,6 +155,7 @@ $(document).ready(function() {
                                 $.fn.switchFocusToNext();
                             }
                         }
+
                         e.preventDefault();
                         return false;
                     }
@@ -249,6 +254,13 @@ $(document).ready(function() {
                         mode = 1;
                         return false;
                     }
+					
+					// Переводим, если надо, на другой язык, если стоит опция
+					if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('alwaysLanguage')) {
+						var fieldValue = $.trim(changeLanguage($(field).val().toLowerCase(), choosersConfig[$(chooser).prop('id')].alwaysLanguage));
+					} else {
+						var fieldValue = $.trim($(field).val().toLowerCase());
+					}
 
                     if(prevVal != $.trim($(field).val()) || isNavigation == 1) {
                         if($(field).val().length > 0) {
@@ -256,7 +268,7 @@ $(document).ready(function() {
                         }
                         // Делаем запрос на сторону сервера
                         var url = choosersConfig[$(chooser).prop('id')].url;
-                        choosersConfig[$(chooser).prop('id')].filters.rules[0].data = $.trim($(field).val().toLowerCase());
+                        choosersConfig[$(chooser).prop('id')].filters.rules[0].data = fieldValue;
                         var urlFilters = choosersConfig[$(chooser).prop('id')].filters;
                         var urlJSON = $.toJSON(urlFilters);
                         url += urlJSON;
@@ -352,6 +364,42 @@ $(document).ready(function() {
                     'alt' : 'Загрузка...'
                 });
             }
+			
+			// Перевод с английского на русский и с русского на английский
+			function changeLanguage(fieldValue, language) {
+				var replacer = null;
+				if($.trim(language) == 'ru') { 
+					replacer = {
+						"q":"й", "w":"ц"  , "e":"у" , "r":"к" , "t":"е", "y":"н", "u":"г", 
+						"i":"ш", "o":"щ", "p":"з" , "[":"х" , "]":"ъ", "a":"ф", "s":"ы", 
+						"d":"в" , "f":"а"  , "g":"п" , "h":"р" , "j":"о", "k":"л", "l":"д", 
+						";":"ж" , "'":"э"  , "z":"я", "x":"ч", "c":"с", "v":"м", "b":"и", 
+						"n":"т" , "m":"ь"  , ",":"б" , ".":"ю"
+					};   
+				}
+				if($.trim(language) == 'en') { 	
+					replacer = {
+						"й":"q", "ц":"w"  ,"у":"e" , "к":"r" , "е":"t", "н":"y", "г":"u", 
+						"ш":"i", "щ":"o", "з":"p" , "х":"[" , "ъ":"]", "ф":"a", "ы":"s", 
+						"в":"d" , "а":"f"  , "п":"g" , "р":"h" , "о":"j", "л":"k", "д":"l", 
+						"ж":";" , "э":"'"  , "я":"z", "ч":"x", "с":"c", "м":"v", "и":"b", 
+						"т":"n" , "ь":"m"  , "б":"," , "ю":"."
+					};   
+				}				
+				
+				for(var i = 0; i < fieldValue.length; i++){                        
+					if(replacer[fieldValue[i].toLowerCase()] != undefined){
+						if(fieldValue[i] == fieldValue[i].toLowerCase()){
+							replace = replacer[fieldValue[i].toLowerCase()];    
+						} else if(str[i] == fieldValue[i].toUpperCase()){
+							replace = replacer[fieldValue[i].toLowerCase()].toUpperCase();
+						} 
+						
+						fieldValue = fieldValue.replace(fieldValue[i], replace);
+					}
+				}
+				return fieldValue;
+			}
 
             $(chooser).on('click', '.choosed span.item span.glyphicon-remove', function(e) {
                 // Удаляем из массива предыдущих элементов
@@ -366,6 +414,13 @@ $(document).ready(function() {
                 if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterRemove') && typeof choosersConfig[$(chooser).prop('id')].afterRemove == 'function') {
                     choosersConfig[$(chooser).prop('id')].afterRemove();
                 }
+				if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('hideEmpty') && choosersConfig[$(chooser).prop('id')].hideEmpty) {
+					if($.fn[$(chooser).attr('id')].getChoosed().length == 0) { 
+						$(chooser).find('.choosed').css('display', 'none');
+					} else {
+						$(chooser).find('.choosed').css('display', 'block');
+					}
+				}
             });
 
             $(chooser).on('click', '.choosed span.item span.glyphicon-arrow-down', function(e) {
@@ -439,6 +494,9 @@ $(document).ready(function() {
                                 // А вот теперь со спокойной совестью блокируем чюзер
                                 $.fn[$(chooser).attr('id')].disable();
                             }
+							if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('hideEmpty') && choosersConfig[$(chooser).prop('id')].hideEmpty) {
+								$(chooser).find('.choosed').css('display', 'block');
+							}
                             if(choosersConfig[$(chooser).prop('id')].hasOwnProperty('afterInsert') && typeof choosersConfig[$(chooser).prop('id')].afterInsert == 'function') {
                                 choosersConfig[$(chooser).prop('id')].afterInsert(chooser);
                             }
@@ -449,6 +507,7 @@ $(document).ready(function() {
                     }
                 }
             }
+
         })(this);
     });
 
@@ -668,6 +727,8 @@ $(document).ready(function() {
         'primaryDiagnosisChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
+			'alwaysLanguage' : 'en',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
@@ -710,6 +771,8 @@ $(document).ready(function() {
         },
         'secondaryDiagnosisChooser' : {
             'primary' : 'id',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+			'alwaysLanguage' : 'en',
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
