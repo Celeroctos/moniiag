@@ -441,13 +441,50 @@ class SheduleController extends Controller {
         // Перебираем весь входной массив, чтобы записать изменения в базу
         $currentDate = date('Y-m-d H:i');
         $answerCurrentDate = false;
+        $emptyTemplate = true;
        foreach($_POST['FormTemplateDefault'] as $field => $value)
         {
-            if ($field=='')
-
+            //if ($field=='')
             if($field == 'medcardId' || $field == 'greetingId'|| $field == 'templateName' || $field == 'templateId') {
                 continue;
             }
+
+            // Если значение у элемента не пустое и не пустой массив - то сбрасываем флаг, что шаблон пустой
+            if(is_array($value)) {
+                if (count($value)!=0)
+                {
+                    $emptyTemplate = false;
+                }
+
+            }
+            else
+            {
+               /* if ($_POST['FormTemplateDefault']['templateId']=='10')
+                {
+                    var_dump(  CJSON::decode('[]')  );
+                    exit();
+                }*/
+                // Сначала раскодируем из JSON значени (во всяком случае попробуем)
+                $decodedObject = CJSON::decode($value);
+                // Если мы что-то получили - проверим на пустоту объект
+               // if ($decodedObject != NULL)
+                if (!is_null($decodedObject))
+                {
+                    if (count($decodedObject)!=0)
+                    {
+                        $emptyTemplate = false;
+                    }
+                }
+                else
+                {
+                    // Иначе  надо тупо проверить на не пустоту строку
+                    if ($value !='')
+                    {
+                        $emptyTemplate = false;
+                    }
+                }
+            }
+
             // Это для выпадающего списка с множественным выбором
             if(is_array($value)) {
                 $value = CJSON::encode($value);
@@ -468,7 +505,6 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-
         //if (count($pathsOfElements)>0)
         //{
             $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
@@ -508,6 +544,15 @@ class SheduleController extends Controller {
             }
         if ($wasSaved)
         {
+            if ($emptyTemplate===true)
+            {
+                $recordRow->is_empty = 1;
+            }
+            else
+            {
+                $recordRow->is_empty = 0;
+            }
+
             $recordRow->save();
         }
         //}

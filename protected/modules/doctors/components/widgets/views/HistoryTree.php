@@ -68,7 +68,7 @@ if (count($secondaryDiagnosis)>0)
 // Сопутсвующие клинические диагнозы
 if (count($clinicalSecondaryDiagnosis)>0)
 {
-?><h4>Клинические сопутствующие диагнозы</h4><ul><?php
+?><h4>Клинические диагнозы</h4><ul><?php
 	foreach ($clinicalSecondaryDiagnosis as $diag)
 	{
 		?><li><?php
@@ -79,7 +79,13 @@ if (count($clinicalSecondaryDiagnosis)>0)
 	
 }
 
-
+// Выводим примечания (клинические диагнозы)
+if ($noteDiagnosis!='')
+{
+    ?><h4>Клинические диагнозы</h4><?php
+        echo $noteDiagnosis;
+    ?><?php
+}
 
 foreach($dividedCats as $key => $template) {
     ?><h4><?php echo $template['name']; ?></h4><?php

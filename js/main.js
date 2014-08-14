@@ -811,7 +811,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
     [
     ];
     $(document).on('keydown' ,function(e){
-        if (e.keyCode==13 || e.keyCode==9)
+        if ((e.keyCode==13 || e.keyCode==9) && (!e.ctrlKey))
         {
             //console.log('Нажата клавиша Enter');
             //console.log(e.currentTarget);
@@ -832,6 +832,17 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
             if (e.keyCode==13)
             {
+
+                //buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
+
+                // Если в фокусе форма логина пароля
+                if ($(containingForm).length>0)
+                {
+                    if ( $($(containingForm)[0]).attr('id')=='login-form' )
+                    {
+                        $($(containingForm)[0]).find('input[type=submit]').click();
+                    }
+                }
 
                 buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
                 if ($(buttons).length = 1 && buttons[0]==focusedElement[0])
@@ -915,6 +926,39 @@ $('select[multiple="multiple"]').each(function(index, select) {
             // Дальше выключаем обработку этого события
             e.preventDefault();
             return;
+        }
+        else
+        {
+            if (e.keyCode==13 || e.keyCode==9)
+            {
+                focusedElement = $(document.activeElement);
+
+                // Смотрим - если в фокусе элемент textarea
+                if ($(focusedElement).is('textarea'))
+                {
+                    currentPosition = $(focusedElement)[0].selectionStart;
+                    // Вставляем в позицию перевод строки
+                    $($(focusedElement)[0]).splice(
+                        $(focusedElement)[0].selectionStart,
+                        $(focusedElement)[0].selectionEnd - $(focusedElement)[0].selectionStart
+                    );
+                    // Добавляем символ перевода строки в позицию SelectionStart
+                    left = $($(focusedElement)[0]).val().substr(0,$(focusedElement)[0].selectionStart);
+                    right = $($(focusedElement)[0]).val().substr($(focusedElement)[0].selectionStart);
+                    $($(focusedElement)[0]).val(
+                        left + '\r\n' + right
+                    );
+                    // Устанавливаем текущую позицию в currentPosition + 2
+                    $(focusedElement)[0].selectionStart =currentPosition +1;
+                    $(focusedElement)[0].selectionEnd = $(focusedElement)[0].selectionStart ;
+
+
+
+                }
+
+            }
+
+            // Смотрим - если в фокусе элемент textarea
         }
     });
     //   Конец блока переходов по Enter-у

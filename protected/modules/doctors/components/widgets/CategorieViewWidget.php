@@ -750,7 +750,7 @@ class CategorieViewWidget extends CWidget {
 				}
 			}
 		}
-		//var_dump($this->historyElements);
+		//var_dump($greeting);
 		//exit();
 		if ($greeting!=NULL)
 		{
@@ -759,6 +759,8 @@ class CategorieViewWidget extends CWidget {
             $cd = PatientDiagnosis::model()->findDiagnosis($greeting, 2);
             $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 0);
 			$csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greeting, 1);
+            $greetingObject = SheduleByDay::model()->findByPk($greeting);
+            $noteDiagnosis = $greetingObject ['note'];
 
 		}
 		else
@@ -768,7 +770,7 @@ class CategorieViewWidget extends CWidget {
             $cd = array();
 			$cpd = array();
 			$csd = array();
-			
+            $noteDiagnosis = '';
 		}
         $result = $this->render('application.modules.doctors.components.widgets.views.HistoryTree', array(
             'categories' => $this->historyTree,
@@ -777,6 +779,7 @@ class CategorieViewWidget extends CWidget {
             'complicating' => $cd,
 			'clinicalPrimaryDiagnosis' => $cpd,
 			'clinicalSecondaryDiagnosis' => $csd,
+            'noteDiagnosis' => $noteDiagnosis,
             'model' => $this->formModel,
             'templates' => $this->catsByTemplates,
             'dividedCats' => $this->dividedCats,
