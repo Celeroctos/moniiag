@@ -12,6 +12,8 @@ class MedcardRecord extends MisActiveRecord  {
 
     public static function getHistoryMedcardByCardId($medcard)
     {
+        //var_dump('!');
+        //exit();
         // Достанем номер ОМС по медкарте
         $medcardObject = Medcard::model()->find('card_number = :number', array( ':number' => $medcard ) );
         $omsNumber = $medcardObject['policy_id'];
@@ -36,7 +38,7 @@ class MedcardRecord extends MisActiveRecord  {
             ->join('mis.doctor_shedule_by_day dsbd', 'mr.greeting_id=dsbd.id')
             ->join('mis.doctors d', 'dsbd.doctor_id=d.id')
             //->where('mep.medcard_id = :medcard_id and mep.is_record=1
-            ->where('mc.policy_id=:oms',
+            ->where('mc.policy_id=:oms AND (NOT(mr.is_empty=1))',
                 array(':oms' => $omsNumber))
             ->order('greeting_id, template_id, id_record desc')
 

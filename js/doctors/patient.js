@@ -258,6 +258,13 @@
     $('#date-cont').trigger('refresh');
 
     $(document).on('click', '.accept-greeting-link', function (e) {
+
+        // Ставим анимацию вместо кнопки "Закончить приём"
+        var gif = generateAjaxGif(16, 16);
+        // Делаем невидимым флажок
+        $(this).addClass('no-display');
+        $($(this).parents()[0]).append(gif);
+
         printHandler = 'accept-greeting-link';
         isThisPrint = true;
         onStartSave();
@@ -270,67 +277,6 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
     // Старый код. Поидее на сервере можно не проверять наличие диагноза, потому что перед процессом закрытия приёма
     //    выполняется сохранение приёма, поэтому в данной точке что на сервере - что на клиенте,
     // диагноз должен быть одинаков
-
-    /*
-    // Берём id-шник приёма
-    var greetingId = $(this).attr('href').substr(1);
-    // Теперь смотрим, заполнен ли основной диагноз. Для этого нужно делать ajax-запрос, потому что отображение диагнозов не означает их сохранённость на стороне сервера
-    $.ajax({
-        'url' : '/index.php/doctors/shedule/getprimarydiagnosis/?greeting_id=' + greetingId,
-        'cache' : false,
-        'dataType' : 'json',
-        'type' : 'GET',
-        'success' : function(data, textStatus, jqXHR) {
-            if(data.success == true) {
-                if(data.data == 0) {// Это означает, что первичный диагноз не установлен. В том случае, если есть шаблоны, которые требуют установки первичного диагноза, вываливать сообщение об ошибке
-                    var isError = '';
-                    for(var i in globalVariables.reqDiagnosis) {
-                        if(globalVariables.reqDiagnosis[i].isReq) {
-                            isError += globalVariables.reqDiagnosis[i].name + ', ';
-                        }
-                    }
-                    if($.trim(isError) != '') {
-                        isError = isError.substr(0, isError.length - 2);
-                        isError = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + isError + '</strong>';
-                        // Выводим сообщение об ошибке
-                        $('#errorPopup .modal-body .row').html("<p>" + isError + "</p>");
-                        $('#errorPopup').modal({
-                        });
-                        return false;
-                    }
-                }
-                // Теперь снимаем флаг обязательности диагноза. Перебираем шаблоны и если хотя бы в олдном из них
-
-                // Дёргаем Ajax
-                $.ajax({
-                    'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
-                    'cache' : false,
-                    'dataType' : 'json',
-                    'type' : 'GET',
-                    'success' : function(data, textStatus, jqXHR) {
-                        if(data.success == true) {
-                            // Перезагружаем страницу
-                            location.reload();
-                        } else {
-                            // Выводим сообщение об ошибке
-                            $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
-                            $('#errorPopup').modal({
-
-                            });
-                        }
-                        return;
-                    }
-                });
-            } else {
-                // Выводим сообщение об ошибке
-                $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
-                $('#errorPopup').modal({
-                });
-            }
-            return;
-        }
-    });
-    */
     var isError = '';
     for(var i in globalVariables.reqDiagnosis) {
         if(globalVariables.reqDiagnosis[i].isReq) {
