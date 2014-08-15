@@ -133,7 +133,7 @@
 
                                 }
                                     ?>
-                                <strong><?php echo $element['label']; ?></strong> <?php echo $element['value']; ?> <strong><?php echo $element['label_after']; ?></strong>
+                                <?php echo $element['label']; ?> <strong><span class="elementValuePrinting"><?php echo $element['value']; ?></span></strong> <?php echo $element['label_after']; ?>
                                 <?php
 						}
 					}

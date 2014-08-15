@@ -42,13 +42,23 @@ class CategorieViewWidget extends CWidget {
         } else {		
 			$categories = $this->getCategories($this->templateType, $this->medcardRecordId,$this->templateId);
         }
+		/*
 		//
-		/*echo('--------');
+		echo('--------');
 		var_dump($categories);
 		
 		echo('--------');
-		*/
+		exit();
 		//
+        */
+/*
+        //
+        echo('--------');
+        var_dump($this->formModel);
+
+        echo('--------');
+        exit();
+        //*/
 
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
@@ -647,10 +657,12 @@ class CategorieViewWidget extends CWidget {
         $elementFinded = MedcardElementForPatient::model()->find(
             'element_id = :element_id
              AND medcard_id = :medcard_id
-             AND history_id = :history_id',
+             AND history_id = :history_id
+             AND path = :element_path',
             array(':medcard_id' => $medcardId,
                   ':element_id' => $element['id'],
-                  ':history_id' => $historyId
+                  ':history_id' => $historyId,
+                  ':element_path' => $element['path']
                  )
         );
         /*if ($element['id']==339)
@@ -708,7 +720,6 @@ class CategorieViewWidget extends CWidget {
     }
 
     public function drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix) {
-        //var_dump("!");
         $this->render('CategorieElement', array(
             'categorie' => $categorie,
             'form' => $form,

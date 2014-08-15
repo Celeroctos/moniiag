@@ -334,6 +334,12 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
 
                 });
             }
+            // Снимаем крутилку с флажка "Закрытия приёма"
+            var gif = generateAjaxGif(16, 16);
+            // Делаем невидимым флажок
+            $('.accept-greeting-link').removeClass('no-display');
+            // Убиваем крутилку
+            $('.accept-greeting-link').parents('td').find('img').remove();
             return;
         }
     });
@@ -342,6 +348,7 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
 });
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
+    //return;
     $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active').find('img').remove();
     var gif = generateAjaxGif(16, 16);
     $(this).parent().addClass('active').append(gif);
@@ -371,7 +378,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
             console.log(data);
             if (data.success == 'true') {
                 // Заполняем медкарту-историю значениями
-                var data = data.data;
+                var historyContent = data.data;
                 /* var form = $('#historyPopup #patient-edit-form');
                 // Сброс формы
                 $(form)[0].reset();
@@ -384,7 +391,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
                 element.val(data[i].value);
                 }*/
                 $(gif).remove();
-                $('#historyPopup .modal-body .row').html(data);
+                $('#historyPopup .modal-body .row').html(historyContent);
                 $('#historyPopup').modal({
 
             });

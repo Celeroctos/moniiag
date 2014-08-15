@@ -94,6 +94,9 @@ class SheduleController extends Controller {
                     });
 
                     $templatesList = $templatesListWithTemplateData;
+
+                    //var_dump ($templatesList);
+                    //exit();
                 } else {
                     $canEditMedcard = 0;
                     $templatesChoose = 1;
@@ -523,8 +526,17 @@ class SheduleController extends Controller {
                 if(is_array($value)) {
                     $value = CJSON::encode($value);
                 }
-                //var_dump($historyElementsPaths);
-                //exit();
+                //var_dump($pathsToFields);
+               // exit();
+
+                /*if (!isset($historyElementsPaths[$pathsToFields[$field]]))
+                {
+                    var_dump($historyElementsPaths);
+                    var_dump($pathsToFields);
+                    var_dump($pathsOfElements);
+                    exit();
+                }*/
+
                 $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
                 $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
 

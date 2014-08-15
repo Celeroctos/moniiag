@@ -156,30 +156,60 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->where('mep.path in ('. $pathsToSelect .')
                         AND mep.greeting_id = :greeting_id',
                     array(':greeting_id' => $greetingId));
-            $elements->order('element_id, history_id desc');
+            $elements->order('element_id, path, history_id desc');
 
 
 
 			$allElements =  $elements->queryAll();
+           // var_dump($allElements);
+           // exit();
             $currentElement = false;
+            $currentPath = false;
             $result = array();
 
             // Если есть элементы - берём его id для дальнейшего сравнения
             if (count($allElements )>0)
             {
                 $currentElement  = $allElements[0]['element_id'];
+                $currentPath = $allElements[0]['path'];
                 array_push($result,$allElements[0]);
             }
             // Дальше проверяем в цикле - если id элемента поменялся
             //    о сравнению с предыдущими строками - то нужно запихать текущую строку в результат
+            //var_dump();
+            //exit();
             foreach ($allElements as $oneRecord)
             {
-                if ($oneRecord['element_id']!=$currentElement  )
+                $needAddToResult = false;
+
+                if ( ($oneRecord['element_id']!=$currentElement) || ($oneRecord['element_id']!=$currentElement)  )
+                {
+                    //$currentElement  = $oneRecord['element_id'];
+                    //array_push($result,$oneRecord);
+                    $needAddToResult = true;
+                }
+                else
+                {
+                    //  ИД-шники равны, НО
+                    // Надо проверить - не поменялся ли путь. Если поменялся - надо добавлять элемент
+                    if ($oneRecord['path']!=$currentPath)
+                    {
+                        $needAddToResult = true;
+                    }
+                }
+
+                // ПРоверяем - надо ли добавлять элемент и если надо - добавляем
+                if ($needAddToResult )
                 {
                     $currentElement  = $oneRecord['element_id'];
+                    $currentPath  = $oneRecord['path'];
                     array_push($result,$oneRecord);
                 }
             }
+
+            //var_dump($result);
+            //exit();
+
 			return $result;
 		} catch(Exception $e) {
 			echo $e->getMessage();
