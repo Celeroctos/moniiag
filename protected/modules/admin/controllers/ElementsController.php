@@ -94,20 +94,27 @@ class ElementsController extends Controller {
                 $oldElementState = MedcardElement::model()->findByPk($_POST['FormElementAdd']['id']);
                 // Вытащим зависимости
                 // Проверить - есть ли зависимости на элементе (причём и в ту и в другую сторону)
-
+/*
                 $existanceDependencies = MedcardElementDependence::model()->findAll(
                     'element_id = :ahead_element OR dep_element_id = :back_element',
                     array( ':ahead_element'=>$_POST['FormElementAdd']['id'], ':back_element' => $_POST['FormElementAdd']['id'] )
+                );*/
+
+                $existanceDependencies = MedcardElementDependence::model()->findAll(
+                    'element_id = :ahead_element',
+                    array( ':ahead_element'=>$_POST['FormElementAdd']['id'] )
                 );
+
                // var_dump($existanceDependencies);
                // exit();
                 // Если счёт зависимостей больше нуля и тип изменился - выводим сообщение об ошибке
-                if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['type']!=$oldElementState['type']))
+                /*if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['type']!=$oldElementState['type']))
                 {
                     echo CJSON::encode(array('success' => 'false',
                         'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён тип элемента. Если на элементе заданы зависимости, то нельзя менять его тип.')) ));
                     exit();
-                }
+                }*/
+
                 // Если счёт зависимостей больше нуля и изменился ИД справочника - также выводим сообщение об ошибке
                 if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['guideId']!=$oldElementState['guide_id']))
                 {
@@ -328,6 +335,22 @@ class ElementsController extends Controller {
         if(($element['default_value'] == null) && ($element['type']!=0)&&($element['type']!=1)) {
             $element['default_value'] = -1;
         }
+
+        // Нужно выяснить - есть ли на элементе зависимости (если есть - нужно зыблокировать некоторые варианты в селекте типа)
+        $existanceDependencies = MedcardElementDependence::model()->findAll(
+            'element_id = :ahead_element',
+            array( ':ahead_element'=> $id )
+        );
+
+        if (count($existanceDependencies)>0)
+        {
+            $element['is_dependencies'] = 1;
+        }
+        else
+        {
+            $element['is_dependencies'] = 0;
+        }
+
         echo CJSON::encode(array('success' => true,
                                  'data' => $element)
         );
