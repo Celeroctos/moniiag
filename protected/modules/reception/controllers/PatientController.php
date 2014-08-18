@@ -1659,27 +1659,58 @@ class PatientController extends Controller {
         } else {
             $cancelledGreetings = false;
         }
+		
+		$onlyClosedGreetings = false;
+		$greetingDate = false;
+		foreach($filters['rules'] as $key => $rule) {
+			if($rule['field'] == 'status') {
+				unset($filters['rules'][$key]);
+				$onlyClosedGreetings = true;
+			}
+			if($rule['field'] == 'patient_day') {
+				$greetingDate = true;
+			}
+		}
 
         if(!$mediateOnly) {
             $model = new Oms();
             // Вычислим общее количество записей
 
-            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings,$cancelledGreetings);
+            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings,$cancelledGreetings, $onlyClosedGreetings, $greetingDate);
 
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
-            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings,$cancelledGreetings);
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings, $cancelledGreetings, $onlyClosedGreetings, $greetingDate);
+			$now = time();
             // Обрабатываем результат
             foreach($items as $index => &$item) {
                 if($item['reg_date'] != null) {
                     $parts = explode('-', $item['reg_date']);
                     $item['reg_date'] = $parts[0];
-                }
-
+                } else {
+					// Можно вычленить из карты
+					if($item['card_number'] != null) {
+						$cardYear = mb_substr($item['card_number'], strrpos($item['card_number'], '/') + 1);
+						$item['reg_date'] = '20'.$cardYear;
+					}
+				}
+				
+				$currentDate = new DateTime(date("Y-m-d"));
                 if($item['birthday'] != null) {
                     $parts = explode('-', $item['birthday']);
                     $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
-                }
+					// Считаем возраст
+					$datetime = new DateTime($item['birthday']);
+					$interval = $datetime->diff($currentDate);
+					$fullYears = $interval->format("%Y");
+					$datetime = new DateTime($parts[2].'.'.$parts[1].'.'.($parts[0] + $fullYears));
+					$interval = $datetime->diff($currentDate);
+					$fullMonths = $interval->format("%m");
+					$datetime = new DateTime($parts[2].'.'.$fullMonths.'.'.($parts[0] + $fullYears));
+					$interval = $datetime->diff($currentDate);
+					$fullDays = $interval->format("%d");
+					$item['grow'] = $fullYears.' лет, '.$fullMonths.' месяцев, '.$fullDays.' дней';
+				}
             }
         } else {
             // Забираем фильтры только те, которые нужны: ФИО
@@ -1732,11 +1763,14 @@ class PatientController extends Controller {
         $allEmpty = true;
 
         foreach($filters['rules'] as &$filter) {
-            if(isset($filter['data']) && trim($filter['data']) != '') {
-                $allEmpty = false;
+            if(isset($filter['data'])) {
+				if(!is_array($filter['data']) && trim($filter['data']) != '') {
+					$allEmpty = false;
+				}
+				if(is_array($filter['data']) && count($filter['data']) > 0) {
+					$allEmpty = false;
+				}
             }
-
-
 
             if($filter['field'] == 'oms_number' && trim($filter['data']) != '') {
                 //---->

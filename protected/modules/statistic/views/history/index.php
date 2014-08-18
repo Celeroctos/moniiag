@@ -3,8 +3,11 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/medcardView.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/statistic/history.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript">
+	globalVariables.isMainDoctorCab = true;
+</script>
 <?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
-<h4>Просмотр медицинских карт</h4>
+<h4>Просмотр приёмов</h4>
 <div class="row">
     <?php
     $form = $this->beginWidget('CActiveForm', array(
@@ -91,6 +94,37 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="greetingDate" class="col-xs-4 control-label required" style="vertical-align: middle;">Дата приёма</label>
+            <div id="greetingDate-cont" class="col-xs-3 input-group date">
+                <input type="hidden" name="greetingDate" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="greetingDate">
+				<span class="input-group-addon">
+					<span class="glyphicon-calendar glyphicon">
+					</span>
+				</span>
+                <div class="subcontrol">
+                    <div class="date-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                        </div>
+                    </div>
+                    <div class="form-inline subfields">
+                        <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                    </div>
+                    <div class="date-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="form-group">
 			<label for="status" class="col-xs-4 control-label required">Только закрытые</label>
 			<div class="col-xs-4">
 				<input name="status" id="status" type="checkbox">
@@ -111,14 +145,11 @@
                 <td>
                     ФИО
                 </td>
+				 <td>
+                    Возраст
+                </td>
 		        <td>
                     Дата рождения
-                </td>
-                <td>
-                    Номер полиса ОМС
-                </td>
-                <td>
-                    Год регистрации карты
                 </td>
                 <td>
                     Номер карты
@@ -162,7 +193,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>По введённым поисковым критериям не найдено ни одного пациента. Вы можете ввести новые данные о пациенте, перейдя по <?php echo CHtml::link('этой', array('/reception/patient/viewadd')) ?> ссылке.</p>
+                    <p>По введённым поисковым критериям не найдено ни одного пациента. Измените критерии поиска и попробуйте поискать заново.</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -180,30 +211,14 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-3">
-                        <h4>Состояния карты:</h4>
+                    <div class="col-xs-12">
+                        <h4>Список приёмов:</h4>
                         <div class="panel panel-default" id="panelOfhistoryPoints">
                             <div class="panel-body">
 
                             </div>
                         </div>
                     </div>
-                   <div class="col-xs-9 no-display" id="panelOfhistoryMedcard">
-                       <!-- <h4>Категории</h4> -->
-                        <!--<div class="panel panel-default" id="panelOfhistoryMedcard">-->
-                        <!--<div id="panelOfhistoryMedcard">-->
-                           <!-- <div class="panel-body">-->
-                                <?php
-                               /* $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget',array(
-                                    'currentPatient' => -1,
-                                    'templateType' => 0,
-                                    'prefix' => 'history',
-                                    'withoutSave' => 1,
-                                    'canEditMedcard' => 0
-                                )); */?>
-                         <!--   </div>-->
-                        <!--</div>-->
-                   </div>
                 </div>
             </div>
             <div class="modal-footer">

@@ -61,10 +61,10 @@
 						$('#successEditPopup').modal({});
 					} else {
 						showMsgs = true
-						setTimeout(autoSave, 30000);
+						//setTimeout(autoSave, 30000);
 					}
                 }
-
+                $(".backDropForSaving").remove();
             } else {
                 ++numCalls;
             }
@@ -137,7 +137,7 @@
 	
 	
 	/* Автосохранение */
-	setTimeout(autoSave, 30000);
+	//setTimeout(autoSave, 30000);
 	
 	function autoSave() {
 		isThisPrint = false;
@@ -174,6 +174,11 @@
     // Метод, который выполняет только сохранение. Его использовать при вызове сохранения
     function onStartSave()
     {
+        // Сделаем бекдроп
+        // Show the backdrop
+        $('<div class="modal-backdrop fade in  backDropForSaving"></div>').appendTo(document.body);
+
+
         // Берём кнопки с классом
         var buttons = $('div.submitEditPatient');
         var buttonsContainers = $('div.submitEditPatient').parents('form#template-edit-form');

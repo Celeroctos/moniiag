@@ -107,6 +107,7 @@
         </ul>
     </li>
 <?php } ?>
+<!--
 <li <?php echo $module == 'hospital' ? 'class="active"' : ''; ?>>
 	<?php echo CHtml::link('<img src="/images/icons/doctors_cabinet.png" width="32" height="32" alt="" />Стационар', array('#')) ?>
 	<ul class="nav">
@@ -115,6 +116,7 @@
 		</li>
 	</ul>
 </li>
+-->
 <?php if(Yii::app()->user->checkAccess('menuStat')) { ?>
     <li <?php echo $module == 'statistic' || ($controller == 'tasu' && $module == 'admin') ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('<img src="/images/icons/stat.png" width="32" height="32" alt="" />Статистика', array('#')) ?>

@@ -17,23 +17,23 @@ $(document).ready(function() {
             'rules' : [
                 {
                     'field' : 'oms_number',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' :  $('#omsNumber').val()
                 },
                 {
                     'field' : 'first_name',
-                    'op' : 'cn',
-                    'data' : $('#firstName').val()
+                    'op' : 'eq',
+                    'data' : $('#firstName').val().toUpperCase()
                 },
                 {
                     'field' : 'middle_name',
-                    'op' : 'cn',
-                    'data' : $('#middleName').val()
+                    'op' : 'eq',
+                    'data' : $('#middleName').val().toUpperCase()
                 },
                 {
                     'field' : 'last_name',
-                    'op' : 'cn',
-                    'data' : $('#lastName').val()
+                    'op' : 'eq',
+                    'data' : $('#lastName').val().toUpperCase()
                 },
                 {
                     'field' : 'address_reg',
@@ -47,7 +47,7 @@ $(document).ready(function() {
                 },
                 {
                     'field' : 'card_number',
-                    'op' : 'cn',
+                    'op' : 'eq',
                     'data' : $('#cardNumber').val()
                 },
                 {
@@ -69,9 +69,34 @@ $(document).ready(function() {
                     'field' : 'birthday',
                     'op' : 'eq',
                     'data' : $('#birthday').val()
+                },
+				{
+                    'field' : 'patient_day',
+                    'op' : 'eq',
+                    'data' : $('#greetingDate').val()
                 }
             ]
         };
+
+		if($('#doctorChooser').length > 0 && $.fn['doctorChooser'].getChoosed().length > 0) {
+			var choosed = $.fn['doctorChooser'].getChoosed();
+			var ids = [];
+			for(var i = 0; i < choosed.length; i++) {
+				ids.push(choosed[i].id);
+			}
+			Result.rules.push({
+				'field' : 'doctor_id',
+				'op' : 'in',
+				'data' : ids
+			});
+		}
+		if($('#status').length > 0 && $('#status').prop('checked')) {
+			Result.rules.push({
+				'field' : 'status',
+				'op' : 'eq',
+				'data' : 1
+			});
+		}
         return Result;
     }
 
@@ -109,7 +134,11 @@ $(document).ready(function() {
                         searchStatus.push(0);
                         if(searchStatus.length == 3) {
                             seeNotFoundPopup();
-                        }
+                        } else if(globalVariables.hasOwnProperty('isMainDoctorCab') && globalVariables.isMainDoctorCab) {  // Просмотр в режиме главврача
+							searchStatus = [];
+							$('#notFoundPopup').modal({
+							});
+						}
                     } else {
                         if(data.rows.length > 0) {
                             searchStatus.push(1);
@@ -152,15 +181,26 @@ $(document).ready(function() {
             {
                 linkCellValue = data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name;
             }
-            table.append(
-                '<tr>' +
-                    '<td>' + linkCellValue + '</td>' +
-                    '<td>' + data[i].birthday+ '</td>' +
-                    '<td>' + data[i].oms_number + '</td>' +
-                    '<td>' + data[i].reg_date + '</td>' +
-                    '<td>' + data[i].card_number + '</td>' +
-                '</tr>'
-            );
+			if($('#panelOfhistoryMedcard').length > 0) {
+				table.append(
+					'<tr>' +
+						'<td>' + linkCellValue + '</td>' +
+						'<td>' + data[i].birthday+ '</td>' +
+						'<td>' + data[i].oms_number + '</td>' +
+						'<td>' + data[i].reg_date + '</td>' +
+						'<td>' + data[i].card_number + '</td>' +
+					'</tr>'
+				);
+			} else {
+				table.append(
+					'<tr>' +
+						'<td>' + linkCellValue + '</td>' +
+						'<td>' + data[i].grow + '</td>' +
+						'<td>' + data[i].birthday+ '</td>' +
+						'<td>' + data[i].card_number + '</td>' +
+					'</tr>'
+				);
+			}
         }
         table.parents('div.no-display').removeClass('no-display');
     }
@@ -187,7 +227,6 @@ $(document).ready(function() {
             }
 
             $('#errorAddPopup').modal({
-
             });
         }
     });
@@ -201,101 +240,136 @@ $(document).ready(function() {
 
     // Просмотр истории медкарты
     $('#omsSearchWithCardResult').on('click', '.viewHistory', function() {
-        $('#panelOfhistoryMedcard').addClass('no-display');
-        var medcardId = $(this).attr('href').substr(1);
-        $('#viewHistoryPopup .modal-title').text('История карты пациента ' + $(this).text() + ' (карта № ' + medcardId + ' )');
-        $('#omsSearchWithCardResult tr').removeClass('active');
-        $(this).parents('tr').addClass('active');
-        $.ajax({
-            'url' : '/index.php/doctors/shedule/gethistorypoints',
-            'data' : {
-                'medcardid' : medcardId
-            },
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == true) {
-                    var data = data.data;
-                    if(data.length == 0) {
-                        alert('Для выбранного пациента нет точек сохранения истории!');
-                        return false;
-                    }
-                    var pointsPanel = $('#panelOfhistoryPoints .panel-body');
-                    $(pointsPanel).find('div').remove();
-                    for(var i = 0; i < data.length; i++) {
+		$('#panelOfhistoryMedcard').addClass('no-display');
+		var medcardId = $(this).attr('href').substr(1);
+		$('#viewHistoryPopup .modal-title').text('История карты пациента ' + $(this).text() + ' (карта № ' + medcardId + ' )');
+		$('#omsSearchWithCardResult tr').removeClass('active');
+		$(this).parents('tr').addClass('active');
+		$.ajax({
+			'url' : '/index.php/doctors/shedule/gethistorypoints',
+			'data' : {
+				'medcardid' : medcardId
+			},
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET',
+			'success' : function(data, textStatus, jqXHR) {
+				if(data.success == true) {
+					var data = data.data;
+					if(data.length == 0) {
+						alert('Для выбранного пациента нет точек сохранения истории!');
+						return false;
+					}
+					var pointsPanel = $('#panelOfhistoryPoints .panel-body');
+					$(pointsPanel).find('div').remove();
+					var displayedGreetings = []; // Для кабинета главврача
+ 					for(var i = 0; i < data.length; i++) {
+						if($('#panelOfhistoryMedcard').length == 0) { // Режим главврача
+							var isFound = false;
+							for(var j = 0; j < displayedGreetings.length; j++) {
+								if(displayedGreetings[j] == data[i].greeting_id) {
+									isFound = true;
+									break;
+								}
+							}
+							
+							if(isFound) {
+								continue;
+							} else {
+								displayedGreetings.push(data[i].greeting_id);
+							}
+						}
+						
+						doctorName = data[i].last_name;
+						if (data[i].first_name!= '')
+						{
+							doctorName += ( ' '+data[i].first_name.substring(0,1) +'.' );
+						}
 
-                        doctorName = data[i].last_name;
-                        if (data[i].first_name!= '')
-                        {
-                            doctorName += ( ' '+data[i].first_name.substring(0,1) +'.' );
-                        }
+						if (data[i].middle_name!= '')
+						{
+							doctorName += ( ' '+data[i].middle_name.substring(0,1) +'.' );
+						}
+						console.log(data[i]);
+						var div = $('<div>');
+						if($('#panelOfhistoryMedcard').length > 0) {
+							var a = $('<a>').prop({
+								'href' : '#' + data[i].medcard_id+'_'+data[i].id_record
+							});
+						} else { // Режим кабинета главдоктора
+							var a = $('<a>').prop({
+								'href' : '#' + data[i].greeting_id
+							});
+						}
+						
+						$(a).prop('title',data[i].template_name ).text(data[i].date_change+ ' - ' + doctorName).appendTo(div);
+						$(div).appendTo(pointsPanel);
+					}
+					$('#viewHistoryPopup').modal({});
+				} else {
 
-                        if (data[i].middle_name!= '')
-                        {
-                            doctorName += ( ' '+data[i].middle_name.substring(0,1) +'.' );
-                        }
-                        console.log(data[i]);
-                        var div = $('<div>');
-                        var a = $('<a>').prop({
-                            'href' : '#' + data[i].medcard_id+'_'+data[i].id_record
-                        }).prop('title',data[i].template_name ).text(data[i].date_change+ ' - ' + doctorName).appendTo(div);
-                        $(div).appendTo(pointsPanel);
-                    }
-                    $('#viewHistoryPopup').modal({});
-                } else {
-
-                }
-                return;
-            }
-        });
+				}
+				return;
+			}
+		});
         return false;
     });
 
     $('#panelOfhistoryPoints .panel-body').on('click', 'a', function(e) {
-        $('#panelOfhistoryPoints .panel-body div.active').removeClass('active');
-        $('#panelOfhistoryMedcard').removeClass('no-display');
-        $(this).parent().addClass('active');
-        var panel = $('#panelOfhistoryMedcard .modal-body');
+		if($('#panelOfhistoryMedcard').length > 0) {
+			$('#panelOfhistoryPoints .panel-body div.active').removeClass('active');
+			$('#panelOfhistoryMedcard').removeClass('no-display');
+			$(this).parent().addClass('active');
+			var panel = $('#panelOfhistoryMedcard .modal-body');
 
-        var historyPointCoordinate = $(this).attr('href').substr(1);
-        var coordinateStrings = historyPointCoordinate.split('_');
+			var historyPointCoordinate = $(this).attr('href').substr(1);
+			var coordinateStrings = historyPointCoordinate.split('_');
 
-        var medcardId = coordinateStrings[0];
-        var pointId = coordinateStrings[1];
+			var medcardId = coordinateStrings[0];
+			var pointId = coordinateStrings[1];
 
 
-        $.ajax({
-            'url' : '/index.php/doctors/patient/gethistorymedcard',
-            'data' : {
-                'medcardid' : medcardId,
-                'historyPointId': pointId,
-                'date' : $(this).text()
-            },
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-                if(data.success == 'true') {
-                    // Заполняем медкарту-историю значениями
-                    var data = data.data;
-                    $('#panelOfhistoryMedcard').html(data);
-                    /*var form = $('#panelOfhistoryMedcard #patient-edit-form');
-                    // Сброс формы
-                    $(form)[0].reset();
-                    $(form).find('input').val('');
-                    for(var i = 0; i < data.length; i++) {
-                        var element = $(form).find('#f_history_' + data[i].element_id);
-                        if(data[i].type == 3) { // Выпадающий список с множественным выбором
-                            data[i].value = $.parseJSON(data[i].value);
-                        }
-                        element.val(data[i].value);
-                    }*/
-                } else {
+			$.ajax({
+				'url' : '/index.php/doctors/patient/gethistorymedcard',
+				'data' : {
+					'medcardid' : medcardId,
+					'historyPointId': pointId,
+					'date' : $(this).text()
+				},
+				'cache' : false,
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success == 'true') {
+						// Заполняем медкарту-историю значениями
+						var data = data.data;
+						$('#panelOfhistoryMedcard').html(data);
+						/*var form = $('#panelOfhistoryMedcard #patient-edit-form');
+						// Сброс формы
+						$(form)[0].reset();
+						$(form).find('input').val('');
+						for(var i = 0; i < data.length; i++) {
+							var element = $(form).find('#f_history_' + data[i].element_id);
+							if(data[i].type == 3) { // Выпадающий список с множественным выбором
+								data[i].value = $.parseJSON(data[i].value);
+							}
+							element.val(data[i].value);
+						}*/
+					} else {
 
-                }
-                return;
-            }
-        });
-    });
+					}
+					return;
+				}
+			});
+		} else {
+			$(this).parent().addClass('active');
+			var id = $(this).attr('href').substr(1);
+			var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+			$(printWin).on('load',
+				function () {
+					this.focus();
+				}
+			);
+		}
+	});
 });
