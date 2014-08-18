@@ -107,6 +107,14 @@
         </ul>
     </li>
 <?php } ?>
+<li <?php echo $module == 'hospital' ? 'class="active"' : ''; ?>>
+	<?php echo CHtml::link('<img src="/images/icons/doctors_cabinet.png" width="32" height="32" alt="" />Стационар', array('#')) ?>
+	<ul class="nav">
+		<li <?php echo $controller == 'monitoring' && $module == 'hospital' ? 'class="active"' : ''; ?>>
+			<?php echo CHtml::link('<img src="/images/icons/greeting_patient.png" width="32" height="32" alt="" />Мониторинг', array('/hospital/monitoring/view')) ?>
+		</li>
+	</ul>
+</li>
 <?php if(Yii::app()->user->checkAccess('menuStat')) { ?>
     <li <?php echo $module == 'statistic' || ($controller == 'tasu' && $module == 'admin') ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('<img src="/images/icons/stat.png" width="32" height="32" alt="" />Статистика', array('#')) ?>
@@ -124,10 +132,24 @@
                 </li>
             <?php } ?>
             <?php if(Yii::app()->user->checkAccess('menuReport')) { ?>
-                <li <?php echo $module == 'statistic' ? 'class="active"' : ''; ?>>
+                <li <?php echo $module == 'statistic' && ($controller == 'history' ||  $controller == 'greetings' || $controller == 'mis') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Отчётность', array('/statistic/index/view')); ?>
                 </li>
             <?php } ?>
+			<li <?php echo $module == 'statistic' && ($controller == 'history' ||  $controller == 'greetings' || $controller == 'mis') ? 'class="active"' : ''; ?>>
+			<?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Просмотр приёмов', array('#')); ?>
+				<ul class="nav">
+					<li <?php echo $module == 'statistic' && $controller == 'history' ? 'class="active"' : ''; ?>>
+						<?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />История приёмов', array('/statistic/history/view')); ?>
+					</li>
+					<li <?php echo $module == 'statistic' && $controller == 'greetings' ? 'class="active"' : ''; ?>>
+						<?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Статистика приёмов', array('/statistic/greetings/view')); ?>
+					</li>
+					<li <?php echo $module == 'statistic' && $controller == 'mis' ? 'class="active"' : ''; ?>>
+						<?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Статистика МИС', array('/statistic/mis/view')); ?>
+					</li>
+				</ul>
+			</li>
         </ul>
     </li>
 <?php } ?>

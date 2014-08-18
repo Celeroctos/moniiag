@@ -332,6 +332,9 @@ form span.required {
     margin-left: 37%;
     width: 100px;
   }
+  #reset-submit {
+		margin-left: 0;
+	}
 
 }
 #acceptGreetingPopup {
@@ -1854,4 +1857,46 @@ a.accordion-toggle:hover {
 }
 #preGreetings-controls {
 	margin-top: 5px;
+}
+/* */
+#sensorsTable {
+	width: 90%;
+	thead {
+		font-size: 14px;
+		font-weight: bold;
+		text-align: center;
+		tr {
+			background: #FBFEF0;
+			color: #2A51EA;
+		}
+	}
+	tbody {
+		td {
+			padding: 5px 10px;
+			text-align: center;
+			border: 1px solid #ffffff;
+			background: #F5F6CE;
+			cursor: pointer;
+		}
+		td:hover {
+			background: #CEF6CE;
+		}
+		td.danger {
+			background: #DF3A01;
+			font-weight: bold;
+			color: #ffffff;
+		}
+	}
+}
+#sensorEditPopup {
+	.modal-dialog {
+		width: 1100px;
+	}
+	.sensorIdBlock {
+		border-radius : 5px;
+		font-size: 24px;
+		padding: 10px 15px;
+		background: #F8EECB;
+		text-align: center;
+	}	
 }

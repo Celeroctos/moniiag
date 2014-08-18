@@ -95,6 +95,14 @@ return array(
                 'application.modules.statistic.components.*',
                 'application.modules.statistic.controllers.*'
             ),
+        ),
+		'hospital' => array(
+            'class' => 'application.modules.hospital.HospitalModule',
+            'import'=>array(
+                'application.modules.hospital.models.*',
+                'application.modules.hospital.components.*',
+                'application.modules.hospital.controllers.*'
+            ),
         )
 	),
 
