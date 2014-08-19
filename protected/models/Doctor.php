@@ -126,7 +126,7 @@ class Doctor extends MisActiveRecord  {
 			// Несуществующее отделение
 			if(!isset($resultArr[(string)$doctor['ward_id']])) {
 				$resultArr[(string)$doctor['ward_id']] = array(
-					'name' => $doctor['ward'],
+					'name' => $doctor['ward'] != null ? $doctor['ward'] : 'Неизвестное отделение',
 					'numAllGreetings' => 0,
 					'primaryPerWriting' => 0,
 					'primaryPerQueue' => 0,
@@ -138,7 +138,7 @@ class Doctor extends MisActiveRecord  {
 			// Несуществующая специальность
 			if(!isset($resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']])) {
 				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']] = array(
-					'name' => $doctor['post'],
+					'name' => $doctor['post'] != null ? $doctor['post'] : 'Неизвестная специальность',
 					'numAllGreetings' => 0,
 					'primaryPerWriting' => 0,
 					'primaryPerQueue' => 0,
@@ -185,6 +185,9 @@ class Doctor extends MisActiveRecord  {
 					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['secondaryPerQueue']++;
 				}
 			}
+			$resultArr[(string)$doctor['ward_id']]['numAllGreetings']++;
+			$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['numAllGreetings']++;
+			$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['numAllGreetings']++;
 		}
         return $resultArr;
 	}

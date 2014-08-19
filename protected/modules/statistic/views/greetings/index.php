@@ -194,6 +194,24 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="notFoundPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Сообщение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>По введённым поисковым критериям не найдено ни одного приёма. Измените критерии поиска и попробуйте поискать заново.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
 <table id="greetingsStatHeaders" class="no-display">
 	<tr class="wardHeaderRow">
 		<td colspan="6">Наименование отделения</td>

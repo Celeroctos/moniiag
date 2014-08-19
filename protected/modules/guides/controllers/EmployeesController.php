@@ -268,6 +268,15 @@ class EmployeesController extends Controller {
                                  'data' => $employees)
         );
     }
+	
+	public function actionGetByWardAndMedworker($wardid, $medworkerid) {
+        $model = new Employee();
+        $employees = $model->getByWardAndMedworker($wardid, $medworkerid);
+
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $employees)
+        );
+    }
 
 }
 
