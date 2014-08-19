@@ -208,6 +208,7 @@ $(document).ready(function () {
         $('#addElementPopup').modal({
 
     });
+        $('#element-add-form select#type').trigger('change');
 });
 
 $("#element-add-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
@@ -419,56 +420,14 @@ function editElement() {
                         if (fields[i].formField == 'config') {
                             var config = $.parseJSON(data.data['config']);
                             if (data.data['type'] == 4) {
-                                if (config.cols.length > 0) {
-                                    $('#editElementPopup .colsHeaders').prop('checked', true);
-                                }
-                                if (config.rows.length > 0) {
-                                    $('#editElementPopup .rowsHeaders').prop('checked', true);
-                                }
-                                var max = config.cols.length > config.rows.length ? config.cols.length : config.rows.length;
-                                var tbody = $('#editElementPopup .table-config-headers tbody');
-                                $('#editElementPopup #numRows').val(config.numRows);
-                                $('#editElementPopup #numCols').val(config.numCols);
-                                if (config.rows.length > 0) {
-                                    $('#editElementPopup #numRows').prop('disabled', true);
-                                }
-                                if (config.cols.length > 0) {
-                                    $('#editElementPopup #numCols').prop('disabled', true);
-                                }
-                                $(tbody).find('tr').remove();
-                                console.log(config);
-                                for (var j = 0; j < max; j++) {
-                                    if (j < config.rows.length) {
-                                        var newInput1 = $('<input>').prop({
-                                            'id': 'r' + j,
-                                            'type': 'text',
-                                            'class': 'form-control',
-                                            'value': config.rows[j]
-                                        });
-                                    } else {
-                                        var newInput1 = null;
-                                    }
-                                    if (j < config.cols.length) {
-                                        var newInput2 = $('<input>').prop({
-                                            'id': 'c' + j,
-                                            'type': 'text',
-                                            'class': 'form-control',
-                                            'value': config.cols[j]
-                                        });
-                                    } else {
-                                        var newInput2 = null;
-                                    }
-
-                                    var newTr = $('<tr>');
-                                    var newTdOne = $('<td>');
-                                    $(newTdOne).append(newInput1);
-                                    var newTdTwo = $('<td>');
-                                    $(newTdTwo).append(newInput2);
-
-                                    $(newTr).append(newTdOne, newTdTwo);
-                                    console.log(newTr);
-                                    $(tbody).append(newTr);
-                                }
+                                printHeadersTable(
+                                    config,
+                                    $('#editElementPopup .table-config-headers tbody'),
+                                    $('#editElementPopup .colsHeaders'),
+                                    $('#editElementPopup .rowsHeaders'),
+                                    $('#editElementPopup #numRows'),
+                                    $('#editElementPopup #numCols')
+                                );
                                 printDefaultValuesTable(config.numCols, config.numRows);
                                 if (config.values != undefined && config.values != null) {
                                     writeDefValuesFromConfig(config.values);
@@ -518,6 +477,92 @@ function editElement() {
         }
     })
 }
+}
+
+function printHeadersTable(config, tbody,colsCheckbox,rowsCheckbox,rowsNumberField,colsNumberField)
+{
+    printingRows = false;
+    printingCols = false;
+    if (config.cols.length > 0) {
+        $(colsCheckbox).prop('checked', true);
+        printingCols = true;
+    }
+    if (config.rows.length > 0) {
+        $(rowsCheckbox).prop('checked', true);
+        printingRows = true;
+    }
+    //var max = config.cols.length > config.rows.length ? config.cols.length : config.rows.length;
+    var max = parseInt(config.numRows) > parseInt(config.numCols) ? config.numRows : config.numCols;
+    $(rowsNumberField).val(config.numRows);
+    $(colsNumberField).val(config.numCols);
+    /*if (config.rows.length > 0) {
+     $('#editElementPopup #numRows').prop('disabled', true);
+     }
+     if (config.cols.length > 0) {
+     $('#editElementPopup #numCols').prop('disabled', true);
+     }*/
+    $(tbody).find('tr').remove();
+    console.log(config);
+    for (var j = 0; j < max; j++) {
+        //if (j < config.rows.length) {
+        if ((j < config.numRows)&&(printingRows)) {
+
+            if (j < config.rows.length)
+            {
+                var newInput1 = $('<input>').prop({
+                    'id': 'r' + j,
+                    'type': 'text',
+                    'class': 'form-control',
+                    'value': config.rows[j]
+                });
+            }
+            else
+            {
+                var newInput1 = $('<input>').prop({
+                    'id': 'r' + j,
+                    'type': 'text',
+                    'class': 'form-control'
+                });
+            }
+
+        } else {
+            var newInput1 = null;
+        }
+        //if (j < config.cols.length) {
+        if ((j < config.numCols)&&(printingCols)) {
+
+            if (j<config.cols.length)
+            {
+                var newInput2 = $('<input>').prop({
+                    'id': 'c' + j,
+                    'type': 'text',
+                    'class': 'form-control',
+                    'value': config.cols[j]
+                });
+            }
+            else
+            {
+                var newInput2 = $('<input>').prop({
+                    'id': 'c' + j,
+                    'type': 'text',
+                    'class': 'form-control'
+                });
+            }
+
+        } else {
+            var newInput2 = null;
+        }
+
+        var newTr = $('<tr>');
+        var newTdOne = $('<td>');
+        $(newTdOne).append(newInput1);
+        var newTdTwo = $('<td>');
+        $(newTdTwo).append(newInput2);
+
+        $(newTr).append(newTdOne, newTdTwo);
+        console.log(newTr);
+        $(tbody).append(newTr);
+    }
 }
 
 // Создаёт таблицу для значений по умолчанию для редактируемых таблиц
@@ -660,7 +705,6 @@ $("select#type").on('change', function (e) {
         $('#dateFieldMaxValue, #dateFieldMinValue').val('').parents('.form-group').addClass('no-display');
     }
 
-
 });
 
 var currentRow = null;
@@ -775,10 +819,79 @@ $('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #
             writeDefValuesFromConfig(config.values);
         }
 
+
+
         // Нужно поменять значения в конфиге
         config.numCols = $(e.currentTarget).parents('.modal-body').find('#numCols').val();
         config.numRows = $(e.currentTarget).parents('.modal-body').find('#numRows').val();
         $($(e.currentTarget).parents('.modal-body').find('#config')[0]).val($.toJSON(config));
+
+        // Теперь нужно проверить - если включены заголовки строк (и столбцов) Если включены - надо удалить (или добавить)
+        //   в таблицу заголовков столько строк, чтобы они соотносились с количеством строк и столбцов в самой таблице
+
+        currentForm = $(e.currentTarget).parents('form');
+
+        //if (  $(currentForm).attr('id')=='element-edit-form' )
+        //{
+        /*
+        newColNumberVal = $($(e.currentTarget).parents('.modal-body')[0]).find('#numCols').val();
+        newRowsNumberVal = $($(e.currentTarget).parents('.modal-body')[0]).find('#numRows').val();
+
+
+        tableHeaders = $(currentForm).find('table.table-config-headers')
+
+            if ( $(currentForm).find('.rowsHeaders').is(':checked')  )
+            {
+                if ( $(tableHeaders).find('input[id^=r]').length< newRowsNumberVal)
+                {
+                    // Добавляем в таблицу строки
+                }
+                else
+                {
+                    if ( $(tableHeaders).find('input[id^=r]').length > newRowsNumberVal)
+                    {
+                        // Удаляем из таблицы строки
+                    }
+                }
+
+            }
+
+            if ( $(currentForm).find('.colsHeaders').is(':checked')  )
+            {
+                if ( $(tableHeaders).find('input[id^=c]').length< newColsNumberVal)
+                {
+                    // Добавляем в таблицу строки
+                }
+                else
+                {
+                    if ( $(tableHeaders).find('input[id^=c]').length > newColsNumberVal)
+                    {
+                        // Удаляем из таблицы строки
+                    }
+                }
+            }
+        //}*/
+
+        // Вызываем обновление таблички с заголовком
+        //rowsCheckbox = $(e.currentTarget).parents('.modal-body').find('#numRows');
+        //colsCheckbox = $(e.currentTarget).parents('.modal-body').find('#numCols');
+        //onRowsHeadersClick(rowsCheckbox);
+        //onColsHeadersClick(colsCheckbox);
+
+        // После обновления таблички заголовков - нужно слова перепрочитать их содеоржимое из конфига
+        //
+
+        // Вывести заново из конфигов заголовки строк и столбцов
+        printHeadersTable(
+            config,
+            $(e.currentTarget).parents('.modal-body').find('.table-config-headers tbody'),
+            $(e.currentTarget).parents('.modal-body').find('.colsHeaders'),
+            $(e.currentTarget).parents('.modal-body').find('.rowsHeaders'),
+            $(e.currentTarget).parents('.modal-body').find('#numRows'),
+            $(e.currentTarget).parents('.modal-body').find('#numCols')
+        );
+
+
     }
     else {
         printDefaultValuesTable(0, 0);
@@ -873,8 +986,14 @@ $('#saveDependencesBtn').on('click', function (e) {
 });
 
 $('.rowsHeaders').on('click', function (e) {
-    var tbody = $(this).parents('.modal-body').find('.table-config-headers').find('tbody');
-    if (!$(this).prop('checked')) {
+    onRowsHeadersClick(this);
+});
+
+
+function onRowsHeadersClick(checkboxPointer)
+{
+    var tbody = $(checkboxPointer).parents('.modal-body').find('.table-config-headers').find('tbody');
+    if (!$(checkboxPointer).prop('checked')) {
         // В том случае, если в колонке заголовков столбцов нет текстовых полей, то нужно удалить строки таблицы
         var rowsHeaders = $(tbody).find('tr').find('td:eq(0)');
         for (var i = 0; i < rowsHeaders.length; i++) {
@@ -884,10 +1003,10 @@ $('.rowsHeaders').on('click', function (e) {
                 $(rowsHeaders[i]).parents('tr').remove();
             }
         }
-        $(this).parents('.modal-body').find('#numRows').attr('disabled', false);
+        //$(this).parents('.modal-body').find('#numRows').attr('disabled', false);
         return;
     }
-    var numRows = $(this).parents('.modal-body').find('#numRows').val();
+    var numRows = $(checkboxPointer).parents('.modal-body').find('#numRows').val();
     $(this).parents('.modal-body').find('#numRows').attr('disabled', true);
     var trs = $(tbody).find('tr');
     if (trs.length < numRows || typeof trs.length == 'undefined') {
@@ -925,11 +1044,13 @@ $('.rowsHeaders').on('click', function (e) {
     } else { // В противном случае ничего не менять
 
     }
-});
+}
 
-$('.colsHeaders').on('click', function () {
-    var tbody = $(this).parents('.modal-body').find('.table-config-headers').find('tbody');
-    if (!$(this).prop('checked')) {
+
+function onColsHeadersClick(checkboxPointer)
+{
+    var tbody = $(checkboxPointer).parents('.modal-body').find('.table-config-headers').find('tbody');
+    if (!$(checkboxPointer).prop('checked')) {
         // В том случае, если в колонке заголовков столбцов нет текстовых полей, то нужно удалить строки таблицы
         var colsHeaders = $(tbody).find('tr').find('td:eq(1)');
         for (var i = 0; i < colsHeaders.length; i++) {
@@ -940,11 +1061,11 @@ $('.colsHeaders').on('click', function () {
             }
 
         }
-        $(this).parents('.modal-body').find('#numCols').attr('disabled', false);
+        //$(this).parents('.modal-body').find('#numCols').attr('disabled', false);
         return;
     }
 
-    var numCols = $(this).parents('.modal-body').find('#numCols').val();
+    var numCols = $(checkboxPointer).parents('.modal-body').find('#numCols').val();
     $(this).parents('.modal-body').find('#numCols').attr('disabled', true);
     var trs = $(tbody).find('tr');
 
@@ -982,6 +1103,11 @@ $('.colsHeaders').on('click', function () {
     } else { // В противном случае ничего не менять
 
     }
+}
+
+
+$('.colsHeaders').on('click', function () {
+   onColsHeadersClick(this);
 });
 
 $('.table-config-headers').on('change', 'input', function (e) {

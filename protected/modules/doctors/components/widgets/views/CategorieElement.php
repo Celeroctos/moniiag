@@ -236,26 +236,60 @@ if(isset($categorie['id'])) {
                                                     <td></td>
                                                 <?php
                                                 }
-                                                for($i = 0; $i < count($element['config']['cols']); $i++) {
-                                                    ?>
-                                                    <td>
-                                                        <?php echo $element['config']['cols'][$i]; ?>
-                                                    </td>
-                                                <?php
+                                                // Пробегаем по всей ширине таблицы.
+                                                //for($i = 0; $i < count($element['config']['cols']); $i++) {
+                                                //var_dump($element['config']['cols']);
+
+                                                for($i = 0; $i < $element['config']['numCols']; $i++) {
+                                                    // Если i>=длины массива cols - выводим пустую ячейку
+                                                    //   Иначе выводим содержимое массива cols из i-той ячейки
+                                                    if ( $i>=count($element['config']['cols']) )
+                                                    {
+                                                        ?><td></td><?php
+                                                    }
+                                                    else
+                                                    {
+                                                        ?>
+                                                        <td>
+                                                            <?php echo $element['config']['cols'][$i]; ?>
+                                                        </td>
+                                                        <?php
+                                                    }
                                                 }
                                                 ?>
                                             </tr>
                                             <?php
                                             }
-
                                             for($i = 0; $i < $element['config']['numRows']; $i++) {
                                             ?>
                                             <tr>
-                                                <?php if(isset($element['config']['rows'][$i])) {
-                                                   ?>
-                                                    <td><?php echo $element['config']['rows'][$i]; ?></td>
-                                                   <?php
-                                                } ?>
+                                                <?php
+                                                //if(isset($element['config']['rows'][$i])) {
+                                                if(isset($element['config']['rows'])) {
+                                                   // Проверим - если счётчик меньше длины rows - выводим знаение из массива rows
+                                                   //   Иначе - выведем пустую клеточку в таблице
+                                                    //var_dump($element['config']['rows']);
+                                                    //var_dump($element['config']['numRows']);
+                                                    //var_dump('______');
+                                                    //exit();
+
+                                                    if ($i<count($element['config']['rows']))
+                                                    {
+                                                        ?>
+                                                        <td><?php
+                                                            echo $element['config']['rows'][$i];
+                                                            ?></td>
+                                                        <?php
+                                                    }
+                                                    else
+                                                    {
+
+                                                        ?>
+                                                        <td></td>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
                                                 <?php
                                                 for($j = 0; $j < $element['config']['numCols']; $j++) {
 													// Вывод значений по умолчанию

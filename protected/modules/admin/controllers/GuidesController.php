@@ -232,6 +232,32 @@ class GuidesController extends Controller {
         return (count($existingDependencies)>0);
     }
 
+    // Удаление значения справочник
+    public function actionDeleteInGuideGreeting($id, $greeting) {
+        $result = 'false';
+        // Надо найти элемент, у которого id равный поданному id и greeting_id = greeting
+        $valuesToDelete = MedcardGuideValue::model()->findAll(
+            'id=:guide_id AND greeting_id=:greeting',
+            array(
+                ':guide_id'=>$id,
+                ':greeting'=>$greeting
+            )
+        );
+        // Если что-то найдено
+        if (count($valuesToDelete )>0)
+        {
+            foreach ($valuesToDelete  as $oneValue)
+            {
+                if ($oneValue->delete())
+                {
+                    $result = 'true';
+                }
+            }
+        }
+
+        echo CJSON::encode(array('success' => $result ));
+    }
+
     public function actionDeleteInGuide($id) {
         $errorMessageText = 'На данную запись есть ссылки!';
         try {

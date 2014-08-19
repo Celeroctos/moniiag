@@ -261,6 +261,74 @@
         $("#date-cont").trigger("refresh", [e.date]);
     });
 
+    $('form[id=template-edit-form] select[multiple]').on('focus',
+        function(e)
+        {
+            // Нужно расширить по содержимому контрола
+            $(this).attr("size", $(this).find('option').length );
+        }
+    );
+
+    $('form[id=template-edit-form] select[multiple]').on('blur',
+        function(e)
+        {
+            // Нужно расширить по содержимому контрола
+            $(this).removeAttr("size");
+        }
+    );
+
+    $('form[id=template-edit-form] select').on('keydown',
+        function(e)
+        {
+            // Если кнопка delete
+            if (e.keyCode==46 || e.keyCode==8)
+            {
+                // Если в текущем селекте выделена хотя бы одна опция
+                selectedOptions = $(this).find('option:selected');
+
+                //console.log(selectedOptions );
+                // У каждой опции хранится в поле value номер элемента, который нужно удалить
+                //    Перебираем выделенные опции
+                for (i=0;i<selectedOptions.length;i++)
+                {
+                    deletedFlag = false;
+                    valueOfOption = selectedOptions[i].value;
+                    // Вызываем удаление опции
+                    deletedFlag = deleteOption(valueOfOption);
+
+                    if (deletedFlag)
+                    {
+                        // Удаляю опцию
+                        $(this).find('option[value='+ valueOfOption +']').remove();
+                    }
+
+                }
+
+
+            }
+        }
+    );
+
+    function deleteOption(valueOfOption)
+    {
+        deleteResult = false; // false - нифига не удалили
+
+        // Запускаем синхронный айкс-запрос
+        $.ajax({
+            'url': '/index.php/admin/guides/deleteinguidegreeting?id=' + valueOfOption + '&greeting=' + $('#greetingId').val(),
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'async': false,
+            'success': function (data, textStatus, jqXHR) {
+                // Если true - то удаление произошло
+                if (data.success == true || data.success == 'true') {
+                    deleteResult = true;
+                }
+            }
+        });
+        return deleteResult;
+    }
 
     $("#date-cont").on('refresh', function (e, date) {
         if (typeof date == 'undefined') {

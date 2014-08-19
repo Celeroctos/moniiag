@@ -81,7 +81,7 @@ class ElementsController extends Controller {
         }
     }
 
-    public function actionEdit() {
+       public function actionEdit() {
         $model = new FormElementAdd();
         if(isset($_POST['FormElementAdd'])) {
             $model->attributes = $_POST['FormElementAdd'];
@@ -90,37 +90,36 @@ class ElementsController extends Controller {
             if ($_POST['FormElementAdd']['id']!='')
             {
 
+
                 // Найдём по id элемент
                 $oldElementState = MedcardElement::model()->findByPk($_POST['FormElementAdd']['id']);
                 // Вытащим зависимости
                 // Проверить - есть ли зависимости на элементе (причём и в ту и в другую сторону)
-/*
-                $existanceDependencies = MedcardElementDependence::model()->findAll(
-                    'element_id = :ahead_element OR dep_element_id = :back_element',
-                    array( ':ahead_element'=>$_POST['FormElementAdd']['id'], ':back_element' => $_POST['FormElementAdd']['id'] )
-                );*/
 
-                $existanceDependencies = MedcardElementDependence::model()->findAll(
-                    'element_id = :ahead_element',
-                    array( ':ahead_element'=>$_POST['FormElementAdd']['id'] )
-                );
+                // Если у старого элемента тип 2 или 3 - проверяем зависимости
 
-               // var_dump($existanceDependencies);
-               // exit();
-                // Если счёт зависимостей больше нуля и тип изменился - выводим сообщение об ошибке
-                /*if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['type']!=$oldElementState['type']))
+                if (($oldElementState['type']==2 )||($oldElementState['type']==3 ))
                 {
-                    echo CJSON::encode(array('success' => 'false',
-                        'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён тип элемента. Если на элементе заданы зависимости, то нельзя менять его тип.')) ));
-                    exit();
-                }*/
-
-                // Если счёт зависимостей больше нуля и изменился ИД справочника - также выводим сообщение об ошибке
-                if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['guideId']!=$oldElementState['guide_id']))
-                {
-                    echo CJSON::encode(array('success' => 'false',
-                        'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён справочник элемента. Если на элементе заданы зависимости, то нельзя менять его справочник.')) ));
-                    exit();
+                    $existanceDependencies = MedcardElementDependence::model()->findAll(
+                        'element_id = :ahead_element OR dep_element_id = :back_element',
+                        array( ':ahead_element'=>$_POST['FormElementAdd']['id'], ':back_element' => $_POST['FormElementAdd']['id'] )
+                    );
+                   // var_dump($existanceDependencies);
+                   // exit();
+                    // Если счёт зависимостей больше нуля и тип изменился - выводим сообщение об ошибке
+                    if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['type']!=$oldElementState['type']))
+                    {
+                        echo CJSON::encode(array('success' => 'false',
+                            'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён тип элемента. Если на элементе заданы зависимости, то нельзя менять его тип.')) ));
+                        exit();
+                    }
+                    // Если счёт зависимостей больше нуля и изменился ИД справочника - также выводим сообщение об ошибке
+                    if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['guideId']!=$oldElementState['guide_id']))
+                    {
+                        echo CJSON::encode(array('success' => 'false',
+                            'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён справочник элемента. Если на элементе заданы зависимости, то нельзя менять его справочник.')) ));
+                        exit();
+                    }
                 }
             }
 
