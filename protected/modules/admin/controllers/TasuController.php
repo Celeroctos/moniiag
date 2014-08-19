@@ -88,98 +88,77 @@ class TasuController extends Controller {
     }
 
     public function actionAddFakeGreetingToBuffer() {
-        $model = new FormTasuFakeBufferAdd();
-        if(isset($_POST['FormTasuFakeBufferAdd'])) {
-            $model->attributes = $_POST['FormTasuFakeBufferAdd'];
-            if($model->validate()) {
-                // Проверка на существование такого приёма (дубликат)
-                $foundFakeGreeting = TasuFakeGreetingsBuffer::model()->find('
-                    t.card_number = :card_number
-                   AND t.doctor_id = :doctor_id
-                   AND t.primary_diagnosis_id = :primary_diagnosis_id
-                   AND t.greeting_date = :greeting_date
-                ', array(
-                    ':card_number' => $model->cardNumber,
-                    ':doctor_id' => $model->doctorId,
-                    ':primary_diagnosis_id' =>$model->primaryDiagnosis,
-                    ':greeting_date' => $model->greetingDate
-                ));
+		if(isset($_POST['form'])) {
+			$form = CJSON::decode($_POST['form']);
+			foreach($form as $element) {
+				$model = new FormTasuFakeBufferAdd();
+				$model->attributes = $element;
+				if($model->validate()) {
+					$fakeModel = new TasuFakeGreetingsBuffer();
+					$fakeModel->card_number = $model->cardNumber;
+					$fakeModel->doctor_id = $model->doctorId;
+					$fakeModel->primary_diagnosis_id = $model->primaryDiagnosis;
+					$fakeModel->greeting_date = $model->greetingDate;
+					if(!$fakeModel->save()) {
+						echo CJSON::encode(array(
+							'success' => false,
+							'errors' => array(
+								'fakeModel' => array(
+									'Невозможно сохранить новый приём!'
+								)
+							)
+						));
+						exit();
+					}
 
-                if($foundFakeGreeting != null) {
-                    echo CJSON::encode(array(
-                        'success' => false,
-                        'errors' => array(
-                            'cardNumber' => array(
-                                'Такой приём уже внесён в список выгружаемых!'
-                            )
-                        )
-                    ));
-                    exit();
-                }
+					// Добавляем вторичные диагнозы
+					if($model->secondaryDiagnosis != null) {
+						foreach($model->secondaryDiagnosis as $diagId) {
+							$secondaryDiagnosisModel = new TasuFakeGreetingsBufferSecDiag();
+							$secondaryDiagnosisModel->buffer_id = $fakeModel->id;
+							$secondaryDiagnosisModel->diagnosis_id = $diagId;
+							
+							 if(!$secondaryDiagnosisModel->save()) {
+								echo CJSON::encode(array(
+									'success' => false,
+									'errors' => array(
+										'secondaryDiagnosisModel' => array(
+											'Невозможно сохранить вторичные диагнозы для нового приёма!'
+										)
+									)
+								));
+								exit();
+							}
+						}
+					}
 
-                // Проверка на существование такой медкарты
-                $medcard = Medcard::model()->findByPk($model->cardNumber);
-                if($medcard == null) {
-                    echo CJSON::encode(array(
-                        'success' => false,
-                        'errors' => array(
-                            'cardNumber' => array(
-                                'Пациент с такой картой не найден!'
-                            )
-                        )
-                    ));
-                    exit();
-                }
-                $fakeModel = new TasuFakeGreetingsBuffer();
-                $fakeModel->card_number = $model->cardNumber;
-                $fakeModel->doctor_id = $model->doctorId;
-                $fakeModel->primary_diagnosis_id = $model->primaryDiagnosis;
-                $fakeModel->greeting_date = $model->greetingDate;
-                if(!$fakeModel->save()) {
-                    echo CJSON::encode(array(
-                        'success' => false,
-                        'errors' => array(
-                            'fakeModel' => array(
-                                'Невозможно сохранить новый приём!'
-                            )
-                        )
-                    ));
-                    exit();
-                }
+					// Теперь добавление в таблицу обычного буфера
+					$buffer = new TasuGreetingsBuffer();
+					$lastImportId = $buffer->getLastImportId();
+					$buffer->greeting_id = null;
+					$buffer->import_id = $lastImportId['max_import_id'];
+					$buffer->fake_id = $fakeModel->id;
+					$buffer->status = 0;
 
-                // Теперь добавление в таблицу обычного буфера
-                $buffer = new TasuGreetingsBuffer();
-                $lastImportId = $buffer->getLastImportId();
+					if(!$buffer->save()) {
+						echo CJSON::encode(array(
+							'success' => false,
+							'errors' => array(
+								'buffer' => array(
+									'Невозможно добавить приём в буфер выгрузки!'
+								)
+							)
+						));
+						exit();
+					}
+				}
+			}
+		}
 
-                $buffer->greeting_id = null;
-                $buffer->import_id = $lastImportId;
-                $buffer->fake_id = $fakeModel->id;
-                $buffer->status = 0;
-
-                if(!$buffer->save()) {
-                    echo CJSON::encode(array(
-                        'success' => false,
-                        'errors' => array(
-                            'buffer' => array(
-                                'Невозможно добавить приём в буфер выгрузки!'
-                            )
-                        )
-                    ));
-                    exit();
-                }
-
-                echo CJSON::encode(array(
-                    'success' => true,
-                    'data' => 'Приём успешно добавлен!'
-                ));
-
-            } else {
-                echo CJSON::encode(array(
-                    'success' => false,
-                    'errors' => $model->errors
-                ));
-            }
-        }
+		echo CJSON::encode(array(
+			'success' => true,
+			'data' => 'Приёмы успешно добавлены!'
+		));
     }
 
     // Загрузка ОМС
@@ -646,11 +625,37 @@ class TasuController extends Controller {
 
 
     public function actionViewIn() {
-        //$tasuTap = new TasuTap();
+         // Список отделений
+		$wardsListDb = Ward::model()->getRows(false, 'name', 'asc');
+
+		$wardsList = array('-1' => 'Нет');
+		foreach($wardsListDb as $value) {
+			$wardsList[(string)$value['id']] = $value['name'].', '.$value['enterprise_name'];
+		}
+		
+		// Список врачей
+		$doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
+
+		$doctorsList = array();
+		foreach($doctorsListDb as $value) {
+			if($value['last_name'] == null) {
+				$value['middle_name'] = '';
+			}
+			if($value['tabel_number'] == null) {
+				$value['tabel_number'] = 'отсутствует';
+			}
+
+			$doctorsList[(string)$value['id']] = $value['last_name'].' '.$value['first_name'].' '.$value['middle_name'].', '.$value['post'].', '.$value['ward'].', табельный номер '.$value['tabel_number'];
+		}
+		
+		asort($doctorsList);
 
         $this->render('viewin', array(
             'modelAdd' => new FormTasuBufferAdd(),
-            'modelAddFake' => new FormTasuFakeBufferAdd()
+            'modelAddFake' => new FormTasuFakeBufferAdd(),
+			'modelFilter' => new FormTasuFilterExport(),
+			'wardsList' => $wardsList,
+			'doctorsList' => $doctorsList
         ));
     }
 
@@ -667,20 +672,47 @@ class TasuController extends Controller {
         } else {
             $filters = false;
         }
+		
+		// Добавка по дате приёма
+		if(isset($_GET['date'])) {
+			$date = $_GET['date'];
+		} else {
+			$date = false;
+		}
+		
+		if(isset($_GET['doctor_id']) && $_GET['doctor_id'] != -1) {
+			$doctorId = $_GET['doctor_id'];
+		} else {
+			$doctorId = false;
+		}
+		
+		if(isset($_GET['import_id'])) {
+			$importId = $_GET['import_id'];
+		} else {
+			$importId = false;
+		}
 
         $model = new TasuGreetingsBuffer();
-        $num = $model->getLastBuffer($filters);
+        $num = $model->getLastBuffer($filters, false, false, false, false, false, $date, $doctorId, $importId);
 
         $totalPages = ceil(count($num) / $rows);
         $start = $page * $rows - $rows;
 
-        $buffer = $model->getLastBuffer($filters, $sidx, $sord, $start, $rows);
+        $buffer = $model->getLastBuffer($filters, $sidx, $sord, $start, $rows, false, $date, $doctorId, $importId);
         $resultBuffer = array();
 
         foreach($buffer as &$element) {
             if($element['medcard'] == null) {
                 continue;
             }
+			
+			if($doctorId !== false && $element['doctor_id'] != $doctorId) {
+				continue;
+			}
+			
+			if($date !== false && strtotime($date) != strtotime($element['patient_day'])) {
+				continue;
+			}
 
             // Проведён в МИС или нет. По fake_id
             if($element['fake_id'] == null) {
@@ -772,7 +804,8 @@ class TasuController extends Controller {
             if($issetGreeting != null) {
                 $buffer = new TasuGreetingsBuffer();
                 $buffer->greeting_id = $issetGreeting->id;
-                $buffer->import_id = $buffer->getLastImportId();
+				$lastImportId = $buffer->getLastImportId();
+                $buffer->import_id = $lastImportId['max_import_id'];
                 if(!$buffer->save()) {
                     echo CJSON::encode(array('success' => false,
                         'text' => 'Ошибка сохранения буфера выгрузки ТАСУ.'));
@@ -820,7 +853,7 @@ class TasuController extends Controller {
                 $lastImportId = $buffer->getLastImportId();
             }
             $buffer->greeting_id = $element['id'];
-            $buffer->import_id = $lastImportId;
+            $buffer->import_id = $lastImportId['max_import_id'];
             if(!$buffer->save()) {
                 echo CJSON::encode(array(
                     'success' => false,
@@ -925,25 +958,86 @@ class TasuController extends Controller {
 
     private function moveGreetingToTasuDb($greeting) {
 		$oms = Oms::model()->findByPk($greeting['oms_id']);
+		$medcard = Medcard::model()->findByPk($greeting['medcard']);
         $patients = $this->searchTasuPatient($greeting, $oms);
         // Добавление пациента, если такой не найден
         if(count($patients) == 0) {
-            $medcard = Medcard::model()->findByPk($greeting['medcard']);
             $result = $this->addTasuPatient($medcard, $oms);
             if($result === false) {
                 $this->numErrors++;
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить пациента с ОМС '.$oms->oms_number;
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить пациента с ОМС '.$oms->oms_number.' ('.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.')';
                 return false;
             } else {
                 $this->numAddedPatients++;
             }
             $patients = $this->searchTasuPatient($greeting, $oms);
-        }
+        } else {
+			$conn = Yii::app()->db2; 
+			$sql = "SELECT * 
+					FROM PDPStdStorage.dbo.t_book_65067
+					WHERE (
+							[patientuid_37756] = ".$patients[0]['PatientUID']."
+						  )
+						  AND [version_end] = '".$this->version_end."'";
+			
+			try {
+				$medcardRow = $conn->createCommand($sql)->queryRow();
+			} catch(Exception $e) {
+				var_dump($e);
+				exit();
+			}
+			
+			if($medcardRow != null && $medcardRow['number_50713'] != $medcard->card_number) { // Сработало условие, при котором надо перерегистрировать карту
+				// Обновим запись о медкарте в ТАСУ
+				$sql = "UPDATE PDPStdStorage.dbo.t_book_65067 
+						SET [number_50713] = '".$medcard->card_number."'
+						WHERE 
+							[patientuid_37756] = ".$patients[0]['PatientUID']." 
+							AND [version_end] = '".$this->version_end."'";
+				try {
+					$conn->createCommand($sql)->execute();
+				} catch(Exception $e) {
+					var_dump($e);
+					exit();
+				}
+			} elseif($medcardRow == null) {
+				// Создать медкарту
+				// Максимальный UID
+				$sql = "(SELECT MAX(uid) + 1 as nextUid FROM [PDPStdStorage].[dbo].[t_book_65067])";
+				$nextUidRow = $conn->createCommand($sql)->queryRow();
+				$sql = "INSERT INTO PDPStdStorage.dbo.t_book_65067 (
+					[uid],
+					[version_begin],
+					[version_end], 
+					[is_top], 
+					[created_by], 
+					[deleted_by], 
+					[patientuid_37756],
+					[booktype_55473],
+					[number_50713],
+					[disabled_11186])
+					VALUES(
+						".$nextUidRow['nextUid'].",
+						1,
+						".$this->version_end.",
+						1,
+						2,
+						NULL,
+						".$patients[0]['PatientUID'].",
+						'01',
+						'".$medcard->card_number."',
+						0
+					)";
 
+				$result = $conn->createCommand($sql)->execute();
+				$this->log[] = '<strong class="text-success">[OK]</strong> В ТАСУ успешно создана медкарта '.$medcard->card_number.'.';
+			}
+		}
+		
         if(count($patients) > 0) {
             $patient = $patients[0];
             // Добавляем приём (талон, ТАП) к пациенту
-            $tap = $this->addTasuTap($patient, $greeting, $oms);
+            $tap = $this->addTasuTap($patient, $greeting, $oms, $medcard);
             if($tap !== false) {
                 $this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' добавлен в базу ТАСУ.';
                 // Добавляем MKБ-10 диагнозы к приёму
@@ -966,6 +1060,7 @@ class TasuController extends Controller {
                 if(count($policyParts) != 2) {
                     $policyParts = array();
                     if(mb_strlen(trim($greeting['oms_number'])) > 7) {
+					
                         $policyParts[0] = mb_substr(trim($greeting['oms_number']), 0, 6);
                         $policyParts[1] = mb_substr(trim($greeting['oms_number']), 6);
                     } else {
@@ -1023,8 +1118,10 @@ class TasuController extends Controller {
     }
 
     private function addTasuPatient($medcard, $oms) {
-        $conn = Yii::app()->db2;
+		$conn = Yii::app()->db2;
 		try {
+			// ТАСУ правее нас: корректируем СМО и регион у полиса принудительно
+			$this->getTasuPatientByPolicy($oms, 1);
             if($oms->oms_series == null) {
                 // Номер полиса состоит из двух частей: серия (пробел) номер
                 $policyParts = explode(' ', trim($oms->oms_number));
@@ -1076,6 +1173,7 @@ class TasuController extends Controller {
                         NULL,
                         '',
                         ''";
+
             $result = $conn->createCommand($sql)->execute();
 
            /* $transaction->commit(); // ?!
@@ -1086,6 +1184,9 @@ class TasuController extends Controller {
 			} */
 
             $birthdayParts = explode('-', $oms->birthday);
+			if($oms->middle_name == null) {
+				$oms->middle_name = '';
+			}
 
             $sql = "SELECT
 	                  [_unmdtbl2636].[uid] AS [PatientUID]
@@ -1106,12 +1207,15 @@ class TasuController extends Controller {
 			// Максимальный UID
 			$sql = "(SELECT MAX(uid) + 1 as nextUid FROM [PDPStdStorage].[dbo].[t_book_65067])";
 		    $nextUidRow = $conn->createCommand($sql)->queryRow();
-		
+
 			// Крафтим медкарту
 			// Посмотрим, есть ли такая медкарта, с таким номером. Если есть - создавать не надо
 			$sql = "SELECT * 
 					FROM PDPStdStorage.dbo.t_book_65067
-					WHERE [number_50713] = '".$medcard->card_number."'
+					WHERE (
+							[number_50713] = '".$medcard->card_number."' OR
+							[patientuid_37756] = ".$patientRow['PatientUID']."
+						  )
 						  AND [version_end] = '".$this->version_end."'";
 			try {
 				$medcardRow = $conn->createCommand($sql)->queryRow();
@@ -1119,6 +1223,7 @@ class TasuController extends Controller {
 				var_dump($e);
 				exit();
 			}
+ 
 			if($medcardRow == null) {
 				$sql = "INSERT INTO PDPStdStorage.dbo.t_book_65067 (
 				[uid],
@@ -1145,8 +1250,20 @@ class TasuController extends Controller {
 				)";
 
 				$result = $conn->createCommand($sql)->execute();
+			} elseif($medcardRow['number_50713'] != $medcard->card_number) { // Сработало условие, при котором надо перерегистрировать карту
+				// Обновим запись о медкарте в ТАСУ
+				$sql = "UPDATE PDPStdStorage.dbo.t_book_65067 
+						SET [number_50713] = '".$medcard->card_number."'
+						WHERE 
+							[patientuid_37756] = ".$patientRow['PatientUID']." 
+							AND [version_end] = '".$this->version_end."'";
+				try {
+					$conn->createCommand($sql)->execute();
+				} catch(Exception $e) {
+					var_dump($e);
+					exit();
+				}
 			}
-
 			// Если не подгружены данные по полису из ТАСУ, самое время это сделать
 			if($oms->insurance == null || $oms->region == null) {
 				$this->getTasuPatientByPolicy($oms);
@@ -1168,7 +1285,7 @@ class TasuController extends Controller {
 				// Может ли такое быть?
 				$regionCode = null;
 			}
-			
+				
             /* Выборка СМО по региону и ID СМО */
             $sql = "SELECT
                         [t].[enabled_56485] AS [Enabled],
@@ -1182,8 +1299,8 @@ class TasuController extends Controller {
                         AND [t].version_end = ".$this->version_end;
 
             $smoRow = $conn->createCommand($sql)->queryRow();
-
-            if($smoRow == null) {
+            	
+			if($smoRow == null) {
                 return false;
             }
 			
@@ -1206,7 +1323,7 @@ class TasuController extends Controller {
                         '".(($oms->status == 0) ? 1 : 3)."',
                         '1',
                         '".$oms->givedate."',
-                        '".$oms->enddate."',
+                        ".(($oms->enddate == null) ? "NULL" : "'".$oms->enddate."'").",
                         NULL,
                         '',
                         '',
@@ -1214,10 +1331,12 @@ class TasuController extends Controller {
                         NULL,
                         NULL,
                         NULL";
+
 			try {
 				$result = $conn->createCommand($sql)->execute();
 			} catch(Exception $e) {
-
+				var_dump($e);
+				exit();
 			}
 			
 			// Выберем последнюю добавленную строку (UID)
@@ -1352,7 +1471,7 @@ class TasuController extends Controller {
         return $answer;
     }
 
-    private function addTasuTap($patient, $greeting, $oms) {
+    private function addTasuTap($patient, $greeting, $oms, $medcard) {
         $conn = Yii::app()->db2;
         try {
             $professional = $this->getTasuProfessional($greeting);
@@ -1444,6 +1563,22 @@ class TasuController extends Controller {
                     return false;
                 }
             }
+			
+			// Медкарта: прикрепление медкарты к ТАП
+			$sql = "SELECT * 
+					FROM PDPStdStorage.dbo.t_book_65067
+					WHERE [number_50713] = '".$medcard->card_number."'
+						  AND [version_end] = '".$this->version_end."'";
+			try {
+				$medcardRow = $conn->createCommand($sql)->queryRow();
+			} catch(Exception $e) {
+				var_dump($e);
+				exit();
+			}
+			
+			if($medcardRow == null) {
+				return false;
+			}
 
             $tasuTap = new TasuTap();
             $tasuTap->uid = TasuTap::getLastUID() + 1;
@@ -1463,7 +1598,7 @@ class TasuController extends Controller {
             $tasuTap->policyuid_53853 = $omsRow['uid'];
             $tasuTap->duluid_44636 = $policyRow['DULUID'];
             $tasuTap->addressuid_30547 = $addressRow[0]['AddressUID'];
-            $tasuTap->bookuid_60769 = null;
+            $tasuTap->bookuid_60769 = $medcardRow['uid'];
             $tasuTap->dvnseries_45145 = '';
             $tasuTap->dvnnumber_55059 = '';
 
@@ -1490,6 +1625,17 @@ class TasuController extends Controller {
                     'type' => 0 // Первичный
                 )
             );
+			// Ищем вторичные для фейковых
+			$secondaryDiags =  TasuFakeGreetingsBufferSecDiag::model()->findAll('buffer_id = :buffer_id', array(
+				':buffer_id' => $greeting['fake_id']
+			));
+			foreach($secondaryDiags as $diag) {
+				$diagnosises[] = array(
+					'mkb10_id' => $diag['diagnosis_id'],
+					'type' => 1 // Вторичный
+				);
+			}
+
         }
         foreach($diagnosises as $diagnosis) {
             $mkb10Diag = Mkb10::model()->findByPk($diagnosis['mkb10_id']);
@@ -1513,7 +1659,7 @@ class TasuController extends Controller {
                 $tapDiagnosis->trauma_34421 = '';
 
                 if(!$tapDiagnosis->save()) {
-                    throw new Exception();
+                    throw new Exception('Не могу сохранить диагноз для приёма!');
                 }
 
                 // Добавляем услуги
@@ -2063,12 +2209,13 @@ class TasuController extends Controller {
         );
     }
 	// Получить данные по полису
-	public function getTasuPatientByPolicy($oms) {
+	// mode - режим работы, 1 - принудительное обновление, даже если есть данные по региону и страховой
+	public function getTasuPatientByPolicy($oms, $mode = 0) {
 		// Если серии нет, то нужно брать номер полиса в качестве опоры
        // return true;
         $conn2 = Yii::app()->db2;
 		$conn3 = Yii::app()->db3;
-		if($oms->region != null && $oms->insurance != null) {
+		if($oms->region != null && $oms->insurance != null && !$mode) {
 			return true;
 		}		
 
@@ -2090,15 +2237,29 @@ class TasuController extends Controller {
 					$series = mb_substr(trim($oms->oms_number), 0, 6);
 					$number = mb_substr(trim($oms->oms_number), 6);
 				} else {
-					throw new Exception();
+					//throw new Exception();
+					return false;
 				}
 			} else {
 				$series = $policyParts[0];
 				$number = $policyParts[1];
 			}
+				
+			if($oms->type == 5) {
+				$number = $series.$number;
+				$series = '';
+			}
 		} else {
 			$series = $oms->oms_series;
 			$number = $oms->oms_number;
+			
+			if($oms->type == 5) {
+				$series = '';
+				$number = $oms->oms_series.$oms->oms_number;
+			} else {
+				$series = $oms->oms_series;
+				$number = $oms->oms_number;
+			}
 		}
 		  
 		// Ищем в местной базе пациентов
@@ -2475,5 +2636,88 @@ class TasuController extends Controller {
                 ))
         );
     }
+	
+	public function actionGetFios() {
+		if(!isset($_GET['doctor_id']) || !isset($_GET['card_number']) || !isset($_GET['greeting_date'])) {
+			echo CJSON::encode(array(
+                'success' => false,
+                'data' => array(
+				)
+			));
+		}
+		
+		// Проверка даты на то, что она не больше текущей
+		if(time() < strtotime($_GET['greeting_date'])) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'errors' => array(
+					'greetingDate' => array(
+						'Дата добавляемого приёма больше текущей!'
+					)
+				)
+			));
+			exit();
+		}
+			
+		// Проверка на существование такого приёма (дубликат)
+		$foundFakeGreeting = TasuFakeGreetingsBuffer::model()->find('
+			t.card_number = :card_number
+		   AND t.doctor_id = :doctor_id
+		   AND t.greeting_date = :greeting_date
+		', array(
+			':card_number' =>$_GET['card_number'],
+			':doctor_id' => $_GET['doctor_id'],
+			':greeting_date' => $_GET['greeting_date']
+		));
+
+		if($foundFakeGreeting != null) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'errors' => array(
+					'cardNumber' => array(
+						'Такой приём уже внесён в список выгружаемых!'
+					)
+				)
+			));
+			exit();
+		}
+
+		// Проверка на существование такой медкарты
+		$medcard = Medcard::model()->findByPk($_GET['card_number']);
+		if($medcard == null) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'errors' => array(
+					'cardNumber' => array(
+						'Пациент с такой картой не найден!'
+					)
+				)
+			));
+			exit();
+		} else {
+			$oms = Oms::model()->findByPk($medcard->policy_id);
+		}
+		// Проверка на существование такого врача
+		$doctor = Doctor::model()->findByPk($_GET['doctor_id']);
+		if($doctor == null) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'errors' => array(
+					'doctorId' => array(
+						'Такой врач не найден!'
+					)
+				)
+			));
+			exit();
+		}
+		
+		echo CJSON::encode(array(
+			'success' => true,
+			'data' => array(
+				'doctorFio' => $doctor->last_name.' '.$doctor->first_name.' '.($doctor->middle_name == null ? '' : $doctor->middle_name),
+				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name)
+			)
+		));
+	}
 }
 ?>

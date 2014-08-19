@@ -120,12 +120,16 @@ class Employee extends MisActiveRecord  {
         try {
             $connection = Yii::app()->db;
             $employees = $connection->createCommand()
-                ->select('d.*')
+                ->select('d.*, m.name as post, w.name as ward')
                 ->from('mis.doctors d')
-                ->where('d.ward_code = :id', array(':id' => $id))
-                ->queryAll();
-
-            return $employees;
+				->leftJoin('mis.wards w', 'w.id = d.ward_code')
+				->leftJoin('mis.medpersonal m', 'd.post_id = m.id');
+			if($id != -1) {
+				$employees->where('d.ward_code = :id', array(':id' => $id));
+			}
+            $employees->order('d.last_name', 'asc');
+			
+            return $employees->queryAll();;
 
         } catch(Exception $e) {
             echo $e->getMessage();

@@ -74,6 +74,16 @@ class PatientController extends Controller {
         }
 
     }
+	
+	// Удалить ОМС
+	public function actionDeleteOms() {
+		if(!isset($_GET['omsid'])) {
+			echo CJSON::encode(array('success' => false));
+			exit();
+		}
+		Oms::model()->deleteByPk($_GET['omsid']);
+		echo CJSON::encode(array('success' => true));
+	}
 
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()
@@ -617,12 +627,20 @@ class PatientController extends Controller {
                     $patientPrivelege = new PatientPrivilegie();
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
                 }
-
-                $fioBirthdayStr = $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name;
-                if ($oms->oms_number!='')
-                {
-                    $fioBirthdayStr .=(', номер полиса: '.$oms->oms_number);
-                }
+				
+				if(is_array($oms)) {
+					$fioBirthdayStr = $oms['last_name'].' '.$oms['first_name'].' '.$oms['middle_name'];
+					if ($oms['oms_number'] !='') 
+					{
+						$fioBirthdayStr .=(', номер полиса: '.$oms['oms_number']);
+					}
+				} else {
+					$fioBirthdayStr = $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name;
+					if ($oms->oms_number!='')
+					{
+						$fioBirthdayStr .=(', номер полиса: '.$oms->oms_number);
+					}
+				}
                 echo CJSON::encode(array('success' => 'true',
                                          'msg' => 'Новая запись успешно добавлена!',
                                          'cardNumber' => $medcard->card_number,
@@ -941,7 +959,13 @@ class PatientController extends Controller {
     private function checkIssetMedcardInYear($oms, $medcard) {
         $year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
-        $medcardSearched = $medcard->getLastMedcardPerYear($code, $oms->id);
+	
+		if(is_array($oms)) {
+			$id = $oms['id'];
+		} else {
+			$id = $oms->id;
+		}
+        $medcardSearched = $medcard->getLastMedcardPerYear($code, $id);
         if($medcardSearched != null) {
             echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
@@ -1486,7 +1510,11 @@ class PatientController extends Controller {
         $medcard->enterprise_id = 1; // TODO: сделать выборку из учреждений, сейчас ставим мониаг жёстко
 
         if($oms) {
-            $medcard->policy_id = $oms->id;
+			if(is_array($oms)) {
+				$medcard->policy_id = $oms['id'];
+			} else {
+				$medcard->policy_id = $oms->id;
+			}
         }
 
         if(!$medcard->save()) {
@@ -1631,27 +1659,58 @@ class PatientController extends Controller {
         } else {
             $cancelledGreetings = false;
         }
+		
+		$onlyClosedGreetings = false;
+		$greetingDate = false;
+		foreach($filters['rules'] as $key => $rule) {
+			if($rule['field'] == 'status') {
+				unset($filters['rules'][$key]);
+				$onlyClosedGreetings = true;
+			}
+			if($rule['field'] == 'patient_day') {
+				$greetingDate = true;
+			}
+		}
 
         if(!$mediateOnly) {
             $model = new Oms();
             // Вычислим общее количество записей
 
-            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings,$cancelledGreetings);
+            $num = $model->getNumRows($filters,false,false,false,false,$WithOnly,$WithoutOnly, $onlyInGreetings,$cancelledGreetings, $onlyClosedGreetings, $greetingDate);
 
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
-            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings,$cancelledGreetings);
+            $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings, $cancelledGreetings, $onlyClosedGreetings, $greetingDate);
+			$now = time();
             // Обрабатываем результат
             foreach($items as $index => &$item) {
                 if($item['reg_date'] != null) {
                     $parts = explode('-', $item['reg_date']);
                     $item['reg_date'] = $parts[0];
-                }
-
+                } else {
+					// Можно вычленить из карты
+					if($item['card_number'] != null) {
+						$cardYear = mb_substr($item['card_number'], strrpos($item['card_number'], '/') + 1);
+						$item['reg_date'] = '20'.$cardYear;
+					}
+				}
+				
+				$currentDate = new DateTime(date("Y-m-d"));
                 if($item['birthday'] != null) {
                     $parts = explode('-', $item['birthday']);
                     $item['birthday'] = $parts[2].'.'.$parts[1].'.'.$parts[0];
-                }
+					// Считаем возраст
+					$datetime = new DateTime($item['birthday']);
+					$interval = $datetime->diff($currentDate);
+					$fullYears = $interval->format("%Y");
+					$datetime = new DateTime($parts[2].'.'.$parts[1].'.'.($parts[0] + $fullYears));
+					$interval = $datetime->diff($currentDate);
+					$fullMonths = $interval->format("%m");
+					$datetime = new DateTime($parts[2].'.'.$fullMonths.'.'.($parts[0] + $fullYears));
+					$interval = $datetime->diff($currentDate);
+					$fullDays = $interval->format("%d");
+					$item['grow'] = $fullYears.' лет, '.$fullMonths.' месяцев, '.$fullDays.' дней';
+				}
             }
         } else {
             // Забираем фильтры только те, которые нужны: ФИО
@@ -1704,11 +1763,14 @@ class PatientController extends Controller {
         $allEmpty = true;
 
         foreach($filters['rules'] as &$filter) {
-            if(isset($filter['data']) && trim($filter['data']) != '') {
-                $allEmpty = false;
+            if(isset($filter['data'])) {
+				if(!is_array($filter['data']) && trim($filter['data']) != '') {
+					$allEmpty = false;
+				}
+				if(is_array($filter['data']) && count($filter['data']) > 0) {
+					$allEmpty = false;
+				}
             }
-
-
 
             if($filter['field'] == 'oms_number' && trim($filter['data']) != '') {
                 //---->

@@ -3,6 +3,7 @@
     globalVariables.isUnsavedUserData = false;  // Есть ли несохранённые данные у пользователя
     globalVariables.wasUserFocused = false; // Был ли фокус на каком-то элементе
     //    флаги isUnsavedUserData и wasUserFocused работают в связке
+	showMsgs = true;
 
     $(window).on(
     'beforeunload',
@@ -56,9 +57,14 @@
                 }
                 else {
                     //  $('#medcardContentSave').trigger('end');
-                    $('#successEditPopup').modal({});
+					if(showMsgs) {
+						$('#successEditPopup').modal({});
+					} else {
+						showMsgs = true
+						//setTimeout(autoSave, 30000);
+					}
                 }
-
+                $(".backDropForSaving").remove();
             } else {
                 ++numCalls;
             }
@@ -122,11 +128,22 @@
             }
         });
     }
-    $('#medcardContentSave').on('click', function (e) {
+    $('#medcardContentSave, #sideMedcardContentSave').on('click', function (e) {
        // $(this).trigger('begin');
         isThisPrint = false;
         onStartSave();
+		e.stopPropagation();
     });
+	
+	
+	/* Автосохранение */
+	//setTimeout(autoSave, 30000);
+	
+	function autoSave() {
+		isThisPrint = false;
+		showMsgs = false;
+		onStartSave();
+	}
 
     $('.greetingStatusCell input').on('change',function(){
         idOfRadio = $(this).prop('id');
@@ -157,6 +174,11 @@
     // Метод, который выполняет только сохранение. Его использовать при вызове сохранения
     function onStartSave()
     {
+        // Сделаем бекдроп
+        // Show the backdrop
+        $('<div class="modal-backdrop fade in  backDropForSaving"></div>').appendTo(document.body);
+
+
         // Берём кнопки с классом
         var buttons = $('div.submitEditPatient');
         var buttonsContainers = $('div.submitEditPatient').parents('form#template-edit-form');
@@ -215,7 +237,9 @@
         // Если есть ошибки
         if (isError) {
             // Показываем поп-ап с ошибками
-            $('#errorPopup').modal({});
+			if(showMsgs) {
+				$('#errorPopup').modal({});
+			}
             // Давим событие нажатия клавиши
             return false;
         }
@@ -379,6 +403,12 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
 
                 });
             }
+            // Снимаем крутилку с флажка "Закрытия приёма"
+            var gif = generateAjaxGif(16, 16);
+            // Делаем невидимым флажок
+            $('.accept-greeting-link').removeClass('no-display');
+            // Убиваем крутилку
+            $('.accept-greeting-link').parents('td').find('img').remove();
             return;
         }
     });
@@ -387,6 +417,7 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
 });
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
+    //return;
     $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active').find('img').remove();
     var gif = generateAjaxGif(16, 16);
     $(this).parent().addClass('active').append(gif);
@@ -416,7 +447,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
             console.log(data);
             if (data.success == 'true') {
                 // Заполняем медкарту-историю значениями
-                var data = data.data;
+                var historyContent = data.data;
                 /* var form = $('#historyPopup #patient-edit-form');
                 // Сброс формы
                 $(form)[0].reset();
@@ -429,7 +460,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
                 element.val(data[i].value);
                 }*/
                 $(gif).remove();
-                $('#historyPopup .modal-body .row').html(data);
+                $('#historyPopup .modal-body .row').html(historyContent);
                 $('#historyPopup').modal({
 
             });

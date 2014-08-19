@@ -93,6 +93,101 @@ class Doctor extends MisActiveRecord  {
         $doctors = $doctor->queryAll();
         return $doctors;
     }
+	
+	public function getDoctorStat($filters) {
+		$connection = Yii::app()->db;
+        $doctor = $connection->createCommand()
+            ->select('d.*, w.name as ward, w.id as ward_id, m.name as post, m.id as post_id, dsbd.greeting_type, dsbd.patient_day, dsbd.order_number, mc.reg_date')
+            ->from('mis.doctors d')
+            ->leftJoin('mis.wards w', 'd.ward_code = w.id')
+            ->leftJoin('mis.medpersonal m', 'd.post_id = m.id')
+			->leftJoin(SheduleByDay::tableName().' dsbd', 'dsbd.doctor_id = d.id')
+			->leftJoin('mis.medcards mc', 'dsbd.medcard_id = mc.card_number');
+		
+		if($filters !== false) {
+			$this->getSearchConditions($doctor, $filters, array(
+			), array(
+				  'd' => array('doctor_id', 'id'),
+				  'm' => array('medworker_id', 'id'),
+				  'w' => array('ward_id', 'id'),
+				  'dsbd' => array('patient_day', 'patient_day_to', 'patient_day_from')
+			), array(
+				'doctor_id' => 'id',
+				'medworker_id' => 'id',
+				'ward_id' => 'id',
+				'patient_day_to' => 'patient_day',
+				'patient_day_from' => 'patient_day'
+			));
+		 }
+		
+		$doctors = $doctor->queryAll();
+		$resultArr = array();
+		foreach($doctors as $doctor) {
+			// Несуществующее отделение
+			if(!isset($resultArr[(string)$doctor['ward_id']])) {
+				$resultArr[(string)$doctor['ward_id']] = array(
+					'name' => $doctor['ward'],
+					'numAllGreetings' => 0,
+					'primaryPerWriting' => 0,
+					'primaryPerQueue' => 0,
+					'secondaryPerWriting' => 0,
+					'secondaryPerQueue' => 0,
+					'elements' => array()
+				);
+			}
+			// Несуществующая специальность
+			if(!isset($resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']])) {
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']] = array(
+					'name' => $doctor['post'],
+					'numAllGreetings' => 0,
+					'primaryPerWriting' => 0,
+					'primaryPerQueue' => 0,
+					'secondaryPerWriting' => 0,
+					'secondaryPerQueue' => 0,
+					'elements' => array()
+				);
+			}
+			
+			// Несуществующий врач
+			if(!isset($resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']])) {
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']] = array(
+					'name' => $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'],
+					'data' => array(
+						'numAllGreetings' => 0,
+						'primaryPerWriting' => 0,
+						'primaryPerQueue' => 0,
+						'secondaryPerWriting' => 0,
+						'secondaryPerQueue' => 0
+					)
+				);
+			}
+			
+			// 2.	Первичные приемы – прием в тот же день, в который завели или перерегистрировали карту (дали новый номер)
+			if($doctor['patient_day'] == $doctor['reg_date']) { // Первичный
+				if($doctor['order_number'] == null) {
+					$resultArr[(string)$doctor['ward_id']]['primaryPerWriting']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['primaryPerWriting']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['primaryPerWriting']++;
+				} else {
+					$resultArr[(string)$doctor['ward_id']]['primaryPerQueue']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['primaryPerQueue']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['primaryPerQueue']++;
+				}
+			// 3.	Вторичные приемы – приемы в дни, отличающиеся от дня заведения/перерегистрации карты. 
+			} else { // Вторичный
+				if($doctor['order_number'] == null) {
+					$resultArr[(string)$doctor['ward_id']]['secondaryPerWriting']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['secondaryPerWriting']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['secondaryPerWriting']++;
+				} else {
+					$resultArr[(string)$doctor['ward_id']]['secondaryPerQueue']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['secondaryPerQueue']++;
+					$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['secondaryPerQueue']++;
+				}
+			}
+		}
+        return $resultArr;
+	}
 }
 
 ?>

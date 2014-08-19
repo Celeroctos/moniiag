@@ -96,7 +96,7 @@ foreach($dividedCats as $key => $template) {
 $this->endWidget();
 ?>
 <script type="text/javascript">
-    //elementsDependences = [];
+    /*
     $(document).ready(function() {
         // Выяснение зависимостей
         var deps = elementsDependences;
@@ -126,5 +126,5 @@ $this->endWidget();
                 }
             }
         }
-    });
+    });*/
 </script>

@@ -1,0 +1,229 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/medcardView.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/statistic/history.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript">
+	globalVariables.isMainDoctorCab = true;
+</script>
+<?php if(Yii::app()->user->checkAccess('searchPatient')) { ?>
+<h4>Просмотр приёмов</h4>
+<div class="row">
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'id' => 'patient-search-form',
+        'enableAjaxValidation' => true,
+        'enableClientValidation' => true,
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/search'),
+        'htmlOptions' => array(
+            'class' => 'form-horizontal col-xs-12',
+            'role' => 'form'
+        )
+    ));
+    ?>
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label for="omsNumber" class="col-xs-4 control-label">Номер полиса</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" autofocus id="omsNumber" placeholder="Номер полиса" title="Номер полиса может состоять из цифр и пробелов">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="cardNumber" class="col-xs-4 control-label">Номер карты</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="cardNumber" placeholder="Номер карты" title="Номер карты вводится в формате номер / год">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="lastName" class="col-xs-4 control-label">Фамилия</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="lastName" placeholder="Фамилия" title="Фамилия может состоять из кириллицы и дефисов (двойные фамилии)">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="firstName" class="col-xs-4 control-label">Имя</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="firstName" placeholder="Имя" title="Имя может состоять из кириллицы и дефисов">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="middleName" class="col-xs-4 control-label">Отчество</label>
+            <div class="col-xs-8">
+                <input type="text" class="form-control" id="middleName" placeholder="Отчество" title="Отчество может состоять из кириллицы и дефисов. Это необязательное поле.">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="birthday" class="col-xs-4 control-label required" style="vertical-align: middle;">Дата рождения</label>
+            <div id="birthday-cont" class="col-xs-3 input-group date">
+                <input type="hidden" name="birthday" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="birthday">
+				<span class="input-group-addon">
+					<span class="glyphicon-calendar glyphicon">
+					</span>
+				</span>
+                <div class="subcontrol">
+                    <div class="date-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                        </div>
+                    </div>
+                    <div class="form-inline subfields">
+                        <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                    </div>
+                    <div class="date-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="form-group chooser" id="doctorChooser">
+		<label for="doctor" class="col-xs-4 control-label">Врач</label>
+			<div class="col-xs-8">
+				<input type="text" class="form-control" id="doctor" placeholder="Начинайте вводить...">
+				<ul class="variants no-display">
+				</ul>
+				<div class="choosed">
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="greetingDate" class="col-xs-4 control-label required" style="vertical-align: middle;">Дата приёма</label>
+            <div id="greetingDate-cont" class="col-xs-3 input-group date">
+                <input type="hidden" name="greetingDate" placeholder="Формат гггг-мм-дд" class="form-control col-xs-4" id="greetingDate">
+				<span class="input-group-addon">
+					<span class="glyphicon-calendar glyphicon">
+					</span>
+				</span>
+                <div class="subcontrol">
+                    <div class="date-ctrl-up-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+                        </div>
+                    </div>
+                    <div class="form-inline subfields">
+                        <input type="text" name="day" placeholder="ДД" class="form-control day">
+                        <input type="text" name="month" placeholder="ММ" class="form-control month">
+                        <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+                    </div>
+                    <div class="date-ctrl-down-buttons">
+                        <div class="btn-group">
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+                            <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="form-group">
+			<label for="status" class="col-xs-4 control-label required">Только закрытые</label>
+			<div class="col-xs-4">
+				<input name="status" id="status" type="checkbox">
+			</div>
+		</div>
+        <div class="form-group">
+            <input type="button" id="patient-search-submit" value="Найти" name="patient-search-submit" class="btn btn-success">
+			<input type="button" id="reset-submit" value="Очистить" name="reset-submit" class="btn btn-success">
+        </div>
+    </div>
+    <?php $this->endWidget(); ?>
+</div>
+<div class="row no-display" id="withCardCont">
+    <div class="col-xs-12 borderedBox">
+        <table class="table table-condensed table-hover" id="omsSearchWithCardResult">
+            <thead>
+            <tr class="header">
+                <td>
+                    ФИО
+                </td>
+				 <td>
+                    Возраст
+                </td>
+		        <td>
+                    Дата рождения
+                </td>
+                <td>
+                    Номер карты
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="row no-display">
+        <ul class="pagination content-pagination">
+        </ul>
+    </div>
+</div>
+<?php } ?>
+<div class="modal fade error-popup" id="errorSearchPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="notFoundPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Сообщение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>По введённым поисковым критериям не найдено ни одного пациента. Измените критерии поиска и попробуйте поискать заново.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="viewHistoryPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">История медкарты пациента</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h4>Список приёмов:</h4>
+                        <div class="panel panel-default" id="panelOfhistoryPoints">
+                            <div class="panel-body">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>

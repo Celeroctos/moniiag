@@ -22,7 +22,7 @@
             }
 
             // Печатаем название шаблона
-            ?><h3><?php echo $oneTemplate['name']; ?></h3><?php
+            ?><span class="templateNamePrinting"><?php echo $oneTemplate['name']; ?></span><?php
             foreach($oneTemplate['cats']  as $index => $categorie) {
                 // Печатаем название категории
                 ?>

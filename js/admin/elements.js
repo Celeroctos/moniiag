@@ -457,6 +457,16 @@ function editElement() {
                             }
                         }
                     }
+                    // Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
+                    //    в изменении типа
+                    if (data.data.is_dependencies == 1)
+                    {
+                        $('#element-edit-form select#type option:not([value=2]):not([value=3])').addClass('no-display');
+                    }
+                    else
+                    {
+                        $('#element-edit-form select#type option').removeClass('no-display');
+                    }
 
                     $.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
 

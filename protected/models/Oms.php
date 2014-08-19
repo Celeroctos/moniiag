@@ -121,8 +121,7 @@ class Oms extends MisActiveRecord {
 	}
     */
 
-    public function getRows($filters, $sidx = false, $sord = false, $start = false,
-                            $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings=false) {
+    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings=false, $onlyClosedGreetings = false, $greetingDate = false) {
 
         $result = array();
 
@@ -132,7 +131,7 @@ class Oms extends MisActiveRecord {
             ->from('mis.oms o')
             ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
 
-        if($onlyInGreetings) {
+        if($onlyInGreetings || $onlyClosedGreetings || $greetingDate) {
             $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
         }
 
@@ -142,6 +141,10 @@ class Oms extends MisActiveRecord {
             $oms->join(CancelledGreeting::model()->tableName().' cg', 'm.card_number = cg.medcard_id');
             $oms->andWhere('cg.deleted = 0 AND cg.patient_day<current_date'  );
         }
+		
+		if($onlyClosedGreetings) { 
+			$oms->andWhere('dsbd.time_end IS NOT NULL');
+		}
 
         if($filters !== false) {
             $this->getSearchConditions($oms, $filters, array(
@@ -152,7 +155,8 @@ class Oms extends MisActiveRecord {
                 )
             ), array(
                 'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'normalized_oms_number', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
-                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
+                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str'),
+				'dsbd' => array('doctor_id', 'patient_day')
             ), array(
                 'e_oms_number' => 'oms_number',
                 'k_oms_number' => 'oms_number',
@@ -177,6 +181,7 @@ class Oms extends MisActiveRecord {
         {
             $oms->andWhere("coalesce(m.card_number,'')!=''");
         }
+		
 
         if ($sidx && $sord && $limit)
         {
@@ -315,8 +320,7 @@ class Oms extends MisActiveRecord {
         }
     }
 
-    public function getNumRows($filters, $sidx = false, $sord = false, $start = false,
-                               $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings = false/*, $withMediate = false*/) {
+    public function getNumRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings = false, $onlyClosedGreetings = false, $greetingDate = false) {
 
         try
         {
@@ -326,10 +330,9 @@ class Oms extends MisActiveRecord {
                 ->from('mis.oms o')
                 ->leftJoin('mis.medcards m', 'o.id = m.policy_id');
 
-            if($onlyInGreetings) {
+            if($onlyInGreetings || $onlyClosedGreetings || $greetingDate) {
                 $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
             }
-
 
             if ($cancelledGreetings)
             {
@@ -337,6 +340,10 @@ class Oms extends MisActiveRecord {
                 $oms->join(CancelledGreeting::model()->tableName().' cg', 'm.card_number = cg.medcard_id');
                 $oms->andWhere('cg.deleted = 0 AND cg.patient_day<current_date'  );
             }
+			
+			if($onlyClosedGreetings) { 
+				$oms->andWhere('dsbd.time_end IS NOT NULL');
+			}
 
             if($filters !== false) {
                 $this->getSearchConditions($oms, $filters, array(
@@ -347,13 +354,14 @@ class Oms extends MisActiveRecord {
                     )
                 ), array(
                     'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'normalized_oms_number' ,'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
-                    'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str')
+                    'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str'),
+					'dsbd' => array('doctor_id', 'patient_day')
                 ), array(
                     'e_oms_number' => 'oms_number',
                     'k_oms_number' => 'oms_number',
                     'normalized_oms_number' => 'oms_series_number'
                 ), array(
-                    'OR' => array(
+					'OR' => array(
                         'e_oms_number',
                         'k_oms_number',
                         'oms_number',
@@ -373,8 +381,8 @@ class Oms extends MisActiveRecord {
                 $oms->andWhere("coalesce(m.card_number,'')!=''");
             }
 
-            //var_dump($oms);
-           //exit();
+          //  var_dump($oms->text);
+          // exit();
 
             $result = $oms->queryRow();
 

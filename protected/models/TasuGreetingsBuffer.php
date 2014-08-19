@@ -10,7 +10,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
         return 'mis.tasu_greetings_buffer';
     }
 
-    public function getLastBuffer($filters, $sidx = false, $sord = false, $start = false, $limit = false, $lastGreeting = false) {
+    public function getLastBuffer($filters, $sidx = false, $sord = false, $start = false, $limit = false, $lastGreeting = false, $date = false, $doctorId = false, $importId = false) {
         try {
             $connection = Yii::app()->db;
             $buffer = $connection->createCommand()
@@ -19,11 +19,16 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ->leftJoin(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
                 ->leftJoin(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
                 ->leftJoin(Oms::tableName().' o', 'm.policy_id = o.id')
-                ->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
-                ->where('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id)
-                                          FROM '.TasuGreetingsBuffer::tableName().' tgb2)')
-				->andWhere('EXISTS(SELECT * FROM '.SheduleByDay::tableName().' dsbd2 WHERE dsbd2.id = dsbd.id) OR tgb.fake_id IS NOT NULL')
-                ->andWhere('tgb.status = 0'); // Получить всё то, что не выгружено
+				->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id');
+			if($importId === false) {
+				$buffer->where('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id) FROM '.TasuGreetingsBuffer::tableName().' tgb2)');
+			} else {
+				$buffer->where('tgb.import_id = :import_id', array(':import_id' => $importId));
+			}
+			$buffer->andWhere('EXISTS(SELECT * FROM '.SheduleByDay::tableName().' dsbd2 WHERE dsbd2.id = dsbd.id) OR tgb.fake_id IS NOT NULL');
+			if($importId === false) {
+				$buffer->andWhere('tgb.status = 0'); // Получить всё то, что не выгружено
+			}
             if($lastGreeting !== false) {
                 $buffer->andWhere('tgb.id > :last_greeting', array(':last_greeting' => $lastGreeting));
             }
@@ -34,6 +39,12 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ), array(
                 ));
             }
+			if($doctorId !== false) {
+				$buffer->andWhere('d.id = :id OR tgb.fake_id IS NOT NULL', array(':id' => $doctorId));
+			}
+			if($date !== false) {
+				$buffer->andWhere('dsbd.patient_day = :patient_day OR tgb.fake_id IS NOT NULL', array(':patient_day' => $date));
+			}
 
             if($sidx !== false && $sord !== false) {
                 $buffer->order($sidx.' '.$sord);
@@ -41,7 +52,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             if($start !== false && $limit !== false) {
                 $buffer->limit($limit, $start);
             }
-
+			
 			$bufferResult = $buffer->queryAll();
             foreach($bufferResult as &$bufferElement) {
                 if($bufferElement['fake_id'] != null) {

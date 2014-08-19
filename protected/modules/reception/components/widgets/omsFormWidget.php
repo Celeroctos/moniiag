@@ -7,8 +7,6 @@ class OmsFormWidget extends CWidget {
 
     public function run() {
 
-        //var_dump($_GET['newOmsNumber']);
-        //exit();
         // Протаскиваем параметры, которые были введены при поиске, чтобы их не вводить повторно
         if (isset($_GET['newOmsNumber']))
             $this->model['policy'] = $_GET['newOmsNumber'];

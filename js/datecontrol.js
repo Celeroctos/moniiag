@@ -200,6 +200,7 @@ var dateControlConfigs =
 	    if(DateField.length == 0) {
             return;
         }
+		
         DateField.datetimepicker({
             language: 'ru',
             format: format,
@@ -211,6 +212,8 @@ var dateControlConfigs =
             minView: 2,
             forceParse: 0
         });
+		
+		$('html').css('overflow-y', 'scroll'); // ?! нас странице с экспортом приёмов исчезает скроллбар
 
        $(DateField).on('show', function(e) {
            var top = null;
@@ -229,7 +232,6 @@ var dateControlConfigs =
         var ctrl = DateField.find('input.form-control:first');
         $(ctrl).on('change', function(e, type)
         {
-            console.log(e.target);
             var subcontrols = $($(this).parents('div')[0]).find('.subcontrol');
             if(typeof subcontrols != 'undefined')
             {

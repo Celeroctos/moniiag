@@ -1,5 +1,4 @@
-﻿// Test
-$(document).ready(function () {
+﻿$(document).ready(function () {
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
@@ -547,6 +546,20 @@ $('select[multiple="multiple"]').each(function(index, select) {
 });
 
  globalVariables.notChangeNavButton = false;
+ // Кнопка закрытия приёма в панели 
+ if($('#medcardContentSave').length > 0) {
+	$('.buttonUpContainer').append($('#medcardContentSave').clone().prop({
+		'id' : 'sideMedcardContentSave',
+		'value' : 'Сохранить',
+		'title' : 'Сохранить текущий приём'
+		}).css(
+		{
+			'marginTop': '100px',
+			'width' : '85px',
+			'marginLeft' : '8px'
+		})
+	);
+ }
  $('.buttonUpContainer').click(function () {
  // Смотрим - есть ли у this класс "backWardButton"
  if ($(this).hasClass('backWardButton'))
@@ -797,15 +810,12 @@ $('select[multiple="multiple"]').each(function(index, select) {
     enterButtonsSelector =
     [
     ];
-
     $(document).on('keydown' ,function(e){
         if ((e.keyCode==13 || e.keyCode==9) && (!e.ctrlKey))
         {
             //console.log('Нажата клавиша Enter');
             //console.log(e.currentTarget);
             //console.log($(':focus'));
-
-
 
 
             // Смотрим что в фокусе - если
@@ -816,15 +826,15 @@ $('select[multiple="multiple"]').each(function(index, select) {
             //    Если элемент сабмитит форму, то надо затриггерить на нём клик
             //   Нужно определить является ли элемент таким, который сабмитит форму
             // По умолчанию - не сабмитит
-
-
             submittable = false;
             // Если кнопка в форме одна - и она в фокусе то она вызывает сабмит
             containingForm = $(focusedElement).parents('form');
 
-
             if (e.keyCode==13)
             {
+
+                //buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
+
                 // Если в фокусе форма логина пароля
                 if ($(containingForm).length>0)
                 {
@@ -834,8 +844,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
                     }
                 }
 
-                buttons = $(containingForm).find('input[type=submit], input[type=button], button');
-
+                buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
                 if ($(buttons).length = 1 && buttons[0]==focusedElement[0])
                 {
                     $(buttons[0]).trigger('click');
@@ -956,3 +965,4 @@ $('select[multiple="multiple"]').each(function(index, select) {
     // <-----------------
 
 });
+// pre

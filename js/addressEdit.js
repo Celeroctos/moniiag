@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+    //------->
+    // Начальная инициализация чюуууузеров
+    //$.fn['districtChooser'].disable();
+    //$.fn['settlementChooser'].disable();
+    //$.fn['streetChooser'].disable();
+    //<-------
     activeChooser = null;
 
     // Обработчики кнопок "Добавить строку в КЛАДР"

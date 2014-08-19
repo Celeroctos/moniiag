@@ -81,7 +81,7 @@ class ElementsController extends Controller {
         }
     }
 
-    public function actionEdit() {
+       public function actionEdit() {
         $model = new FormElementAdd();
         if(isset($_POST['FormElementAdd'])) {
             $model->attributes = $_POST['FormElementAdd'];
@@ -334,6 +334,22 @@ class ElementsController extends Controller {
         if(($element['default_value'] == null) && ($element['type']!=0)&&($element['type']!=1)) {
             $element['default_value'] = -1;
         }
+
+        // Нужно выяснить - есть ли на элементе зависимости (если есть - нужно зыблокировать некоторые варианты в селекте типа)
+        $existanceDependencies = MedcardElementDependence::model()->findAll(
+            'element_id = :ahead_element',
+            array( ':ahead_element'=> $id )
+        );
+
+        if (count($existanceDependencies)>0)
+        {
+            $element['is_dependencies'] = 1;
+        }
+        else
+        {
+            $element['is_dependencies'] = 0;
+        }
+
         echo CJSON::encode(array('success' => true,
                                  'data' => $element)
         );
