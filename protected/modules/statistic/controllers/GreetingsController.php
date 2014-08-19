@@ -72,10 +72,16 @@ class GreetingsController extends Controller {
 				}
             }
 			
-			if(($filter['field'] == 'ward_id' && $filter['data'] == -1)
-				|| ($filter['field'] == 'medworker_id' && $filter['data'] == -1)
-				|| ($filter['field'] == 'doctor_id' && $filter['data'] == -1)
-				|| ($filter['field'] == 'patient_day_from' && trim($filter['data']) == '')
+			if($filter['field'] == 'ward_id' || $filter['field'] == 'medworker_id' || $filter['field'] == 'doctor_id') {
+				foreach($filter['data'] as $val) {
+					if($val == -1) {
+						unset($filters['rules'][$key]);
+						break;
+					}
+				}
+			}
+			
+			if(($filter['field'] == 'patient_day_from' && trim($filter['data']) == '')
 				|| ($filter['field'] == 'patient_day_to' && trim($filter['data']) == '')) {
 				unset($filters['rules'][$key]);
 			}

@@ -6,7 +6,8 @@
 		//'.add-patient-submit input',
         '#medcardContentSave',
         '#printContentButton',
-        '#greetings-search-submit'
+        '#greetings-search-submit',
+		'#greeting-getstat-submit'
 	];
 	
 	buttonSelectors.forEach(function(buttonSelector) {

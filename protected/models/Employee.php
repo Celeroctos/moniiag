@@ -125,10 +125,18 @@ class Employee extends MisActiveRecord  {
 				->leftJoin('mis.wards w', 'w.id = d.ward_code')
 				->leftJoin('mis.medpersonal m', 'd.post_id = m.id');
 			if($wardId != -1) {
-				$employees->andWhere('d.ward_code = :wardId', array(':wardId' => $wardId));
+				if(!is_array($wardId)) {
+					$employees->andWhere('d.ward_code = :wardId', array(':wardId' => $wardId));
+				} else {
+					$employees->andWhere(array('in', 'd.ward_code', $wardId));
+				}
 			}
 			if($medworkerId != -1) {
-				$employees->andWhere('m.id = :medworkerId', array(':medworkerId' => $medworkerId));
+				if(!is_array($medworkerId)) {
+					$employees->andWhere('m.id = :medworkerId', array(':medworkerId' => $medworkerId));
+				} else {
+					$employees->andWhere(array('in', 'm.id', $medworkerId));
+				}
 			}
             $employees->order('d.last_name', 'asc');
 			

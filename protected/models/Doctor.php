@@ -218,6 +218,17 @@ class Doctor extends MisActiveRecord  {
 			));
 		 }
 		
+		$dateBegin = false;
+		$dateEnd = false;
+		foreach($filters['rules'] as $filter) {
+			if($filter['field'] == 'patient_day_from' && trim($filter['data']) != '') {
+				$dateBegin = $filter['data'];
+			}
+			if($filter['field'] == 'patient_day_to' && trim($filter['data']) != '') {
+				$dateEnd = $filter['data'];
+			}
+		}
+		
 		$doctors = $doctor->queryAll();
 		$resultArr = array();
 		foreach($doctors as $doctor) {
@@ -254,7 +265,7 @@ class Doctor extends MisActiveRecord  {
 				);
 							
 				// Считаем приёмы, которые добавили вручную, для данного врача
-				$numFakes = TasuFakeGreetingsBuffer::model()->getNumRows($doctor['id']);
+				$numFakes = TasuFakeGreetingsBuffer::model()->getNumRows($doctor['id'], $dateBegin, $dateEnd);
 				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['handworkGreetings'] = $numFakes['num_greetings'];
 				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['handworkGreetings'] += $numFakes['num_greetings'];
 				$resultArr[(string)$doctor['ward_id']]['handworkGreetings'] += $numFakes['num_greetings'];

@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$('#wardId, #medpersonalId').on('change', function() {
 		$('#wardId, #medpersonalId').attr('disabled', true);
 		$.ajax({
-			'url' : '/index.php/guides/employees/getbywardandmedworker?wardid=' + $('#wardId').val() + '&medworkerid='  + $('#medpersonalId').val(),
+			'url' : '/index.php/guides/employees/getbywardandmedworker?wardid=' + $.toJSON($('#wardId').val()) + '&medworkerid='  + $.toJSON($('#medpersonalId').val()),
 			'cache' : false,
 			'dataType' : 'json',
 			'success' : function(data, textStatus, jqXHR) {
@@ -27,17 +27,17 @@ $(document).ready(function() {
             'rules' : [
                 {
                     'field' : 'ward_id',
-                    'op' : 'eq',
+                    'op' : 'in',
                     'data' :  $('#wardId').val()
                 },
                 {
                     'field' : 'medworker_id',
-                    'op' : 'eq',
+                    'op' : 'in',
                     'data' : $('#medpersonalId').val()
                 },
                 {
                     'field' : 'doctor_id',
-                    'op' : 'eq',
+                    'op' : 'in',
                     'data' : $('#doctorId').val()
                 },
 				{
@@ -57,6 +57,7 @@ $(document).ready(function() {
 	}
 	
 	$('#greeting-getstat-submit').on('click', function() {
+		$(this).trigger('begin');
 		var filters = getFilters();
 		 $.ajax({
             'url' : '/index.php/statistic/greetings/getstat/?filters=' + $.toJSON(filters),
@@ -147,6 +148,7 @@ $(document).ready(function() {
 
                     });
                 }
+				$('#greeting-getstat-submit').trigger('end');
                 return;
 			}
 		});

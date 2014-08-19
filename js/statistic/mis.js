@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	// Фильтр по отделению
-	$('#wardId, #medpersonalId').on('change', function() {
+	/*$('#wardId, #medpersonalId').on('change', function() {
 		$('#wardId, #medpersonalId').attr('disabled', true);
 		$.ajax({
 			'url' : '/index.php/guides/employees/getbywardandmedworker?wardid=' + $('#wardId').val() + '&medworkerid='  + $('#medpersonalId').val(),
@@ -18,7 +18,7 @@ $(document).ready(function() {
 				}
 			}
 		});
-	});
+	});*/
 	
 	function getFilters() {
         var Result =
@@ -27,12 +27,12 @@ $(document).ready(function() {
             'rules' : [
                 {
                     'field' : 'ward_id',
-                    'op' : 'eq',
+                    'op' : 'in',
                     'data' :  $('#wardId').val()
                 },
                 {
                     'field' : 'medworker_id',
-                    'op' : 'eq',
+                    'op' : 'in',
                     'data' : $('#medpersonalId').val()
                 },
 				{
@@ -53,7 +53,8 @@ $(document).ready(function() {
 	
 	$('#greeting-getstat-submit').on('click', function() {
 		var filters = getFilters();
-		 $.ajax({
+		$(this).trigger('begin');
+		$.ajax({
             'url' : '/index.php/statistic/mis/getstat/?filters=' + $.toJSON(filters),
             'cache' : false,
             'dataType' : 'json',
@@ -130,6 +131,7 @@ $(document).ready(function() {
 
                     });
                 }
+				$('#greeting-getstat-submit').trigger('end');
                 return;
 			}
 		});

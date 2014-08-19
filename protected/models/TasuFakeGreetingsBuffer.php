@@ -17,10 +17,10 @@ class TasuFakeGreetingsBuffer extends MisActiveRecord {
             ->from(self::tableName().' tfg')
 			->where('tfg.doctor_id = :doctor_id', array(':doctor_id' => $doctorId));
 		if($dateBegin !== false) {
-			$tfg->andWhere('tfg.patient_day >= :patient_day_from', array(':patient_day_from' => $dateBegin));
+			$tfg->andWhere('tfg.greeting_date >= :patient_day_from', array(':patient_day_from' => $dateBegin));
 		}
 		if($dateEnd !== false) {
-			$tfg->andWhere('tfg.patient_day <= :patient_day_to', array(':patient_day_to' => $dateEnd));
+			$tfg->andWhere('tfg.greeting_date <= :patient_day_to', array(':patient_day_to' => $dateEnd));
 		}
 		return $tfg->queryRow();
 	}

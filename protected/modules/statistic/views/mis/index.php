@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/ajaxbutton.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/statistic/mis.js" ></script>
@@ -28,6 +29,8 @@
 				 <?php echo $form->dropDownList($modelFilter, 'wardId', $wardsList, array(
 					'id' => 'wardId',
 					'class' => 'form-control',
+					'multiple' => 'multiple',
+					'options' => array('-1' => array('selected' => true))
 				)); ?>
 			</div>
         </div>
@@ -38,7 +41,9 @@
 			<div class="col-xs-8">
 				 <?php echo $form->dropDownList($modelFilter, 'medpersonalId', $medpersonalList, array(
 					'id' => 'medpersonalId',
-					'class' => 'form-control'
+					'class' => 'form-control',
+					'multiple' => 'multiple',
+					'options' => array('-1' => array('selected' => true))
 				)); ?>
 			</div>
         </div>
