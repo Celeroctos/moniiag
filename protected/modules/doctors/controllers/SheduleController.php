@@ -239,9 +239,18 @@ class SheduleController extends Controller {
             }
         }
 
-        if(isset($_GET['onlywaitinglist']) && $_GET['onlywaitinglist'] == 1) {
+
+        if(isset($_POST['onlywaitinglist']) && $_POST['onlywaitinglist'] == 1) {
             $patientsListWidget->isWaitingLine = true;
+            $patientsListWidget->tableId = 'doctorWaitingList';
         }
+        else
+        {
+            $patientsListWidget->tableId = 'doctorPatientList';
+        }
+
+        //var_dump($patientsListWidget->tableId);
+        //exit();
 
         // Теперь получаем html-ку со списком пациентов
         $result = $patientsListWidget->getPatientList(
