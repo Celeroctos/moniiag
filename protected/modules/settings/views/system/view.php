@@ -88,6 +88,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="deleteCreetingConfirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Внимание!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Нажатие этой кнопки приведёт к полному удалению информации о приёмах! Эта возможность нужна только разработчикам. Если Вы таковым не являетесь - нажмите "Отмена"</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="allGreetingsDelete">Удалить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancelDeleteAllGreetings">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade error-popup" id="successPopup">
     <div class="modal-dialog">
         <div class="modal-content">

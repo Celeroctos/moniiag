@@ -20,7 +20,33 @@ $(document).ready(function() {
         }
     });
 
+    $('#allGreetingsDelete').click(
+        function(){
+            $('#deleteCreetingConfirm').modal('hide');
+
+            $('#clearGreetingDataSubmit').attr('value', 'Подождите, идёт процесс очистки данных...');
+            $('#clearGreetingDataSubmit').attr('disabled', true);
+            $.ajax({
+                'url' : '/index.php/admin/categories/cleargreetingsdata',
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET',
+                'success' : function(data, textStatus, jqXHR) {
+                    if(data.success == true) {
+                        $("#successPopup .modal-body").find('p').remove();
+                        $("#successPopup .modal-body").append($('<p>').html(data.data));
+                        $('#clearGreetingDataSubmit').attr('value', 'Очистить таблицы для приёмов пациентов');
+                        $('#clearGreetingDataSubmit').attr('disabled', false);
+                        $("#successPopup").modal({});
+                    }
+                }
+            });
+        }
+    );
+
     $('#clearGreetingDataSubmit').on('click', function(e) {
+        $('#deleteCreetingConfirm').modal({});
+/*
         $(this).attr('value', 'Подождите, идёт процесс очистки данных...');
         $(this).attr('disabled', true);
         $.ajax({
@@ -37,6 +63,6 @@ $(document).ready(function() {
                     $("#successPopup").modal({});
                 }
             }
-        });
+        });*/
     });
 });
