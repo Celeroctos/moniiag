@@ -271,16 +271,12 @@
                     valueOfOption = selectedOptions[i].value;
                     // Вызываем удаление опции
                     deletedFlag = deleteOption(valueOfOption);
-
                     if (deletedFlag)
                     {
                         // Удаляю опцию
                         $(this).find('option[value='+ valueOfOption +']').remove();
                     }
-
                 }
-
-
             }
         }
     );
