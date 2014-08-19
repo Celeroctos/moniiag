@@ -127,15 +127,19 @@ $(document).ready(function() {
 						$(table).append(wardFooterClone);
 					}
 					
-					
-					var allFooterClone = $(tableOfHeaders).find('.allFooterRow').clone();
-					$(allFooterClone).find('td:eq(1)').text(numAllGreetings);
-					$(allFooterClone).find('td:eq(2)').text(primaryPerWriting);
-					$(allFooterClone).find('td:eq(3)').text(primaryPerQueue);
-					$(allFooterClone).find('td:eq(4)').text(secondaryPerWriting);
-					$(allFooterClone).find('td:eq(5)').text(secondaryPerQueue);
-					
-					$(table).append(allFooterClone);					
+					if(numAllGreetings > 0) {
+						var allFooterClone = $(tableOfHeaders).find('.allFooterRow').clone();
+						$(allFooterClone).find('td:eq(1)').text(numAllGreetings);
+						$(allFooterClone).find('td:eq(2)').text(primaryPerWriting);
+						$(allFooterClone).find('td:eq(3)').text(primaryPerQueue);
+						$(allFooterClone).find('td:eq(4)').text(secondaryPerWriting);
+						$(allFooterClone).find('td:eq(5)').text(secondaryPerQueue);
+						
+						$(table).append(allFooterClone);
+					} else {
+						$('#notFoundPopup').modal({
+						});
+					}					
 				} else {
                     $('#errorSearchPopup .modal-body .row p').remove();
                     $('#errorSearchPopup .modal-body .row').append('<p>' + data.data + '</p>')

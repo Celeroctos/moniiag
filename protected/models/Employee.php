@@ -116,7 +116,7 @@ class Employee extends MisActiveRecord  {
         return $employees->queryAll();
     }
 
-    public function getByWard($id) {
+    public function getByWard($wardId, $medworkerId) {
         try {
             $connection = Yii::app()->db;
             $employees = $connection->createCommand()
@@ -124,8 +124,11 @@ class Employee extends MisActiveRecord  {
                 ->from('mis.doctors d')
 				->leftJoin('mis.wards w', 'w.id = d.ward_code')
 				->leftJoin('mis.medpersonal m', 'd.post_id = m.id');
-			if($id != -1) {
-				$employees->where('d.ward_code = :id', array(':id' => $id));
+			if($wardId != -1) {
+				$employees->andWhere('d.ward_code = :wardId', array(':wardId' => $wardId));
+			}
+			if($medworkerId != -1) {
+				$employees->andWhere('m.id = :medworkerId', array(':medworkerId' => $medworkerId));
 			}
             $employees->order('d.last_name', 'asc');
 			
@@ -135,6 +138,10 @@ class Employee extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }
+	
+	public function getByWardAndMedworker($wardId, $medworkerId) {
+		return self::getByWard($wardId, $medworkerId); 
+	}
 
     public function getEmployeesPerSpec($id) {
         try {

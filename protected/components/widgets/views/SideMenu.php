@@ -134,7 +134,7 @@
                 </li>
             <?php } ?>
             <?php if(Yii::app()->user->checkAccess('menuReport')) { ?>
-                <li <?php echo $module == 'statistic' && ($controller == 'history' ||  $controller == 'greetings' || $controller == 'mis') ? 'class="active"' : ''; ?>>
+                <li <?php echo $module == 'statistic' && !($controller == 'history' ||  $controller == 'greetings' || $controller == 'mis') ? 'class="active"' : ''; ?>>
                     <?php echo CHtml::link('<img src="/images/icons/icon_sample.png" width="32" height="32" alt="" />Отчётность', array('/statistic/index/view')); ?>
                 </li>
             <?php } ?>
