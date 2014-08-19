@@ -262,8 +262,8 @@ class Doctor extends MisActiveRecord  {
 			
 			if($doctor['is_accepted'] == 1) { // Закрытый приём вручную
 				$resultArr[(string)$doctor['ward_id']]['closedGreetings']++;
-				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['closedGreeting']++;
-				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['closedGreeting']++;
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['closedGreetings']++;
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['closedGreetings']++;
 			} 
 			
 			$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['numAllGreetings']++;
