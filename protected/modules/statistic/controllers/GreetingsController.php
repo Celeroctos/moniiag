@@ -5,7 +5,7 @@ class GreetingsController extends Controller {
 		// Список отделений
 		$wardsListDb = Ward::model()->getRows(false, 'name', 'asc');
 
-		$wardsList = array('-1' => 'Нет');
+		$wardsList = array('-1' => 'Все');
 		foreach($wardsListDb as $value) {
 			$wardsList[(string)$value['id']] = $value['name'].', '.$value['enterprise_name'];
 		}
@@ -13,7 +13,7 @@ class GreetingsController extends Controller {
 		// Список специализаций
 		$medpersonalListDb = Medworker::model()->getRows(false, 'name', 'asc');
 
-		$medpersonalList = array('-1' => 'Нет');
+		$medpersonalList = array('-1' => 'Все');
 		foreach($medpersonalListDb as $value) {
 			$medpersonalList[(string)$value['id']] = $value['name'];
 		}
