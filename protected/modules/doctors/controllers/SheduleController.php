@@ -144,7 +144,8 @@ class SheduleController extends Controller {
 
         $doctorComment = CommentOms::getTopComment(isset($medcard) ? $medcard : null);
         $doctorNumberComments = count(CommentOms::getComments(isset($medcard) ? $medcard : null));
-
+        //var_dump($medcard);
+        //exit();
 		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
@@ -300,6 +301,8 @@ class SheduleController extends Controller {
 
         $historyPoints = MedcardElementForPatient::model()->getHistoryPoints($medcard);
 
+       // var_dump($historyPoints );
+       // exit();
 
         foreach ($historyPoints  as &$historyEl)
         {

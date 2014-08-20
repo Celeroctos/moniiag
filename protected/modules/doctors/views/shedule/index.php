@@ -17,6 +17,8 @@
         <div class="col-xs-5 null-padding-right">
             <!-- Выводим информацию о карте -->
             <?php
+            //var_dump($historyPoints);
+            //exit();
             $this->widget('application.modules.doctors.components.widgets.MedcardContentWidget', array(
                 'medcard' => $medcard,
                 'historyPoints' => $historyPoints,

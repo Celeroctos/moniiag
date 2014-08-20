@@ -230,9 +230,9 @@ class MedcardElementForPatient extends MisActiveRecord {
             return MedcardRecord::getHistoryMedcardByCardId($medcard);
 
 		} catch(Exception $e) {
-			var_dump($e);
-			exit();
+			//var_dump($e);
 			echo $e->getMessage();
+            exit();
 		}
 	}
 
