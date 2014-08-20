@@ -1725,7 +1725,7 @@ class PatientController extends Controller {
                 }
             }
             if($numEmpty == 3) {
-                $num = 0;
+                $num = array();
                 $totalPages = 0;
                 $items = array();
             } else {
@@ -1738,17 +1738,20 @@ class PatientController extends Controller {
         }
 
         $canViewGreetingHistory =  Yii::app()->user->checkAccess('canViewGreetingArchive');
-
-        echo CJSON::encode(
-           array(
-                'greetingsHistory' => $canViewGreetingHistory,
-                'success' => true,
-                'rows' => $items,
-                'total' => $totalPages,
-                'records' => count($num)
-             )
-        );
-
+		if(is_array($num) && isset($num['num'])) {
+			$num = $num['num'];
+		} elseif(is_array($num)) {
+			$num = count($num);
+		}
+	
+       echo CJSON::encode(array(
+			//'greetingsHistory' => $canViewGreetingHistory,
+			'success' => true,
+			//'rows' => $items,
+			'total' => 1,
+			//'records' => $num
+			)
+		);
     }
     
     private function checkFilters($filters = false) {

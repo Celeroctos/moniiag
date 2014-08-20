@@ -119,6 +119,8 @@ class Doctor extends MisActiveRecord  {
 				'patient_day_from' => 'patient_day'
 			));
 		 }
+		$doctor->andWhere('dsbd.time_begin IS NOT NULL');
+		$doctor->andWhere('m.is_medworker = 1');
 		
 		$doctors = $doctor->queryAll();
 		$resultArr = array();
@@ -217,6 +219,9 @@ class Doctor extends MisActiveRecord  {
 				'patient_day_from' => 'patient_day'
 			));
 		 }
+		
+		$doctor->andWhere('dsbd.time_begin IS NOT NULL');
+		$doctor->andWhere('m.is_medworker = 1');
 		
 		$dateBegin = false;
 		$dateEnd = false;
