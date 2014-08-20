@@ -281,12 +281,12 @@ $(document).ready(function() {
 						}
 						
 						doctorName = data[i].last_name;
-						if (data[i].first_name!= '')
+						if (data[i].first_name!= '' && data[i].first_name!= null)
 						{
 							doctorName += ( ' '+data[i].first_name.substring(0,1) +'.' );
 						}
 
-						if (data[i].middle_name!= '')
+						if (data[i].middle_name!= '' && data[i].middle_name!=null)
 						{
 							doctorName += ( ' '+data[i].middle_name.substring(0,1) +'.' );
 						}
