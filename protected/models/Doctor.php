@@ -231,6 +231,7 @@ class Doctor extends MisActiveRecord  {
 		
 		$doctors = $doctor->queryAll();
 		$resultArr = array();
+		
 		foreach($doctors as $doctor) {
 			// Несуществующее отделение
 			if(!isset($resultArr[(string)$doctor['ward_id']])) {
