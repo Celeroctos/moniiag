@@ -214,6 +214,20 @@ class PrintController extends Controller {
         return $parts[2].'.'.$parts[1].'.'.$parts[0];
     }
 
+    public function actionGetRecommendationTemplatesInGreeting($greetingId)
+    {
+        echo CJSON::encode(array('success' => 'true',
+            'data' => MedcardElementForPatient::getRecommendationTemplatesInGreeting($greetingId)
+        ));
+        exit();
+    }
+
+    // Печать одного шаблона рекоммендаций
+    public function actionPrintOneRecommendationTemplate($greetingId,$templateId)
+    {
+
+    }
+
     // Печать результа приёма
 	public function actionPrintGreeting($greetingIn = false, $printRecom=false, $returnResult = false) {
         if($greetingIn === false && !isset($_GET['greetingid'])) {

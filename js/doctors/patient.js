@@ -86,6 +86,34 @@
         }
     }
 
+    // Функция печати и самого приёма и рекоммендаций (т.е. всего, что выбрано в поп-апе)
+    function printAllPopup()
+    {
+        // Если выбран "Приём" - запускаем печать приёма
+        if ( $('#greetingPrintNeed input[checked]').length>0 )
+        {
+            var id = $('#greetingId').val();
+            var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+            $(printWin).on('load',
+                function () {
+                    this.focus();
+                }
+
+            );
+        }
+
+        // Перебираем отмеченные шаблоны из рекоммендаций и по очереди вызываeм печать этих шаблонов
+        recommendationsChecboxes = $('#recommendationTemplatesPrintNeed input[checked]]');
+        for (i=0;i<recommendationsChecboxes.length;i++)
+        {
+            // Вызываем печать каждого шаблона рекоммендаций
+        }
+    }
+
+    $('#printPopupButton').on('click',function(e){
+        printAllPopup();
+    });
+
     function getNewHistory()
     {
         // Достанем номер карты
@@ -541,6 +569,8 @@ $('#printPopup .btn-success').on('click', function (e) {
     isThisPrint = false;
 });
 
+// Старый код, потом убрать
+/*
 // Печать листа приёма, само действие
 $('.print-greeting-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
@@ -568,6 +598,63 @@ $('.print-recomendation-link').on('print', function (e) {
 
     return false;
 });
+*/
+
+    function printDataToPrintPopup()
+    {
+        // Делаем синхронный Ajax-запрос, разбираем данные, которые он вернул и выводим в поп-ап
+        $.ajax({
+            'url': '/index.php/doctors/print/getrecommendationtemplatesingreeting?greetingId='  + $('#greetingId').val(),
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'async': false,
+            'success': function (data, textStatus, jqXHR) {
+                // Если true - то удаление произошло
+                if (data.success == true || data.success == 'true') {
+                    console.log(data);
+                    // Перебираем строки шаблона и выводим по чекбоксу для каждого шаблона
+                    templates = data.data;
+                    // Очистим блок с шаблонами
+                    $('#recommendationTemplatesPrintNeed p').empty();
+                    for (i=0;i<templates.length;i++)
+                    {
+                        newChecboxRow = $('<input type="checkbox" name="recTemplate'+ templates[i].template_id +'" value="'+
+                            templates[i].template_id
+                            +'">');
+                        /*$(newChecboxRow).text(
+                            templates[i].template_name
+                        );*/
+                        $('#recommendationTemplatesPrintNeed p').append(newChecboxRow);
+                        $('#recommendationTemplatesPrintNeed p').html(
+                            $('#recommendationTemplatesPrintNeed p').html() + templates[i].template_name+'<br>'
+                        );
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    $('.print-greeting-link').on('print', function (e) {
+        printDataToPrintPopup();
+        $('#greetingPrintNeed input').attr('checked', '');
+        // Отмечаем пункт "Приём", а остальные - нет
+        $('#whatPrinting').modal({});
+        return false;
+    });
+
+
+// Печать листа приёма, само действие
+    $('.print-recomendation-link').on('print', function (e) {
+        printDataToPrintPopup();
+        $('#greetingPrintNeed input').removeAttr('checked');
+        $('#recommendationTemplatesPrintNeed input').attr('checked', '');
+        // Отмечаем все пункты, кроме "Приём"
+        $('#whatPrinting').modal({});
+        return false;
+    });
 
 // Сохранение диагнозов
 $('#submitDiagnosis').on('click', function (e) {

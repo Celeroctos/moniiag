@@ -203,6 +203,27 @@ class MedcardElementForPatient extends MisActiveRecord {
 		}
 	}
 
+    // Выдаёт список шаблонов-рекоммендаций, которые поменяли за приём по номеру приёма
+    public static function getRecommendationTemplatesInGreeting($greetingId)
+    {
+        try {
+            $connection = Yii::app()->db;
+            $templates = $connection->createCommand()
+                ->selectDistinct('template_id, template_name')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('mep.greeting_id = :greetingId
+                        AND (NOT(template_id is NULL))
+                        AND template_page_id = 1',
+                        array(
+                            ':greetingId' => $greetingId
+                        )
+                );
+            return $templates->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
     public function getMaxHistoryPointId($element, $medcardId, $greetingId) {
         try {
