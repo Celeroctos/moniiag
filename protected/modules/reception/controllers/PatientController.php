@@ -1389,7 +1389,8 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientWithCardAdd'])) {
             $model->attributes = $_POST['FormPatientWithCardAdd'];
             if($model->validate()) {
-                $medcard = Medcard::model()->findByPk($_POST['FormPatientWithCardAdd']['cardNumber']);
+                $medcard = Medcard::model()->find('card_number = :card_number', array(':card_number' => $_POST['FormPatientWithCardAdd']['cardNumber']));
+
                 $this->addEditModelMedcard($medcard, $model);
 
                 if($model->privilege != -1) {
@@ -1481,7 +1482,7 @@ class PatientController extends Controller {
 
     // Добавление медкарты
     private function addEditModelMedcard($medcard, $model, $oms = false) {
-        // Добавление карты: нет id
+        // Добавление карты: нет id. 
         if($medcard->card_number == null) {
             $medcard->card_number = $this->getCardNumber();
             // Записываем текущую дату и ID пользователя, который создал медкарту
@@ -1490,6 +1491,7 @@ class PatientController extends Controller {
             $medcard->user_created = $record['employee_id'];
 
         }
+		
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
 		$medcard->address_str = $model->address;
@@ -1522,6 +1524,52 @@ class PatientController extends Controller {
                                      'error' => 'Произошла ошибка записи новой медкарты.'));
             exit();
         }
+		
+		// Теперь пишем в лог ЭМК. В том случае, если лог по пользователю есть (т.е. идёт перерегистрация), берём последний лог и изменяем его
+		$emklogOld = EmkLog::model()->getLastLogByPolicy($medcard->policy_id);
+
+		if($emklogOld != null) { // Принудительное обновление	
+			$emklogOld->enddate = date('Y-m-d');
+			if(!$emklogOld->save()) {
+				echo CJSON::encode(array('success' => true,
+										 'error' => 'Произошла ошибка обновления лога для медкарты.'));
+				exit();
+			}
+		}
+
+		$emklog = new EmkLog();
+		$emklog->card_number = $medcard->card_number;
+		$emklog->date_created = $medcard->date_created;
+		$emklog->user_created = $medcard->user_created;
+		$emklog->snils = $medcard->snils;
+		$emklog->address = $medcard->address;
+		$emklog->address_str = $medcard->address_str;
+		$emklog->address_reg = $medcard->address_reg;
+		$emklog->address_reg_str = $medcard->address_reg_str;
+		$emklog->doctype  = $medcard->doctype;
+		$emklog->serie = $medcard->serie;
+		$emklog->docnumber = $medcard->docnumber;
+		$emklog->invalid_group = $medcard->invalid_group;
+		$emklog->reg_date = $medcard->reg_date;
+		$emklog->work_place = $medcard->work_place;
+		$emklog->work_address = $medcard->work_address;
+		$emklog->post = $medcard->post;
+		$emklog->contact = $medcard->contact;
+		$emklog->profession = $medcard->profession;
+		$emklog->enterprise_id = $medcard->enterprise_id;
+		$emklog->policy_id = $medcard->policy_id;
+		// Новые поля, уникальные для emklog относительно медкарты
+		$emklog->medcard_id = $medcard->id; // Ссылка на карту
+		$emklog->user_changed = Yii::app()->user->id;
+		$emklog->startdate = date('Y-m-d');
+		$emklog->enddate = null;
+
+		if(!$emklog->save()) {
+            echo CJSON::encode(array('success' => true,
+                                     'error' => 'Произошла ошибка записи лога для новой медкарты.'));
+            exit();
+        }
+
         return $medcard;
     }
 
@@ -1567,8 +1615,6 @@ class PatientController extends Controller {
             $totalPages = 0;
         }
 
-        //var_dump($items);
-        //exit();
         echo CJSON::encode(
             array(
                 'success' => true,
@@ -1743,7 +1789,7 @@ class PatientController extends Controller {
 		} elseif(is_array($num)) {
 			$num = count($num);
 		}
-	
+
        echo CJSON::encode(array(
 			'greetingsHistory' => $canViewGreetingHistory,
 			'success' => true,
