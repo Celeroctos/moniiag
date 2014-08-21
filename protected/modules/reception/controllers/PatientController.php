@@ -1745,11 +1745,11 @@ class PatientController extends Controller {
 		}
 	
        echo CJSON::encode(array(
-			//'greetingsHistory' => $canViewGreetingHistory,
+			'greetingsHistory' => $canViewGreetingHistory,
 			'success' => true,
-			//'rows' => $items,
+			'rows' => $items,
 			'total' => 1,
-			//'records' => $num
+			'records' => $num
 			)
 		);
     }
