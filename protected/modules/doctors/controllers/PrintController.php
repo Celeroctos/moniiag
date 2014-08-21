@@ -222,12 +222,8 @@ class PrintController extends Controller {
         exit();
     }
 
-    // Печать одного шаблона рекоммендаций
-    public function actionPrintOneRecommendationTemplate($greetingId,$templateId)
-    {
-
-    }
-
+    // Старый код, убрать потом
+    /*
     // Печать результа приёма
 	public function actionPrintGreeting($greetingIn = false, $printRecom=false, $returnResult = false) {
         if($greetingIn === false && !isset($_GET['greetingid'])) {
@@ -372,7 +368,158 @@ class PrintController extends Controller {
                 'diagnosises' => $diagnosises
             );
 		}
+    }*/
+
+
+    // Печать результа приёма
+    public function actionPrintGreeting($greetingIn = false, $printRecom=false, $returnResult = false, $templateId=false) {
+        if($greetingIn === false && !isset($_GET['greetingid'])) {
+            exit('Ошибка: не выбран приём.');
+        } else {
+            $greetingId = $greetingIn !== false ? $greetingIn : $_GET['greetingid'];
+        }
+        // В противном случае, выбираем все элементы, изменённые во время приёма
+
+        $greeting = SheduleByDay::model()->findByPk($greetingId);
+        if($greeting == null) {
+            exit('Ошибка: такого приёма не существует!');
+        }
+
+        // Получим общую информацию о приёме
+        $doctor = Doctor::model()->findByPk($greeting['doctor_id']);
+        $greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+        // Найдём медкарту, а по ней и пациента
+        $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
+        $patient = Oms::model()->findByPk($medcard['policy_id']);
+        $greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
+        $greetingInfo['card_number'] = $greeting['medcard_id'];
+        $dateParts = explode('-', $greeting['patient_day']);
+        $greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
+
+        //var_dump($printRecom);
+        //exit();
+
+        if (!$printRecom)
+        {
+            $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
+        }
+        else
+        {
+            // $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId,false,'eq',true);
+            // Вызываем функцию, которая вернёт элементы по номеру шаблона
+            //   Поидее если у нас $printRecom = true, то templateId должен быть задан тоже
+            $changedElements = MedcardElementForPatient::model()->findGreetingTemplate($greetingId,$templateId);
+        }
+
+        //var_dump($changedElements );
+        //exit();
+
+        //  foreach ($changedElements as $oneEl)
+        //   {
+        //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
+        //      }
+//exit();
+        if(count($changedElements) == 0) {
+            // Единичная печать
+            if($greetingIn === false) {
+                //var_dump($changedElements);
+                //exit();
+
+                exit('Во время этого приёма не было произведено никаких изменений!');
+            } else {
+                return array();
+            }
+        }
+
+        // Создадим виджет
+        $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
+
+        //var_dump($changedElements);
+        //exit();
+
+        // Запихнём виджету те элементы, которые мы вытащили по приёму
+        $categorieWidget->setHistoryElements($changedElements);
+
+        // Провернём как в мясорубке элементы в этом виджете
+        $categorieWidget->makeTree('getTreeNodePrint');
+        $categorieWidget->sortTree();
+        // Теперь поделим категории
+        $categorieWidget->divideTreebyCats();
+
+        $sortedElements = $categorieWidget->dividedCats;
+
+        // Вытащим диагнозы
+        //var_dump($greetingId);
+        //exit();
+
+        $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
+        $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $cd = PatientDiagnosis::model()->findDiagnosis($greetingId, 2);
+        $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
+        $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
+        $noteDiagnosis = $greeting['note'];
+
+        //var_dump($cd);
+        //exit();
+
+        // Соберём их в об'ект
+        $diagnosises = array(
+            'primary' => $pd,
+            'secondary' => $sd,
+            'clinicalPrimary' => $cpd,
+            'clinicalSecondary' => $csd,
+            'complicating' => $cd,
+            'noteGreeting' => $noteDiagnosis
+        );
+
+        //var_dump($diagnosises );
+        //exit();
+
+        //var_dump($sortedElements);
+        //exit();
+        if($greetingIn === false) {
+            if(!$returnResult) {
+                $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
+
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+                $mPDF->WriteHTML($stylesheet, 1);
+
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.less');
+                $mPDF->WriteHTML($stylesheet, 1);
+
+
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
+                $mPDF->WriteHTML($stylesheet, 1);
+                $htmlForPdf =
+                    $this->render('greeting', array(
+                        'templates' => $sortedElements,
+                        'greeting' => $greetingInfo,
+                        'diagnosises' => $diagnosises
+                    ), true);
+                $mPDF->WriteHTML(
+                    $htmlForPdf
+                );
+
+                ob_end_clean();
+                $this->render('greetingpdf', array(
+                    'pdfContent' => $mPDF->Output()
+                ));
+            } else {
+                return array(
+                    'templates' => $sortedElements,
+                    'greeting' => $greetingInfo,
+                    'diagnosises' => $diagnosises
+                );
+            }
+        } else {
+            return array(
+                'templates' => $sortedElements,
+                'greeting' => $greetingInfo,
+                'diagnosises' => $diagnosises
+            );
+        }
     }
+
     // Массовая печать результатов приёма
     public function actionMassPrintGreetings() {
         if(!isset($_GET['greetingids'])) {
@@ -414,6 +561,8 @@ class PrintController extends Controller {
             'pdfContent' => $mPDF->Output()
         ));
     }
+
+
 
     // Получить данные для вьюхи
     public function actionMakePrintListView() {
