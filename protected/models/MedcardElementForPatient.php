@@ -345,15 +345,15 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
                 //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
-                ->where('mep.greeting_id = :greetingId AND mep.record_id = :recordId',
+                ->where('mep.greeting_id = :greetingId AND ( ((mep.record_id = :recordId) AND NOT (mep.element_id=-1) ) OR  ((mep.record_id = 1) AND (mep.element_id=-1) )  )',
                     array(
                         ':greetingId' => $greetingId,
                         ':recordId' => $medcardRecords[0]['record_id']
                     ))
                 ->order('element_id, history_id desc');
             $elements = $values->queryAll();
-            var_dump($elements );
-            exit();
+            //var_dump($elements );
+           // exit();
             return $elements;
         }
         catch(Exception $e)

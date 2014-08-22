@@ -90,7 +90,7 @@
     function printAllPopup()
     {
         // Если выбран "Приём" - запускаем печать приёма
-        if ( $('#greetingPrintNeed input[checked]').length>0 )
+        if ( $('#greetingPrintNeed input:checked').length>0 )
         {
             var id = $('#greetingId').val();
             var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
