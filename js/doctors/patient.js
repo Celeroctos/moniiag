@@ -103,16 +103,31 @@
         }
 
         // Перебираем отмеченные шаблоны из рекоммендаций и по очереди вызываeм печать этих шаблонов
-        recommendationsChecboxes = $('#recommendationTemplatesPrintNeed input[checked]]');
+        recommendationsChecboxes = $('#recommendationTemplatesPrintNeed input:checked');
         for (i=0;i<recommendationsChecboxes.length;i++)
         {
             // Вызываем печать каждого шаблона рекоммендаций
+            // Берём номер шаблона
+            templateId = recommendationsChecboxes[i].value;
+            printTemplateRecommendation(templateId);
         }
     }
 
     $('#printPopupButton').on('click',function(e){
         printAllPopup();
     });
+
+    function printTemplateRecommendation(templateNumber)
+    {
+        var id  = $('#greetingId').val();
+        var printWin = window.open('/index.php/doctors/print/printgreeting/?templateId='+ templateNumber +'&printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        $(printWin).on('load',
+            function () {
+                this.focus();
+            }
+
+        );
+    }
 
     function getNewHistory()
     {

@@ -321,10 +321,46 @@ class MedcardElementForPatient extends MisActiveRecord {
 
     public function findGreetingTemplate($greetingId, $templateId)
     {
-        // Выберем из таблицы medcard_records записи по приёму и номеру шаблона, отсортируем по record_id, выберем самую младшую
-        //    и по record_id этой записи выберем из таблицы элементов медкарты элементы медкарты, которые и вернём в конце функции
+        try{
+            // Выберем из таблицы medcard_records записи по приёму и номеру шаблона, отсортируем по record_id, выберем самую младшую
+            //    и по record_id этой записи выберем из таблицы элементов медкарты элементы медкарты, которые и вернём в конце функции
+            $connection = Yii::app()->db;
+            $records = $connection->createCommand()
+                ->select('mr.*')
+                ->from('mis.medcard_records mr')
+                //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
+                ->where('mr.greeting_id = :greetingId AND template_id = :templateId',
+                    array(
+                        ':greetingId' => $greetingId,
+                        ':templateId' => $templateId
+                    )
+                )
+                ->order('record_id desc');
+            $medcardRecords = $records->queryAll();
 
 
+            // Берём нулевую строку (первую)
+            //  Берём у неё record_id и по ней и приёму выбираем элементы медкарты
+            $values = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
+                ->where('mep.greeting_id = :greetingId AND mep.record_id = :recordId',
+                    array(
+                        ':greetingId' => $greetingId,
+                        ':recordId' => $medcardRecords[0]['record_id']
+                    ))
+                ->order('element_id, history_id desc');
+            $elements = $values->queryAll();
+            var_dump($elements );
+            exit();
+            return $elements;
+        }
+        catch(Exception $e)
+        {
+            var_dump($e);
+            exit();
+        }
     }
 
     // Найти все конечные состояния полей, изменённых во время приёма
