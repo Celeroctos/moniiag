@@ -391,6 +391,12 @@ class PrintController extends Controller {
         // Найдём медкарту, а по ней и пациента
         $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
         $patient = Oms::model()->findByPk($medcard['policy_id']);
+        $parts = explode('-', $patient['birthday']);
+
+        $greetingInfo['full_years'] = date('Y') - $parts[0];
+        //var_dump($greetingInfo['full_years'] );
+       // exit();
+        $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
         $greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
         $greetingInfo['card_number'] = $greeting['medcard_id'];
         $dateParts = explode('-', $greeting['patient_day']);
@@ -490,12 +496,29 @@ class PrintController extends Controller {
 
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
                 $mPDF->WriteHTML($stylesheet, 1);
-                $htmlForPdf =
-                    $this->render('greeting', array(
-                        'templates' => $sortedElements,
-                        'greeting' => $greetingInfo,
-                        'diagnosises' => $diagnosises
-                    ), true);
+                $htmlForPdf = '';
+
+                // Если печатаем рекомендации - печатаем их по-другому, в другой совершенно форме:
+                if ($printRecom)
+                {
+                    $htmlForPdf =
+                        $this->render('recommendationPdf', array(
+                            'templates' => $sortedElements,
+                            'greeting' => $greetingInfo,
+                            'diagnosises' => $diagnosises,
+                            'enterprise' => $enterprise
+                        ), true);
+                }
+                else
+                {
+                    $htmlForPdf =
+                        $this->render('greeting', array(
+                            'templates' => $sortedElements,
+                            'greeting' => $greetingInfo,
+                            'diagnosises' => $diagnosises
+                        ), true);
+                }
+
                 $mPDF->WriteHTML(
                     $htmlForPdf
                 );
