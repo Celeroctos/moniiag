@@ -12,7 +12,25 @@ $templatesIndex = $keysOfTemplates[0];
 <!-- Основной диагноз не выводим -->
 <!-- Выводим клинические диагнозы -->
 <?php
-    if (count($diagnosises['clinicalSecondary'])>0)
+
+    if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
+    {
+        ?><div style="margin:0px;"><strong><h3>Диагноз</h3></strong><?php
+        if (count($diagnosises['clinicalSecondary'])>0)
+        {
+            foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+            {
+                ?><br><strong> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+            }
+            if (strlen($diagnosises['noteGreeting'])>0)
+            {
+                ?><br><?php echo $diagnosises['noteGreeting']; ?><?php
+            }
+        }
+        ?></div><?php
+    }
+
+    /*if (count($diagnosises['clinicalSecondary'])>0)
     {
     ?><div style="margin:0px;"><strong><h3>Диагноз</h3></strong><?php
         foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
@@ -20,7 +38,9 @@ $templatesIndex = $keysOfTemplates[0];
             ?><br><strong> - <?php echo $oneDiagnosis['description']; ?></strong><?php
         }
         ?></div><?php
-    }
+    }*/
+
+
     // Пока я просто оставлю это здесь
    /* if (strlen($diagnosises['noteGreeting'])>0)
     {
@@ -29,6 +49,8 @@ $templatesIndex = $keysOfTemplates[0];
         ?></div><?php
     }*/
     // Дальше выводим тело шаблона
+
+
     foreach ($templates as $oneTemplate)
     {
 
