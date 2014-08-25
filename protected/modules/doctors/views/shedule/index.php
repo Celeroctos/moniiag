@@ -254,7 +254,9 @@
             foreach ($templatesList as $key => $template) {
                 ?>
                 <div>
-                    <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
+
+                    <?php
+                    $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
                         'currentPatient' => $currentPatient,
                         'templateType' => 0,
                         'templateId' => $template['id'],
@@ -475,8 +477,25 @@
             //exit();
 
             // В случае, если шаблоны рекоммендации вообще есть, нужно записать их номер и имя в шаблон
+            ?><p><a name="topRecomTemplates"></a></p>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs recomTemplatesListNav">
+                            <?php foreach($referenceTemplatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="rt<?php echo $template['id']; ?>">
+                                <strong><?php echo $template['name']; ?></strong>
+                            </a>
+                        </li>
+                        <?php
+                        $counter++;
+                    } ?>
+                </ul>
 
-
+            </div>
+            <?php
+            $counter = 0;
+            //var_dump($referenceTemplatesList);
+            //exit();
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
                 <div class="default-margin-top">
@@ -495,9 +514,27 @@
 					//	'form' => $formM
                     )); ?>
                 </div>
-            <?php }
+                <?php
+                $counter++;
+            }
 			//	$this->endWidget();
+            $counter = 0;
 			?>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs recomTemplatesListNav recomTemplatesListNavBottom">
+                    <?php foreach($referenceTemplatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="rt<?php echo $template['id']; ?>">
+                                <strong><?php echo $template['name']; ?></strong>
+                            </a>
+                        </li>
+                        <?php
+                        $counter++;
+                    } ?>
+                </ul>
+
+            </div>
+
         <?php } ?>
     <?php } ?>
 <?php } ?>
@@ -747,7 +784,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <p>Здравствуйте! Вы запустили службу печати приёма. Пожалуйста, отметьте - что вы хотите напечатать и нажмите на соответствующую кнопку</p>
+                    <p>Пожалуйста, отметьте - что вы хотите напечатать и нажмите на соответствующую кнопку</p>
                 </div>
                 <div class="row" id="greetingPrintNeed">
                     <p><input type="checkbox" name="greetingPrintNeed" value="-1">  Приём</p>
