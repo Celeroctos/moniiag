@@ -312,6 +312,7 @@
 					</div>
 				</div>
 			</div>
+            <div class="greetingHR"></div>
             <div id="accordionD" class="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
@@ -475,9 +476,8 @@
             //var_dump('-------');
             //var_dump($referenceTemplatesList);
             //exit();
-
-            // В случае, если шаблоны рекоммендации вообще есть, нужно записать их номер и имя в шаблон
-            ?><p><a name="topRecomTemplates"></a></p>
+            ?><div class="greetingHR"></div>
+            <p><a name="topRecomTemplates"></a></p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs recomTemplatesListNav">
                             <?php foreach($referenceTemplatesList as $key => $template) { ?>
