@@ -561,6 +561,22 @@ $('select[multiple="multiple"]').each(function(index, select) {
 		})
 	);
  }
+
+    // Кнопка печати слева
+    if($('#printContentButton').length > 0) {
+        $('.buttonUpContainer').append($('#printContentButton').clone().prop({
+            'id' : 'sidePrintContentButton',
+            'value' : 'Печать',
+            'title' : 'Распечатать приём'
+        }).css(
+            {
+                'marginTop': '3px',
+                'width' : '85px',
+                'marginLeft' : '8px'
+            })
+        );
+    }
+
  $('.buttonUpContainer').click(function () {
  // Смотрим - есть ли у this класс "backWardButton"
  if ($(this).hasClass('backWardButton'))

@@ -573,7 +573,7 @@ $('#successEditPopup').on('hidden.bs.modal', function (e) {
     }
 });
 
-$(document).on('click', '#printContentButton', function () {
+$(document).on('click', '#printContentButton, #sidePrintContentButton', function () {
    // $('#printContentButton').trigger('begin');
     $('.print-greeting-link').click();
 

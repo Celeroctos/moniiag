@@ -214,22 +214,35 @@
     if ($currentPatient !== false) {
         if ($templatesChoose == 0) {
             $counter = 0;
-    ?>
+    ?><p><a name="topMainTemplates"></a></p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs templatesListNav">
                     <?php foreach($templatesList as $key => $template) { ?>
                         <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
                             <a href="#" id="t<?php echo $template['id']; ?>">
-                                <strong>
-                                    <?php echo $template['name']; ?>
-                                </strong>
+                                <strong><?php echo $template['name']; ?></strong>
                             </a>
                         </li>
                     <?php
                         $counter++;
                     } ?>
                 </ul>
+
             </div>
+            <script>
+                //oldAddress = document.location.href;
+
+                //document.location.href=document.location.href+'#topMainTemplates';
+               // window.scrollBy(0,-50);
+                destinationAnchor = $('a[name=topMainTemplates]');
+                if (destinationAnchor!=undefined)
+                {
+                    destination = $(destinationAnchor)[0].offsetTop;
+                    $('body,html').animate({
+                        scrollTop: destination
+                    }, 599);
+                }
+            </script>
             <script type="text/javascript">
                 if (globalVariables.elementsDependences == undefined)
                 {
