@@ -466,6 +466,7 @@
                     </div>
                 </div>
             </div>
+            <div class="greetingHR"></div>
 			  <?php
             echo CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $currentSheduleId,
                 array('title' => 'Печать рекомендаций',
@@ -476,7 +477,7 @@
             //var_dump('-------');
             //var_dump($referenceTemplatesList);
             //exit();
-            ?><div class="greetingHR"></div>
+            ?>
             <p><a name="topRecomTemplates"></a></p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs recomTemplatesListNav">
