@@ -16,6 +16,8 @@ $templatesIndex = $keysOfTemplates[0];
 if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
     ?><div><span style="font-size:16px;"><strong>Диагноз</strong></span><?php
+    var_dump($diagnosises);
+    exit();
     if (count($diagnosises['clinicalSecondary'])>0)
     {
         foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
