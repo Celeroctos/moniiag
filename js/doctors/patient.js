@@ -573,10 +573,15 @@ $('#successEditPopup').on('hidden.bs.modal', function (e) {
     }
 });
 
-$(document).on('click', '#printContentButton, #sidePrintContentButton', function () {
+/*$(document).on('click', '#printContentButton, #sidePrintContentButton', function () {
    // $('#printContentButton').trigger('begin');
     $('.print-greeting-link').click();
+});*/
 
+$('#printContentButton, #sidePrintContentButton').on('click', function (e) {
+        // $('#printContentButton').trigger('begin');
+        $('.print-greeting-link').click();
+    e.stopPropagation();
 });
 
 $('#printPopup .btn-success').on('click', function (e) {
