@@ -108,4 +108,5 @@ foreach ($templates as $oneTemplate)
 }
 ?>
 <!-- Выведем ФИО врача -->
-<br/><br/><strong><span style="font-size:14px;">Врач: <?php echo $greeting['doctor_fio'];  ?></span></strong>
+<br/><br/><strong><span style="font-size:14px;">Врач: <?php  echo $greeting['doctor_fio'].' '.$greeting['doctor_fio'];  ?></span></strong>
+<!--?php exit();
