@@ -487,6 +487,11 @@ class PrintController extends Controller {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
 
+                if ($printRecom)
+                {
+                    $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0,'',8,8,8,8,8,8);
+                }
+
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
                 $mPDF->WriteHTML($stylesheet, 1);
 

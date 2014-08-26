@@ -1,12 +1,11 @@
 <!-- Шапка -->
 <?php echo $enterprise['fullname']; ?><br>
-<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?></nobr><br>
-<nobr>Колцентр тел.: +7-495-1236013</nobr>
+<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?>&nbsp;&nbsp;&nbsp;Колцентр тел.: +7-495-1236013</nobr><br>
 <br/><br/>
 <h3 style="text-align: center;">ЗАКЛЮЧЕНИЕ ОТ <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h3>
 <br/>
 <div class="header">
-    <h3><?php echo $greeting['patient_fio']; ?>, <?php echo $greeting['full_years'];
+    <span style="font-weight: bold;font-size: 16px;"><?php echo $greeting['patient_fio']; ?>, <?php echo $greeting['full_years'];
         // Вычисляем как просклонять слово "года" для возраста данного пациента
         if ($greeting['full_years'] % 10 == 1)
         {
@@ -25,7 +24,7 @@
 
         }
 
-        ?></h3>
+        ?></span>
 </div>
 <?php $keysOfTemplates = array_keys($templates);
 $templatesIndex = $keysOfTemplates[0];
@@ -37,22 +36,20 @@ $templatesIndex = $keysOfTemplates[0];
 
 if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
-    ?><div><span style="font-size:16px;"><strong>Диагноз</strong></span><?php
-    //var_dump($diagnosises);
-    //exit();
-    if (count($diagnosises['clinicalSecondary'])>0)
-    {
-        foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
-        {
-            ?><br><strong> - <?php echo $oneDiagnosis['description']; ?></strong><?php
-        }
-    }
+
+    ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
     if (strlen($diagnosises['noteGreeting'])>0)
     {
-
-            ?><br><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
+        ?><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
     }
-
+    if (count($diagnosises['clinicalSecondary'])>0)
+    {
+        $wasPrintedDiag = false;
+        foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+        {
+            ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+        }
+    }
     ?></div><?php
 }
 ?><!--br/--><?php
