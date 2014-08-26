@@ -2,11 +2,11 @@
 <?php echo $enterprise['fullname']; ?><br>
 <nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?></nobr><br>
 <nobr>Колцентр тел.: +7-495-1236013</nobr>
-<br/>
-<h4 style="text-align: center;">ЗАКЛЮЧЕНИЕ ОТ <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h4>
+<br/><br/>
+<h3 style="text-align: center;">ЗАКЛЮЧЕНИЕ ОТ <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h3>
 <br/>
 <div class="header">
-    <h3><?php echo $greeting['patient_fio']; ?> - <?php echo $greeting['full_years'];
+    <h3><?php echo $greeting['patient_fio']; ?>, <?php echo $greeting['full_years'];
         // Вычисляем как просклонять слово "года" для возраста данного пациента
         if ($greeting['full_years'] % 10 == 1)
         {
@@ -53,7 +53,7 @@ if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteG
 
     ?></div><?php
 }
-?><br/><?php
+?><!--br/--><?php
 /*if (count($diagnosises['clinicalSecondary'])>0)
 {
 ?><div style="margin:0px;"><strong><h3>Диагноз</h3></strong><?php
@@ -83,7 +83,7 @@ foreach ($templates as $oneTemplate)
     foreach($oneTemplate['cats']  as $index => $categorie)
     {
         ?>
-        <div style="margin-left:5px;">
+        <div style="margin-left:5px; margin-top:0px;">
             <?php
             if ($wasFirstCategoryPrint==true)
             {
@@ -110,3 +110,4 @@ foreach ($templates as $oneTemplate)
 ?>
 <!-- Выведем ФИО врача -->
 <br/><br/><strong><span style="font-size:14px;">Врач: <?php echo $greeting['doctor_fio'];  ?></span></strong>
+<!--?php exit();
