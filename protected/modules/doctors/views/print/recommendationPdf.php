@@ -1,17 +1,39 @@
 <!-- Шапка -->
 <?php echo $enterprise['fullname']; ?><br>
-<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?></nobr>
+<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?></nobr><br>
+<nobr>Колцентр тел.: +7-495-1236013</nobr>
+<br/>
+<h4 style="text-align: center;">ЗАКЛЮЧЕНИЕ ОТ <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h4>
+<br/>
 <div class="header">
-    <h3>Пациент <?php echo $greeting['patient_fio']; ?> - Возраст: <?php echo $greeting['full_years']; ?></h3>
+    <h3><?php echo $greeting['patient_fio']; ?> - <?php echo $greeting['full_years'];
+        // Вычисляем как просклонять слово "года" для возраста данного пациента
+        if ($greeting['full_years'] % 10 == 1)
+        {
+            echo " год";
+        }
+        else
+        {
+            if ( ($greeting['full_years'] % 10>=2) && ($greeting['full_years'] % 10<=4))
+            {
+                echo " года";
+            }
+            else
+            {
+                echo " лет";
+            }
+
+        }
+
+        ?></h3>
 </div>
 <?php $keysOfTemplates = array_keys($templates);
 $templatesIndex = $keysOfTemplates[0];
 ?>
-<!-- Название шаблона (берём первый шаблон)-->
-<h4><?php echo $templates[$templatesIndex ]['name']; ?> от <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h4>
-<!-- Основной диагноз не выводим -->
-<!-- Выводим клинические диагнозы -->
+<br/>
 <?php
+//var_dump($diagnosises['noteGreeting']);
+//exit();
 
 if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
@@ -22,14 +44,16 @@ if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteG
         {
             ?><br><strong> - <?php echo $oneDiagnosis['description']; ?></strong><?php
         }
-        if (strlen($diagnosises['noteGreeting'])>0)
-        {
-            ?><br><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
-        }
     }
+    if (strlen($diagnosises['noteGreeting'])>0)
+    {
+
+            ?><br><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
+    }
+
     ?></div><?php
 }
-
+?><br/><?php
 /*if (count($diagnosises['clinicalSecondary'])>0)
 {
 ?><div style="margin:0px;"><strong><h3>Диагноз</h3></strong><?php
@@ -50,20 +74,31 @@ if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteG
  }*/
 // Дальше выводим тело шаблона
 
-
+// Флаг о том, что была отпечатана первая категория.
+//   Сделано для того, чтобы не печатать название первой категории
+$wasFirstCategoryPrint = false;
 foreach ($templates as $oneTemplate)
 {
 
     foreach($oneTemplate['cats']  as $index => $categorie)
     {
         ?>
-        <div style="margin-left:20px;">
-            <strong style="text-decoration: underline"><?php echo $categorie['element']['name']; ?></strong>
+        <div style="margin-left:5px;">
+            <?php
+            if ($wasFirstCategoryPrint==true)
+            {
+                ?>
+                <strong style="text-decoration: underline"><?php echo $categorie['element']['name']; ?></strong>
+                <?php
+            }
+            ?>
+            <?php $wasFirstCategoryPrint  = true;?>
             <p class ="print-elements">
                 <?php
                 // Вызываем виджет категории
                 $printCategorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
-                    'categoryToPrint' => $categorie
+                    'categoryToPrint' => $categorie,
+                    'ignoreBrSettings' => true
                 ));
                 $printCategorieWidget->run();
                 ?>
@@ -74,4 +109,4 @@ foreach ($templates as $oneTemplate)
 }
 ?>
 <!-- Выведем ФИО врача -->
-<strong><span style="font-size:14px;">Врач: <?php echo $greeting['doctor_fio'];  ?></span></strong>
+<br/><br/><strong><span style="font-size:14px;">Врач: <?php echo $greeting['doctor_fio'];  ?></span></strong>

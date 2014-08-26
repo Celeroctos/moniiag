@@ -345,7 +345,8 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
                 //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
-                ->where('mep.greeting_id = :greetingId AND ( ((mep.record_id = :recordId) AND NOT (mep.element_id=-1) ) OR  ((mep.record_id = 1) AND (mep.element_id=-1) )  )',
+                //->where('mep.greeting_id = :greetingId AND ( ((mep.record_id = :recordId) AND NOT (mep.element_id=-1) ) OR  ((mep.record_id = 1) AND (mep.element_id=-1) )  )',
+                                ->where('mep.greeting_id = :greetingId AND ( ((mep.record_id = :recordId) AND NOT (mep.element_id=-1) ) OR  (mep.element_id=-1) )',
                     array(
                         ':greetingId' => $greetingId,
                         ':recordId' => $medcardRecords[0]['record_id']
