@@ -40,20 +40,7 @@
                 numCalls = 0;
                 getNewHistory();
                 if (isThisPrint) {
-                    if (printHandler == 'print-greeting-link') {
-                        $('.activeGreeting .' + printHandler).trigger('print');
-                        //  $('#printContentButton').trigger('end');
-                    }
-                    else {
-                        if (printHandler == 'print-recomendation-link') {
-                            $('.' + printHandler).trigger('print');
-                        }
-                        else {
-                            // Закрываем приём
-                            $('.' + printHandler).trigger('accept');
-                        }
-                    }
-
+                    onSaveComplete();
                 }
                 else {
                     //  $('#medcardContentSave').trigger('end');
@@ -129,6 +116,23 @@
             }
 
         );
+    }
+
+    function onSaveComplete()
+    {
+        if (printHandler == 'print-greeting-link') {
+            $('.activeGreeting .' + printHandler).trigger('print');
+            //  $('#printContentButton').trigger('end');
+        }
+        else {
+            if (printHandler == 'print-recomendation-link') {
+                $('.' + printHandler).trigger('print');
+            }
+            else {
+                // Закрываем приём
+                $('.' + printHandler).trigger('accept');
+            }
+        }
     }
 
     function getNewHistory()
@@ -232,68 +236,76 @@
         $('#errorPopup .modal-body .row').html("");
         // Перебираем формы
 
-        for (i = 0; i < buttonsContainers.length; i++) {
-            // Имеем i-тую форму, контролы которой надо провалидировать
-            var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').filter(function(index) {
-                return $(this).parents('#patient-medcard-edit-form').length == 0
-                    && $(this).parents('#add-greeting-value-form') == 0
-                    && $(this).parents('#add-value-form') == 0;
-                    // Чтобы не попало окно с данными медкарты и добавления
-            }).has('label span.required');
+        // Если кнопок нет - сразу вызываем функцию
+        if (buttonsContainers.length==0)
+        {
+            onSaveComplete();
+        }
+        else
+        {
 
-            for (j = 0; j < controlElements.length; j++) {
-                // Внутри контейнера с контролом ищу сам контрол
-                var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number], textarea, select');
-                // Проверим - есть ли данного контрола значение
-                if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
-                    isError = true;
-                    $(oneControlElement[0]).animate({
-                        backgroundColor: "rgb(255, 196, 196)"
-                    });
-                    // В следующий раз, когда значение у контрола поменяется - надо сбросить css-совйсто
-                    $(oneControlElement[0]).one('change', function () {
-                        $(this).css('background-color', '');
-                    });
-                    // И на keydown тоже самое поставим
-                    $(oneControlElement[0]).one('keydown', function () {
-                        $(this).css('background-color', '');
-                    });
+            for (i = 0; i < buttonsContainers.length; i++) {
+                // Имеем i-тую форму, контролы которой надо провалидировать
+                var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').filter(function(index) {
+                    return $(this).parents('#patient-medcard-edit-form').length == 0
+                        && $(this).parents('#add-greeting-value-form') == 0
+                        && $(this).parents('#add-value-form') == 0;
+                        // Чтобы не попало окно с данными медкарты и добавления
+                }).has('label span.required');
 
-                    // Вытащим метку данного элемента
-                    var labelOfControl = ($(controlElements[j]).find('label').text()).trim();
-                    // Вытащим заголовок категории, чтобы указать место, где заполнять
-                    var categorieTitle = $(oneControlElement).parents('.accordion');
+                for (j = 0; j < controlElements.length; j++) {
+                    // Внутри контейнера с контролом ищу сам контрол
+                    var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number], textarea, select');
+                    // Проверим - есть ли данного контрола значение
+                    if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
+                        isError = true;
+                        $(oneControlElement[0]).animate({
+                            backgroundColor: "rgb(255, 196, 196)"
+                        });
+                        // В следующий раз, когда значение у контрола поменяется - надо сбросить css-совйсто
+                        $(oneControlElement[0]).one('change', function () {
+                            $(this).css('background-color', '');
+                        });
+                        // И на keydown тоже самое поставим
+                        $(oneControlElement[0]).one('keydown', function () {
+                            $(this).css('background-color', '');
+                        });
 
-                    // Если последний символ в строке звёздочка - обрезаем её
-                    if (labelOfControl[labelOfControl.length - 1] == '*') {
-                        labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
+                        // Вытащим метку данного элемента
+                        var labelOfControl = ($(controlElements[j]).find('label').text()).trim();
+                        // Вытащим заголовок категории, чтобы указать место, где заполнять
+                        var categorieTitle = $(oneControlElement).parents('.accordion');
+
+                        // Если последний символ в строке звёздочка - обрезаем её
+                        if (labelOfControl[labelOfControl.length - 1] == '*') {
+                            labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
+                        }
+                        labelOfControl = labelOfControl.trim();
+                        // Если последний символ в строке двоеточие - обрезаем его
+                        if (labelOfControl[labelOfControl.length - 1] == ':') {
+                            labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
+                        }
+                        // Добавим в поп-ап сообщение из ошибки
+                        $('#errorPopup .modal-body .row').append("<p>" + 'Поле \"' + labelOfControl + '\" должно быть заполнено' + "</p>")
                     }
-                    labelOfControl = labelOfControl.trim();
-                    // Если последний символ в строке двоеточие - обрезаем его
-                    if (labelOfControl[labelOfControl.length - 1] == ':') {
-                        labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
-                    }
-                    // Добавим в поп-ап сообщение из ошибки
-                    $('#errorPopup .modal-body .row').append("<p>" + 'Поле \"' + labelOfControl + '\" должно быть заполнено' + "</p>")
                 }
             }
-        }
 
-        // Если есть ошибки
-        if (isError) {
-            // Показываем поп-ап с ошибками
-			if(showMsgs) {
-				$('#errorPopup').modal({});
-			}
-            // Давим событие нажатия клавиши
-            return false;
+            // Если есть ошибки
+            if (isError) {
+                // Показываем поп-ап с ошибками
+                if(showMsgs) {
+                    $('#errorPopup').modal({});
+                }
+                // Давим событие нажатия клавиши
+                return false;
+            }
+            else {
+                // Вызываем сабмит всех кнопок
+                $(buttons).find('input[type="submit"]').click();
+                $('#submitDiagnosis').click();
+            }
         }
-        else {
-            // Вызываем сабмит всех кнопок
-            $(buttons).find('input[type="submit"]').click();
-            $('#submitDiagnosis').click();
-        }
-
     }
 
     $("#date-cont").on('changeDate', function (e) {
