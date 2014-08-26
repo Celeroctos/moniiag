@@ -1037,7 +1037,8 @@ class CategorieViewWidget extends CWidget {
         //var_dump("!");
         //exit();
         //var_dump($historyElement);
-		if ($historyElement['element_id'] == -1)
+		//exit();
+        if ($historyElement['element_id'] == -1)
 		{
            // var_dump("!");
            // exit();

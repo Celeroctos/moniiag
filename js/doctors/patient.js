@@ -84,6 +84,8 @@
             $(printWin).on('load',
                 function () {
                     this.focus();
+                    //window.print();
+                   // printWin.print();
                 }
 
             );
