@@ -38,8 +38,10 @@
     'value' => $templateId
     )); ?>
 
-<?php if(!$this->previewMode && $this->templateType == 0) { ?>
-<div <?php echo !$isActiveTemplate ? 'class="no-display"' : ''; ?> id="tab<?php echo $templateId; ?>">
+<?php
+    if(!$this->previewMode /*&& $this->templateType == 0*/) {
+    ?>
+<div <?php echo !$isActiveTemplate ? 'class="no-display"' : ''; ?> id="<?php  echo ($this->templateType==1) ? 'r' : ''; ?>tab<?php echo $templateId; ?>">
 <?php } ?>
     <?php
 
@@ -50,7 +52,9 @@
             $this->drawCategorie($categorie, $form, $model, $lettersInPixel, $templatePrefix);
         }
     } ?>
-<?php if(!$this->previewMode && $this->templateType == 0) { ?>
+<?php
+if(!$this->previewMode /*&& $this->templateType == 0*/) {
+    ?>
 </div>
 <?php } ?>
 <?php if(!$withoutSave && Yii::app()->user->checkAccess('canSaveMedcardMovement')) { ?>

@@ -807,6 +807,8 @@ class CategorieViewWidget extends CWidget {
 		//var_dump($this->historyTree);
 		//exit();
 		$num = 0;
+        //var_dump($this->historyTree);
+        //exit();
     	foreach ($this->historyTree as $nodeTopLevel)
     	{
 			// Возьмём элемент массива element и прочитаем у 
@@ -1032,8 +1034,16 @@ class CategorieViewWidget extends CWidget {
 	private function getTreeNodePrint($historyElement)
 	{
 		$nodeContent = array();
-		if ($historyElement['element_id'] == -1)
+        //var_dump("!");
+        //exit();
+        //var_dump($historyElement);
+		//exit();
+        if ($historyElement['element_id'] == -1)
 		{
+           // var_dump("!");
+           // exit();
+            //var_dump($historyElement);
+            //exit();
 			$nodeContent['name'] = $historyElement['categorie_name'];
 			$nodeContent['template_id'] = $historyElement['template_id'];
 			$nodeContent['template_name'] = $historyElement['template_name'];

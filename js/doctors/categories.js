@@ -154,16 +154,28 @@ $(document).ready(function() {
         console.log(heightDifference);
         console.log('ScrollTOp до '+$(document).scrollTop());
 
+
         if ( ($(this).parents('.templatesListNav').hasClass('templatesListNavBottom'))  )
         {
-            if (heightDifference>0)
+
+            destinationAnchor = $('a[name=topMainTemplates]');
+            if (destinationAnchor!=undefined)
+            {
+                destination = $(destinationAnchor)[0].offsetTop;
+                $('body,html').animate({
+                    scrollTop: destination
+                }, 599);
+            }
+
+            // Старый код. Скорее всего не понадобится
+            /*  if (heightDifference>0)
             {
                 $(document).scrollTop($(document).scrollTop()+heightDifference);
             }
             else
             {
                 $(document).scrollTop(   $(document).height() -  scrollHeightTopDifference );
-            }
+            }*/
         }
 
         console.log('ScrollTOp после '+$(document).scrollTop());
@@ -183,4 +195,61 @@ $(document).ready(function() {
             $(tabs[i]).tab('show');
         }
     });
+
+    $('.recomTemplatesListNav a').click(function (e) {
+        e.preventDefault();
+        var tabId = $(this).prop('id').substr(2);
+        //heightBefore = $(document).height();
+        //scrollHeightTopDifference = $(document).height() - $(document).scrollTop();
+        //console.log('Высота сначала '+$(document).height());
+        $('form#template-edit-form').find('[id^=rtab]').addClass('no-display');
+        $('form#template-edit-form').find('#rtab' + tabId).removeClass('no-display').show(500);
+        //console.log('Высота потом '+$(document).height());
+        //heightAfter = $(document).height();
+        //heightDifference = heightAfter - heightBefore;
+        //console.log(heightDifference);
+        //console.log('ScrollTOp до '+$(document).scrollTop());
+
+
+        if ( ($(this).parents('.recomTemplatesListNav').hasClass('recomTemplatesListNavBottom'))  )
+        {
+
+            destinationAnchor = $('a[name=topRecomTemplates]');
+            if (destinationAnchor!=undefined)
+            {
+                destination = $(destinationAnchor)[0].offsetTop;
+                $('body,html').animate({
+                    scrollTop: destination
+                }, 599);
+            }
+
+            // Старый код. Скорее всего не понадобится
+            /*  if (heightDifference>0)
+             {
+             $(document).scrollTop($(document).scrollTop()+heightDifference);
+             }
+             else
+             {
+             $(document).scrollTop(   $(document).height() -  scrollHeightTopDifference );
+             }*/
+        }
+
+        //console.log('ScrollTOp после '+$(document).scrollTop());
+        // Теперь нужно сдвинуть scrollTop в плюс на разницу heightDifference
+
+
+        //$(this).tab('show')
+
+        /*allTabs = $('templatesListNav a[id^=t]');
+         // Снимаем всем класс active
+         $(allTabs).parents('li').removeClass('active');
+
+         return;*/
+        tabs = $('[id=rt'+ tabId +']');
+        for (i=0;i<tabs.length;i++)
+        {
+            $(tabs[i]).tab('show');
+        }
+    });
+
 });
