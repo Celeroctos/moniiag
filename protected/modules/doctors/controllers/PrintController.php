@@ -387,6 +387,19 @@ class PrintController extends Controller {
 
         // Получим общую информацию о приёме
         $doctor = Doctor::model()->findByPk($greeting['doctor_id']);
+        //var_dump($doctor);
+        //exit();
+        // Вытащим специальность врача
+        $speciality = Medworker::model()->findByPk($doctor['post_id']);
+        if (isset($speciality['name']))
+        {
+            $greetingInfo['doctor_spec'] = $speciality['name'];
+        }
+        else
+        {
+            $greetingInfo['doctor_spec'] = '';
+        }
+
         $greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
         // Найдём медкарту, а по ней и пациента
         $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
