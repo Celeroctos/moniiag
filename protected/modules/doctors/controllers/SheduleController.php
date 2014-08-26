@@ -385,31 +385,13 @@ class SheduleController extends Controller {
         return $date;
     }
 
-	private function getNewRecordState($historyCategorieElement, $value, $recordId )
+	private function stepToNextState($historyCategorieElement, $value, $recordId )
 	{
-		$historyCategorieElementNext = new MedcardElementForPatient();
-        $historyCategorieElementNext->value = $value;
-        $historyCategorieElementNext->history_id = $historyCategorieElement['history_id'] + 1;
-		$historyCategorieElementNext->is_record = 1;
-		$historyCategorieElementNext->record_id = $recordId + 1;
-        $historyCategorieElementNext->medcard_id = $historyCategorieElement['medcard_id'];
-		$historyCategorieElementNext->template_page_id= $historyCategorieElement['template_page_id'];
-        $historyCategorieElementNext->greeting_id = $historyCategorieElement['greeting_id'];
-        $historyCategorieElementNext->categorie_name = $historyCategorieElement['categorie_name'];
-        $historyCategorieElementNext->path = $historyCategorieElement['path'];
-        $historyCategorieElementNext->is_wrapped = $historyCategorieElement['is_wrapped'];
-        $historyCategorieElementNext->categorie_id = $historyCategorieElement['categorie_id'];
-        $historyCategorieElementNext->element_id = $historyCategorieElement['element_id'];
-        $historyCategorieElementNext->label_before = $historyCategorieElement['label_before'];
-        $historyCategorieElementNext->label_after = $historyCategorieElement['label_after'];
-        $historyCategorieElementNext->size = $historyCategorieElement['size'];
-		$historyCategorieElementNext->change_date = date('Y-m-d H:i');		
-        $historyCategorieElementNext->type = $historyCategorieElement['type'];
-		$historyCategorieElementNext->allow_add = $historyCategorieElement['allow_add'];
-        $historyCategorieElementNext->guide_id = $historyCategorieElement['guide_id'];
-        $historyCategorieElementNext->config = $historyCategorieElement['config'];
-				
-		return $historyCategorieElementNext;
+        $historyCategorieElement->value = $value;
+        $historyCategorieElement->history_id = $historyCategorieElement->history_id + 1;
+		$historyCategorieElement->is_record = 1;
+		$historyCategorieElement->record_id = $recordId + 1;
+		$historyCategorieElement->change_date = date('Y-m-d H:i');
 	}
 
     // Редактирование данных пациента
@@ -474,15 +456,9 @@ class SheduleController extends Controller {
             }
             else
             {
-               /* if ($_POST['FormTemplateDefault']['templateId']=='10')
-                {
-                    var_dump(  CJSON::decode('[]')  );
-                    exit();
-                }*/
                 // Сначала раскодируем из JSON значени (во всяком случае попробуем)
                 $decodedObject = CJSON::decode($value);
                 // Если мы что-то получили - проверим на пустоту объект
-               // if ($decodedObject != NULL)
                 if (!is_null($decodedObject))
                 {
                     if (count($decodedObject)!=0)
@@ -520,8 +496,6 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-        //if (count($pathsOfElements)>0)
-        //{
             $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
             (
                         $_POST['FormTemplateDefault']['greetingId'],
@@ -538,22 +512,13 @@ class SheduleController extends Controller {
                 if(is_array($value)) {
                     $value = CJSON::encode($value);
                 }
-                //var_dump($pathsToFields);
-               // exit();
-
-                /*if (!isset($historyElementsPaths[$pathsToFields[$field]]))
-                {
-                    var_dump($historyElementsPaths);
-                    var_dump($pathsToFields);
-                    var_dump($pathsOfElements);
-                    exit();
-                }*/
 
                 $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
-                $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
+                //$historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
+                $this->stepToNextState($historyCategorieElement, $value, $recordId );
 
                 $answerCurrentDate = true;
-                if(!$historyCategorieElementNext->save())
+                if(!$historyCategorieElement->save())
                 {
                     ob_end_clean();
                     echo CJSON::encode(array('success' => true,
