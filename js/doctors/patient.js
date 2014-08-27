@@ -40,20 +40,7 @@
                 numCalls = 0;
                 getNewHistory();
                 if (isThisPrint) {
-                    if (printHandler == 'print-greeting-link') {
-                        $('.activeGreeting .' + printHandler).trigger('print');
-                        //  $('#printContentButton').trigger('end');
-                    }
-                    else {
-                        if (printHandler == 'print-recomendation-link') {
-                            $('.' + printHandler).trigger('print');
-                        }
-                        else {
-                            // Закрываем приём
-                            $('.' + printHandler).trigger('accept');
-                        }
-                    }
-
+                    onSaveComplete();
                 }
                 else {
                     //  $('#medcardContentSave').trigger('end');
@@ -83,6 +70,68 @@
             }
         } else {
 
+        }
+    }
+
+    // Функция печати и самого приёма и рекоммендаций (т.е. всего, что выбрано в поп-апе)
+    function printAllPopup()
+    {
+        // Если выбран "Приём" - запускаем печать приёма
+        if ( $('#greetingPrintNeed input:checked').length>0 )
+        {
+            var id = $('#greetingId').val();
+            var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+            $(printWin).on('load',
+                function () {
+                    this.focus();
+                    //window.print();
+                   // printWin.print();
+                }
+
+            );
+        }
+
+        // Перебираем отмеченные шаблоны из рекоммендаций и по очереди вызываeм печать этих шаблонов
+        recommendationsChecboxes = $('#recommendationTemplatesPrintNeed input:checked');
+        for (i=0;i<recommendationsChecboxes.length;i++)
+        {
+            // Вызываем печать каждого шаблона рекоммендаций
+            // Берём номер шаблона
+            templateId = recommendationsChecboxes[i].value;
+            printTemplateRecommendation(templateId);
+        }
+    }
+
+    $('#printPopupButton').on('click',function(e){
+        printAllPopup();
+    });
+
+    function printTemplateRecommendation(templateNumber)
+    {
+        var id  = $('#greetingId').val();
+        var printWin = window.open('/index.php/doctors/print/printgreeting/?templateId='+ templateNumber +'&printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        $(printWin).on('load',
+            function () {
+                this.focus();
+            }
+
+        );
+    }
+
+    function onSaveComplete()
+    {
+        if (printHandler == 'print-greeting-link') {
+            $('.activeGreeting .' + printHandler).trigger('print');
+            //  $('#printContentButton').trigger('end');
+        }
+        else {
+            if (printHandler == 'print-recomendation-link') {
+                $('.' + printHandler).trigger('print');
+            }
+            else {
+                // Закрываем приём
+                $('.' + printHandler).trigger('accept');
+            }
         }
     }
 
@@ -187,68 +236,76 @@
         $('#errorPopup .modal-body .row').html("");
         // Перебираем формы
 
-        for (i = 0; i < buttonsContainers.length; i++) {
-            // Имеем i-тую форму, контролы которой надо провалидировать
-            var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').filter(function(index) {
-                return $(this).parents('#patient-medcard-edit-form').length == 0
-                    && $(this).parents('#add-greeting-value-form') == 0
-                    && $(this).parents('#add-value-form') == 0;
-                    // Чтобы не попало окно с данными медкарты и добавления
-            }).has('label span.required');
+        // Если кнопок нет - сразу вызываем функцию
+        if (buttonsContainers.length==0)
+        {
+            onSaveComplete();
+        }
+        else
+        {
 
-            for (j = 0; j < controlElements.length; j++) {
-                // Внутри контейнера с контролом ищу сам контрол
-                var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number], textarea, select');
-                // Проверим - есть ли данного контрола значение
-                if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
-                    isError = true;
-                    $(oneControlElement[0]).animate({
-                        backgroundColor: "rgb(255, 196, 196)"
-                    });
-                    // В следующий раз, когда значение у контрола поменяется - надо сбросить css-совйсто
-                    $(oneControlElement[0]).one('change', function () {
-                        $(this).css('background-color', '');
-                    });
-                    // И на keydown тоже самое поставим
-                    $(oneControlElement[0]).one('keydown', function () {
-                        $(this).css('background-color', '');
-                    });
+            for (i = 0; i < buttonsContainers.length; i++) {
+                // Имеем i-тую форму, контролы которой надо провалидировать
+                var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').filter(function(index) {
+                    return $(this).parents('#patient-medcard-edit-form').length == 0
+                        && $(this).parents('#add-greeting-value-form') == 0
+                        && $(this).parents('#add-value-form') == 0;
+                        // Чтобы не попало окно с данными медкарты и добавления
+                }).has('label span.required');
 
-                    // Вытащим метку данного элемента
-                    var labelOfControl = ($(controlElements[j]).find('label').text()).trim();
-                    // Вытащим заголовок категории, чтобы указать место, где заполнять
-                    var categorieTitle = $(oneControlElement).parents('.accordion');
+                for (j = 0; j < controlElements.length; j++) {
+                    // Внутри контейнера с контролом ищу сам контрол
+                    var oneControlElement = $(controlElements[j]).find('input[type=text],input[type=number], textarea, select');
+                    // Проверим - есть ли данного контрола значение
+                    if ($(oneControlElement[0]).val() == '' || $(oneControlElement[0]).val() == null) {
+                        isError = true;
+                        $(oneControlElement[0]).animate({
+                            backgroundColor: "rgb(255, 196, 196)"
+                        });
+                        // В следующий раз, когда значение у контрола поменяется - надо сбросить css-совйсто
+                        $(oneControlElement[0]).one('change', function () {
+                            $(this).css('background-color', '');
+                        });
+                        // И на keydown тоже самое поставим
+                        $(oneControlElement[0]).one('keydown', function () {
+                            $(this).css('background-color', '');
+                        });
 
-                    // Если последний символ в строке звёздочка - обрезаем её
-                    if (labelOfControl[labelOfControl.length - 1] == '*') {
-                        labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
+                        // Вытащим метку данного элемента
+                        var labelOfControl = ($(controlElements[j]).find('label').text()).trim();
+                        // Вытащим заголовок категории, чтобы указать место, где заполнять
+                        var categorieTitle = $(oneControlElement).parents('.accordion');
+
+                        // Если последний символ в строке звёздочка - обрезаем её
+                        if (labelOfControl[labelOfControl.length - 1] == '*') {
+                            labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
+                        }
+                        labelOfControl = labelOfControl.trim();
+                        // Если последний символ в строке двоеточие - обрезаем его
+                        if (labelOfControl[labelOfControl.length - 1] == ':') {
+                            labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
+                        }
+                        // Добавим в поп-ап сообщение из ошибки
+                        $('#errorPopup .modal-body .row').append("<p>" + 'Поле \"' + labelOfControl + '\" должно быть заполнено' + "</p>")
                     }
-                    labelOfControl = labelOfControl.trim();
-                    // Если последний символ в строке двоеточие - обрезаем его
-                    if (labelOfControl[labelOfControl.length - 1] == ':') {
-                        labelOfControl = labelOfControl.substring(0, labelOfControl.length - 1);
-                    }
-                    // Добавим в поп-ап сообщение из ошибки
-                    $('#errorPopup .modal-body .row').append("<p>" + 'Поле \"' + labelOfControl + '\" должно быть заполнено' + "</p>")
                 }
             }
-        }
 
-        // Если есть ошибки
-        if (isError) {
-            // Показываем поп-ап с ошибками
-			if(showMsgs) {
-				$('#errorPopup').modal({});
-			}
-            // Давим событие нажатия клавиши
-            return false;
+            // Если есть ошибки
+            if (isError) {
+                // Показываем поп-ап с ошибками
+                if(showMsgs) {
+                    $('#errorPopup').modal({});
+                }
+                // Давим событие нажатия клавиши
+                return false;
+            }
+            else {
+                // Вызываем сабмит всех кнопок
+                $(buttons).find('input[type="submit"]').click();
+                $('#submitDiagnosis').click();
+            }
         }
-        else {
-            // Вызываем сабмит всех кнопок
-            $(buttons).find('input[type="submit"]').click();
-            $('#submitDiagnosis').click();
-        }
-
     }
 
     $("#date-cont").on('changeDate', function (e) {
@@ -530,10 +587,15 @@ $('#successEditPopup').on('hidden.bs.modal', function (e) {
     }
 });
 
-$(document).on('click', '#printContentButton', function () {
+/*$(document).on('click', '#printContentButton, #sidePrintContentButton', function () {
    // $('#printContentButton').trigger('begin');
     $('.print-greeting-link').click();
+});*/
 
+$('#printContentButton, #sidePrintContentButton').on('click', function (e) {
+        // $('#printContentButton').trigger('begin');
+        $('.print-greeting-link').click();
+    e.stopPropagation();
 });
 
 $('#printPopup .btn-success').on('click', function (e) {
@@ -541,6 +603,8 @@ $('#printPopup .btn-success').on('click', function (e) {
     isThisPrint = false;
 });
 
+// Старый код, потом убрать
+/*
 // Печать листа приёма, само действие
 $('.print-greeting-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
@@ -568,6 +632,63 @@ $('.print-recomendation-link').on('print', function (e) {
 
     return false;
 });
+*/
+
+    function printDataToPrintPopup()
+    {
+        // Делаем синхронный Ajax-запрос, разбираем данные, которые он вернул и выводим в поп-ап
+        $.ajax({
+            'url': '/index.php/doctors/print/getrecommendationtemplatesingreeting?greetingId='  + $('#greetingId').val(),
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'async': false,
+            'success': function (data, textStatus, jqXHR) {
+                // Если true - то удаление произошло
+                if (data.success == true || data.success == 'true') {
+                    console.log(data);
+                    // Перебираем строки шаблона и выводим по чекбоксу для каждого шаблона
+                    templates = data.data;
+                    // Очистим блок с шаблонами
+                    $('#recommendationTemplatesPrintNeed p').empty();
+                    for (i=0;i<templates.length;i++)
+                    {
+                        newChecboxRow = $('<input type="checkbox" name="recTemplate'+ templates[i].template_id +'" value="'+
+                            templates[i].template_id
+                            +'">');
+                        /*$(newChecboxRow).text(
+                            templates[i].template_name
+                        );*/
+                        $('#recommendationTemplatesPrintNeed p').append(newChecboxRow);
+                        $('#recommendationTemplatesPrintNeed p').html(
+                            $('#recommendationTemplatesPrintNeed p').html() + templates[i].template_name+'<br>'
+                        );
+                    }
+                }
+            }
+        });
+
+
+    }
+
+    $('.print-greeting-link').on('print', function (e) {
+        printDataToPrintPopup();
+        $('#greetingPrintNeed input').attr('checked', '');
+        // Отмечаем пункт "Приём", а остальные - нет
+        $('#whatPrinting').modal({});
+        return false;
+    });
+
+
+// Печать листа приёма, само действие
+    $('.print-recomendation-link').on('print', function (e) {
+        printDataToPrintPopup();
+        $('#greetingPrintNeed input').removeAttr('checked');
+        $('#recommendationTemplatesPrintNeed input').attr('checked', '');
+        // Отмечаем все пункты, кроме "Приём"
+        $('#whatPrinting').modal({});
+        return false;
+    });
 
 // Сохранение диагнозов
 $('#submitDiagnosis').on('click', function (e) {

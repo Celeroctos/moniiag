@@ -214,22 +214,35 @@
     if ($currentPatient !== false) {
         if ($templatesChoose == 0) {
             $counter = 0;
-    ?>
+    ?><p><a name="topMainTemplates"></a></p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs templatesListNav">
                     <?php foreach($templatesList as $key => $template) { ?>
                         <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
                             <a href="#" id="t<?php echo $template['id']; ?>">
-                                <strong>
-                                    <?php echo $template['name']; ?>
-                                </strong>
+                                <strong><?php echo $template['name']; ?></strong>
                             </a>
                         </li>
                     <?php
                         $counter++;
                     } ?>
                 </ul>
+
             </div>
+            <script>
+                //oldAddress = document.location.href;
+
+                //document.location.href=document.location.href+'#topMainTemplates';
+               // window.scrollBy(0,-50);
+                destinationAnchor = $('a[name=topMainTemplates]');
+                if (destinationAnchor!=undefined)
+                {
+                    destination = $(destinationAnchor)[0].offsetTop;
+                    $('body,html').animate({
+                        scrollTop: destination
+                    }, 599);
+                }
+            </script>
             <script type="text/javascript">
                 if (globalVariables.elementsDependences == undefined)
                 {
@@ -237,33 +250,13 @@
                 }
             </script>
             <?php
-
-           /* $formM = $this->beginWidget('CActiveForm', array(
-                'id' => 'template-edit-form',
-                'enableAjaxValidation' => true,
-                'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
-                'htmlOptions' => array(
-                    'class' => 'form-horizontal col-xs-12',
-                    'role' => 'form'
-                )
-            ));
-            echo $formM->hiddenField($templateModel,'medcardId', array(
-                'id' => 'medcardId',
-                'class' => 'form-control',
-                'value' => $currentPatient
-            ));
-            echo $formM->hiddenField($templateModel,'greetingId', array(
-                'id' => 'greetingId',
-                'class' => 'form-control',
-                'value' => $currentSheduleId
-            ));
-*/
             $counter = 0;
             foreach ($templatesList as $key => $template) {
                 ?>
                 <div>
-                    <?php $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
+
+                    <?php
+                    $this->widget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
                         'currentPatient' => $currentPatient,
                         'templateType' => 0,
                         'templateId' => $template['id'],
@@ -319,6 +312,7 @@
 					</div>
 				</div>
 			</div>
+            <div class="greetingHR"></div>
             <div id="accordionD" class="accordion">
                 <div class="accordion-group">
                     <div class="accordion-heading">
@@ -472,34 +466,37 @@
                     </div>
                 </div>
             </div>
+            <div class="greetingHR"></div>
 			  <?php
             echo CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $currentSheduleId,
                 array('title' => 'Печать рекомендаций',
                     'class' => 'print-recomendation-link'));
             ?>
             <?php
-			/*$formM = $this->beginWidget('CActiveForm', array(
-                'id' => 'template-edit-form',
-                'enableAjaxValidation' => true,
-                'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
-                'htmlOptions' => array(
-                    'class' => 'form-horizontal',
-                    'role' => 'form'
-                )
-            ));
-            echo $formM->hiddenField($templateModel,'medcardId', array(
-                'id' => 'medcardId',
-                'class' => 'form-control',
-                'value' => $currentPatient
-            ));
-            echo $formM->hiddenField($templateModel,'greetingId', array(
-                'id' => 'greetingId',
-                'class' => 'form-control',
-                'value' => $currentSheduleId
-            ));
-*/
             $counter = 0;
+            //var_dump('-------');
+            //var_dump($referenceTemplatesList);
+            //exit();
+            ?>
+            <p><a name="topRecomTemplates"></a></p>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs recomTemplatesListNav">
+                            <?php foreach($referenceTemplatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="rt<?php echo $template['id']; ?>">
+                                <strong><?php echo $template['name']; ?></strong>
+                            </a>
+                        </li>
+                        <?php
+                        $counter++;
+                    } ?>
+                </ul>
+
+            </div>
+            <?php
+            $counter = 0;
+            //var_dump($referenceTemplatesList);
+            //exit();
             foreach ($referenceTemplatesList as $key => $template) {
                 ?>
                 <div class="default-margin-top">
@@ -518,9 +515,27 @@
 					//	'form' => $formM
                     )); ?>
                 </div>
-            <?php }
+                <?php
+                $counter++;
+            }
 			//	$this->endWidget();
+            $counter = 0;
 			?>
+            <div class="row col-xs-12">
+                <ul class="nav nav-tabs recomTemplatesListNav recomTemplatesListNavBottom">
+                    <?php foreach($referenceTemplatesList as $key => $template) { ?>
+                        <li <?php echo $counter == 0 ? 'class="active"' : ''; ?>>
+                            <a href="#" id="rt<?php echo $template['id']; ?>">
+                                <strong><?php echo $template['name']; ?></strong>
+                            </a>
+                        </li>
+                        <?php
+                        $counter++;
+                    } ?>
+                </ul>
+
+            </div>
+
         <?php } ?>
     <?php } ?>
 <?php } ?>
@@ -761,6 +776,33 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="whatPrinting">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Мастер печати приёма</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Пожалуйста, отметьте - что вы хотите напечатать и нажмите на соответствующую кнопку</p>
+                </div>
+                <div class="row" id="greetingPrintNeed">
+                    <p><input type="checkbox" name="greetingPrintNeed" value="-1">  Приём</p>
+                </div>
+                <div class="row" id="recommendationTemplatesPrintNeed">
+                    <p>
+
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-close" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-success" id="printPopupButton" data-dismiss="modal">Печать</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade error-popup" id="printPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -780,26 +822,6 @@
         </div>
     </div>
 </div>
-<!--
-<div class="modal fade error-popup" id="successDiagnosisPopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Успешное сохранение диагнозов</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <p>Диагнозы для текущего приёма успешно сохранены.</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
--->
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-medcard-edit-form',

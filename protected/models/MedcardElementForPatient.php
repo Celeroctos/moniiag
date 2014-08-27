@@ -209,6 +209,27 @@ class MedcardElementForPatient extends MisActiveRecord {
 		}
 	}
 
+    // Выдаёт список шаблонов-рекоммендаций, которые поменяли за приём по номеру приёма
+    public static function getRecommendationTemplatesInGreeting($greetingId)
+    {
+        try {
+            $connection = Yii::app()->db;
+            $templates = $connection->createCommand()
+                ->selectDistinct('template_id, template_name')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('mep.greeting_id = :greetingId
+                        AND (NOT(template_id is NULL))
+                        AND template_page_id = 1',
+                        array(
+                            ':greetingId' => $greetingId
+                        )
+                );
+            return $templates->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
     public function getMaxHistoryPointId($element, $medcardId, $greetingId) {
         try {
@@ -309,90 +330,135 @@ class MedcardElementForPatient extends MisActiveRecord {
 		}
 	}
 
-    // Найти все конечные состояния полей, изменённых во время приёма
-	public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq', $recommendationOnly=false) {
-			try {
-                $eqPath = ($pathForFind !== false) && ($operator == 'eq');
-                $likePath = ($pathForFind !== false) && ($operator == 'like');
-                $connection = Yii::app()->db;
-                $values = $connection->createCommand()
-                    ->select('mep.*')
-                    ->from('mis.medcard_elements_patient mep')
+    public function findGreetingTemplate($greetingId, $templateId)
+    {
+        try{
+            // Выберем из таблицы medcard_records записи по приёму и номеру шаблона, отсортируем по record_id, выберем самую младшую
+            //    и по record_id этой записи выберем из таблицы элементов медкарты элементы медкарты, которые и вернём в конце функции
+            $connection = Yii::app()->db;
+            $records = $connection->createCommand()
+                ->select('mr.*')
+                ->from('mis.medcard_records mr')
                 //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
-                    ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
-                    ->order('element_id, history_id desc');
-                $elements = $values->queryAll();
-                $results = array();
+                ->where('mr.greeting_id = :greetingId AND template_id = :templateId',
+                    array(
+                        ':greetingId' => $greetingId,
+                        ':templateId' => $templateId
+                    )
+                )
+                ->order('record_id desc');
+            $medcardRecords = $records->queryAll();
 
-                $currentElementNumber = false;
-                $currentMaximum = false;
-                if (count($elements )>0)
+
+            // Берём нулевую строку (первую)
+            //  Берём у неё record_id и по ней и приёму выбираем элементы медкарты
+            $values = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
+                //->where('mep.greeting_id = :greetingId AND ( ((mep.record_id = :recordId) AND NOT (mep.element_id=-1) ) OR  ((mep.record_id = 1) AND (mep.element_id=-1) )  )',
+                                ->where('mep.greeting_id = :greetingId AND ( ((mep.record_id = :recordId) AND NOT (mep.element_id=-1) ) OR  (mep.element_id=-1) )',
+                    array(
+                        ':greetingId' => $greetingId,
+                        ':recordId' => $medcardRecords[0]['record_id']
+                    ))
+                ->order('element_id, history_id desc');
+            $elements = $values->queryAll();
+            //var_dump($elements );
+           // exit();
+            return $elements;
+        }
+        catch(Exception $e)
+        {
+            var_dump($e);
+            exit();
+        }
+    }
+
+    // Найти все конечные состояния полей, изменённых во время приёма
+    public function findAllPerGreeting($greetingId, $pathForFind = false, $operator = 'eq', $recommendationOnly=false) {
+        try {
+            $eqPath = ($pathForFind !== false) && ($operator == 'eq');
+            $likePath = ($pathForFind !== false) && ($operator == 'like');
+            $connection = Yii::app()->db;
+            $values = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
+                ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
+                ->order('element_id, history_id desc');
+            $elements = $values->queryAll();
+            $results = array();
+
+            $currentElementNumber = false;
+            $currentMaximum = false;
+            if (count($elements )>0)
+            {
+                $currentElementNumber = $elements[0]['element_id'];
+                $currentMaximum = $elements[0]['history_id'];
+            }
+            // Проверяем условие max history_id
+            foreach ($elements as $oneElement)
+            {
+                if ($currentElementNumber!=$oneElement['element_id'])
                 {
-                    $currentElementNumber = $elements[0]['element_id'];
-                    $currentMaximum = $elements[0]['history_id'];
+                    $currentElementNumber=$oneElement['element_id'];
+                    $currentMaximum = $oneElement['history_id'];
+                    array_push($results,$oneElement);
                 }
-                // Проверяем условие max history_id
-                foreach ($elements as $oneElement)
+                else
                 {
-                    if ($currentElementNumber!=$oneElement['element_id'])
+                    if ($oneElement['history_id']==$currentMaximum)
                     {
-                        $currentElementNumber=$oneElement['element_id'];
-                        $currentMaximum = $oneElement['history_id'];
                         array_push($results,$oneElement);
                     }
-                    else
-                    {
-                        if ($oneElement['history_id']==$currentMaximum)
-                        {
-                            array_push($results,$oneElement);
-                        }
-                    }
                 }
+            }
 
-                // Проверяем likePath
-                if ($likePath)
+            // Проверяем likePath
+            if ($likePath)
+            {
+                $tempResult = array();
+                foreach ($results as $oneElement)
                 {
-                    $tempResult = array();
-                    foreach ($results as $oneElement)
+                    // ПРоверяем на то, что путь начинается на подстроку pathForFind
+                    if (strpos($oneElement['path'],$pathForFind)===0)
                     {
-                        // ПРоверяем на то, что путь начинается на подстроку pathForFind
-                        if (strpos($oneElement['path'],$pathForFind)===0)
-                        {
-                            array_push($tempResult,$oneElement);
-                        }
+                        array_push($tempResult,$oneElement);
                     }
-                    $results = $tempResult;
-
                 }
-                // ПРоверяем eqPath
-                if ($eqPath)
+                $results = $tempResult;
+
+            }
+            // ПРоверяем eqPath
+            if ($eqPath)
+            {
+                $tempResult = array();
+                foreach ($results as $oneElement)
                 {
-                    $tempResult = array();
-                    foreach ($results as $oneElement)
+                    if ($oneElement['path']==$pathForFind)
                     {
-                        if ($oneElement['path']==$pathForFind)
-                        {
-                            array_push($tempResult,$oneElement);
-                        }
+                        array_push($tempResult,$oneElement);
                     }
-                    $results = $tempResult;
                 }
+                $results = $tempResult;
+            }
 
-                // ПРоверка печати рекомендаций
-                if ($recommendationOnly)
+            // ПРоверка печати рекомендаций
+            if ($recommendationOnly)
+            {
+                $tempResult = array();
+                foreach ($results as $oneElement)
                 {
-                    $tempResult = array();
-                    foreach ($results as $oneElement)
+                    if ($oneElement['template_page_id']=='1')
                     {
-                        if ($oneElement['template_page_id']=='1')
-                        {
-                            array_push($tempResult,$oneElement);
-                        }
+                        array_push($tempResult,$oneElement);
                     }
-                    $results = $tempResult;
                 }
+                $results = $tempResult;
+            }
 
-                return $results;
+            return $results;
         } catch(Exception $e) {
             echo $e->getMessage();
             exit();

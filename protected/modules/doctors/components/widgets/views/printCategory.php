@@ -124,14 +124,23 @@
                                    }
                                }
 
-                                if ($element['is_wrapped']=='1' && $elementNumber!=1)
+                                if (($element['is_wrapped']=='1' && $elementNumber!=1)||($ignoreBrSettings==true))
                                 {
 
                                     ?>
-                                    <br></br>
+                                    <br/>
                                     <?php
 
                                 }
+                               // Если стоит настройка - дополнительно печатаем пустую строку
+
+                               if (false)//($ignoreBrSettings==true)
+                                {
+                                    ?>
+                                    <br/>
+                                    <?php
+                                }
+
                                     ?>
                                 <?php echo $element['label']; ?> <strong><span class="elementValuePrinting"><?php echo $element['value']; ?></span></strong> <?php echo $element['label_after']; ?>
                                 <?php
