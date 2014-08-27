@@ -386,23 +386,31 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->from('mis.medcard_elements_patient mep')
                 //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
                 ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
-                ->order('element_id, history_id desc');
+                //->order('element_id, history_id desc');
+                ->order('path, history_id desc');
             $elements = $values->queryAll();
+            //var_dump($elements );
+            //exit();
+            //===========>
             $results = array();
 
             $currentElementNumber = false;
             $currentMaximum = false;
             if (count($elements )>0)
             {
-                $currentElementNumber = $elements[0]['element_id'];
+                $currentElementPath = $elements[0]['path'];
                 $currentMaximum = $elements[0]['history_id'];
             }
+
+            //var_dump($elements );
+            //exit();
+
             // Проверяем условие max history_id
             foreach ($elements as $oneElement)
             {
-                if ($currentElementNumber!=$oneElement['element_id'])
+                if ($currentElementPath!=$oneElement['path'])
                 {
-                    $currentElementNumber=$oneElement['element_id'];
+                    $currentElementPath=$oneElement['path'];
                     $currentMaximum = $oneElement['history_id'];
                     array_push($results,$oneElement);
                 }
@@ -414,6 +422,9 @@ class MedcardElementForPatient extends MisActiveRecord {
                     }
                 }
             }
+
+            //var_dump($results);
+            //exit();
 
             // Проверяем likePath
             if ($likePath)
@@ -458,6 +469,9 @@ class MedcardElementForPatient extends MisActiveRecord {
                 $results = $tempResult;
             }
 
+            //======>
+            //var_dump($results);
+            //exit();
             return $results;
         } catch(Exception $e) {
             echo $e->getMessage();
