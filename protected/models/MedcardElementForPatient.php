@@ -263,12 +263,17 @@ class MedcardElementForPatient extends MisActiveRecord {
 							
 												AND (mep.record_id = (SELECT MAX(mep2.record_id)
                                               FROM mis.medcard_elements_patient mep2
-                                              WHERE mep2.real_categorie_id = mep.real_categorie_id
+                                              WHERE
+                                                    mep2.greeting_id = mep.greeting_id
+                                                    AND mep2.path = mep.path
                                                     AND mep2.medcard_id = :medcard_id))
 						
 							
 				)', array(':medcard_id' => $medcardId));
-			return $values->queryAll();
+            $result = $values->queryAll();
+			//var_dump($result);
+            //exit();
+            return $result;
 
 		} catch(Exception $e) {
 			echo $e->getMessage();

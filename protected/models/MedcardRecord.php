@@ -10,6 +10,29 @@ class MedcardRecord extends MisActiveRecord  {
         return 'mis.medcard_records';
     }
 
+    public static function getMaxRecIdOnGreeting($template, $greeting)
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $queryToRun = $connection->createCommand()
+                ->select('
+                        MAX (record_id)
+                        ')
+                ->from('mis.medcard_records mr')
+                ->where('greeting_id=:greeting AND template_id=:template',
+                    array(
+                        ':greeting' => $greeting,
+                        ':template' => $template
+                    )
+                );
+                $result = $queryToRun->queryScalar();
+            return $result;
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public static function getHistoryMedcardByCardId($medcard)
     {
        // var_dump('!');
