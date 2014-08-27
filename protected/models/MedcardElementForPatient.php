@@ -137,6 +137,7 @@ class MedcardElementForPatient extends MisActiveRecord {
 
 			$connection = Yii::app()->db;
 
+            /*
             $elements = $connection->createCommand()
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
@@ -144,10 +145,15 @@ class MedcardElementForPatient extends MisActiveRecord {
                         AND mep.greeting_id = :greeting_id',
                     array(':greeting_id' => $greetingId));
             $elements->order('element_id, path, history_id desc');
-
-
-
 			$allElements =  $elements->queryAll();
+            */
+            $allElements = MedcardElementForPatient::model()->findAllBySql(
+                'SELECT mep.* FROM mis.medcard_elements_patient mep WHERE mep.path in ('
+                . $pathsToSelect .
+                ') AND mep.greeting_id = '.$greetingId.' ORDER BY mep.element_id, mep.path,mep.history_id desc'
+            );
+
+
            // var_dump($allElements);
            // exit();
             $currentElement = false;

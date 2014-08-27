@@ -387,11 +387,13 @@ class SheduleController extends Controller {
 
 	private function stepToNextState($historyCategorieElement, $value, $recordId )
 	{
-        $historyCategorieElement->value = $value;
-        $historyCategorieElement->history_id = $historyCategorieElement->history_id + 1;
-		$historyCategorieElement->is_record = 1;
-		$historyCategorieElement->record_id = $recordId + 1;
-		$historyCategorieElement->change_date = date('Y-m-d H:i');
+       // var_dump($value);
+       // exit();
+        $historyCategorieElement['value'] = $value;
+        $historyCategorieElement['history_id'] = $historyCategorieElement['history_id'] + 1;
+		$historyCategorieElement['is_record'] = 1;
+		$historyCategorieElement['record_id'] = $recordId + 1;
+		$historyCategorieElement['change_date'] = date('Y-m-d H:i');
 	}
 
     // Редактирование данных пациента
@@ -502,11 +504,18 @@ class SheduleController extends Controller {
                         $pathsOfElements
                         );
             $historyElementsPaths = array();
+            //var_dump($historyElements );
+        //exit();
             foreach ($historyElements as $oneHistoryElement)
             {
+               // $oneHistoryElement->save();
                 $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
             }
             $wasSaved = false;
+
+            //var_dump($pathsToFields);
+            //exit();
+
             foreach($controlsToSave as $field => $value)
             {
                 if(is_array($value)) {
@@ -515,9 +524,22 @@ class SheduleController extends Controller {
 
                 $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
                 //$historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
+                //var_dump($historyCategorieElement);
+                //exit();
                 $this->stepToNextState($historyCategorieElement, $value, $recordId );
+                /*$newElementState = new MedcardElementForPatient();
+                //$newElementState->attributes = $historyCategorieElement;
+
+                foreach($historyCategorieElement as $attrKey => $oneAttr)
+                {
+                    $newElementState->$attrKey = $oneAttr;
+                }*/
 
                 $answerCurrentDate = true;
+
+                //var_dump($newElementState);
+                //exit();
+
                 if(!$historyCategorieElement->save())
                 {
                     ob_end_clean();
@@ -529,7 +551,8 @@ class SheduleController extends Controller {
                 {
                     $wasSaved = true;
                 }
-
+               // var_dump("!");
+               // exit();
             }
         if ($wasSaved)
         {
