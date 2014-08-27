@@ -10,6 +10,7 @@ class CategorieViewWidget extends CWidget {
     public $medcard = null;
     public $currentDate = null;
 	private $historyElements = array(); // Массив истории элементов: по ним воссоздаётся шаблон
+    private $maxRecordIdByTemplateGreeting = -1;
     public $historyTree = array(); // Построенное дерево историии
     public $catsByTemplates = array(); // Категории по шаблону
     public $dividedCats = array(); // Поделённые категории
@@ -30,6 +31,15 @@ class CategorieViewWidget extends CWidget {
         {
             $this->templateName = MedcardTemplate::model()->findByPk($this->templateId);
             $this->templateName = $this->templateName['name'];
+
+            // А если ещё и id приёма - то ищем максимальный record_id для данного приёма для данного шаблона
+            if(is_null($this->greetingId)==false)
+            {
+                $this->maxRecordIdByTemplateGreeting = MedcardRecord::getMaxRecIdOnGreeting(
+                    $this->templateId,$this->greetingId
+                );
+            }
+
         }
 
         if($this->currentDate == null) {
@@ -345,22 +355,32 @@ class CategorieViewWidget extends CWidget {
                 if(($id && !$path) || $this->previewMode) {
                     $elements = MedcardElement::model()->getElementsByCategorie($id);
                 } else {
+                    // Здесь выбираются ЭЛЕМЕНТЫ (без категорий), если приём был начат раньше
+                    $elements = array();
+                    //var_dump($this->maxRecordIdByTemplateGreeting);
+                    //exit();
                     $elements = MedcardElementForPatient::model()->findAll(
-                        'history_id = :history_id
-                        AND greeting_id = :greeting_id
+                        '/*history_id = history_id
+                        AND*/ greeting_id = :greeting_id
                         AND medcard_id = :medcard_id
                         AND categorie_id = :categorie_id
+                        AND record_id = :record_id
                         AND path LIKE :path
                         AND element_id != -1',
                         array(
                             ':greeting_id' => $this->greetingId,
                             ':medcard_id' => $this->medcard['card_number'],
-                            ':history_id' => 1,
+                            //':history_id' => 1,
+                            ':record_id' => $this->maxRecordIdByTemplateGreeting,
                             ':categorie_id' => $categorieResult['id'],
                             //':path' => $path.'%'
                             ':path' => $path.'.%'
                         )
                     );
+                    //var_dump($recordId-1);
+                    //exit();
+                    //var_dump($elements );
+                    //exit();
                 }
 
                 $numWrapped = 0; // Это число элементов, которые следуют за каким-то конкретным элементом
