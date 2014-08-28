@@ -1,6 +1,6 @@
 <!-- Шапка -->
 <?php echo $enterprise['fullname']; ?><br>
-<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?>&nbsp;&nbsp;&nbsp;Колцентр тел.: +7-495-1236013</nobr><br>
+<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?>&nbsp;&nbsp;&nbsp;Коллцентр тел.: +7-495-1236013</nobr><br>
 <br/><br/>
 <h3 style="text-align: center;">ЗАКЛЮЧЕНИЕ ОТ <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h3>
 <br/>
