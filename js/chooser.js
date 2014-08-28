@@ -727,7 +727,7 @@ $(document).ready(function() {
         'primaryDiagnosisChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
-			'alwaysLanguage' : 'en',
+			//'alwaysLanguage' : 'en',
 			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
@@ -772,7 +772,7 @@ $(document).ready(function() {
         'secondaryDiagnosisChooser' : {
             'primary' : 'id',
 			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
-			'alwaysLanguage' : 'en',
+			//'alwaysLanguage' : 'en',
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
