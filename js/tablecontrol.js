@@ -23,7 +23,7 @@ $(document).ready(function() {
                 $(parentTd).html(inputVal);
                 $(parentTd).on('click', clickFunc);
                 // Теперь записываем значения в виде таблицы в скрытое поле
-                var tds = $(control).find('td[class^="content"]');
+                var tds = $(control).find('td.controlTableContentCell');
                 var hiddenJson = [];
                 for(var i = 0; i < tds.length; i++) {
                     var coordsStr = $(tds[i]).prop('class').substr($(tds[i]).prop('class').lastIndexOf('-') + 1);

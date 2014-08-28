@@ -69,7 +69,8 @@ class CategorieViewWidget extends CWidget {
         echo('--------');
         exit();
         //*/
-
+        //var_dump($categories);
+        //exit();
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
@@ -359,6 +360,9 @@ class CategorieViewWidget extends CWidget {
                     $elements = array();
                     //var_dump($this->maxRecordIdByTemplateGreeting);
                     //exit();
+                    //var_dump("!");
+                    //exit();
+
                     $elements = MedcardElementForPatient::model()->findAll(
                         '/*history_id = history_id
                         AND*/ greeting_id = :greeting_id
@@ -379,7 +383,7 @@ class CategorieViewWidget extends CWidget {
                     );
                     //var_dump($recordId-1);
                     //exit();
-                    //var_dump($elements );
+                    //var_dump($this->maxRecordIdByTemplateGreeting);
                     //exit();
                 }
 
