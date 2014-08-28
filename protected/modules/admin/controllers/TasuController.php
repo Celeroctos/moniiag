@@ -2213,11 +2213,12 @@ class TasuController extends Controller {
 	public function getTasuPatientByPolicy($oms, $mode = 0) {
 		// Если серии нет, то нужно брать номер полиса в качестве опоры
        // return true;
-        $conn2 = Yii::app()->db2;
-		$conn3 = Yii::app()->db3;
 		if($oms->region != null && $oms->insurance != null && !$mode) {
 			return true;
 		}		
+
+        $conn2 = Yii::app()->db2;
+		$conn3 = Yii::app()->db3;
 
 		/*if(!$conn2->getActive() || !$conn3->getActive()) {
 			return -1; // Нет соединения
