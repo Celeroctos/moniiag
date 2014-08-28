@@ -15,6 +15,7 @@
         '#dateBeginEdit-cont',
         '#dateEndEdit-cont',
         '#greetingDate-cont',
+		'#greetingDate-cont2',
         '#addShedulePopup #shift-date-begin-cont',
 	    '#addShedulePopup #shift-date-end-cont',
         '#editSheduleEmployeePopup #shift-date-begin-cont',

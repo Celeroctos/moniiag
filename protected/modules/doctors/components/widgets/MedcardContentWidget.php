@@ -17,7 +17,7 @@ class MedcardContentWidget extends CWidget {
     public $numberDoctorComments;
                 
     public function run() {
-        //var_dump($this->doctorComment);
+        //var_dump($this->historyPoints);
         //exit();
         if($this->medcard) {
             echo $this->render('application.modules.doctors.components.widgets.views.MedcardContentWidget', array(

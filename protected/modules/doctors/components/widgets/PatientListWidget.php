@@ -6,10 +6,12 @@ class PatientListWidget extends CWidget {
     public $currentPatient = false;
     public $filterModel;
     public $isWaitingLine = false;
-    public $tableId = 'doctorPatientList';
+    // $tableId = 'doctorPatientList';
+    public $tableId;
     public $patientsDay = '';
 
     public function run() {
+        //var_dump($this->tableId);
             echo $this->render('application.modules.doctors.components.widgets.views.PatientListWidget', array(
                 'patients' => $this->patients,
                 'currentSheduleId' => $this->currentSheduleId,

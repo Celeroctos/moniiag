@@ -49,6 +49,8 @@
                 <div class="accordion-inner">
 
                     <?php
+                    //var_dump($historyPoints);
+                    //exit();
 
                     foreach ($historyPoints as $key => $point) { ?>
 	                    <div>

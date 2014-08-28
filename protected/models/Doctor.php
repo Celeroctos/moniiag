@@ -119,6 +119,8 @@ class Doctor extends MisActiveRecord  {
 				'patient_day_from' => 'patient_day'
 			));
 		 }
+		$doctor->andWhere('dsbd.time_begin IS NOT NULL');
+		$doctor->andWhere('m.is_medworker = 1');
 		
 		$doctors = $doctor->queryAll();
 		$resultArr = array();
@@ -190,6 +192,103 @@ class Doctor extends MisActiveRecord  {
 			$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['numAllGreetings']++;
 		}
         return $resultArr;
+	}
+	
+	public function getMisStat($filters) {
+		$connection = Yii::app()->db;
+        $doctor = $connection->createCommand()
+            ->select('d.*, w.name as ward, w.id as ward_id, m.name as post, m.id as post_id, dsbd.greeting_type, dsbd.patient_day, dsbd.order_number, dsbd.time_end, dsbd.is_accepted, mc.reg_date')
+            ->from('mis.doctors d')
+            ->leftJoin('mis.wards w', 'd.ward_code = w.id')
+            ->leftJoin('mis.medpersonal m', 'd.post_id = m.id')
+			->leftJoin(SheduleByDay::tableName().' dsbd', 'dsbd.doctor_id = d.id')
+			->leftJoin('mis.medcards mc', 'dsbd.medcard_id = mc.card_number');
+		
+		if($filters !== false) {
+			$this->getSearchConditions($doctor, $filters, array(
+			), array(
+				  'd' => array('doctor_id', 'id'),
+				  'm' => array('medworker_id', 'id'),
+				  'w' => array('ward_id', 'id'),
+				  'dsbd' => array('patient_day', 'patient_day_to', 'patient_day_from')
+			), array(
+				'doctor_id' => 'id',
+				'medworker_id' => 'id',
+				'ward_id' => 'id',
+				'patient_day_to' => 'patient_day',
+				'patient_day_from' => 'patient_day'
+			));
+		 }
+		
+		$doctor->andWhere('dsbd.time_begin IS NOT NULL');
+		$doctor->andWhere('m.is_medworker = 1');
+		
+		$dateBegin = false;
+		$dateEnd = false;
+		foreach($filters['rules'] as $filter) {
+			if($filter['field'] == 'patient_day_from' && trim($filter['data']) != '') {
+				$dateBegin = $filter['data'];
+			}
+			if($filter['field'] == 'patient_day_to' && trim($filter['data']) != '') {
+				$dateEnd = $filter['data'];
+			}
+		}
+		
+		$doctors = $doctor->queryAll();
+		$resultArr = array();
+		
+		foreach($doctors as $doctor) {
+			// Несуществующее отделение
+			if(!isset($resultArr[(string)$doctor['ward_id']])) {
+				$resultArr[(string)$doctor['ward_id']] = array(
+					'name' => $doctor['ward'] != null ? $doctor['ward'] : 'Неизвестное отделение',
+					'numAllGreetings' => 0,
+					'closedGreetings' => 0,
+					'handworkGreetings' => 0,
+					'elements' => array()
+				);
+			}
+			// Несуществующая специальность
+			if(!isset($resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']])) {
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']] = array(
+					'name' => $doctor['post'] != null ? $doctor['post'] : 'Неизвестная специальность',
+					'numAllGreetings' => 0,
+					'closedGreetings' => 0,
+					'handworkGreetings' => 0,
+					'elements' => array()
+				);
+			}
+			
+			// Несуществующий врач
+			if(!isset($resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']])) {
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']] = array(
+					'name' => $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'],
+					'data' => array(
+						'numAllGreetings' => 0,
+						'closedGreetings' => 0,
+						'handworkGreetings' => 0
+					)
+				);
+							
+				// Считаем приёмы, которые добавили вручную, для данного врача
+				$numFakes = TasuFakeGreetingsBuffer::model()->getNumRows($doctor['id'], $dateBegin, $dateEnd);
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['handworkGreetings'] = $numFakes['num_greetings'];
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['handworkGreetings'] += $numFakes['num_greetings'];
+				$resultArr[(string)$doctor['ward_id']]['handworkGreetings'] += $numFakes['num_greetings'];
+			}
+			
+			if($doctor['is_accepted'] == 1) { // Закрытый приём вручную
+				$resultArr[(string)$doctor['ward_id']]['closedGreetings']++;
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['closedGreetings']++;
+				$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['closedGreetings']++;
+			} 
+			
+			$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['elements'][(string)$doctor['id']]['data']['numAllGreetings']++;
+			$resultArr[(string)$doctor['ward_id']]['numAllGreetings']++;
+			$resultArr[(string)$doctor['ward_id']]['elements'][(string)$doctor['post_id']]['numAllGreetings']++;
+		}
+		
+		return $resultArr;
 	}
 }
 

@@ -516,7 +516,7 @@
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '" title="Записать пациента на приём" target="_blank">' +
+                        '<a href="#' + data[i].card_number + '" class="writePatientLink">' +
                             '<span class="glyphicon glyphicon-dashboard"></span>' +
                         '</a>' +
                     '</td>' +
@@ -536,6 +536,42 @@
         }
         table.parents('div.no-display').removeClass('no-display');
     }
+	
+	$(document).on('click', '.writePatientLink', function(e) {
+		$('.writePatientLink').popover('destroy');
+		var cardId = $(this).attr('href').substr(1);
+		var url = 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardId;
+		$(this).popover({
+            animation: true,
+            html: true,
+            placement: 'bottom',
+            title: 'Выберите тип записи пациента:',
+            delay: {
+                show: 300,
+                hide: 300
+            },
+            container: $(this).parents('td'),
+            content: function() {
+				var a1 = $('<a>').prop({
+					href: url,
+					target: '_blank'
+				}).css({
+					fontWeight: 'bold'
+				}).text('На определённое время');
+				
+				var a2 = $('<a>').prop({
+					href: url + '&waitingline=1',
+					target: '_blank'
+				}).css({
+					fontWeight: 'bold'
+				}).text('В живую очередь');
+				
+				return $('<div>').append(a1, $('<br>'), a2);
+			}
+		});
+	   $(this).popover('show');
+	   return false;
+	});
 
     // Отобразить ошибки формы добавления пациента
     $("#patient-withoutcard-form, #patient-withcard-form, #patient-medcard-edit-form, #patient-oms-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {

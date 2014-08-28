@@ -144,7 +144,8 @@ class SheduleController extends Controller {
 
         $doctorComment = CommentOms::getTopComment(isset($medcard) ? $medcard : null);
         $doctorNumberComments = count(CommentOms::getComments(isset($medcard) ? $medcard : null));
-
+        //var_dump($medcard);
+        //exit();
 		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
@@ -239,9 +240,18 @@ class SheduleController extends Controller {
             }
         }
 
-        if(isset($_GET['onlywaitinglist']) && $_GET['onlywaitinglist'] == 1) {
+
+        if(isset($_POST['onlywaitinglist']) && $_POST['onlywaitinglist'] == 1) {
             $patientsListWidget->isWaitingLine = true;
+            $patientsListWidget->tableId = 'doctorWaitingList';
         }
+        else
+        {
+            $patientsListWidget->tableId = 'doctorPatientList';
+        }
+
+        //var_dump($patientsListWidget->tableId);
+        //exit();
 
         // Теперь получаем html-ку со списком пациентов
         $result = $patientsListWidget->getPatientList(
@@ -291,6 +301,8 @@ class SheduleController extends Controller {
 
         $historyPoints = MedcardElementForPatient::model()->getHistoryPoints($medcard);
 
+       // var_dump($historyPoints );
+       // exit();
 
         foreach ($historyPoints  as &$historyEl)
         {

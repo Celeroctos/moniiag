@@ -31,6 +31,7 @@ $(document).ready(function() {
                     }
                 },
                 clearAll: function() {
+					current = null;
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
                     $(chooser).find('input').prop('disabled', false);
@@ -130,6 +131,7 @@ $(document).ready(function() {
 
                     // Нажатие Enter переносит в список выбранных
                     if(e.keyCode == 13) {
+						console.log(current);
                         // Если в чюююузер ничего не вбито - переходим в другой контрол
                         wasChangedFocus = false;
                         if ($(chooser).find('input').val()=='')

@@ -270,6 +270,21 @@ class EmployeesController extends Controller {
     }
 	
 	public function actionGetByWardAndMedworker($wardid, $medworkerid) {
+		$wardid = CJSON::decode($wardid);
+		$medworkerid = CJSON::decode($medworkerid);
+		foreach($wardid as $val) {
+			if($val == -1) {
+				$wardid = -1;
+				break;
+			}
+		}
+		foreach($medworkerid as $val) {
+			if($val == -1) {
+				$medworkerid = -1;
+				break;
+			}
+		}
+		
         $model = new Employee();
         $employees = $model->getByWardAndMedworker($wardid, $medworkerid);
 

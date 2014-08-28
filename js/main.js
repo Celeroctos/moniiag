@@ -1,4 +1,5 @@
-﻿$(document).ready(function () {
+﻿//
+$(document).ready(function () {
     globalVariables.wrongPassword = false;
     globalVariables.wrongLogin = false;
 
@@ -544,6 +545,60 @@ $('select[multiple="multiple"]').each(function(index, select) {
 		return false;
 	});*/ 
 });
+    $('.buttonUpContainer').click(function () {
+        // Смотрим - есть ли у this класс "backWardButton"
+        if ($(this).hasClass('backWardButton'))
+        {
+            if (globalVariables.lastScrollTop>0)
+            {
+                globalVariables.notChangeNavButton = true;
+                // Ставим на setTimeOut чтобы после перевода состояния сделать кнопку "Наверх"
+                setTimeout(
+                    function (){
+                        // Показываем контейнер навигации
+                        $('.buttonUpContainer').show();
+                        // Делаем кнопку "Наверх"
+                        $('.buttonUpText').text("Наверх");
+                        $('.buttonUpSign').removeClass("glyphicon-chevron-down");
+                        $('.buttonUpSign').addClass("glyphicon-chevron-up");
+                        globalVariables.notChangeNavButton = false;
+                        $('.buttonUpContainer').removeClass('backWardButton');
+                    },
+                    800
+                );
+                // Возвращаем скролл
+                $('body,html').animate({
+                    scrollTop: globalVariables.lastScrollTop
+                }, 599);
+            }
+
+        }
+        else
+        {
+            globalVariables.lastScrollTop = $(window).scrollTop();
+
+            globalVariables.notChangeNavButton = true;
+            setTimeout(
+                function (){
+                    // Показываем контейнер навигации
+                    $('.buttonUpContainer').show();
+
+                    // Делаем кнопку "Назад"
+                    $('.buttonUpText').text("Назад");
+                    $('.buttonUpSign').removeClass("glyphicon-chevron-up");
+                    $('.buttonUpSign').addClass("glyphicon-chevron-down");
+                    $('.buttonUpContainer').addClass('backWardButton');
+                    globalVariables.notChangeNavButton = false;
+                },
+                800
+            );
+            $('body,html').animate({
+                scrollTop: 0
+            }, 599);
+
+        }
+        return false;
+    });
 
  globalVariables.notChangeNavButton = false;
  // Кнопка закрытия приёма в панели 
@@ -560,60 +615,23 @@ $('select[multiple="multiple"]').each(function(index, select) {
 		})
 	);
  }
- $('.buttonUpContainer').click(function () {
- // Смотрим - есть ли у this класс "backWardButton"
- if ($(this).hasClass('backWardButton'))
- {
-    if (globalVariables.lastScrollTop>0)
-    {
-        globalVariables.notChangeNavButton = true;
-        // Ставим на setTimeOut чтобы после перевода состояния сделать кнопку "Наверх"
-        setTimeout(
-        function (){
-            // Показываем контейнер навигации
-            $('.buttonUpContainer').show();
-            // Делаем кнопку "Наверх"
-            $('.buttonUpText').text("Наверх");
-            $('.buttonUpSign').removeClass("glyphicon-chevron-down");
-            $('.buttonUpSign').addClass("glyphicon-chevron-up");
-            globalVariables.notChangeNavButton = false;
-            $('.buttonUpContainer').removeClass('backWardButton');
-        },
-        800
+
+    // Кнопка печати слева
+    if($('#printContentButton').length > 0) {
+        $('.buttonUpContainer').append($('#printContentButton').clone().prop({
+            'id' : 'sidePrintContentButton',
+            'value' : 'Печать',
+            'title' : 'Распечатать приём'
+        }).css(
+            {
+                'marginTop': '3px',
+                'width' : '85px',
+                'marginLeft' : '8px'
+            })
         );
-            // Возвращаем скролл 
-        $('body,html').animate({
-          scrollTop: globalVariables.lastScrollTop
-        }, 599);
     }
-   
- }
- else
- {
-    globalVariables.lastScrollTop = $(window).scrollTop();
 
-        globalVariables.notChangeNavButton = true;
-        setTimeout(
-        function (){
-         // Показываем контейнер навигации
-            $('.buttonUpContainer').show();
 
-            // Делаем кнопку "Назад"
-            $('.buttonUpText').text("Назад");
-            $('.buttonUpSign').removeClass("glyphicon-chevron-up");
-            $('.buttonUpSign').addClass("glyphicon-chevron-down");
-            $('.buttonUpContainer').addClass('backWardButton');
-            globalVariables.notChangeNavButton = false;
-        },
-        800
-        );
-           $('body,html').animate({
-              scrollTop: 0
-            }, 599);
-
-         }
-    return false;
-  });
     $(window).scroll(
         function() 
         {

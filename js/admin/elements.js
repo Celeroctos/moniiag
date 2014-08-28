@@ -964,7 +964,8 @@ $('#saveDependencesBtn').on('click', function (e) {
     var controlAction = $('#controlActions').val();
 
     $.ajax({
-        'url': '/index.php/admin/elements/savedependences',
+        'url': '/index.php/admin/elements/savedependences' +
+            '',
         'data': {
             'values': $.toJSON(controlValues),
             'dependenced': $.toJSON(controlDependencesList),
