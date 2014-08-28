@@ -27,9 +27,14 @@ class MedcardRecord extends MisActiveRecord  {
                     )
                 );
                 $result = $queryToRun->queryScalar();
+            //var_dump($greeting);
+            //var_dump($template);
+            //var_dump($result );
+            //exit();
             return $result;
         } catch(Exception $e) {
             echo $e->getMessage();
+            exit();
         }
     }
 
