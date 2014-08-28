@@ -70,6 +70,9 @@ class CategorieViewWidget extends CWidget {
         exit();
         //*/
 
+       // var_dump($categories);
+       // exit();
+
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
