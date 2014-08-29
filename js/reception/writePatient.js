@@ -18,6 +18,27 @@
     });
 
     function getPatientsFilter() {
+		/* ticket 10333:
+			Если задан только один из этих параметров, то пользователю выдавать сообщение:
+			"Недостаточно параметров для поиска" 
+		*/
+		var counter = 0;
+		var check = [
+			$.trim($('#docnumber').val()),
+			$.trim($('#serie').val()),
+			$.trim($('#birthday2').val())
+		].forEach(function(element) {
+			if(element != '') {
+				counter++;
+			}
+		});
+		if(counter == 1) {
+			$('#errorSearchPopup .modal-body .row p').remove();
+			$('#errorSearchPopup .modal-body .row').append('<p class="errorText">Недостаточно параметров для поиска!</p>');
+			$('#errorSearchPopup').modal({});
+			return false;
+		}
+		
         var Result = {
             'groupOp' : 'AND',
             'rules' : [
@@ -165,6 +186,9 @@
     
     function updatePatientsList() {
         var filters = getPatientsFilter();
+		if(!filters) {
+			return -1;
+		}
         var PaginationData=getPaginationParameters('searchWithCardResult');
         if (PaginationData!='') {
             PaginationData = '&'+PaginationData;

@@ -11,6 +11,27 @@ $(document).ready(function() {
     var searchStatus = []; // Здесь - результаты поиска. Есть или нет найденные записи
 
     function getFilters() {
+		/* ticket 10333:
+			Если задан только один из этих параметров, то пользователю выдавать сообщение:
+			"Недостаточно параметров для поиска" 
+		*/
+		var counter = 0;
+		var check = [
+			$.trim($('#docnumber').val()),
+			$.trim($('#serie').val()),
+			$.trim($('#birthday').val())
+		].forEach(function(element) {
+			if(element != '') {
+				counter++;
+			}
+		});
+		if(counter == 1) {
+			$('#errorSearchPopup .modal-body .row p').remove();
+			$('#errorSearchPopup .modal-body .row').append('<p class="errorText">Недостаточно параметров для поиска!</p>');
+			$('#errorSearchPopup').modal({});
+			return false;
+		}
+		
         var Result =
         {
             'groupOp' : 'AND',
@@ -116,6 +137,9 @@ $(document).ready(function() {
 
     function updatePatientWithCardsList() {
         var filters = getFilters();
+		if(!filters) {
+			return -1;
+		}
         var PaginationData=getPaginationParameters('omsSearchWithCardResult');
         if (PaginationData!='') {
             PaginationData = '&'+PaginationData;
