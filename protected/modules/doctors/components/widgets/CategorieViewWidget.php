@@ -475,20 +475,27 @@ class CategorieViewWidget extends CWidget {
                     if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null) {
                         $medguideValuesModel = new MedcardGuideValue();
                         $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id'], 'value', 'asc',  false, false, $elementResult['path'], $this->greetingId);
+                        //var_dump($medguideValues);
                         $guideValues = array();
 						if(count($medguideValues) > 0) {
+                           // var_dump($medguideValues);
                             $guideValues = array();
                             foreach($medguideValues as $value) {
                                 // Если значение из справочника равно "-3" и тип не равен 7ми, то добавим значение
-                                if (!(($value['id']==-3)&& ($elementResult['type']==7)))
-                                {
+                               // if (!(($value['id']==-3)&& ($elementResult['type']==7)))
+                                //{
+                                    //var_dump("!");
+                                    //var_dump($value['value']);
                                     $guideValues[$value['id']] = $value['value'];
-                                }
+                                //}
                             }
                             $elementResult['guide'] = $guideValues;
                         } else {
                             $elementResult['guide'] = array();
                         }
+                        //var_dump($elementResult['guide']);
+                        //echo ("|");
+
                     }
 
                     // Добавляем в форму
@@ -519,8 +526,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['num_wraps'] = $numWrapped;
                         $numWrapped = 0;
                     }
-
+                    //var_dump($elementResult);
                     $categorieResult['elements'][] = $elementResult;
+
                 }
 
                 usort($categorieResult['elements'], function($element1, $element2) {

@@ -966,6 +966,13 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                     $.fn['tableControl'].init($(controltables[i]));
                 }
 
+                // Для селект-контролов вызываем функцию инициализации клика
+                selectControls = $(accClone).find('select');
+                for(i=0;i<selectControls.length;i++)
+                {
+                    $.fn['categories'].initSelectOnClick(selectControls[i]);
+                }
+
                 // Надо скрыть все категории, кроме только что отклонированной
                 // Берём id родительской категории и ищем все аккордеоны, в поле ИД которых входит ИД-шник родительской
                 //   и посылаем сигнал "свернись!"
