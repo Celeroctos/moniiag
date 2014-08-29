@@ -432,7 +432,7 @@ class PrintController extends Controller {
 
         //var_dump($changedElements );
         //exit();
-
+        // =====>
         //  foreach ($changedElements as $oneEl)
         //   {
         //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
@@ -468,7 +468,8 @@ class PrintController extends Controller {
         $sortedElements = $categorieWidget->dividedCats;
 
         // Вытащим диагнозы
-        //var_dump($greetingId);
+        //=======>
+        //var_dump($sortedElements );
         //exit();
 
         $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);

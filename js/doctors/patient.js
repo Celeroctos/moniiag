@@ -116,6 +116,24 @@
             }
 
         );
+
+    }
+
+    function onSaveComplete()
+    {
+        if (printHandler == 'print-greeting-link') {
+            $('.activeGreeting .' + printHandler).trigger('print');
+            //  $('#printContentButton').trigger('end');
+        }
+        else {
+            if (printHandler == 'print-recomendation-link') {
+                $('.' + printHandler).trigger('print');
+            }
+            else {
+                // Закрываем приём
+                $('.' + printHandler).trigger('accept');
+            }
+        }
     }
 
     function onSaveComplete()

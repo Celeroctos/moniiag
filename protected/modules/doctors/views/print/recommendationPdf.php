@@ -1,6 +1,6 @@
 <!-- Шапка -->
 <?php echo $enterprise['fullname']; ?><br>
-<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?>&nbsp;&nbsp;&nbsp;Колцентр тел.: +7-495-1236013</nobr><br>
+<nobr>Тел.: <?php echo $enterprise['phone']; ?>, адрес: <?php echo $enterprise['address_jur']; ?>&nbsp;&nbsp;&nbsp;Коллцентр тел.: +7-495-1236013</nobr><br>
 <br/><br/>
 <h3 style="text-align: center;">ЗАКЛЮЧЕНИЕ ОТ <?php echo $greeting['date']; ?> № <?php echo $greeting['card_number']; ?></h3>
 <br/>
@@ -36,10 +36,10 @@ $templatesIndex = $keysOfTemplates[0];
 
 if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
+
     ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
     if (strlen($diagnosises['noteGreeting'])>0)
     {
-
         ?><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
     }
     if (count($diagnosises['clinicalSecondary'])>0)

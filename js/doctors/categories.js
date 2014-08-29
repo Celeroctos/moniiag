@@ -123,9 +123,12 @@ $(document).ready(function() {
         });
     }
 
+    // Старый код, потом выкинуть
+    /*
     $('.accordion-inner select').each(function(index, element) {
         var currentValue = $(element).val();
-        $(element).on('change', function(e) {
+        //$(element).on('change', function(e) {
+        $(document).on('change',element, function(e) {
             if($(this).val() == '-3') {
                 globalVariables.domElement = element;
                 var elementId =  $(element).attr('id').substr($(element).attr('id').lastIndexOf('_') + 1);
@@ -138,7 +141,22 @@ $(document).ready(function() {
             }
         });
     });
+    */
 
+    $(document).on('change','.accordion-inner select',function()
+        {
+            if($(this).val() == '-3') {
+                globalVariables.domElement = this;
+                var elementId =  $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
+                $('#addGreetingComboValuePopup #controlId').val(elementId);
+                $('#addGreetingComboValuePopup').modal({});
+                $(this).val(currentValue);
+                return false;
+            } else {
+                currentValue = $(this).val();
+            }
+        }
+    );
 
     $('.templatesListNav a').click(function (e) {
         e.preventDefault();
