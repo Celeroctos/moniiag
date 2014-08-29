@@ -154,7 +154,7 @@ $(document).ready(function () {
 
             if (begin != '' && end != '') {
                 $.ajax({
-                    'url': '/index.php/admin/shedule/isgreeting?begin=' + begin + '&end=' + end + '&doctor_id=' + doctorId,
+                    'url': '/admin/shedule/isgreeting?begin=' + begin + '&end=' + end + '&doctor_id=' + doctorId,
                     'cache': false,
                     'dataType': 'json',
                     'type': 'GET',
@@ -205,7 +205,7 @@ $(document).ready(function () {
                             // Удаляем расписание
                             // Надо вынуть данные для редактирования
                             $.ajax({
-                                'url': '/index.php/admin/shedule/delete?id=' + currentRow,
+                                'url': '/admin/shedule/delete?id=' + currentRow,
                                 'cache': false,
                                 'dataType': 'json',
                                 'type': 'GET',
@@ -243,7 +243,7 @@ $(document).ready(function () {
             'setGridParam',
             {
                 url: globalVariables.baseUrl +
-                    '/index.php/admin/shedule/getwrittenpatientsedit?' +
+                    '/admin/shedule/getwrittenpatientsedit?' +
                     'doctor_id=' + doctor +
                     '&date_begin=' + beginDate +
                     '&date_end=' + endDate +
@@ -263,7 +263,7 @@ $(document).ready(function () {
             'setGridParam',
             {
                 url: globalVariables.baseUrl +
-                    '/index.php/admin/shedule/getwrittenpatients?' +
+                    '/admin/shedule/getwrittenpatients?' +
                     'doctor_id=' + doctor +
                     '&begin=' + beginDate +
                     '&end=' + endDate,
@@ -281,7 +281,7 @@ $(document).ready(function () {
         if (currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url': '/index.php/admin/shedule/getone?id=' + currentRow,
+                'url': '/admin/shedule/getone?id=' + currentRow,
                 'cache': false,
                 'dataType': 'json',
                 'type': 'GET',
@@ -351,7 +351,7 @@ $(document).ready(function () {
     }
 
     $("#shiftsAdd").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/modules/getshifts',
+        url: globalVariables.baseUrl + '/admin/modules/getshifts',
         datatype: "json",
         colNames: ['Код', 'Начало приёма', 'Конец приёма'],
         colModel: [
@@ -384,7 +384,7 @@ $(document).ready(function () {
 
 
     $("#shiftsEdit").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/modules/getshifts',
+        url: globalVariables.baseUrl + '/admin/modules/getshifts',
         datatype: "json",
         colNames: ['Код', 'Начало приёма', 'Конец приёма'],
         colModel: [
@@ -473,7 +473,7 @@ $(document).ready(function () {
         }
         // Делаем поиск
         $.ajax({
-            'url': '/index.php/reception/doctors/searchcommon/?filters=' + $.toJSON(filters) + PaginationData,
+            'url': '/reception/doctors/searchcommon/?filters=' + $.toJSON(filters) + PaginationData,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -555,7 +555,7 @@ $(document).ready(function () {
         globalVariables.doctorSheduleEdit = id;
         // Здесь - запрос к базе: мб, уже есть установленное раписание, тогда его надо вывести
         $.ajax({
-            'url': '/index.php/admin/shedule/get?id=' + id,
+            'url': '/admin/shedule/get?id=' + id,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -610,7 +610,7 @@ $(document).ready(function () {
         jQuery("#shiftsEmployee").jqGrid(
             'setGridParam',
             {
-                url: globalVariables.baseUrl + '/index.php/admin/shedule/getshiftsemployee?doctorId=' + globalVariables.doctorSheduleEdit,
+                url: globalVariables.baseUrl + '/admin/shedule/getshiftsemployee?doctorId=' + globalVariables.doctorSheduleEdit,
                 page: 1
             }
         );

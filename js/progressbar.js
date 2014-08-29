@@ -143,77 +143,77 @@ $(document).ready(function(e) {
     function getConfig() {
         var config = {
             '#syncMedservices' : {
-                'url' : '/index.php/guides/service/syncwithtasu',
+                'url' : '/guides/service/syncwithtasu',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncLands' : {
-                'url' : '/index.php/guides/cladr/synclands',
+                'url' : '/guides/cladr/synclands',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncRegions' : {
-                'url' : '/index.php/guides/cladr/syncregions',
+                'url' : '/guides/cladr/syncregions',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncDistricts' : {
-                'url' : '/index.php/guides/cladr/syncdistricts',
+                'url' : '/guides/cladr/syncdistricts',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncSettlements' : {
-                'url' : '/index.php/guides/cladr/syncsettlements',
+                'url' : '/guides/cladr/syncsettlements',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncStreets' : {
-                'url' : '/index.php/guides/cladr/syncstreets',
+                'url' : '/guides/cladr/syncstreets',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncPatients' : {
-                'url' : '/index.php/admin/tasu/syncpatients',
+                'url' : '/admin/tasu/syncpatients',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
             '#syncDoctors' : {
-                'url' : '/index.php/admin/tasu/syncdoctors',
+                'url' : '/admin/tasu/syncdoctors',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
 			'#syncOms' : {
-                'url' : '/index.php/admin/tasu/syncoms',
+                'url' : '/admin/tasu/syncoms',
                 'successMsg' : 'Синхронизация с ТАСУ-ОМС завершена!',
                 'successFunc' : function() {
 
                 }
             },
 			'#syncInsurances' : {
-                'url' : '/index.php/admin/tasu/syncinsurances',
+                'url' : '/admin/tasu/syncinsurances',
                 'successMsg' : 'Синхронизация с ТАСУ завершена!',
                 'successFunc' : function() {
 
                 }
             },
 			'#genPoliciesOnlySymbols' : {
-				'url' : '/index.php/admin/tasu/createomssearchfield',
+				'url' : '/admin/tasu/createomssearchfield',
                 'successMsg' : 'Создание поисковых полей завершено!',
                 'successFunc' : function() {
 

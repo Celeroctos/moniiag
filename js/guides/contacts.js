@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#contacts").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/contacts/get',
+        url: globalVariables.baseUrl + '/guides/contacts/get',
         datatype: "local",
         colNames:['Код', 'Сотрудник', 'Тип контакта', 'Значение контакта', ''],
         colModel:[
@@ -120,7 +120,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/contacts/getone?id=' + currentRow,
+                'url' : '/guides/contacts/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -166,7 +166,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/contacts/delete?id=' + currentRow,
+                'url' : '/guides/contacts/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -189,7 +189,7 @@ $(document).ready(function() {
 
     // Форма фильтрации контактов
     $("#contact-filter-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
-        var url = '/index.php/guides/contacts/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val() + '&employeeid=' + $("#employeeCodeFilter").val();
+        var url = '/guides/contacts/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val() + '&employeeid=' + $("#employeeCodeFilter").val();
         $("#contacts").jqGrid('setGridParam', {
             url: url,
             datatype: 'json'
@@ -213,7 +213,7 @@ $(document).ready(function() {
         var enterpriseCode = $(this).val();
         if(enterpriseCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
             $.ajax({
-                'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
+                'url' : '/guides/wards/getbyenterprise?id=' + enterpriseCode,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -238,7 +238,7 @@ $(document).ready(function() {
         var wardCode = $(this).val();
         if(wardCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
             $.ajax({
-                'url' : '/index.php/guides/employees/getbyward?id=' + wardCode,
+                'url' : '/guides/employees/getbyward?id=' + wardCode,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

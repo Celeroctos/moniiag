@@ -18,7 +18,7 @@
         'id' => 'patient-oms-edit-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editoms'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -43,7 +43,7 @@
             <div class="add-patient-submit">
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editoms'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#patient-oms-edit-form").trigger("success", [data, textStatus, jqXHR])

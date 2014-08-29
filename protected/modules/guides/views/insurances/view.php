@@ -22,7 +22,7 @@
                 'id' => 'insurance-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/insurances/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/insurances/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -80,7 +80,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/insurances/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/insurances/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#insurance-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -108,7 +108,7 @@
                 'id' => 'insurance-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/insurances/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/insurances/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -172,7 +172,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/insurances/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/insurances/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#insurance-edit-form").trigger("success", [data, textStatus, jqXHR])

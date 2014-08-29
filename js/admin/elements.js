@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $("#elements").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/elements/get',
+        url: globalVariables.baseUrl + '/admin/elements/get',
         datatype: "json",
         colNames: ['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Метка для администратора', 'Размер', 'Перенос строки', 'Позиция', 'Полный путь', '', '', '', '', ''],
         colModel: [
@@ -132,7 +132,7 @@ $(document).ready(function () {
         }
     );
 
-    var url = globalVariables.baseUrl + '/index.php/admin/elements/getdependenceslist';
+    var url = globalVariables.baseUrl + '/admin/elements/getdependenceslist';
     $("#dependences").jqGrid({
         url: url,
         datatype: "local",
@@ -337,7 +337,7 @@ function editElement() {
     if (currentRow != null) {
         // Надо вынуть данные для редактирования
         $.ajax({
-            'url': '/index.php/admin/elements/getone?id=' + currentRow,
+            'url': '/admin/elements/getone?id=' + currentRow,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -607,7 +607,7 @@ $("#deleteElement").click(function () {
     if (currentRow != null) {
         // Надо вынуть данные для редактирования
         $.ajax({
-            'url': '/index.php/admin/elements/delete?id=' + currentRow,
+            'url': '/admin/elements/delete?id=' + currentRow,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -724,7 +724,7 @@ $('#editElementDependences').on('click', function () {
     if (currentRow != null) {
         // Надо вынуть данные для редактирования зависимостей
         $.ajax({
-            'url': '/index.php/admin/elements/getdependences?id=' + currentRow,
+            'url': '/admin/elements/getdependences?id=' + currentRow,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -964,7 +964,7 @@ $('#saveDependencesBtn').on('click', function (e) {
     var controlAction = $('#controlActions').val();
 
     $.ajax({
-        'url': '/index.php/admin/elements/savedependences' +
+        'url': '/admin/elements/savedependences' +
             '',
         'data': {
             'values': $.toJSON(controlValues),
@@ -1171,7 +1171,7 @@ $('select#guideId').on('change', function (e, currentValue) {
     $(defaultSelect).attr('disabled', true);
 
     $.ajax({
-        'url': '/index.php/admin/guides/getvalues',
+        'url': '/admin/guides/getvalues',
         'data': {
             'id': $(this).val()
         },

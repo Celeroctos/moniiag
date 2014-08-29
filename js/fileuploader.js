@@ -143,7 +143,7 @@ $(document).ready(function() {
 
 var fileUploadersConfig = {
     'tasuIn' : {
-        'url' : '/index.php/admin/tasu/uploadoms',
-        'progressurl' : '/index.php/admin/tasu/getuploadprogressinfo'
+        'url' : '/admin/tasu/uploadoms',
+        'progressurl' : '/admin/tasu/getuploadprogressinfo'
     }
 }

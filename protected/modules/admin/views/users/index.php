@@ -21,7 +21,7 @@
                 'id' => 'user-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/users/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -102,7 +102,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/users/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#user-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -130,7 +130,7 @@
                 'id' => 'user-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/users/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -202,7 +202,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/users/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#user-edit-form").trigger("success", [data, textStatus, jqXHR])
@@ -230,7 +230,7 @@
                 'id' => 'user-edit-password-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/changepass'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/users/changepass'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -277,7 +277,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/users/changepass'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/users/changepass'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#user-edit-password-form").trigger("success", [data, textStatus, jqXHR])

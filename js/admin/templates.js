@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#templates").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/templates/get',
+        url: globalVariables.baseUrl + '/admin/templates/get',
         datatype: "json",
         colNames:['Код', 'Название', 'Страница', 'Категории', 'Обязательность диагноза', 'Порядок', '', '', ''],
         colModel:[
@@ -139,7 +139,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/templates/getone?id=' + currentRow,
+                'url' : '/admin/templates/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -199,7 +199,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/templates/delete?id=' + currentRow,
+                'url' : '/admin/templates/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -232,7 +232,7 @@ $(document).ready(function() {
             }).text('Подождите, шаблон вызывается...');
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/templates/show?id=' + currentRow,
+                'url' : '/admin/templates/show?id=' + currentRow,
                 'cache' : false,
                 'type' : 'GET',
                 'dataType' : 'json',

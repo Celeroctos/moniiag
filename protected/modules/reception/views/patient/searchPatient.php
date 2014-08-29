@@ -12,7 +12,7 @@
         'id' => 'patient-search-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/search'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/search'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -302,7 +302,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-medcard-edit-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editcard'),
     'htmlOptions' => array(
         'class' => 'form-horizontal col-xs-12',
         'role' => 'form'
@@ -335,7 +335,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editcard'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#patient-medcard-edit-form").trigger("success", [data, textStatus, jqXHR])
@@ -355,7 +355,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-oms-edit-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editoms'),
     'htmlOptions' => array(
         'class' => 'form-horizontal col-xs-12',
         'role' => 'form'
@@ -386,7 +386,7 @@ $form = $this->beginWidget('CActiveForm', array(
                 //echo CHtml::submitButton(
                 echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editoms'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editoms'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#patient-oms-edit-form").trigger("success", [data, textStatus, jqXHR])

@@ -15,7 +15,7 @@ class Controller extends CController {
             // Если гость, то не давать заходить куда-то
             $this->redirect('/');
         } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
-            $this->redirect(Yii::app()->request->baseUrl.'/index.php'.Yii::app()->user->startpageUrl);
+            $this->redirect(Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl);
         }
 		
         $roleModel = new Role();

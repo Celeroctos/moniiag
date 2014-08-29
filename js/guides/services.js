@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#services").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/service/get',
+        url: globalVariables.baseUrl + '/guides/service/get',
         datatype: "json",
         colNames:['ID',
                   'Код услуги в ТАСУ',
@@ -110,7 +110,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/service/getone?id=' + currentRow,
+                'url' : '/guides/service/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -152,7 +152,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/service/delete?id=' + currentRow,
+                'url' : '/guides/service/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -178,7 +178,7 @@ $(document).ready(function() {
             'disabled' : true
         }).text('Идёт синхронизация с ТАСУ...');
         $.ajax({
-            'url' : '/index.php/guides/service/syncwithtasu',
+            'url' : '/guides/service/syncwithtasu',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',

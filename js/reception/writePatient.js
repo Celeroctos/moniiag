@@ -195,7 +195,7 @@
         }
         // Делаем поиск
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -207,7 +207,7 @@
                     if(data.rows.length == 0) {
                         // Проверим: мб, есть пациент с таким полисом просто
                         $.ajax({
-                            'url' : '/index.php/reception/patient/search/?withoutonly=0&rows=10&page=1&sidx=oms_number&sord=desc&filters=' + $.toJSON(filters),
+                            'url' : '/reception/patient/search/?withoutonly=0&rows=10&page=1&sidx=oms_number&sord=desc&filters=' + $.toJSON(filters),
                             'cache' : false,
                             'dataType' : 'json',
                             'type' : 'GET',
@@ -274,7 +274,7 @@
         $('.organizer').trigger('resetClickedDay');
         // Делаем поиск
         $.ajax({
-            'url' : '/index.php/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
+            'url' : '/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'data' : data,
@@ -336,14 +336,14 @@
 				if(globalVariables.isCallCenter) {
 					var content = '<tr>' +
 						'<td class="write-patient-cell">' +
-							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '&callcenter=1&is_pregnant=' + $('#canPregnant').val() + '">' +
+							'<a title="Записать пациента" href="http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + '&callcenter=1&is_pregnant=' + $('#canPregnant').val() + '">' +
 								'<span class="glyphicon glyphicon-dashboard"></span>' +
 							'</a>' +
 						'</td>';
 				} else {
 					var content = '<tr>' +
 						'<td class="write-patient-cell">' +
-							'<a title="Записать пациента" href="http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + ((globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) ? '&waitingline=1' : '') +'">' +
+							'<a title="Записать пациента" href="http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + data[i].card_number + ((globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) ? '&waitingline=1' : '') +'">' +
 								'<span class="glyphicon glyphicon-dashboard"></span>' +
 							'</a>' +
 						'</td>';
@@ -458,7 +458,7 @@
         // Делаем поиск
         params.doctorid = doctorId;
         $.ajax({
-            'url' : '/index.php/doctors/shedule/getcalendar',
+            'url' : '/doctors/shedule/getcalendar',
             'data' : params,
             'cache' : false,
             'dataType' : 'json',
@@ -507,7 +507,7 @@
                     '<tr>' +
                         '<td>' + data[i].timeBegin + ' - ' + data[i].timeEnd + '</td>' +
                         '<td>' +
-                            '<a href="http://' + location.host + '/index.php/reception/patient/editcardview/?cardid=' + data[i].cardNumber + '" title="Посмотреть информацию по пациенту">' +
+                            '<a href="http://' + location.host + '/reception/patient/editcardview/?cardid=' + data[i].cardNumber + '" title="Посмотреть информацию по пациенту">' +
                                     data[i].fio  +
                             '</a>' +
                         '</td>' +
@@ -589,7 +589,7 @@
             params.cancelledGreetingId = globalVariables.cancelledGreeting;
         }
         $.ajax({
-            'url' : '/index.php/doctors/shedule/writepatient',
+            'url' : '/doctors/shedule/writepatient',
             'data' : params,
             'cache' : false,
             'dataType' : 'json',
@@ -660,7 +660,7 @@
             id : greetingId
         };
         $.ajax({
-            'url' : '/index.php/doctors/shedule/unwritepatient',
+            'url' : '/doctors/shedule/unwritepatient',
             'data' : params,
             'cache' : false,
             'dataType' : 'json',
@@ -712,7 +712,7 @@
             params.cancelledGreetingId = globalVariables.cancelledGreeting;
         }
         $.ajax({
-            'url' : '/index.php/doctors/shedule/writepatient',
+            'url' : '/doctors/shedule/writepatient',
             'data' : params,
             'cache' : false,
             'dataType' : 'json',
@@ -781,7 +781,7 @@
         $(this).parents('tr').addClass('active');
         $("#motion-history").jqGrid('setGridParam',{
             'datatype' : 'json',
-            'url' : globalVariables.baseUrl + '/index.php/reception/patient/gethistorymotion/?omsid=' + omsId
+            'url' : globalVariables.baseUrl + '/reception/patient/gethistorymotion/?omsid=' + omsId
         }).trigger("reloadGrid");
         $('#viewHistoryMotionPopup').modal({});
         return false;
@@ -791,7 +791,7 @@
     $(document).on('click', '.editMedcard', function(e) {
         console.log($(this).prop('href'));
         $.ajax({
-            'url' : '/index.php/reception/patient/getmedcarddata',
+            'url' : '/reception/patient/getmedcarddata',
             'data' : {
                 'cardid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -826,7 +826,7 @@
     // Редактирование полиса в попапе
     $(document).on('click', '.editOms', function(e) {
         $.ajax({
-            'url' : '/index.php/reception/patient/getomsdata',
+            'url' : '/reception/patient/getomsdata',
             'data' : {
                 'omsid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -885,9 +885,9 @@
     var createWithOms = false;
     $('#createCard').on('click', function() {
         if(createWithOms !== false) {
-            location.href = '/index.php/reception/patient/viewadd/?patientid=' + createWithOms
+            location.href = '/reception/patient/viewadd/?patientid=' + createWithOms
         } else {
-            location.href = '/index.php/reception/patient/viewadd';
+            location.href = '/reception/patient/viewadd';
         }
     });
 

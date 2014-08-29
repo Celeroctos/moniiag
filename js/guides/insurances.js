@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#insurances").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/insurances/get',
+        url: globalVariables.baseUrl + '/guides/insurances/get',
         datatype: "json",
         colNames:['Код', 'Наименование', 'Код СМО'],
         colModel:[
@@ -140,7 +140,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/insurances/getone?id=' + currentRow,
+                'url' : '/guides/insurances/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -199,7 +199,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/insurances/delete?id=' + currentRow,
+                'url' : '/guides/insurances/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

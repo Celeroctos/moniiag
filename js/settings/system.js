@@ -27,7 +27,7 @@ $(document).ready(function() {
             $('#clearGreetingDataSubmit').attr('value', 'Подождите, идёт процесс очистки данных...');
             $('#clearGreetingDataSubmit').attr('disabled', true);
             $.ajax({
-                'url' : '/index.php/admin/categories/cleargreetingsdata',
+                'url' : '/admin/categories/cleargreetingsdata',
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -50,7 +50,7 @@ $(document).ready(function() {
         $(this).attr('value', 'Подождите, идёт процесс очистки данных...');
         $(this).attr('disabled', true);
         $.ajax({
-            'url' : '/index.php/admin/categories/cleargreetingsdata',
+            'url' : '/admin/categories/cleargreetingsdata',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',

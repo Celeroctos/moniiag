@@ -11,7 +11,7 @@
                 'id' => 'district-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/districtadd'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/districtadd'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -75,7 +75,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/districtadd'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/districtadd'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#district-add-form").trigger("success", [data, textStatus, jqXHR])

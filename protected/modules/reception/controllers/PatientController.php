@@ -1087,7 +1087,7 @@ class PatientController extends Controller {
         $medcard = $modelCard->findByPk($_GET['cardid']);
         if($medcard == null) {
             $req = new CHttpRequest();
-            $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
+            $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/viewsearch'));
         }
         $modelOms = new Oms();
         $oms = $modelOms->findByPk($medcard->policy_id);
@@ -1334,7 +1334,7 @@ class PatientController extends Controller {
         $oms = $modelOms->findByPk($_GET['omsid']);
         if($oms == null) {
             $req = new CHttpRequest();
-            $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/viewsearch'));
+            $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/viewsearch'));
         }
 		
 		// Подгружаем на всякий случай данные из ТАСУ
@@ -2189,7 +2189,7 @@ class PatientController extends Controller {
         }
 
         $req = new CHttpRequest();
-        $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/writepatientstepone'));
+        $req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/writepatientstepone'));
     }
 
     public function actionChangeOrDelete()

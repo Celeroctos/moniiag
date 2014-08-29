@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#identity").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/doctype/get',
+        url: globalVariables.baseUrl + '/guides/doctype/get',
         datatype: "json",
         colNames:['Код', 'Наименование'],
         colModel:[
@@ -39,7 +39,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/doctype/getone?id=' + currentRow,
+                'url' : '/guides/doctype/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -75,7 +75,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/doctype/delete?id=' + currentRow,
+                'url' : '/guides/doctype/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

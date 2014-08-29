@@ -80,7 +80,7 @@
         if ( $('#greetingPrintNeed input:checked').length>0 )
         {
             var id = $('#greetingId').val();
-            var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+            var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
             $(printWin).on('load',
                 function () {
                     this.focus();
@@ -109,7 +109,7 @@
     function printTemplateRecommendation(templateNumber)
     {
         var id  = $('#greetingId').val();
-        var printWin = window.open('/index.php/doctors/print/printgreeting/?templateId='+ templateNumber +'&printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        var printWin = window.open('/doctors/print/printgreeting/?templateId='+ templateNumber +'&printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         $(printWin).on('load',
             function () {
                 this.focus();
@@ -160,7 +160,7 @@
 
         // Отправим аякс
         $.ajax({
-            'url' : '/index.php/doctors/shedule/gethistorypoints',
+            'url' : '/doctors/shedule/gethistorypoints',
             'data' : {
                 'medcardid' : cardNumber
             },
@@ -225,7 +225,7 @@
         //   Есть новое значение статуса приёма и ИД самого приёма
         //  Самое время отправить ajax-запрос
         $.ajax({
-            'url' : '/index.php/doctors/shedule/changegreetingstatus?greetingId='
+            'url' : '/doctors/shedule/changegreetingstatus?greetingId='
                 +idGreeting
                 +'&newValue='
                 +newValue,
@@ -386,7 +386,7 @@
 
         // Запускаем синхронный айкс-запрос
         $.ajax({
-            'url': '/index.php/admin/guides/deleteinguidegreeting?id=' + valueOfOption + '&greeting=' + $('#greetingId').val(),
+            'url': '/admin/guides/deleteinguidegreeting?id=' + valueOfOption + '&greeting=' + $('#greetingId').val(),
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -460,7 +460,7 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
     //return false;
     var greetingId = $(this).attr('href').substr(1);
     $.ajax({
-        'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
+        'url' : '/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
         'cache' : false,
         'dataType' : 'json',
         'type' : 'GET',
@@ -506,7 +506,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
     $('#historyPopup .medcardNumber').text('№ ' + medcardId);
     $('#historyPopup .historyDate').text(date);
     $.ajax({
-        'url': '/index.php/doctors/patient/gethistorymedcard',
+        'url': '/doctors/patient/gethistorymedcard',
         'data': {
             medcardid: medcardId,
             historyPointId: pointId,
@@ -626,7 +626,7 @@ $('#printPopup .btn-success').on('click', function (e) {
 // Печать листа приёма, само действие
 $('.print-greeting-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
-    var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+    var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
     $(printWin).on('load',
     function () {
         this.focus();
@@ -640,7 +640,7 @@ $('.print-greeting-link').on('print', function (e) {
 // Печать листа приёма, само действие
 $('.print-recomendation-link').on('print', function (e) {
     var id = $(this).attr('href').substr(1);
-    var printWin = window.open('/index.php/doctors/print/printgreeting/?printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+    var printWin = window.open('/doctors/print/printgreeting/?printRecom=1&greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
     $(printWin).on('load',
     function () {
         this.focus();
@@ -656,7 +656,7 @@ $('.print-recomendation-link').on('print', function (e) {
     {
         // Делаем синхронный Ajax-запрос, разбираем данные, которые он вернул и выводим в поп-ап
         $.ajax({
-            'url': '/index.php/doctors/print/getrecommendationtemplatesingreeting?greetingId='  + $('#greetingId').val(),
+            'url': '/doctors/print/getrecommendationtemplatesingreeting?greetingId='  + $('#greetingId').val(),
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -743,7 +743,7 @@ $('#submitDiagnosis').on('click', function (e) {
     }
 
     $.ajax({
-        'url': '/index.php/doctors/patient/savediagnosis',
+        'url': '/doctors/patient/savediagnosis',
         'data': {
             'primary': $.toJSON(primaryIds),
             'secondary': $.toJSON(secondaryIds),
@@ -804,7 +804,7 @@ $('#onlyLikeDiagnosis').click(function (e) {
 // Просмотр медкарты в попапе
 $(document).on('click', '.editMedcard', function (e) {
     $.ajax({
-        'url': '/index.php/reception/patient/getmedcarddata',
+        'url': '/reception/patient/getmedcarddata',
         'data': {
             'cardid': $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
         },
@@ -868,7 +868,7 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
 
     // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
     $.ajax({
-        'url': '/index.php/doctors/patient/cloneelement',
+        'url': '/doctors/patient/cloneelement',
         'data': {
             'pr_key': prKey
         },
@@ -1044,7 +1044,7 @@ $(document).on('click', '.accordion-unclone-btn', function (e) {
     var accParent = $(this).parents('.accordion')[0];
     var prKey = $(this).find('span.pr-key').text();
     $.ajax({
-        'url': '/index.php/doctors/patient/uncloneelement',
+        'url': '/doctors/patient/uncloneelement',
         'data': {
             'pr_key': prKey
         },
@@ -1383,7 +1383,7 @@ $('#addClinicalDiagnosisSubmit').on('click', function (e) {
 
 
     $.ajax({
-        'url': '/index.php/admin/diagnosis/addclinic',
+        'url': '/admin/diagnosis/addclinic',
         'data': {
             'FormClinicalDiagnosisAdd[description]': diagnosisName
         },
@@ -1410,7 +1410,7 @@ function generateAjaxGif(width, height) {
 
 function getHistoryPoint(medcardId, pointId, date) {
     $.ajax({
-        'url': '/index.php/doctors/patient/gethistorymedcard',
+        'url': '/doctors/patient/gethistorymedcard',
         'data': {
             medcardid: medcardId,
             historyPointId: pointId,
@@ -1504,7 +1504,7 @@ $('#nextHistoryPoint').on('click', function () {
     });
 
     function updatePatientList(onlyWaitingList) {
-        var url = '/index.php/doctors/shedule/updatepatientlist';
+        var url = '/doctors/shedule/updatepatientlist';
         var data = {
             FormSheduleFilter : {
                 date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
@@ -1547,7 +1547,7 @@ $('#nextHistoryPoint').on('click', function () {
     }
 
     function updateExpanded() {
-        var url = '/index.php/doctors/shedule/getpatientslistbydate';
+        var url = '/doctors/shedule/getpatientslistbydate';
         var data = {
             'doctorid' : globalVariables.doctorId,
             'year' : globalVariables.year,

@@ -32,7 +32,7 @@ $(document).ready(function() {
     
     
     $("#medguides").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/guides/getvalues?id=' + globalVariables.currentGuideId,
+        url: globalVariables.baseUrl + '/admin/guides/getvalues?id=' + globalVariables.currentGuideId,
         datatype: "json",
         colNames:['','Значение'],
         colModel:[
@@ -133,7 +133,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/guides/getonevalue?id=' + currentRow,
+                'url' : '/admin/guides/getonevalue?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -171,7 +171,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/guides/deleteinguide?id=' + currentRow,
+                'url' : '/admin/guides/deleteinguide?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

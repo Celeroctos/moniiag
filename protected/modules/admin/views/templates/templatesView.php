@@ -25,7 +25,7 @@
                 'id' => 'template-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -102,7 +102,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#template-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -130,7 +130,7 @@
                 'id' => 'template-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -214,7 +214,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/templates/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])

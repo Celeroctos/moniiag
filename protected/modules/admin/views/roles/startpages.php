@@ -20,7 +20,7 @@
                 'id' => 'startpage-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/addstartpage'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/addstartpage'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -73,7 +73,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/addstartpage'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/addstartpage'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#startpage-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -101,7 +101,7 @@
                 'id' => 'startpage-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/editstartpage'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/editstartpage'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -158,7 +158,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/editstartpage'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/editstartpage'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#startpage-edit-form").trigger("success", [data, textStatus, jqXHR])

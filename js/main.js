@@ -319,7 +319,7 @@ $('#quickPanel img:not(.recycleBin)').each(panelDragInit);
 
 $('#recycleBin-cont img').droppable().on('drop', function (event, ui) {
     $.ajax({
-        'url': '/index.php/quickpanel/removeelement',
+        'url': '/quickpanel/removeelement',
         'cache': false,
         'dataType': 'json',
         'data': {
@@ -410,7 +410,7 @@ $('#quickPanel').droppable({
 
         if (!removeMode) {
             $.ajax({
-                'url': '/index.php/quickpanel/addelement',
+                'url': '/quickpanel/addelement',
                 'cache': false,
                 'dataType': 'json',
                 'data': {
@@ -482,7 +482,7 @@ $('#fontPlus').on('click', function (e) {
     var fontSize = parseInt($('.sampleLetterSize').css('font-size'));
     $('#fontPlus, #fontMinus').attr('disabled', true);
     $.ajax({
-        'url': '/index.php/style/changefontsize',
+        'url': '/style/changefontsize',
         'cache': false,
         'dataType': 'json',
         'data': {
@@ -500,7 +500,7 @@ $('#fontMinus').on('click', function (e) {
     var fontSize = parseInt($('.sampleLetterSize').css('font-size'));
     $('#fontPlus, #fontMinus').attr('disabled', true);
     $.ajax({
-        'url': '/index.php/style/changefontsize',
+        'url': '/style/changefontsize',
         'cache': false,
         'dataType': 'json',
         'data': {
@@ -712,7 +712,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
             console.log('Тест');
 
             $.ajax({
-                'url' : '/index.php/doctors/patient/getindicators',
+                'url' : '/doctors/patient/getindicators',
                 'data' : {
                 },
                 'cache' : false,
@@ -754,7 +754,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
         $(document).on('click', '.is-patients-to-check', function()
         {
             // Перенаправляем на страницу
-            location.href = '/index.php/doctors/patient/viewmonitoring?alarm=1'
+            location.href = '/doctors/patient/viewmonitoring?alarm=1'
         });
 
 
@@ -981,6 +981,49 @@ $('select[multiple="multiple"]').each(function(index, select) {
     });
     //   Конец блока переходов по Enter-у
     // <-----------------
-
+	
+		
+	systemFuncs = {
+		sessionTimer : null,
+		setSessionTimer : function(value) {
+			this.setSessionInterval(value, this);
+			var _this = this;
+			$(document).on('keydown', function() {
+				_this.setSessionInterval(value, _this);
+			});
+		},
+		setSessionInterval: function(value, _this) {
+			clearTimeout(_this.sessionTimer);
+			_this.sessionTimer = setTimeout(function() {
+				$.ajax({
+					'url' : '/users/logout',
+					'cache' : false,
+					'dataType' : 'json',
+					'type' : 'GET',
+					'success' : function(data, textStatus, jqXHR) {
+						if(data.success == 'true') {
+							location.href = '/';
+						}
+					},
+				});
+			}, value * 1000);
+		}
+	};
+	
+	/* Забор всех настроек для клиентской стороны */
+	$.ajax({
+		'url' : '/system/getsettings',
+		'cache' : false,
+		'dataType' : 'json',
+		'type' : 'GET',
+		'success' : function(data, textStatus, jqXHR) {
+			if(data.success) {
+				var data = data.data;
+				for(var i = 0; i < data.length; i++) {
+					systemFuncs[data[i].func].call(systemFuncs, data[i].value);
+				}
+			}
+		},
+	});
 });
 // pre
