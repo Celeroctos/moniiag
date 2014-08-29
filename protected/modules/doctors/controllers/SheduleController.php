@@ -105,6 +105,21 @@ class SheduleController extends Controller {
                     // Получим разрешённые для него шаблоны
                     $medcardTemplates = new MedcardTemplate();
                     $templatesList = $medcardTemplates->getTemplatesByEmployee($medworkerId);
+
+                    var_dump($templatesList);
+                    exit();
+
+                    // Отсортируем шаблоны по порядку
+                    usort($templatesList, function($template1, $template2) {
+                        if($template1->index > $template2->index) {
+                            return 1;
+                        } elseif($template1->index < $template2->index) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+
                 }
             }
         }
