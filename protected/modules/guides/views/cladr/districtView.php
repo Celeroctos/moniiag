@@ -39,7 +39,7 @@
                 'id' => 'district-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/districtedit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/districtedit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -100,7 +100,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/districtedit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/districtedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#district-edit-form").trigger("success", [data, textStatus, jqXHR])

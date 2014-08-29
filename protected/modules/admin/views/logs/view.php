@@ -10,7 +10,7 @@
         'id' => 'log-search-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/logs/search'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/logs/search'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'

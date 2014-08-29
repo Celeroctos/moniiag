@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     $("#diagnosiss").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/diagnosis/getclinical',
+        url: globalVariables.baseUrl + '/admin/diagnosis/getclinical',
         datatype: "json",
         colNames: ['', 'Название'],
         colModel: [
@@ -95,7 +95,7 @@ $(document).ready(function () {
         if (currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url': '/index.php/admin/diagnosis/getoneclinical?id=' + currentRow,
+                'url': '/admin/diagnosis/getoneclinical?id=' + currentRow,
                 'cache': false,
                 'dataType': 'json',
                 'type': 'GET',
@@ -131,7 +131,7 @@ $(document).ready(function () {
         if (currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url': '/index.php/admin/diagnosis/deleteclinical?id=' + currentRow,
+                'url': '/admin/diagnosis/deleteclinical?id=' + currentRow,
                 'cache': false,
                 'dataType': 'json',
                 'type': 'GET',

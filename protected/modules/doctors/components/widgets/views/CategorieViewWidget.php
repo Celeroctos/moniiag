@@ -11,7 +11,7 @@
 		'id' => 'template-edit-form',
 		'enableAjaxValidation' => true,
 		'enableClientValidation' => true,
-		'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+		'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/shedule/editpatient'),
 		'htmlOptions' => array(
 			'class' => 'form-horizontal col-xs-12',
 			'role' => 'form'
@@ -61,7 +61,7 @@ if(!$this->previewMode /*&& $this->templateType == 0*/) {
 <div class="form-group submitEditPatient">
 	<?php echo CHtml::ajaxSubmitButton(
 		'Сохранить',
-		CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/patientedit'),
+		CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/shedule/patientedit'),
 		array(
 			'success' => 'function(data, textStatus, jqXHR) {
                 $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])

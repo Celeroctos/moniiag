@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#wards").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/wards/get',
+        url: globalVariables.baseUrl + '/guides/wards/get',
         datatype: "json",
         colNames:['Код', 'Наименование', 'Тип учреждения'],
         colModel:[
@@ -106,7 +106,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/wards/getone?id=' + currentRow,
+                'url' : '/guides/wards/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -149,7 +149,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/wards/delete?id=' + currentRow,
+                'url' : '/guides/wards/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

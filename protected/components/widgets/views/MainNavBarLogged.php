@@ -47,7 +47,7 @@
                 'id' => 'logout-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/users/logout'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/users/logout'),
                 'htmlOptions' => array(
                     'class' => 'navbar-form navbar-right',
                     'role' => 'form'
@@ -57,7 +57,7 @@
 
                 <?php echo CHtml::ajaxSubmitButton(
                     'Выйти',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/users/logout'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/users/logout'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                         $("#logout-form").trigger("success", [data, textStatus, jqXHR])

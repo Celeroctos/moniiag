@@ -41,7 +41,7 @@ $(document).ready(function() {
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/admin/logs/search/?filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/admin/logs/search/?filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',

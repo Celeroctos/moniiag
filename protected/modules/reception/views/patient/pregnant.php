@@ -8,7 +8,7 @@
         'id' => 'pregnant-search-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/searchpregnant'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/searchpregnant'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -84,7 +84,7 @@
         <div class="pregnant-search-submit">
             <?php echo CHtml::ajaxSubmitButton(
                 'Поиск',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/searchpregnant'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/searchpregnant'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
                                     $("#pregnant-search-form").trigger("success", [data, textStatus, jqXHR])
@@ -128,17 +128,17 @@
                             </a>
                         </td>
                         <td>
-                            <a href="http://moniiag.toonftp.ru/index.php/reception/patient/editomsview/?omsid=<?php echo "{$model->id}"; ?>">
+                            <a href="http://moniiag.toonftp.ru/reception/patient/editomsview/?omsid=<?php echo "{$model->id}"; ?>">
                                 <?php echo "{$model->omsNumber}"; ?>
                             </a>
                         </td>
                         <td>
-                            <a href="http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=<?php echo "{$model->cardNumber}"; ?>">
+                            <a href="http://moniiag.toonftp.ru/reception/patient/editcardview/?cardid=<?php echo "{$model->cardNumber}"; ?>">
                                 <?php echo "{$model->cardNumber}"; ?>
                             </a>
                         </td>
                         <td>
-                            <a href="http://moniiag.toonftp.ru/index.php/reception/patient/addpregnant/?cardid=<?php echo $model->cardNumber; ?>">
+                            <a href="http://moniiag.toonftp.ru/reception/patient/addpregnant/?cardid=<?php echo $model->cardNumber; ?>">
                                 <span class="glyphicon glyphicon-edit"></span>
                             </a>
                         </td>
@@ -157,7 +157,7 @@
             'id' => 'pregnant-addedit-form',
             'enableAjaxValidation' => true,
             'enableClientValidation' => true,
-            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/searchpregnant'),
+            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/searchpregnant'),
             'htmlOptions' => array(
                 'class' => 'form-horizontal col-xs-12',
                 'role' => 'form'
@@ -202,7 +202,7 @@
             <div class="pregnant-addedit-submit">
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addeditpregnant'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/addeditpregnant'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#pregnant-addedit-form").trigger("success", [data, textStatus, jqXHR])

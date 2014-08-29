@@ -28,7 +28,7 @@
                 'id' => 'enterprise-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/enterprises/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/enterprises/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -188,7 +188,7 @@
                 <!--<button type="button" class="btn btn-primary">Добавить</button>-->
                 <?php echo CHtml::ajaxSubmitButton(
                         'Добавить',
-                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/enterprises/add'),
+                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/enterprises/add'),
                         array(
                             'success' => 'function(data, textStatus, jqXHR) {
                                 $("#enterprise-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -216,7 +216,7 @@
                 'id' => 'enterprise-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/enterprises/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/enterprises/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -379,7 +379,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/enterprises/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/enterprises/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#enterprise-edit-form").trigger("success", [data, textStatus, jqXHR])

@@ -56,7 +56,7 @@
         }
 
         $.ajax({
-            'url' : '/index.php/doctors/shedule/writepatient',
+            'url' : '/doctors/shedule/writepatient',
             'data' : params,
             'cache' : false,
             'dataType' : 'json',
@@ -135,7 +135,7 @@
                         };
                         // Отписать пациента
                         $.ajax({
-                            'url' : '/index.php/doctors/shedule/unwritepatient',
+                            'url' : '/doctors/shedule/unwritepatient',
                             'data' : params,
                             'cache' : false,
                             'dataType' : 'json',
@@ -387,7 +387,7 @@
                                 }
 
                                 $.ajax({
-                                    'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate(),
+                                    'url' : '/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + date.getFullYear() + '&month=' + (date.getMonth() + 1) + '&day=' + date.getDate(),
                                     'cache' : false,
                                     'dataType' : 'json',
                                     'type' : 'GET',

@@ -1,7 +1,7 @@
 ﻿$(document).ready(function() {
 	function initGreetingsGrid(id, pagerId, title) {
 		$(id).jqGrid({
-			url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings',
+			url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings',
 			datatype: "json",
 			colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус', 'Проведён в МИС'],
 			colModel:[
@@ -72,7 +72,7 @@
 	initGreetingsGrid("#historyGreetings", '#historyGreetingsPager', "Список выгруженных приёмов");
 
 	$("#importHistory").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/tasu/getbufferhistorygreetings',
+        url: globalVariables.baseUrl + '/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
         colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', ''],
         colModel:[
@@ -140,7 +140,7 @@
         });
 
         $.ajax({
-            'url' : '/index.php/admin/tasu/clearbuffer',
+            'url' : '/admin/tasu/clearbuffer',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -163,7 +163,7 @@
             'disabled' : true
         }).text('Формируется список приёмов...');
         $.ajax({
-            'url' : '/index.php/admin/tasu/addallgreetings',
+            'url' : '/admin/tasu/addallgreetings',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -198,7 +198,7 @@
 			var numErrors = 0;
             function makeImport() {
                 $.ajax({
-                    'url' : '/index.php/admin/tasu/importgreetings',
+                    'url' : '/admin/tasu/importgreetings',
                     'cache' : false,
                     'data' : {
                         currentGreeting : currentGreeting,
@@ -340,7 +340,7 @@
 
     $('#addGreeting').on('click', function(e) {
         $.ajax({
-            'url' : '/index.php/admin/tasu/getnotbufferedgreetings',
+            'url' : '/admin/tasu/getnotbufferedgreetings',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -375,7 +375,7 @@
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/tasu/deletefrombuffer?id=' + currentRow,
+                'url' : '/admin/tasu/deletefrombuffer?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -453,7 +453,7 @@
 		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		 $.ajax({
-            'url' : '/index.php/admin/tasu/getfios',
+            'url' : '/admin/tasu/getfios',
             'data' : {
 				'doctor_id' : $('#doctorId').val(),
 				'card_number' : $.trim($('#cardNumber').val()),
@@ -519,7 +519,7 @@
     $("#greeting-addfakeall-submit").on('click', function(e) {
 		console.log(greetingsTempBuffer);
         $.ajax({
-            'url' : '/index.php/admin/tasu/addfakegreetingtobuffer',
+            'url' : '/admin/tasu/addfakegreetingtobuffer',
             'data' : {
 				'form' : $.toJSON(greetingsTempBuffer),
 			},
@@ -564,7 +564,7 @@
 	$('#wardId').on('change', function() {
 		$(this).attr('disabled', true);
 		$.ajax({
-			'url' : '/index.php/guides/employees/getbyward?id=' + $(this).val(),
+			'url' : '/guides/employees/getbyward?id=' + $(this).val(),
 			'cache' : false,
 			'dataType' : 'json',
 			'success' : function(data, textStatus, jqXHR) {
@@ -631,7 +631,7 @@
 		// Перезагружаем таблицу
 		$('#greetings').jqGrid('setGridParam',
             {
-                url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings' + urlParams,
+                url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings' + urlParams,
                 page: 1
 			}
 		);
@@ -644,7 +644,7 @@
 			var row = $('#importHistory').jqGrid('getRowData', currentRow);
 			$('#historyGreetings').jqGrid('setGridParam',
 				{
-					url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings?import_id=' + row.import_id,
+					url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings?import_id=' + row.import_id,
 					page: 1
 				}
 			);

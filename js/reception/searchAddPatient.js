@@ -132,7 +132,7 @@
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -208,7 +208,7 @@
         // Запрашиваем аяксом на существование данного полиса
 
         $.ajax({
-            'url' : '/index.php/reception/patient/getisomswithnumber',
+            'url' : '/reception/patient/getisomswithnumber',
             'data' : {
                 'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
                 'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
@@ -319,7 +319,7 @@
         oms = globalVariables.newOmsId;
 
         $.ajax({
-            'url' : '/index.php/reception/patient/rebindomsmedcard',
+            'url' : '/reception/patient/rebindomsmedcard',
             'data' : {
                 //if (isset($_GET['cardNumber']) && isset($_GET['newOmsId']))
                 'cardNumber' : medcard,
@@ -366,7 +366,7 @@
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?withoutonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/reception/patient/search/?withoutonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -414,7 +414,7 @@
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?mediateonly=0&filters=' + $.toJSON(filters) + PaginationData,
+            'url' : '/reception/patient/search/?mediateonly=0&filters=' + $.toJSON(filters) + PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -470,7 +470,7 @@
                     '<td>' + data[i].birthday+ '</td>' +
                     '<td>' + data[i].oms_number + '</td>' +
                     '<td>' +
-                        '<a title="Регистрировать ЭМК" href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
+                        '<a title="Регистрировать ЭМК" href="http://' + location.host + '/reception/patient/viewadd/?patientid=' + data[i].id + '">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
@@ -504,7 +504,7 @@
                     '<td>' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</td>' +
                     '<td>' + data[i].phone + '</td>' +
                     '<td>' +
-                        '<a title="Регистрировать ОМС и ЭМК" href="http://' + location.host + '/index.php/reception/patient/addomsview/">' +
+                        '<a title="Регистрировать ОМС и ЭМК" href="http://' + location.host + '/reception/patient/addomsview/">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
@@ -531,7 +531,7 @@
                    /*  '<td>' + data[i].reg_date + '</td>' + */
                     '<td class="cardNumber">' + data[i].card_number + '</td>' +
                     '<td>' +
-                        '<a href="http://' + location.host + '/index.php/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК">' +
+                        '<a href="http://' + location.host + '/reception/patient/viewadd/?patientid=' + data[i].id + '" title="Перерегистрировать ЭМК">' +
                             '<span class="glyphicon glyphicon-plus"></span>' +
                         '</a>' +
                     '</td>' +
@@ -570,7 +570,7 @@
 	$(document).on('click', '.writePatientLink', function(e) {
 		$('.writePatientLink').popover('destroy');
 		var cardId = $(this).attr('href').substr(1);
-		var url = 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardId;
+		var url = 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + cardId;
 		$(this).popover({
             animation: true,
             html: true,
@@ -611,7 +611,7 @@
                 if($(this).attr('id') == '#patient-withcard-form' || $(this).attr('id') == '#patient-withoutcard-form') {
                     $(this)[0].reset();
                 }
-                $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
+                $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
                 cardNumber = ajaxData.cardNumber;
                 $('#successAddPopup').find('#successCardNumber').text(cardNumber);
                 $('#successAddPopup').find('#newPatientFio').text(ajaxData.fioBirthday);
@@ -694,7 +694,7 @@
     // Печать карты, окно
     $(document).on('click', '.printlink', function(e) {
         var id = $(this).attr('href').substr(1);
-        var printWin = window.open('/index.php/doctors/print/printmainpage/?medcardid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        var printWin = window.open('/doctors/print/printmainpage/?medcardid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         printWin.focus();
         return false;
     });
@@ -732,7 +732,7 @@
         if(patientClicked.substr(0, 1) == 'o') {
             var patientId = patientClicked.substr(1);
             // Редирект на экшн, который прокинет данные к опосредованному пациенту и медкарте
-            window.open('/index.php/reception/patient/viewadd?mediateid=' + mediateClicked + '&patientid=' + patientId,
+            window.open('/reception/patient/viewadd?mediateid=' + mediateClicked + '&patientid=' + patientId,
                         '_blank');
         }
         // Сопоставляется медкарта
@@ -740,7 +740,7 @@
             var patientId = patientClicked.substr(1);
             // Экшн, который запишет уже существующего пациента на данную медкарту к врачу
             $.ajax({
-                'url' : '/index.php/reception/patient/mediatetomedcard?medcardid=' + patientId + '&mediateid=' + mediateClicked,
+                'url' : '/reception/patient/mediatetomedcard?medcardid=' + patientId + '&mediateid=' + mediateClicked,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -784,7 +784,7 @@
         $(this).parents('tr').addClass('active');
         $("#motion-history").jqGrid('setGridParam',{
             'datatype' : 'json',
-            'url' : globalVariables.baseUrl + '/index.php/reception/patient/gethistorymotion/?omsid=' + omsId
+            'url' : globalVariables.baseUrl + '/reception/patient/gethistorymotion/?omsid=' + omsId
         }).trigger("reloadGrid");
         $('#viewHistoryMotionPopup').modal({});
         return false;
@@ -794,7 +794,7 @@
     $(document).on('click', '.editMedcard', function(e) {
         console.log($(this).prop('href'));
         $.ajax({
-            'url' : '/index.php/reception/patient/getmedcarddata',
+            'url' : '/reception/patient/getmedcarddata',
             'data' : {
                 'cardid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -869,7 +869,7 @@
 		}
 		
 		$.ajax({
-            'url' : '/index.php/reception/patient/deleteoms',
+            'url' : '/reception/patient/deleteoms',
             'data' : {
                 'omsid' : $(link).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -907,7 +907,7 @@
 
 
         $.ajax({
-            'url' : '/index.php/reception/patient/getomsdata',
+            'url' : '/reception/patient/getomsdata',
             'data' : {
                 'omsid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -1023,7 +1023,7 @@
         var hiddenData = $(clickedRow).find('input[type="hidden"]').val();
         if($.trim(hiddenData) != '') {
             $.ajax({
-                'url' : '/index.php/guides/cladr/getcladrdata',
+                'url' : '/guides/cladr/getcladrdata',
                 'data' : {
                     'data' : hiddenData
                 },
@@ -1198,13 +1198,13 @@
     var cardNumber = false;
     $('#writePatientBtn').on('click', function() {
         if(cardNumber !== false) {
-            location.href = '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardNumber
+            location.href = '/reception/patient/writepatientsteptwo/?cardid=' + cardNumber
         }
     });
 
     $('#printPatientBtn').on('click', function() {
         if(cardNumber !== false) {
-            var printWin = window.open('/index.php/doctors/print/printmainpage/?medcardid=' + cardNumber,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+            var printWin = window.open('/doctors/print/printmainpage/?medcardid=' + cardNumber,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
             printWin.focus();
             return false;
         }
@@ -1215,7 +1215,7 @@
         'hidden.bs.modal',
         function()
         {
-            location.href = '/index.php/reception/patient/viewsearch';
+            location.href = '/reception/patient/viewsearch';
         }
     );
 
@@ -1276,7 +1276,7 @@
     $('#createNewPatientBtn').on('click', function(e) {
         // В запрос подаём данные из полей, которые мы ввели в форме, чтобы при создании пациента не вводить эти
         //   данные заново
-        location.href = '/index.php/reception/patient/viewadd' + serializeParameters();
+        location.href = '/reception/patient/viewadd' + serializeParameters();
     });
 
     $('#patient-search-form').on('keydown', function(e) {

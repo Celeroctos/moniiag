@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#enterprises").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/enterprises/get',
+        url: globalVariables.baseUrl + '/guides/enterprises/get',
         datatype: "json",
         colNames:['Код', 'Наименование', 'Тип учреждения', 'Реквизиты'],
         colModel:[
@@ -113,7 +113,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/enterprises/getone?id=' + currentRow,
+                'url' : '/guides/enterprises/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -191,7 +191,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/enterprises/delete?id=' + currentRow,
+                'url' : '/guides/enterprises/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

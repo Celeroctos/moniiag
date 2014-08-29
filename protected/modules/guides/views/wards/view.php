@@ -25,7 +25,7 @@
             'id' => 'ward-add-form',
             'enableAjaxValidation' => true,
             'enableClientValidation' => true,
-            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/wards/add'),
+            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/wards/add'),
             'htmlOptions' => array(
                 'class' => 'form-horizontal col-xs-12',
                 'role' => 'form'
@@ -72,7 +72,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
                         'Добавить',
-                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/wards/add'),
+                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/wards/add'),
                         array(
                             'success' => 'function(data, textStatus, jqXHR) {
                                 $("#ward-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -95,7 +95,7 @@
             'id' => 'ward-edit-form',
             'enableAjaxValidation' => true,
             'enableClientValidation' => true,
-            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/wards/edit'),
+            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/wards/edit'),
             'htmlOptions' => array(
                 'class' => 'form-horizontal col-xs-12',
                 'role' => 'form'
@@ -146,7 +146,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/wards/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/wards/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#ward-edit-form").trigger("success", [data, textStatus, jqXHR])

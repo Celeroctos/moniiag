@@ -24,7 +24,7 @@
                 'id' => 'categorie-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/categories/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -99,7 +99,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/categories/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#categorie-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -127,7 +127,7 @@
                 'id' => 'categorie-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/categories/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -207,7 +207,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/categories/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/categories/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#categorie-edit-form").trigger("success", [data, textStatus, jqXHR])

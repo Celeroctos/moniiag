@@ -145,7 +145,7 @@ $(document).ready(function() {
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -236,7 +236,7 @@ $(document).ready(function() {
             if($(this).attr('id') == '#patient-withcard-form' || $(this).attr('id') == '#patient-withoutcard-form') {
                 $(this)[0].reset();
             }
-            $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
+            $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
             $('#successAddPopup').modal({
 
             });
@@ -270,7 +270,7 @@ $(document).ready(function() {
 		$('#omsSearchWithCardResult tr').removeClass('active');
 		$(this).parents('tr').addClass('active');
 		$.ajax({
-			'url' : '/index.php/doctors/shedule/gethistorypoints',
+			'url' : '/doctors/shedule/gethistorypoints',
 			'data' : {
 				'medcardid' : medcardId
 			},
@@ -354,7 +354,7 @@ $(document).ready(function() {
 
 
 			$.ajax({
-				'url' : '/index.php/doctors/patient/gethistorymedcard',
+				'url' : '/doctors/patient/gethistorymedcard',
 				'data' : {
 					'medcardid' : medcardId,
 					'historyPointId': pointId,
@@ -388,7 +388,7 @@ $(document).ready(function() {
 		} else {
 			$(this).parent().addClass('active');
 			var id = $(this).attr('href').substr(1);
-			var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+			var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
 			$(printWin).on('load',
 				function () {
 					this.focus();

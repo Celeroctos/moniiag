@@ -2,7 +2,7 @@ $(document).ready(function() {
     var numRows = 0; // Количество строк в таблице
 
     $("#diagnosiss").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
+        url: globalVariables.baseUrl + '/guides/medworkers/get',
         datatype: "json",
         colNames:['Код', 'Наименование', 'Тип персонала', '', ''],
         colModel:[
@@ -88,7 +88,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования: предпочтения конкретной специальности
             $.ajax({
-                'url' : '/index.php/admin/diagnosis/getlikes?id=' + rowData.id,
+                'url' : '/admin/diagnosis/getlikes?id=' + rowData.id,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -124,7 +124,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо передать данные, которые были установлены в качестве любимых диагнозов..
             $.ajax({
-                'url' : '/index.php/admin/diagnosis/setlikes',
+                'url' : '/admin/diagnosis/setlikes',
                 'data' : {
                    'medworker_id' : rowData.id,
                    'diagnosis_ids' : $.toJSON(choosedArr)

@@ -81,7 +81,7 @@ $(document).ready(function() {
         // вызываем action удаления приёма
         //DeleteCancelledGreeting
         $.ajax({
-            'url' : '/index.php/reception/patient/deletecancelledgreeting',
+            'url' : '/reception/patient/deletecancelledgreeting',
             'data' : {
                 'greetingId' : rowId
             },
@@ -131,7 +131,7 @@ $(document).ready(function() {
         var checked = $('#status').prop('checked');
 
         $.ajax({
-            'url' : '/index.php/reception/patient/getpatientstorewrite',
+            'url' : '/reception/patient/getpatientstorewrite',
             'data' : {
                 'doctors' : $.toJSON(doctorsIds),
                 'patients' : $.toJSON(patientIds),
@@ -289,14 +289,14 @@ $(document).ready(function() {
             console.log(greetings[i].mediate_id);
             if (greetings[i].mediate_id != '' && greetings[i].mediate_id != null)
             {
-                content += ('<td><a class="rewrite-link" target="_blank" href="/index.php/reception/patient/writepatientwithoutdata?cancelledGreetingId='+ greetings[i].id+'">'+
+                content += ('<td><a class="rewrite-link" target="_blank" href="/reception/patient/writepatientwithoutdata?cancelledGreetingId='+ greetings[i].id+'">'+
                     '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
                     '</a></td>');
             }
             else
             {
                 //writepatientsteptwo
-                content += ('<td><a class="rewrite-link" target="_blank" href="/index.php/reception/patient/writepatientsteptwo?cancelledGreetingId='+ greetings[i].id+'&cardid='+ greetings[i].medcard_id + waitingLineUrl +'">'+
+                content += ('<td><a class="rewrite-link" target="_blank" href="/reception/patient/writepatientsteptwo?cancelledGreetingId='+ greetings[i].id+'&cardid='+ greetings[i].medcard_id + waitingLineUrl +'">'+
                     '<span class="glyphicon glyphicon-pencil" title="Перезаписать пациента"></span>'+
                     '</a></td>');
             }
@@ -361,7 +361,7 @@ $(document).ready(function() {
         $('#todoctor-submit').prop('disabled', true);
 
         $.ajax({
-            'url' : '/index.php/reception/patient/changemedcardstatus',
+            'url' : '/reception/patient/changemedcardstatus',
             'data' : {
                 'ids' : $.toJSON(ids),
                 'status' : 1 // Передвинем на "Ожидает приёма"

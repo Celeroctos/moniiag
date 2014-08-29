@@ -27,7 +27,7 @@
                 	'id' => 'clinic-add-form',
                 	'enableAjaxValidation' => true,
                 	'enableClientValidation' => true,
-                	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/diagnosis/addclinic'),
+                	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/diagnosis/addclinic'),
                 	'htmlOptions' => array(
                 				'class' => 'form-horizontal col-xs-12',
                 				'role' => 'form'
@@ -57,7 +57,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
                     	'Добавить',
-                    	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/diagnosis/addclinic'),
+                    	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/diagnosis/addclinic'),
                     	array(
                     			'success' => 'function(data, textStatus, jqXHR) {
                                     $("#clinic-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -85,7 +85,7 @@
                 	'id' => 'clinic-edit-form',
                 	'enableAjaxValidation' => true,
                 	'enableClientValidation' => true,
-                	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/diagnosis/editclinic'),
+                	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/diagnosis/editclinic'),
                 	'htmlOptions' => array(
                 				'class' => 'form-horizontal col-xs-12',
                 				'role' => 'form'
@@ -119,7 +119,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
                     	'Сохранить',
-                    	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/diagnosis/editclinic'),
+                    	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/diagnosis/editclinic'),
                     	array(
                     			'success' => 'function(data, textStatus, jqXHR) {
                                     $("#clinic-edit-form").trigger("success", [data, textStatus, jqXHR])

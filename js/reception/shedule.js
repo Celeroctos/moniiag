@@ -101,7 +101,7 @@
         var checked = $('#status').prop('checked');
 
         $.ajax({
-            'url' : '/index.php/reception/shedule/getshedule',
+            'url' : '/reception/shedule/getshedule',
             'data' : {
                 'doctors' : $.toJSON(doctorsIds),
                 'patients' : $.toJSON(patientIds),
@@ -312,7 +312,7 @@
         $('#todoctor-submit').prop('disabled', true);
 
         $.ajax({
-            'url' : '/index.php/reception/patient/changemedcardstatus',
+            'url' : '/reception/patient/changemedcardstatus',
             'data' : {
                 'ids' : $.toJSON(ids),
                 'status' : 1 // Передвинем на "Ожидает приёма"

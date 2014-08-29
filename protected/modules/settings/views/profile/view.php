@@ -6,7 +6,7 @@
         'id' => 'edit-profile-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/add'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/add'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -70,7 +70,7 @@
             <div class="edit-profile-submit">
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/profile/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/settings/profile/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                         $("#edit-profile-form").trigger("success", [data, textStatus, jqXHR])

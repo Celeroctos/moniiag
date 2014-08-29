@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#employees").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/employees/get',
+        url: globalVariables.baseUrl + '/guides/employees/get',
         datatype: "json",
         colNames:['Код',
                   'ФИО',
@@ -203,7 +203,7 @@ $(document).ready(function() {
 
     // Форма фильтрации сотрудника
     $("#employee-filter-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
-        var url = '/index.php/guides/employees/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val();
+        var url = '/guides/employees/get?enterpriseid=' + $("#enterpriseCode").val() + '&wardid=' + $("#wardCodeFilter").val();
         $("#employees").jqGrid('setGridParam', { url: url });
         $("#employees").trigger("reloadGrid");
     });
@@ -213,7 +213,7 @@ $(document).ready(function() {
         var enterpriseCode = $(this).val();
         if(enterpriseCode != -1 && enterpriseCode != -2) { // В том случае, если это не "Нет учреждения" или не "Без учреждения", подгрузим отделения его..
             $.ajax({
-                'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
+                'url' : '/guides/wards/getbyenterprise?id=' + enterpriseCode,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -246,7 +246,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/employees/getone?id=' + currentRow,
+                'url' : '/guides/employees/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -337,7 +337,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/employees/delete?id=' + currentRow,
+                'url' : '/guides/employees/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

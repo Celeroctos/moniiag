@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#settlements").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/cladr/settlementget',
+        url: globalVariables.baseUrl + '/guides/cladr/settlementget',
         datatype: "json",
         colNames:['ID',
                   'Регион',
@@ -128,7 +128,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/settlementgetone?id=' + currentRow,
+                'url' : '/guides/cladr/settlementgetone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -196,7 +196,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/settlementdelete?id=' + currentRow,
+                'url' : '/guides/cladr/settlementdelete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

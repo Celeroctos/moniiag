@@ -132,7 +132,7 @@ class ProfileController extends Controller {
 			}
         }
 		$req = new CHttpRequest();
-		$req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/profile/view'));
+		$req->redirect(CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/settings/profile/view'));
     }
 	
 	public function getAvatarPath() {

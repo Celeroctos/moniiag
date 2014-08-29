@@ -102,7 +102,7 @@
         'id' => 'shedule-exp-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addeditexps'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/addeditexps'),
         'htmlOptions' => array(
             'class' => 'form-horizontal',
             'role' => 'form'
@@ -249,7 +249,7 @@
         <div class="form-group default-padding-left">
             <?php echo CHtml::ajaxSubmitButton(
                 'Сохранить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addeditexps'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/addeditexps'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
                         $("#shedule-exp-form").trigger("success", [data, textStatus, jqXHR])
@@ -348,7 +348,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно добавили расписание для сотрудника</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -367,7 +367,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно удалили расписание для сотрудника</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -387,7 +387,7 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Вы успешно отредактировали расписание для сотрудника.</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -429,7 +429,7 @@
 			 	'id' => 'add-shedule-employee',
 			 	'enableAjaxValidation' => true,
 			 	'enableClientValidation' => true,
-			 	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addedit'),
+			 	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/addedit'),
 			 	'htmlOptions' => array(
 			 				'class' => 'form-horizontal col-xs-12',
 			 				'role' => 'form'
@@ -1083,7 +1083,7 @@
         <div class="modal-footer">
 		 <?php echo CHtml::ajaxSubmitButton(
 		 	'Сохранить',
-		 	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addedit'),
+		 	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/addedit'),
 		 	array(
 		 			'success' => 'function(data, textStatus, jqXHR) {
                                 $("#add-shedule-employee").trigger("success", [data, textStatus, jqXHR])
@@ -1115,7 +1115,7 @@
 			 	'id' => 'edit-shedule-employee',
 			 	'enableAjaxValidation' => true,
 			 	'enableClientValidation' => true,
-			 	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addedit'),
+			 	'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/addedit'),
 			 	'htmlOptions' => array(
 			 				'class' => 'form-horizontal col-xs-12',
 			 				'role' => 'form'
@@ -1769,7 +1769,7 @@
         <div class="modal-footer">
 		 <?php echo CHtml::ajaxSubmitButton(
 		 	'Сохранить',
-		 	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/addedit'),
+		 	CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/addedit'),
 		 	array(
 		 			'success' => 'function(data, textStatus, jqXHR) {
                                 $("#edit-shedule-employee").trigger("success", [data, textStatus, jqXHR])

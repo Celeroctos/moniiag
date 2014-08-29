@@ -127,7 +127,7 @@ $(document).ready(function() {
             var day = $(this).text();
             globalVariables.clickedTd = $(this);
             $.ajax({
-                'url' : '/index.php/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + year + '&month=' + (month + 1) + '&day=' + day,
+                'url' : '/doctors/shedule/getpatientslistbydate/?doctorid=' + doctorId + '&year=' + year + '&month=' + (month + 1) + '&day=' + day,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
