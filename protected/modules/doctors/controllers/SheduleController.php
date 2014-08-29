@@ -92,8 +92,18 @@ class SheduleController extends Controller {
                             return 0;
                         }
                     });
-
                     $templatesList = $templatesListWithTemplateData;
+
+                    // Отсортируем шаблончики рекоммендаций
+                    usort($referenceTemplatesList, function($template1, $template2) {
+                        if($template1['index'] > $template2['index']) {
+                            return 1;
+                        } elseif($template1['index'] < $template2['index']) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
 
                     //var_dump ($templatesList);
                     //exit();
@@ -106,14 +116,11 @@ class SheduleController extends Controller {
                     $medcardTemplates = new MedcardTemplate();
                     $templatesList = $medcardTemplates->getTemplatesByEmployee($medworkerId);
 
-                    var_dump($templatesList);
-                    exit();
-
                     // Отсортируем шаблоны по порядку
                     usort($templatesList, function($template1, $template2) {
-                        if($template1->index > $template2->index) {
+                        if($template1['index'] > $template2['index']) {
                             return 1;
-                        } elseif($template1->index < $template2->index) {
+                        } elseif($template1['index']< $template2['index']) {
                             return -1;
                         } else {
                             return 0;
