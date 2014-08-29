@@ -265,7 +265,7 @@ if(isset($categorie['id'])) {
                                             <tr>
                                                 <?php
                                                 //if(isset($element['config']['rows'][$i])) {
-                                                if(isset($element['config']['rows'])) {
+                                                if((isset($element['config']['rows'])) && ( count($element['config']['rows']) > 0  )) {
                                                    // Проверим - если счётчик меньше длины rows - выводим знаение из массива rows
                                                    //   Иначе - выведем пустую клеточку в таблице
                                                     //var_dump($element['config']['rows']);
