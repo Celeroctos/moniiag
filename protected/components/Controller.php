@@ -1,5 +1,27 @@
 <?php
 class Controller extends CController {
+	protected $sessionActiveActions = array(
+		array(
+			'module' => 'admin',
+			'controller' => 'tasu',
+			'action' => 'syncoms'
+		),
+		array(
+			'module' => 'admin',
+			'controller' => 'tasu',
+			'action' => 'syncpatients'
+		),
+		array(
+			'module' => 'admin',
+			'controller' => 'tasu',
+			'action' => 'syncdoctors'
+		),
+		array(
+			'module' => 'admin',
+			'controller' => 'tasu',
+			'action' => 'syncinsurances'
+		)
+	);
     /* Неправильное использование, но пока непонятно, как переопределить конструктор */
     // Фильтр для выполнения запроса по поводу прав доступа
     public function filterGetAccessHierarchy($filterChain) {
@@ -40,9 +62,29 @@ class Controller extends CController {
 		
         $filterChain->run();
     }
+	
+	public function filterSessionTimerHandler($filterChain) {
+		if(Yii::app()->request->isAjaxRequest) {
+			$module = $this->getModule();
+			if($module != null) {
+				$module = $module->getId();
+			}
+			$controller = $this->getId();
+			$action = $this->getAction()->getId();
+			foreach($this->sessionActiveActions as $element) {
+				if(strtolower($controller) == $element['controller'] && strtolower($module) == $element['module'] && strtolower($action) == $element['action']) {
+					Yii::app()->user->setState('currentSessionPeriod', time());
+					Yii::app()->user->setState('isActiveSession', 1);
+				}
+			}
+		}
+
+		$filterChain->run();
+	}
 
     public function filters() {
         return array(
+			'SessionTimerHandler',
             'GetAccessHierarchy'
         );
     }

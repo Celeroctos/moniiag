@@ -985,15 +985,22 @@ $('select[multiple="multiple"]').each(function(index, select) {
 		
 	systemFuncs = {
 		sessionTimer : null,
+		sessionTime : null,
+		checkOnlineDataTime: 60000,
 		setSessionTimer : function(value) {
+			this.sessionTime = value;
 			this.setSessionInterval(value, this);
 			var _this = this;
 			$(document).on('keydown', function() {
 				_this.setSessionInterval(value, _this);
 			});
+			$(document).on('click', 'a, input, select, button', function() {
+				_this.setSessionInterval(value, _this);
+			});
 		},
 		setSessionInterval: function(value, _this) {
 			clearTimeout(_this.sessionTimer);
+			console.log('Timer reseted.');
 			_this.sessionTimer = setTimeout(function() {
 				$.ajax({
 					'url' : '/users/logout',
@@ -1007,6 +1014,24 @@ $('select[multiple="multiple"]').each(function(index, select) {
 					},
 				});
 			}, value * 1000);
+		},
+		checkOnlineData: function() {
+			$.ajax({
+				'url' : '/system/getonlinedata',
+				'cache' : false,
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success) {
+						var data = data.data;
+						if(data.hasOwnProperty('isActiveSession') && data.isActiveSession == 1) {
+							systemFuncs.setSessionInterval(systemFuncs.sessionTime, systemFuncs);
+						}
+					}
+				},
+			});
+			
+			setTimeout(systemFuncs.checkOnlineData, systemFuncs.checkOnlineDataTime);
 		}
 	};
 	
@@ -1022,8 +1047,14 @@ $('select[multiple="multiple"]').each(function(index, select) {
 				for(var i = 0; i < data.length; i++) {
 					systemFuncs[data[i].func].call(systemFuncs, data[i].value);
 				}
+				
+				setTimeout(function() {
+					systemFuncs.checkOnlineData(); 
+				}, systemFuncs.checkOnlineDataTime);
 			}
 		},
 	});
+	
+	
 });
 // pre
