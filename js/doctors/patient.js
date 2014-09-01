@@ -344,11 +344,11 @@
         }
     );
 
-    $('form[id=template-edit-form] select[multiple]').on('blur',
-        function(e)
+   $('form[id=template-edit-form] select[multiple]').on('blur',
+    function(e)
         {
-            // Нужно расширить по содержимому контрола
-            $(this).removeAttr("size");
+            // Нужно удалить расширение
+          $(this).removeAttr("size");
         }
     );
 
@@ -446,7 +446,16 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
             isError += globalVariables.reqDiagnosis[i].name + ', ';
         }
     }
+    // Проверим - установлен ли диагноз
+    mainDiagnose = [];
+    mainDiagnose = $.fn['primaryDiagnosisChooser'].getChoosed();
+    // Если длина mainDiagnose >0 то диагноз установлен
+    //    - сбрасываем ошибку
+    if (mainDiagnose.length>0)
+        isError = '';
+
     if($.trim(isError) != '') {
+        onGreetingClosingEnd();
         isError = isError.substr(0, isError.length - 2);
         isError = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + isError + '</strong>';
         // Выводим сообщение об ошибке
@@ -479,17 +488,23 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
                 });
             }
             // Снимаем крутилку с флажка "Закрытия приёма"
-            var gif = generateAjaxGif(16, 16);
-            // Делаем невидимым флажок
-            $('.accept-greeting-link').removeClass('no-display');
-            // Убиваем крутилку
-            $('.accept-greeting-link').parents('td').find('img').remove();
+            onGreetingClosingEnd();
             return;
         }
     });
 
 
 });
+
+function onGreetingClosingEnd()
+{
+    // Снимаем крутилку с флажка "Закрытия приёма"
+    var gif = generateAjaxGif(16, 16);
+    // Делаем невидимым флажок
+    $('.accept-greeting-link').removeClass('no-display');
+    // Убиваем крутилку
+    $('.accept-greeting-link').parents('td').find('img').remove();
+}
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
     //return;

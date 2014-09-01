@@ -358,10 +358,11 @@ class CategorieViewWidget extends CWidget {
                 } else {
                     // Здесь выбираются ЭЛЕМЕНТЫ (без категорий), если приём был начат раньше
                     $elements = array();
-                    //var_dump($this->maxRecordIdByTemplateGreeting);
-                    //exit();
-                    //var_dump("!");
-                    //exit();
+                    // Проверяем - если maxRecordIdByTemplateGreeting равно нулю, то присваиваем ему значение 1
+                    if (is_null($this->maxRecordIdByTemplateGreeting))
+                    {
+                        $this->maxRecordIdByTemplateGreeting = 1;
+                    }
 
                     $elements = MedcardElementForPatient::model()->findAll(
                         '/*history_id = history_id
@@ -574,6 +575,10 @@ class CategorieViewWidget extends CWidget {
                     }
                 } else {
                     if(!$this->previewMode) {
+
+                       //var_dump('!');
+                       // exit();
+
                         $categoriesChildren = MedcardElementForPatient::model()->findAll(
                             'categorie_id = :categorie_id
                             AND element_id = :element_id
@@ -590,6 +595,9 @@ class CategorieViewWidget extends CWidget {
                                 ':path' => $categorieResult['path'].'.%'
                             )
                         );
+
+
+
                     }
                 }
 				$categorieResult['children'] = array();
