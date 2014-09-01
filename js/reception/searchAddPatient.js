@@ -556,12 +556,16 @@
             content: function() {
 				var a1 = $('<a>').prop({
 					href: url
+				}).on('click', function(e) {
+					e.stopPropagation();
 				}).css({
 					fontWeight: 'bold'
 				}).text('На определённое время');
 				
 				var a2 = $('<a>').prop({
 					href: url + '&waitingline=1'
+				}).on('click', function(e) {
+					e.stopPropagation();
 				}).css({
 					fontWeight: 'bold'
 				}).text('В живую очередь');
