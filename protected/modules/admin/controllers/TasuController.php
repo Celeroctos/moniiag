@@ -961,7 +961,7 @@ class TasuController extends Controller {
 		$medcard = Medcard::model()->findByPk($greeting['medcard']);
         $patients = $this->searchTasuPatient($greeting, $oms);
         // Добавление пациента, если такой не найден
-        if(count($patients) == 0) {
+        if(count($patients) == 0 || !$patients) {
             $result = $this->addTasuPatient($medcard, $oms);
             if($result === false) {
                 $this->numErrors++;
@@ -1203,7 +1203,7 @@ class TasuController extends Controller {
                           AND [_unmdtbl2636].version_end = ".$this->version_end;
 
             $patientRow = $conn->createCommand($sql)->queryRow();
-			
+
 			// Максимальный UID
 			$sql = "(SELECT MAX(uid) + 1 as nextUid FROM [PDPStdStorage].[dbo].[t_book_65067])";
 		    $nextUidRow = $conn->createCommand($sql)->queryRow();

@@ -29,7 +29,7 @@
 		<?php echo $form->labelEx($modelFilter,'greetingDate', array(
 			'class' => 'col-xs-3 control-label'
 		)); ?>
-		<div id="greetingDate2-cont" class="col-xs-5 input-group date">
+		<div id="greetingDate-cont2" class="col-xs-5 input-group date">
 			<?php echo $form->hiddenField($modelFilter,'greetingDate', array(
 				'id' => 'filterGreetingDate',
 				'class' => 'form-control'

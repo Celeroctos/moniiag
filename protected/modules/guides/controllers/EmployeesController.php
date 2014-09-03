@@ -262,7 +262,7 @@ class EmployeesController extends Controller {
 
     public function actionGetByWard($id) {
         $model = new Employee();
-        $employees = $model->getByWard($id);
+        $employees = $model->getByWard($id, -1);
 
         echo CJSON::encode(array('success' => true,
                                  'data' => $employees)
