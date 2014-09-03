@@ -3,17 +3,12 @@
 		$(id).jqGrid({
 			url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings',
 			datatype: "json",
-			colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус', 'Проведён в МИС'],
+			colNames:['Код', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач', 'Статус', 'Проведён в МИС'],
 			colModel:[
 				{
 					name:'id',
 					index:'id',
 					width: 50
-				},
-				{
-					name: 'doctor_fio',
-					index:'doctor_fio',
-					width: 150
 				},
 				{
 					name: 'medcard',
@@ -26,8 +21,18 @@
 					width: 170
 				},
 				{
+					name: 'pr_diag_code',
+					index: 'pr_diag_code',
+					width: 100
+				},
+				{
 					name: 'patient_day',
 					index: 'patient_day',
+					width: 120
+				},
+				{
+					name: 'doctor_fio',
+					index:'doctor_fio',
 					width: 150
 				},
 				{
@@ -38,7 +43,7 @@
 				{
 					name: 'in_mis_desc',
 					index: 'in_mis_desc',
-					width: 150
+					width: 140
 				}
 			],
 			rowNum: 30,

@@ -732,6 +732,14 @@ class TasuController extends Controller {
             } else {
                 $element['status'] = 'Неизвестно';
             }
+			
+			// Вычленяем код диагноза
+			$diagnosisPr = Mkb10::model()->findByPk($element['primary_diagnosis_id']);
+			if($diagnosisPr != null) {
+				$element['pr_diag_code'] = mb_substr($diagnosisPr->description, 0, mb_strpos($diagnosisPr->description, ' '));
+			} else {
+				$element['pr_diag_code'] = '';
+			}
 
             array_push($resultBuffer, $element);
         }
