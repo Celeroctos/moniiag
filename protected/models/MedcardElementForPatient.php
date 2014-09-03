@@ -408,7 +408,7 @@ class MedcardElementForPatient extends MisActiveRecord {
             // Проверяем условие max history_id
             foreach ($elements as $oneElement)
             {
-                if ($currentElementPath!=$oneElement['path'])
+                if (((string)$currentElementPath)!==((string)$oneElement['path']))
                 {
                     $currentElementPath=$oneElement['path'];
                     $currentMaximum = $oneElement['history_id'];
