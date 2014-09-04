@@ -151,14 +151,20 @@ class SheduleController extends Controller {
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
 
-        $userId = Yii::app()->user->id;
-        $doctor = User::model()->findByPk($userId);
+        if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$userId = Yii::app()->user->id;
+			$doctor = User::model()->findByPk($userId);
+			$doctorId = $doctor['employee_id'];
+		} else {
+			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+		
         if(isset($openedTab) && $openedTab == 1) {
             $onlyWaitingLine = 1;
         } else {
             $onlyWaitingLine = 0;
         }
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+        $patients = $this->getPatientList($doctorId, $curDate, false, $onlyWaitingLine);
         $patients = $patients['result'];
 
         //var_dump(    $this->getTopComment(isset($medcard) ? $medcard : null)    );
@@ -168,6 +174,35 @@ class SheduleController extends Controller {
         $doctorNumberComments = count(CommentOms::getComments(isset($medcard) ? $medcard : null));
         //var_dump($medcard);
         //exit();
+		
+		// Список врачей
+		$doctorsList = array('-1' => 'Я');
+		$filterDoctorForm = new FormFilterDoctor();
+		if (Yii::app()->user->checkAccess('canChangeDoctor')) { 
+			$doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
+			foreach($doctorsListDb as $value) {
+				if($value['last_name'] == null) {
+					$value['middle_name'] = '';
+				}
+				if($value['tabel_number'] == null) {
+					$value['tabel_number'] = 'отсутствует';
+				}
+
+				$doctorsList[(string)$value['id']] = $value['last_name'].' '.$value['first_name'].' '.$value['middle_name'].', '.$value['post'].', '.$value['ward'].', табельный номер '.$value['tabel_number'];
+			}
+		}
+		
+		asort($doctorsList);
+		
+		// Режим медсестры: принимающий доктор может не совпадать с реальным
+		if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$userId = Yii::app()->user->id;
+			$doctor = User::model()->findByPk($userId);
+			$currentDoctorId = $doctor['employee_id'];
+		} else {
+			$currentDoctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+		
 		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
@@ -203,7 +238,10 @@ class SheduleController extends Controller {
             'requiredDiagnosis' => isset($requiredDiagnosis) ? $requiredDiagnosis : array(),
 			'medcardRecordId' => $medcardRecordId,
             'templateModel' =>  new  FormTemplateDefault(),
-            'openedTab' => isset($openedTab) ? $openedTab : 0
+            'openedTab' => isset($openedTab) ? $openedTab : 0,
+			'doctorsList' => $doctorsList,
+			'modelDoctorFilter' => $filterDoctorForm,
+			'currentGreetingsDoctor' => $currentDoctorId
         ));
     }
 
@@ -229,15 +267,36 @@ class SheduleController extends Controller {
         $parts = explode('-', $curDateRaw);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
         // Получим доктора
-        $userId = Yii::app()->user->id;
-        $doctor = User::model()->findByPk($userId);
+        if(!isset($_POST['currentDoctor']) || $_POST['currentDoctor'] == -1) {
+			// Если не занесен в сессию конкретный доктор, то, значит, берём текущего пользователя
+			if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+				$userId = Yii::app()->user->id;
+				$doctor = User::model()->findByPk($userId);
+				$doctorId = $doctor['employee_id'];
+			} else {
+				$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+			}
+		} else {
+			$doctor = Doctor::model()->findByPk($_POST['currentDoctor']);
+			// Проверка, что такой врач вообще есть
+			if($doctor != null) {
+				$doctorId = $doctor['id'];
+			} else {
+				$userId = Yii::app()->user->id;
+				$doctor = User::model()->findByPk($userId);
+				$doctorId = $doctor['employee_id'];
+			}
+		}
+
+		Yii::app()->user->setState('currentGreetingsDoctor', $doctorId);
+		
         if(isset($_POST['onlywaitinglist']) && $_POST['onlywaitinglist'] == 1) {
             $onlyWaitingLine = true;
         } else {
             $onlyWaitingLine = false;
         }
         // Получим пациентов
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+        $patients = $this->getPatientList($doctorId, $curDate, false, $onlyWaitingLine);
         $patients = $patients['result'];
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');

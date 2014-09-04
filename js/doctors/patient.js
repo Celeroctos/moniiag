@@ -1517,6 +1517,39 @@ $('#nextHistoryPoint').on('click', function () {
         isExpandedList = true;
         updateExpanded();*/
     });
+	
+	// Смена врача
+	$('#change-doctor-form select').on('change', function(e) {
+		$('#change-doctor-form select').prop('disabled', true); 
+		// Вставляем оверлей
+		$('.overlayCont').prepend($('<div>').prop('class', 'overlay').css({'marginLeft' : '10px'}));
+		$('#refreshPatientList').trigger('click');
+	});
+	
+	// Показ комментария (скрытого)
+	$(document).on('mouseover', '#doctorPatientList tr:not(:first), #doctorWaitingList tr:not(:first)', function(e) {
+		$('#doctorPatientList tr, #doctorWaitingList tr').popover('destroy');
+		$(this).popover({
+            animation: true,
+            html: true,
+            placement: 'left',
+            title: '<strong>Комментарий:</strong>',
+            delay: {
+                show: 250,
+                hide: 250
+            },
+            container: $(this).find('td:first'),
+            content: function() {
+				return $('<div>').append($(this).find('.hiddenComment').html());
+			}
+		});
+	   $(this).popover('show');
+	   return false;
+	});
+	
+	$(document).on('mouseout', '#doctorPatientList tr:not(:first), #doctorWaitingList tr:not(:first)', function(e) {
+		$('#doctorPatientList tr, #doctorWaitingList tr').popover('destroy');
+	});
 
     function updatePatientList(onlyWaitingList) {
         var url = '/doctors/shedule/updatepatientlist';
@@ -1525,7 +1558,8 @@ $('#nextHistoryPoint').on('click', function () {
                 date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
             },
             currentPatient : $('#currentPatientId').val(),
-            currentGreeting : $('#greetingId').val()
+            currentGreeting : $('#greetingId').val(),
+			currentDoctor : $('#change-doctor-form').length > 0 ? $('#change-doctor-form select').val() : -1
         };
         if(typeof onlyWaitingList != 'undefined') {
             data.onlywaitinglist = 1;
@@ -1556,6 +1590,10 @@ $('#nextHistoryPoint').on('click', function () {
                         $('#doctorWaitingList').remove();
                         $(parentContainer).append(data.data);
                     }
+					if($('#change-doctor-form').length > 0) {
+						$('#change-doctor-form select').prop('disabled', false); 
+					}
+					$('.overlay').remove();
                 }
             }
         });
@@ -1588,7 +1626,7 @@ $('#nextHistoryPoint').on('click', function () {
     }
 
     $('#refreshPatientList').on('click', function(e) {
-            updatePatientList();
+		updatePatientList();
     });
 
     $('.patientListNav li').on('click', function() {
