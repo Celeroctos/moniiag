@@ -10,6 +10,8 @@ $(document).ready(function() {
                     $(control).find('select.twoColumnListTo').prepend(
                         '<option value="'+ id +'">' +displayValue+ '</option>'
                     );
+
+                    refreshValue(control);
                 }
 
             };
