@@ -330,6 +330,57 @@ class MedcardElementForPatient extends MisActiveRecord {
 		}
 	}
 
+    public function findElementsForGreeting($greetingId, $medcardId,$categoryId, $path )
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $elements = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('greeting_id = :greeting_id
+                            AND medcard_id = :medcard_id
+                            AND categorie_id = :categorie_id
+                            AND path LIKE :path
+                            AND element_id != -1',
+                            array(
+                                ':greeting_id' => $greetingId,
+                                ':medcard_id' => $medcardId,
+                                ':categorie_id' => $categoryId,
+                                ':path' => $path.'.%'
+                            )
+                        )
+                ->order('element_id, record_id desc');
+            $elements = $elements->queryAll();
+
+
+            if (count($elements)>0)
+            {
+                $currentElementId = $elements[0]['element_id'];
+                $newElementsList = array();
+                $newElementsList[] = $elements[0];
+                foreach ($elements as $oneElement)
+                {
+                    // Если element_id не равен текущему Id-нику
+                    if ($oneElement['element_id']!=$currentElementId)
+                    {
+                        $currentElementId  = $oneElement['element_id'];
+                        $newElementsList[] = $oneElement;
+                    }
+
+
+                }
+                $elements = $newElementsList;
+            }
+            return $elements;
+         }
+         catch(Exception $e)
+         {
+            var_dump($e);
+            exit();
+         }
+    }
+
     public function findGreetingTemplate($greetingId, $templateId)
     {
         try{

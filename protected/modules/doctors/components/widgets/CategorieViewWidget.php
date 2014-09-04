@@ -69,6 +69,7 @@ class CategorieViewWidget extends CWidget {
         echo('--------');
         exit();
         //*/
+        //echo '<pre>';
         //var_dump($categories);
         //exit();
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
@@ -363,29 +364,12 @@ class CategorieViewWidget extends CWidget {
                     {
                         $this->maxRecordIdByTemplateGreeting = 1;
                     }
-
-                    $elements = MedcardElementForPatient::model()->findAll(
-                        '/*history_id = history_id
-                        AND*/ greeting_id = :greeting_id
-                        AND medcard_id = :medcard_id
-                        AND categorie_id = :categorie_id
-                        AND record_id = :record_id
-                        AND path LIKE :path
-                        AND element_id != -1',
-                        array(
-                            ':greeting_id' => $this->greetingId,
-                            ':medcard_id' => $this->medcard['card_number'],
-                            //':history_id' => 1,
-                            ':record_id' => $this->maxRecordIdByTemplateGreeting,
-                            ':categorie_id' => $categorieResult['id'],
-                            //':path' => $path.'%'
-                            ':path' => $path.'.%'
-                        )
-                    );
-                    //var_dump($recordId-1);
-                    //exit();
-                    //var_dump($this->maxRecordIdByTemplateGreeting);
-                    //exit();
+                    $mepObject = new MedcardElementForPatient();
+                    $elements = $mepObject->findElementsForGreeting(
+                        $this->greetingId,
+                        $this->medcard['card_number'],
+                        $categorieResult['id'],
+                        $path);
                 }
 
                 $numWrapped = 0; // Это число элементов, которые следуют за каким-то конкретным элементом
