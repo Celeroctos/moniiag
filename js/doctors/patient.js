@@ -444,6 +444,14 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
         $('#errorPopup .modal-body .row').html("<p>" + isError + "</p>");
         $('#errorPopup').modal({
         });
+
+        // Перебрасываем фокус на диагноз
+        destinationAnchor = $('#accordionD')[0].offsetTop;;
+        $('body,html').animate({
+            scrollTop: destinationAnchor
+        }, 599);
+
+
         return false;
     }
     // Вызываем закрытие приёма
