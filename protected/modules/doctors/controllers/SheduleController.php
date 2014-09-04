@@ -1318,13 +1318,29 @@ class SheduleController extends Controller {
                 $dataToWrite['middle_name'] = $mediateData['middle_name'];
                 $dataToWrite['phone'] = $mediateData['phone'];
             }
-            $sheduleElement->delete();
-            $this->saveGreetingDataToSession($dataToWrite);
+
+            // Проверим - если приём начат - никакого удаления!
+            if ($sheduleElement->is_beginned!=1)
+            {
+
+                $sheduleElement->delete();
+                $this->saveGreetingDataToSession($dataToWrite);
+                echo CJSON::encode(array('success' => 'true',
+                    'data' => 'Пациент успешно отписан!'));
+            }
+            else
+            {
+                echo CJSON::encode(array('success' => 'false',
+                    'data' => 'Невозможно отменить данный приём, так как он уже начат!'));
+            }
+            return;
+           // $sheduleElement->delete();
+           // $this->saveGreetingDataToSession($dataToWrite);
            // var_dump($_SESSION['unwritedGreetings']);
            // exit();
         }
 
-        echo CJSON::encode(array('success' => 'true',
-            'data' => 'Пациент успешно отписан!'));
+        echo CJSON::encode(array('success' => 'false',
+            'data' => 'Какая-то не понятная ошибка. Вы меня сильно озадачили!'));
     }
 }

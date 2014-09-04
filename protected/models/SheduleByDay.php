@@ -5,6 +5,12 @@ class SheduleByDay extends MisActiveRecord {
         return parent::model($className);
     }
 
+    public function beforeDelete()
+    {
+        var_dump('23rhrszddxf');
+        exit();
+    }
+
     public function tableName()
     {
         return 'mis.doctor_shedule_by_day';
@@ -333,7 +339,7 @@ class SheduleByDay extends MisActiveRecord {
     }
 
     // Получить список приёмов по критериям
-    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false) {
+    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false, $notBeginned=false) {
         try {
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
@@ -411,6 +417,12 @@ class SheduleByDay extends MisActiveRecord {
             }
             if($mediateOnly) {
                 $greetings->andWhere('dsbd.mediate_id IS NOT NULL');
+            }
+
+            if ($notBeginned)
+            {
+                // Дописываем в where ещё одно условие на is_beginned
+                $greetings->andWhere('((not (is_beginned = 1)) OR ((is_beginned) is NULL))');
             }
 
             $greetings->order('dsbd.patient_time');
