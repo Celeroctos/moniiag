@@ -79,7 +79,7 @@
 	$("#importHistory").jqGrid({
         url: globalVariables.baseUrl + '/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', ''],
+        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', 'Лог', ''],
         colModel:[
             {
                 name: 'id',
@@ -101,6 +101,11 @@
                 index:'status',
                 width: 150
             },
+			{
+				name: 'log',
+				index: 'log',
+				width: 50
+			},
 			{
 				name: 'import_id',
 				hidden: true
@@ -484,7 +489,8 @@
 						'doctor_fio' : data.data.doctorFio, 
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
-						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.')
+						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
+						'diagnosis_code' : primaryDiagnosis[0].description.substr(0, primaryDiagnosis[0].description.indexOf(' '))
 					});
 
 					lastId++;
@@ -589,33 +595,38 @@
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма'],
+        colNames:['', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач'],
         colModel:[
 			{
 				name: 'id',
 				index: 'id',
 				hidden: true
 			},
-            {
-                name: 'doctor_fio',
-                index:'doctor_fio',
-                width: 150
-            },
-            {
+			{
                 name: 'medcard',
                 index:'medcard',
                 width: 100
             },
-            {
+			{
                 name: 'patient_fio',
                 index:'patient_fio',
                 width: 170
             },
+			{
+                name: 'diagnosis_code',
+                index: 'diagnosis_code',
+                width: 100
+            },
             {
                 name: 'patient_day',
                 index: 'patient_day',
+                width: 120
+            },
+			{
+                name: 'doctor_fio',
+                index:'doctor_fio',
                 width: 150
-            }
+            },
         ],
         rowNum: 30,
         rowList:[10,20,30],
