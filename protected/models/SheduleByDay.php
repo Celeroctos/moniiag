@@ -153,6 +153,7 @@ class SheduleByDay extends MisActiveRecord {
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
  					AND ((dsbd.patient_day > current_date) OR ((dsbd.patient_day=current_date) AND (dsbd.patient_time >= current_time)))
+ 					AND (     not(dsbd.is_beginned=1) OR (dsbd.is_beginned is NULL)   )
  					', array(
  						':beginDate' => $dateBegin,
  						':endDate' => $dateEnd
