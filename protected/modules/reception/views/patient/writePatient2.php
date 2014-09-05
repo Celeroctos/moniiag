@@ -87,7 +87,7 @@
                 <div class="col-xs-8">
                     <select class="form-control" id="greetingType">
                         <option value="0" <?php echo isset($greetingType) && ($greetingType == 0 || $greetingType == 1) ? 'selected="selected"' : '';  ?>>Первичный</option>
-                        <option value="2" <?php echo isset($greetingType) && $greetingType == 2 ? 'selected="selected"' : '';  ?>>Вторичный</option>
+                        <option value="2" <?php echo isset($greetingType) && $greetingType == 2 ? 'selected="selected"' : '';  ?>>Повторный</option>
                     </select>
                 </div>
             </div>
