@@ -38,6 +38,27 @@ class MedcardRecord extends MisActiveRecord  {
         }
     }
 
+    public function getSavedTemplatesForGreeting($greetingId)
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $templates = $connection->createCommand()
+                ->select('mt.id, mt.name, mt.primary_diagnosis')
+                ->from('mis.medcard_templates mt')
+                ->join('mis.medcard_records mr','mt.id=mr.template_id')
+                ->where('greeting_id=:greeting', array(':greeting' => $greetingId));
+            $result = $templates->queryAll();
+            return $result;
+
+        }
+        catch(Exception $exc)
+        {
+            var_dump($exc);
+            exit();
+        }
+    }
+
     public static function getHistoryMedcardByCardId($medcard)
     {
        // var_dump('!');
