@@ -275,7 +275,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Вторичный'), array(
+                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Повторный'), array(
                                     'id' => 'greetingType',
                                     'class' => 'form-control'
                                 )); ?>
@@ -526,7 +526,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Вторичный'), array(
+                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Повторный'), array(
                                     'id' => 'greetingType',
                                     'class' => 'form-control'
                                 )); ?>

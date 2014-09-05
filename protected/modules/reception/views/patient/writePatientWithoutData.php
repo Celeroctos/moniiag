@@ -76,7 +76,7 @@
                     <select class="form-control" id="greetingType">
                         <option value="0">Первичный</option>
                         <!--<option value="1">Первичный</option>-->
-                        <option value="2">Вторичный</option>
+                        <option value="2">Повторный</option>
                     </select>
                 </div>
             </div>
