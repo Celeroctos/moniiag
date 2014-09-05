@@ -443,6 +443,8 @@ function startAcceptGreeting()
     // $(this).trigger('accept');
 }
 
+
+    focusDiagnosisPlease = false;
 function acceptGreeting(greetingId)
 {
     var needDiagMsq = '';
@@ -479,9 +481,16 @@ function acceptGreeting(greetingId)
                     $('#errorPopup').modal({
 
                     });
+                    // Перебрасываем фокус на диагноз
+                    destinationAnchor = $('#accordionD')[0].offsetTop;;
+                    $('body,html').animate({
+                        scrollTop: destinationAnchor
+                    }, 599);
+                    focusDiagnosisPlease = true;
                 }
                 else
                 {
+
                     // Выводим сообщение о том, что нужно вывест
                     $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
                     $('#errorPopup').modal({
@@ -503,6 +512,15 @@ function acceptGreeting(greetingId)
     var greetingId = $(this).attr('href').substr(1);
   acceptGreeting(greetingId);
 });*/
+
+    $('#errorPopup').on('hidden.bs.modal', function (e){
+        if (focusDiagnosisPlease)
+        {
+            $('#primaryDiagnosisChooser input[type=text]').focus();
+            focusDiagnosisPlease = false;
+        }
+
+    });
 
 function onCloseGreetingStart()
 {
