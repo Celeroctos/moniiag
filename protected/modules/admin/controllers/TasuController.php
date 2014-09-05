@@ -705,7 +705,7 @@ class TasuController extends Controller {
             if($element['medcard'] == null) {
                 continue;
             }
-			
+
 			if($doctorId !== false && $element['doctor_id'] != $doctorId) {
 				continue;
 			}
