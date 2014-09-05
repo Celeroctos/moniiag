@@ -73,11 +73,11 @@ class SheduleController extends Controller {
                     }
 
                     $templatesListWithTemplateData = array();
-                    $requiredDiagnosis = array();
+                    $currentRequiredDiagnosis = array();
                     foreach($_POST['templatesList'] as $key => $id) {
                         $templModel = MedcardTemplate::model()->findByPk($id);
                         $templatesListWithTemplateData[] = $templModel;
-                        $requiredDiagnosis['t'.$id] = array(
+                        $currentRequiredDiagnosis ['t'.$id] = array(
                             'name' => $templModel->name,
                             'isReq' => $templModel->primary_diagnosis
                         );
@@ -105,7 +105,48 @@ class SheduleController extends Controller {
                     // Получим разрешённые для него шаблоны
                     $medcardTemplates = new MedcardTemplate();
                     $templatesList = $medcardTemplates->getTemplatesByEmployee($medworkerId);
+
+                    // Нужно получить шаблоны, которые были выбраны раньше в приёме (если были выбраны)
+                    $medcardRecordObj = new MedcardRecord();
+                    $oldTemplatesForGreeting = $medcardRecordObj->getSavedTemplatesForGreeting($_GET['rowid']);
+
+                    $oldRequiredDiagnosis = array();
+                    foreach($oldTemplatesForGreeting as $oneTemplate) {
+                        $oldRequiredDiagnosis['t'.$oneTemplate['id']] = array(
+                            'name' => $oneTemplate['name'],
+                            'isReq' => $oneTemplate['primary_diagnosis']
+                        );
+                    }
                 }
+
+
+
+                // Теперь нужно смиксовать в итоговый массив шаблонов массивы текущие и массивы старых приёмов
+                if ((isset($currentRequiredDiagnosis)) || ( isset($oldRequiredDiagnosis) ))
+                {
+                    $requiredDiagnosis = array();
+                    // Перебираем текущие шаблоны (выбранные)
+                    if (isset($currentRequiredDiagnosis))
+                    {
+                        // Перебираем старые шаблоны
+                        foreach($currentRequiredDiagnosis as $key => $oneTemplate )
+                        {
+                            $requiredDiagnosis[$key] = $oneTemplate ;
+                        }
+                    }
+                    // Перебираем старые шаблоны
+                    if (isset($oldRequiredDiagnosis))
+                    {
+                        foreach($oldRequiredDiagnosis as $key => $oneTemplate )
+                        {
+                            if (!isset($requiredDiagnosis[$key]))
+                            {
+                                $requiredDiagnosis[$key] = $oneTemplate ;
+                            }
+                        }
+                    }
+                }
+
             }
         }
         if(!isset($templatesChoose)) {
@@ -217,6 +258,7 @@ class SheduleController extends Controller {
         // Получим пациентов
         $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
         $patients = $patients['result'];
+
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
         $patientsListWidget->filterModel = $this->filterModel;
@@ -626,6 +668,16 @@ class SheduleController extends Controller {
             if($sheduleElement != null) {
                 // Проверим - установлен ли первичый диагноз. Если нет - выводим сообщение
                 $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
+                if ($_GET['needDiagnosis']=='1')
+                {
+                    if (count($primaryDiagnosis) == 0){
+                        echo CJSON::encode(array('success' => false,
+                            'needdiagnose' => true,
+                            'text' => 'Введите основной диагноз!'));
+                        return;
+                    }
+                }
+
                 //var_dump($primaryDiagnosis);
                 //exit();
                 
@@ -667,7 +719,6 @@ class SheduleController extends Controller {
                         }
                     }
                 //}
-
             }
         }
         echo CJSON::encode(array('success' => true,
