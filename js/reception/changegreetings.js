@@ -65,6 +65,7 @@ $(document).ready(function() {
             'dataType' : 'json',
 			'data' : {
 				'mediateonly' : 0,
+                'notBeginned': 1,
 				'filters' : $.toJSON(filters)
 			},
             'type' : 'GET',
@@ -183,7 +184,10 @@ $(document).ready(function() {
                             $(link).parents('tr').remove();
                         });
                     } else {
+                        $('#cannotUnwritePopup p').text(data.data);
+                        $('#cannotUnwritePopup').modal({
 
+                        });
                     }
                     return;
                 }
