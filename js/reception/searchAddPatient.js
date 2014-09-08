@@ -537,10 +537,12 @@
         table.parents('div.no-display').removeClass('no-display');
     }
 	
+	var popoverCont = null;
 	$(document).on('click', '.writePatientLink', function(e) {
 		$('.writePatientLink').popover('destroy');
 		var cardId = $(this).attr('href').substr(1);
 		var url = 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + cardId;
+		popoverCont = this;
 		$(this).popover({
             animation: true,
             html: true,
@@ -553,15 +555,17 @@
             container: $(this).parents('td'),
             content: function() {
 				var a1 = $('<a>').prop({
-					href: url,
-					target: '_blank'
+					href: url
+				}).on('click', function(e) {
+					e.stopPropagation();
 				}).css({
 					fontWeight: 'bold'
 				}).text('На определённое время');
 				
 				var a2 = $('<a>').prop({
-					href: url + '&waitingline=1',
-					target: '_blank'
+					href: url + '&waitingline=1'
+				}).on('click', function(e) {
+					e.stopPropagation();
 				}).css({
 					fontWeight: 'bold'
 				}).text('В живую очередь');
@@ -570,7 +574,14 @@
 			}
 		});
 	   $(this).popover('show');
+	   e.stopPropagation();
 	   return false;
+	});
+	
+	$(document).on('click', function(e) {
+		if(popoverCont != null) {
+			$(popoverCont).parent().find('.popover').remove();
+		}
 	});
 
     // Отобразить ошибки формы добавления пациента
