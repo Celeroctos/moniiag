@@ -34,7 +34,7 @@ $templatesIndex = $keysOfTemplates[0];
 //var_dump($diagnosises['noteGreeting']);
 //exit();
 
-if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
+if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
     ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
     if (strlen($diagnosises['noteGreeting'])>0)
@@ -44,11 +44,28 @@ if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteG
     }
     if (count($diagnosises['clinicalSecondary'])>0)
     {
+        //var_dump("!");
+        //exit();
         $wasPrintedDiag = false;
         foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
         {
             ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
         }
+    }
+    else
+    {
+
+        // Если нет клинического - печатаем МКБ
+        if (count($diagnosises['primary'])>0)
+        {
+            foreach ($diagnosises['primary'] as $oneDiagnosis)
+            {
+                ?><strong> <?php   echo $oneDiagnosis['description'];?></strong><?php
+            }
+            ?></div><?php
+
+        }
+
     }
     ?></div><?php
 }
