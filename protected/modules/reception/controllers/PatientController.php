@@ -499,9 +499,9 @@ class PatientController extends Controller {
 				try {
 					$tasuController = Yii::app()->createController('admin/tasu');
 					$result = $tasuController[0]->getTasuPatientByPolicy($patient);
-					if($result === -1) {
+					/*if($result === -1) {
 						$tasuStatus = false;
-					}
+					}*/
 				} catch(Exception $e) {
 					$tasuStatus = false;
 				}
@@ -1100,9 +1100,9 @@ class PatientController extends Controller {
 			try {
 				$tasuController = Yii::app()->createController('admin/tasu');
 				$result = $tasuController[0]->getTasuPatientByPolicy($oms);
-				if($result === -1) {
+				/*if($result === -1) {
 					$tasuStatus = false;
-				}
+				}*/
 			} catch(Exception $e) {
 				$tasuStatus = false;
 			}
@@ -1342,9 +1342,9 @@ class PatientController extends Controller {
 		try {
 			$tasuController = Yii::app()->createController('admin/tasu');
 			$tasuOmsData = $tasuController[0]->getTasuPatientByPolicy($oms);
-			if($tasuOmsData === -1) {
+			/*if($tasuOmsData === -1) {
 				$tasuStatus = false;
-			}
+			}*/
 		} catch(Exception $e) {
 			$tasuStatus = false;
 		}
@@ -2042,9 +2042,9 @@ class PatientController extends Controller {
 						try {
 							$tasuController = Yii::app()->createController('admin/tasu');
 							$result = $tasuController[0]->getTasuPatientByPolicy($oms);
-							if($result === -1) {
+							/*if($result === -1) {
 								$tasuStatus = false;
-							}
+							}*/
 						} catch(Exception $e) {
 							$tasuStatus = false;
 						}
@@ -2382,9 +2382,9 @@ class PatientController extends Controller {
 			try {
 				$tasuController = Yii::app()->createController('admin/tasu');
 				$result = $tasuController[0]->getTasuPatientByPolicy($oms);
-				if($result === -1) {
+				/*if($result === -1) {
 					$tasuStatus = false;	
-				}
+				}*/
 			} catch(Exception $e) {
 				$tasuStatus = false;
 			}
