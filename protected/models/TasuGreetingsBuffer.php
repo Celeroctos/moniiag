@@ -135,12 +135,21 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             if($lastBufferId['max_import_id'] == null || $lastBufferId['max_import_id'] == 0) {
                 $lastBufferId['max_import_id'] = 1;
             } else {
-                // Проверим, не закрыта ли данная выгрузка
-                $issetInHistory = TasuGreetingsBufferHistory::model()->find('import_id = :import_id', array(':import_id' => $lastBufferId['max_import_id']));
+                // Проверим, не закрыта ли данная выгрузка. Состояние "отменённая выгрузка" (2) не считается.
+                $issetInHistory = TasuGreetingsBufferHistory::model()->find('import_id = :import_id AND status = 1', array(':import_id' => $lastBufferId['max_import_id']));
                 if($issetInHistory != null) {
-                    $lastBufferId['max_import_id']++;
+					// Посмотрим, остались ли невыгруженные строки-приёмы (ошибки)
+					$numErrors = $connection->createCommand()
+						->select('COUNT(*) as num')
+						->from(TasuGreetingsBuffer::tableName().' tgb')
+						->where('import_id = :import_id AND status = 1', array(':import_id' => $lastBufferId['max_import_id']))
+						->queryRow();
+					
+					if($numErrors['num'] == 0) {
+						$lastBufferId['max_import_id']++;
+					}
                 }
-            }
+			}
 
             return $lastBufferId;
         } catch(Exception $e) {
