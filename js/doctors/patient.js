@@ -320,22 +320,91 @@
         $("#date-cont").trigger("refresh", [e.date]);
     });
 
-    $('form[id=template-edit-form] select[multiple]').on('focus',
+    //===============>
+    // Сжатие-расширение селект-контролов
+    expandSelectTimer = null;
+    selectToExpand = null;
+
+    //$('form[id=template-edit-form] select[multiple]').on('mouseover',
+    $(document).on('mouseover','form[id=template-edit-form] select[multiple]',
         function(e)
         {
+
+            onActivate(this);
+            //selectToExpand = this;
+            // Запускаем таймер
+            //expandSelectTimer = setTimeout(expandSelect,500);
+            /*
             // Нужно расширить по содержимому контрола
             $(this).attr("size", $(this).find('option').length );
+            */
+            // Запустить таймер для
+
         }
     );
 
-   $('form[id=template-edit-form] select[multiple]').on('blur',
+    $(document).on('mousemove','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+
+            onActivate(this);
+            //selectToExpand = this;
+            // Запускаем таймер
+            //expandSelectTimer = setTimeout(expandSelect,500);
+            /*
+             // Нужно расширить по содержимому контрола
+             $(this).attr("size", $(this).find('option').length );
+             */
+            // Запустить таймер для
+
+        }
+    );
+
+    function onActivate(element)
+    {
+        selectToExpand = element;
+        // Запускаем таймер
+        expandSelectTimer = setTimeout(expandSelect,500);
+    }
+
+    //$('form[id=template-edit-form] select[multiple]').on('focus',
+    $(document).on('focus','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+           expandSelect();
+        }
+    );
+
+    function expandSelect()
+    {
+        $(selectToExpand).attr("size", $(selectToExpand).find('option').length );
+        // Сбрасываем таймер
+        clearTimeout(expandSelectTimer);
+    }
+
+    $(document).on('blur','form[id=template-edit-form] select[multiple]',
+    //   $('form[id=template-edit-form] select[multiple]').on('blur',
     function(e)
         {
             // Нужно удалить расширение
           $(this).removeAttr("size");
+          clearTimeout(expandSelectTimer);
         }
     );
 
+    //$('form[id=template-edit-form] select[multiple]').on('mouseout',
+        $(document).on('mouseout','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+            clearTimeout(expandSelectTimer);
+            // Убираем расширение только если this не в фокусе
+            if ( ! $(this).is(':focus') )
+            {
+                $(this).removeAttr("size");
+            }
+        }
+    );
+    // <==================
     $('form[id=template-edit-form] select').on('keydown',
         function(e)
         {
