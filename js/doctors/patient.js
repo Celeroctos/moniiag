@@ -590,10 +590,30 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
 });
 });
 
-$('#historyPopup').on('show.bs.modal', function (e) {
+$('#historyPopup').on('shown.bs.modal', function (e) {
     var deps = filteredDeps;
     for (var i = 0; i < deps.length; i++) {
-        var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
+        mainDependenceElement = $('select[id$="_' + deps[i].elementId + '"]');
+        // Проверяем - если элемент мультиселектовый, то считаем, что его значение
+        //     - это все опшены, которые есть внутри его
+        var elementValue = '';
+
+        if ($(mainDependenceElement).attr('multiple'))
+        {
+            // Берём все опшены, запихиваем в json
+            optionsSelected = $(mainDependenceElement).find('option');
+            optionsSelectedArray = [];
+            for (j=0;j<optionsSelected.length;j++)
+            {
+                optionsSelectedArray.push( $($(optionsSelected)[j]).attr('value')  );
+            }
+            elementValue = $.toJSON(optionsSelectedArray);
+        }
+        else
+        {
+            elementValue = $(mainDependenceElement).val();
+        }
+        //var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
         changeControlState(deps[i], elementValue, '#historyPopup');
     }
 });

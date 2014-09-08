@@ -764,12 +764,13 @@ class CategorieViewWidget extends CWidget {
 		
 		$this->makeTree('getTreeNode');
         $this->sortTree();
-        //var_dump($this->historyTree);
+       //var_dump($this->historyTree);
         //exit();
         // Теперь поделим категории
         $this->divideTreebyCats();
-        //var_dump($this->dividedCats);
-        //exit();
+       /* var_dump('3cvgfbhdhgarc');
+         echo '<pre>' ;var_dump($this->dividedCats);
+        exit();*/
 		$greeting  = null;
         // Рассортируем
 		// Вытащим приёмы
