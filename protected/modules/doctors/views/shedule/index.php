@@ -822,6 +822,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="closeGreetingPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Подтверждение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success closeGreetingPopupButton" data-dismiss="modal">Закончить</button>
+                <button type="button" class="btn btn-close" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php
 $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-medcard-edit-form',

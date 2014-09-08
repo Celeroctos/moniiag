@@ -137,6 +137,7 @@ class MedcardElementForPatient extends MisActiveRecord {
 
 			$connection = Yii::app()->db;
 
+            /*
             $elements = $connection->createCommand()
                 ->select('mep.*')
                 ->from('mis.medcard_elements_patient mep')
@@ -144,10 +145,15 @@ class MedcardElementForPatient extends MisActiveRecord {
                         AND mep.greeting_id = :greeting_id',
                     array(':greeting_id' => $greetingId));
             $elements->order('element_id, path, history_id desc');
-
-
-
 			$allElements =  $elements->queryAll();
+            */
+            $allElements = MedcardElementForPatient::model()->findAllBySql(
+                'SELECT mep.* FROM mis.medcard_elements_patient mep WHERE mep.path in ('
+                . $pathsToSelect .
+                ') AND mep.greeting_id = '.$greetingId.' ORDER BY mep.element_id, mep.path,mep.history_id desc'
+            );
+
+
            // var_dump($allElements);
            // exit();
             $currentElement = false;
@@ -278,12 +284,17 @@ class MedcardElementForPatient extends MisActiveRecord {
 							
 												AND (mep.record_id = (SELECT MAX(mep2.record_id)
                                               FROM mis.medcard_elements_patient mep2
-                                              WHERE mep2.real_categorie_id = mep.real_categorie_id
+                                              WHERE
+                                                    mep2.greeting_id = mep.greeting_id
+                                                    AND mep2.path = mep.path
                                                     AND mep2.medcard_id = :medcard_id))
 						
 							
 				)', array(':medcard_id' => $medcardId));
-			return $values->queryAll();
+            $result = $values->queryAll();
+			//var_dump($result);
+            //exit();
+            return $result;
 
 		} catch(Exception $e) {
 			echo $e->getMessage();
@@ -318,6 +329,57 @@ class MedcardElementForPatient extends MisActiveRecord {
 			echo $e->getMessage();
 		}
 	}
+
+    public function findElementsForGreeting($greetingId, $medcardId,$categoryId, $path )
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $elements = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('greeting_id = :greeting_id
+                            AND medcard_id = :medcard_id
+                            AND categorie_id = :categorie_id
+                            AND path LIKE :path
+                            AND element_id != -1',
+                            array(
+                                ':greeting_id' => $greetingId,
+                                ':medcard_id' => $medcardId,
+                                ':categorie_id' => $categoryId,
+                                ':path' => $path.'.%'
+                            )
+                        )
+                ->order('element_id, record_id desc');
+            $elements = $elements->queryAll();
+
+
+            if (count($elements)>0)
+            {
+                $currentElementId = $elements[0]['element_id'];
+                $newElementsList = array();
+                $newElementsList[] = $elements[0];
+                foreach ($elements as $oneElement)
+                {
+                    // Если element_id не равен текущему Id-нику
+                    if ($oneElement['element_id']!=$currentElementId)
+                    {
+                        $currentElementId  = $oneElement['element_id'];
+                        $newElementsList[] = $oneElement;
+                    }
+
+
+                }
+                $elements = $newElementsList;
+            }
+            return $elements;
+         }
+         catch(Exception $e)
+         {
+            var_dump($e);
+            exit();
+         }
+    }
 
     public function findGreetingTemplate($greetingId, $templateId)
     {
@@ -375,23 +437,31 @@ class MedcardElementForPatient extends MisActiveRecord {
                 ->from('mis.medcard_elements_patient mep')
                 //    ->leftJoin('mis.medcard_templates mt', 'mep.template_id = mt.id')
                 ->where('mep.greeting_id = :greetingId', array(':greetingId' => $greetingId))
-                ->order('element_id, history_id desc');
+                //->order('element_id, history_id desc');
+                ->order('path, history_id desc');
             $elements = $values->queryAll();
+            //var_dump($elements );
+            //exit();
+            //===========>
             $results = array();
 
             $currentElementNumber = false;
             $currentMaximum = false;
             if (count($elements )>0)
             {
-                $currentElementNumber = $elements[0]['element_id'];
+                $currentElementPath = $elements[0]['path'];
                 $currentMaximum = $elements[0]['history_id'];
             }
+
+            //var_dump($elements );
+            //exit();
+
             // Проверяем условие max history_id
             foreach ($elements as $oneElement)
             {
-                if ($currentElementNumber!=$oneElement['element_id'])
+                if (((string)$currentElementPath)!==((string)$oneElement['path']))
                 {
-                    $currentElementNumber=$oneElement['element_id'];
+                    $currentElementPath=$oneElement['path'];
                     $currentMaximum = $oneElement['history_id'];
                     array_push($results,$oneElement);
                 }
@@ -403,6 +473,9 @@ class MedcardElementForPatient extends MisActiveRecord {
                     }
                 }
             }
+
+            //var_dump($results);
+            //exit();
 
             // Проверяем likePath
             if ($likePath)
@@ -447,6 +520,9 @@ class MedcardElementForPatient extends MisActiveRecord {
                 $results = $tempResult;
             }
 
+            //======>
+            //var_dump($results);
+            //exit();
             return $results;
         } catch(Exception $e) {
             echo $e->getMessage();

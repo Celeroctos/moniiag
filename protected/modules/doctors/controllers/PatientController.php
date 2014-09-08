@@ -315,6 +315,9 @@ class PatientController extends Controller {
             }
 
             $list = array();
+            //var_dump($historyTransform);
+            //var_dump($elements );
+            //exit();
             foreach($elements as $element) {
                 MedcardElementPatientDependence::model()->updateAll(array(
                    'dep_element_path' => $historyTransform[$element['dep_element_path']]
@@ -531,8 +534,11 @@ class PatientController extends Controller {
                 $control = MedcardElementForPatient::model()->find('element_id = :element_id', array(':element_id' => $model->controlId));
                 $guideValue = new MedcardGuideValue();
                 $guideValue->element_path = $control->path;
-                $guideValue->greeting_id = $control->greeting_id;
+                //$guideValue->greeting_id = $control->greeting_id;
+                $guideValue->greeting_id = $model->greetingId;
                 $guideValue->value = $model->value;
+                //var_dump($model);
+                //exit();
                 if($guideValue->save()) {
                     echo CJSON::encode(array('success' => 'true',
                                              'id' => $guideValue->id,

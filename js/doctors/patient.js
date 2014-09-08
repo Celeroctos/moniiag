@@ -32,7 +32,7 @@
     {
         console.log(ajaxData);
         if (ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
-            //if ($(".submitEditPatient").length - 1 == numCalls) {
+           // if ($(".submitEditPatient").length - 1 == numCalls) { // (-1) - на запрос сохранения диагноза
             if ($(".submitEditPatient").length == numCalls) {
                 // Сбрасываем, что есть несохранённые данные
                 globalVariables.isUnsavedUserData = false
@@ -130,7 +130,8 @@
             }
             else {
                 // Закрываем приём
-                $('.' + printHandler).trigger('accept');
+                // $('.' + printHandler).trigger('accept');
+                onCloseGreetingStart();
             }
         }
     }
@@ -239,6 +240,7 @@
         // Если кнопок нет - сразу вызываем функцию
         if (buttonsContainers.length==0)
         {
+            $(".backDropForSaving").remove();
             onSaveComplete();
         }
         else
@@ -326,11 +328,11 @@
         }
     );
 
-    $('form[id=template-edit-form] select[multiple]').on('blur',
-        function(e)
+   $('form[id=template-edit-form] select[multiple]').on('blur',
+    function(e)
         {
-            // Нужно расширить по содержимому контрола
-            $(this).removeAttr("size");
+            // Нужно удалить расширение
+          $(this).removeAttr("size");
         }
     );
 
@@ -402,47 +404,63 @@
     });
     $('#date-cont').trigger('refresh');
 
+    greetingIdToClose = null;
     $(document).on('click', '.accept-greeting-link', function (e) {
+        greetingIdToClose = $(this).attr('href').substr(1);
+        acceptMessage = '';
 
-        // Ставим анимацию вместо кнопки "Закончить приём"
-        var gif = generateAjaxGif(16, 16);
-        // Делаем невидимым флажок
-        $(this).addClass('no-display');
-        $($(this).parents()[0]).append(gif);
+        if (globalVariables.reqDiagnosis==undefined || globalVariables.reqDiagnosis==0)
+        {
+            // Приём пустой - надо спросить, а нужно ли его закрывать
+            acceptMessage = 'Во время данного приёма не было произведено никаких записей. Вы действительно хотите закончить этот приём?';
+        }
+        else
+        {
+            // Приём заполненный - надо спросить, нужно ли его закрыть.
+            acceptMessage = 'Вы действительно хотите закончить этот приём?';
+        }
 
-        printHandler = 'accept-greeting-link';
-        isThisPrint = true;
-        onStartSave();
-       // $(this).trigger('accept');
+        // Выводим сообщение о том, что нужно вывест
+        $('#closeGreetingPopup p').html(acceptMessage);
+        $('#closeGreetingPopup').modal({});
     });
 
-// Закрытие приёма
-$(document).on('accept', '.accept-greeting-link', function(e) {
+    $('.closeGreetingPopupButton').on('click',function(e){
+        startAcceptGreeting();
+    });
 
-    // Старый код. Поидее на сервере можно не проверять наличие диагноза, потому что перед процессом закрытия приёма
-    //    выполняется сохранение приёма, поэтому в данной точке что на сервере - что на клиенте,
-    // диагноз должен быть одинаков
-    var isError = '';
+function startAcceptGreeting()
+{
+    // Ставим анимацию вместо кнопки "Закончить приём"
+    var gif = generateAjaxGif(16, 16);
+    // Делаем невидимым флажок
+    $(this).addClass('no-display');
+    $($(this).parents()[0]).append(gif);
+
+    printHandler = 'accept-greeting-link';
+    isThisPrint = true;
+    onStartSave();
+    // $(this).trigger('accept');
+}
+
+
+    focusDiagnosisPlease = false;
+function acceptGreeting(greetingId)
+{
+    var needDiagMsq = '';
     for(var i in globalVariables.reqDiagnosis) {
         if(globalVariables.reqDiagnosis[i].isReq) {
-            isError += globalVariables.reqDiagnosis[i].name + ', ';
+            needDiagMsq += globalVariables.reqDiagnosis[i].name + ', ';
         }
     }
-    if($.trim(isError) != '') {
-        isError = isError.substr(0, isError.length - 2);
-        isError = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + isError + '</strong>';
-        // Выводим сообщение об ошибке
-        $('#errorPopup .modal-body .row').html("<p>" + isError + "</p>");
-        $('#errorPopup').modal({
-        });
-        return false;
+
+    needDiagnosis = '0';
+    if (needDiagMsq!='')
+    {
+        needDiagnosis = '1';
     }
-    // Вызываем закрытие приёма
-    // Дёргаем Ajax
-    //return false;
-    var greetingId = $(this).attr('href').substr(1);
     $.ajax({
-        'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
+        'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString()+'&needDiagnosis='+needDiagnosis,
         'cache' : false,
         'dataType' : 'json',
         'type' : 'GET',
@@ -454,24 +472,70 @@ $(document).on('accept', '.accept-greeting-link', function(e) {
                 // Перезагружаем страницу
                 location.reload();
             } else {
-                // Выводим сообщение об ошибке
-                $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
-                $('#errorPopup').modal({
+                if (data.needdiagnose)
+                {
+                    needDiagMsq = needDiagMsq.substr(0, needDiagMsq.length - 2);
+                    needDiagMsq = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + needDiagMsq + '</strong>';
+                    // Выводим сообщение о том, что нужно вывест
+                    $('#errorPopup .modal-body .row').html("<p>" + needDiagMsq + "</p>");
+                    $('#errorPopup').modal({
 
-                });
+                    });
+                    // Перебрасываем фокус на диагноз
+                    destinationAnchor = $('#accordionD')[0].offsetTop;;
+                    $('body,html').animate({
+                        scrollTop: destinationAnchor
+                    }, 599);
+                    focusDiagnosisPlease = true;
+                }
+                else
+                {
+
+                    // Выводим сообщение о том, что нужно вывест
+                    $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
+                    $('#errorPopup').modal({
+
+                    });
+                }
+
+
             }
             // Снимаем крутилку с флажка "Закрытия приёма"
-            var gif = generateAjaxGif(16, 16);
-            // Делаем невидимым флажок
-            $('.accept-greeting-link').removeClass('no-display');
-            // Убиваем крутилку
-            $('.accept-greeting-link').parents('td').find('img').remove();
+            onGreetingClosingEnd();
             return;
         }
     });
+}
 
+// Закрытие приёма
+/*$(document).on('accept', '.accept-greeting-link', function(e) {
+    var greetingId = $(this).attr('href').substr(1);
+  acceptGreeting(greetingId);
+});*/
 
-});
+    $('#errorPopup').on('hidden.bs.modal', function (e){
+        if (focusDiagnosisPlease)
+        {
+            $('#primaryDiagnosisChooser input[type=text]').focus();
+            focusDiagnosisPlease = false;
+        }
+
+    });
+
+function onCloseGreetingStart()
+{
+    acceptGreeting(greetingIdToClose);
+}
+
+function onGreetingClosingEnd()
+{
+    // Снимаем крутилку с флажка "Закрытия приёма"
+    var gif = generateAjaxGif(16, 16);
+    // Делаем невидимым флажок
+    $('.accept-greeting-link').removeClass('no-display');
+    // Убиваем крутилку
+    $('.accept-greeting-link').parents('td').find('img').remove();
+}
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
     //return;
@@ -964,6 +1028,13 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                 for (i=0;i<controltables.length;i++)
                 {
                     $.fn['tableControl'].init($(controltables[i]));
+                }
+
+                // Для селект-контролов вызываем функцию инициализации клика
+                selectControls = $(accClone).find('select');
+                for(i=0;i<selectControls.length;i++)
+                {
+                    $.fn['categories'].initSelectOnClick(selectControls[i]);
                 }
 
                 // Надо скрыть все категории, кроме только что отклонированной
