@@ -15,16 +15,23 @@ class SheduleController extends Controller {
         $page = $_GET['page'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
+        $notBeginned = $_GET['notBeginned'];
+        $notBeginnedFlag = false;
+        if ($notBeginned==1)
+        {
+            $notBeginnedFlag = true;
+        }
+
 
         $model = new SheduleByDay();
 
-        $greetings = $model->getGreetingsPerQrit($filters, false, false);
+        $greetings = $model->getGreetingsPerQrit($filters, false, false, false, $notBeginnedFlag );
         $num = count($greetings);
 
         $totalPages = ceil($num / $rows);
         $start = $page * $rows - $rows;
 
-        $greetings = $model->getGreetingsPerQrit($filters, $start, $rows);
+        $greetings = $model->getGreetingsPerQrit($filters, $start, $rows,false,$notBeginnedFlag );
 
         foreach($greetings as &$greeting) {
             if($greeting['contact'] == null) {

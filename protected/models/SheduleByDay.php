@@ -147,6 +147,7 @@ class SheduleByDay extends MisActiveRecord {
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
  					AND ((dsbd.patient_day > current_date) OR ((dsbd.patient_day=current_date) AND (dsbd.patient_time >= current_time)))
+ 					AND (     not(dsbd.is_beginned=1) OR (dsbd.is_beginned is NULL)   )
  					', array(
  						':beginDate' => $dateBegin,
  						':endDate' => $dateEnd
@@ -333,7 +334,7 @@ class SheduleByDay extends MisActiveRecord {
     }
 
     // Получить список приёмов по критериям
-    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false) {
+    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false, $notBeginned=false) {
         try {
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
@@ -411,6 +412,12 @@ class SheduleByDay extends MisActiveRecord {
             }
             if($mediateOnly) {
                 $greetings->andWhere('dsbd.mediate_id IS NOT NULL');
+            }
+
+            if ($notBeginned)
+            {
+                // Дописываем в where ещё одно условие на is_beginned
+                $greetings->andWhere('((not (is_beginned = 1)) OR ((is_beginned) is NULL))');
             }
 
             $greetings->order('dsbd.patient_time');

@@ -650,7 +650,10 @@
                     // Перезагружаем календарь
                     loadCalendar(globalVariables.month, globalVariables.year, $(globalVariables.clickedTd).prop('id'));
                 } else {
+                    $('#cannotUnwritePopup p').text(data.data);
+                    $('#cannotUnwritePopup').modal({
 
+                    });
                 }
                 return;
             }

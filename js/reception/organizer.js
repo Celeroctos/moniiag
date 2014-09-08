@@ -147,7 +147,10 @@
                                     });
                                     $('.organizer').trigger('reload');
                                 } else {
+                                    $('#cannotUnwritePopup p').text(data.data);
+                                    $('#cannotUnwritePopup').modal({
 
+                                    });
                                 }
                                 return;
                             }
