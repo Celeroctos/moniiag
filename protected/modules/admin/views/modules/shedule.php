@@ -8,7 +8,7 @@
         'id' => 'shedule-settings-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/shedulesettingsedit'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/modules/shedulesettingsedit'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -210,7 +210,7 @@
         <div class="form-group">
             <?php echo CHtml::ajaxSubmitButton(
                 'Сохранить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/shedulesettingsedit'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/modules/shedulesettingsedit'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
                                 $("#shedule-settings-form").trigger("success", [data, textStatus, jqXHR])
@@ -236,7 +236,7 @@
                 'id' => 'shift-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/addshift'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/modules/addshift'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -340,7 +340,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/addshift'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/modules/addshift'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#shift-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -414,7 +414,7 @@
                 'id' => 'shift-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/editshift'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/modules/editshift'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -509,7 +509,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/modules/editshift'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/modules/editshift'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#shift-edit-form").trigger("success", [data, textStatus, jqXHR])

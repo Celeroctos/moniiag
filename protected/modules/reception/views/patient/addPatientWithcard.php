@@ -15,7 +15,7 @@
         'id' => 'patient-withcard-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addcard'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/addcard'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -45,7 +45,7 @@
         <div class="add-patient-submit">
             <?php echo CHtml::ajaxSubmitButton(
                 'Добавить',
-                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addcard'),
+                CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/addcard'),
                 array(
                     'success' => 'function(data, textStatus, jqXHR) {
                         $("#patient-withcard-form").trigger("success", [data, textStatus, jqXHR])

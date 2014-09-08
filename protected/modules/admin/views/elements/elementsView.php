@@ -26,7 +26,7 @@
                 'id' => 'element-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -406,7 +406,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#element-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -434,7 +434,7 @@
                 'id' => 'element-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -819,7 +819,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/elements/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#element-edit-form").trigger("success", [data, textStatus, jqXHR])

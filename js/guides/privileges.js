@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#privileges").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/privileges/get',
+        url: globalVariables.baseUrl + '/guides/privileges/get',
         datatype: "json",
         colNames:['ID',
                   'Код льготы',
@@ -111,7 +111,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/privileges/getone?id=' + currentRow,
+                'url' : '/guides/privileges/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -153,7 +153,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/privileges/delete?id=' + currentRow,
+                'url' : '/guides/privileges/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

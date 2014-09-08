@@ -39,7 +39,7 @@ $this->widget('application.modules.guides.components.widgets.claddr.streetAdder'
                 'id' => 'street-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/streetedit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/streetedit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -132,7 +132,7 @@ $this->widget('application.modules.guides.components.widgets.claddr.streetAdder'
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/streetedit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/streetedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#street-edit-form").trigger("success", [data, textStatus, jqXHR])

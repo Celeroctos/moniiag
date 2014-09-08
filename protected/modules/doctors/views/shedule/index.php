@@ -49,7 +49,7 @@
                                     <div class="accordion-inner">
                                         <form id="templates-choose-form" class="form-horizontal col-xs-12" method="post"
                                               role="form"
-                                              action="<?php CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/shedule/view?cardid=' . $medcard['card_number'] . '&date=' . $currentDate . '&rowid=' . $currentSheduleId); ?>">
+                                              action="<?php CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/shedule/view?cardid=' . $medcard['card_number'] . '&date=' . $currentDate . '&rowid=' . $currentSheduleId); ?>">
                                             <?php foreach ($templatesList as $key => $template) { ?>
                                                 <div class="form-group">
                                                     <input type="checkbox" value="<?php echo $template['id']; ?>"
@@ -86,7 +86,7 @@
                 'id' => 'change-date-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/shedule/view'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/shedule/view'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -327,7 +327,7 @@
                                 'id' => 'diagnosis-form',
                                 'enableAjaxValidation' => true,
                                 'enableClientValidation' => true,
-                            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/shedule/view'),
+                            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/shedule/view'),
                                 'htmlOptions' => array(
                                     'class' => 'form-horizontal col-xs-12',
                                     'role' => 'form'
@@ -577,7 +577,7 @@
                         'id' => 'add-value-form',
                         'enableAjaxValidation' => true,
                         'enableClientValidation' => true,
-                        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/admin/guides/addinguide'),
+                        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/admin/guides/addinguide'),
                         'htmlOptions' => array(
                             'class' => 'form-horizontal col-xs-12',
                             'role' => 'form',
@@ -614,7 +614,7 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                         <?php echo CHtml::ajaxSubmitButton(
                             'Добавить',
-                            CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/admin/guides/addinguide'),
+                            CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/admin/guides/addinguide'),
                             array(
                                 'success' => 'function(data, textStatus, jqXHR) {
                                     $("#add-value-form").trigger("success", [data, textStatus, jqXHR])
@@ -678,7 +678,7 @@
                 'id' => 'add-greeting-value-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/patient/addvalueinguide'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/patient/addvalueinguide'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form',
@@ -724,7 +724,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/patient/addvalueinguide'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/patient/addvalueinguide'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                             $("#add-greeting-value-form").trigger("success", [data, textStatus, jqXHR])
@@ -751,7 +751,7 @@
                 'id' => 'add-clinical-diagnosis-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/doctors/patient/addvalueinguide'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/patient/addvalueinguide'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form',
@@ -846,7 +846,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-medcard-edit-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/index.php/reception/patient/editcard'),
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/reception/patient/editcard'),
     'htmlOptions' => array(
         'class' => 'form-horizontal col-xs-12',
         'role' => 'form'

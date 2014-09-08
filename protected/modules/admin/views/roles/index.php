@@ -20,7 +20,7 @@
                 'id' => 'role-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -66,17 +66,34 @@
                                 )); ?>
                             </div>
                         </div>
-                        <h4>Права доступа</h4>
-                        <?php foreach($actions as $key => $actionGroup) { ?>
-                        <h5><strong><?php echo $key; ?></strong></h5>
-                        <div class="form-group">
-                            <?php foreach($actionGroup as $key2 => $action) { ?>
-                                <label class="checkbox-inline">
-                                    <input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>"> <?php echo $action; ?>
-                                </label>
-                            <?php } ?>
-                        </div>
-                        <?php } ?>
+                        <h4>Права доступа:</h4>
+						<ul class="nav nav-tabs actionsGroupsTablist" role="tablist">
+						<?php 
+							$counter = 0;
+							foreach($actions as $key => $actionGroup) { ?>
+							<li>
+								<a href="#t<?php echo $counter; ?>" role="tab" data-toggle="tab"><?php echo $key; ?></a>
+							</li>
+						<?php
+								$counter++;
+							} 
+						?>
+						</ul>
+                        <div class="tab-content">
+							<?php 
+							$counter = 0;
+							foreach($actions as $key => $actionGroup) { ?>
+							<div class="form-group tab-pane" id="t<?php echo $counter; ?>">
+								<?php foreach($actionGroup as $key2 => $action) { ?>
+									<label class="checkbox-inline">
+										<input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>"> <?php echo $action; ?>
+									</label>
+								<?php } ?>
+							</div>
+							<?php 
+								$counter++;
+							} ?>
+						</div>
                     </div>
                 </div>
             </div>
@@ -84,7 +101,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#role-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -112,7 +129,7 @@
                 'id' => 'role-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -163,16 +180,33 @@
                             </div>
                         </div>
                         <h4>Права доступа:</h4>
-                        <?php foreach($actions as $key => $actionGroup) { ?>
-                            <h5><strong><?php echo $key; ?></strong></h5>
-                            <div class="form-group">
-                                <?php foreach($actionGroup as $key2 => $action) { ?>
-                                    <label class="checkbox-inline">
-                                        <input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>" /> <?php echo $action; ?>
-                                    </label>
-                                <?php } ?>
-                            </div>
-                        <?php } ?>
+						<ul class="nav nav-tabs actionsGroupsTablist" role="tablist">
+						<?php 
+							$counter = 0;
+							foreach($actions as $key => $actionGroup) { ?>
+							<li>
+								<a href="#e<?php echo $counter; ?>" role="tab" data-toggle="tab"><?php echo $key; ?></a>
+							</li>
+						<?php
+								$counter++;
+							} 
+						?>
+						</ul>
+                        <div class="tab-content">
+							<?php 
+							$counter = 0;
+							foreach($actions as $key => $actionGroup) { ?>
+							<div class="form-group tab-pane" id="e<?php echo $counter; ?>">
+								<?php foreach($actionGroup as $key2 => $action) { ?>
+									<label class="checkbox-inline">
+										<input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>"> <?php echo $action; ?>
+									</label>
+								<?php } ?>
+							</div>
+							<?php 
+								$counter++;
+							} ?>
+						</div>
                     </div>
                 </div>
             </div>
@@ -180,7 +214,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/roles/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/roles/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#role-edit-form").trigger("success", [data, textStatus, jqXHR])

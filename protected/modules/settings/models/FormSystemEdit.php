@@ -4,15 +4,16 @@ class FormSystemEdit extends FormMisDefault
 {
     public $lettersInPixel;
 	public $tasuMode;
+	public $sessionStandbyTime;
 
     public function rules()
     {
         return array(
             array(
-                'lettersInPixel, tasuMode', 'required'
+                'lettersInPixel, tasuMode, sessionStandbyTime', 'required'
             ),
             array(
-                'lettersInPixel, tasuMode', 'numerical'
+                'lettersInPixel, tasuMode, sessionStandbyTime', 'numerical'
             )
         );
     }
@@ -21,7 +22,8 @@ class FormSystemEdit extends FormMisDefault
     {
         return array(
             'lettersInPixel' => 'Количество пикселей в символе',
-			'tasuMode' => 'ТАСУ включена'
+			'tasuMode' => 'ТАСУ включена',
+			'sessionStandbyTime' => 'Время простоя пользовательской сессии (секунд)'
         );
     }
 }

@@ -123,7 +123,7 @@
                     'id' => 'comment-add-form',
                     'enableAjaxValidation' => true,
                     'enableClientValidation' => true,
-                    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cabinets/add'),
+                    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cabinets/add'),
                     'htmlOptions' => array(
                         'class' => 'form-horizontal col-xs-12',
                         'role' => 'form'
@@ -160,7 +160,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
                         'Добавить',
-                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/comment/add'),
+                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/comment/add'),
                         array(
                             'success' => 'function(data, textStatus, jqXHR) {
                                 $("#comment-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -188,7 +188,7 @@
                     'id' => 'comment-edit-form',
                     'enableAjaxValidation' => true,
                     'enableClientValidation' => true,
-                    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cabinets/edit'),
+                    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cabinets/edit'),
                     'htmlOptions' => array(
                         'class' => 'form-horizontal col-xs-12',
                         'role' => 'form'
@@ -225,7 +225,7 @@
                     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                     <?php echo CHtml::ajaxSubmitButton(
                         'Сохранить',
-                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/comment/edit'),
+                        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/comment/edit'),
                         array(
                             'success' => 'function(data, textStatus, jqXHR) {
                                 $("#comment-edit-form").trigger("success", [data, textStatus, jqXHR])

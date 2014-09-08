@@ -24,7 +24,7 @@
                 'id' => 'guide-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/guides/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -54,7 +54,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/guides/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#guide-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -82,7 +82,7 @@
                 'id' => 'guide-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/guides/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -116,7 +116,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/guides/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/guides/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#guide-edit-form").trigger("success", [data, textStatus, jqXHR])

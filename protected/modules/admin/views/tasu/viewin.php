@@ -29,7 +29,7 @@
 		<?php echo $form->labelEx($modelFilter,'greetingDate', array(
 			'class' => 'col-xs-3 control-label'
 		)); ?>
-		<div id="greetingDate2-cont" class="col-xs-5 input-group date">
+		<div id="greetingDate-cont2" class="col-xs-5 input-group date">
 			<?php echo $form->hiddenField($modelFilter,'greetingDate', array(
 				'id' => 'filterGreetingDate',
 				'class' => 'form-control'
@@ -169,7 +169,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/tasu/addgreetingtobuffer'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/tasu/addgreetingtobuffer'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#greeting-add-form").trigger("success", [data, textStatus, jqXHR])

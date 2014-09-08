@@ -116,6 +116,7 @@ return array(
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
+			'showScriptName' => false,
 			/*'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
@@ -170,7 +171,7 @@ return array(
                         '_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
                     ),
                     'class'=>'mpdf'/*, // the literal class filename to be loaded from the vendors folder
-                    'defaultParams'     => array( // More info: http://mpdf1.com/manual/index.php?tid=184
+                    'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
                         'mode'              => '', //  This parameter specifies the mode of the new document.
                         'format'            => 'A4', // format A4, A5, ...
                        // 'default_font_size' => 0, // Sets the default document font size in points (pt)
@@ -186,7 +187,7 @@ return array(
                     )*/
 
 /*
-                    'defaultParams'     => array( // More info: http://mpdf1.com/manual/index.php?tid=184
+                    'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
                      'autoPageBreak' => true
                     )
 */

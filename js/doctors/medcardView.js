@@ -11,6 +11,27 @@ $(document).ready(function() {
     var searchStatus = []; // Здесь - результаты поиска. Есть или нет найденные записи
 
     function getFilters() {
+		/* ticket 10333:
+			Если задан только один из этих параметров, то пользователю выдавать сообщение:
+			"Недостаточно параметров для поиска" 
+		*/
+		var counter = 0;
+		var check = [
+			$.trim($('#docnumber').val()),
+			$.trim($('#serie').val()),
+			$.trim($('#birthday').val())
+		].forEach(function(element) {
+			if(element != '') {
+				counter++;
+			}
+		});
+		if(counter == 1) {
+			$('#errorSearchPopup .modal-body .row p').remove();
+			$('#errorSearchPopup .modal-body .row').append('<p class="errorText">Недостаточно параметров для поиска!</p>');
+			$('#errorSearchPopup').modal({});
+			return false;
+		}
+		
         var Result =
         {
             'groupOp' : 'AND',
@@ -116,12 +137,15 @@ $(document).ready(function() {
 
     function updatePatientWithCardsList() {
         var filters = getFilters();
+		if(!filters) {
+			return -1;
+		}
         var PaginationData=getPaginationParameters('omsSearchWithCardResult');
         if (PaginationData!='') {
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -212,7 +236,7 @@ $(document).ready(function() {
             if($(this).attr('id') == '#patient-withcard-form' || $(this).attr('id') == '#patient-withoutcard-form') {
                 $(this)[0].reset();
             }
-            $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/index.php/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
+            $('#successAddPopup .writePatient').prop('href', 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + ajaxData.cardNumber);
             $('#successAddPopup').modal({
 
             });
@@ -246,7 +270,7 @@ $(document).ready(function() {
 		$('#omsSearchWithCardResult tr').removeClass('active');
 		$(this).parents('tr').addClass('active');
 		$.ajax({
-			'url' : '/index.php/doctors/shedule/gethistorypoints',
+			'url' : '/doctors/shedule/gethistorypoints',
 			'data' : {
 				'medcardid' : medcardId
 			},
@@ -330,7 +354,7 @@ $(document).ready(function() {
 
 
 			$.ajax({
-				'url' : '/index.php/doctors/patient/gethistorymedcard',
+				'url' : '/doctors/patient/gethistorymedcard',
 				'data' : {
 					'medcardid' : medcardId,
 					'historyPointId': pointId,
@@ -364,7 +388,7 @@ $(document).ready(function() {
 		} else {
 			$(this).parent().addClass('active');
 			var id = $(this).attr('href').substr(1);
-			var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+			var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
 			$(printWin).on('load',
 				function () {
 					this.focus();

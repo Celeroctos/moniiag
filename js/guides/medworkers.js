@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#medworkers").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/medworkers/get',
+        url: globalVariables.baseUrl + '/guides/medworkers/get',
         datatype: "json",
         colNames:['Код', 'Наименование', 'Тип персонала', 'Тип оплаты', 'Принимает беременных', 'Меддолжность', '', '', ''],
         colModel:[
@@ -137,7 +137,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/medworkers/getone?id=' + currentRow,
+                'url' : '/guides/medworkers/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -201,7 +201,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/medworkers/delete?id=' + currentRow,
+                'url' : '/guides/medworkers/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

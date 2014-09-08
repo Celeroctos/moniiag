@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#users").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/users/get',
+        url: globalVariables.baseUrl + '/admin/users/get',
         datatype: "json",
         colNames:['Код', 'Отображается', 'Логин', 'Роль', '', '', 'Сотрудник'],
         colModel:[
@@ -69,7 +69,7 @@ $(document).ready(function() {
 
     $("#addUser").click(function() {
         $.ajax({
-            'url' : '/index.php/admin/users/getallforassociate',
+            'url' : '/admin/users/getallforassociate',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -168,7 +168,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/users/getone?id=' + currentRow,
+                'url' : '/admin/users/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -231,7 +231,7 @@ $(document).ready(function() {
         var currentRow = $('#users').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             $.ajax({
-                'url' : '/index.php/admin/users/getone?id=' + currentRow,
+                'url' : '/admin/users/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -263,7 +263,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/users/delete?id=' + currentRow,
+                'url' : '/admin/users/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

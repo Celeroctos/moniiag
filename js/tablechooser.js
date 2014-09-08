@@ -63,7 +63,7 @@ $(document).ready(function() {
                     }).text(data.fileFields[i]));
                 }
             },
-            'url': '/index.php/admin/tasu/gettablefields',
+            'url': '/admin/tasu/gettablefields',
             'templateAccept' : function(row, data) {
                 row.find('.dbField').val(data.dbField);
                 row.find('.tasuField').val(data.fileField);
@@ -88,7 +88,7 @@ $(document).ready(function() {
                     }).text(data.dbFields[i]));
                 }
             },
-            'url': '/index.php/admin/tasu/gettablefields',
+            'url': '/admin/tasu/gettablefields',
             'templateAccept' : function(row, data) {
                 row.find('.dbField').val(data.dbField);
             },

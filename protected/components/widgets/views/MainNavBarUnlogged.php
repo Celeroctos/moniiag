@@ -20,7 +20,7 @@
                 'id' => 'login-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/users/login'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/users/login'),
                 'htmlOptions' => array(
                     'class' => 'navbar-form navbar-right',
                     'role' => 'form'
@@ -43,7 +43,7 @@
                 </div>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Войти',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/users/login'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/users/login'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                         $("#login-form").trigger("success", [data, textStatus, jqXHR])

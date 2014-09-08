@@ -3,7 +3,7 @@ TCPDF - README
 
 IF YOU'D LIKE TO SUPPORT TCPDF, PLEASE CONSIDER MAKING A 
 DONATION: 
-http://sourceforge.net/donate/index.php?group_id=128076
+http://sourceforge.net/donate?group_id=128076
 
 ------------------------------------------------------------
 

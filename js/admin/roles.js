@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#roles").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/roles/get',
+        url: globalVariables.baseUrl + '/admin/roles/get',
         datatype: "json",
         colNames:['Код', 'Название', 'Родитель', 'Стартовая страница', '', ''],
         colModel:[
@@ -122,7 +122,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/roles/getone?id=' + currentRow,
+                'url' : '/admin/roles/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -175,7 +175,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/roles/delete?id=' + currentRow,
+                'url' : '/admin/roles/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -195,4 +195,12 @@ $(document).ready(function() {
             })
         }
     });
+	
+	/*$('.actionsGroupsTablist').each(function(index, element) {
+		$(element).find('li:first').addClass('active');
+	});*/
+	$('.actionsGroupsTablist').each(function(index, element) {
+		console.log($(element).find('li:first a'));
+		$(element).find('li:first a').tab('show'); // Select first tab
+	});
 });

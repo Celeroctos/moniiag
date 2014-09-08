@@ -11,7 +11,7 @@
                 'id' => 'settlement-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/settlementadd'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/settlementadd'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -91,7 +91,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/settlementadd'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/settlementadd'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#settlement-add-form").trigger("success", [data, textStatus, jqXHR])

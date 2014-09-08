@@ -9,7 +9,7 @@
         'id' => 'system-settings-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/system/settingsedit'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/settings/system/settingsedit'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -42,10 +42,22 @@
 			?>
 		</div>
 	</div>
+	<div class="form-group">
+        <?php echo $form->labelEx($model,'sessionStandbyTime', array(
+            'class' => 'col-xs-2 control-label'
+        )); ?>
+        <div class="col-xs-4">
+            <?php echo $form->textField($model,'sessionStandbyTime', array(
+                'id' => 'sessionStandbyTime',
+                'class' => 'form-control',
+                'placeholder' => 'Время простоя сессии пользователя'
+            )); ?>
+        </div>
+    </div>
     <div class="form-group">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить настройки',
-            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/settings/system/settingsedit'),
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/settings/system/settingsedit'),
             array(
                 'success' => 'function(data, textStatus, jqXHR) {
                                     $("#system-settings-form").trigger("success", [data, textStatus, jqXHR])

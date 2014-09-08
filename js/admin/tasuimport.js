@@ -1,19 +1,14 @@
 ﻿$(document).ready(function() {
 	function initGreetingsGrid(id, pagerId, title) {
 		$(id).jqGrid({
-			url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings',
+			url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings',
 			datatype: "json",
-			colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус', 'Проведён в МИС'],
+			colNames:['Код', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач', 'Статус', 'Проведён в МИС'],
 			colModel:[
 				{
 					name:'id',
 					index:'id',
 					width: 50
-				},
-				{
-					name: 'doctor_fio',
-					index:'doctor_fio',
-					width: 150
 				},
 				{
 					name: 'medcard',
@@ -26,8 +21,18 @@
 					width: 170
 				},
 				{
+					name: 'pr_diag_code',
+					index: 'pr_diag_code',
+					width: 100
+				},
+				{
 					name: 'patient_day',
 					index: 'patient_day',
+					width: 120
+				},
+				{
+					name: 'doctor_fio',
+					index:'doctor_fio',
 					width: 150
 				},
 				{
@@ -38,7 +43,7 @@
 				{
 					name: 'in_mis_desc',
 					index: 'in_mis_desc',
-					width: 150
+					width: 140
 				}
 			],
 			rowNum: 30,
@@ -72,9 +77,9 @@
 	initGreetingsGrid("#historyGreetings", '#historyGreetingsPager', "Список выгруженных приёмов");
 
 	$("#importHistory").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/tasu/getbufferhistorygreetings',
+        url: globalVariables.baseUrl + '/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', ''],
+        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', 'Лог', 'Отменить', ''],
         colModel:[
             {
                 name: 'id',
@@ -96,6 +101,16 @@
                 index:'status',
                 width: 150
             },
+			{
+				name: 'log',
+				index: 'log',
+				width: 50
+			},
+			{
+				name: 'cancel',
+				index: 'cancel',
+				width: 70
+			},
 			{
 				name: 'import_id',
 				hidden: true
@@ -127,6 +142,43 @@
         }
     );
 	
+	// Фикс для того, чтобы узнать информацию о столбце: нативно по одиночному клику такая информация не выводится
+    $("#importHistory").click(function(e) {
+        var el = e.target;
+        if (el.nodeName !== "TD") {
+            el = $(el, this.rows).closest("td");
+        }
+		if($(el).find('a').length == 0) {
+			return false;
+		}
+
+        var iCol = $(el).index();
+        var nCol = $(el).siblings().length;
+        var row = $(el,this.rows).closest("tr.jqgrow");
+        var rowId = row[0].id;
+        if(iCol == 5) {
+			if(!window.confirm('Вы действительно хотите отменить выгрузку?')) {
+				return false;
+			}
+			$.ajax({
+				'url' : '/admin/tasu/cancelimport',
+				'cache' : false,
+				'data' : {
+					'bufferid' : $(el).find('a').prop('id').substr(1)
+				},
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success) {
+						alert('Выгрузка успешно отменена!');
+						$("#greetings, #importHistory").trigger('reloadGrid');
+					}
+				}
+			});
+			return false;
+		}
+    });
+	
 	$('#clearGreetings').on('click', function(e) {
 	    $('#confirmPopup').modal({});
 	});
@@ -140,7 +192,7 @@
         });
 
         $.ajax({
-            'url' : '/index.php/admin/tasu/clearbuffer',
+            'url' : '/admin/tasu/clearbuffer',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -163,7 +215,7 @@
             'disabled' : true
         }).text('Формируется список приёмов...');
         $.ajax({
-            'url' : '/index.php/admin/tasu/addallgreetings',
+            'url' : '/admin/tasu/addallgreetings',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -198,7 +250,7 @@
 			var numErrors = 0;
             function makeImport() {
                 $.ajax({
-                    'url' : '/index.php/admin/tasu/importgreetings',
+                    'url' : '/admin/tasu/importgreetings',
                     'cache' : false,
                     'data' : {
                         currentGreeting : currentGreeting,
@@ -340,7 +392,7 @@
 
     $('#addGreeting').on('click', function(e) {
         $.ajax({
-            'url' : '/index.php/admin/tasu/getnotbufferedgreetings',
+            'url' : '/admin/tasu/getnotbufferedgreetings',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -375,7 +427,7 @@
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/tasu/deletefrombuffer?id=' + currentRow,
+                'url' : '/admin/tasu/deletefrombuffer?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -453,7 +505,7 @@
 		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		 $.ajax({
-            'url' : '/index.php/admin/tasu/getfios',
+            'url' : '/admin/tasu/getfios',
             'data' : {
 				'doctor_id' : $('#doctorId').val(),
 				'card_number' : $.trim($('#cardNumber').val()),
@@ -479,7 +531,8 @@
 						'doctor_fio' : data.data.doctorFio, 
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
-						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.')
+						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
+						'diagnosis_code' : primaryDiagnosis[0].description.substr(0, primaryDiagnosis[0].description.indexOf(' '))
 					});
 
 					lastId++;
@@ -519,7 +572,7 @@
     $("#greeting-addfakeall-submit").on('click', function(e) {
 		console.log(greetingsTempBuffer);
         $.ajax({
-            'url' : '/index.php/admin/tasu/addfakegreetingtobuffer',
+            'url' : '/admin/tasu/addfakegreetingtobuffer',
             'data' : {
 				'form' : $.toJSON(greetingsTempBuffer),
 			},
@@ -564,7 +617,7 @@
 	$('#wardId').on('change', function() {
 		$(this).attr('disabled', true);
 		$.ajax({
-			'url' : '/index.php/guides/employees/getbyward?id=' + $(this).val(),
+			'url' : '/guides/employees/getbyward?id=' + $(this).val(),
 			'cache' : false,
 			'dataType' : 'json',
 			'success' : function(data, textStatus, jqXHR) {
@@ -584,33 +637,38 @@
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма'],
+        colNames:['', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач'],
         colModel:[
 			{
 				name: 'id',
 				index: 'id',
 				hidden: true
 			},
-            {
-                name: 'doctor_fio',
-                index:'doctor_fio',
-                width: 150
-            },
-            {
+			{
                 name: 'medcard',
                 index:'medcard',
                 width: 100
             },
-            {
+			{
                 name: 'patient_fio',
                 index:'patient_fio',
                 width: 170
             },
+			{
+                name: 'diagnosis_code',
+                index: 'diagnosis_code',
+                width: 100
+            },
             {
                 name: 'patient_day',
                 index: 'patient_day',
+                width: 120
+            },
+			{
+                name: 'doctor_fio',
+                index:'doctor_fio',
                 width: 150
-            }
+            },
         ],
         rowNum: 30,
         rowList:[10,20,30],
@@ -631,7 +689,7 @@
 		// Перезагружаем таблицу
 		$('#greetings').jqGrid('setGridParam',
             {
-                url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings' + urlParams,
+                url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings' + urlParams,
                 page: 1
 			}
 		);
@@ -644,7 +702,7 @@
 			var row = $('#importHistory').jqGrid('getRowData', currentRow);
 			$('#historyGreetings').jqGrid('setGridParam',
 				{
-					url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings?import_id=' + row.import_id,
+					url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings?import_id=' + row.import_id,
 					page: 1
 				}
 			);

@@ -36,10 +36,10 @@ $templatesIndex = $keysOfTemplates[0];
 
 if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
+
     ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
     if (strlen($diagnosises['noteGreeting'])>0)
     {
-
         ?><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
     }
     if (count($diagnosises['clinicalSecondary'])>0)

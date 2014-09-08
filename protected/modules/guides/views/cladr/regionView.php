@@ -37,7 +37,7 @@ $this->widget('application.modules.guides.components.widgets.claddr.regionAdder'
                 'id' => 'region-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/regionedit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/regionedit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -82,7 +82,7 @@ $this->widget('application.modules.guides.components.widgets.claddr.regionAdder'
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/regionedit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/regionedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#region-edit-form").trigger("success", [data, textStatus, jqXHR])

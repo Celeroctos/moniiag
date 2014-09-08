@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#streets").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/cladr/streetget',
+        url: globalVariables.baseUrl + '/guides/cladr/streetget',
         datatype: "json",
         colNames:['ID',
                   'Регион',
@@ -126,7 +126,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/streetgetone?id=' + currentRow,
+                'url' : '/guides/cladr/streetgetone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -207,7 +207,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/streetdelete?id=' + currentRow,
+                'url' : '/guides/cladr/streetdelete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

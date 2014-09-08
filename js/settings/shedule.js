@@ -1,7 +1,7 @@
 $(document).ready(function() {
     
     $("#shifts").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/modules/getshifts',
+        url: globalVariables.baseUrl + '/admin/modules/getshifts',
         datatype: "json",
         colNames:['Код', 'Начало приёма', 'Конец приёма'],
         colModel:[
@@ -131,7 +131,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/modules/getoneshift?id=' + currentRow,
+                'url' : '/admin/modules/getoneshift?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -172,7 +172,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/modules/deleteshift?id=' + currentRow,
+                'url' : '/admin/modules/deleteshift?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

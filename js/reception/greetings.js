@@ -16,7 +16,7 @@ $(document).ready(function() {
             PaginationData = '&'+PaginationData;
         }
         $.ajax({
-            'url' : '/index.php/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
+            'url' : '/reception/patient/search/?withonly=0&filters=' + $.toJSON(filters)+PaginationData,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',

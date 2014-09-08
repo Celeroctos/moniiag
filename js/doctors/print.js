@@ -4,7 +4,7 @@ $(document).ready(function(e) {
     $('.printBtn').on('click', function(e) {
         //window.print();
         $.ajax({
-            'url' : '/index.php/doctors/print/makeprintpdf',
+            'url' : '/doctors/print/makeprintpdf',
             'data' : {},
             'cache' : false,
             'dataType' : 'json',
@@ -43,7 +43,7 @@ $(document).ready(function(e) {
         $('#massPrintDocs').hide();
 
         $.ajax({
-            'url' : '/index.php/doctors/print/makeprintlistview',
+            'url' : '/doctors/print/makeprintlistview',
             'data' : {
                 'doctors' : $.toJSON(doctorsIds),
                 'patients' : $.toJSON(patientIds),
@@ -104,7 +104,7 @@ $(document).ready(function(e) {
 
     $('#massPrintDocs').on('click', '.print-greeting-link', function(e) {
         var id = $(this).attr('href').substr(1);
-        var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         printWin.focus();
         return false;
     });
@@ -124,7 +124,7 @@ $(document).ready(function(e) {
                 ids.push(id);
             });
         }
-        var printWin = window.open('/index.php/doctors/print/massprintgreetings/?greetingids=' + $.toJSON(ids),'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        var printWin = window.open('/doctors/print/massprintgreetings/?greetingids=' + $.toJSON(ids),'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         printWin.focus();
     });
 });

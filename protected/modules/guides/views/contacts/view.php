@@ -4,7 +4,7 @@
         'id' => 'contact-filter-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/filter'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/filter'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -53,7 +53,7 @@
     <div class="form-group">
         <?php echo CHtml::ajaxSubmitButton(
             'Фильтровать',
-            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/filter'),
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/filter'),
             array(
                 'success' => 'function(data, textStatus, jqXHR) {
                                     $("#contact-filter-form").trigger("success", [data, textStatus, jqXHR])
@@ -96,7 +96,7 @@
                 'id' => 'contact-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -142,7 +142,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#contact-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -170,7 +170,7 @@
                 'id' => 'contact-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -216,7 +216,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#contact-edit-form").trigger("success", [data, textStatus, jqXHR])

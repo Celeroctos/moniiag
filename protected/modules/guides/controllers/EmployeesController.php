@@ -232,7 +232,7 @@ class EmployeesController extends Controller {
                 $employee['fio'] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'];
                 $employee['more_info'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть подробную информацию по '.$employee['fio'].'"><span class="glyphicon glyphicon-share-alt"></span>
 </a>';
-                $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
+                $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
 </a>';
                 if($employee['display_in_callcenter'] == 1) {
                     $employee['display_in_callcenter_desc'] = 'Да';
@@ -262,7 +262,7 @@ class EmployeesController extends Controller {
 
     public function actionGetByWard($id) {
         $model = new Employee();
-        $employees = $model->getByWard($id);
+        $employees = $model->getByWard($id, -1);
 
         echo CJSON::encode(array('success' => true,
                                  'data' => $employees)
