@@ -5,12 +5,6 @@ class SheduleByDay extends MisActiveRecord {
         return parent::model($className);
     }
 
-    public function beforeDelete()
-    {
-        var_dump('23rhrszddxf');
-        exit();
-    }
-
     public function tableName()
     {
         return 'mis.doctor_shedule_by_day';
