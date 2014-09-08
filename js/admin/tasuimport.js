@@ -79,7 +79,7 @@
 	$("#importHistory").jqGrid({
         url: globalVariables.baseUrl + '/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', 'Лог', ''],
+        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', 'Лог', 'Отменить', ''],
         colModel:[
             {
                 name: 'id',
@@ -105,6 +105,11 @@
 				name: 'log',
 				index: 'log',
 				width: 50
+			},
+			{
+				name: 'cancel',
+				index: 'cancel',
+				width: 70
 			},
 			{
 				name: 'import_id',
@@ -136,6 +141,43 @@
             closeAfterSearch: true
         }
     );
+	
+	// Фикс для того, чтобы узнать информацию о столбце: нативно по одиночному клику такая информация не выводится
+    $("#importHistory").click(function(e) {
+        var el = e.target;
+        if (el.nodeName !== "TD") {
+            el = $(el, this.rows).closest("td");
+        }
+		if($(el).find('a').length == 0) {
+			return false;
+		}
+
+        var iCol = $(el).index();
+        var nCol = $(el).siblings().length;
+        var row = $(el,this.rows).closest("tr.jqgrow");
+        var rowId = row[0].id;
+        if(iCol == 5) {
+			if(!window.confirm('Вы действительно хотите отменить выгрузку?')) {
+				return false;
+			}
+			$.ajax({
+				'url' : '/admin/tasu/cancelimport',
+				'cache' : false,
+				'data' : {
+					'bufferid' : $(el).find('a').prop('id').substr(1)
+				},
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success) {
+						alert('Выгрузка успешно отменена!');
+						$("#greetings, #importHistory").trigger('reloadGrid');
+					}
+				}
+			});
+			return false;
+		}
+    });
 	
 	$('#clearGreetings').on('click', function(e) {
 	    $('#confirmPopup').modal({});

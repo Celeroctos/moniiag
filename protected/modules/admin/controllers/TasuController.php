@@ -13,6 +13,7 @@ class TasuController extends Controller {
     public $numAdded = 0;
     public $log = array();
 	public $logStr = '';
+	public $isErrorElement = false; // Флаг, который позволит отловить ошибку (для оставления элемента выгрузки в списке невыгруженных)
     // Просмотр страницы интеграции с ТАСУ
     public function actionView() {
         if(isset($_GET['iframe'])) {
@@ -779,12 +780,21 @@ class TasuController extends Controller {
 
             if($element['status'] == 1) {
                 $element['status'] = 'Завершена';
-            } else {
+				if(Yii::app()->user->checkAccess('canCancelImport')) {
+					$element['cancel'] = '<a href="#" id="l'.$element['id'].'"><span class="glyphicon glyphicon-remove"></span></a>';
+				} else {
+					$element['cancel'] = '<span class="glyphicon glyphicon-remove not-active"></span>';
+				}
+            } elseif($element['status'] == 2) {
+				$element['status'] = 'Отменена';
+				$element['cancel'] = '-';
+			} else {
                 $element['status'] = 'Не завершена';
+				$element['cancel'] = '-';
             }
 			
 			if($element['log_path'] != null) {
-				$element['log'] = '<a href="/'.$element['log_path'].'"><span class="glyphicon glyphicon-download-alt"></span></a>';
+				$element['log'] = '<a href="/admin/tasu/sendlogfile/?bufferid='.$element['id'].'" target="_blank" id="l'.$element['id'].'"><span class="glyphicon glyphicon-download-alt"></span></a>';
 			} else {
 				$element['log'] = '-';
 			}
@@ -933,14 +943,19 @@ class TasuController extends Controller {
 
             /* --------------- */
             if($bufferGreetingModel != null) {
-                $bufferGreetingModel->status = 1;
-                if(!$bufferGreetingModel->save()) {
-                    $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id;
-					$this->logStr .= "[Ошибка] Невозможно изменить статус приёма в буфере c ID".$bufferGreetingModel->id."\r\n";
-                } else {
-                    $this->log[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id.' успешно изменён.';
-					$this->logStr .= "[OK] Статус приёма в буфере c ID".$bufferGreetingModel->id." успешно изменён.\r\n";
-                }
+				if(!$this->isErrorElement) {
+					$bufferGreetingModel->status = 1;
+					if(!$bufferGreetingModel->save()) {
+						$this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id;
+						$this->logStr .= "[Ошибка] Невозможно изменить статус приёма в буфере c ID".$bufferGreetingModel->id."\r\n";
+						$this->isErrorElement = true;
+					} else {
+						$this->log[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id.' успешно изменён.';
+						$this->logStr .= "[OK] Статус приёма в буфере c ID".$bufferGreetingModel->id." успешно изменён.\r\n";
+					}
+				} else {
+					$this->isErrorElement = false;
+				}
             }
             $this->lastId = $bufferGreetingModel->id;
         }
@@ -951,15 +966,16 @@ class TasuController extends Controller {
 		if(!file_exists(getcwd().'/uploads/logs/tasu')) {
 			mkdir(getcwd().'/uploads/logs/tasu');
 		}
+		
 		if(Yii::app()->user->getState('tasuLog', -1) != -1) {
 			$filepath = Yii::app()->user->getState('tasuLog');
 		} else {
 			$filename = md5(time());
 			$filepath = '/uploads/logs/tasu/'.$filename.'.txt';
-			Yii::app()->user->setState('tasuLog', getcwd().$filepath);
+			Yii::app()->user->setState('tasuLog', $filepath);
 		}
-		
-		file_put_contents($filepath, $this->logStr, FILE_APPEND);
+	//	var_dump(Yii::app()->user->getState('tasuLog', -1));
+		file_put_contents(getcwd().'/'.$filepath, $this->logStr, FILE_APPEND);
 		
 		// Делаем контрольный запрос. Если на выборку контрольного запроса выбирается 0 строк, то, значит, это окончание выгрузки. Надо перенести выгрузку в историю
         $moreBuffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $this->lastId);
@@ -973,9 +989,11 @@ class TasuController extends Controller {
             if(!$historyBuffer->save()) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно занести выгрузку c ID'.$importId.' в историю выгрузок.';
 				$this->logStr .= "[Ошибка] Невозможно занести выгрузку c ID".$importId." в историю выгрузок.\r\n";
+				$this->isErrorElement = true;
             } else {
                 $this->log[] = '<strong class="text-success">[OK]</strong> Выгрузка с ID'.$importId.' успешно сохранена в истории выгрузок.';
 				$this->logStr .= "[OK] Выгрузка с ID".$importId." успешно сохранена в истории выгрузок.\r\n";
+				$this->isErrorElement = true;
             }
 			Yii::app()->user->setState('tasuLog', -1);
         }
@@ -1006,7 +1024,8 @@ class TasuController extends Controller {
                 $this->numErrors++;
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить пациента с ОМС '.$oms->oms_number.' ('.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.')';
 				$this->logStr .= "[Ошибка] Невозможно добавить пациента с ОМС ".$oms->oms_number." (".$oms->last_name." ".$oms->first_name." ".$oms->middle_name.")\r\n";
-                return false;
+                $this->isErrorElement = true;
+				return false;
             } else {
                 $this->numAddedPatients++;
             }
@@ -1037,8 +1056,7 @@ class TasuController extends Controller {
 				try {
 					$conn->createCommand($sql)->execute();
 				} catch(Exception $e) {
-					var_dump($e);
-					exit();
+					return false;
 				}
 			} elseif($medcardRow == null) {
 				// Создать медкарту
@@ -1087,11 +1105,13 @@ class TasuController extends Controller {
             } else {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' в базу: возможно, полис пациента записан в неправильном формате...?.';
 				$this->logStr .= "[Ошибка] Невозможно добавить приём с ID".$greeting['greeting_id']." в базу: возможно, полис пациента записан в неправильном формате...?\r\n";
+				$this->isErrorElement = true;
             }
         } else {
             $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента для приёма с ID'.$greeting['greeting_id'].' в ТАСУ: возможно, пациент не создался в ТАСУ...?.';
 			$this->logStr .= "[Ошибка] Невозможно найти пациента для приёма с ID".$greeting['greeting_id']." в ТАСУ: возможно, пациент не создался в ТАСУ...?\r\n";
-        }
+			$this->isErrorElement = true;
+		}
     }
 
     private function searchTasuPatient($greeting, $oms) {
@@ -1564,7 +1584,8 @@ class TasuController extends Controller {
             if($omsRow == null) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти полис '.$serie.' '.$number.'!';
 				$this->logStr .= "[Ошибка] Невозможно найти полис ".$serie." ".$number."!\r\n";
-                return false;
+                $this->isErrorElement = true;
+				return false;
             }
 
             $sql = "SELECT
@@ -1579,7 +1600,8 @@ class TasuController extends Controller {
             if($policyRow == null) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].'!';
 				$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']."!r\n";
-                return false;
+                $this->isErrorElement = true;
+				return false;
             }
 
             $sql = 'SELECT
@@ -1607,7 +1629,8 @@ class TasuController extends Controller {
                 if($addressRow == null) {
                     $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].' по адресу регистрации!';
 					$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']." по адресу регистрации!\r\n";
-                    return false;
+                    $this->isErrorElement = true;
+					return false;
                 }
             }
 			
@@ -1652,6 +1675,7 @@ class TasuController extends Controller {
             if(!$tasuTap->save()) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно сохранить TAP для пациента с ID '.$patient['PatientUID'].'!';
 				$this->logStr .= "[Ошибка] Невозможно сохранить TAP для пациента с ID ".$patient['PatientUID']."!\r\n";
+				$this->isErrorElement = true;
                 throw new Exception();
             }
             $this->numAdded++;
@@ -1800,9 +1824,11 @@ class TasuController extends Controller {
             if($doctor == null) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач для приёма '.$greeting['id'].' не существует!';
 				$this->logStr .= "[Ошибка] Врач для приёма ".$greeting['id']." не существует!\r\n";
-            } elseif($doctor->tabel_number == null) {
+				$this->isErrorElement = true;
+			} elseif($doctor->tabel_number == null) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач для приёма '.$greeting['id'].' не имеет табельного номера!';
 				$this->logStr .= "[Ошибка] Врач для приёма ".$greeting['id']." не имеет табельного номера!";
+				$this->isErrorElement = true;
             }
             return false;
         }
@@ -2768,6 +2794,43 @@ class TasuController extends Controller {
 				'doctorFio' => $doctor->last_name.' '.$doctor->first_name.' '.($doctor->middle_name == null ? '' : $doctor->middle_name),
 				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name)
 			)
+		));
+	}
+	
+	public function actionSendLogFile() {
+		if(isset($_GET['bufferid'])) {
+			$bufferH = TasuGreetingsBufferHistory::model()->findByPk($_GET['bufferid']);
+			if($bufferH == null) {
+				echo CJSON::encode(array(
+					'success' => false,
+					'errors' => array(
+						'bufferH' => array(
+							'Не найдена запись о выгрузке!'
+						)
+					)
+				));
+				exit();
+			}
+			$filepath = getcwd().$bufferH->log_path;
+			header("Pragma: public");
+			header('Content-Type: text/plain');
+			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+			header('Content-Disposition: attachment; filename="log.txt"');
+			$content = file_get_contents($filepath);
+			die($content);
+		}		
+	}
+	
+	public function actionCancelImport() {
+		if(isset($_GET['bufferid'])) {
+			$bufferH = TasuGreetingsBufferHistory::model()->findByPk($_GET['bufferid']);
+			TasuGreetingsBuffer::model()->updateAll(array('status' => 0), 'import_id = :import_id', array(':import_id' => $bufferH->import_id));
+			$bufferH->status = 2; // Статус "отменена"
+			$bufferH->save();
+		}
+		echo CJSON::encode(array(
+			'success' => true,
+			'data' => array()
 		));
 	}
 }
