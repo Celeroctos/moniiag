@@ -195,4 +195,12 @@ $(document).ready(function() {
             })
         }
     });
+	
+	/*$('.actionsGroupsTablist').each(function(index, element) {
+		$(element).find('li:first').addClass('active');
+	});*/
+	$('.actionsGroupsTablist').each(function(index, element) {
+		console.log($(element).find('li:first a'));
+		$(element).find('li:first a').tab('show'); // Select first tab
+	});
 });
