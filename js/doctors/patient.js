@@ -338,22 +338,229 @@
         $("#date-cont").trigger("refresh", [e.date]);
     });
 
-    $('form[id=template-edit-form] select[multiple]').on('focus',
+    /*
+    //===============>
+    // Сжатие-расширение селект-контролов
+    expandSelectTimer = null;
+    selectToExpand = null;
+
+
+    $('form[id=template-edit-form] select[multiple]').mouseenter(
         function(e)
         {
-            // Нужно расширить по содержимому контрола
-            $(this).attr("size", $(this).find('option').length );
+
+            onActivate(this);
+
+        }
+
+    );
+
+    $('form[id=template-edit-form] select[multiple]').mousemove(
+        function(e)
+        {
+
+            onActivate(this);
+
+        }
+
+    );
+
+    //$('form[id=template-edit-form] select[multiple]').on('mouseover',
+
+    function onActivate(element)
+    {
+        selectToExpand = element;
+        // Запускаем таймер
+        if(wasScroll)
+        {
+            expandSelectTimer = setTimeout(expandSelect,250);
+        }
+        else
+        {
+            expandSelectTimer = setTimeout(expandSelect,3000);
+        }
+    }
+
+    //$('form[id=template-edit-form] select[multiple]').on('focus',
+    $(document).on('focus','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+           expandSelect();
         }
     );
 
-   $('form[id=template-edit-form] select[multiple]').on('blur',
+    function expandSelect()
+    {
+        clearTimeout(expandSelectTimer);
+        expandSelectTimer = null;
+        if (wasScroll)
+        {
+            // Устанавливаем таймер на туеву кучу времени вперёд
+
+            expandSelectTimer = setTimeout(expandSelect,2000);
+        }
+        else
+        {
+            $(selectToExpand).attr("size", $(selectToExpand).find('option').length );
+            // Сбрасываем таймер
+
+        }
+    }
+
+    $(document).on('blur','form[id=template-edit-form] select[multiple]',
+    //   $('form[id=template-edit-form] select[multiple]').on('blur',
     function(e)
         {
             // Нужно удалить расширение
           $(this).removeAttr("size");
+          clearTimeout(expandSelectTimer);
+            expandSelectTimer = null;
         }
     );
 
+    $('form[id=template-edit-form] select[multiple]').mouseleave(
+    //    $(document).on('mouseout','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+            clearTimeout(expandSelectTimer);
+            expandSelectTimer = null;
+            // Убираем расширение только если this не в фокусе
+            if ( ! $(e.currentTarget).is(':focus') )
+            {
+                $(e.currentTarget).removeAttr("size");
+            }
+        }
+    );
+
+    wasScroll = false;
+
+    $(document).on('scroll',
+        function(e)
+        {
+            console.log('я прокрутился');
+            wasScroll = true;
+            setTimeout(function(){
+                wasScroll = false;
+            },5000);
+
+            // Если есть таймер - перезапускаем его
+
+        }
+    );
+
+    // <==================
+    */
+
+    //=================>
+    expandingTimer = setInterval(onExpandTimerTick,250);
+    isCursorInElement = false;
+    elementUnderCursorOld = null;
+    elementUnderCursor = null;
+    ticksAfterCursor = 0;
+
+    function collapseCursorElement()
+    {
+        if (  $(elementUnderCursor).is(elementUnderCursorOld)==false  )
+        {
+
+            $('.expandedElement:not(:focus)').removeAttr("size")
+            $('.expandedElement:not(:focus)').removeClass('expandedElement');
+        }
+    }
+
+    function onExpandTimerTick()
+    {
+        ticksAfterCursor--;
+        if (ticksAfterCursor>0)
+        {
+            return;
+        }
+
+        if (isCursorInElement)
+        {
+            // Смотрим - если старый элемент не соотносится с новым, то нужно спрятать раскрытые элементы
+            //    c классом expandedElement, кроме сфокусированного
+            collapseCursorElement();
+
+            if (elementUnderCursor!=null)
+            {
+            // Раскрываем элемент, ставим ему класс
+                $(elementUnderCursor).attr("size", $(elementUnderCursor).find('option').length );
+                $(elementUnderCursor).addClass('expandedElement');
+            }
+
+        }
+        else
+        {
+            collapseCursorElement();
+        }
+        elementUnderCursorOld = elementUnderCursor;
+
+    }
+
+    $('form[id=template-edit-form] select[multiple]').on('mouseenter',
+        function(e)
+        {
+            console.log('я вхожу');
+            isCursorInElement = true;
+            elementUnderCursor = this;
+            console.log('я вошёл');
+        }
+
+    );
+
+
+
+    $('form[id=template-edit-form] select[multiple]').on('mouseleave',
+        function(e)
+        {
+            console.log('я устал, я ухожу');
+            isCursorInElement = false;
+            elementUnderCursor = null;
+            console.log('я ушёл');
+        }
+
+    );
+
+    oldClientX = 0;
+    oldClientY = 0;
+
+    $('form[id=template-edit-form] select[multiple]').on('mousemove',
+        function(e)
+        {
+            if  (
+                ( (oldClientX- e.clientX>10 )||(oldClientY- e.clientY>10 ) )
+                    ||
+                ( (oldClientX- e.clientX<-10 )||(oldClientY- e.clientY<-10 ) )
+                )
+            {
+                ticksAfterCursor = 0;
+            }
+
+
+            oldClientX = e.clientX;
+            oldClientY = e.clientY;
+
+            console.log('я подвигался');
+        }
+
+    );
+
+   /* $(document).on('mousemove',function(){
+        console.log('я подвигался');
+
+    });*/
+
+    $(document).on('scroll',
+        function(e)
+        {
+           // console.log('я прокрутился');
+            ticksAfterCursor=36;
+
+        }
+    );
+
+    // <===============
     $('form[id=template-edit-form] select').on('keydown',
         function(e)
         {
@@ -608,10 +815,30 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
 });
 });
 
-$('#historyPopup').on('show.bs.modal', function (e) {
+$('#historyPopup').on('shown.bs.modal', function (e) {
     var deps = filteredDeps;
     for (var i = 0; i < deps.length; i++) {
-        var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
+        mainDependenceElement = $('select[id$="_' + deps[i].elementId + '"]');
+        // Проверяем - если элемент мультиселектовый, то считаем, что его значение
+        //     - это все опшены, которые есть внутри его
+        var elementValue = '';
+
+        if ($(mainDependenceElement).attr('multiple'))
+        {
+            // Берём все опшены, запихиваем в json
+            optionsSelected = $(mainDependenceElement).find('option');
+            optionsSelectedArray = [];
+            for (j=0;j<optionsSelected.length;j++)
+            {
+                optionsSelectedArray.push( $($(optionsSelected)[j]).attr('value')  );
+            }
+            elementValue = $.toJSON(optionsSelectedArray);
+        }
+        else
+        {
+            elementValue = $(mainDependenceElement).val();
+        }
+        //var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
         changeControlState(deps[i], elementValue, '#historyPopup');
     }
 });

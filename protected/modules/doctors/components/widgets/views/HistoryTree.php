@@ -86,6 +86,10 @@ if ($noteDiagnosis!='')
         echo $noteDiagnosis;
     ?><?php
 }
+/*var_dump('fdjbdfdcdf');
+echo '<pre>';
+var_dump($dividedCats);
+exit();*/
 
 foreach($dividedCats as $key => $template) {
     ?><h4><?php echo $template['name']; ?></h4><?php
