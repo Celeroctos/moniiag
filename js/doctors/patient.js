@@ -498,7 +498,7 @@
 
     }
 
-    $('form[id=template-edit-form] select[multiple]').on('mouseenter',
+    $(document).on('mouseenter','form[id=template-edit-form] select[multiple]',
         function(e)
         {
             console.log('я вхожу');
@@ -511,7 +511,7 @@
 
 
 
-    $('form[id=template-edit-form] select[multiple]').on('mouseleave',
+    $(document).on('mouseleave','form[id=template-edit-form] select[multiple]',
         function(e)
         {
             console.log('я устал, я ухожу');
@@ -525,7 +525,7 @@
     oldClientX = 0;
     oldClientY = 0;
 
-    $('form[id=template-edit-form] select[multiple]').on('mousemove',
+    $(document).on('mousemove','form[id=template-edit-form] select[multiple]',
         function(e)
         {
             if  (
