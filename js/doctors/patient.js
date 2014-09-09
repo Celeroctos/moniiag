@@ -320,51 +320,47 @@
         $("#date-cont").trigger("refresh", [e.date]);
     });
 
+    /*
     //===============>
     // Сжатие-расширение селект-контролов
     expandSelectTimer = null;
     selectToExpand = null;
 
+
+    $('form[id=template-edit-form] select[multiple]').mouseenter(
+        function(e)
+        {
+
+            onActivate(this);
+
+        }
+
+    );
+
+    $('form[id=template-edit-form] select[multiple]').mousemove(
+        function(e)
+        {
+
+            onActivate(this);
+
+        }
+
+    );
+
     //$('form[id=template-edit-form] select[multiple]').on('mouseover',
-    $(document).on('mouseover','form[id=template-edit-form] select[multiple]',
-        function(e)
-        {
-
-            onActivate(this);
-            //selectToExpand = this;
-            // Запускаем таймер
-            //expandSelectTimer = setTimeout(expandSelect,500);
-            /*
-            // Нужно расширить по содержимому контрола
-            $(this).attr("size", $(this).find('option').length );
-            */
-            // Запустить таймер для
-
-        }
-    );
-
-    $(document).on('mousemove','form[id=template-edit-form] select[multiple]',
-        function(e)
-        {
-
-            onActivate(this);
-            //selectToExpand = this;
-            // Запускаем таймер
-            //expandSelectTimer = setTimeout(expandSelect,500);
-            /*
-             // Нужно расширить по содержимому контрола
-             $(this).attr("size", $(this).find('option').length );
-             */
-            // Запустить таймер для
-
-        }
-    );
 
     function onActivate(element)
     {
         selectToExpand = element;
         // Запускаем таймер
-        expandSelectTimer = setTimeout(expandSelect,500);
+        if(wasScroll)
+        {
+            expandSelectTimer = setTimeout(expandSelect,250);
+        }
+        else
+        {
+            expandSelectTimer = setTimeout(expandSelect,3000);
+        }
     }
 
     //$('form[id=template-edit-form] select[multiple]').on('focus',
@@ -377,9 +373,20 @@
 
     function expandSelect()
     {
-        $(selectToExpand).attr("size", $(selectToExpand).find('option').length );
-        // Сбрасываем таймер
         clearTimeout(expandSelectTimer);
+        expandSelectTimer = null;
+        if (wasScroll)
+        {
+            // Устанавливаем таймер на туеву кучу времени вперёд
+
+            expandSelectTimer = setTimeout(expandSelect,2000);
+        }
+        else
+        {
+            $(selectToExpand).attr("size", $(selectToExpand).find('option').length );
+            // Сбрасываем таймер
+
+        }
     }
 
     $(document).on('blur','form[id=template-edit-form] select[multiple]',
@@ -389,22 +396,153 @@
             // Нужно удалить расширение
           $(this).removeAttr("size");
           clearTimeout(expandSelectTimer);
+            expandSelectTimer = null;
         }
     );
 
-    //$('form[id=template-edit-form] select[multiple]').on('mouseout',
-        $(document).on('mouseout','form[id=template-edit-form] select[multiple]',
+    $('form[id=template-edit-form] select[multiple]').mouseleave(
+    //    $(document).on('mouseout','form[id=template-edit-form] select[multiple]',
         function(e)
         {
             clearTimeout(expandSelectTimer);
+            expandSelectTimer = null;
             // Убираем расширение только если this не в фокусе
-            if ( ! $(this).is(':focus') )
+            if ( ! $(e.currentTarget).is(':focus') )
             {
-                $(this).removeAttr("size");
+                $(e.currentTarget).removeAttr("size");
             }
         }
     );
+
+    wasScroll = false;
+
+    $(document).on('scroll',
+        function(e)
+        {
+            console.log('я прокрутился');
+            wasScroll = true;
+            setTimeout(function(){
+                wasScroll = false;
+            },5000);
+
+            // Если есть таймер - перезапускаем его
+
+        }
+    );
+
     // <==================
+    */
+
+    //=================>
+    expandingTimer = setInterval(onExpandTimerTick,250);
+    isCursorInElement = false;
+    elementUnderCursorOld = null;
+    elementUnderCursor = null;
+    ticksAfterCursor = 0;
+
+    function collapseCursorElement()
+    {
+        if (  $(elementUnderCursor).is(elementUnderCursorOld)==false  )
+        {
+
+            $('.expandedElement:not(:focus)').removeAttr("size")
+            $('.expandedElement:not(:focus)').removeClass('expandedElement');
+        }
+    }
+
+    function onExpandTimerTick()
+    {
+        ticksAfterCursor--;
+        if (ticksAfterCursor>0)
+        {
+            return;
+        }
+
+        if (isCursorInElement)
+        {
+            // Смотрим - если старый элемент не соотносится с новым, то нужно спрятать раскрытые элементы
+            //    c классом expandedElement, кроме сфокусированного
+            collapseCursorElement();
+
+            if (elementUnderCursor!=null)
+            {
+            // Раскрываем элемент, ставим ему класс
+                $(elementUnderCursor).attr("size", $(elementUnderCursor).find('option').length );
+                $(elementUnderCursor).addClass('expandedElement');
+            }
+
+        }
+        else
+        {
+            collapseCursorElement();
+        }
+        elementUnderCursorOld = elementUnderCursor;
+
+    }
+
+    $('form[id=template-edit-form] select[multiple]').on('mouseenter',
+        function(e)
+        {
+            console.log('я вхожу');
+            isCursorInElement = true;
+            elementUnderCursor = this;
+            console.log('я вошёл');
+        }
+
+    );
+
+
+
+    $('form[id=template-edit-form] select[multiple]').on('mouseleave',
+        function(e)
+        {
+            console.log('я устал, я ухожу');
+            isCursorInElement = false;
+            elementUnderCursor = null;
+            console.log('я ушёл');
+        }
+
+    );
+
+    oldClientX = 0;
+    oldClientY = 0;
+
+    $('form[id=template-edit-form] select[multiple]').on('mousemove',
+        function(e)
+        {
+            if  (
+                ( (oldClientX- e.clientX>10 )||(oldClientY- e.clientY>10 ) )
+                    ||
+                ( (oldClientX- e.clientX<-10 )||(oldClientY- e.clientY<-10 ) )
+                )
+            {
+                ticksAfterCursor = 0;
+            }
+
+
+            oldClientX = e.clientX;
+            oldClientY = e.clientY;
+
+            console.log('я подвигался');
+        }
+
+    );
+
+   /* $(document).on('mousemove',function(){
+        console.log('я подвигался');
+
+    });*/
+
+    $(document).on('scroll',
+        function(e)
+        {
+           // console.log('я прокрутился');
+            ticksAfterCursor=36;
+
+        }
+    );
+
+    // <===============
     $('form[id=template-edit-form] select').on('keydown',
         function(e)
         {
