@@ -330,6 +330,7 @@
         $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
         $('#change-date-form').submit();
     });
+	
     $("#date-cont").trigger("refresh");
 
     $("#date-cont").on('changeMonth', function (e) {
@@ -411,6 +412,8 @@
         }
 
         var daysWithPatients = globalVariables.patientsInCalendar;
+		console.log(daysWithPatients);
+		$('.day-with').removeClass('day-with');
         for (var i in daysWithPatients) {
             var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
             if (parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
@@ -418,6 +421,7 @@
             }
         }
     });
+	
     $('#date-cont').trigger('refresh');
 
     $(document).on('click', '.accept-greeting-link', function (e) {
@@ -1523,6 +1527,7 @@ $('#nextHistoryPoint').on('click', function () {
 		$('#change-doctor-form select').prop('disabled', true); 
 		// Вставляем оверлей
 		$('.overlayCont').prepend($('<div>').prop('class', 'overlay').css({'marginLeft' : '10px'}));
+		$('.changeDate-cont').prepend($('<div>').prop('class', 'overlay'));
 		$('#refreshPatientList').trigger('click');
 	});
 	
@@ -1593,10 +1598,30 @@ $('#nextHistoryPoint').on('click', function () {
 					if($('#change-doctor-form').length > 0) {
 						$('#change-doctor-form select').prop('disabled', false); 
 					}
-					$('.overlay').remove();
+					$('.overlayCont .overlay').remove();
+					if($('.infoCont div').length > 0) { // Внутри есть данные по пациенту, а врач сменён
+						$('.infoCont div').remove();
+					}
                 }
             }
         });
+		
+		// Два независимых процесса
+		$.ajax({
+            'url' : '/doctors/shedule/refreshdayswithpatients',
+            'cache': false,
+            'dataType': 'json',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success) {
+					globalVariables.patientsInCalendar = $.evalJSON(data.data);
+					$('.changeDate-cont').find('.overlay').remove();
+					$("#date-cont").trigger('changeMonth');
+				}
+			}
+		});
     }
 
     function updateExpanded() {

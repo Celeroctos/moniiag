@@ -144,13 +144,7 @@ class SheduleController extends Controller {
         }
 
         $this->filterModel = new FormSheduleFilter();
-
-        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
-        $curDate = $this->getCurrentDate();
-
-        $parts = explode('-', $curDate);
-        $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
-
+		
         if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
 			$userId = Yii::app()->user->id;
 			$doctor = User::model()->findByPk($userId);
@@ -158,7 +152,13 @@ class SheduleController extends Controller {
 		} else {
 			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
 		}
-		
+
+        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients($doctorId));
+        $curDate = $this->getCurrentDate();
+
+        $parts = explode('-', $curDate);
+        $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
+
         if(isset($openedTab) && $openedTab == 1) {
             $onlyWaitingLine = 1;
         } else {
@@ -269,7 +269,7 @@ class SheduleController extends Controller {
         // Получим доктора
         if(!isset($_POST['currentDoctor']) || $_POST['currentDoctor'] == -1) {
 			// Если не занесен в сессию конкретный доктор, то, значит, берём текущего пользователя
-			if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1 || $_POST['currentDoctor'] == -1) {
 				$userId = Yii::app()->user->id;
 				$doctor = User::model()->findByPk($userId);
 				$doctorId = $doctor['employee_id'];
@@ -429,21 +429,32 @@ class SheduleController extends Controller {
         ob_end_clean();
         $result = $commentsListWidget->getCommentsList($onePatientComments);
 
-
-
         echo CJSON::encode(array('success' => true,
                                     'data' => $result
         ));
-
     }
-
-
 
     // Получить даты, в которых у врача есть пациенты
-    private function getDaysWithPatients() {
+    private function getDaysWithPatients($doctorId) {
         $shedule = new SheduleByDay();
-        return $shedule->getDaysWithPatients(Yii::app()->user->id);
+        return $shedule->getDaysWithPatients($doctorId);
     }
+	
+	public function actionRefreshDaysWithPatients() {
+		 if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$userId = Yii::app()->user->id;
+			$doctor = User::model()->findByPk($userId);
+			$doctorId = $doctor['employee_id'];
+		} else {
+			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+
+        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients($doctorId));
+		echo CJSON::encode(array('success' => true,
+                                 'data' =>  $patientsInCalendar
+        ));
+
+	}
 
     // Получить текущую дату
     private function getCurrentDate() {

@@ -14,7 +14,7 @@
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">
-        <div class="col-xs-5 null-padding-right">
+        <div class="col-xs-5 null-padding-right infoCont">
             <!-- Выводим информацию о карте -->
             <?php
             //var_dump($historyPoints);
