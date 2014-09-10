@@ -13,12 +13,21 @@ class SheduleController extends Controller {
 
     public function actionView() {
 		$medcardRecordId = 0;
+				
+        if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$userId = Yii::app()->user->id;
+			$doctor = User::model()->findByPk($userId);
+			$doctorId = $doctor['employee_id'];
+		} else {
+			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+
         if(isset($_GET['cardid']) && trim($_GET['cardid']) != '') {
             
 			// Проверим, есть ли такая медкарта вообще
             $medcardFinded = Medcard::model()->findByPk($_GET['cardid']);
             if($medcardFinded != null) {
-				$medcardRecordId = MedcardElementForPatient::getMaxRecordId($_GET['cardid'])+1;
+				$medcardRecordId = MedcardElementForPatient::getMaxRecordId($_GET['cardid']) + 1;
 				$this->currentPatient = trim($_GET['cardid']);
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getOne($this->currentPatient);
@@ -37,7 +46,13 @@ class SheduleController extends Controller {
                 } else {
                    $openedTab = 0; // Обычная запись
                 }
-                if(isset($_POST['templatesList'])) {
+				// Здесь проверим: если текущий врач не совпадает с врачом пациента, не показывать экран с инфой и выбором шаблонов
+				if($greeting->doctor_id != $doctorId) {
+					$this->currentPatient = false;
+					$openedTab = 0;
+				}
+
+                if(isset($_POST['templatesList']) && $greeting->doctor_id == $doctorId) {
                     //var_dump('!');
                     //exit();
                     // Шаблоны выбраны. Нужно их обработать.
@@ -107,7 +122,7 @@ class SheduleController extends Controller {
 
                     //var_dump ($templatesList);
                     //exit();
-                } else {
+                } elseif($greeting->doctor_id == $doctorId) {
                     $canEditMedcard = 0;
                     $templatesChoose = 1;
                     // Получим должность пользователя
@@ -144,14 +159,6 @@ class SheduleController extends Controller {
         }
 
         $this->filterModel = new FormSheduleFilter();
-		
-        if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
-			$userId = Yii::app()->user->id;
-			$doctor = User::model()->findByPk($userId);
-			$doctorId = $doctor['employee_id'];
-		} else {
-			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
-		}
 
         $patientsInCalendar = CJSON::encode($this->getDaysWithPatients($doctorId));
         $curDate = $this->getCurrentDate();

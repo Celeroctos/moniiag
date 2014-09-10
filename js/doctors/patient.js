@@ -119,43 +119,27 @@
 
     }
 
-    function onSaveComplete()
+	function onSaveComplete()
     {
-		// Режим удаления контента приёма
 		if(withGreetingContentDelete) {
-			$('.greetingContentCont div').remove();
+			$('.greetingContentCont').remove();
 			withGreetingContentDelete = false;
+		} else {
+			if (printHandler == 'print-greeting-link') {
+				$('.activeGreeting .' + printHandler).trigger('print');
+				//  $('#printContentButton').trigger('end');
+			}
+			else {
+				if (printHandler == 'print-recomendation-link') {
+					$('.' + printHandler).trigger('print');
+				}
+				else {
+					// Закрываем приём
+					// $('.' + printHandler).trigger('accept');
+					onCloseGreetingStart();
+				}
+			}
 		}
-        if (printHandler == 'print-greeting-link') {
-            $('.activeGreeting .' + printHandler).trigger('print');
-            //  $('#printContentButton').trigger('end');
-        }
-        else {
-            if (printHandler == 'print-recomendation-link') {
-                $('.' + printHandler).trigger('print');
-            }
-            else {
-                // Закрываем приём
-                $('.' + printHandler).trigger('accept');
-            }
-        }
-    }
-
-    function onSaveComplete()
-    {
-        if (printHandler == 'print-greeting-link') {
-            $('.activeGreeting .' + printHandler).trigger('print');
-            //  $('#printContentButton').trigger('end');
-        }
-        else {
-            if (printHandler == 'print-recomendation-link') {
-                $('.' + printHandler).trigger('print');
-            }
-            else {
-                // Закрываем приём
-                $('.' + printHandler).trigger('accept');
-            }
-        }
     }
 
     function getNewHistory()
