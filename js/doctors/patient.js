@@ -1307,7 +1307,7 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                     if (deps[i].dependences.list.length > 0) {
                         filteredDeps.push(deps[i]);
                         (function (select, dep) {
-                            $(document).on('change', select, function (e) {
+                            $(select).on('change', function (e) {
                                 var elementValue = $(select).val();
                                 changeControlState(dep, elementValue, $(select).parents('.accordion:eq(0)'));
                             });
@@ -1324,7 +1324,6 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
 
     function getElementForDependences(undottedPath)
     {
-       // return $('select[id*="_' + undottedPath + '_"]');
         return $('[id*="_' + undottedPath + '_"]');
     }
 
