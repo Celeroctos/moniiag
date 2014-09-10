@@ -243,7 +243,11 @@
     if ($currentPatient !== false) {
         if ($templatesChoose == 0) {
             $counter = 0;
-    ?><p><a name="topMainTemplates"></a></p>
+    ?>
+		<div class="greetingContentCont">
+			<p>
+				<a name="topMainTemplates"></a>
+			</p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs templatesListNav">
                     <?php foreach($templatesList as $key => $template) { ?>
@@ -562,9 +566,8 @@
                         $counter++;
                     } ?>
                 </ul>
-
             </div>
-
+		</div>
         <?php } ?>
     <?php } ?>
 <?php } ?>

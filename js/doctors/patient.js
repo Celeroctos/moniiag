@@ -35,7 +35,7 @@
             //if ($(".submitEditPatient").length - 1 == numCalls) {
             if ($(".submitEditPatient").length == numCalls) {
                 // Сбрасываем, что есть несохранённые данные
-                globalVariables.isUnsavedUserData = false
+                globalVariables.isUnsavedUserData = false;
                 // Сбрасываем режим на дефолт
                 numCalls = 0;
                 getNewHistory();
@@ -121,6 +121,11 @@
 
     function onSaveComplete()
     {
+		// Режим удаления контента приёма
+		if(withGreetingContentDelete) {
+			$('.greetingContentCont div').remove();
+			withGreetingContentDelete = false;
+		}
         if (printHandler == 'print-greeting-link') {
             $('.activeGreeting .' + printHandler).trigger('print');
             //  $('#printContentButton').trigger('end');
@@ -1556,6 +1561,8 @@ $('#nextHistoryPoint').on('click', function () {
 		$('#doctorPatientList tr, #doctorWaitingList tr').popover('destroy');
 	});
 
+	var withGreetingContentDelete = false; // Фикс для удаления данных приёма при смене врача, если заданы права на смену
+	
     function updatePatientList(onlyWaitingList) {
         var url = '/doctors/shedule/updatepatientlist';
         var data = {
@@ -1601,6 +1608,11 @@ $('#nextHistoryPoint').on('click', function () {
 					$('.overlayCont .overlay').remove();
 					if($('.infoCont div').length > 0) { // Внутри есть данные по пациенту, а врач сменён
 						$('.infoCont div').remove();
+					}
+					// А это - приём. Его для начала надо сохранить
+					if($('#template-edit-form').length > 0) { // Внутри есть данные по пациенту, а врач сменён
+						withGreetingContentDelete = true; // Удалить контент после того, как сохранится всё
+						$('#sideMedcardContentSave').trigger('click');
 					}
                 }
             }
