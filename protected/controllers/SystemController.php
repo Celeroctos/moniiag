@@ -12,5 +12,18 @@ class SystemController extends Controller {
 			)
 		);
 	}
+	
+	public function actionGetOnlineData() {
+		$answer = array();
+		if(Yii::app()->user->getState('isActiveSession', -1) != -1) {
+			$answer['isActiveSession'] = Yii::app()->user->getState('isActiveSession');
+			Yii::app()->user->setState('isActiveSession', 0);
+		}
+		echo CJSON::encode(
+			array('success' => true,
+				  'data' => $answer
+			)
+		);
+	}
 }
 ?>

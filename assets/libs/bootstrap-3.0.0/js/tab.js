@@ -49,7 +49,7 @@
     if (e.isDefaultPrevented()) return
 
     var $target = $(selector)
-
+alert("!");
     this.activate($this.parent('li'), $ul)
     this.activate($target, $target.parent(), function () {
       $this.trigger({

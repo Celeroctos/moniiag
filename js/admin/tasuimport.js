@@ -3,17 +3,12 @@
 		$(id).jqGrid({
 			url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings',
 			datatype: "json",
-			colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус', 'Проведён в МИС'],
+			colNames:['Код', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач', 'Статус', 'Проведён в МИС'],
 			colModel:[
 				{
 					name:'id',
 					index:'id',
 					width: 50
-				},
-				{
-					name: 'doctor_fio',
-					index:'doctor_fio',
-					width: 150
 				},
 				{
 					name: 'medcard',
@@ -26,8 +21,18 @@
 					width: 170
 				},
 				{
+					name: 'pr_diag_code',
+					index: 'pr_diag_code',
+					width: 100
+				},
+				{
 					name: 'patient_day',
 					index: 'patient_day',
+					width: 120
+				},
+				{
+					name: 'doctor_fio',
+					index:'doctor_fio',
 					width: 150
 				},
 				{
@@ -38,7 +43,7 @@
 				{
 					name: 'in_mis_desc',
 					index: 'in_mis_desc',
-					width: 150
+					width: 140
 				}
 			],
 			rowNum: 30,
@@ -74,7 +79,7 @@
 	$("#importHistory").jqGrid({
         url: globalVariables.baseUrl + '/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', ''],
+        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', 'Лог', 'Отменить', ''],
         colModel:[
             {
                 name: 'id',
@@ -96,6 +101,16 @@
                 index:'status',
                 width: 150
             },
+			{
+				name: 'log',
+				index: 'log',
+				width: 50
+			},
+			{
+				name: 'cancel',
+				index: 'cancel',
+				width: 70
+			},
 			{
 				name: 'import_id',
 				hidden: true
@@ -126,6 +141,43 @@
             closeAfterSearch: true
         }
     );
+	
+	// Фикс для того, чтобы узнать информацию о столбце: нативно по одиночному клику такая информация не выводится
+    $("#importHistory").click(function(e) {
+        var el = e.target;
+        if (el.nodeName !== "TD") {
+            el = $(el, this.rows).closest("td");
+        }
+		if($(el).find('a').length == 0) {
+			return false;
+		}
+
+        var iCol = $(el).index();
+        var nCol = $(el).siblings().length;
+        var row = $(el,this.rows).closest("tr.jqgrow");
+        var rowId = row[0].id;
+        if(iCol == 5) {
+			if(!window.confirm('Вы действительно хотите отменить выгрузку?')) {
+				return false;
+			}
+			$.ajax({
+				'url' : '/admin/tasu/cancelimport',
+				'cache' : false,
+				'data' : {
+					'bufferid' : $(el).find('a').prop('id').substr(1)
+				},
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success) {
+						alert('Выгрузка успешно отменена!');
+						$("#greetings, #importHistory").trigger('reloadGrid');
+					}
+				}
+			});
+			return false;
+		}
+    });
 	
 	$('#clearGreetings').on('click', function(e) {
 	    $('#confirmPopup').modal({});
@@ -479,7 +531,8 @@
 						'doctor_fio' : data.data.doctorFio, 
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
-						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.')
+						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
+						'diagnosis_code' : primaryDiagnosis[0].description.substr(0, primaryDiagnosis[0].description.indexOf(' '))
 					});
 
 					lastId++;
@@ -584,33 +637,38 @@
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма'],
+        colNames:['', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач'],
         colModel:[
 			{
 				name: 'id',
 				index: 'id',
 				hidden: true
 			},
-            {
-                name: 'doctor_fio',
-                index:'doctor_fio',
-                width: 150
-            },
-            {
+			{
                 name: 'medcard',
                 index:'medcard',
                 width: 100
             },
-            {
+			{
                 name: 'patient_fio',
                 index:'patient_fio',
                 width: 170
             },
+			{
+                name: 'diagnosis_code',
+                index: 'diagnosis_code',
+                width: 100
+            },
             {
                 name: 'patient_day',
                 index: 'patient_day',
+                width: 120
+            },
+			{
+                name: 'doctor_fio',
+                index:'doctor_fio',
                 width: 150
-            }
+            },
         ],
         rowNum: 30,
         rowList:[10,20,30],
