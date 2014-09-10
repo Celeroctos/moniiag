@@ -244,6 +244,11 @@
     // Метод, который выполняет только сохранение. Его использовать при вызове сохранения
     function onStartSave(overlaySuck) // overlaySuck - флаг, нужен ли оверлей
     {
+        if (globalVariables.savingProcessing==true)
+        {
+            return;
+        }
+
         globalVariables.savingProcessing = true;
         // Сделаем бекдроп
         // Show the backdrop
