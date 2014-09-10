@@ -2,6 +2,7 @@
 
     globalVariables.isUnsavedUserData = false;  // Есть ли несохранённые данные у пользователя
     globalVariables.wasUserFocused = false; // Был ли фокус на каком-то элементе
+    globalVariables.savingProcessing = false;
     //    флаги isUnsavedUserData и wasUserFocused работают в связке
 	showMsgs = true;
 
@@ -35,7 +36,8 @@
            // if ($(".submitEditPatient").length - 1 == numCalls) { // (-1) - на запрос сохранения диагноза
             if ($(".submitEditPatient").length == numCalls) {
                 // Сбрасываем, что есть несохранённые данные
-                globalVariables.isUnsavedUserData = false
+                globalVariables.isUnsavedUserData = false;
+                globalVariables.savingProcessing = false;
                 // Сбрасываем режим на дефолт
                 numCalls = 0;
                 getNewHistory();
@@ -48,7 +50,7 @@
 						$('#successEditPopup').modal({});
 					} else {
 						showMsgs = true
-						//setTimeout(autoSave, 30000);
+						setTimeout(autoSave, 30000);
 					}
                 }
                 $(".backDropForSaving").remove();
@@ -205,12 +207,12 @@
 	
 	
 	/* Автосохранение */
-	//setTimeout(autoSave, 30000);
+	setTimeout(autoSave, 30000);
 	
 	function autoSave() {
 		isThisPrint = false;
 		showMsgs = false;
-		onStartSave();
+		onStartSave(true);
 	}
 
     $('.greetingStatusCell input').on('change',function(){
@@ -240,12 +242,15 @@
     });
 
     // Метод, который выполняет только сохранение. Его использовать при вызове сохранения
-    function onStartSave()
+    function onStartSave(overlaySuck) // overlaySuck - флаг, нужен ли оверлей
     {
+        globalVariables.savingProcessing = true;
         // Сделаем бекдроп
         // Show the backdrop
-        $('<div class="modal-backdrop fade in  backDropForSaving"></div>').appendTo(document.body);
-
+        if (overlaySuck==undefined || overlaySuck==false)
+        {
+            $('<div class="modal-backdrop fade in  backDropForSaving"></div>').appendTo(document.body);
+        }
 
         // Берём кнопки с классом
         var buttons = $('div.submitEditPatient');
