@@ -1,3 +1,52 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/shedule.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
+<h4>Графики работы персонала</h4>
+<!-- Выводим распределение докторов по отделениям -->
+<script>
+    globalVariables.doctorsForWards = <?php echo CJSON::encode($doctorsForWards); ?>
+</script>
+
+<div class="row">
+    <div class="col-xs-6">
+        <div>
+            Отделение
+            <!-- Список отделений -->
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <select class="form-control" id="wardSelect" multiple="multiple">
+                        <?php foreach($wardsList as $id => $name) { ?>
+                            <option value="<?php echo $id; ?>" <?php  echo (  ($id==-1)?'selected':''   ); ?>><?php echo $name; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="col-xs-6">
+        <div>
+            Сотрудник
+            <!-- Спискота всех сотрудников -->
+            <div class="form-group">
+                <div class="col-xs-12">
+                    <select class="form-control" id="doctorsSelect" multiple="multiple">
+                        <?php foreach($doctorList as $oneDoctor) { ?>
+                            <option value="<?php echo $oneDoctor['id']; ?>"><?php echo $oneDoctor['fio']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Дальше код отключаем -->
+<?php if (false){
+
+    ?>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/writtenPatients.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/shedule.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
@@ -1841,4 +1890,4 @@
             </div>
         </div>
     </div>
-</div>
+</div><?php } ?>

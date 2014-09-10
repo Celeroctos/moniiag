@@ -108,7 +108,9 @@ class WardsController extends Controller {
             echo CJSON::encode(
                 array('rows' => $wards,
                       'total' => $totalPages,
-                      'records' => count($num))
+                      'records' => count($num),
+                      'success' => true
+                )
             );
         } catch(Exception $e) {
             echo $e->getMessage();

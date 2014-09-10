@@ -3,6 +3,42 @@ class SheduleController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
 
     public function actionView() {
+        //var_dump("ля-ля");
+        //exit();
+
+        $ward = new Ward();
+        $wardsResult = $ward->getRows(false, 'name', 'asc');
+        $wardsList = array('-1' => 'Все отделения',
+                            '-2'=> 'Без отделения');
+        foreach($wardsResult as $key => $value) {
+            $wardsList[$value['id']] = $value['name'];
+        }
+
+        // Вытащим врачей вместе с отделениями и со всем
+        $doctorObject = new Doctor();
+        $doctorsList = $doctorObject->getAll();
+/*echo '<pre>';
+        var_dump($doctorsList );
+        exit();
+*/
+
+        // Делаем массив [доктор] => отделение
+        $wardsForDoctor = array();
+        foreach($doctorsList as $oneDoctor) {
+            $wardsForDoctor[$oneDoctor['id']] = $oneDoctor['ward_code'];
+        }
+
+        array_unshift($doctorsList, array('id' => -1,'fio' => 'Все врачи'));
+
+        // Добавим врача "Все врачи"
+
+        $this->render('index', array(
+            'wardsList' => $wardsList,
+            'doctorList' => $doctorsList,
+            'doctorsForWards' => $wardsForDoctor
+        ));
+
+        exit();
         $ward = new Ward();
         $wardsResult = $ward->getRows(false, 'name', 'asc');
         $wardsList = array('-1' => 'Нет');
