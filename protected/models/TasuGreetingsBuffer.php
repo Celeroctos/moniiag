@@ -21,7 +21,10 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ->leftJoin(Oms::tableName().' o', 'm.policy_id = o.id')
 				->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
 				->leftJoin(PatientDiagnosis::tableName().' p', 'p.greeting_id = tgb.greeting_id')
-				->where('p.type = 0 OR tgb.fake_id IS NOT NULL');
+				->where('p.type = 0 OR tgb.fake_id IS NOT NULL OR NOT EXISTS(
+					SELECT * 
+					FROM '.PatientDiagnosis::tableName().' p2 
+					WHERE greeting_id = tgb.greeting_id)');
 			
 			if($importId === false) {
 				$buffer->andWhere('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id) FROM '.TasuGreetingsBuffer::tableName().' tgb2)');
@@ -56,6 +59,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             }
             if($start !== false && $limit !== false && $doctorId === false) {
                 $buffer->limit($limit, $start);
+
             }
 
 			$bufferResult = $buffer->queryAll();
@@ -64,6 +68,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 			$counter = 0;
 			$counterStart = 0;
             foreach($bufferResult as $key => &$bufferElement) {
+
                 if($bufferElement['fake_id'] != null) {			
                     $fakeModel = TasuFakeGreetingsBuffer::model()->findByPk($bufferElement['fake_id']);
 					
