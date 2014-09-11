@@ -1692,7 +1692,7 @@ class TasuController extends Controller {
             $diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
         } else {
 			$diagnosises = array();
-			if($greeting['primary_diagnosis_id'] != null)
+			if($greeting['primary_diagnosis_id'] != null) {
 				$diagnosises = array(
 					array(
 						'mkb10_id' => $greeting['primary_diagnosis_id'],
