@@ -2715,12 +2715,13 @@ class TasuController extends Controller {
     }
 	
 	public function actionGetFios() {
-		if(!isset($_GET['doctor_id']) || !isset($_GET['card_number']) || !isset($_GET['greeting_date'])) {
+		if(!isset($_GET['doctor_id']) || !isset($_GET['card_number']) || !isset($_GET['greeting_date']) || !isset($_GET['pr_diagnosis_id'])) {
 			echo CJSON::encode(array(
                 'success' => false,
                 'data' => array(
 				)
 			));
+			exit();
 		}
 		
 		// Проверка даты на то, что она не больше текущей
@@ -2788,11 +2789,27 @@ class TasuController extends Controller {
 			exit();
 		}
 		
+		// Вынуть код диагноза
+		$prDiag = Mkb10::model()->findByPk($_GET['pr_diagnosis_id']);
+		if($prDiag == null) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'errors' => array(
+					'prDiag' => array(
+						'Такой диагноз не найден!'
+					)
+				)
+			));
+			exit();
+		}
+		$prDiagCode = mb_substr($prDiag->description, 0, strpos($prDiag->description, ' '));
+		
 		echo CJSON::encode(array(
 			'success' => true,
 			'data' => array(
 				'doctorFio' => $doctor->last_name.' '.$doctor->first_name.' '.($doctor->middle_name == null ? '' : $doctor->middle_name),
-				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name)
+				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name),
+				'pr_diagnosis_code' => $prDiagCode
 			)
 		));
 	}
