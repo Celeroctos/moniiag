@@ -1691,12 +1691,15 @@ class TasuController extends Controller {
         if($greeting['fake_id'] == null) {
             $diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
         } else {
-            $diagnosises = array(
-                array(
-                    'mkb10_id' => $greeting['primary_diagnosis_id'],
-                    'type' => 0 // Первичный
-                )
-            );
+			$diagnosises = array();
+			if($greeting['primary_diagnosis_id'] != null)
+				$diagnosises = array(
+					array(
+						'mkb10_id' => $greeting['primary_diagnosis_id'],
+						'type' => 0 // Первичный
+					)
+				);
+			}
 			// Ищем вторичные для фейковых
 			$secondaryDiags =  TasuFakeGreetingsBufferSecDiag::model()->findAll('buffer_id = :buffer_id', array(
 				':buffer_id' => $greeting['fake_id']
@@ -1710,6 +1713,9 @@ class TasuController extends Controller {
 
         }
         foreach($diagnosises as $diagnosis) {
+			if($diagnosis['mkb10_id'] == null) { // Первичного диагноза может не быть
+				continue;
+			}
             $mkb10Diag = Mkb10::model()->findByPk($diagnosis['mkb10_id']);
             if($mkb10Diag == null) {
                 continue;
