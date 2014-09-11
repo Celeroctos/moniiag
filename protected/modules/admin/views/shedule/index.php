@@ -1,7 +1,8 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/shedule.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
-<h4>Графики работы персонала</h4>
+<!-- тег center - это конечно плохо, но пока пусть будет -->
+<center><h4>Графики работы персонала</h4></center>
 <!-- Выводим распределение докторов по отделениям -->
 <script>
     globalVariables.doctorsForWards = <?php echo CJSON::encode($doctorsForWards); ?>
@@ -9,8 +10,8 @@
 
 <div class="row">
     <div class="col-xs-6">
-        <div>
-            Отделение
+        <div class="doctorsWardsBlock">
+            <span class="timetableDoctorsHead"><h5>Отделение</h5></span>
             <!-- Список отделений -->
             <div class="form-group">
                 <div class="col-xs-12">
@@ -27,8 +28,8 @@
     </div>
 
     <div class="col-xs-6">
-        <div>
-            Сотрудник
+        <div class="doctorsWardsBlock">
+            <span class="timetableDoctorsHead"><h5>Сотрудник</h5></span>
             <!-- Спискота всех сотрудников -->
             <div class="form-group">
                 <div class="col-xs-12">
