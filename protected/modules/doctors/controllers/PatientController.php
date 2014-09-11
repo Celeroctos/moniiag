@@ -12,7 +12,12 @@ class PatientController extends Controller {
         $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
 
         $categorieWidget->createFormModel();
-		$historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid'],$_GET['historyPointId']); // Получаем поля для всех полей относительно хистори
+		$historyArr = $categorieWidget->getFieldsHistoryByDate(
+            $_GET['medcardId'],
+            $_GET['greetingId'],
+            $_GET['templateId']
+
+        ); // Получаем поля для всех полей относительно хистори
 		ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));
