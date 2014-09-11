@@ -246,7 +246,7 @@
     {
         if (globalVariables.savingProcessing==true)
         {
-            return;
+           // return;
         }
 
         globalVariables.savingProcessing = true;
