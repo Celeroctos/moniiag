@@ -54,8 +54,8 @@
 
                     foreach ($historyPoints as $key => $point) { ?>
 	                    <div>
-						<a href="#<?php echo $point['medcard_id']; ?>_<?php echo $point['id_record']; ?>" class="medcard-history-showlink"><?php echo $point['date_change']; ?> - <?php echo $point['template_name']; ?></a>
-						</div>
+                            <a href="#<?php echo $point['medcard_id']; ?>_<?php echo $point['greeting_id']; ?>_<?php echo $point['template_id']; ?>" class="medcard-history-showlink"><?php echo $point['date_change']; ?> - <?php echo $point['template_name']; ?></a>
+                        </div>
                     <?php } ?>
                 </div>
             </div>

@@ -755,12 +755,14 @@ class CategorieViewWidget extends CWidget {
         ));
     }
 
-	public function getFieldsHistoryByDate($date, $medcardId,$recordId) {
+	public function getFieldsHistoryByDate($medcardId,$greetingId,$templateId) {
         $this->formModel = new FormTemplateDefault();
-		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId,$recordId);
+		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($medcardId,$greetingId,$templateId);
         // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
-		//var_dump($this->historyElements);
-		///exit();
+		//var_dump('sdfgsdfzxd');
+       // echo '<pre>';
+       // var_dump($this->historyElements);
+		//exit();
 		
 		$this->makeTree('getTreeNode');
         $this->sortTree();

@@ -176,10 +176,11 @@
                         var hisArr = data;
                         var historyContainer = $('#accordionH .accordion-inner div:first');
                         $('#accordionH .accordion-inner').text('');
+                        console.log(hisArr);
                         for (i = hisArr.length - 1; i >= 0; i--) { // (идём в обратном порядке)
                             var newDiv = $('<div>');
                             $(newDiv).append($('<a>').prop('href',
-                                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].id_record).attr(
+                                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].greeting_id +'_'+ hisArr[i].template_id).attr(
                                     'class', 'medcard-history-showlink').text(hisArr[i].date_change + ' - ' + hisArr[i].template_name));
                             var historyContainer = $('#accordionH .accordion-inner div:first');
                             if (historyContainer.length == 0) {
@@ -781,17 +782,18 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
     var historyPointCoordinate = $(this).attr('href').substr(1);
     var coordinateStrings = historyPointCoordinate.split('_');
 
-    var medcardId = coordinateStrings[0];
-    var pointId = coordinateStrings[1];
+    var medcard = coordinateStrings[0];
+    var greeting = coordinateStrings[1];
+    var template = coordinateStrings[2];
     var date = $(this).text();
-    $('#historyPopup .medcardNumber').text('№ ' + medcardId);
+    $('#historyPopup .medcardNumber').text('№ ' + medcard);
     $('#historyPopup .historyDate').text(date);
     $.ajax({
         'url': '/doctors/patient/gethistorymedcard',
         'data': {
-            medcardid: medcardId,
-            historyPointId: pointId,
-            date: date
+            medcardId: medcard,
+            greetingId: greeting,
+            templateId: template
         },
         'cache': false,
         'dataType': 'json',
@@ -1706,13 +1708,22 @@ function generateAjaxGif(width, height) {
     });
 }
 
-function getHistoryPoint(medcardId, pointId, date) {
+function getHistoryPoint(activeLink) {
+    // Доим активную ссылку - получаем с неё данные для запроса истории
+     var href = ($(activeLink).find('a').attr('href')).substr(1);
+     hostoryCoordinates = href.split('_');
+
+     var medcard = hostoryCoordinates[0];
+     var greeting = hostoryCoordinates[1];
+     var template = hostoryCoordinates[2];
+     $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcard);
+     $('#historyPopup .modal-title .historyDate').html($(activeLink).find('a').text());
     $.ajax({
         'url': '/doctors/patient/gethistorymedcard',
         'data': {
-            medcardid: medcardId,
-            historyPointId: pointId,
-            date: date
+            medcardId: medcard,
+            greetingId: greeting,
+            templateId: template
         },
         'cache': false,
         'dataType': 'json',
@@ -1744,12 +1755,7 @@ $('#prevHistoryPoint').on('click', function () {
     } else {
         activeDiv = $('#accordionH .accordion-inner div:last').addClass('active');
     }
-    var href = $(activeDiv).find('a').attr('href');
-    var historyPointId = href.substr(href.lastIndexOf('_') + 1);
-    var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
-    getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
-    $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
-    $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
+    getHistoryPoint(activeDiv);
 });
 
 $('#nextHistoryPoint').on('click', function () {
@@ -1764,14 +1770,8 @@ $('#nextHistoryPoint').on('click', function () {
     } else {
         activeDiv = $('#accordionH .accordion-inner div:first').addClass('active');
     }
-    var href = $(activeDiv).find('a').attr('href');
-    var historyPointId = href.substr(href.lastIndexOf('_') + 1);
-    var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
-    getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
-    $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
-    $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
+    getHistoryPoint(activeDiv);
 });
-
 
     var isExpandedList = false;
     $('#expandPatientList').on('click', function(e) {
@@ -1795,10 +1795,7 @@ $('#nextHistoryPoint').on('click', function () {
     });
 
     $('#collapsePatientList').on('click', function(e) {
-     /*   $(this).addClass('no-display');
-        $('#expandPatientList').removeClass('no-display');
-        isExpandedList = true;
-        updateExpanded();*/
+
     });
 
     function updatePatientList(onlyWaitingList) {
