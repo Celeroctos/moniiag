@@ -37,24 +37,22 @@ $templatesIndex = $keysOfTemplates[0];
 if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
     ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
-    if (strlen($diagnosises['noteGreeting'])>0)
-    {
+    // Если строка с примечанием пустая и не выбран никакой клинический диагноз в чюююзере
+    $noteGreetingLength = strlen($diagnosises['noteGreeting']);
+    $countClinical = count($diagnosises['clinicalSecondary']);
+    //var_dump($diagnosises);
+    //var_dump($countClinical );
+    //exit();
 
-        ?><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
-    }
-    if (count($diagnosises['clinicalSecondary'])>0)
+
+
+if (($noteGreetingLength<=0)&&(($countClinical <=0) || ($countClinical ==false)))
     {
-        //var_dump("!");
+        // Выводим МКБ
+
+        //var_dump(strlen($diagnosises['noteGreeting']));
+        //var_dump(count($diagnosises['clinicalSecondary'])<=0);
         //exit();
-        $wasPrintedDiag = false;
-        foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
-        {
-            ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
-        }
-    }
-    else
-    {
-
         // Если нет клинического - печатаем МКБ
         if (count($diagnosises['primary'])>0)
         {
@@ -65,7 +63,25 @@ if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'
             ?></div><?php
 
         }
+    }
+    else
+    {
+        // Выводим клинические диагнозы
+        if (strlen($diagnosises['noteGreeting'])>0)
+        {
 
+            ?><strong><br><?php echo $diagnosises['noteGreeting']; ?></strong><?php
+        }
+        if (count($diagnosises['clinicalSecondary'])>0)
+        {
+            //var_dump("!");
+            //exit();
+            $wasPrintedDiag = false;
+            foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+            {
+                ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+            }
+        }
     }
     ?></div><?php
 }
