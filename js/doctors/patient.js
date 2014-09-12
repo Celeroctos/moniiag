@@ -802,28 +802,37 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
 $('#historyPopup').on('shown.bs.modal', function (e) {
     var deps = filteredDeps;
     for (var i = 0; i < deps.length; i++) {
-        mainDependenceElement = $('select[id$="_' + deps[i].elementId + '"]');
-        // Проверяем - если элемент мультиселектовый, то считаем, что его значение
-        //     - это все опшены, которые есть внутри его
-        var elementValue = '';
+        mainDependenceElementsSet = $('#historyPopup select[id$="_' + deps[i].elementId + '"]');
+        // В истории могут быть несколько элементов с одним и тем  же id, поэтому
+        //   в переменной mainDependenceElementsSet могут храниться один или больше элемент
+        for (j=0;j<mainDependenceElementsSet.length;j++)
+        {
 
-        if ($(mainDependenceElement).attr('multiple'))
-        {
-            // Берём все опшены, запихиваем в json
-            optionsSelected = $(mainDependenceElement).find('option');
-            optionsSelectedArray = [];
-            for (j=0;j<optionsSelected.length;j++)
+            // Проверяем - если элемент мультиселектовый, то считаем, что его значение
+            //     - это все опшены, которые есть внутри его
+            var elementValue = '';
+
+            if ($(mainDependenceElementsSet[j]).attr('multiple'))
             {
-                optionsSelectedArray.push( $($(optionsSelected)[j]).attr('value')  );
+                // Берём все опшены, запихиваем в json
+                optionsSelected = $(mainDependenceElementsSet[j]).find('option');
+                optionsSelectedArray = [];
+                for (j=0;j<optionsSelected.length;j++)
+                {
+                    optionsSelectedArray.push( $($(optionsSelected)[j]).attr('value')  );
+                }
+                elementValue = $.toJSON(optionsSelectedArray);
             }
-            elementValue = $.toJSON(optionsSelectedArray);
+            else
+            {
+                elementValue = $(mainDependenceElementsSet[j]).val();
+            }
+            //var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
+            // Вычислям контейнер для элемента
+
+            parentAccordion = $(mainDependenceElementsSet[j]).parents('.accordion:eq(0)');
+            changeControlState(deps[i], elementValue, parentAccordion);
         }
-        else
-        {
-            elementValue = $(mainDependenceElement).val();
-        }
-        //var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
-        changeControlState(deps[i], elementValue, '#historyPopup');
     }
 });
 
@@ -1222,7 +1231,14 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         var tempSubstr = controlId.substr(0, controlId.lastIndexOf('_'));
                         var substrSecond = tempSubstr.substr(0, tempSubstr.lastIndexOf('_') + 1);
                         $(control).prop('id', substrSecond + undottedPathAfter + substrFirst);
+
                         // Перепишем имя у элемента
+                        var arrayMultiselectSign = '';
+                        // Если у клонированного элемента стоит multiselect - надо дописать в имени []
+                        if ($(control).prop('multiple')==true)
+                        {
+                            arrayMultiselectSign = '[]';
+                        }
                         $(control).prop('name',
                         'FormTemplateDefault['
                          +
@@ -1231,7 +1247,7 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         undottedPathAfter
                          +
                         substrFirst +
-                        ']');
+                        ']'+arrayMultiselectSign);
                     }
                 }
 
@@ -1708,6 +1724,11 @@ function getHistoryPoint(activeLink) {
                 // Заполняем медкарту-историю значениями
                 var data = data.data;
                 $('#historyPopup .modal-body .row').html(data);
+
+                // Триггерим событие открытия поп-апа с историей
+                $('#historyPopup').trigger('shown.bs.modal');
+
+
                 $('#historyPopup .modal-body .row').css('text-align', 'left');
                 $('#nextHistoryPoint, #prevHistoryPoint').attr('disabled', false);
             }

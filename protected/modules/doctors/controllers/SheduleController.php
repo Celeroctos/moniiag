@@ -442,6 +442,9 @@ class SheduleController extends Controller {
     public function actionPatientEdit()
 	{
 
+      //  var_dump($_POST);
+      //  exit();
+
 		// Метод работает так: Сначала прочитываем из формы ид тех элементов, которые правятся в результате приёма.
 		//  Затем с помощью условия WHERE IN и id-шников из формы, они считываются сразу одним запросом, 
 		//    создаётся из них ассоциативный массив.
@@ -453,6 +456,8 @@ class SheduleController extends Controller {
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
         }
+
+        //var_dump()
 
         $transaction = Yii::app()->db->beginTransaction();
 
@@ -560,8 +565,11 @@ class SheduleController extends Controller {
 
             foreach($controlsToSave as $field => $value)
             {
+                //var_dump($field);
+                //var_dump($value);
                 if(is_array($value)) {
                     $value = CJSON::encode($value);
+
                 }
 
                 $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
@@ -587,7 +595,7 @@ class SheduleController extends Controller {
                     ob_end_clean();
                     echo CJSON::encode(array('success' => true,
                                                  'text' => 'Ошибка сохранения записи.'));
-                    exit();
+
                 }
                 else
                 {
@@ -611,7 +619,7 @@ class SheduleController extends Controller {
         }
         //}
         $transaction->commit();
-
+       // exit();
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.'
