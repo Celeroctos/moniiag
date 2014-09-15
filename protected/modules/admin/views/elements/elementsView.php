@@ -195,6 +195,18 @@
                                 <?php echo $form->error($model,'allowAdd'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'showDynamic', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'showDynamic', array('Нет', 'Да'), array(
+                                    'id' => 'showDynamic',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'showDynamic'); ?>
+                            </div>
+                        </div>
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(
@@ -593,7 +605,6 @@
                                 <?php echo $form->error($model,'isRequired'); ?>
                             </div>
                         </div>
-                        
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'allowAdd', array(
                                 'class' => 'col-xs-3 control-label'
@@ -605,6 +616,18 @@
                                     'disabled' => true,
                                 )); ?>
                                 <?php echo $form->error($model,'allowAdd'); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'showDynamic', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'showDynamic', array('Нет', 'Да'), array(
+                                    'id' => 'showDynamic',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'showDynamic'); ?>
                             </div>
                         </div>
                         <div class="table-config-container no-display">

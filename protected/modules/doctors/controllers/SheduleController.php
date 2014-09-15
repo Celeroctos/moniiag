@@ -247,6 +247,43 @@ class SheduleController extends Controller {
             'openedTab' => isset($openedTab) ? $openedTab : 0
         ));
     }
+	
+	public function actionGetParamHistory() {
+		if(!Yii::app()->request->getIsAjaxRequest() || !isset($_GET['element']) || !isset($_GET['medcard'])) {
+			echo CJSON::encode(array(
+                'success' => false
+            ));
+            exit();
+		}
+		
+		list($preKey, $prefix, $undottedPath, $elementId) = explode('_', $_GET['element']);
+		$dottedPath = implode('.', explode('|', $undottedPath));
+		$historyElements = MedcardElementForPatient::model()->findAll(
+			'element_id = :element_id
+			AND medcard_id = :medcard_id
+			AND path = :path',
+			array(
+				':element_id' => $elementId,
+				':medcard_id' => $_GET['medcard'],
+				':path' => $dottedPath
+			)
+		);
+		$answer = array();
+		foreach($historyElements as $element) {
+			if($element['greeting_id'] == $_GET['greetingId']) {
+				continue;
+			}
+			$answer[] = array(
+				'change_date' => $element['change_date'],
+				'value' => $element['value']
+			);
+		}
+		
+		echo CJSON::encode(array(
+            'success' => true,
+            'data' => $answer
+        ));
+	}
 
     public function actionGetPrimaryDiagnosis() {
         if(!isset($_GET['greeting_id'])) {

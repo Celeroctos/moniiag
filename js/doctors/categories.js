@@ -341,5 +341,87 @@ $(document).ready(function() {
             $(tabs[i]).tab('show');
         }
     });
+	
+	var popoverCont = null;
+	// Просмотр динамики параметров
+	$(document).on('click', '.showDynamicIcon', function(e) {
+		popoverCont = $(this);
+		$(this).popover({
+            animation: true,
+            html: true,
+            placement: 'right',
+            title: 'Динамика изменения параметра',
+            delay: {
+                show: 300,
+                hide: 300
+            },
+            container: $(this),
+            content: function() {
+				var table = $('<table>');
+				var elementId = $(this).next().prop('id');
+				var ajaxGif =  $('<img>').prop({
+                    'src' : '/images/ajax-loader.gif',
+                    'width' : 32,
+                    'height' : 32,
+                    'alt' : 'Загрузка...'
+                });
+				var container = $('<div>');
+				$.ajax({
+					'url' : '/doctors/shedule/getparamhistory',
+					'cache' : false,
+					'dataType' : 'json',
+					'data' : {
+						'element' : elementId,
+						'medcard' : globalVariables.medcardNumber,
+						'greetingId' : $('#greetingId').val()
+					},
+					'type' : 'GET',
+					'success' : function(data, textStatus, jqXHR) {
+						if(data.success == true) {
+							$(table).find('tr:not(:first)').remove();
+							var data = data.data;
+							for(var i in data) {
+								var tr = $('<tr>').append(
+									$('<td>').text(data[i].change_date),
+									$('<td>').text(data[i].value)
+								);
+							}
+							$(ajaxGif).remove();
+							$(container).append(table);
+						} 
+					}
+				});
+				return $(container).addClass('changesList').append(ajaxGif);
+			}
+		});
+		
+	    $(this).popover('show');
+		
+		var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+			position: 'absolute',
+			cursor: 'pointer',
+			left: '480px'
+		});
 
+		$(span).on('click', function(e) {
+			$(popoverCont).popover('destroy');
+			e.stopPropagation();
+			return false;
+		});
+		
+		$(this).find('.popover-title').css({
+			'color' : '#000000',
+			'fontWeight' : 'bold'
+		}).text('Динамика изменения параметра');
+		
+		$(this).find('.popover').css({
+			'cursor' : 'default',
+			'width' : '500px',
+			'max-width' : '500px',
+			'min-width' : '500px'
+		}).append(span);
+
+	    e.stopPropagation();
+	    return false;
+	});
 });
