@@ -32,11 +32,20 @@ class SheduleController extends Controller {
 
         // Добавим врача "Все врачи"
 
+        // Достанем кабинеты
+        $cabinets = Cabinet::model()->getRows(false);
+
+      //  var_dump($cabinets );
+      //  exit();
+
         $this->render('index', array(
             'wardsList' => $wardsList,
             'doctorList' => $doctorsList,
-            'doctorsForWards' => $wardsForDoctor
+            'doctorsForWards' => $wardsForDoctor,
+            'cabinetsList' => $cabinets
         ));
+
+
 
         exit();
         $ward = new Ward();
@@ -77,9 +86,8 @@ class SheduleController extends Controller {
 		}
 		
 		$formModel->weekEnds = CJSON::encode($restDays);
-		
-		// var_dump($restDays );
-		// exit();
+
+
 
         $this->render('index', array(
             'wardsList' => $wardsList,

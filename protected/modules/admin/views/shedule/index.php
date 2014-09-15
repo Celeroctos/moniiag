@@ -112,7 +112,333 @@
     </div>
 
     <div class="col-xs-12" id="#timetableEditing">
+        <!-- Шаблон для редактирования графика -->
+        <span class="timeTableId no-display"></span>
+        <span class="timeTableJSON no-display"></span>
+        <div class="col-xs-12 timeTableEditDateTimesAction">
+            <nobr>C <span class="timeTableROFrom"></span> по <span class="timeTableROTo"></span></nobr>
+        </div>
+        <div class="col-xs-12 timeTablesEditDoctorsWards">
+            <div class="col-xs-6 timeTablesEditWards">
+                <div class="col-xs-4 timeTablesEditWardsLabel">Отделение:</div>
+                <div class="col-xs-8 timeTablesEditWardsValue">
+                    Анатомии ресниц<br>Офтальмологическое<br>Болезней лёгких курильщиков
+                </div>
+            </div>
+            <div class="col-xs-6 timeTablesEditDoctors">
+                Рабинович Евграф Аристархович<br>Джонсон аль-Мухаммед аль-Ибрагим<br>Моисеев Борис
+            </div>
+        </div>
+        <table class="timeTablesEditTable">
+            <thead>
+            <tr>
+                <td class="roomTD">
+                    Кабинет
+                </td>
+                <td class="daysTD">
+                    Дни работы
+                </td>
+                <td class="hoursOfWorkTD">
+                    Часы работы
+                </td>
+                <td class="hoursOfGreetingTD">
+                    Часы приёма
+                </td>
+                <td class="shiftTD no-display">
+                    Смена
+                </td>
+                <td class="limitTD">
+                    Лимит на приём
+                </td>
+                <td class="factsTD">
+                    Обстоятельство
+                </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="roomTD">
+                    <!-- селект с кабинетами -->
+                    <select class="cabinetSelectEdit">
+                        <?php
+                        foreach ($cabinetsList as $oneCabinet)
+                        {
+                            ?>
+                              <option value="<?php $oneCabinet['id']; ?>"><?php
+                                  echo ($oneCabinet['cab_number'].' - '.$oneCabinet['description']);
+                                  ?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </td>
+                <td class="daysTD">
+                    <!-- Совершенно жуткая ячейка с набором разных параметров -->
+                    <!-- Верхний блок - дни недели и номер недели в месяце -->
+                    <div class="daysEditingTopBLock">
+                        <table class="daysOfWeekEdit" >
+                            <tr>
+                                <td><input class="weekDay1" type = "checkbox">Пн</td>
+                                <td><input class="weekDay2" type = "checkbox">Вт</td>
+                                <td><input class="weekDay3" type = "checkbox">Ср</td>
+                                <td><input class="weekDay4" type = "checkbox">Чт</td>
+                                <td><input class="weekDay5" type = "checkbox">Пт</td>
+                                <td><input class="weekDay6" type = "checkbox">Сб</td>
+                                <td><input class="weekDay7" type = "checkbox">Вс</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="weekDayNumber1_1" />1ый<br />
+                                    <input type="checkbox" name="weekDayNumber1_2" />2ой<br />
+                                    <input type="checkbox" name="weekDayNumber1_3" />3ий<br />
+                                    <input type="checkbox" name="weekDayNumber1_4" />4ый<br />
+                                    <input type="checkbox" name="weekDayNumber1_5" />5ый<br />
+                                </td>
+                                <td>
 
+                                    <input type="checkbox" name="weekDayNumber2_1" />1ый<br />
+                                    <input type="checkbox" name="weekDayNumber2_2" />2ой<br />
+                                    <input type="checkbox" name="weekDayNumber2_3" />3ий<br />
+                                    <input type="checkbox" name="weekDayNumber2_4" />4ый<br />
+                                    <input type="checkbox" name="weekDayNumber2_5" />5ый<br />
+                                </td>
+                                <td>
+
+                                    <input type="checkbox" name="weekDayNumber3_1" />1ая<br />
+                                    <input type="checkbox" name="weekDayNumber3_2" />2ая<br />
+                                    <input type="checkbox" name="weekDayNumber3_3" />3я<br />
+                                    <input type="checkbox" name="weekDayNumber3_4" />4ая<br />
+                                    <input type="checkbox" name="weekDayNumber3_5" />5ая<br />
+                                </td>
+                                <td>
+
+                                    <input type="checkbox" name="weekDayNumber4_1" />1ый<br />
+                                    <input type="checkbox" name="weekDayNumber4_2" />2ой<br />
+                                    <input type="checkbox" name="weekDayNumber4_3" />3ий<br />
+                                    <input type="checkbox" name="weekDayNumber4_4" />4ый<br />
+                                    <input type="checkbox" name="weekDayNumber4_5" />5ый<br />
+                                </td>
+                                <td>
+
+                                    <input type="checkbox" name="weekDayNumber5_1" />1ая<br />
+                                    <input type="checkbox" name="weekDayNumber5_2" />2ая<br />
+                                    <input type="checkbox" name="weekDayNumber5_3" />3я<br />
+                                    <input type="checkbox" name="weekDayNumber5_4" />4ая<br />
+                                    <input type="checkbox" name="weekDayNumber5_5" />5ая<br />
+                                </td>
+                                <td>
+
+                                    <input type="checkbox" name="weekDayNumber6_1" />1ая<br />
+                                    <input type="checkbox" name="weekDayNumber6_2" />2ая<br />
+                                    <input type="checkbox" name="weekDayNumber6_3" />3я<br />
+                                    <input type="checkbox" name="weekDayNumber6_4" />4ая<br />
+                                    <input type="checkbox" name="weekDayNumber6_5" />5ая<br />
+                                </td>
+                                <td>
+
+                                    <input type="checkbox" name="weekDayNumber7_1" />1ое<br />
+                                    <input type="checkbox" name="weekDayNumber7_2" />2ое<br />
+                                    <input type="checkbox" name="weekDayNumber7_3" />3е<br />
+                                    <input type="checkbox" name="weekDayNumber7_4" />4ое<br />
+                                    <input type="checkbox" name="weekDayNumber7_5" />5ое<br />
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <!-- Нижний блок - Даты и чётность/нечётность -->
+                    <div class ="daysEditingBottomBLock" >
+                        <div class="calendarBlock">
+                            <div class="date date-timetable null-padding-left">
+                                <input class="form-control" placeholder="" title="" style="width: 200px;" name="addDateTimetable" type="hidden" value="">
+                                <span class="input-group-addon">
+                                            <span class="glyphicon-calendar glyphicon">
+                                            </span>
+                                </span>
+                            </div>
+                            <div class= "calendarBlockLabel">
+                            Выбрать дату(ы) в<br>календаре
+                            </div>
+                        </div>
+
+                        <div class="exceptionBlock">
+                            <!-- Чекбокс чётности-нечётности -->
+                            <div class="oddCheckbox">
+                                <div style="display:inline-block;">
+                                    <input type="checkbox" name="oddDays">Чётные
+                                </div>
+                                <div style="display:inline-block;">
+                                    <input type="checkbox" name="notoddDays">Нечетные
+                                </div>
+                            </div>
+                            <!-- Селект исключений -->
+                            <div class="exceptionSelectContainer">
+                                Кроме: <select class="exceptionSelect">
+                                    <option value="-1"></option>
+                                    <option value="-2">Даты в календаре</option>
+                                    <option value="1">Понедельника</option>
+                                    <option value="2">Вторника</option>
+                                    <option value="3">Среды</option>
+                                    <option value="4">Четверга</option>
+                                    <option value="5">Пятницы</option>
+                                    <option value="6">Субботы</option>
+                                    <option value="7">Воскресенья</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td class="hoursOfWorkTD">
+                    <div class="workingHourBlock">
+                        <div>
+                            <div class="input-group date time-control time-timetable" class = workingHourBeginTime>
+                                <input type="hidden" class="form-control">
+                                <div class="subcontrol">
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--br -->
+                        <div>
+
+                            <div class="input-group date time-control time-timetable" class = workingHourEndTime>
+                                <input type="hidden" class="form-control">
+                                <div class="subcontrol">
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    <div>
+                </td>
+                <td class="hoursOfGreetingTD">
+                    <div class="greetingHourBlock">
+                        <div>
+                            <div class="input-group date time-control time-timetable" class = greetingHourBeginTime>
+                                <input type="hidden" class="form-control">
+                                <div class="subcontrol">
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--br -->
+                        <div>
+
+                            <div class="input-group date time-control time-timetable" class = greetingHourEndTime>
+                                <input type="hidden" class="form-control">
+                                <div class="subcontrol">
+                                    <div class="form-inline subfields">
+                                        <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                        <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div>
+
+
+                </td>
+                <td class="shiftTD no-display">
+                    <!-- Пока забиваем -->
+
+                </td>
+                <td class="limitTD">
+                    <!-- Селект и три блока -->
+                    <select class="sourceSelect">
+                        <option value="1">Call-Центр</option>
+                        <option value="2">Регистратура</option>
+                        <option value="3">Интернет</option>
+                    </select>
+                    <div class="limitBlock limitBlock1">
+                        Количество<br>
+                        <input type="text" class = "limitQuantity limitQuantity1">
+                        <br>Время<br>
+                        <div class="input-group date time-control time-timetable" class = limitTime1>
+                            <input type="hidden" class="form-control">
+                            <div class="subcontrol">
+                                <div class="form-inline subfields">
+                                    <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                    <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group date time-control time-timetable" class = limitTime1End>
+                            <input type="hidden" class="form-control">
+                            <div class="subcontrol">
+                                <div class="form-inline subfields">
+                                    <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                    <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="limitBlock limitBlock2">
+                        Количество<br>
+                        <input type="text" class = "limitQuantity limitQuantity2">
+                        <br>Время<br>
+                        <div class="input-group date time-control time-timetable" class = "limitTime2">
+                            <input type="hidden" class="form-control">
+                            <div class="subcontrol">
+                                <div class="form-inline subfields">
+                                    <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                    <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group date time-control time-timetable" class = "limitTime2End">
+                            <input type="hidden" class="form-control">
+                            <div class="subcontrol">
+                                <div class="form-inline subfields">
+                                    <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                    <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="limitBlock limitBlock3">
+                        Количество<br>
+                        <input type="text" class = "limitQuantity limitQuantity3">
+                        <br>Время<br>
+                        <div class="input-group date time-control time-timetable" class = "limitTime3">
+                            <input type="hidden" class="form-control">
+                            <div class="subcontrol">
+                                <div class="form-inline subfields">
+                                    <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                    <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group date time-control time-timetable" class = "limitTime3End">
+                            <input type="hidden" class="form-control">
+                            <div class="subcontrol">
+                                <div class="form-inline subfields">
+                                    <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
+                                    <input type="text" name="minute" placeholder="ММ" class="form-control minute">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                <td class="factsTD">
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>

@@ -1933,6 +1933,7 @@ a.accordion-toggle:hover {
   background-color: rgb(175, 175, 175);
   margin-bottom:10px;
 }
+/* Редактирование расписания */
 .doctorsWardsBlock
 {
   text-align: center;
@@ -1942,3 +1943,128 @@ a.accordion-toggle:hover {
 {
   border:1px;
 }
+
+.timeTablesEditTable
+{
+.roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD
+{
+  border-style: solid;
+  border-width: 2px;
+  border-color: green;
+}
+
+  thead tr td
+  {
+    text-align: center;
+  }
+
+  /*td{
+
+  }*/
+  .cabinetSelectEdit{width:50px; }
+  .daysOfWeekEdit td{
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left-style:solid ;
+    border-left-width:1px;
+  }
+  .daysEditingBottomBLock
+  {
+    display:inline-block;
+    .calendarBlock{
+      display:inline-block;
+    }
+    .exceptionBlock{
+      display:inline-block;
+    }
+
+    .oddCheckbox
+    {
+      display:inline-block;
+    }
+
+  }
+  .limitTD
+  {
+    vertical-align: top;
+  }
+  .limitBlock
+  {
+    text-align: center;
+    .limitQuantity{
+      width: 30px;
+    }
+  }
+  .limitTD
+  {
+    .time-control
+    {
+      text-align: center;
+      align: center;
+      left: 18px;
+      /*position: static;*/
+      .subfields
+      {
+        min-width: 70px;
+      }
+    }
+  }
+  .time-timetable
+  {
+    height: 25px;
+  }
+}
+
+
+.daysEditingBottomBLock
+{
+  .calendarBlock
+  {
+   /* width:40%;*/
+    margin-right: 20px;
+    display:inline-block;
+    div.date-timetable {
+      span {
+        display: block;
+       /* position: relative;*/
+        top: 2px;
+        left: 110px;
+        z-index: 99;
+        padding: 12px 24px;
+        border-left: solid 1px rgb(204, 204, 204);
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+        span.glyphicon-calendar {
+          left: -10px;
+          top: -5px;
+          padding: 0;
+          font-size: 22px;
+        }
+      }
+      width:50px;
+      display: inline-block;
+      margin-right: 15px;
+    }
+    .calendarBlockLabel
+    {
+      display:inline-block;
+      margin-top:-15px
+    }
+  }
+  .exceptionBlock
+  {
+    .exceptionBlock{
+      .exceptionSelectContainer
+      {
+        .exceptionSelect
+        {
+
+        }
+
+      }
+    }
+
+  }
+
+}
+/*=======================*/
