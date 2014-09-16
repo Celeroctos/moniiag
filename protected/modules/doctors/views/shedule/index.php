@@ -14,7 +14,7 @@
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">
-        <div class="col-xs-5 null-padding-right">
+        <div class="col-xs-5 null-padding-right infoCont">
             <!-- Выводим информацию о карте -->
             <?php
             //var_dump($historyPoints);
@@ -165,48 +165,77 @@
                 </div>
             </div>
             <div class="row">
-                <ul class="nav nav-tabs patientListNav">
-                    <li <?php echo isset($openedTab) && $openedTab == 0 ? 'class="active"' : ''; ?>><a href="#" id="writedByTime">По записи</a></li>
-                    <li <?php echo isset($openedTab) && $openedTab == 1 ? 'class="active"' : ''; ?>><a href="#" id="writedByOrder">Живая очередь</a></li>
-                </ul>
-                <div id="writedByTimeCont" <?php echo isset($openedTab) && $openedTab == 1 ? 'class="no-display"' : ''; ?>>
-                    <h5 class="patient-list-h5">
-                        <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
-                    </h5>
-                    <div class="col-xs-12 borderedBox">
-                        <?php
-                        // Вызываем виджет списка пациентов
-                        $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                            'patients' => ((isset($openedTab) && $openedTab == 0) || !isset($openedTab)) ? $patients : array(),
-                            'currentSheduleId' => $currentSheduleId,
-                            'currentPatient' => $currentPatient,
-                            'filterModel' => $filterModel,
-                            'isWaitingLine' => 0,
-                            'tableId' => 'doctorPatientList',
-                            'patientsDay' => $year.'-'.$month.'-'.$day
-                        ));
-                        ?>
-                    </div>
-                </div>
-                <div id="writedByOrderCont" <?php echo isset($openedTab) && $openedTab == 0 ? 'class="no-display"' : ''; ?>>
-                    <h5 class="patient-list-h5">
-                        <strong>Живая очередь на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshWaitingList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a>
-                    </h5>
-                    <div class="col-xs-12 borderedBox">
-                        <?php
-                        // Вызываем виджет списка пациентов
-                        $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                            'patients' => ((isset($openedTab) && $openedTab == 1)) ? $patients : array(),
-                            'currentSheduleId' => $currentSheduleId,
-                            'currentPatient' => $currentPatient,
-                            'filterModel' => $filterModel,
-                            'isWaitingLine' => 1,
-                            'tableId' => 'doctorWaitingList',
-                            'patientsDay' => $year.'-'.$month.'-'.$day
-                        ));
-                        ?>
-                    </div>
-                </div>
+				<?php if (Yii::app()->user->checkAccess('canChangeDoctor')) {
+					$changeDoctorForm = $this->beginWidget('CActiveForm', array(
+						'id' => 'change-doctor-form',
+						'enableAjaxValidation' => true,
+						'enableClientValidation' => true,
+						'htmlOptions' => array(
+							'class' => 'form-horizontal col-xs-12',
+							'role' => 'form'
+						)
+					));
+				?>
+				 <div class="form-group">
+					<?php echo $changeDoctorForm ->labelEx($modelDoctorFilter,'doctorId', array(
+						'class' => 'col-xs-3 control-label'
+					)); ?>
+					<div class="col-xs-9">
+						<?php echo $changeDoctorForm ->dropDownList($modelDoctorFilter,'doctorId', $doctorsList, array(
+							'id' => 'doctorId',
+							'class' => 'form-control',
+							'options' => array($currentGreetingsDoctor => array('selected' => true))
+						)); ?>
+					</div>
+				</div>	
+				<?php 
+						$this->endWidget();
+					} 
+				?>
+				<div class="overlayCont">
+					<ul class="nav nav-tabs patientListNav">
+						<li <?php echo isset($openedTab) && $openedTab == 0 ? 'class="active"' : ''; ?>><a href="#" id="writedByTime">По записи</a></li>
+						<li <?php echo isset($openedTab) && $openedTab == 1 ? 'class="active"' : ''; ?>><a href="#" id="writedByOrder">Живая очередь</a></li>
+					</ul>
+					<div id="writedByTimeCont" <?php echo isset($openedTab) && $openedTab == 1 ? 'class="no-display"' : ''; ?>>
+						<h5 class="patient-list-h5">
+							<strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
+						</h5>
+						<div class="col-xs-12 borderedBox">
+							<?php
+							// Вызываем виджет списка пациентов
+							$this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+								'patients' => ((isset($openedTab) && $openedTab == 0) || !isset($openedTab)) ? $patients : array(),
+								'currentSheduleId' => $currentSheduleId,
+								'currentPatient' => $currentPatient,
+								'filterModel' => $filterModel,
+								'isWaitingLine' => 0,
+								'tableId' => 'doctorPatientList',
+								'patientsDay' => $year.'-'.$month.'-'.$day
+							));
+							?>
+						</div>
+					</div>
+					<div id="writedByOrderCont" <?php echo isset($openedTab) && $openedTab == 0 ? 'class="no-display"' : ''; ?>>
+						<h5 class="patient-list-h5">
+							<strong>Живая очередь на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshWaitingList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a>
+						</h5>
+						<div class="col-xs-12 borderedBox">
+							<?php
+							// Вызываем виджет списка пациентов
+							$this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+								'patients' => ((isset($openedTab) && $openedTab == 1)) ? $patients : array(),
+								'currentSheduleId' => $currentSheduleId,
+								'currentPatient' => $currentPatient,
+								'filterModel' => $filterModel,
+								'isWaitingLine' => 1,
+								'tableId' => 'doctorWaitingList',
+								'patientsDay' => $year.'-'.$month.'-'.$day
+							));
+							?>
+						</div>
+					</div>
+				</div>
             </div>
         </div>
     </div>
@@ -214,7 +243,11 @@
     if ($currentPatient !== false) {
         if ($templatesChoose == 0) {
             $counter = 0;
-    ?><p><a name="topMainTemplates"></a></p>
+    ?>
+		<div class="greetingContentCont">
+			<p>
+				<a name="topMainTemplates"></a>
+			</p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs templatesListNav">
                     <?php foreach($templatesList as $key => $template) { ?>
@@ -533,9 +566,8 @@
                         $counter++;
                     } ?>
                 </ul>
-
             </div>
-
+		</div>
         <?php } ?>
     <?php } ?>
 <?php } ?>
