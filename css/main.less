@@ -1946,21 +1946,50 @@ a.accordion-toggle:hover {
 
 .timeTablesEditTable
 {
-.roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD
-{
-  border-style: solid;
-  border-width: 2px;
-  border-color: green;
-}
+  .withBorderTDTimetableEditor
+  {
+    .roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD
+    {
+      border-style: solid;
+      border-width: 2px;
+      border-color: green;
+    }
 
+    .roomTD, .limitTD, .deleteTD
+    {
+      text-align: center;
+    }
+
+    .deleteTD
+    {
+      vertical-align: middle;
+    }
+  }
   thead tr td
   {
     text-align: center;
   }
 
+  .removeTimeTableRule
+  {
+    font-size: 24px;
+  }
+
   /*td{
 
   }*/
+
+  .addRuleButtons
+  {
+    button
+    {
+      font-size: 12px;
+      height: 45px;
+    }
+
+
+  }
+
   .cabinetSelectEdit{width:50px; }
   .daysOfWeekEdit td{
     padding-left: 5px;

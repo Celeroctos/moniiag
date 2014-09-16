@@ -1,4 +1,5 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/commonBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <!-- тег center - это конечно плохо, но пока пусть будет -->
@@ -44,14 +45,18 @@
     </div>
 </div>
 <div class="addingNewSheduleContainer row no-display">
-    <button type="button" class="addingNewShedule btn btn-default" data-dismiss="modal">Сопоставить сотруднику расписание</button>
+    <button type="button" class="addingNewShedule btn btn-default" data-dismiss="modal">Сопоставить расписание</button>
 </div>
+<div id="edititngSheduleArea" class="no-display">
 
+</div>
+<div id="existingSheduleArea" class="no-display">
 
+</div>
 <!-- Блок, содержащий шаблоны для вывода графиков в разных режимах (редактирования, просмотра и пр) -->
 <!-- JavaScript берёт отсюда блоки, заполняет их значениями для каждого из графиков(правил)
     и выводит в интерфейс заполненными -->
-<div class="nodisplay" id="#timetableTemplates">
+<div class="no-display" id="timetableTemplates">
     <!-- Шаблон вывода графика в режиме просмотра-->
     <div class="col-xs-12" id="timetableReadOnly">
         <span class="timeTableId no-display"></span>
@@ -116,7 +121,7 @@
         </table>
     </div>
 
-    <div class="col-xs-12" id="#timetableEditing">
+    <div class="col-xs-12" id="timetableEditing">
         <!-- Шаблон для редактирования графика -->
         <span class="timeTableId no-display"></span>
         <span class="timeTableJSON no-display"></span>
@@ -136,7 +141,7 @@
         </div>
         <table class="timeTablesEditTable">
             <thead>
-            <tr>
+            <tr class="withBorderTDTimetableEditor">
                 <td class="roomTD">
                     Кабинет
                 </td>
@@ -158,10 +163,12 @@
                 <td class="factsTD">
                     Обстоятельство
                 </td>
+                <td class="deleteTD">
+                </td>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr class="withBorderTDTimetableEditor oneRowRuleTimetable">
                 <td class="roomTD">
                     <!-- селект с кабинетами -->
                     <select class="cabinetSelectEdit">
@@ -440,6 +447,36 @@
 
                 </td>
                 <td class="factsTD">
+                </td>
+                <td class="deleteTD">
+                    <span class="removeTimeTableRule glyphicon glyphicon-remove-circle" title="Удалить"></span>
+                </td>
+            </tr>
+            <tr class="addRuleButtons">
+            <!-- Строка с кнопками добавить -->
+                <td class="roomTD">
+                    <button type="button" class="addingNewSheduleRoom btn btn-default" data-dismiss="modal">Добавить<br>кабинет</button>
+                </td>
+                <td class="daysTD">
+                    <button type="button" class="addingNewSheduleDays btn btn-default" data-dismiss="modal">Добавить дни</button>
+                </td>
+                <td class="hoursOfWorkTD">
+                    <button type="button" class="addingNewSheduleHourWork btn btn-default" data-dismiss="modal">Добавить<br>часы</button>
+                </td>
+                <td class="hoursOfGreetingTD">
+                    <button type="button" class="addingNewSheduleHourGreeting btn btn-default" data-dismiss="modal">Добавить<br>часы</button>
+                </td>
+                <td class="shiftTD no-display">
+                    Смена
+                </td>
+                <td class="limitTD">
+                    <button type="button" class="addingNewSheduleLimit btn btn-default" data-dismiss="modal">Добавить лимит</button>
+                </td>
+                <td class="factsTD">
+
+                </td>
+                <td class="deleteTD">
+
                 </td>
             </tr>
             </tbody>

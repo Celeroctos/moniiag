@@ -44,60 +44,21 @@ class SheduleController extends Controller {
             'doctorsForWards' => $wardsForDoctor,
             'cabinetsList' => $cabinets
         ));
-
-
-
-        exit();
-        $ward = new Ward();
-        $wardsResult = $ward->getRows(false, 'name', 'asc');
-        $wardsList = array('-1' => 'Нет');
-        foreach($wardsResult as $key => $value) {
-            $wardsList[$value['id']] = $value['name'];
-        }
-
-        // Список должностей
-        $post = new Post();
-        $postsResult = $post->getRows(false, 'name', 'asc');
-        $postsList = array('-1' => 'Нет');
-        foreach($postsResult as $key => $value) {
-            $postsList[$value['id']] = $value['name'];
-        }
-
-        // Модель формы для модицикации расписания
-        $formModel = new FormSheduleAdd();
-
-        // Список кабинетов
-        $cabinet = new Cabinet();
-        $cabinetResult = $cabinet->getRows(false, 'cab_number', 'asc');
-        $cabinetList = array();
-        foreach($cabinetResult as $key => $value) {
-            $cabinetList[$value['id']] = $value['cab_number'].' - '.$value['description'].', '.$value['ward'].' отделение, '.$value['enterprise'];
-        }
-
-        $daysExp = $this->getExpDays(true);
-
-		/*Получим список выходных дней по поликилинике*/
-		$restDaysDb = SheduleRest::model()->findAll();
-		$restDays = array();
-		
-		foreach ($restDaysDb as $oneDay)
-		{
-			$restDays[] = $oneDay['day'];
-		}
-		
-		$formModel->weekEnds = CJSON::encode($restDays);
-
-
-
-        $this->render('index', array(
-            'wardsList' => $wardsList,
-            'postsList' => $postsList,
-            'model' => $formModel,
-            'daysExp' => $daysExp,
-            'cabinetList' => $cabinetList
-        ));
     }
 
+    public function actionGetShedule()
+    {
+
+        echo CJSON::encode(
+            array(
+                'success'=> true,
+                'shedules'=> array( )
+                 //'shedules'=> array( 1,2,3,4)
+            )
+        );
+    }
+
+    //======================>
 /*
 	public function actionGetWrittenPatientsEdit()
  	{

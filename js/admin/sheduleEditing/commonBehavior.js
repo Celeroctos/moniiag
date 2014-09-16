@@ -1,6 +1,3 @@
-/**
- * Created by FOX742NOTE on 16.09.14.
- */
 /*
 Этот файл для реализации общего поведения страницы-редактора расписания.
 Здесь описаны запрос и получение данных от сервера, логика открытия страницы редактора.
@@ -90,6 +87,14 @@ $(document).ready(function () {
         }
     );
 
+    $('#wardSelect, #doctorsSelect').on(
+        'change',
+        function()
+        {
+            refreshTimeTableList();
+        }
+    );
+
     function refreshTimeTableList()
     {
         // Собираем id-шники выбранных отделений и врачей
@@ -98,22 +103,90 @@ $(document).ready(function () {
         console.log(selectedWards);
         console.log(selectedDoctors);
         // Если selectedDoctors или selectedWards равен нулю - то надо подать массив из одного элемента -1
+        if (selectedWards ==null)
+        {
+            selectedWards = $.toJSON( [-1] );
+        }
 
+        if (selectedDoctors ==null)
+        {
+            selectedDoctors = $.toJSON( [-1] );
+        }
         // Отправляем запрос
+        params = {
+            'doctors': selectedDoctors,
+            'wards': selectedWards
+        };
+        $.ajax({
+            'url' : '/index.php/admin/shedule/getshedule',
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                onShedulesRecieve(data);
+            }
+        });
 
 
 
-
-        // Внутри обработчика запроса перебираем графики и выводим их в виде таблицы
 
     }
-
-
 
     refreshTimeTableList();
 
-    function onShedulesRecieve()
+    function onShedulesRecieve(dataObject)
+    {
+        if (dataObject.success==true || dataObject.success=="true")
+        {
+            if (dataObject.shedules.length>0)
+            {
+                // Внутри обработчика запроса перебираем графики и выводим их в виде таблицы
+                // Скрываем кнопочку "Сопоставить"
+                $('.addingNewSheduleContainer').addClass('no-display');
+            }
+            else
+            {
+                // Делаем видимой кнопочку "Сопоставить"
+                //     (если не открыт блок редактирования)
+                if (  $('#edititngSheduleArea').hasClass('no-display')  )
+                {
+                    $('.addingNewSheduleContainer').removeClass('no-display');
+                }
+            }
+        }
+
+    }
+
+    function startSheduleEdit()
     {
 
     }
+
+    function startSheduleAdd()
+    {
+
+
+    }
+
+    function startSheduleEditor(shedule)
+    {
+        // Если shedule не определено - то значит надо создать новое расписание
+        //   если определено - то значит надо открыть для редактирования
+
+    }
+
+    $('.addingNewShedule').click(
+        function()
+        {
+            $.fn['timetableEditor'].startAdding();
+        }
+    );
+
+    $(document).on('click',
+        '.addingNewSheduleRoom, .addingNewSheduleDays, .addingNewSheduleHourWork, .addingNewSheduleHourGreeting, .addingNewSheduleLimit',
+        function()
+        {
+            $.fn['timetableEditor'].addRowInEditor();
+        }
+    );
 });
