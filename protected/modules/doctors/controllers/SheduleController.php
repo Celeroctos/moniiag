@@ -277,7 +277,13 @@ class SheduleController extends Controller {
 			
 			if($element['type'] == 2 || $element['type'] == 3) {
 				$value = MedcardGuideValue::model()->findByPk($element['value']);
-				$element['value'] = $value->value;
+				if($value != null) {
+					if($value == -1) {
+						$element['value'] = 'Не выбрано';
+					} else {
+						$element['value'] = $value->value;
+					}
+				}
 			}
 			$temp = array(
 				'change_date' => $element['change_date'],
