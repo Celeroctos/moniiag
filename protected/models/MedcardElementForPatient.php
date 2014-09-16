@@ -267,10 +267,23 @@ class MedcardElementForPatient extends MisActiveRecord {
 		return $this->getHistoryPointsByCardId($medcard['card_number']);
     }
 
-	public function getValuesByDate($date, $medcardId, $historyId) {
+	public function getValuesByDate($medcardId, $greetingId,$templateId) {
 		try {
 			$connection = Yii::app()->db;		
-						
+
+            // Найдём для приёма и номера шаблона максимальный record_id, чтобы потом вытащить все элементы
+
+            $recordIdQuery = $connection->createCommand()
+                ->select('MAX(record_id)')
+                ->from('mis.medcard_records mr')
+                ->where('(mr.medcard_id = :medcard_id AND mr.greeting_id = :greeting AND template_id = :template)',
+                    array(
+                        ':medcard_id' => $medcardId,
+                        ':greeting' => $greetingId,
+                        ':template' => $templateId)
+                );
+            $historyId = $recordIdQuery->queryScalar();
+
 			$values = $connection->createCommand()
 				->select('mep.*, me.type')
 				->from('mis.medcard_elements_patient mep')

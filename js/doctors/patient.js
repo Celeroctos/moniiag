@@ -166,10 +166,11 @@
                         var hisArr = data;
                         var historyContainer = $('#accordionH .accordion-inner div:first');
                         $('#accordionH .accordion-inner').text('');
+                        console.log(hisArr);
                         for (i = hisArr.length - 1; i >= 0; i--) { // (идём в обратном порядке)
                             var newDiv = $('<div>');
                             $(newDiv).append($('<a>').prop('href',
-                                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].id_record).attr(
+                                    '#' + globalVariables.medcardNumber + '_' + hisArr[i].greeting_id +'_'+ hisArr[i].template_id).attr(
                                     'class', 'medcard-history-showlink').text(hisArr[i].date_change + ' - ' + hisArr[i].template_name));
                             var historyContainer = $('#accordionH .accordion-inner div:first');
                             if (historyContainer.length == 0) {
@@ -342,119 +343,7 @@
         $("#date-cont").trigger("refresh", [e.date]);
     });
 
-    /*
-    //===============>
     // Сжатие-расширение селект-контролов
-    expandSelectTimer = null;
-    selectToExpand = null;
-
-
-    $('form[id=template-edit-form] select[multiple]').mouseenter(
-        function(e)
-        {
-
-            onActivate(this);
-
-        }
-
-    );
-
-    $('form[id=template-edit-form] select[multiple]').mousemove(
-        function(e)
-        {
-
-            onActivate(this);
-
-        }
-
-    );
-
-    //$('form[id=template-edit-form] select[multiple]').on('mouseover',
-
-    function onActivate(element)
-    {
-        selectToExpand = element;
-        // Запускаем таймер
-        if(wasScroll)
-        {
-            expandSelectTimer = setTimeout(expandSelect,250);
-        }
-        else
-        {
-            expandSelectTimer = setTimeout(expandSelect,3000);
-        }
-    }
-
-    //$('form[id=template-edit-form] select[multiple]').on('focus',
-    $(document).on('focus','form[id=template-edit-form] select[multiple]',
-        function(e)
-        {
-           expandSelect();
-        }
-    );
-
-    function expandSelect()
-    {
-        clearTimeout(expandSelectTimer);
-        expandSelectTimer = null;
-        if (wasScroll)
-        {
-            // Устанавливаем таймер на туеву кучу времени вперёд
-
-            expandSelectTimer = setTimeout(expandSelect,2000);
-        }
-        else
-        {
-            $(selectToExpand).attr("size", $(selectToExpand).find('option').length );
-            // Сбрасываем таймер
-
-        }
-    }
-
-    $(document).on('blur','form[id=template-edit-form] select[multiple]',
-    //   $('form[id=template-edit-form] select[multiple]').on('blur',
-    function(e)
-        {
-            // Нужно удалить расширение
-          $(this).removeAttr("size");
-          clearTimeout(expandSelectTimer);
-            expandSelectTimer = null;
-        }
-    );
-
-    $('form[id=template-edit-form] select[multiple]').mouseleave(
-    //    $(document).on('mouseout','form[id=template-edit-form] select[multiple]',
-        function(e)
-        {
-            clearTimeout(expandSelectTimer);
-            expandSelectTimer = null;
-            // Убираем расширение только если this не в фокусе
-            if ( ! $(e.currentTarget).is(':focus') )
-            {
-                $(e.currentTarget).removeAttr("size");
-            }
-        }
-    );
-
-    wasScroll = false;
-
-    $(document).on('scroll',
-        function(e)
-        {
-            console.log('я прокрутился');
-            wasScroll = true;
-            setTimeout(function(){
-                wasScroll = false;
-            },5000);
-
-            // Если есть таймер - перезапускаем его
-
-        }
-    );
-
-    // <==================
-    */
-
     //=================>
     expandingTimer = setInterval(onExpandTimerTick,250);
     isCursorInElement = false;
@@ -550,11 +439,6 @@
 
     );
 
-   /* $(document).on('mousemove',function(){
-        console.log('я подвигался');
-
-    });*/
-
     $(document).on('scroll',
         function(e)
         {
@@ -563,7 +447,6 @@
 
         }
     );
-
     // <===============
     $('form[id=template-edit-form] select').on('keydown',
         function(e)
@@ -777,17 +660,18 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
     var historyPointCoordinate = $(this).attr('href').substr(1);
     var coordinateStrings = historyPointCoordinate.split('_');
 
-    var medcardId = coordinateStrings[0];
-    var pointId = coordinateStrings[1];
+    var medcard = coordinateStrings[0];
+    var greeting = coordinateStrings[1];
+    var template = coordinateStrings[2];
     var date = $(this).text();
-    $('#historyPopup .medcardNumber').text('№ ' + medcardId);
+    $('#historyPopup .medcardNumber').text('№ ' + medcard);
     $('#historyPopup .historyDate').text(date);
     $.ajax({
         'url': '/doctors/patient/gethistorymedcard',
         'data': {
-            medcardid: medcardId,
-            historyPointId: pointId,
-            date: date
+            medcardId: medcard,
+            greetingId: greeting,
+            templateId: template
         },
         'cache': false,
         'dataType': 'json',
@@ -824,28 +708,38 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
 $('#historyPopup').on('shown.bs.modal', function (e) {
     var deps = filteredDeps;
     for (var i = 0; i < deps.length; i++) {
-        mainDependenceElement = $('select[id$="_' + deps[i].elementId + '"]');
-        // Проверяем - если элемент мультиселектовый, то считаем, что его значение
-        //     - это все опшены, которые есть внутри его
-        var elementValue = '';
 
-        if ($(mainDependenceElement).attr('multiple'))
+        mainDependenceElementsSet = $('#historyPopup select[id$="_' + deps[i].elementId + '"]');
+        // В истории могут быть несколько элементов с одним и тем  же id, поэтому
+        //   в переменной mainDependenceElementsSet могут храниться один или больше элемент
+        for (j=0;j<mainDependenceElementsSet.length;j++)
         {
-            // Берём все опшены, запихиваем в json
-            optionsSelected = $(mainDependenceElement).find('option');
-            optionsSelectedArray = [];
-            for (j=0;j<optionsSelected.length;j++)
+
+            // Проверяем - если элемент мультиселектовый, то считаем, что его значение
+            //     - это все опшены, которые есть внутри его
+            var elementValue = '';
+
+            if ($(mainDependenceElementsSet[j]).attr('multiple'))
             {
-                optionsSelectedArray.push( $($(optionsSelected)[j]).attr('value')  );
+                // Берём все опшены, запихиваем в json
+                optionsSelected = $(mainDependenceElementsSet[j]).find('option');
+                optionsSelectedArray = [];
+                for (j=0;j<optionsSelected.length;j++)
+                {
+                    optionsSelectedArray.push( $($(optionsSelected)[j]).attr('value')  );
+                }
+                elementValue = $.toJSON(optionsSelectedArray);
             }
-            elementValue = $.toJSON(optionsSelectedArray);
+            else
+            {
+                elementValue = $(mainDependenceElementsSet[j]).val();
+            }
+            //var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
+            // Вычислям контейнер для элемента
+
+            parentAccordion = $(mainDependenceElementsSet[j]).parents('.accordion:eq(0)');
+            changeControlState(deps[i], elementValue, parentAccordion);
         }
-        else
-        {
-            elementValue = $(mainDependenceElement).val();
-        }
-        //var elementValue = $('select[id$="_' + deps[i].elementId + '"]').val();
-        changeControlState(deps[i], elementValue, '#historyPopup');
     }
 });
 
@@ -1244,7 +1138,14 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         var tempSubstr = controlId.substr(0, controlId.lastIndexOf('_'));
                         var substrSecond = tempSubstr.substr(0, tempSubstr.lastIndexOf('_') + 1);
                         $(control).prop('id', substrSecond + undottedPathAfter + substrFirst);
+
                         // Перепишем имя у элемента
+                        var arrayMultiselectSign = '';
+                        // Если у клонированного элемента стоит multiselect - надо дописать в имени []
+                        if ($(control).prop('multiple')==true)
+                        {
+                            arrayMultiselectSign = '[]';
+                        }
                         $(control).prop('name',
                         'FormTemplateDefault['
                          +
@@ -1253,7 +1154,7 @@ $(document).on('click', '.accordion-clone-btn', function (e) {
                         undottedPathAfter
                          +
                         substrFirst +
-                        ']');
+                        ']'+arrayMultiselectSign);
                     }
                 }
 
@@ -1705,13 +1606,22 @@ function generateAjaxGif(width, height) {
     });
 }
 
-function getHistoryPoint(medcardId, pointId, date) {
+function getHistoryPoint(activeLink) {
+    // Доим активную ссылку - получаем с неё данные для запроса истории
+     var href = ($(activeLink).find('a').attr('href')).substr(1);
+     hostoryCoordinates = href.split('_');
+
+     var medcard = hostoryCoordinates[0];
+     var greeting = hostoryCoordinates[1];
+     var template = hostoryCoordinates[2];
+     $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcard);
+     $('#historyPopup .modal-title .historyDate').html($(activeLink).find('a').text());
     $.ajax({
         'url': '/doctors/patient/gethistorymedcard',
         'data': {
-            medcardid: medcardId,
-            historyPointId: pointId,
-            date: date
+            medcardId: medcard,
+            greetingId: greeting,
+            templateId: template
         },
         'cache': false,
         'dataType': 'json',
@@ -1724,6 +1634,11 @@ function getHistoryPoint(medcardId, pointId, date) {
                 // Заполняем медкарту-историю значениями
                 var data = data.data;
                 $('#historyPopup .modal-body .row').html(data);
+
+                // Триггерим событие открытия поп-апа с историей
+                $('#historyPopup').trigger('shown.bs.modal');
+
+
                 $('#historyPopup .modal-body .row').css('text-align', 'left');
                 $('#nextHistoryPoint, #prevHistoryPoint').attr('disabled', false);
             }
@@ -1743,12 +1658,7 @@ $('#prevHistoryPoint').on('click', function () {
     } else {
         activeDiv = $('#accordionH .accordion-inner div:last').addClass('active');
     }
-    var href = $(activeDiv).find('a').attr('href');
-    var historyPointId = href.substr(href.lastIndexOf('_') + 1);
-    var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
-    getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
-    $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
-    $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
+    getHistoryPoint(activeDiv);
 });
 
 $('#nextHistoryPoint').on('click', function () {
@@ -1763,14 +1673,8 @@ $('#nextHistoryPoint').on('click', function () {
     } else {
         activeDiv = $('#accordionH .accordion-inner div:first').addClass('active');
     }
-    var href = $(activeDiv).find('a').attr('href');
-    var historyPointId = href.substr(href.lastIndexOf('_') + 1);
-    var medcardId = href.substr(1, href.lastIndexOf('_') - 1);
-    getHistoryPoint(medcardId, historyPointId, $(activeDiv).find('a').text());
-    $('#historyPopup .modal-title .medcardNumber').html('№ ' + medcardId);
-    $('#historyPopup .modal-title .historyDate').html($(activeDiv).find('a').text());
+    getHistoryPoint(activeDiv);
 });
-
 
     var isExpandedList = false;
     $('#expandPatientList').on('click', function(e) {
@@ -1794,10 +1698,7 @@ $('#nextHistoryPoint').on('click', function () {
     });
 
     $('#collapsePatientList').on('click', function(e) {
-     /*   $(this).addClass('no-display');
-        $('#expandPatientList').removeClass('no-display');
-        isExpandedList = true;
-        updateExpanded();*/
+
     });
 	
 	// Смена врача
