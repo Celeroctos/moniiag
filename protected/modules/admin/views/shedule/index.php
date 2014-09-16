@@ -1,5 +1,5 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/shedule.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/commonBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <!-- тег center - это конечно плохо, но пока пусть будет -->
 <center><h4>Графики работы персонала</h4></center>
@@ -43,6 +43,11 @@
         </div>
     </div>
 </div>
+<div class="addingNewSheduleContainer row no-display">
+    <button type="button" class="addingNewShedule btn btn-default" data-dismiss="modal">Сопоставить сотруднику расписание</button>
+</div>
+
+
 <!-- Блок, содержащий шаблоны для вывода графиков в разных режимах (редактирования, просмотра и пр) -->
 <!-- JavaScript берёт отсюда блоки, заполняет их значениями для каждого из графиков(правил)
     и выводит в интерфейс заполненными -->
