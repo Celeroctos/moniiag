@@ -274,6 +274,11 @@ class SheduleController extends Controller {
 			if($element['greeting_id'] == $_GET['greetingId']) {
 				continue;
 			}
+			
+			if($element['type'] == 2 || $element['type'] == 3) {
+				$value = MedcardGuideValue::model()->findByPk($element['value']);
+				$element['value'] = $value->value;
+			}
 			$temp = array(
 				'change_date' => $element['change_date'],
 				'value' => $element['value'],
