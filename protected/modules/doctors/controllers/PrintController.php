@@ -399,8 +399,23 @@ class PrintController extends Controller {
         {
             $greetingInfo['doctor_spec'] = '';
         }
-
         $greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+
+        $greetingInfo['doctor_initials'] = $doctor['last_name'];
+
+        $dFName = mb_substr($doctor['first_name'],0,1, 'utf-8');
+        $dMName = mb_substr($doctor['middle_name'],0,1, 'utf-8');
+
+        if ($dFName !==false && $dFName!=='')
+        {
+            $greetingInfo['doctor_initials'] .= (' '.$dFName .'.');
+        }
+
+        if ($dMName !==false && $dMName!=='')
+        {
+            $greetingInfo['doctor_initials'] .= (' '.$dMName.'.');
+        }
+
         // Найдём медкарту, а по ней и пациента
         $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
         $patient = Oms::model()->findByPk($medcard['policy_id']);
@@ -411,6 +426,21 @@ class PrintController extends Controller {
        // exit();
         $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
         $greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
+
+        $greetingInfo['patient_initials'] = $patient['last_name'];
+        $pFName = mb_substr($patient['first_name'],0,1, 'utf-8');
+        $pMName = mb_substr($patient['middle_name'],0,1, 'utf-8');
+
+        if ($pFName !==false && $pFName!=='')
+        {
+            $greetingInfo['patient_initials'] .= (' '.$pFName .'.');
+        }
+
+        if ($pMName !==false&& $pMName!=='')
+        {
+            $greetingInfo['patient_initials'] .= (' '.$pMName.'.');
+        }
+
         $greetingInfo['card_number'] = $greeting['medcard_id'];
         $dateParts = explode('-', $greeting['patient_day']);
         $greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];

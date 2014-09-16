@@ -1,10 +1,16 @@
-<div class="header">
+<!-- Старый код-->
+<!--div class="header">
     <h3>Результаты приёма за <?php echo $greeting['date']; ?>, <?php echo $greeting['doctor_fio']; ?> (пациент <?php echo $greeting['patient_fio']; ?>, номер карты <?php echo $greeting['card_number']; ?>)</h3>
+</div-->
+
+<div class="header">
+    <h3>
+        <nobr><?php echo $greeting['date']; ?>, <?php echo $greeting['patient_initials']; ?>, <?php echo $greeting['card_number']; ?></nobr>
+    <br/>
+        <nobr><?php echo $greeting['doctor_spec']; ?> <?php echo $greeting['doctor_initials']; ?></nobr>
+    </h3>
 </div>
 <?php
-//var_dump($diagnosises);
-//exit();
-
         // Сначала печатаем шаблоны, у которых template_page_id = 0
         // Потом выводим диагнозы
         // Потом выводим шаблоны, у которых template_page_id = 1
@@ -20,7 +26,6 @@
             {
                 continue;
             }
-
             // Печатаем название шаблона
             ?><span class="templateNamePrinting"><?php echo $oneTemplate['name']; ?></span><?php
             foreach($oneTemplate['cats']  as $index => $categorie) {
@@ -43,8 +48,6 @@
 
             }
         }
-
-
         // Выводим диагнозы
         if (count($diagnosises['primary'])>0)
         {
@@ -54,10 +57,7 @@
                 echo $oneDiagnosis['description'];
             }
             ?></div><?php
-
         }
-
-
         if (count($diagnosises['complicating'])>0)
         {
             ?><div><strong><h3>Осложнения основного диагноза по МКБ-10: </h3></strong><?php
@@ -68,8 +68,6 @@
             }
             ?></div><?php
         }
-
-
         if (count($diagnosises['secondary'])>0)
         {
             ?><div><strong><h3>Сопутствующие диагнозы (МКБ-10): </h3></strong><?php
