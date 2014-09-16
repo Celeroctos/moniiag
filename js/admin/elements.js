@@ -438,6 +438,7 @@ function editElement() {
                             continue;
                         }
                         form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+						console.log(fields[i].formField + ' => ' + data.data[fields[i].modelField]);
                         // Таблица
                         if (fields[i].formField == 'config') {
 							if(typeof data.data['config'] != 'object') {

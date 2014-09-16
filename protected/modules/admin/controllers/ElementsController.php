@@ -348,10 +348,13 @@ class ElementsController extends Controller {
         if(($element['default_value'] == null) && ($element['type']!=0)&&($element['type']!=1)) {
             $element['default_value'] = -1;
         }
+		
 		if($element['config'] != null) {
 			$element['config'] = CJSON::decode($element['config']);
 			if(isset($element['config']['showDynamic'])) {
 				$element['show_dynamic'] = 1;
+			} else {
+				$element['show_dynamic'] = 0;
 			}
 		} else {
 			$element['show_dynamic'] = 0;
