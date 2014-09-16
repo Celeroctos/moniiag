@@ -1612,7 +1612,7 @@ class PatientController extends Controller {
     // Поиск пациента и его запсь
     public function actionSearch() {
        // var_dump($_GET);
-       // exit();
+        //exit();
 
         // Проверим наличие фильтров
         $filters = $this->checkFilters();
@@ -1681,7 +1681,10 @@ class PatientController extends Controller {
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings, $cancelledGreetings, $onlyClosedGreetings, $greetingDate);
-			$now = time();
+			//var_dump($num);
+            //exit();
+
+            $now = time();
             // Обрабатываем результат
             foreach($items as $index => &$item) {
                 if($item['reg_date'] != null) {

@@ -68,7 +68,7 @@ $(document).ready(function() {
                 },
                 {
                     'field' : 'card_number',
-                    'op' : 'eq',
+                    'op' : 'cn',
                     'data' : $('#cardNumber').val()
                 },
                 {
