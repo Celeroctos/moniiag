@@ -357,8 +357,14 @@ $(document).ready(function() {
             },
             container: $(this),
             content: function() {
-				var table = $('<table>');
+				var table = $('<table>').css({
+					'width' : '100%'
+				}).addClass('table');
+				var diff1TdHeader = $('<td>').text('Разница с текущим');
+				var diff2TdHeader = $('<td>').text('Разница с предыдущим');
+				$(table).append($('<thead>').append($('<tr>').addClass('bold').append($('<td>').text('Дата'), $('<td>').text('Значение'), diff1TdHeader, diff2TdHeader)), $('<tbody>'));
 				var elementId = $(this).next().prop('id');
+				var currentValue = $(this).next().val();
 				var ajaxGif =  $('<img>').prop({
                     'src' : '/images/ajax-loader.gif',
                     'width' : 32,
@@ -378,13 +384,47 @@ $(document).ready(function() {
 					'type' : 'GET',
 					'success' : function(data, textStatus, jqXHR) {
 						if(data.success == true) {
-							$(table).find('tr:not(:first)').remove();
+							$(table).find('tbody tr:not(:first)').remove();
 							var data = data.data;
-							for(var i in data) {
+							if(data.length > 0 && data[0].type == 5) {
+								$(diff1TdHeader).removeClass('no-display');
+								$(diff2TdHeader).removeClass('no-display');
+							} else {
+								$(diff1TdHeader).addClass('no-display');
+								$(diff2TdHeader).addClass('no-display');
+							}
+							var prevValue = null;
+							for(var i = 0; i < data.length; i++) {
 								var tr = $('<tr>').append(
 									$('<td>').text(data[i].change_date),
 									$('<td>').text(data[i].value)
 								);
+								if(data[i].type == 5) { // Тип numberField
+									var diff1 = parseFloat(currentValue) - parseFloat(data[i].value);
+									if(i > 0 && prevValue != null) {
+										var diff2 = prevValue - parseFloat(data[i].value);
+									} else {
+										var diff2 = 0;
+									}
+									prevValue = parseFloat(data[i].value);
+									
+									var diffTd1 = $('<td>').addClass('bold').text(diff1);
+									var diffTd2 = $('<td>').addClass('bold').text(diff2);
+									
+									if(diff1 > 0) {
+										$(diffTd1).addClass('text-danger');
+									} else if(diff1 < 0) {
+										$(diffTd1).addClass('text-success');
+									}
+									
+									if(diff2 > 0) {
+										$(diffTd2).addClass('text-danger');
+									} else if(diff2 < 0) {
+										$(diffTd2).addClass('text-success');
+									}
+									$(tr).append(diffTd1, diffTd2);
+								} 
+								$(table).find('tbody').append(tr);
 							}
 							$(ajaxGif).remove();
 							$(container).append(table);
@@ -405,6 +445,7 @@ $(document).ready(function() {
 
 		$(span).on('click', function(e) {
 			$(popoverCont).popover('destroy');
+			$(span).remove();
 			e.stopPropagation();
 			return false;
 		});
@@ -413,6 +454,13 @@ $(document).ready(function() {
 			'color' : '#000000',
 			'fontWeight' : 'bold'
 		}).text('Динамика изменения параметра');
+		
+		$(this).find('.popover-content, .popover-title').css({
+			'width' : '100%'
+		}).on('click', function(e) {
+			e.stopPropagation();
+			return false;
+		});
 		
 		$(this).find('.popover').css({
 			'cursor' : 'default',

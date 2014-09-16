@@ -51,7 +51,6 @@
                                               role="form"
                                               action="<?php CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/shedule/view?cardid=' . $medcard['card_number'] . '&date=' . $currentDate . '&rowid=' . $currentSheduleId); ?>">
                                             <div class="overlayCont">
-												<div class="overlay">
 												<?php foreach ($templatesList as $key => $template) { ?>
 													<div class="form-group">
 														<input type="checkbox" value="<?php echo $template['id']; ?>"
@@ -60,7 +59,6 @@
 															class="control-label"><?php echo $template['name']; ?></label>
 													</div>
 												<?php } ?>
-												</div>
 											</div>
                                             <div class="form-group">
                                                 <?php echo CHtml::submitButton(

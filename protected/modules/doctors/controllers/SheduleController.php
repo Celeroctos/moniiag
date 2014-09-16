@@ -261,7 +261,8 @@ class SheduleController extends Controller {
 		$historyElements = MedcardElementForPatient::model()->findAll(
 			'element_id = :element_id
 			AND medcard_id = :medcard_id
-			AND path = :path',
+			AND path = :path
+			ORDER BY change_date ASC',
 			array(
 				':element_id' => $elementId,
 				':medcard_id' => $_GET['medcard'],
@@ -273,10 +274,12 @@ class SheduleController extends Controller {
 			if($element['greeting_id'] == $_GET['greetingId']) {
 				continue;
 			}
-			$answer[] = array(
+			$temp = array(
 				'change_date' => $element['change_date'],
-				'value' => $element['value']
+				'value' => $element['value'],
+				'type' => $element['type']
 			);
+			$answer[] = $temp;
 		}
 		
 		echo CJSON::encode(array(
