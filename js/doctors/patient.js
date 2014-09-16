@@ -1645,6 +1645,7 @@ function changeControlState(dep, elementValue, container) {
 $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     var checkboxes = $(this).parents('form').find('input[type="checkbox"]');
     $(this).attr('disabled', true);
+
     for (var i = 0; i < checkboxes.length; i++) {
         if ($(checkboxes[i]).prop('checked')) {
             $(this).attr('value', 'Подождите, приём начинается...');
