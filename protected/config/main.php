@@ -112,6 +112,9 @@ return array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
 		),
+		'request'=>array(
+            'enableCsrfValidation'=>true,
+        ),
 		// uncomment the following to enable URLs in path-format
 
 		'urlManager'=>array(
