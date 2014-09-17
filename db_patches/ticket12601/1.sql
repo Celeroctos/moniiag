@@ -1,0 +1,9 @@
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может добавлять правило генерации медкарты', 1, 'guideAddMedcardRule');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может редактировать правило генерации медкарты', 1, 'guideEditMedcardRule');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может удалять правило редактирования медкарты', 1, 'guideDeleteMedcardRule');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может добавлять префикс для медкарты', 1, 'guideAddMedcardPrefix');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может редактировать префикс для медкарты', 1, 'guideEditMedcardPrefix');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может удалять префикс для медкарты', 1, 'guideDeleteMedcardPrefix');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может добавлять постфикс для медкарты', 1, 'guideAddMedcardPostfix');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может редактировать постфикс для медкарты', 1, 'guideEditMedcardPostfix');
+INSERT INTO mis.access_actions ("name","group","accessKey") VALUES ('Может удалять постфикс для медкарты', 1, 'guideDeleteMedcardPostfix');
