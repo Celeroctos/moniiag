@@ -36,13 +36,24 @@ class SheduleController extends Controller {
         $cabinets = Cabinet::model()->getRows(false);
 
       //  var_dump($cabinets );
+      //var_dump("!!");
       //  exit();
+
+        $timetableFactObj = new TimetableFact();
+        $factsSheduleForSelect = $timetableFactObj->getForSelect();
+        $factsForJSON = array();
+        foreach ($factsSheduleForSelect as $oneFact)
+        {
+            $factsForJSON [$oneFact['id']] = $oneFact['is_range'];
+        }
 
         $this->render('index', array(
             'wardsList' => $wardsList,
             'doctorList' => $doctorsList,
             'doctorsForWards' => $wardsForDoctor,
-            'cabinetsList' => $cabinets
+            'cabinetsList' => $cabinets,
+            'factsForSelect' => $factsSheduleForSelect,
+            'factsForJSON' => $factsForJSON
         ));
     }
 

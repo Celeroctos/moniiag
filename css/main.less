@@ -1953,6 +1953,14 @@ a.accordion-toggle:hover {
       border-style: solid;
       border-width: 2px;
       border-color: green;
+      .time-timetable
+      {
+        .input-group-addon
+        {
+          display:none;
+        }
+      }
+
     }
 
     .roomTD, .limitTD, .deleteTD
@@ -1991,6 +1999,13 @@ a.accordion-toggle:hover {
   }
 
   .cabinetSelectEdit{width:50px; }
+
+  .daysOfWeekEdit
+  {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .daysOfWeekEdit td{
     padding-left: 5px;
     padding-right: 5px;
@@ -2013,7 +2028,7 @@ a.accordion-toggle:hover {
     }
 
   }
-  .limitTD
+  .limitTD, .factsTD
   {
     vertical-align: top;
   }
@@ -2104,4 +2119,49 @@ a.accordion-toggle:hover {
   margin-right: auto;*/
 
 }
+
+.sheduleEditorFooter
+{
+  display:inline-block;
+  margin-top: 15px;
+  margin-left: 7%;
+  .date-control
+  {
+    padding-left: 0px;
+    .input-group-addon
+    {
+      left: 100px;
+      top: -13px;
+
+      width: 20px;
+      height: 30px;
+      span.glyphicon-calendar
+      {
+        font-size: 17px;
+        left: -9px;
+      }
+    }
+  }
+}
+.timeTableBegin, .timeTableEnd
+{
+  display:inline-block;
+  width:170px;
+}
+
+.timetableEditorHandlingButtons
+{
+  display:inline-block;
+}
+.lifetimeOfTimetable
+{
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 15px;
+}
+.saveSheduleButton, .cancelSheduleButton
+{
+  margin-top: 24px;
+}
+
 /*=======================*/

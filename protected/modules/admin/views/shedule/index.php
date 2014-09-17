@@ -8,7 +8,9 @@
 <script>
     globalVariables.doctorsForWards = <?php echo CJSON::encode($doctorsForWards); ?>
 </script>
-
+<script>
+    globalVariables.factsForSelect = <?php echo CJSON::encode($factsForJSON); ?>
+</script>
 <div class="row">
     <div class="col-xs-6">
         <div class="doctorsWardsBlock">
@@ -261,7 +263,7 @@
                     <!-- Нижний блок - Даты и чётность/нечётность -->
                     <div class ="daysEditingBottomBLock" >
                         <div class="calendarBlock">
-                            <div class="date date-timetable null-padding-left">
+                            <div class="input-group date date-timetable null-padding-left">
                                 <input class="form-control" placeholder="" title="" style="width: 200px;" name="addDateTimetable" type="hidden" value="">
                                 <span class="input-group-addon">
                                             <span class="glyphicon-calendar glyphicon">
@@ -303,9 +305,13 @@
                 </td>
                 <td class="hoursOfWorkTD">
                     <div class="workingHourBlock">
+                        <b>С</b>
                         <div>
-                            <div class="input-group date time-control time-timetable" class = workingHourBeginTime>
+                            <div class="input-group date time-control time-timetable workingHourBeginTime">
                                 <input type="hidden" class="form-control">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
                                 <div class="subcontrol">
                                     <div class="form-inline subfields">
                                         <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -316,10 +322,14 @@
 
                         </div>
                         <!--br -->
+                        <b>По</b>
                         <div>
 
-                            <div class="input-group date time-control time-timetable" class = workingHourEndTime>
+                            <div class="input-group date time-control time-timetable workingHourEndTime">
                                 <input type="hidden" class="form-control">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
                                 <div class="subcontrol">
                                     <div class="form-inline subfields">
                                         <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -333,9 +343,13 @@
                 </td>
                 <td class="hoursOfGreetingTD">
                     <div class="greetingHourBlock">
+                        <b>С</b>
                         <div>
-                            <div class="input-group date time-control time-timetable" class = greetingHourBeginTime>
+                            <div class="input-group date time-control time-timetable greetingHourBeginTime">
                                 <input type="hidden" class="form-control">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
                                 <div class="subcontrol">
                                     <div class="form-inline subfields">
                                         <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -345,11 +359,14 @@
                             </div>
 
                         </div>
-                        <!--br -->
+                        <b>По</b>
                         <div>
 
-                            <div class="input-group date time-control time-timetable" class = greetingHourEndTime>
+                            <div class="input-group date time-control time-timetable greetingHourEndTime">
                                 <input type="hidden" class="form-control">
+                                <span class="input-group-addon no-display">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                </span>
                                 <div class="subcontrol">
                                     <div class="form-inline subfields">
                                         <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -378,8 +395,11 @@
                         Количество<br>
                         <input type="text" class = "limitQuantity limitQuantity1">
                         <br>Время<br>
-                        <div class="input-group date time-control time-timetable" class = limitTime1>
+                        <div class="input-group date time-control time-timetable limitTime1">
                             <input type="hidden" class="form-control">
+                            <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <div class="subcontrol">
                                 <div class="form-inline subfields">
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -387,8 +407,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group date time-control time-timetable" class = limitTime1End>
+                        <div class="input-group date time-control time-timetable limitTime1End">
                             <input type="hidden" class="form-control">
+                             <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <div class="subcontrol">
                                 <div class="form-inline subfields">
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -402,8 +425,11 @@
                         Количество<br>
                         <input type="text" class = "limitQuantity limitQuantity2">
                         <br>Время<br>
-                        <div class="input-group date time-control time-timetable" class = "limitTime2">
+                        <div class="input-group date time-control time-timetable limitTime2">
                             <input type="hidden" class="form-control">
+                             <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <div class="subcontrol">
                                 <div class="form-inline subfields">
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -411,8 +437,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group date time-control time-timetable" class = "limitTime2End">
+                        <div class="input-group date time-control time-timetable limitTime2End">
                             <input type="hidden" class="form-control">
+                             <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <div class="subcontrol">
                                 <div class="form-inline subfields">
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -425,8 +454,11 @@
                         Количество<br>
                         <input type="text" class = "limitQuantity limitQuantity3">
                         <br>Время<br>
-                        <div class="input-group date time-control time-timetable" class = "limitTime3">
+                        <div class="input-group date time-control time-timetable limitTime3">
                             <input type="hidden" class="form-control">
+                             <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <div class="subcontrol">
                                 <div class="form-inline subfields">
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -434,8 +466,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="input-group date time-control time-timetable" class = "limitTime3End">
+                        <div class="input-group date time-control time-timetable limitTime3End">
                             <input type="hidden" class="form-control">
+                             <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <div class="subcontrol">
                                 <div class="form-inline subfields">
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
@@ -447,6 +482,23 @@
 
                 </td>
                 <td class="factsTD">
+                    <select class="factsSelect">
+                        <option value="-1"></option>
+                        <?php
+                            foreach ($factsForSelect as $oneFact)
+                            {
+                                ?>
+                                    <option value="<?php echo $oneFact['id']; ?>"><?php echo $oneFact['name']; ?></option>
+                                <?php
+                            }
+                        ?>
+                    </select>
+                    <!-- Чекбокс чётности-нечётности -->
+                    <div class="rangeCheckbox no-display">
+                            <input type="checkbox" name="rangeFact">Период
+                            <br>
+                            <input type="checkbox" name="notRangeFact">Один день
+                    </div>
                 </td>
                 <td class="deleteTD">
                     <span class="removeTimeTableRule glyphicon glyphicon-remove-circle" title="Удалить"></span>
@@ -481,6 +533,59 @@
             </tr>
             </tbody>
         </table>
+        <div class="sheduleEditorFooter">
+            <span class="lifetimeOfTimetable">Укажите период действия графика</span>
+            <div class="timeTableBegin">
+
+                <div class="form-group">
+                  <label>C</label><br>
+                  <div class="col-xs-3 input-group date date-control sheduleBeginDateTime-cont">
+                        <input type="hidden" class="sheduleBeginDateTime form-control col-xs-4" placeholder="Формат гггг-мм-дд" name="reportDate">
+				        <span class="input-group-addon">
+					        <span class="glyphicon-calendar glyphicon">
+					        </span>
+				        </span>
+                        <div class="subcontrol">
+                            <div class="form-inline subfields">
+                                <input type="text" class="form-control day" placeholder="ДД" name="day">
+                                <input type="text" class="form-control month" placeholder="ММ" name="month">
+                                <input type="text" class="form-control year" placeholder="ГГГГ" name="year">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="timeTableEnd">
+                <div class="form-group">
+                    <label>По</label><br>
+                    <div class="col-xs-3 input-group date date-control sheduleEndDateTime-cont">
+                        <input type="hidden" class="form-control col-xs-4 sheduleEndDateTime" placeholder="Формат гггг-мм-дд" name="reportDate">
+				        <span class="input-group-addon">
+					        <span class="glyphicon-calendar glyphicon">
+					        </span>
+				        </span>
+                        <div class="subcontrol">
+                            <div class="form-inline subfields">
+                                <input type="text" class="form-control day" placeholder="ДД" name="day">
+                                <input type="text" class="form-control month" placeholder="ММ" name="month">
+                                <input type="text" class="form-control year" placeholder="ГГГГ" name="year">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="timetableEditorHandlingButtons">
+                <br>
+                <button type="button" class="saveSheduleButton btn btn-default" data-dismiss="modal">Сохранить</button>
+                <button type="button" class="cancelSheduleButton btn btn-default" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
     </div>
 
 </div>
