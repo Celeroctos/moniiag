@@ -189,4 +189,12 @@ $(document).ready(function () {
             $.fn['timetableEditor'].addRowInEditor();
         }
     );
+
+
+    $(document).on('click','.saveSheduleButton',function (){
+        console.log(
+            $.fn['sheduleEditor.port.editorToJSON'].getResult()
+
+        );
+    });
 });

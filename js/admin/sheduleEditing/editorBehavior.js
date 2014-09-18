@@ -216,9 +216,10 @@ $(document).ready(function () {
 
                 caption += $(containerTemplate).find('.dateFactBegin').val();
             }
-            caption += ' ';
+            $(containerTemplate).find('.factTextCaptionDate').text(caption);
             selectedOption = $(editorContainer).find('.factsSelect option:selected');
-            caption += $(selectedOption).text();
+            //caption += $(selectedOption).text();
+            $(containerTemplate).find('.factTextCaptionReason').text($(selectedOption).text());
             $(containerTemplate).find('.factTextCaption').text(caption);
             $(containerTemplate).removeClass('no-display');
 

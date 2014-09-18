@@ -5,6 +5,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/commonBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorInitsializing.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/ports/EditorToJSON.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <!-- тег center - это конечно плохо, но пока пусть будет -->
 <center><h4>Графики работы персонала</h4></center>
@@ -179,10 +180,12 @@
                     <!-- селект с кабинетами -->
                     <select class="cabinetSelectEdit">
                         <?php
+                       // var_dump($cabinetsList);
+                       // exit();
                         foreach ($cabinetsList as $oneCabinet)
                         {
                             ?>
-                              <option value="<?php $oneCabinet['id']; ?>"><?php
+                              <option value="<?php echo $oneCabinet['id']; ?>"><?php
                                   echo ($oneCabinet['cab_number'].' - '.$oneCabinet['description']);
                                   ?></option>
                             <?php
@@ -196,69 +199,69 @@
                     <div class="daysEditingTopBLock">
                         <table class="daysOfWeekEdit" >
                             <tr>
-                                <td><input class="weekDay1" type = "checkbox">Пн</td>
-                                <td><input class="weekDay2" type = "checkbox">Вт</td>
-                                <td><input class="weekDay3" type = "checkbox">Ср</td>
-                                <td><input class="weekDay4" type = "checkbox">Чт</td>
-                                <td><input class="weekDay5" type = "checkbox">Пт</td>
-                                <td><input class="weekDay6" type = "checkbox">Сб</td>
-                                <td><input class="weekDay7" type = "checkbox">Вс</td>
+                                <td><nobr><input class="weekDay1" type = "checkbox">Пн</nobr></td>
+                                <td><nobr><input class="weekDay2" type = "checkbox">Вт</nobr></td>
+                                <td><nobr><input class="weekDay3" type = "checkbox">Ср</nobr></td>
+                                <td><nobr><input class="weekDay4" type = "checkbox">Чт</nobr></td>
+                                <td><nobr><input class="weekDay5" type = "checkbox">Пт</nobr></td>
+                                <td><nobr><input class="weekDay6" type = "checkbox">Сб</nobr></td>
+                                <td><nobr><input class="weekDay7" type = "checkbox">Вс</nobr></td>
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="checkbox" name="weekDayNumber1_1" />1ый<br />
-                                    <input type="checkbox" name="weekDayNumber1_2" />2ой<br />
-                                    <input type="checkbox" name="weekDayNumber1_3" />3ий<br />
-                                    <input type="checkbox" name="weekDayNumber1_4" />4ый<br />
-                                    <input type="checkbox" name="weekDayNumber1_5" />5ый<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber1_1" />1ый</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber1_2" />2ой</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber1_3" />3ий</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber1_4" />4ый</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber1_5" />5ый</nobr><br />
                                 </td>
                                 <td>
 
-                                    <input type="checkbox" name="weekDayNumber2_1" />1ый<br />
-                                    <input type="checkbox" name="weekDayNumber2_2" />2ой<br />
-                                    <input type="checkbox" name="weekDayNumber2_3" />3ий<br />
-                                    <input type="checkbox" name="weekDayNumber2_4" />4ый<br />
-                                    <input type="checkbox" name="weekDayNumber2_5" />5ый<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber2_1" />1ый</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber2_2" />2ой</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber2_3" />3ий</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber2_4" />4ый</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber2_5" />5ый</nobr><br />
                                 </td>
                                 <td>
 
-                                    <input type="checkbox" name="weekDayNumber3_1" />1ая<br />
-                                    <input type="checkbox" name="weekDayNumber3_2" />2ая<br />
-                                    <input type="checkbox" name="weekDayNumber3_3" />3я<br />
-                                    <input type="checkbox" name="weekDayNumber3_4" />4ая<br />
-                                    <input type="checkbox" name="weekDayNumber3_5" />5ая<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber3_1" />1ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber3_2" />2ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber3_3" />3я</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber3_4" />4ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber3_5" />5ая</nobr><br />
                                 </td>
                                 <td>
 
-                                    <input type="checkbox" name="weekDayNumber4_1" />1ый<br />
-                                    <input type="checkbox" name="weekDayNumber4_2" />2ой<br />
-                                    <input type="checkbox" name="weekDayNumber4_3" />3ий<br />
-                                    <input type="checkbox" name="weekDayNumber4_4" />4ый<br />
-                                    <input type="checkbox" name="weekDayNumber4_5" />5ый<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber4_1" />1ый</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber4_2" />2ой</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber4_3" />3ий</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber4_4" />4ый</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber4_5" />5ый</nobr><br />
                                 </td>
                                 <td>
 
-                                    <input type="checkbox" name="weekDayNumber5_1" />1ая<br />
-                                    <input type="checkbox" name="weekDayNumber5_2" />2ая<br />
-                                    <input type="checkbox" name="weekDayNumber5_3" />3я<br />
-                                    <input type="checkbox" name="weekDayNumber5_4" />4ая<br />
-                                    <input type="checkbox" name="weekDayNumber5_5" />5ая<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber5_1" />1ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber5_2" />2ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber5_3" />3я</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber5_4" />4ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber5_5" />5ая</nobr><br />
                                 </td>
                                 <td>
 
-                                    <input type="checkbox" name="weekDayNumber6_1" />1ая<br />
-                                    <input type="checkbox" name="weekDayNumber6_2" />2ая<br />
-                                    <input type="checkbox" name="weekDayNumber6_3" />3я<br />
-                                    <input type="checkbox" name="weekDayNumber6_4" />4ая<br />
-                                    <input type="checkbox" name="weekDayNumber6_5" />5ая<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber6_1" />1ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber6_2" />2ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber6_3" />3я</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber6_4" />4ая</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber6_5" />5ая</nobr><br />
                                 </td>
                                 <td>
 
-                                    <input type="checkbox" name="weekDayNumber7_1" />1ое<br />
-                                    <input type="checkbox" name="weekDayNumber7_2" />2ое<br />
-                                    <input type="checkbox" name="weekDayNumber7_3" />3е<br />
-                                    <input type="checkbox" name="weekDayNumber7_4" />4ое<br />
-                                    <input type="checkbox" name="weekDayNumber7_5" />5ое<br />
+                                    <nobr><input type="checkbox" name="weekDayNumber7_1" />1ое</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber7_2" />2ое</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber7_3" />3е</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber7_4" />4ое</nobr><br />
+                                    <nobr><input type="checkbox" name="weekDayNumber7_5" />5ое</nobr><br />
                                 </td>
                             </tr>
 
@@ -624,7 +627,8 @@
         <input type="hidden" class="isRange no-display">
         <input type="hidden" class="dateFactBegin no-display">
         <input type="hidden" class="dateFactEnd no-display">
-        <span class="factTextCaption"></span>
-        <span class="glyphicon glyphicon-remove factRemoveButton"></span>
+        <nobr><span class="glyphicon glyphicon-remove factRemoveButton"></span>
+        <span class="factTextCaptionReason"></span></nobr>
+        <br><span class="factTextCaptionDate"></span>
     </div>
 </div>

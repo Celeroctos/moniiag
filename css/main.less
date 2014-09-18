@@ -2132,7 +2132,7 @@ a.accordion-toggle:hover {
 {
   display:inline-block;
   margin-top: 15px;
-  margin-left: 7%;
+  /*margin-left: 7%;*/
   .date-control
   {
     padding-left: 0px;
@@ -2173,7 +2173,7 @@ a.accordion-toggle:hover {
 }
 .daysEditingDatesBlock
 {
-  display:inline-block;
+  /*display:inline-block;*/
   .daysOneDateContainer
   {
     background-color: rgb(245, 246, 206);
@@ -2188,14 +2188,28 @@ a.accordion-toggle:hover {
 
 .factsDatesBlock
 {
+  text-align: left;
   .factsItemContainer
   {
     background-color: rgb(245, 246, 206);
     margin-bottom: 10px;
-    .factRemoveButton
+    text-align: left;
+    .factTextCaptionReason
     {
-      color: rgb(255, 0, 0);
+      text-decoration: underline;
     }
+    .factTextCaption
+    {
+      display:inline-block;
+    }
+    /*.factRemoveButtonContainer
+    {
+      display:inline-block;*/
+      .factRemoveButton
+      {
+        color: rgb(255, 0, 0);
+      }
+    /*}*/
   }
 }
 
