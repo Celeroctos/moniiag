@@ -10,8 +10,8 @@ $(document).ready(function() {
                 width: 50
             },
             {
-                name: 'name',
-                index: 'name',
+                name: 'value',
+                index: 'value',
                 width: 250
             }
         ],
@@ -69,8 +69,8 @@ $(document).ready(function() {
                                 formField: 'id'
                             },
                             {
-                                modelField: 'name',
-                                formField: 'name'
+                                modelField: 'value',
+                                formField: 'value'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {

@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#rules").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getrules',
         datatype: "json",
-        colNames:['Код', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', '', '', ''],
+        colNames:['Код', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', '', '', '', ''],
         colModel:[
             {
                 name:'id',
@@ -20,8 +20,8 @@ $(document).ready(function() {
                 width: 80
             },
 			{
-                name: 'value',
-                index: 'value',
+                name: 'rule',
+                index: 'rule',
                 width: 100
             },
 			{
@@ -43,7 +43,12 @@ $(document).ready(function() {
                 name: 'parent_id',
                 index: 'parent_id',
                 hidden: true
-            }
+            },
+			{
+                name: 'value',
+                index: 'value',
+                hidden: true
+            },
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -100,11 +105,30 @@ $(document).ready(function() {
                                 formField: 'id'
                             },
                             {
-                                modelField: 'name',
-                                formField: 'name'
-                            }
+                                modelField: 'parent_id',
+                                formField: 'parentId'
+                            },
+							{
+                                modelField: 'prefix_id',
+                                formField: 'prefixId'
+                            },
+							{
+                                modelField: 'postfix_id',
+                                formField: 'postfixId'
+                            },
+							{
+								modelField: 'value',
+								formField: 'typeId'
+							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
+							if(fields[i].formField == 'typeId') {
+								if(data.data[fields[i].modelField] == 2) {
+									form.find('#parentId').parents('.form-group').removeClass('no-display');
+								} else {
+									form.find('#parentId').parents('.form-group').addClass('no-display');
+								}
+							}
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
                         $("#editRulePopup").modal({
@@ -191,5 +215,11 @@ $(document).ready(function() {
         }
     });
 
-
+	$('#rule-edit-form, #rule-add-form').find('#typeId').on('change', function(e) {
+		if($(this).val() == 2) {
+			$(this).parents('.form-group').next().removeClass('no-display').find('select').val(-1);
+		} else {
+			$(this).parents('.form-group').next().addClass('no-display').find('select').val(-1);
+		}
+	});
 });

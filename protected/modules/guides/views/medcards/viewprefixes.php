@@ -41,6 +41,22 @@
             ?>
             <div class="modal-body">
                 <div class="row">
+					<?php echo $form->hiddenField($model,'id', array(
+						'id' => 'id',
+						'class' => 'form-control'
+					)); ?>
+					<div class="form-group">
+						<?php echo $form->labelEx($model,'value', array(
+							'class' => 'col-xs-3 control-label'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->textField($model,'value', array(
+								'id' => 'value',
+								'class' => 'form-control',
+								'placeholder' => 'Значение'
+							)); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -86,6 +102,18 @@
             ?>
             <div class="modal-body">
                 <div class="row">
+					<div class="form-group">
+						<?php echo $form->labelEx($model,'value', array(
+							'class' => 'col-xs-3 control-label'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->textField($model,'value', array(
+								'id' => 'value',
+								'class' => 'form-control',
+								'placeholder' => 'Значение'
+							)); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">

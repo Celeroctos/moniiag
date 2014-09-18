@@ -41,6 +41,54 @@
             ?>
             <div class="modal-body">
                 <div class="row">
+					<?php echo $form->hiddenField($model,'id', array(
+						'id' => 'id',
+						'class' => 'form-control'
+					)); ?>
+					<div class="form-group">
+						<?php echo $form->label($model,'prefixId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'prefixId', $prefixesList, array(
+								'id' => 'prefixId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'postfixId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'postfixId', $postfixesList, array(
+								'id' => 'postfixId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'typeId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'typeId', $typesList, array(
+								'id' => 'typeId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'parentId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'parentId', $rulesList, array(
+								'id' => 'parentId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -86,6 +134,50 @@
             ?>
             <div class="modal-body">
                 <div class="row">
+					<div class="form-group">
+						<?php echo $form->label($model,'prefixId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'prefixId', $prefixesList, array(
+								'id' => 'prefixId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'postfixId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'postfixId', $postfixesList, array(
+								'id' => 'postfixId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'typeId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'typeId', $typesList, array(
+								'id' => 'typeId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group no-display">
+						<?php echo $form->label($model,'parentId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'parentId', $rulesList, array(
+								'id' => 'parentId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
