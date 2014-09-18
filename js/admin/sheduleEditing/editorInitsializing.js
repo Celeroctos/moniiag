@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+
     $.fn['timetableEditor'] =
     {
         startAdding: function()
@@ -19,15 +20,22 @@ $(document).ready(function () {
         addRowInEditor: function()
         {
             addOneRowRule();
+        },
+        getActiveRangePicker: function()
+        {
+            return activeRangePicker;
         }
+
     }
 
-    // Открываем редактор (показываем блок с ним)
+    activeRangePicker = null;
+
+    // РћС‚РєСЂС‹РІР°РµРј СЂРµРґР°РєС‚РѕСЂ (РїРѕРєР°Р·С‹РІР°РµРј Р±Р»РѕРє СЃ РЅРёРј)
     function openEditor()
     {
         $('.addingNewSheduleContainer').addClass('no-display');
         editingTemplate = $('#timetableTemplates #timetableEditing');
-        // Теперь надо вставить в содержимое editingTemplate в блок
+        // РўРµРїРµСЂСЊ РЅР°РґРѕ РІСЃС‚Р°РІРёС‚СЊ РІ СЃРѕРґРµСЂР¶РёРјРѕРµ editingTemplate РІ Р±Р»РѕРє
         editorBlock = $('#edititngSheduleArea');
         $(editorBlock).removeClass('no-display');
 
@@ -36,12 +44,12 @@ $(document).ready(function () {
 
     function initHandlers( editorBlock)
     {
-        // В первой tr-ке редактора удаляем крестик удаления
+        // Р’ РїРµСЂРІРѕР№ tr-РєРµ СЂРµРґР°РєС‚РѕСЂР° СѓРґР°Р»СЏРµРј РєСЂРµСЃС‚РёРє СѓРґР°Р»РµРЅРёСЏ
         $(editorBlock).find('.oneRowRuleTimetable:eq(0) td.deleteTD').empty();
 
         $(editorBlock).find('.sourceSelect').trigger('change');
 
-        // Инитим календарь для ячейки "Дни работы"
+        // РРЅРёС‚РёРј РєР°Р»РµРЅРґР°СЂСЊ РґР»СЏ СЏС‡РµР№РєРё "Р”РЅРё СЂР°Р±РѕС‚С‹"
         tableRow = $(editorBlock).find('.oneRowRuleTimetable:eq(0)');
         initRowHandlers(tableRow);
 
@@ -52,8 +60,8 @@ $(document).ready(function () {
 
     function initEditor(timeTableToEdit)
     {
-        // Если определён - надо перебрать все правила из графика и запустить их редактирование
-        //   иначе - надо открыть только первую строчку в
+        // Р•СЃР»Рё РѕРїСЂРµРґРµР»С‘РЅ - РЅР°РґРѕ РїРµСЂРµР±СЂР°С‚СЊ РІСЃРµ РїСЂР°РІРёР»Р° РёР· РіСЂР°С„РёРєР° Рё Р·Р°РїСѓСЃС‚РёС‚СЊ РёС… СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ
+        //   РёРЅР°С‡Рµ - РЅР°РґРѕ РѕС‚РєСЂС‹С‚СЊ С‚РѕР»СЊРєРѕ РїРµСЂРІСѓСЋ СЃС‚СЂРѕС‡РєСѓ РІ
         if (timeTableToEdit==undefined)
         {
 
@@ -76,17 +84,17 @@ $(document).ready(function () {
 
     function addOneRowRule()
     {
-        // Принцип:
-        //      1. берём из шаблона строчку
-        //      2. вставляем её перед строкой с кнопочками
-        //      3. В колонке "обстоятельства" меняем rowspan на +1
+        // РџСЂРёРЅС†РёРї:
+        //      1. Р±РµСЂС‘Рј РёР· С€Р°Р±Р»РѕРЅР° СЃС‚СЂРѕС‡РєСѓ
+        //      2. РІСЃС‚Р°РІР»СЏРµРј РµС‘ РїРµСЂРµРґ СЃС‚СЂРѕРєРѕР№ СЃ РєРЅРѕРїРѕС‡РєР°РјРё
+        //      3. Р’ РєРѕР»РѕРЅРєРµ "РѕР±СЃС‚РѕСЏС‚РµР»СЊСЃС‚РІР°" РјРµРЅСЏРµРј rowspan РЅР° +1
         templateRow = $('#timetableTemplates .oneRowRuleTimetable').clone();
         buttonsRow = $('#edititngSheduleArea tr.addRuleButtons');
 
-        // Прикошачиваем события к строке
+        // РџСЂРёРєРѕС€Р°С‡РёРІР°РµРј СЃРѕР±С‹С‚РёСЏ Рє СЃС‚СЂРѕРєРµ
         initRowHandlers(templateRow);
 
-        // В добавляемой строке уничтожаю колонку "factsTD"
+        // Р’ РґРѕР±Р°РІР»СЏРµРјРѕР№ СЃС‚СЂРѕРєРµ СѓРЅРёС‡С‚РѕР¶Р°СЋ РєРѕР»РѕРЅРєСѓ "factsTD"
         $(templateRow).find('.factsTD ').remove();
 
         templateRow.insertBefore(buttonsRow);
@@ -98,7 +106,7 @@ $(document).ready(function () {
 
     }
 
-    // Инитит календарь внутри ячейки "дни работы"
+    // РРЅРёС‚РёС‚ РєР°Р»РµРЅРґР°СЂСЊ РІРЅСѓС‚СЂРё СЏС‡РµР№РєРё "РґРЅРё СЂР°Р±РѕС‚С‹"
     function initRowHandlers(tableRow)
     {
 
@@ -108,18 +116,36 @@ $(document).ready(function () {
         InitOneTimeControl(   $(tableRow).find('.hoursOfGreetingTD .greetingHourBeginTime')  );
         InitOneTimeControl(   $(tableRow).find('.hoursOfGreetingTD .greetingHourEndTime')  );
 
-        // Инитим лимит на приёмы
+        // РРЅРёС‚РёРј Р»РёРјРёС‚ РЅР° РїСЂРёС‘РјС‹
         for (i=0;i<3;i++)
         {
             limitBlock = $(tableRow).find('.limitTD .limitBlock'+ (i+1).toString());
             //
             timeBeginComtrol = $(limitBlock).find( '.limitTime'+ (i+1).toString());
             timeEndComtrol = $(limitBlock).find( '.limitTime'+ (i+1).toString()+'End');
-            // Инитим контролы
+            // РРЅРёС‚РёРј РєРѕРЅС‚СЂРѕР»С‹
             InitOneTimeControl(   timeBeginComtrol );
             InitOneTimeControl(  timeEndComtrol );
         }
-        // Инитим календари начала и конца действия графика
 
+      //  $($(tableRow)).find('input[name="addFactRangeTimetable"]').daterangepicker();
+        $($(tableRow)).find('.factsRangeButton').daterangepicker(
+            {},
+            function(start, end) {
+                console.log(this);
+                activeRanger = $.fn['timetableEditor'].getActiveRangePicker();
+                if (activeRanger!=null)
+                {
+                    $(activeRanger).find('[name=factRangeBegin]').val( start.format('DD.MM.YYYY')  );
+                    $(activeRanger).find('[name=factRangeEnd]').val( end.format('DD.MM.YYYY')  );
+                    $('#edititngSheduleArea .oneRowRuleTimetable:first .factsTD').trigger('needFactSave');
+                }
+                //$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+        );
+
+        InitOneDateControl(   $(tableRow).find('.factsTD .addFactDateTimetable-cont')  );
+
+        $(tableRow).find('.oneRowRuleTimetable:first .rangeCheckbox input').trigger('change');
     }
 });

@@ -53,6 +53,8 @@ $(document).ready(function () {
         if ( $(this).val()==-1 )
         {
             $(parentContainer).find('.rangeCheckbox').addClass('no-display');
+            $(parentContainer).find('.factsRangeDateCalendarContainer').addClass('no-display');
+            $(parentContainer).find('.factsOneDateCalendarContainer').addClass('no-display');
         }
         else
         {
@@ -73,6 +75,15 @@ $(document).ready(function () {
                 $(parentContainer).find('[name=notRangeFact]').prop('checked', true);
             }
 
+            if ($(parentContainer).find('[name=rangeFact]').prop('checked')==true)
+            {
+                switchFactsRangeMode(true);
+            }
+            else
+            {
+                switchFactsRangeMode(false);
+            }
+
         }
 
 
@@ -87,13 +98,14 @@ $(document).ready(function () {
             {
                 // Снимаю выделение с элемента not-odd
                 $(parentBlock).find('[name=notRangeFact]').removeAttr('checked');
-
+                switchFactsRangeMode(true);
             }
 
             if ( $(this).attr('name')==  'notRangeFact' )
             {
                 // Снимаю выделение с элемента odd
                 $(parentBlock).find('[name=rangeFact]').removeAttr('checked');
+                switchFactsRangeMode(false);
             }
         }
         else
@@ -102,6 +114,22 @@ $(document).ready(function () {
             $(this).prop("checked", true);
         }
     });
+
+    function switchFactsRangeMode(turnOn)
+    {
+        oneDate = $('#edititngSheduleArea .factsOneDateCalendarContainer');
+        rangeDate = $('#edititngSheduleArea .factsRangeDateCalendarContainer');
+        if (turnOn)
+        {
+            $(oneDate).addClass('no-display');
+            $(rangeDate).removeClass('no-display');
+        }
+        else
+        {
+            $(oneDate).removeClass('no-display');
+            $(rangeDate).addClass('no-display');
+        }
+    }
 
     $(document).on('change','[name=addDateTimetable]',function(){
         // Найдём блок, в который нужно вставить дату
@@ -123,5 +151,80 @@ $(document).ready(function () {
         $(parentsContainer).remove();
 
     });
+
+    $(document).on('click', '.factsItemContainer .factRemoveButton', function(){
+        // Взять родителя у this и удалить
+        parentsContainer = $(this).parents('.factsItemContainer');
+        $(parentsContainer).remove();
+
+    });
+
+    activeRangePicker = null;
+
+    $(document).on('click', '.factsRangeButton',function(){
+       // Ищем родительский контейнер
+        activeRangePicker = $(this).parents('.addFactRangeTimetable-cont');
+
+    });
+
+    $(document).on('change', '[name=addFactDateTimetable]',function(){
+        parentFactTD = $(this).parents('.factsTD');
+        parentFactTD.trigger('needFactSave');
+    });
+
+    $(document).on(
+      'needFactSave',
+      '#edititngSheduleArea .oneRowRuleTimetable:first .factsTD',
+        function()
+        {
+            // Читаем факт и складываем его в таблицу
+            console.log('Читаю факт из редактора');
+
+            caption = '';
+
+            containerTemplate = $('#timetableTemplates .factsItemContainer').clone();
+
+            editorContainer = $('#edititngSheduleArea .oneRowRuleTimetable:first .factsTD');
+            $(containerTemplate).find('.typeFactVal').val(  $(editorContainer).find('.factsSelect').val() );
+            $(containerTemplate).find('.isRange').val(  '0' );
+            if (   $(editorContainer).find('[name=rangeFact]').prop('checked')==true  )
+            {
+                $(containerTemplate).find('.isRange').val(  '1' );
+            }
+            if (   $(containerTemplate).find('.isRange').val(   )=='1' )
+            {
+                $(containerTemplate).find('.dateFactBegin').val(
+                    $(editorContainer).find('[name=factRangeBegin]').val()
+                );
+
+                caption += $(editorContainer).find('[name=factRangeBegin]').val();
+
+                $(containerTemplate).find('.dateFactEnd').val(
+                    $(editorContainer).find('[name=factRangeEnd]').val()
+                );
+
+                caption += ' - ';
+                caption += $(editorContainer).find('[name=factRangeEnd]').val();
+
+
+            }
+            else
+            {
+                $(containerTemplate).find('.dateFactBegin').val(
+                    $(editorContainer).find('[name=addFactDateTimetable]').val().split('-').reverse().join('.')
+                );
+
+                caption += $(containerTemplate).find('.dateFactBegin').val();
+            }
+            caption += ' ';
+            selectedOption = $(editorContainer).find('.factsSelect option:selected');
+            caption += $(selectedOption).text();
+            $(containerTemplate).find('.factTextCaption').text(caption);
+            $(containerTemplate).removeClass('no-display');
+
+            // Записываем в блок
+            $(editorContainer).find('.factsDatesBlock').append( $(containerTemplate) );
+        }
+    );
 
 });

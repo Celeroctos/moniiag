@@ -1,4 +1,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/daterangepicker/moment.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/daterangepicker/daterangepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/daterangepicker/daterangepicker-bs3.css" />
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/commonBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorInitsializing.js" ></script>
@@ -501,6 +504,27 @@
                             <br>
                             <input type="checkbox" name="notRangeFact">Один день
                     </div>
+                    <div class="factsOneDateCalendarContainer no-display">
+                        <div class="input-group date date-timetable null-padding-left addFactDateTimetable-cont">
+                            <input class="form-control" placeholder="" title="" style="width: 200px;" name="addFactDateTimetable" type="hidden" value="">
+                                <span class="input-group-addon">
+                                            <span class="glyphicon-calendar glyphicon">
+                                            </span>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="factsRangeDateCalendarContainer no-display">
+                        <div class="input-group date date-timetable null-padding-left addFactRangeTimetable-cont">
+                            <input type="hidden" name="factRangeBegin">
+                            <input type="hidden" name="factRangeEnd">
+                                <span class="input-group-addon factsRangeButton">
+                                            <span class="glyphicon-calendar glyphicon">
+                                            </span>
+                                </span>
+                        </div>
+                    </div>
+                    <div class="factsDatesBlock">
+                    </div>
                 </td>
                 <td class="deleteTD">
                     <span class="removeTimeTableRule glyphicon glyphicon-remove-circle" title="Удалить"></span>
@@ -594,5 +618,13 @@
         <span class="daysOneDateValue"></span>
         <span class="glyphicon glyphicon-remove daysOneDateValueRemove"></span>
     </div>
-
+    <!-- Контейнер для хранения обстоятельств (дежурство, неприёмный день и т.п.) -->
+    <div class="factsItemContainer">
+        <input type="hidden" class="typeFactVal no-display">
+        <input type="hidden" class="isRange no-display">
+        <input type="hidden" class="dateFactBegin no-display">
+        <input type="hidden" class="dateFactEnd no-display">
+        <span class="factTextCaption"></span>
+        <span class="glyphicon glyphicon-remove factRemoveButton"></span>
+    </div>
 </div>
