@@ -11,14 +11,43 @@ $(document).ready(function () {
     {
         // Выбираем все в строке таблицы редактирования
         rulesRows = $('#edititngSheduleArea .oneRowRuleTimetable');
+        resultObject = {};
+
         rulesObject = [];
         // Перебираем правила
-        for (i=0;i<rulesRows.length;i++)
+        for (rulesCounter=0;rulesCounter<rulesRows.length;rulesCounter++)
         {
-            rulesObject = getRowObject($(rulesRows)[i]);
+            rulesObject.push(getRowObject($(rulesRows)[rulesCounter]));
         }
 
-        return $.toJSON(rulesObject);
+        resultObject.rules = rulesObject;
+        // Конвертим факты
+
+        resultObject.facts = getFacts( '.oneRowRuleTimetable:first td.factsTD' );
+        resultJSON = $.toJSON(resultObject);
+        return resultJSON;
+    }
+
+    function getFacts(cellWithFacts)
+    {
+        resultFacts = [];
+        // Перебираем обстоятельства
+        factsBlocks = $(cellWithFacts).find('.factsItemContainer');
+        if (factsBlocks.length>0)
+        {
+            rowObjectResult.facts = [];
+            for (i=0;i<factsBlocks.length;i++)
+            {
+                oneFactArrayEl = {};
+                oneFactArrayEl.type = $($(factsBlocks)[i]).find('.typeFactVal').val();
+                oneFactArrayEl.isRange = $($(factsBlocks)[i]).find('.isRange').val();
+                oneFactArrayEl.begin = ($($(factsBlocks)[i]).find('.dateFactBegin').val()).split('.').reverse().join('-') ;
+                oneFactArrayEl.end = ($($(factsBlocks)[i]).find('.dateFactEnd').val()).split('.').reverse().join('-') ;
+
+                resultFacts.push(oneFactArrayEl);
+            }
+        }
+        return resultFacts;
     }
 
     function getRowObject(tableRowRule)
@@ -72,22 +101,7 @@ $(document).ready(function () {
         // Читаем лимиты
         rowObjectResult.limits = getLimits(tableRowRule);
 
-        // Перебираем обстоятельства
-        factsBlocks = $(tableRowRule).find('.factsItemContainer');
-        if (factsBlocks.length>0)
-        {
-            rowObjectResult.facts = [];
-            for (i=0;i<factsBlocks.length;i++)
-            {
-                oneFactArrayEl = {};
-                oneFactArrayEl.type = $($(factsBlocks)[i]).find('.typeFactVal').val();
-                oneFactArrayEl.isRange = $($(factsBlocks)[i]).find('.isRange').val();
-                oneFactArrayEl.begin = ($($(factsBlocks)[i]).find('.dateFactBegin').val()).split('.').reverse().join('-') ;
-                oneFactArrayEl.end = ($($(factsBlocks)[i]).find('.dateFactEnd').val()).split('.').reverse().join('-') ;
 
-                rowObjectResult.facts.push(oneFactArrayEl);
-            }
-        }
 
         return rowObjectResult;
     }
