@@ -1,6 +1,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorBehavior.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/commonBehavior.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorInitsializing.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <!-- тег center - это конечно плохо, но пока пусть будет -->
 <center><h4>Графики работы персонала</h4></center>
@@ -301,7 +302,8 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="daysEditingDatesBlock">
+                    </div>
                 </td>
                 <td class="hoursOfWorkTD">
                     <div class="workingHourBlock">
@@ -586,6 +588,11 @@
                 <button type="button" class="cancelSheduleButton btn btn-default" data-dismiss="modal">Отмена</button>
             </div>
         </div>
+    </div>
+    <!-- Контейнер для хранения латы в ячейке "Дни работы" -->
+    <div class="daysOneDateContainer">
+        <span class="daysOneDateValue"></span>
+        <span class="glyphicon glyphicon-remove daysOneDateValueRemove"></span>
     </div>
 
 </div>
