@@ -152,6 +152,7 @@ $(document).ready(function() {
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == 'true') {
                         $("#rules").trigger("reloadGrid");
+						$('#rule-edit-form, #rule-add-form').find('#parentId').trigger('update');
                     } else {
                         // Удаляем предыдущие ошибки
                         $('#errorAddRulePopup .modal-body .row p').remove();
@@ -173,6 +174,7 @@ $(document).ready(function() {
             // Перезагружаем таблицу
             $("#rules").trigger("reloadGrid");
             $("#rule-add-form")[0].reset(); // Сбрасываем форму
+			$('#rule-edit-form, #rule-add-form').find('#parentId').trigger('update');
         } else {
 
             // Удаляем предыдущие ошибки
@@ -221,5 +223,29 @@ $(document).ready(function() {
 		} else {
 			$(this).parents('.form-group').next().addClass('no-display').find('select').val(-1);
 		}
+	});
+	
+	$('#rule-edit-form, #rule-add-form').find('#parentId').on('update', function(e) {
+		$(this).prop('disabled', true);
+		$.ajax({
+			'url' : '/guides/medcards/updateruleslist',
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET',
+			'success' : function(data, textStatus, jqXHR) {
+				if(data.success) {
+					// TODO
+					var select = $('#rule-edit-form, #rule-add-form').find('#parentId');
+					$(select).find('option').remove();
+					var data = data.data;
+					for(var i in data) {
+						$(select).append($('<option>').prop({
+							'value' : i
+						}).text(data[i]));
+					}
+					$('#rule-edit-form, #rule-add-form').find('#parentId').prop('disabled', false).val(-1);
+				}
+			}
+		});
 	});
 });

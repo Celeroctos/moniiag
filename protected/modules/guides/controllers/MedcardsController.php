@@ -48,9 +48,18 @@ class MedcardsController extends Controller {
 		$rulesList = array('-1' => 'Не наследуется');
 		$rulesDb = MedcardRule::model()->findAll();
 		foreach($rulesDb as $rule) {
-			$rulesList[(string)$rule['id']] = $rule['value'];
+			$rulesList[(string)$rule['id']] = (string)$rule['id'];
 		}
 		return $rulesList;
+	}
+	
+	public function actionUpdateRulesList() {
+		echo CJSON::encode(
+			array(
+				'success' => true,
+				'data' => $this->getMedcardsRules()
+			)
+		);
 	}
 		
 	public function actionGetRules() {
@@ -77,6 +86,14 @@ class MedcardsController extends Controller {
 				if($rule['parent_id'] == null) {
 					$rule['parent_id'] = -1;
 					$rule['parent'] = 'Нет';
+				}
+				if($rule['prefix_id'] == null) {
+					$rule['prefix_id'] = -1;
+					$rule['prefix'] = 'Нет';
+				}
+				if($rule['postfix_id'] == null) {
+					$rule['postfix_id'] = -1;
+					$rule['postfix'] = 'Нет';
 				}
 				$rule['rule'] = $this->typesList[$rule['value']];
 			}
@@ -296,8 +313,14 @@ class MedcardsController extends Controller {
 	
 	public function actionGetOneRule($id) {
         $rule = MedcardRule::model()->findByPk($id);
-		if($rule->parent_id == null) {
+		if($rule['parent_id'] == null) {
 			$rule['parent_id'] = -1;
+		}
+		if($rule['prefix_id'] == null) {
+			$rule['prefix_id'] = -1;
+		}
+		if($rule['postfix_id'] == null) {
+			$rule['postfix_id'] = -1;
 		}
         echo CJSON::encode(
 			array(
