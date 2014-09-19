@@ -178,7 +178,10 @@ $(document).ready(function () {
     $('.addingNewShedule').click(
         function()
         {
+
+            //test ='{"rules":[{"cabinet":"18","days":{"1":[],"2":["1"],"3":[],"4":["2"],"5":[],"6":["3"],"7":[]},"oddance":0,"except":"4","daysDates":["2014-09-01","2014-09-02"],"workingBegin":"11:11","workingEnd":"22:22","greetingBegin":"3:33","greetingEnd":"4:44","limits":{"1":{"quantity":"5","begin":"5:55","end":"5:55"},"2":{},"3":{}}}],"facts":[{"type":"1","isRange":"1","begin":"2014-09-01","end":"2014-09-08"},{"type":"4","isRange":"0","begin":"2014-09-24","end":""}]}';
             $.fn['timetableEditor'].startAdding();
+            //$.fn['timetableEditor'].startEditing(test);
         }
     );
 
@@ -197,4 +200,6 @@ $(document).ready(function () {
 
         );
     });
+
+
 });

@@ -133,7 +133,7 @@ $(document).ready(function () {
 
     $(document).on('change','[name=addDateTimetable]',function(){
         // Найдём блок, в который нужно вставить дату
-        if ( ($(this).val()!='') && ($(this).val()!=undefined) && ($(this).val()!=null) )
+        /*if ( ($(this).val()!='') && ($(this).val()!=undefined) && ($(this).val()!=null) )
         {
             targetBlock = $(this).parents('.daysTD').find('.daysEditingDatesBlock');
             // а Основе this.val - конструируем блок с датой
@@ -142,6 +142,11 @@ $(document).ready(function () {
             $(newDateBlock).find('.daysOneDateValue').text(   ($(this).val()).split('-').reverse().join('.') );
             // Записываем newDateBlock в контейнер
             $(targetBlock).append( $(newDateBlock) );
+        }*/
+        if ( ($(this).val()!='') && ($(this).val()!=undefined) && ($(this).val()!=null) )
+        {
+            targetBlock = $(this).parents('.daysTD').find('.daysEditingDatesBlock');
+            $.fn['timetableEditor'].addDayDate(targetBlock, $(this).val());
         }
     });
 
@@ -185,47 +190,91 @@ $(document).ready(function () {
             containerTemplate = $('#timetableTemplates .factsItemContainer').clone();
 
             editorContainer = $('#edititngSheduleArea .oneRowRuleTimetable:first .factsTD');
-            $(containerTemplate).find('.typeFactVal').val(  $(editorContainer).find('.factsSelect').val() );
-            $(containerTemplate).find('.isRange').val(  '0' );
+            type =  $(editorContainer).find('.factsSelect').val();
+            isRange = '0';
             if (   $(editorContainer).find('[name=rangeFact]').prop('checked')==true  )
             {
-                $(containerTemplate).find('.isRange').val(  '1' );
+                isRange = '1';
             }
-            if (   $(containerTemplate).find('.isRange').val(   )=='1' )
+            if (   isRange=='1' || isRange==1 )
             {
-                $(containerTemplate).find('.dateFactBegin').val(
-                    $(editorContainer).find('[name=factRangeBegin]').val()
-                );
+                dateBegin =
+                    $(editorContainer).find('[name=factRangeBegin]').val();
 
-                caption += $(editorContainer).find('[name=factRangeBegin]').val();
-
-                $(containerTemplate).find('.dateFactEnd').val(
-                    $(editorContainer).find('[name=factRangeEnd]').val()
-                );
-
-                caption += ' - ';
-                caption += $(editorContainer).find('[name=factRangeEnd]').val();
-
-
+                dateEnd =
+                    $(editorContainer).find('[name=factRangeEnd]').val();
             }
             else
             {
-                $(containerTemplate).find('.dateFactBegin').val(
-                    $(editorContainer).find('[name=addFactDateTimetable]').val().split('-').reverse().join('.')
-                );
-
-                caption += $(containerTemplate).find('.dateFactBegin').val();
+                dateBegin =
+                    $(editorContainer).find('[name=addFactDateTimetable]').val();
+                dateEnd = '';
             }
-            $(containerTemplate).find('.factTextCaptionDate').text(caption);
-            selectedOption = $(editorContainer).find('.factsSelect option:selected');
-            //caption += $(selectedOption).text();
-            $(containerTemplate).find('.factTextCaptionReason').text($(selectedOption).text());
-            $(containerTemplate).find('.factTextCaption').text(caption);
-            $(containerTemplate).removeClass('no-display');
 
-            // Записываем в блок
-            $(editorContainer).find('.factsDatesBlock').append( $(containerTemplate) );
+            $.fn['timetableEditor'].addFact(
+                type,
+                isRange,
+                dateBegin,
+                dateEnd
+            );
         }
     );
+
+
+    /* $(document).on(
+     'needFactSave',
+     '#edititngSheduleArea .oneRowRuleTimetable:first .factsTD',
+     function()
+     {
+     // Читаем факт и складываем его в таблицу
+     console.log('Читаю факт из редактора');
+
+     caption = '';
+
+     containerTemplate = $('#timetableTemplates .factsItemContainer').clone();
+
+     editorContainer = $('#edititngSheduleArea .oneRowRuleTimetable:first .factsTD');
+     $(containerTemplate).find('.typeFactVal').val(  $(editorContainer).find('.factsSelect').val() );
+     $(containerTemplate).find('.isRange').val(  '0' );
+     if (   $(editorContainer).find('[name=rangeFact]').prop('checked')==true  )
+     {
+     $(containerTemplate).find('.isRange').val(  '1' );
+     }
+     if (   $(containerTemplate).find('.isRange').val(   )=='1' )
+     {
+     $(containerTemplate).find('.dateFactBegin').val(
+     $(editorContainer).find('[name=factRangeBegin]').val()
+     );
+
+     caption += $(editorContainer).find('[name=factRangeBegin]').val();
+
+     $(containerTemplate).find('.dateFactEnd').val(
+     $(editorContainer).find('[name=factRangeEnd]').val()
+     );
+
+     caption += ' - ';
+     caption += $(editorContainer).find('[name=factRangeEnd]').val();
+
+
+     }
+     else
+     {
+     $(containerTemplate).find('.dateFactBegin').val(
+     $(editorContainer).find('[name=addFactDateTimetable]').val().split('-').reverse().join('.')
+     );
+
+     caption += $(containerTemplate).find('.dateFactBegin').val();
+     }
+     $(containerTemplate).find('.factTextCaptionDate').text(caption);
+     selectedOption = $(editorContainer).find('.factsSelect option:selected');
+     //caption += $(selectedOption).text();
+     $(containerTemplate).find('.factTextCaptionReason').text($(selectedOption).text());
+     $(containerTemplate).find('.factTextCaption').text(caption);
+     $(containerTemplate).removeClass('no-display');
+
+     // Записываем в блок
+     $(editorContainer).find('.factsDatesBlock').append( $(containerTemplate) );
+     }
+     );*/
 
 });

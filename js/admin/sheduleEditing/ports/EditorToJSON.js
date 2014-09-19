@@ -24,6 +24,7 @@ $(document).ready(function () {
         // Конвертим факты
 
         resultObject.facts = getFacts( '.oneRowRuleTimetable:first td.factsTD' );
+        console.log(resultObject);
         resultJSON = $.toJSON(resultObject);
         return resultJSON;
     }
@@ -35,14 +36,14 @@ $(document).ready(function () {
         factsBlocks = $(cellWithFacts).find('.factsItemContainer');
         if (factsBlocks.length>0)
         {
-            rowObjectResult.facts = [];
+           // rowObjectResult.facts = [];
             for (i=0;i<factsBlocks.length;i++)
             {
                 oneFactArrayEl = {};
                 oneFactArrayEl.type = $($(factsBlocks)[i]).find('.typeFactVal').val();
                 oneFactArrayEl.isRange = $($(factsBlocks)[i]).find('.isRange').val();
-                oneFactArrayEl.begin = ($($(factsBlocks)[i]).find('.dateFactBegin').val()).split('.').reverse().join('-') ;
-                oneFactArrayEl.end = ($($(factsBlocks)[i]).find('.dateFactEnd').val()).split('.').reverse().join('-') ;
+                oneFactArrayEl.begin = ($($(factsBlocks)[i]).find('.dateFactBegin').val()) ;
+                oneFactArrayEl.end = ($($(factsBlocks)[i]).find('.dateFactEnd').val()) ;
 
                 resultFacts.push(oneFactArrayEl);
             }
