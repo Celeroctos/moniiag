@@ -5,13 +5,14 @@ class FormMedcardRuleAdd extends FormMisDefault
 	public $postfixId;
 	public $parentId;
 	public $typeId;
+	public $name;
     public $id;
 
     public function rules()
     {
         return array(
 			array(
-				'typeId', 'required'
+				'typeId, name', 'required'
 			),
 			array(
 				'parentId, postfixId, prefixId, typeId', 'numerical'
@@ -23,6 +24,7 @@ class FormMedcardRuleAdd extends FormMisDefault
     public function attributeLabels()
     {
         return array(
+			'name' => 'Название',
 			'typeId' => 'Правило формирования номера',
 			'parentId' => 'Унаследован от правила',
 			'prefixId' => 'Префикс',

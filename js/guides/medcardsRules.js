@@ -2,12 +2,17 @@ $(document).ready(function() {
     $("#rules").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getrules',
         datatype: "json",
-        colNames:['Код', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', '', '', '', ''],
+        colNames:['Код', 'Название', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', '', '', '', ''],
         colModel:[
             {
                 name:'id',
                 index:'id',
                 width: 60
+            },
+			{
+                name: 'name',
+                index: 'name',
+                width: 150
             },
             {
                 name: 'postfix',
@@ -103,6 +108,10 @@ $(document).ready(function() {
                             {
                                 modelField: 'id',
                                 formField: 'id'
+                            },
+							{
+                                modelField: 'name',
+                                formField: 'name'
                             },
                             {
                                 modelField: 'parent_id',

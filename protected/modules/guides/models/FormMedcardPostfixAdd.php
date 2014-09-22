@@ -10,14 +10,14 @@ class FormMedcardPostfixAdd extends FormMisDefault
 			array(
 				'value', 'required'
 			)
-        );
+		);
     }
 
 
     public function attributeLabels()
     {
         return array(
-			'value' => 'Постфикс',
+			'value' => 'Постфикс'
         );
     }
 }

@@ -852,7 +852,11 @@ class TasuController extends Controller {
             ));
             exit();
         }
-        TasuGreetingsBuffer::model()->deleteByPk($_GET['id']);
+        $buffer = TasuGreetingsBuffer::model()->findByPk($_GET['id']);
+		if($buffer->fake_id != null) {
+			TasuFakeGreetingsBuffer::model()->deleteByPk($buffer->fake_id);
+		}
+		$buffer->delete();
         echo CJSON::encode(array(
             'success' => true,
             'data' => 'Приём успешно удалён из очереди для выгрузки.'
@@ -1205,13 +1209,14 @@ class TasuController extends Controller {
             }
 
             // Пациент такой должен быть всего один
+			$birthday = implode('', explode('-', $oms->birthday));
             $sql = "EXEC PDPStdStorage.dbo.p_patset_20892
                         0,
                         '',
                         '".$oms->last_name."',
                         '".$oms->first_name."',
                         '".$oms->middle_name."',
-                        '".$oms->birthday."',
+                        '".$birthday."',
                         '".(($oms->gender == 1) ? 1 : 2)."',
                         NULL,
                         '0',
@@ -1377,6 +1382,13 @@ class TasuController extends Controller {
 				$number = $policyParts[1];
 			}
 			
+			$givedate = $oms->givedate;
+			$givedate = implode('', explode('-', $givedate));
+			$enddate = $oms->enddate;
+			if($enddate != null) {
+				$enddate = implode('', explode('-', $enddate));
+			}
+			
             $sql = "EXEC PDPStdStorage.dbo.p_patsetpol_48135
                         ".$patientRow['PatientUID'].",
                         0,
@@ -1386,8 +1398,8 @@ class TasuController extends Controller {
                         '".$smoRow['ShortName']."',
                         '".(($oms->status == 0) ? 1 : 3)."',
                         '1',
-                        '".$oms->givedate."',
-                        ".(($oms->enddate == null) ? "NULL" : "'".$oms->enddate."'").",
+                        '".$givedate."',
+                        ".(($oms->enddate == null) ? "NULL" : "'".$enddate."'").",
                         NULL,
                         '',
                         '',
@@ -1427,7 +1439,9 @@ class TasuController extends Controller {
 				$result = $conn->createCommand($sql)->execute();
 			} catch(Exception $e) {
 			}
-
+			
+			$givedDate = implode('', explode('-', $medcard->gived_date));
+			
 			$sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
                         ".$patientRow['PatientUID'].",
                         0,
@@ -1440,8 +1454,8 @@ class TasuController extends Controller {
                         '".$oms->middle_name."',
                         0,
                         '".(($oms->gender == 1) ? 1 : 2)."',
-                        '".$oms->birthday."',
-                        '".$medcard->gived_date."',
+                        '".$birthday."',
+                        '".$givedDate."',
                         NULL,
                         '',
                         NULL";
@@ -1649,6 +1663,8 @@ class TasuController extends Controller {
 			if($medcardRow == null) {
 				return false;
 			}
+			
+			$greeting['patient_day'] = implode(explode('-', $greeting['patient_day']));
 
             $tasuTap = new TasuTap();
             $tasuTap->uid = TasuTap::getLastUID() + 1;
@@ -1768,6 +1784,9 @@ class TasuController extends Controller {
     }
 
     private function addTasuProfessional($doctor) {
+		$dateBegin = implode('', explode('-', $doctor->date_begin));
+		$dateEnd = implode('', explode('-', $doctor->date_end));
+	
         // Получим последний ID для таблицы врачей
         $conn = Yii::app()->db2;
         $lastDoctorId = TasuEmployee::getLastUID();
@@ -1786,9 +1805,9 @@ class TasuController extends Controller {
         $tasuEmployee->ot_43242 = $doctor->middle_name;
         $tasuEmployee->fio_24180 = $doctor->last_name.' '.$doctor->first_name.' '.$doctor->middle_name;
         $tasuEmployee->shortfio_00269 = '';
-        $tasuEmployee->takeondate_51957 = $doctor->date_begin;
+        $tasuEmployee->takeondate_51957 = $dateBegin;
         $tasuEmployee->discharged_46785 = 0;
-        $tasuEmployee->dischargedate_63406 = $doctor->date_end;
+        $tasuEmployee->dischargedate_63406 = $dateEnd;
         if(!$tasuEmployee->save()) {
             throw new Exception();
         }

@@ -21,10 +21,17 @@ class MedcardsController extends Controller {
     }
 	
 	public function actionViewRules() {
-		$prefixesList = array('-1' => 'Не имеется');
-		$postfixesList = array('-1' => 'Не имеется');
-		
-		
+		$prefixesList = array(
+			'-1' => 'Не имеется',
+			'-2' => 'Предустановленный: ГГ',
+			'-3' => 'Предустановленный: ГГГГ'
+		);
+		$postfixesList = array(
+			'-1' => 'Не имеется',
+			'-2' => 'Предустановленный: ГГ',
+			'-3' => 'Предустановленный: ГГГГ'
+		);
+			
 		$prefixesDb = MedcardPrefix::model()->findAll();
 		$postfixesDb = MedcardPostfix::model()->findAll();
 		foreach($prefixesDb as $prefix) {
@@ -90,11 +97,21 @@ class MedcardsController extends Controller {
 				if($rule['prefix_id'] == null) {
 					$rule['prefix_id'] = -1;
 					$rule['prefix'] = 'Нет';
+				} elseif($rule['prefix_id'] == -2) {
+					$rule['prefix'] = 'Предустановленный: ГГ';
+				} elseif($rule['prefix_id'] == -3) {
+					$rule['prefix'] = 'Предустановленный: ГГГГ';
 				}
+				
 				if($rule['postfix_id'] == null) {
 					$rule['postfix_id'] = -1;
 					$rule['postfix'] = 'Нет';
+				} elseif($rule['postfix_id'] == -2) {
+					$rule['postfix'] = 'Предустановленный: ГГ';
+				} elseif($rule['postfix_id'] == -3) {
+					$rule['postfix'] = 'Предустановленный: ГГГГ';
 				}
+				
 				$rule['rule'] = $this->typesList[$rule['value']];
 			}
 			
@@ -344,14 +361,21 @@ class MedcardsController extends Controller {
 
     private function addEditModelRule($rule, $model, $msg) {
         $rule->value = $model->typeId;
+		$rule->name = $model->name;
 		if($model->prefixId != -1) {
 			$rule->prefix_id = $model->prefixId;
+		} else {
+			$rule->prefix_id = null;
 		}
 		if($model->postfixId != -1) {
 			$rule->postfix_id = $model->postfixId;
+		} else {
+			$rule->postfix_id = null;
 		}
 		if($model->parentId != -1) {
 			$rule->parent_id = $model->parentId;
+		} else {
+			$rule->parent_id = null;
 		}
         if($rule->save()) {
             echo CJSON::encode(array(

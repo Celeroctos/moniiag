@@ -17,7 +17,7 @@ class FormMedcardPrefixAdd extends FormMisDefault
     public function attributeLabels()
     {
         return array(
-			'value' => 'Префикс',
+			'value' => 'Префикс'
         );
     }
 }

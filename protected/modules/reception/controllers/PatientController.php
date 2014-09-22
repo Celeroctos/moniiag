@@ -75,6 +75,15 @@ class PatientController extends Controller {
 
     }
 	
+	public function actionGenerateCardNumber() {
+		if(!isset($_GET['ruleid'])) {
+			echo CJSON::encode(array('success' => false));
+			exit();
+		}
+		$generator = new CardnumberGenerator();
+		$cardNumber = $generator->generateNumber($_GET['ruleid']);
+	}
+	
 	// Удалить ОМС
 	public function actionDeleteOms() {
 		if(!isset($_GET['omsid'])) {
