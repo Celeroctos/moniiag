@@ -77,7 +77,7 @@ $(document).ready(function () {
         }
 
         // Читаем статус исключений (поле кроме)
-        if (  ($(tableRowRule).find('.exceptionSelect').val()!=-1)  )
+        if (  ($(tableRowRule).find('.exceptionSelect').val()!=null)  )
         {
             rowObjectResult.except = $(tableRowRule).find('.exceptionSelect').val();
         }

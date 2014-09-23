@@ -303,8 +303,9 @@
                         </table>
                     </div>
                     <!-- Нижний блок - Даты и чётность/нечётность -->
-                    <div class ="daysEditingBottomBLock" >
-                        <div class="calendarBlock">
+                    <table class ="daysEditingBottomBLock" >
+                        <tr>
+                        <td class="calendarBlock">
                             <div class="input-group date date-timetable null-padding-left">
                                 <input class="form-control" placeholder="" title="" style="width: 200px;" name="addDateTimetable" type="hidden" value="">
                                 <span class="input-group-addon">
@@ -315,9 +316,8 @@
                             <div class= "calendarBlockLabel">
                             Выбрать дату(ы) в<br>календаре
                             </div>
-                        </div>
-
-                        <div class="exceptionBlock">
+                        </td>
+                        <td class="exceptionBlock">
                             <!-- Чекбокс чётности-нечётности -->
                             <div class="oddCheckbox">
                                 <div style="display:inline-block;">
@@ -329,8 +329,7 @@
                             </div>
                             <!-- Селект исключений -->
                             <div class="exceptionSelectContainer">
-                                Кроме: <select class="exceptionSelect">
-                                    <option value="-1"></option>
+                                Кроме:<select class="exceptionSelect" multiple="multiple">
                                     <option value="-2">Даты в календаре</option>
                                     <option value="1">Понедельника</option>
                                     <option value="2">Вторника</option>
@@ -341,8 +340,9 @@
                                     <option value="7">Воскресенья</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
+                        </td>
+                        </tr>
+                    </table>
                     <div class="daysEditingDatesBlock">
                     </div>
                 </td>
