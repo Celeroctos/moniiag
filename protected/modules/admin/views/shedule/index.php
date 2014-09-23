@@ -7,6 +7,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/editorInitsializing.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/ports/EditorToJSON.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/ports/JSONToEditor.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/sheduleEditing/ports/JSONToPreview.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js" ></script>
 <!-- тег center - это конечно плохо, но пока пусть будет -->
 <center><h4>Графики работы персонала</h4></center>
@@ -59,7 +60,20 @@
 
 </div>
 <div id="existingSheduleArea" class="no-display">
+    <!-- Контейнер для пагинации -->
 
+
+    <!-- Спискота готовых графиков -->
+    <div class="col-xs-12" id="existingSheduleAreaList">
+
+
+
+    </div>
+    <!-- Контейнер для пагинации -->
+    <div class="row">
+        <ul class="pagination content-pagination">
+        </ul>
+    </div>
 </div>
 <!-- Блок, содержащий шаблоны для вывода графиков в разных режимах (редактирования, просмотра и пр) -->
 <!-- JavaScript берёт отсюда блоки, заполняет их значениями для каждого из графиков(правил)
@@ -133,10 +147,29 @@
         <!-- Шаблон для редактирования графика -->
         <span class="timeTableId no-display"></span>
         <span class="timeTableJSON no-display"></span>
-        <div class="col-xs-12 timeTableEditDateTimesAction">
-            <nobr>C <span class="timeTableROFrom"></span> по <span class="timeTableROTo"></span></nobr>
+        <div class="col-xs-12 timeTableEditDateTimesAction no-display">
+            <strong><nobr>C <span class="timeTableEditFrom"></span> по <span class="timeTableEditTo"></span></nobr></strong>
         </div>
-        <div class="col-xs-12 timeTablesEditDoctorsWards">
+        <table class="timeTablesEditDoctorsWards">
+            <tr class="">
+                <td class = "wardsColEditing">
+                    <strong>Отделения:</strong>
+                </td>
+                <td class = "doctorsColEditing">
+                    <strong>Врачи:</strong>
+                </td>
+            </tr>
+                <tr class="oneRowDoctorsWardEditing">
+                    <td class = "wardsColEditing">
+
+                    </td>
+                    <td class = "doctorsColEditing">
+
+                    </td>
+                </tr>
+        </table>
+        <!-- -->
+        <!--div class="col-xs-12 timeTablesEditDoctorsWards">
             <div class="col-xs-6 timeTablesEditWards">
                 <div class="col-xs-4 timeTablesEditWardsLabel">Отделение:</div>
                 <div class="col-xs-8 timeTablesEditWardsValue">
@@ -146,7 +179,8 @@
             <div class="col-xs-6 timeTablesEditDoctors">
                 Рабинович Евграф Аристархович<br>Джонсон аль-Мухаммед аль-Ибрагим<br>Моисеев Борис
             </div>
-        </div>
+        </div-->
+        <!-- -->
         <table class="timeTablesEditTable">
             <thead>
             <tr class="withBorderTDTimetableEditor">
@@ -631,5 +665,23 @@
         <nobr><span class="glyphicon glyphicon-remove factRemoveButton"></span>
         <span class="factTextCaptionReason"></span></nobr>
         <br><span class="factTextCaptionDate"></span>
+    </div>
+</div>
+<div class="modal fade error-popup" id="successEditPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Успешно!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Расписание успешно сохранено</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
     </div>
 </div>

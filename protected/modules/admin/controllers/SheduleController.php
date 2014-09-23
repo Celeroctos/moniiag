@@ -57,14 +57,249 @@ class SheduleController extends Controller {
         ));
     }
 
+    public function actionSave()
+    {
+        //var_dump($_GET);
+        //var_dump($_POST);
+        //exit();
+
+        // Смотрим - если в базе есть расписание с заданным id - надо его найти. Иначе создать новое
+        $timeTableModel = null;
+        if ($_GET['timeTableId']!="")
+        {
+            //$timeTableObject = Timetable::model();
+            $timeTableModel = Timetable::model()->findByPk($_GET['timeTableId']);
+        }
+        else
+        {
+            $timeTableModel = new Timetable();
+          //  $timeTableModel->id=NULL;
+        }
+
+        // Проверяем дату начала и дату конца
+        if ( (
+            ($_GET['begin']=="") || (!isset($_GET['begin'])) || ($_GET['begin']==NULL)
+            )
+            ||
+            (
+                ($_GET['end']=="") || (!isset($_GET['end'])) || ($_GET['end']==NULL)
+            )  ){
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => 'Не заполнена дата начала или дата конца действия расписания' ));
+            exit();
+        }
+
+        if ($_GET['timeTableId']!="")
+        {
+            // Удаляем все старые записи в таблице связей
+            DoctorsTimetable::model()->delete();
+
+        }
+        // Пишем новые значения в модель
+        $timeTableModel->date_begin = $_GET['begin'];
+        $timeTableModel->date_end = $_GET['end'];
+        $timeTableModel->timetable_rules = $_GET['timeTableBody'];
+        // Сохраняем расписание
+        $timeTableModel->save();
+        //var_dump($timeTableModel->id);
+        //exit();
+        // Перебираем докторов и пишем им запись в таблицу связей доктор<->расписание
+        $doctorsIds = CJSON::decode( $_GET['doctors'] );
+        foreach ($doctorsIds as $oneDoctorIds)
+        {
+            // $oneDoctorIds - берём IDшник и записываем строку
+            $doctorsTimeTableLink = new DoctorsTimetable();
+            $doctorsTimeTableLink->id_doctor = $oneDoctorIds;
+            $doctorsTimeTableLink->id_timetable = $timeTableModel->EntryID;
+            $doctorsTimeTableLink->save();
+        }
+
+        /*
+        echo CJSON::encode(array('success' => true,
+            'msg' => 'Выходные дни успешно сохранены.'));
+        */
+
+        echo CJSON::encode(array('success' => true,
+            'msg' => 'Расписание успешно сохранено.'));
+    }
+
     public function actionGetShedule()
     {
 
+        /*if (in_array('-1',$_GET['wards']))
+        {
+            echo("Нашёл Все отделения");
+        }
+
+        if (in_array('-2',$_GET['wards']))
+        {
+            echo("Нашёл Без отделения");
+        }*/
+        //var_dump($_GET);
+        //exit();
+
+        // Прокачиваем параметры списка
+        if (!isset($_GET['rows']))
+        {
+            $rows = false;
+        }
+        else
+        {
+            $rows = $_GET['rows'];
+        }
+
+        if (!isset ($_GET['page']))
+        {
+            $page = false;
+        }
+        else
+        {
+            $page = $_GET['page'];
+        }
+
+        if (!isset($_GET['sidx']))
+        {
+            $sidx = false;
+        }
+        else
+        {
+            $sidx = $_GET['sidx'];
+        }
+
+        if (!isset($_GET['sord']))
+        {
+            $sord = false;
+        }
+        else
+        {
+            $sord = $_GET['sord'];
+        }
+
+        // Тут возможно три случая:
+        // 1. Все отделения или не указано вообще отделения, не указаны врачи
+        //      в этом случае нет никаких ограничений - выбираем всех докторов, все расписания
+
+        // 2. Указаны некоторые отделения, не указаны врачи (или все)
+        //    в этом случае работает фильтр только по отделениям
+
+        // 3. Указаны ID докторов. В этом случае плевать нам с высокой колокольни на отделения
+
+        $doctors = null;
+        $wards = null;
+        $withoutWard = false;
+
+        if (isset($_GET['doctors']))
+        {
+            // Это третий случай
+            $doctors = $_GET['doctors'];
+        }
+        else
+        {
+            // Если найдено "без отделений" - возводим флаг
+            if (in_array('-2',$_GET['wards']))
+            {
+                $withoutWard = true;
+            }
+            else
+            {
+                // смотрим - если ли нет пункта "все отделения"
+                if (!in_array('-1',$_GET['wards']))
+                {
+                    // Выбираем если массив отделений не пуст - присваиваем его в $wards
+                    if (isset($_GET['wards']))
+                    {
+                        $wards = $_GET['wards'];
+                    }
+                }
+            }
+        }
+
+       /* var_dump('Доктора=');
+        var_dump($doctors);
+
+        var_dump('Отделения=');
+        var_dump($wards);
+
+        var_dump($withoutWard);
+
+        exit();
+*/
+
+
+
+        // Теперь, имеем данные для обращения к базе данных
+        // Сконструируем специальный массив, хранящий данные для запроса
+        $filterParameters = array(
+            'doctorsIds' => $doctors,
+            'wardsIds' => $wards,
+            'woWardFlag' => $withoutWard
+
+        );
+
+        // =======> Test
+        /*$filterParameters = array(
+            'doctorsIds' => array('30','35'),
+            'wardsIds' => null,
+            'woWardFlag' => false
+
+        );*/
+
+        /*$filterParameters = array(
+            'doctorsIds' => null,
+            'wardsIds' => array('8'),
+            'woWardFlag' => false
+
+        );
+        */
+
+        /*$filterParameters = array(
+            'doctorsIds' => null,
+            'wardsIds' => null,
+            'woWardFlag' => true
+
+        );*/
+
+        //<==========
+
+        // Считаем предварительные данные для спискоты
+        $timeTableObject = new Timetable();
+        $num = $timeTableObject ->getNumRows($filterParameters);
+
+        if(count($num) > 0) {
+            $totalPages = ceil($num / $rows);
+            $start = $page * $rows - $rows;
+            $items = $timeTableObject->getRows($filterParameters , $sidx, $sord, $start, $rows);
+        } else {
+            $items = array();
+            $totalPages = 0;
+        }
+
+        /*$doctors = null;
+        // Смотрим - если не выбрано докторов - выбираем всех врачей по отделениям.
+        if (isset($_GET['doctors']))
+        {
+            $doctors = $_GET['doctors'];
+        }
+        else
+        {
+            // Большая печалька(( потому что надо выбрать по отделениям всех докторов из этих отделений
+            // Но если выбрано "все отделения", то это очень хорошо :) в этом случае не нужно ограничение на доктора
+            //  А вот если
+        }
+        */
         echo CJSON::encode(
             array(
                 'success'=> true,
-                'shedules'=> array( )
+                //'shedules'=> array( )
                  //'shedules'=> array( 1,2,3,4)
+
+
+
+                'rows' => $items,
+              //  'rows' => array( ),
+
+                'total' => $totalPages,
+                'records' => count($num)
             )
         );
     }
@@ -154,168 +389,6 @@ class SheduleController extends Controller {
         $newCancelledGreeting->comment = $greeting['comment'];
         $newCancelledGreeting->save();
     }
-
-
-   /* // Получить пациентов, записанных на данного врача (голые строки)
-    // Новая часть
-    private function getPatientsWritten()
-    {
-        try {
-
-            // Прочитаем параметры
-            if (!isset($_GET['rows']))
-            {
-                $rows = false;
-            }
-            else
-            {
-                $rows = $_GET['rows'];
-            }
-
-            if (!isset ($_GET['page']))
-            {
-                $page = false;
-            }
-            else
-            {
-                $page = $_GET['page'];
-            }
-
-            if (!isset($_GET['sidx']))
-            {
-                $sidx = false;
-            }
-            else
-            {
-                $sidx = $_GET['sidx'];
-            }
-
-            if (!isset($_GET['sord']))
-            {
-                $sord = false;
-            }
-            else
-            {
-                $sord = $_GET['sord'];
-            }
-
-
-            if(isset($_GET['filters']) && trim($_GET['filters']) != '')
-            {
-                $filters = CJSON::decode($_GET['filters']);
-            }
-            else
-            {
-                $filters = false;
-            }
-
-            $dayBegin = $_GET['begin'];
-            $dayEnd = $_GET['end'];
-            //$doctorId= $_GET['doctor_id'];
-            $doctors = array();
-
-            // Инициализируем массив докторов
-
-
-            if (isset($_GET['doctorsIds']))
-            {
-
-                //var_dump($_GET['doctorsIds']);
-                //exit();
-
-                if (is_array($_GET['doctorsIds']))
-                {
-                    $doctorsArr = $_GET['doctorsIds'];
-                }
-                else
-                {
-                    $doctorsArr = CJSON::decode($_GET['doctorsIds']);
-                }
-
-
-
-
-                if (is_array($doctorsArr))
-                {
-                    $doctors = $doctorsArr;
-                }
-                else
-                {
-                    $doctors[] = $doctorsArr;
-                }
-            }
-            else
-            {
-                $doctors[] = $_GET['doctor_id'];
-            }
-
-            $model = new SheduleByDay();
-            $num = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors);
-            //var_dump($num);
-            //exit();
-
-
-            $totalPages = 0;
-            $start = 0;
-            if ($rows)
-            {
-                $totalPages = ceil(count($num) / $rows);
-                $start = $page * $rows - $rows;
-            }
-
-
-            $greetings = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors, $sidx, $sord, $start, $rows);
-
-            //var_dump($greetings);
-            //exit();
-            // Приведём дату в приличный вид
-            foreach($greetings as &$element) {
-
-
-                $greetingDateArr= explode('-', $element['patient_day']);
-                $element['patient_date'] =	$greetingDateArr[2].'.'
-                    .$greetingDateArr[1].'.'
-                    .$greetingDateArr[0].' '.$element['patient_time'];
-
-
-                $element['doctor_fio'] = $element['last_name'];
-
-                if ($element['first_name']!='')
-                {
-                    $element['doctor_fio'] .= (' '.mb_substr($element['first_name'],0,1,'utf-8').'.');
-                }
-
-                if ($element['middle_name']!='')
-                {
-                    $element['doctor_fio'] .= (' '.mb_substr($element['middle_name'],0,1,'utf-8'). '.');
-                }
-
-
-                //$element['unwrite'] = '\<Test'.(string)$element['id'];
-
-
-
-                $element['unwrite'] = '<a class="unwrite-link" href="#'.(string)$element['id'].'">'.
-                    '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>'.
-                    '</a>';
-
-                //var_dump($element['unwrite']);
-                //exit();
-                //var_dump($element);
-            }
-
-          //  var_dump($greetings);
-          //  exit();
-            return
-                array(	'rows' => $greetings,
-                    'total' => $totalPages,
-                    'records' => count($num))
-            ;
-
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
-    }*/
 
     private function getPatientsInfoToGreetings(&$arrayOfGreetings)
     {

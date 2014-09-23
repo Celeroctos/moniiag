@@ -62,6 +62,11 @@ $(document).ready(function () {
             // Записываем в блок
             $(editorContainer).find('.factsDatesBlock').append( $(containerTemplate) );
 
+        },
+        closeEditing: function()
+        {
+            $('#edititngSheduleArea').empty();
+            $('#edititngSheduleArea').addClass('no-display');
         }
 
     }
@@ -78,6 +83,7 @@ $(document).ready(function () {
         $(editorBlock).removeClass('no-display');
 
         $(editorBlock).html(   $(editingTemplate[0]).html()   );
+        $(document).trigger('refreshDoctorsListEditor');
     }
 
     function initHandlers( editorBlock)

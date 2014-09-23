@@ -220,61 +220,113 @@ $(document).ready(function () {
         }
     );
 
+    $(document).on('change', '.sheduleBeginDateTime, .sheduleEndDateTime', function()
+        {
+            // Если у обоих контролов из редактора  есть значение - выводим его, иначе
+            //     прячем блок "с по"
+            if ( ($('#edititngSheduleArea .sheduleBeginDateTime').val()!='') &&
+                ($('#edititngSheduleArea .sheduleEndDateTime').val()!='') )
+            {
 
-    /* $(document).on(
-     'needFactSave',
-     '#edititngSheduleArea .oneRowRuleTimetable:first .factsTD',
-     function()
-     {
-     // Читаем факт и складываем его в таблицу
-     console.log('Читаю факт из редактора');
+                $('#edititngSheduleArea .timeTableEditFrom').text(
+                    $('#edititngSheduleArea .sheduleEndDateTime').val().split('-').reverse().join('.')
 
-     caption = '';
+                );
 
-     containerTemplate = $('#timetableTemplates .factsItemContainer').clone();
+                $('#edititngSheduleArea .timeTableEditTo').text(
+                    $('#edititngSheduleArea .sheduleBeginDateTime').val().split('-').reverse().join('.')
 
-     editorContainer = $('#edititngSheduleArea .oneRowRuleTimetable:first .factsTD');
-     $(containerTemplate).find('.typeFactVal').val(  $(editorContainer).find('.factsSelect').val() );
-     $(containerTemplate).find('.isRange').val(  '0' );
-     if (   $(editorContainer).find('[name=rangeFact]').prop('checked')==true  )
-     {
-     $(containerTemplate).find('.isRange').val(  '1' );
-     }
-     if (   $(containerTemplate).find('.isRange').val(   )=='1' )
-     {
-     $(containerTemplate).find('.dateFactBegin').val(
-     $(editorContainer).find('[name=factRangeBegin]').val()
-     );
+                );
+                $('.timeTableEditDateTimesAction').removeClass('no-display');
+            }
+            else
+            {
+                $('.timeTableEditDateTimesAction').addClass('no-display');
+            }
+        }
+    );
 
-     caption += $(editorContainer).find('[name=factRangeBegin]').val();
+    $(document).on('refreshDoctorsListEditor', function(){
+        // 1. Забираем врачей
+        // 2. Распределяем их по отделениям
+        // 3. В соответствии с отделением - выводим в таблицу
+        console.log('я случился!');
+        doctorsByWardsSelected = [];
+        doctorsByWardsSelectedNames = [];
+        selectedDoctors = $('#doctorsSelect').find('option:selected');
+        // Перебираем выбранных докторов
+        for (i=0;i<selectedDoctors.length;i++)
+        {
 
-     $(containerTemplate).find('.dateFactEnd').val(
-     $(editorContainer).find('[name=factRangeEnd]').val()
-     );
+            if ($(selectedDoctors[i]).attr('value')==-1)
+            {
+                continue;
+            }
+            // Для каждого доктора определяем код его отделения
+            selectedDoctorWardCode = globalVariables.doctorsForWards[$(selectedDoctors[i]).attr('value')];
 
-     caption += ' - ';
-     caption += $(editorContainer).find('[name=factRangeEnd]').val();
+            //
+            if (selectedDoctorWardCode==null)
+            {
+                selectedDoctorWardCode = -2;
+            }
 
+            // Дальше смотрим - если отделения, которое мы получили нет, то добавляем в массив doctorsByWardsSelected его
+            if (doctorsByWardsSelected[selectedDoctorWardCode]==undefined)
+            {
 
-     }
-     else
-     {
-     $(containerTemplate).find('.dateFactBegin').val(
-     $(editorContainer).find('[name=addFactDateTimetable]').val().split('-').reverse().join('.')
-     );
+                doctorsByWardsSelected[selectedDoctorWardCode] = [];
+                if (selectedDoctorWardCode==-2)
+                {
+                    doctorsByWardsSelectedNames[selectedDoctorWardCode] = 'Без отделения';
+                }
+                else
+                {
+                    doctorsByWardsSelectedNames[selectedDoctorWardCode] =
+                        $('#wardSelect').find('option[value='+ selectedDoctorWardCode +']').text();
+                }
 
-     caption += $(containerTemplate).find('.dateFactBegin').val();
-     }
-     $(containerTemplate).find('.factTextCaptionDate').text(caption);
-     selectedOption = $(editorContainer).find('.factsSelect option:selected');
-     //caption += $(selectedOption).text();
-     $(containerTemplate).find('.factTextCaptionReason').text($(selectedOption).text());
-     $(containerTemplate).find('.factTextCaption').text(caption);
-     $(containerTemplate).removeClass('no-display');
+            }
 
-     // Записываем в блок
-     $(editorContainer).find('.factsDatesBlock').append( $(containerTemplate) );
-     }
-     );*/
+            // В массив по номеру отделения добавляем ФИО доктора
+            doctorsByWardsSelected[selectedDoctorWardCode].push(
+                $(selectedDoctors[i]).text()
+            );
+
+        }
+        console.log(doctorsByWardsSelected);
+        console.log(doctorsByWardsSelectedNames);
+
+        // Теперь перебираем полученные отделения и распихиваем их по таблице
+        // Очищаем таблицу с врачами и отделениями
+        $('#edititngSheduleArea').find('.timeTablesEditDoctorsWards tr.oneRowDoctorsWardEditing').remove();
+       // for (i=0;i<doctorsByWardsSelected.length;i++)
+        for(var key in doctorsByWardsSelected)
+        {
+            newWardTR = $('#timetableTemplates .oneRowDoctorsWardEditing').clone();
+            // Выводим имя отделения
+            $(newWardTR).find('.wardsColEditing').text(doctorsByWardsSelectedNames[key]);
+            // Перебираем врачей внутри отделения
+            for (j=0;j<doctorsByWardsSelected[key].length;j++)
+            {
+                // Вставляем имя доктора
+                $(newWardTR).find('.doctorsColEditing').html(
+                    $(newWardTR).find('.doctorsColEditing').html()+ doctorsByWardsSelected[key][j]
+                );
+                if (j!=doctorsByWardsSelected[key].length-1)
+                {
+                    $(newWardTR).find('.doctorsColEditing').html(
+                        $(newWardTR).find('.doctorsColEditing').html()+ '<br>'
+                    );
+                }
+
+            }
+
+            // Вставляем в строку
+            $('#edititngSheduleArea .timeTablesEditDoctorsWards tbody').append(newWardTR);
+
+        }
+
+    });
 
 });

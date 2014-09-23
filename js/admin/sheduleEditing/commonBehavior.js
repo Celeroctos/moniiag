@@ -4,6 +4,7 @@
  */
 $(document).ready(function () {
 
+    InitPaginationList('existingTimeTablesList','tt.id','desc',refreshTimeTableList)
 
     $('#wardSelect').on(
         'change',
@@ -91,9 +92,31 @@ $(document).ready(function () {
         'change',
         function()
         {
+            //
+            if ($(this).is('#doctorsSelect')  )
+            {
+                if ( $(this).find('option[value=-1]').is(':selected') )
+                {
+                    // Снять выделение с "Все врачи", выделить всех остальных
+                    $('#doctorsSelect').find('option[value=-1]').prop('selected',false);
+                    $('#doctorsSelect').find('option:not([value=-1])').prop('selected', true);
+                }
+
+            }
+
+            refreshEditorDoctors();
             refreshTimeTableList();
         }
     );
+
+    function refreshEditorDoctors()
+    {
+        // Если редактор открыт - нужно перепрочитать список врачей и отделений
+        if ( $('#edititngSheduleArea').hasClass('no-display')==false  )
+        {
+            $(document).trigger('refreshDoctorsListEditor');
+        }
+    }
 
     function refreshTimeTableList()
     {
@@ -103,7 +126,7 @@ $(document).ready(function () {
         console.log(selectedWards);
         console.log(selectedDoctors);
         // Если selectedDoctors или selectedWards равен нулю - то надо подать массив из одного элемента -1
-        if (selectedWards ==null)
+        /*if (selectedWards ==null)
         {
             selectedWards = $.toJSON( [-1] );
         }
@@ -111,17 +134,26 @@ $(document).ready(function () {
         if (selectedDoctors ==null)
         {
             selectedDoctors = $.toJSON( [-1] );
-        }
+        }*/
         // Отправляем запрос
-        params = {
-            'doctors': selectedDoctors,
-            'wards': selectedWards
-        };
+        params = {};
+        if (selectedDoctors!=null)
+        {
+            params.doctors = selectedDoctors;
+        }
+
+        if (selectedWards!=null)
+        {
+            params.wards = selectedWards;
+        }
+
+        console.log(params);
         $.ajax({
-            'url' : '/index.php/admin/shedule/getshedule',
+            'url' : '/index.php/admin/shedule/getshedule?'+getPaginationParameters('existingTimeTablesList'),
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
+            'data': params,
             'success' : function(data, textStatus, jqXHR) {
                 onShedulesRecieve(data);
             }
@@ -138,23 +170,54 @@ $(document).ready(function () {
     {
         if (dataObject.success==true || dataObject.success=="true")
         {
-            if (dataObject.shedules.length>0)
+            if (dataObject.rows.length>0)
             {
+                $('#existingSheduleAreaList').empty();
                 // Внутри обработчика запроса перебираем графики и выводим их в виде таблицы
+                printExistingTimetables(dataObject.rows);
                 // Скрываем кнопочку "Сопоставить"
                 $('.addingNewSheduleContainer').addClass('no-display');
+                $('#existingSheduleArea').removeClass('no-display');
+
             }
             else
             {
+                $('#existingSheduleArea').addClass('no-display');
+                $('#existingSheduleAreaList').empty();
                 // Делаем видимой кнопочку "Сопоставить"
                 //     (если не открыт блок редактирования)
                 if (  $('#edititngSheduleArea').hasClass('no-display')  )
                 {
-                    $('.addingNewSheduleContainer').removeClass('no-display');
+                    // Если в списке докторов кто-то выбран
+                    if ( $('#doctorsSelect').find('option:selected').length!=0 )
+                    {
+                        $('.addingNewSheduleContainer').removeClass('no-display');
+                    }
+                    else
+                    {
+                        $('.addingNewSheduleContainer').addClass('no-display');
+                    }
                 }
             }
         }
 
+    }
+
+    function printExistingTimetables(timeTableRows)
+    {
+        //
+        for (rowTimetableCounter=0;rowTimetableCounter<timeTableRows.length;timeTableRows++)
+        {
+            existingTimeTableContainer = $('<div>');
+            $(existingTimeTableContainer).addClass('existingTimeTableContainer');
+            $(existingTimeTableContainer).html(
+                $.fn['sheduleEditor.port.JSONToPreview'].getHTML(timeTableRows)
+            );
+
+            // Добавляем в блок спискоты существующих графиков тот, который мы вывели
+            $('#existingSheduleAreaList').append(existingTimeTableContainer);
+
+        }
     }
 
     function startSheduleEdit()
@@ -185,6 +248,14 @@ $(document).ready(function () {
         }
     );
 
+    $(document).on('click','.cancelSheduleButton',function(){
+        // Надо сделать невидимым блок редактирования
+        $('#edititngSheduleArea').empty();
+        $('#edititngSheduleArea').addClass('no-display');
+        refreshTimeTableList();
+
+    });
+
     $(document).on('click',
         '.addingNewSheduleRoom, .addingNewSheduleDays, .addingNewSheduleHourWork, .addingNewSheduleHourGreeting, .addingNewSheduleLimit',
         function()
@@ -194,12 +265,71 @@ $(document).ready(function () {
     );
 
 
-    $(document).on('click','.saveSheduleButton',function (){
+
+
+    /*$(document).on('click','.saveSheduleButton',function (){
         console.log(
             $.fn['sheduleEditor.port.editorToJSON'].getResult()
 
         );
+    });*/
+
+    function onSaveSheduleEnd(returningData)
+    {
+        if (returningData.success==true || returningData.success=='true')
+        {
+            // 1. Выводим сообщение, что всё хорошо
+            // 2. Закрываем редактор
+            // 3. Обновляем список выведенных графиков
+            $('#successEditPopup').modal({});
+            $.fn['timetableEditor'].closeEditing();
+            refreshTimeTableList();
+        }
+        else
+        {
+            // Выводим ошибку
+
+        }
+    }
+
+    $(document).on('click','.saveSheduleButton',function (){
+        // 1. Читаем данные из интерфейса
+        // Читаем докторов
+        doctorsIds = $('#doctorsSelect').val();
+        //console.log(doctorsIds);
+
+        // Читаем JSON
+        timetableJSON = $.fn['sheduleEditor.port.editorToJSON'].getResult();
+
+        // Читаем года
+        dateBegin = $('#edititngSheduleArea').find('.sheduleBeginDateTime').val();
+        dateEnd = $('#edititngSheduleArea').find('.sheduleEndDateTime').val();
+
+        timetableId = $('#edititngSheduleArea').find('.timeTableId').text();
+
+        timeTableDataContainer = {
+            'doctors':$.toJSON(doctorsIds),
+            'timeTableBody': timetableJSON,
+            'timeTableId': timetableId,
+            'begin' : dateBegin,
+            'end': dateEnd
+        }
+        // 2. Отправляем их серверу
+        $.ajax({
+            'url' : '/index.php/admin/shedule/save',
+            'cache' : false,
+            'dataType' : 'json',
+            'data': timeTableDataContainer,
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                // 3. Вызываем call-back
+                onSaveSheduleEnd(data);
+            }
+        });
+
+
     });
+
 
 
 });
