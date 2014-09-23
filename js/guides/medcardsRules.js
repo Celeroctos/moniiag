@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#rules").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getrules',
         datatype: "json",
-        colNames:['Код', 'Название', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', '', '', '', ''],
+        colNames:['Код', 'Название', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', 'Предыдущие префиксы и постфиксы', '', '', '', '', ''],
         colModel:[
             {
                 name:'id',
@@ -35,6 +35,11 @@ $(document).ready(function() {
                 width: 100
             },
 			{
+                name: 'participle_mode_desc',
+                index: 'participle_mode_desc',
+                width: 250
+            },
+			{
                 name: 'postfix_id',
                 index: 'postfix_id',
                 hidden: true
@@ -54,6 +59,11 @@ $(document).ready(function() {
                 index: 'value',
                 hidden: true
             },
+			{
+				name:  'participle_mode',
+				index: 'participle_mode',
+				hidden: true
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -128,14 +138,20 @@ $(document).ready(function() {
 							{
 								modelField: 'value',
 								formField: 'typeId'
+							},
+							{
+								modelField: 'participle_mode',
+								formField: 'participleMode'
 							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
 							if(fields[i].formField == 'typeId') {
 								if(data.data[fields[i].modelField] == 2) {
 									form.find('#parentId').parents('.form-group').removeClass('no-display');
+									form.find('#participleMode').parents('.form-group').removeClass('no-display');
 								} else {
 									form.find('#parentId').parents('.form-group').addClass('no-display');
+									form.find('#participleMode').parents('.form-group').addClass('no-display');
 								}
 							}
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);

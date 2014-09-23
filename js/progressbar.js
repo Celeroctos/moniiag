@@ -45,7 +45,7 @@ $(document).ready(function(e) {
                                 totalRows = data.totalRows;
                             }
                             $(element).find('.progress-bar').prop({
-                                'style' : '100%',
+                                'style' : 'width: 100%',
                                 'aria-valuenow' : '100'
                             });
                         } else {
@@ -126,6 +126,10 @@ $(document).ready(function(e) {
 
         $(element).find('.successImport').on('click', function(e) {
             totalRows = null;
+			$(element).find('.progress-bar').prop({
+				'style' : 'width: 0%',
+				'aria-valuenow' : '0'
+			});
             $(element).find('.numStringsAll').text(0);
             $(element).find('.numStrings').text(0);
             $(element).slideUp(500, function(e) {

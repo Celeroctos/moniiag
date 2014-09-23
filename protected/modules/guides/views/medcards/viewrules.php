@@ -100,6 +100,21 @@
 							)); ?>
 						</div>
 					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'participleMode', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'participleMode', array(
+								'-1' => 'Не выбран',
+								'Добавление второго префикса и постфикса',
+								'Замена предыдущего префикса и постфикса'
+							), array(
+								'id' => 'participleMode',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -196,6 +211,21 @@
 						<div class="col-xs-9">
 							<?php echo $form->dropDownList($model, 'parentId', $rulesList, array(
 								'id' => 'parentId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group no-display">
+						<?php echo $form->label($model,'participleMode', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'participleMode', array(
+								'-1' => 'Не выбран',
+								'Добавление второго префикса и постфикса',
+								'Замена предыдущего префикса и постфикса'
+							), array(
+								'id' => 'participleMode',
 								'class' => 'form-control'
 							)); ?>
 						</div>

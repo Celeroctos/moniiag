@@ -1105,7 +1105,7 @@ class TasuController extends Controller {
                 $this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' добавлен в базу ТАСУ.';
 				$this->logStr .= "[OK] ТАП на приём ".$greeting['greeting_id']." добавлен в базу ТАСУ.\r\n";
                 // Добавляем MKБ-10 диагнозы к приёму
-                $this->setMKB10ByTap($tap, $greeting, $oms);
+                $this->setMKB10ByTap($tap, $greeting, $oms, $medcard);
             } else {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' в базу: возможно, полис пациента записан в неправильном формате...?.';
 				$this->logStr .= "[Ошибка] Невозможно добавить приём с ID".$greeting['greeting_id']." в базу: возможно, полис пациента записан в неправильном формате...?\r\n";
@@ -1702,7 +1702,7 @@ class TasuController extends Controller {
         }
     }
 
-    private function setMKB10ByTap($tap, $greeting) {
+    private function setMKB10ByTap($tap, $greeting, $oms, $medcard) {
         // У фейковых приёмов диагноз ищется иначе
         if($greeting['fake_id'] == null) {
             $diagnosises = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id', array(':greeting_id' => $greeting['greeting_id']));
@@ -1742,7 +1742,7 @@ class TasuController extends Controller {
                 $tapDiagnosis->tapuid_30432 = $tap->uid;
                 $tapDiagnosis->ismain_36277 = ($diagnosis['type'] == 0) ? 1 : 0;
                 $tapDiagnosis->icdcode_39884 = $parts[0];
-                $tapDiagnosis->deseasenature_42940 = 1;
+                $tapDiagnosis->deseasenature_42940 = ($medcard['reg_date'] == $greeting['patient_day']) ? 1 : 2; // Первичность-вторичность приёма
                 $tapDiagnosis->monitoringstate_54640 = null;
                 $tapDiagnosis->trauma_34421 = '';
 
@@ -1751,7 +1751,7 @@ class TasuController extends Controller {
                 }
 
                 // Добавляем услуги
-                $this->setTapServices($tapDiagnosis, $greeting);
+                $this->setTapServices($tapDiagnosis, $greeting, $oms);
             } catch(Exception $e) {
                 $this->numErrors++;
                 return false;
@@ -1759,17 +1759,26 @@ class TasuController extends Controller {
         }
     }
 
-    private function setTapServices($tapDiagnosis, $greeting) {
+    private function setTapServices($tapDiagnosis, $greeting, $oms) {
         // Пока зашиваем жёстко
         $conn = Yii::app()->db2;
-        try {
+        $currentDate = new DateTime(date("Y-m-d"));
+		try {
+			$datetime = new DateTime($oms->birthday);
+			$interval = $datetime->diff($currentDate);
+			$fullYears = $interval->format("%Y");
+			
             $tasuTapService = new TasuTapService();
             $tasuTapService->version_begin = '';
             $tasuTapService->version_end = $this->version_end;
             $tasuTapService->is_top = 1;
             $tasuTapService->created_by = 2;
             $tasuTapService->diagnosisuid_34765 = $tapDiagnosis->uid;
-            $tasuTapService->servicecode_20924 = '010106';
+			if($fullYears >= 18) {
+				$tasuTapService->servicecode_20924 = '2329600';
+			} else {
+				$tasuTapService->servicecode_20924 = '132600';
+			}
             $tasuTapService->count_23546 = 1;
 
             if(!$tasuTapService->save()) {
@@ -1780,7 +1789,6 @@ class TasuController extends Controller {
             $this->numErrors++;
             return false;
         }
-
     }
 
     private function addTasuProfessional($doctor) {
@@ -2843,7 +2851,15 @@ class TasuController extends Controller {
 	public function actionCancelImport() {
 		if(isset($_GET['bufferid'])) {
 			$bufferH = TasuGreetingsBufferHistory::model()->findByPk($_GET['bufferid']);
-			TasuGreetingsBuffer::model()->updateAll(array('status' => 0), 'import_id = :import_id', array(':import_id' => $bufferH->import_id));
+			// Обязательно переставить importId на максимальный, чтобы отображать в списке прошлые выгрузки
+			$lastImportId = TasuGreetingsBuffer::model()->getLastImportId();
+			TasuGreetingsBuffer::model()->updateAll(array(
+					'status' => 0,
+					'import_id' => $lastImportId['max_import_id']
+				), 
+				'import_id = :import_id', 
+				array(':import_id' => $bufferH->import_id)
+			);
 			$bufferH->status = 2; // Статус "отменена"
 			$bufferH->save();
 		}

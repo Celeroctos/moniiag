@@ -55,7 +55,7 @@ class MedcardsController extends Controller {
 		$rulesList = array('-1' => 'Не наследуется');
 		$rulesDb = MedcardRule::model()->findAll();
 		foreach($rulesDb as $rule) {
-			$rulesList[(string)$rule['id']] = (string)$rule['id'];
+			$rulesList[(string)$rule['id']] = $rule['name'];
 		}
 		return $rulesList;
 	}
@@ -111,6 +111,15 @@ class MedcardsController extends Controller {
 				} elseif($rule['postfix_id'] == -3) {
 					$rule['postfix'] = 'Предустановленный: ГГГГ';
 				}
+				
+				if($rule['participle_mode'] === null) {
+					$rule['participle_mode_desc'] = '-';
+					$rule['participle_mode'] = -1;
+				} elseif($rule['participle_mode'] == 0) {
+					$rule['participle_mode_desc'] = 'Добавление вторых';
+				} elseif($rule['participle_mode'] == 1) {
+					$rule['participle_mode_desc'] = 'Замена';
+				} 
 				
 				$rule['rule'] = $this->typesList[$rule['value']];
 			}
@@ -339,6 +348,10 @@ class MedcardsController extends Controller {
 		if($rule['postfix_id'] == null) {
 			$rule['postfix_id'] = -1;
 		}
+		if($rule['participle_mode'] === null) {
+			$rule['participle_mode'] = -1;
+		}
+
         echo CJSON::encode(
 			array(
 				'success' => true,
@@ -374,6 +387,11 @@ class MedcardsController extends Controller {
 		}
 		if($model->parentId != -1) {
 			$rule->parent_id = $model->parentId;
+			if($rule->participle_mode != -1) {
+				$rule->participle_mode = $model->participleMode;
+			} else {
+				$rule->participle_mode = null;
+			}
 		} else {
 			$rule->parent_id = null;
 		}

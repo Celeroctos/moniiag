@@ -26,7 +26,7 @@ class MedcardRule extends MisActiveRecord {
         if($filters !== false) {
             $this->getSearchConditions($rules, $filters, array(
             ), array(
-                'mr' => array('id', 'value', 'parent_id', 'prefix_id', 'postfix_id')
+                'mr' => array('id', 'value', 'parent_id', 'prefix_id', 'postfix_id', 'participle_mode')
             ), array(
             ));
         }

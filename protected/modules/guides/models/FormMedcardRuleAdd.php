@@ -5,6 +5,7 @@ class FormMedcardRuleAdd extends FormMisDefault
 	public $postfixId;
 	public $parentId;
 	public $typeId;
+	public $participleMode;
 	public $name;
     public $id;
 
@@ -15,7 +16,7 @@ class FormMedcardRuleAdd extends FormMisDefault
 				'typeId, name', 'required'
 			),
 			array(
-				'parentId, postfixId, prefixId, typeId', 'numerical'
+				'parentId, postfixId, prefixId, typeId, participleMode', 'numerical'
 			)
         );
     }
@@ -29,6 +30,7 @@ class FormMedcardRuleAdd extends FormMisDefault
 			'parentId' => 'Унаследован от правила',
 			'prefixId' => 'Префикс',
 			'postfixId' => 'Постфикс',
+			'participleMode' => 'Режим работы с префиксами и постфиксами'
         );
     }
 }

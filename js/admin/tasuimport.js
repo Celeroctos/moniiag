@@ -333,7 +333,7 @@
 								$('#clearGreetings').attr({
 									'disabled' : false
 								});
-								 $('#importProgressbarP').prop({
+								$('#importProgressbarP').prop({
                                     'aria-valuenow' : '0'
                                 }).css('width', '0%');
 							});
@@ -373,6 +373,9 @@
 
             $('.successImport').on('click', function(e) {
                 $('#importContainer').slideUp(500, function() {
+					$('#importProgressbarP').prop({
+						'aria-valuenow' : '0'
+					}).css('width', '0%');
                     $("#greetings").trigger("reloadGrid");
                     $("#importHistory").trigger("reloadGrid");
                     $('.continueImport, .pauseImport').removeClass('no-display');
