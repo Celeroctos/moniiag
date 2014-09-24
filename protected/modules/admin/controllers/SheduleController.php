@@ -35,6 +35,14 @@ class SheduleController extends Controller {
         // Достанем кабинеты
         $cabinets = Cabinet::model()->getRows(false);
 
+        // Создаём масситв кабинетов по их id-шникам
+        $cabinetsByIds = array();
+
+        foreach ($cabinets as $oneCabinet)
+        {
+            $cabinetsByIds[$oneCabinet['id']] = $oneCabinet['cab_number'];
+        }
+
       //  var_dump($cabinets );
       //var_dump("!!");
       //  exit();
@@ -52,6 +60,7 @@ class SheduleController extends Controller {
             'doctorList' => $doctorsList,
             'doctorsForWards' => $wardsForDoctor,
             'cabinetsList' => $cabinets,
+            'cabinetsListIds' => $cabinetsByIds,
             'factsForSelect' => $factsSheduleForSelect,
             'factsForJSON' => $factsForJSON
         ));

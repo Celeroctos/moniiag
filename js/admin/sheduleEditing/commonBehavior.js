@@ -203,19 +203,53 @@ $(document).ready(function () {
 
     }
 
+    // Функция взята отсюда: http://webonrails.ru/post/304/
+   /* function clone(obj)
+    {
+        if(!obj || typeof obj !== 'object')
+        {
+            return obj;
+        }
+
+        var c = (typeof obj.pop === 'function') ? [] : {};
+        var p, v;
+
+        for(p in obj)
+        {
+            if(obj.hasOwnProperty(p))
+            {
+                v = obj[p];
+                if(v && typeof v === 'object')
+                {
+                    c[p] = clone(v);
+                }
+                else
+                {
+                    c[p] = v;
+                }
+            }
+        }
+
+        return c;
+    }*/
+
     function printExistingTimetables(timeTableRows)
     {
-        //
-        for (rowTimetableCounter=0;rowTimetableCounter<timeTableRows.length;timeTableRows++)
+        for (rowTimetableCounter=0;rowTimetableCounter<timeTableRows.length;rowTimetableCounter++)
         {
+
             existingTimeTableContainer = $('<div>');
             $(existingTimeTableContainer).addClass('existingTimeTableContainer');
             $(existingTimeTableContainer).html(
-                $.fn['sheduleEditor.port.JSONToPreview'].getHTML(timeTableRows)
+                $.fn['sheduleEditor.port.JSONToPreview'].getHTML(timeTableRows[rowTimetableCounter])
             );
 
             // Добавляем в блок спискоты существующих графиков тот, который мы вывели
-            $('#existingSheduleAreaList').append(existingTimeTableContainer);
+            //$('#existingSheduleAreaList').append(existingTimeTableContainer);
+            $('#existingSheduleAreaList').html(
+                $('#existingSheduleAreaList').html()
+                    +
+                    $(existingTimeTableContainer).html()  );
 
         }
     }

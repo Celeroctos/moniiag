@@ -18,6 +18,10 @@
 <script>
     globalVariables.factsForSelect = <?php echo CJSON::encode($factsForJSON); ?>
 </script>
+<!-- Выбрасываем кабинеты с номерами и всеми причиндалами-->
+<script>
+    globalVariables.cabinetsArray = <?php echo CJSON::encode($cabinetsListIds); ?>
+</script>
 <div class="row">
     <div class="col-xs-6">
         <div class="doctorsWardsBlock">
@@ -80,23 +84,34 @@
     и выводит в интерфейс заполненными -->
 <div class="no-display" id="timetableTemplates">
     <!-- Шаблон вывода графика в режиме просмотра-->
-    <div class="col-xs-12" id="timetableReadOnly">
-        <span class="timeTableId no-display"></span>
-        <span class="timeTableJSON no-display"></span>
+    <div class="col-xs-12 timetableReadOnly">
+        <input class="timeTableId" type="hidden">
+        <input class="timeTableJSON" type="hidden">
         <div class="col-xs-12 timeTableRODateTimesAction">
-           <nobr>C <span class="timeTableROFrom"></span> по <span class="timeTableROTo"></span></nobr>
+           <strong><nobr>C <span class="timeTableROFrom"></span> по <span class="timeTableROTo"></span></nobr></strong>
         </div>
-        <div class="col-xs-12 timeTablesRODoctorsWards">
-            <div class="col-xs-6 timeTablesROWards">
-                <div class="col-xs-4 timeTablesROWardsLabel">Отделение:</div>
-                <div class="col-xs-8 timeTablesROWardsValue">
-                    Анатомии ресниц<br>Офтальмологическое<br>Болезней лёгких курильщиков
-                </div>
-            </div>
-            <div class="col-xs-6 timeTablesRODoctors">
-                    Рабинович Евграф Аристархович<br>Джонсон аль-Мухаммед аль-Ибрагим<br>Моисеев Борис
-            </div>
-        </div>
+
+
+        <table class="timeTablesRODoctorsWards">
+            <tr class="">
+                <td class = "wardsColEditing">
+                    <strong>Отделения:</strong>
+                </td>
+                <td class = "doctorsColEditing">
+                    <strong>Врачи:</strong>
+                </td>
+            </tr>
+            <tr class="oneRowDoctorsWardRO">
+                <td class = "wardsColRO">
+
+                </td>
+                <td class = "doctorsColRO">
+
+                </td>
+            </tr>
+        </table>
+
+
         <table class="timeTablesROTable">
             <thead>
                 <tr>
@@ -112,7 +127,7 @@
                     <td class="hoursOfGreetingTD">
                         Часы приёма
                     </td>
-                    <td class="shiftTD">
+                    <td class="shiftTD no-display">
                         Смена
                     </td>
                     <td class="limitTD">
@@ -132,7 +147,7 @@
                     </td>
                     <td class="hoursOfGreetingTD">
                     </td>
-                    <td class="shiftTD">
+                    <td class="shiftTD no-display">
                     </td>
                     <td class="limitTD">
                     </td>
@@ -666,6 +681,22 @@
         <span class="factTextCaptionReason"></span></nobr>
         <br><span class="factTextCaptionDate"></span>
     </div>
+    <!-- Контейнер для хранение пределов приёма при выводе существующего расписания-->
+    <div class="limitROBlock">
+        <span class="limitObjectName"></span><br>
+        <span class="limitROBody"></span>
+    </div>
+    <div class="oneFactROBlock">
+        <table>
+            <tr>
+                <td class="oneFactTypeRO">
+                </td>
+                <td class="oneFactTimeRO">
+                </td>
+            </tr>
+        </table>
+    </div>
+
 </div>
 <div class="modal fade error-popup" id="successEditPopup">
     <div class="modal-dialog">

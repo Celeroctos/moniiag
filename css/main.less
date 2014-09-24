@@ -1943,6 +1943,72 @@ a.accordion-toggle:hover {
 {
   border:1px;
 }
+.timeTablesROTable
+{
+  font-weight:bold;
+  width: 100%;
+  tr{
+    width: 100%;
+    td{
+      word-wrap: break-word;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #000000;
+    }
+    /*.roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD*/
+    .roomTD
+    {
+      width: 5%;
+      text-align: center;
+    }
+    .daysTD
+    {
+      width: 40%;
+      text-align: center;
+    }
+    .hoursOfWorkTD
+    {
+      width: 10%;
+      text-align: center;
+    }
+    .hoursOfGreetingTD
+    {
+      width: 10%;
+      text-align: center;
+    }
+    .limitTD
+    {
+      width: 15%;
+      text-align: center;
+    }
+    .factsTD
+    {
+      vertical-align: top;
+    }
+  }
+  thead{
+    text-align: center;
+  }
+}
+
+
+.oneFactROBlock
+{
+  table
+  {
+    width: 100%;
+    margin-bottom: 10px;
+    td{
+      word-wrap: break-word;
+      vertical-align: top;
+      border-style: none;
+    }
+    .oneFactTypeRO
+    {
+      width:60%;
+    }
+  }
+}
 
 .timeTablesEditTable
 {
@@ -2252,15 +2318,32 @@ a.accordion-toggle:hover {
     display: inline-block;
     margin-right: 15px;
   }
-.oneRowDoctorsWardEditing
+.timeTablesEditDoctorsWards, .timeTablesRODoctorsWards
 {
- /* padding-top: 100px;*/
-  border-top-style:solid ;
-  border-top-width:1px;
-  .wardsColEditing
+  width: 100%;
+  font-weight: bold;
+  .oneRowDoctorsWardEditing, .oneRowDoctorsWardRO
   {
-    vertical-align: top;
-    padding-right: 100px;
+   /* padding-top: 100px;*/
+    border-top-style:solid ;
+    border-top-width:1px;
+    .doctorsColEditing, .doctorsColRO
+    {
+      width: 55%;
+    }
+    .wardsColEditing, .wardsColRO
+    {
+      width: 45%;
+      vertical-align: top;
+      padding-right: 100px;
+    }
+  }
+}
+
+.limitROBlock{
+  .limitObjectName
+  {
+    text-decoration: underline;
   }
 }
 
