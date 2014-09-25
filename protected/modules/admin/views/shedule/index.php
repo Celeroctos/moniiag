@@ -58,7 +58,7 @@
     </div>
 </div>
 <div class="addingNewSheduleContainer row no-display">
-    <button type="button" class="addingNewShedule btn btn-default" data-dismiss="modal">Сопоставить расписание</button>
+    <button type="button" class="addingNewShedule btn btn-default" data-dismiss="modal">Составить расписание</button>
 </div>
 <div id="edititngSheduleArea" class="no-display">
 
@@ -591,27 +591,27 @@
             <tr class="addRuleButtons">
             <!-- Строка с кнопками добавить -->
                 <td class="roomTD">
-                    <button type="button" class="addingNewSheduleRoom btn btn-default" data-dismiss="modal">Добавить<br>кабинет</button>
+                    <button type="button" class="addingNewSheduleRoom btn btn-default" data-dismiss="modal">Добавить<br>правило</button>
                 </td>
-                <td class="daysTD">
+                <td class="daysTD no-display">
                     <button type="button" class="addingNewSheduleDays btn btn-default" data-dismiss="modal">Добавить дни</button>
                 </td>
                 <td class="hoursOfWorkTD no-display">
                     <button type="button" class="addingNewSheduleHourWork btn btn-default" data-dismiss="modal">Добавить<br>часы</button>
                 </td>
-                <td class="hoursOfGreetingTD">
+                <td class="hoursOfGreetingTD no-display">
                     <button type="button" class="addingNewSheduleHourGreeting btn btn-default" data-dismiss="modal">Добавить<br>часы</button>
                 </td>
                 <td class="shiftTD no-display">
                     Смена
                 </td>
-                <td class="limitTD">
+                <td class="limitTD no-display">
                     <button type="button" class="addingNewSheduleLimit btn btn-default" data-dismiss="modal">Добавить лимит</button>
                 </td>
-                <td class="factsTD">
+                <td class="factsTD no-display">
 
                 </td>
-                <td class="deleteTD">
+                <td class="deleteTD no-display">
 
                 </td>
             </tr>
@@ -734,6 +734,23 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Расписание успешно сохранено</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="errorPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
                 </div>
             </div>
             <div class="modal-footer">

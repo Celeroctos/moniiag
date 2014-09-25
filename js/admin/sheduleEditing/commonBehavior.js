@@ -137,9 +137,14 @@ $(document).ready(function () {
         }*/
         // Отправляем запрос
         params = {};
+
         if (selectedDoctors!=null)
         {
             params.doctors = selectedDoctors;
+        }
+        else
+        {
+            return;
         }
 
         if (selectedWards!=null)
@@ -323,6 +328,19 @@ $(document).ready(function () {
         else
         {
             // Выводим ошибку
+            // Удаляем предыдущие ошибки
+            $('#errorPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for (var i in returningData.errors) {
+
+                    $('#errorPopup .modal-body .row').append("<p>" + returningData.errors[i] + "</p>")
+
+            }
+
+            $('#errorPopup').modal({
+
+            });
+
 
         }
     }

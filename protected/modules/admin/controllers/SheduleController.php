@@ -94,7 +94,7 @@ class SheduleController extends Controller {
                 ($_GET['end']=="") || (!isset($_GET['end'])) || ($_GET['end']==NULL)
             )  ){
             echo CJSON::encode(array('success' => 'false',
-                'errors' => 'Не заполнена дата начала или дата конца действия расписания' ));
+                'errors' => array('Не заполнена дата начала или дата конца действия расписания' )));
             exit();
         }
 
