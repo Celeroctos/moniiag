@@ -101,7 +101,7 @@ class SheduleController extends Controller {
         if ($_GET['timeTableId']!="")
         {
             // Удаляем все старые записи в таблице связей
-            DoctorsTimetable::model()->delete();
+            DoctorsTimetable::model()->deleteAll('id_timetable = :it', array(':it'=>$_GET['timeTableId']));
 
         }
         // Пишем новые значения в модель
@@ -119,7 +119,14 @@ class SheduleController extends Controller {
             // $oneDoctorIds - берём IDшник и записываем строку
             $doctorsTimeTableLink = new DoctorsTimetable();
             $doctorsTimeTableLink->id_doctor = $oneDoctorIds;
-            $doctorsTimeTableLink->id_timetable = $timeTableModel->EntryID;
+            if ($timeTableModel->EntryID!=null)
+            {
+                $doctorsTimeTableLink->id_timetable = $timeTableModel->EntryID;
+            }
+            else
+            {
+                $doctorsTimeTableLink->id_timetable = $_GET['timeTableId'];
+            }
             $doctorsTimeTableLink->save();
         }
 

@@ -17,8 +17,14 @@ class Timetable extends MisActiveRecord {
 
 
     public function afterSave() {
-        // Надо будет разобраться почему без вот этой вот конструкции не возвращается назад ID-шник только что добавленной записи
-        $this->EntryID = Yii::app()->db->getLastInsertID('mis.timetable_id_seq');
+        try{
+            // Надо будет разобраться почему без вот этой вот конструкции не возвращается назад ID-шник только что добавленной записи
+            $this->EntryID = Yii::app()->db->getLastInsertID('mis.timetable_id_seq');
+        }
+        catch(Exception $Exc)
+        {
+
+        }
         return parent::afterSave();
     }
 
