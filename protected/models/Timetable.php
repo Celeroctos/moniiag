@@ -22,6 +22,7 @@ class Timetable extends MisActiveRecord {
         return parent::afterSave();
     }
 
+
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false)
     {
         $timeTablesIds = $this->getRowsIds($filters, $sidx, $sord , $start , $limit );

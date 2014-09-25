@@ -156,6 +156,7 @@ $(document).ready(function () {
             'data': params,
             'success' : function(data, textStatus, jqXHR) {
                 onShedulesRecieve(data);
+                printPagination('existingTimeTablesList',data.total, '#existingSheduleArea .pagination-container');
             }
         });
 
@@ -339,7 +340,7 @@ $(document).ready(function () {
         dateBegin = $('#edititngSheduleArea').find('.sheduleBeginDateTime').val();
         dateEnd = $('#edititngSheduleArea').find('.sheduleEndDateTime').val();
 
-        timetableId = $('#edititngSheduleArea').find('.timeTableId').text();
+        timetableId = $('#edititngSheduleArea').find('.timeTableId').val();
 
         timeTableDataContainer = {
             'doctors':$.toJSON(doctorsIds),
@@ -364,6 +365,49 @@ $(document).ready(function () {
 
     });
 
+    function startEdit(timetableJSONData)
+    {
+        obj = $.parseJSON(timetableJSONData);
+        //console.log('JSON расписания = '+timetableJSONData);
+        $.fn['timetableEditor'].startEditing(obj);
+    }
 
+    $(document).on('click','.changeSheduleButton',function()
+        {
+            // Нужно закрыть редактирование предыдущего расписание, если редактор открыт
+            //    Потом выбрать докторов, которые указаны в графике
+            //      а затем открыть редактор для редактирования уже текущего графика
+            if (  !$('#edititngSheduleArea').hasClass('no-display') || $('#edititngSheduleArea').text().trim()!='' )
+            {
+                // Закрываем редактор
+                $('#edititngSheduleArea .cancelSheduleButton').trigger('click');
+            }
+
+            dataWithTimeTable = $(this).parents('.timetableReadOnly').find('.timeTableJSON').val();
+            startEdit(dataWithTimeTable);
+
+
+        }
+    );
+
+    $(document).on('click', '.addAddingSheduleButton',function(){
+        //$('.addingNewSheduleContainer button').trigger('click');
+
+
+        // Нужно закрыть редактирование предыдущего расписание, если редактор открыт
+        //    Потом выбрать докторов, которые указаны в графике
+        //      а затем открыть редактор для редактирования уже текущего графика
+        if (  !$('#edititngSheduleArea').hasClass('no-display') || $('#edititngSheduleArea').text().trim()!='' )
+        {
+            // Закрываем редактор
+            $('#edititngSheduleArea .cancelSheduleButton').trigger('click');
+        }
+
+        dataWithTimeTable = $(this).parents('.timetableReadOnly').find('.timeTableJSON').val();
+        //startEdit(dataWithTimeTable);
+        dataObject = $.parseJSON(dataWithTimeTable);
+        $.fn['timetableEditor'].startAddingAnotherTimetable(dataObject.wardsWithDoctors);
+
+    });
 
 });

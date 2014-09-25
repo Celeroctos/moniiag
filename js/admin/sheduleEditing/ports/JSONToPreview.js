@@ -448,7 +448,7 @@ $(document).ready(function () {
         for (var wardsCounter in doctorsArray)
         {
             // Взять строку из таблицы, первую колонку заполнить названием отделения
-             newRowTemplate = $('#timetableTemplates .oneRowDoctorsWardRO');
+             newRowTemplate = $('#timetableTemplates .oneRowDoctorsWardRO').clone();
             // Добавляем отделение
             $(newRowTemplate).find('td.wardsColRO').text(doctorsArray[wardsCounter].name);
             // Перебираем врачей

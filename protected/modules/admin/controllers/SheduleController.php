@@ -313,6 +313,18 @@ class SheduleController extends Controller {
         );
     }
 
+    function actionDeleteTimeTable()
+    {
+        $idTimeTable = $_GET['timetableId'];
+        // Удаляем расписание
+        Timetable::model()->deleteByPk($idTimeTable);
+        // Удаляем связь между докторами т расписаниями, у которых проставлено это расписание
+        DoctorsTimetable::model()->deleteAll('id_timetable = :timetable', array(':timetable'=>$_GET['timetableId']));
+
+        echo CJSON::encode(array('success' => true,
+            'msg' => 'Расписание успешно удалено!.'));
+    }
+
     //======================>
 /*
 	public function actionGetWrittenPatientsEdit()

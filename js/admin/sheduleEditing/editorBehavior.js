@@ -329,4 +329,42 @@ $(document).ready(function () {
 
     });
 
+    globalVariables.timetableToDelete = null;
+    globalVariables.timetableToDeleteHTML = null;
+    $(document).on('click','.deleteSheduleButton',function(){
+       // Удаляем график, но сначала надо спросить разрешения.
+       //  Сначала прочитаем ид расписания
+        globalVariables.timetableToDelete  = $(this).parents('.timetableReadOnly').find('input.timeTableId').val();
+        globalVariables.timetableToDeleteHTML = $(this).parents('.timetableReadOnly');
+        console.log('График для удаления ИД: '+globalVariables.timetableToDelete);
+        $('#deleteTemplatePopup').modal({});
+    });
+
+    $('#timetableButtonDelete').on('click',function(){
+        // Если не был нажат какой-то график, то выходим из обработчика
+        if (globalVariables.timetableToDelete == null)
+        {
+            return;
+        }
+
+        // Посылаем ajax-удаления
+        $.ajax({
+            'url' : '/index.php/admin/shedule/deletetimetable?timetableId='+globalVariables.timetableToDelete,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+              if (data.success==true)
+              {
+                  // Удаляем блок с расписанием
+                  $('#doctorsSelect').trigger('change');
+              }
+            }
+        });
+
+
+    });
+
+
+
 });

@@ -7,14 +7,17 @@ $(document).ready(function () {
         {
             openEditor();
            // initEditor();
-            editorBlock = $('#edititngSheduleArea');
-            initHandlers(editorBlock);
+
         },
+        startAddingAnotherTimetable: function(timeTableToEdit)
+        {
+            openEditor();
+            addNewTimetable(timeTableToEdit)
+        },
+
         startEditing: function(timeTableToEdit)
         {
             openEditor();
-            editorBlock = $('#edititngSheduleArea');
-            initHandlers(editorBlock);
             initEditor(timeTableToEdit);
         },
         addRowInEditor: function()
@@ -84,6 +87,7 @@ $(document).ready(function () {
 
         $(editorBlock).html(   $(editingTemplate[0]).html()   );
         $(document).trigger('refreshDoctorsListEditor');
+        initHandlers(editorBlock);
     }
 
     function initHandlers( editorBlock)
@@ -104,17 +108,60 @@ $(document).ready(function () {
 
     function initEditor(timeTableToEdit)
     {
-        $.fn['sheduleEditor.port.JSONToEditor'].printToScreen(timeTableToEdit);
-        // Если определён - надо перебрать все правила из графика и запустить их редактирование
-        //   иначе - надо открыть только первую строчку в
-        if (timeTableToEdit==undefined)
-        {
+        console.log(timeTableToEdit);
 
-        }
-        else
-        {
+        // Выводим содержимое самого календаря
+        $.fn['sheduleEditor.port.JSONToEditor'].printToScreen(timeTableToEdit.json_data);
+        // Даты начала и даты конца действия графика
+        $('#edititngSheduleArea .sheduleBeginDateTime').val(timeTableToEdit.date_begin);
+        $('#edititngSheduleArea .sheduleEndDateTime').val(timeTableToEdit.date_end);
 
+        $('#edititngSheduleArea .sheduleBeginDateTime').trigger('change');
+        $('#edititngSheduleArea .sheduleEndDateTime').trigger('change');
+
+        // Записываем Id расписания
+        $('#edititngSheduleArea .timeTableId').val(timeTableToEdit.id);
+
+        // Выбираем докторов, которые указаны в списке
+        // Сначала выберем "все отделения"
+        $('#wardSelect').find('option').attr('selected',false);
+        $('#wardSelect').find('option[value=-1]').attr('selected','selected');
+        $('#wardSelect').trigger('change');
+
+        doctorsToSelect = [];
+        for (var wardKey in timeTableToEdit.wardsWithDoctors)
+        {
+            for (var doctorKey in timeTableToEdit.wardsWithDoctors[wardKey].doctors)
+            {
+                doctorsToSelect.push(doctorKey);
+            }
         }
+
+        $('#doctorsSelect').val(doctorsToSelect );
+        $('#doctorsSelect').trigger('change');
+
+    }
+
+    function addNewTimetable(doctors)
+    {
+
+        // Выбираем докторов, которые указаны в списке
+        // Сначала выберем "все отделения"
+        $('#wardSelect').find('option').attr('selected',false);
+        $('#wardSelect').find('option[value=-1]').attr('selected','selected');
+        $('#wardSelect').trigger('change');
+
+        doctorsToSelect = [];
+        for (var wardKey in doctors)
+        {
+            for (var doctorKey in doctors[wardKey].doctors)
+            {
+                doctorsToSelect.push(doctorKey);
+            }
+        }
+
+        $('#doctorsSelect').val(doctorsToSelect );
+        $('#doctorsSelect').trigger('change');
     }
 
     function initEditorEmpty()

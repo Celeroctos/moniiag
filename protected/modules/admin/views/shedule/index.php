@@ -74,7 +74,7 @@
 
     </div>
     <!-- Контейнер для пагинации -->
-    <div class="row">
+    <div class="row pagination-container">
         <ul class="pagination content-pagination">
         </ul>
     </div>
@@ -93,7 +93,7 @@
 
 
         <table class="timeTablesRODoctorsWards">
-            <tr class="">
+            <tr>
                 <td class = "wardsColEditing">
                     <strong>Отделения:</strong>
                 </td>
@@ -156,12 +156,17 @@
                 </tr>
             </tbody>
         </table>
+        <!-- Кнопки "Изменить и "Удалить"-->
+        <div style="display:inline-block;">
+            <button type="button" class="changeSheduleButton btn btn-default" data-dismiss="modal">Изменить</button>
+            <button type="button" class="deleteSheduleButton btn btn-default" data-dismiss="modal">Удалить</button>
+            <button type="button" class="addAddingSheduleButton btn btn-default" data-dismiss="modal">Добавить</button>
+        </div>
     </div>
 
     <div class="col-xs-12" id="timetableEditing">
         <!-- Шаблон для редактирования графика -->
-        <span class="timeTableId no-display"></span>
-        <span class="timeTableJSON no-display"></span>
+        <input class="timeTableId" type="hidden">
         <div class="col-xs-12 timeTableEditDateTimesAction no-display">
             <strong><nobr>C <span class="timeTableEditFrom"></span> по <span class="timeTableEditTo"></span></nobr></strong>
         </div>
@@ -698,6 +703,27 @@
     </div>
 
 </div>
+
+<div class="modal fade error-popup" id="deleteTemplatePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <!--<h4 class="modal-title">Успешно!</h4>-->
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p>Вы действительно хотите удалить расписание?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id = "timetableButtonDelete" data-dismiss="modal">Удалить</button>
+                <button type="button" class="btn btn-close" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade error-popup" id="successEditPopup">
     <div class="modal-dialog">
         <div class="modal-content">
