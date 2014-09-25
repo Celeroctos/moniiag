@@ -121,7 +121,7 @@ $(document).ready(function () {
     {
         timetableObject = $.parseJSON(timetableJSON);
 
-        rulesNumber = timetableObject.rules-1;
+        rulesNumber = timetableObject.rules.length-1;
 
         // Добавляем в редактор rulesNumber дополнительных строк
         for (i=0;i<rulesNumber;i++)

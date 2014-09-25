@@ -121,7 +121,7 @@
                     <td class="daysTD">
                         Дни работы
                     </td>
-                    <td class="hoursOfWorkTD">
+                    <td class="hoursOfWorkTD no-display">
                         Часы работы
                     </td>
                     <td class="hoursOfGreetingTD">
@@ -143,7 +143,7 @@
                     </td>
                     <td class="daysTD">
                     </td>
-                    <td class="hoursOfWorkTD">
+                    <td class="hoursOfWorkTD no-display">
                     </td>
                     <td class="hoursOfGreetingTD">
                     </td>
@@ -210,7 +210,7 @@
                 <td class="daysTD">
                     Дни работы
                 </td>
-                <td class="hoursOfWorkTD">
+                <td class="hoursOfWorkTD no-display">
                     Часы работы
                 </td>
                 <td class="hoursOfGreetingTD">
@@ -366,7 +366,7 @@
                     <div class="daysEditingDatesBlock">
                     </div>
                 </td>
-                <td class="hoursOfWorkTD">
+                <td class="hoursOfWorkTD no-display">
                     <div class="workingHourBlock">
                         <b>С</b>
                         <div>
@@ -596,7 +596,7 @@
                 <td class="daysTD">
                     <button type="button" class="addingNewSheduleDays btn btn-default" data-dismiss="modal">Добавить дни</button>
                 </td>
-                <td class="hoursOfWorkTD">
+                <td class="hoursOfWorkTD no-display">
                     <button type="button" class="addingNewSheduleHourWork btn btn-default" data-dismiss="modal">Добавить<br>часы</button>
                 </td>
                 <td class="hoursOfGreetingTD">
