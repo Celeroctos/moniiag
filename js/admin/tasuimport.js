@@ -388,6 +388,11 @@
                     totalRows = null;
                     $('.numStringsAll').text(0);
                     $('.numStrings').text(0);
+					$('.numStringsAdded').text(0);
+                    $('.numStringsDiscarded').text(0);
+					$('.numStringsError').text(0);
+                    $('.numDoctorsAdded').text(0);
+					$('.numPatientsAdded').text(0);
                 }).addClass('no-display');
             });
         }).removeClass('no-display');

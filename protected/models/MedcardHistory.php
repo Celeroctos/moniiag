@@ -13,20 +13,28 @@ class MedcardHistory extends MisActiveRecord {
     {
         return 'mis.medcards_history';
     }
-	
-	public function getLastNumberByYear($code = false, $ruleId) {
-        $connection = Yii::app()->db;
+
+	public function getMaxThroughNumberPerYear($year, $ruleId) {
+		$connection = Yii::app()->db;
         $medcard = $connection->createCommand()
-            ->select('m.*, CAST(SUBSTRING("m"."to", 0, (CHAR_LENGTH("m"."to") - 2)) as INTEGER) as "fx"')
-            ->from('mis.medcards_history m');
-        $medcard->andWhere(array('like', 'm.to', '%/'.$code))
-				->andWhere('rule_id = :rule_id', array(':rule_id' => $ruleId))
-                ->order('fx desc')
-                ->limit(1, 0);
+            ->select('m.to')
+            ->from('mis.medcards_history m')
+			->where('rule_id = :rule_id AND SUBSTRING(CAST(m.reg_date as TEXT), 0, 5) = :year', array(':rule_id' => $ruleId, ':year' => $year))
+			->order('m.id desc');
 
-        return $medcard->queryRow();
-    }
+		return $medcard->queryRow();
+	}
+	
+	public function geLastNumberThrough($ruleId) {
+		$connection = Yii::app()->db;
+        $medcard = $connection->createCommand()
+            ->select('m.to')
+            ->from('mis.medcards_history m')
+			->where('rule_id = :rule_id', array(':rule_id' => $ruleId))
+			->order('m.id desc');
 
+		return $medcard->queryRow();
+	}
 }
 
 ?>

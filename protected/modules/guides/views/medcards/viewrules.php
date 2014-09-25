@@ -101,16 +101,31 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<?php echo $form->label($model,'participleMode', array(
+						<?php echo $form->label($model,'participleModePrefix', array(
 							'class' => 'col-xs-3 control-label text-left'
 						)); ?>
 						<div class="col-xs-9">
-							<?php echo $form->dropDownList($model, 'participleMode', array(
+							<?php echo $form->dropDownList($model, 'participleModePrefix', array(
 								'-1' => 'Не выбран',
-								'Добавление второго префикса и постфикса',
-								'Замена предыдущего префикса и постфикса'
+								'Добавление второго',
+								'Замена предыдущего'
 							), array(
-								'id' => 'participleMode',
+								'id' => 'participleModePrefix',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'participleModePostfix', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'participleModePostfix', array(
+								'-1' => 'Не выбран',
+								'Добавление второго',
+								'Замена предыдущего'
+							), array(
+								'id' => 'participleModePostfix',
 								'class' => 'form-control'
 							)); ?>
 						</div>
@@ -215,17 +230,32 @@
 							)); ?>
 						</div>
 					</div>
-					<div class="form-group no-display">
-						<?php echo $form->label($model,'participleMode', array(
+					<div class="form-group">
+						<?php echo $form->label($model,'participleModePrefix', array(
 							'class' => 'col-xs-3 control-label text-left'
 						)); ?>
 						<div class="col-xs-9">
-							<?php echo $form->dropDownList($model, 'participleMode', array(
+							<?php echo $form->dropDownList($model, 'participleModePrefix', array(
 								'-1' => 'Не выбран',
-								'Добавление второго префикса и постфикса',
-								'Замена предыдущего префикса и постфикса'
+								'Добавление второго',
+								'Замена предыдущего'
 							), array(
-								'id' => 'participleMode',
+								'id' => 'participleModePrefix',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'participleModePostfix', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'participleModePostfix', array(
+								'-1' => 'Не выбран',
+								'Добавление второго',
+								'Замена предыдущего'
+							), array(
+								'id' => 'participleModePostfix',
 								'class' => 'form-control'
 							)); ?>
 						</div>

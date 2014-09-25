@@ -8,4 +8,7 @@
     <li <?php echo $action == 'viewrules' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Правила', array('/guides/medcards/viewrules')) ?>
     </li>
+	<li <?php echo $action == 'viewseparators' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Разделители', array('/guides/medcards/viewseparators')) ?>
+    </li>
 </ul>

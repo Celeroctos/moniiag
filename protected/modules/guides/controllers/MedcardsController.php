@@ -20,16 +20,24 @@ class MedcardsController extends Controller {
 		));
     }
 	
+	public function actionViewSeparators() {
+		$this->render('viewseparators', array(
+			'model' => new FormMedcardSeparatorAdd()
+		));
+    }
+	
 	public function actionViewRules() {
 		$prefixesList = array(
 			'-1' => 'Не имеется',
 			'-2' => 'Предустановленный: ГГ',
-			'-3' => 'Предустановленный: ГГГГ'
+			'-3' => 'Предустановленный: ГГГГ',
+			'-4' => 'Предустановленный: порядковый номер в разрезе года'
 		);
 		$postfixesList = array(
 			'-1' => 'Не имеется',
 			'-2' => 'Предустановленный: ГГ',
-			'-3' => 'Предустановленный: ГГГГ'
+			'-3' => 'Предустановленный: ГГГГ',
+			'-4' => 'Предустановленный: порядковый номер в разрезе года'
 		);
 			
 		$prefixesDb = MedcardPrefix::model()->findAll();
@@ -101,6 +109,8 @@ class MedcardsController extends Controller {
 					$rule['prefix'] = 'Предустановленный: ГГ';
 				} elseif($rule['prefix_id'] == -3) {
 					$rule['prefix'] = 'Предустановленный: ГГГГ';
+				} elseif($rule['prefix_id'] == -4) {
+					$rule['prefix'] = 'Предустановленный: порядковый номер в разрезе года';
 				}
 				
 				if($rule['postfix_id'] == null) {
@@ -110,15 +120,26 @@ class MedcardsController extends Controller {
 					$rule['postfix'] = 'Предустановленный: ГГ';
 				} elseif($rule['postfix_id'] == -3) {
 					$rule['postfix'] = 'Предустановленный: ГГГГ';
+				} elseif($rule['postfix_id'] == -4) {
+					$rule['postfix'] = 'Предустановленный: порядковый номер в разрезе года';
 				}
 				
-				if($rule['participle_mode'] === null) {
-					$rule['participle_mode_desc'] = '-';
-					$rule['participle_mode'] = -1;
-				} elseif($rule['participle_mode'] == 0) {
-					$rule['participle_mode_desc'] = 'Добавление вторых';
-				} elseif($rule['participle_mode'] == 1) {
-					$rule['participle_mode_desc'] = 'Замена';
+				if($rule['participle_mode_prefix'] === null) {
+					$rule['participle_mode_prefix_desc'] = '-';
+					$rule['participle_mode_prefix'] = -1;
+				} elseif($rule['participle_mode_prefix'] == 0) {
+					$rule['participle_mode_prefix_desc'] = 'Добавление второго';
+				} elseif($rule['participle_mode_prefix'] == 1) {
+					$rule['participle_mode_prefix_desc'] = 'Замена';
+				} 
+				
+				if($rule['participle_mode_postfix'] === null) {
+					$rule['participle_mode_postfix_desc'] = '-';
+					$rule['participle_mode_postfix'] = -1;
+				} elseif($rule['participle_mode_postfix'] == 0) {
+					$rule['participle_mode_postfix_desc'] = 'Добавление второго';
+				} elseif($rule['participle_mode_postfix'] == 1) {
+					$rule['participle_mode_postfix_desc'] = 'Замена';
 				} 
 				
 				$rule['rule'] = $this->typesList[$rule['value']];
@@ -348,8 +369,11 @@ class MedcardsController extends Controller {
 		if($rule['postfix_id'] == null) {
 			$rule['postfix_id'] = -1;
 		}
-		if($rule['participle_mode'] === null) {
-			$rule['participle_mode'] = -1;
+		if($rule['participle_mode_prefix'] === null) {
+			$rule['participle_mode_prefix'] = -1;
+		}
+		if($rule['participle_mode_postfix'] === null) {
+			$rule['participle_mode_postfix'] = -1;
 		}
 
         echo CJSON::encode(
@@ -387,11 +411,18 @@ class MedcardsController extends Controller {
 		}
 		if($model->parentId != -1) {
 			$rule->parent_id = $model->parentId;
-			if($rule->participle_mode != -1) {
-				$rule->participle_mode = $model->participleMode;
+			if($rule->participle_mode_prefix != -1) {
+				$rule->participle_mode_prefix = $model->participleModePrefix;
 			} else {
-				$rule->participle_mode = null;
+				$rule->participle_mode_prefix = null;
 			}
+			
+			if($rule->participle_mode_postfix != -1) {
+				$rule->participle_mode_postfix = $model->participleModePostfix;
+			} else {
+				$rule->participle_mode_postfix = null;
+			}
+			
 		} else {
 			$rule->parent_id = null;
 		}

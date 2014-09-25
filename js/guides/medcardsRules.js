@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#rules").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getrules',
         datatype: "json",
-        colNames:['Код', 'Название', 'Постфикс', 'Префикс', 'Правило', 'Унаследован от', 'Предыдущие префиксы и постфиксы', '', '', '', '', ''],
+        colNames:['Код', 'Название', 'Префикс', 'Постфикс', 'Правило', 'Унаследован от', 'Предыдущий префикс', 'Предыдущий постфикс', '', '', '', '','',''],
         colModel:[
             {
                 name:'id',
@@ -14,14 +14,14 @@ $(document).ready(function() {
                 index: 'name',
                 width: 150
             },
-            {
-                name: 'postfix',
-                index: 'postfix',
-                width: 80
-            },
 			{
                 name: 'prefix',
                 index: 'prefix',
+                width: 80
+            },
+			{
+                name: 'postfix',
+                index: 'postfix',
                 width: 80
             },
 			{
@@ -35,9 +35,14 @@ $(document).ready(function() {
                 width: 100
             },
 			{
-                name: 'participle_mode_desc',
-                index: 'participle_mode_desc',
-                width: 250
+                name: 'participle_mode_prefix_desc',
+                index: 'participle_mode_prefix_desc',
+                width: 170
+            },
+			{
+                name: 'participle_mode_postfix_desc',
+                index: 'participle_mode_postfix_desc',
+                width: 170
             },
 			{
                 name: 'postfix_id',
@@ -60,8 +65,13 @@ $(document).ready(function() {
                 hidden: true
             },
 			{
-				name:  'participle_mode',
-				index: 'participle_mode',
+				name:  'participle_mode_prefix',
+				index: 'participle_mode_prefix',
+				hidden: true
+			},
+			{
+				name:  'participle_mode_postfix',
+				index: 'participle_mode_postfix',
 				hidden: true
 			}
         ],
@@ -140,18 +150,24 @@ $(document).ready(function() {
 								formField: 'typeId'
 							},
 							{
-								modelField: 'participle_mode',
-								formField: 'participleMode'
+								modelField: 'participle_mode_prefix',
+								formField: 'participleModePrefix'
+							},
+							{
+								modelField: 'participle_mode_postfix',
+								formField: 'participleModePostfix'
 							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
 							if(fields[i].formField == 'typeId') {
 								if(data.data[fields[i].modelField] == 2) {
 									form.find('#parentId').parents('.form-group').removeClass('no-display');
-									form.find('#participleMode').parents('.form-group').removeClass('no-display');
+									form.find('#participleModePrefix').parents('.form-group').removeClass('no-display');
+									form.find('#participleModePostfix').parents('.form-group').removeClass('no-display');
 								} else {
 									form.find('#parentId').parents('.form-group').addClass('no-display');
-									form.find('#participleMode').parents('.form-group').addClass('no-display');
+									form.find('#participleModePrefix').parents('.form-group').addClass('no-display');
+									form.find('#participleModePostfix').parents('.form-group').addClass('no-display');
 								}
 							}
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
