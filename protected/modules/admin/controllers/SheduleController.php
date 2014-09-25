@@ -16,7 +16,7 @@ class SheduleController extends Controller {
 
         // Вытащим врачей вместе с отделениями и со всем
         $doctorObject = new Doctor();
-        $doctorsList = $doctorObject->getAll();
+        $doctorsList = $doctorObject->getAllForSelect();
 /*echo '<pre>';
         var_dump($doctorsList );
         exit();
