@@ -8,7 +8,10 @@ class FormMedcardSeparatorAdd extends FormMisDefault
     {
         return array(
 			array(
-				'id, value', 'required'
+				'value', 'required'
+			),
+			array(
+				'id', 'safe'
 			)
         );
     }

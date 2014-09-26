@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#rules").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getrules',
         datatype: "json",
-        colNames:['Код', 'Название', 'Префикс', 'Постфикс', 'Правило', 'Унаследован от', 'Предыдущий префикс', 'Предыдущий постфикс', '', '', '', '','',''],
+        colNames:['Код', 'Название', 'Префикс', 'Постфикс', 'Разделитель префикса', 'Разделитель постфикса', 'Правило', 'Унаследован от', 'Предыдущий префикс', 'Предыдущий постфикс', '', '', '', '','','','',''],
         colModel:[
             {
                 name:'id',
@@ -23,6 +23,16 @@ $(document).ready(function() {
                 name: 'postfix',
                 index: 'postfix',
                 width: 80
+            },
+			{
+                name: 'prefix_separator',
+                index: 'prefix_separator',
+                width: 170
+            },
+			{
+                name: 'postfix_separator',
+                index: 'postfix_separator',
+                width: 170
             },
 			{
                 name: 'rule',
@@ -73,7 +83,17 @@ $(document).ready(function() {
 				name:  'participle_mode_postfix',
 				index: 'participle_mode_postfix',
 				hidden: true
-			}
+			},
+			{
+                name: 'prefix_separator_id',
+                index: 'prefix_separator_id',
+                hidden: true
+            },
+			{
+                name: 'postfix_separator_id',
+                index: 'postfix_separator_id',
+                hidden: true
+            },
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -146,6 +166,14 @@ $(document).ready(function() {
                                 formField: 'postfixId'
                             },
 							{
+                                modelField: 'prefix_separator_id',
+                                formField: 'prefixSeparatorId'
+                            },
+							{
+                                modelField: 'postfix_separator_id',
+                                formField: 'postfixSeparatorId'
+                            },
+							{
 								modelField: 'value',
 								formField: 'typeId'
 							},
@@ -168,6 +196,20 @@ $(document).ready(function() {
 									form.find('#parentId').parents('.form-group').addClass('no-display');
 									form.find('#participleModePrefix').parents('.form-group').addClass('no-display');
 									form.find('#participleModePostfix').parents('.form-group').addClass('no-display');
+								}
+							}
+							if(fields[i].formField == 'prefixId') {
+								if(data.data[fields[i].modelField] == -1) {
+									form.find('#prefixSeparatorId').parents('.form-group').addClass('no-display');
+								} else {
+									form.find('#prefixSeparatorId').parents('.form-group').removeClass('no-display');
+								}
+							}
+							if(fields[i].formField == 'postfixId') {
+								if(data.data[fields[i].modelField] == -1) {
+									form.find('#postfixSeparatorId').parents('.form-group').addClass('no-display');
+								} else {
+									form.find('#postfixSeparatorId').parents('.form-group').removeClass('no-display');
 								}
 							}
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
@@ -215,7 +257,9 @@ $(document).ready(function() {
             // Перезагружаем таблицу
             $("#rules").trigger("reloadGrid");
             $("#rule-add-form")[0].reset(); // Сбрасываем форму
+			$("#rule-add-form").find('#prefixSeparatorId, #postfixSeparatorId').parents('.form-group').addClass('no-display');
 			$('#rule-edit-form, #rule-add-form').find('#parentId').trigger('update');
+			$('#rule-add-form').find('#typeId').val(0).trigger('change');
         } else {
 
             // Удаляем предыдущие ошибки
@@ -263,6 +307,14 @@ $(document).ready(function() {
 			$(this).parents('.form-group').next().removeClass('no-display').find('select').val(-1);
 		} else {
 			$(this).parents('.form-group').next().addClass('no-display').find('select').val(-1);
+		}
+	});
+	
+	$('#rule-edit-form, #rule-add-form').find('#prefixId, #postfixId').on('change', function(e) {
+		if($(this).val() != -1) {
+			$(this).parents('.form-group').next().removeClass('no-display');
+		} else {
+			$(this).parents('.form-group').next().addClass('no-display');
 		}
 	});
 	

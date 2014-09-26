@@ -8,7 +8,6 @@ class CardnumberGenerator extends CComponent {
 		}
 
 		$number = $this->generate($this->generatePrefix($rule), $this->generatePostfix($rule), $rule);
-		var_dump($number);
 		return $number;
 	}
 	
@@ -17,51 +16,87 @@ class CardnumberGenerator extends CComponent {
 	}
 	
 	private function generatePrefix($rule) {
+		// Выясняем сепаратор
+		if($rule->prefix_id != null) {
+			$separator = MedcardSeparator::model()->findByPk($rule->prefix_separator_id);
+			if($separator == null) {
+				echo CJSON::encode(
+					array(
+						'success' => false,
+						'errors' => array(
+							'separators' => array(
+								'Разделитель для префикса не найден!'
+							)
+						)
+					)
+				);
+				exit();
+			}
+		}
+		
 		if($rule->value == 2 && $this->prevNumber != null && $rule->participle_mode_prefix == 1) {
 			$prefix = MedcardPostfix::model()->findByPk($rule->prefix_id);
-			return $prefix->value;
+			return $separator->value.$prefix->value;
 		}
 	
 		if($rule->prefix_id == -2) { // ГГ
-			return date('y').'/';
+			return date('y').$separator->value;
 		} elseif($rule->prefix_id == -3) { // ГГГГ
-			return date('Y').'/';
+			return date('Y').$separator->value;
 		} elseif($rule->prefix_id == -4) { // TODO: Порядковый номер в разрезе года
 			$lastPerYear = MedcardHistory::model()->getMaxThroughNumberPerYear(date('Y'), $rule->id);
 			if($lastPerYear != null) {
-				$number = mb_substr($lastPerYear['to'], mb_strpos($lastPerYear['to'], '|') + 1, mb_strlen($lastPerYear['to']) - mb_strrpos($lastPerYear['to'], '|'));
-				return '|'.($number + 1).'|';
+				$number = mb_substr($lastPerYear['to'], mb_strpos($lastPerYear['to'], $separator->value) + 1, mb_strlen($lastPerYear['to']) - mb_strrpos($lastPerYear['to'], $separator->value));
+				return $separator->value.($number + 1).$separator->value;
 			} else {
-				return '|1|';
+				return $separator->value.'1'.$separator->value;
 			}
 		} elseif($rule->prefix_id > 0) { // Не "не имеется"
 			$prefix = MedcardPrefix::model()->findByPk($rule->prefix_id);
-			return $prefix->value;
+			return $prefix->value.$separator->value;
 		}
 		return '';
 	}
 	
 	private function generatePostfix($rule) {
+		// Выясняем сепаратор
+		if($rule->postfix_id != null) {
+			$separator = MedcardSeparator::model()->findByPk($rule->postfix_separator_id);
+			if($separator == null ) {
+				echo CJSON::encode(
+					array(
+						'success' => false,
+						'errors' => array(
+							'separators' => array(
+								'Разделитель для постфикса не найден!'
+							)
+						)
+					)
+				);
+				exit();
+			}
+		}
+		
 		if($rule->value == 2 && $this->prevNumber != null && $rule->participle_mode_postfix == 1) {
 			$postfix = MedcardPostfix::model()->findByPk($rule->postfix_id);
-			return $postfix->value;
+			return $separator->value.$postfix->value;
 		}
 		
 		if($rule->postfix_id == -2) { // ГГ
-			return '/'.date('y');
+			return $separator->value.date('y');
 		} elseif($rule->postfix_id == -3) { // ГГГГ
-			return '/'.date('Y');
+			return $separator->value.date('Y');
 		} elseif($rule->postfix_id == -4) { // TODO: Порядковый номер в разрезе года
 			$lastPerYear = MedcardHistory::model()->getMaxThroughNumberPerYear(date('Y'), $rule->id);
 			if($lastPerYear != null) {
-				$number = mb_substr($lastPerYear['to'], mb_strpos($lastPerYear['to'], '#') + 1, mb_strlen($lastPerYear['to']) - mb_strrpos($lastPerYear['to'], '#'));
-				return '#'.($number + 1).'#';
+				$number = mb_substr($lastPerYear['to'], mb_strpos($lastPerYear['to'], $separator->value) + 1, mb_strlen($lastPerYear['to']) - mb_strrpos($lastPerYear['to'], $separator->value));
+				return $separator->value.($number + 1).$separator->value;
 			} else {
-				return '#1#';
+				return $separator->value.'1'.$separator->value;
 			}
 		} elseif($rule->postfix_id > 0) { // Не "не имеется"
 			$postfix = MedcardPostfix::model()->findByPk($rule->postfix_id);
-			return $postfix->value;
+			return $separator->value.$postfix->value;
 		}
 		return '';
 	}
@@ -85,7 +120,7 @@ class CardnumberGenerator extends CComponent {
 			if($medcard == null) {
 				$number = 0; // Это для того, чтобы do-while сгенерировал 1чку
 			} else {
-				$number = $this->getNumber($rule->prefix_id, $rule->postfix_id, $medcard['to']);
+				$number = $this->getNumber($rule, $medcard['to']);
 			}
 		} elseif($rule->value == 1) { // Сквозная
 			$medcard = MedcardHistory::model()->getLastNumberThrough();
@@ -93,17 +128,17 @@ class CardnumberGenerator extends CComponent {
 			if($medcard == null) {
 				$number = 0; // Это для того, чтобы do-while сгенерировал 1чку
 			} else {
-				$number = $this->getNumber($rule->prefix_id, $rule->postfix_id, $medcard['to']);
+				$number = $this->getNumber($rule, $medcard['to']);
 			}
 		} elseif($rule->value == 2) { // На основе существующего номера
-			if($this->prevNumber != null) {
+			if($this->prevNumber != null) {			
 				$number = $this->prevNumber;
 				$prevRuleModel = MedcardRule::model()->findByPk($rule->parent_id);
 				if($rule->participle_mode_prefix === 0) { // Режим добавления второго префикса
 					$number = $prefix.$number;
 				}
 				if($rule->participle_mode_prefix == 1) { // Режим замены префикса
-					$number = $this->splicePrefix($prevRuleModel->prefix_id, $number);
+					$number = $this->splicePrefix($prevRuleModel, $number);
 					$number = $prefix.$number;
 				}
 
@@ -111,7 +146,7 @@ class CardnumberGenerator extends CComponent {
 					$number = $number.$postfix;
 				}
 				if($rule->participle_mode_postfix == 1) { // Режим замены постфикса
-					$number = $this->splicePostfix($prevRuleModel->postfix_id, $number);
+					$number = $this->splicePostfix($prevRuleModel, $number);
 					$number = $number.$postfix;
 				}
 				return $number;
@@ -147,46 +182,82 @@ class CardnumberGenerator extends CComponent {
 		return $str;
 	}
 	
-	private function getNumber($prefix_id, $postfix_id, $data) {
-		$data = $this->splicePrefix($prefix_id, $data);
-		$data = $this->splicePostfix($postfix_id, $data);
+	private function getNumber($rule, $data) {
+		$data = $this->splicePrefix($rule, $data);
+		$data = $this->splicePostfix($rule, $data);
 		return $data;
 	}
 	
-	private function splicePrefix($prefix_id, $data, $returnPrefix = false) {
-		if($prefix_id !== false) { // Если оно равно false, то это означает, что резать эту частицу не надо
-			if($prefix_id == -2 || $prefix_id == -3) {
+	private function splicePrefix($rule, $data, $returnPrefix = false) {
+		// Выясняем сепаратор
+		if($rule->prefix_id != null) {
+			$separator = MedcardSeparator::model()->findByPk($rule->prefix_separator_id);
+			if($separator == null) {
+				echo CJSON::encode(
+					array(
+						'success' => false,
+						'errors' => array(
+							'separators' => array(
+								'Разделитель для префикса не найден!'
+							)
+						)
+					)
+				);
+				exit();
+			}
+		}
+		
+		if($rule->prefix_id !== false) { // Если оно равно false, то это означает, что резать эту частицу не надо
+			if($rule->prefix_id == -2 || $rule->prefix_id == -3) {
 				if($returnPrefix === false) {
-					$data = mb_substr($data, strpos($data, '/') + 1); 
+					$data = mb_substr($data, strpos($data, $separator->value) + 1); 
 				} else {
-					$data =  mb_substr($data, 0, strpos($data, '/')); 
+					$data =  mb_substr($data, 0, strpos($data, $separator->value)); 
 				}
-			} elseif($prefix_id != null) {
-				$prefixModel = MedcardPrefix::model()->findByPk($prefix_id);
+			} elseif($rule->prefix_id != null) {
+				$prefixModel = MedcardPrefix::model()->findByPk($rule->prefix_id);
 				if($returnPrefix === false) {
-					$data = mb_substr($data, mb_strpos($data, $prefixModel->value) + mb_strlen($prefixModel->value));
+					$data = mb_substr($data, mb_strpos($data, $prefixModel->value.$separator->value) + mb_strlen($prefixModel->value.$separator->value));
 				} else {
-					$data = mb_substr($data, 0, mb_strpos($data, $prefixModel->value));
+					$data = mb_substr($data, 0, mb_strpos($data, $prefixModel->value.$separator->value));
 				}
 			}
 		}
 		
 		return $data;
 	}
-	private function splicePostfix($postfix_id, $data, $returnPostfix = false) {
-		if($postfix_id !== false) { // Аналогично
-			if($postfix_id == -2 || $postfix_id == -3) {
+	private function splicePostfix($rule, $data, $returnPostfix = false) {
+		// Выясняем сепаратор
+		if($rule->postfix_id != null) {
+			$separator = MedcardSeparator::model()->findByPk($rule->postfix_separator_id);
+			if($separator == null) {
+				echo CJSON::encode(
+					array(
+						'success' => false,
+						'errors' => array(
+							'separators' => array(
+								'Разделитель для постфикса не найден!'
+							)
+						)
+					)
+				);
+				exit();
+			}
+		}
+		
+		if($rule->postfix_id !== false) { // Аналогично
+			if($rule->postfix_id == -2 || $rule->postfix_id == -3) {
 				if($returnPostfix === false) {
-					$data = mb_substr($data, 0, strrpos($data, '/')); 
+					$data = mb_substr($data, 0, strrpos($data, $separator->value)); 
 				} else {
-					$data = mb_substr($data, strrpos($data, '/') + 1); 
+					$data = mb_substr($data, strrpos($data, $separator->value) + 1); 
 				}
-			} elseif($postfix_id != null) {
-				$postfixModel = MedcardPostfix::model()->findByPk($postfix_id);
+			} elseif($rule->postfix_id != null) {
+				$postfixModel = MedcardPostfix::model()->findByPk($rule->postfix_id);
 				if($returnPostfix === false) {
-					$data = mb_substr($data, 0, mb_strrpos($data, $postfixModel->value));
+					$data = mb_substr($data, 0, mb_strrpos($data, $separator->value.$postfixModel->value));
 				} else {
-					$data = mb_substr($data, mb_strrpos($data, $postfixModel->value));
+					$data = mb_substr($data, mb_strrpos($data, $separator->value.$postfixModel->value));
 				}
 			}	
 		}

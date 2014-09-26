@@ -81,7 +81,7 @@ class PatientController extends Controller {
 			exit();
 		}
 		$generator = new CardnumberGenerator();
-		$generator->setPrevNumber('14/12345-Н');
+		$generator->setPrevNumber('14/12345-Р');
 		$cardNumber = $generator->generateNumber($_GET['ruleid']);
 	}
 	

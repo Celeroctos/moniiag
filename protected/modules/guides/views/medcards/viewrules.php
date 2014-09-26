@@ -67,6 +67,17 @@
 							)); ?>
 						</div>
 					</div>
+					<div class="form-group no-display">
+						<?php echo $form->label($model,'prefixSeparatorId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'prefixSeparatorId', $separatorsList, array(
+								'id' => 'prefixSeparatorId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
 					<div class="form-group">
 						<?php echo $form->label($model,'postfixId', array(
 							'class' => 'col-xs-3 control-label text-left'
@@ -74,6 +85,17 @@
 						<div class="col-xs-9">
 							<?php echo $form->dropDownList($model, 'postfixId', $postfixesList, array(
 								'id' => 'postfixId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group no-display">
+						<?php echo $form->label($model,'postfixSeparatorId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'postfixSeparatorId', $separatorsList, array(
+								'id' => 'postfixSeparatorId',
 								'class' => 'form-control'
 							)); ?>
 						</div>
@@ -197,6 +219,17 @@
 							)); ?>
 						</div>
 					</div>
+					<div class="form-group no-display">
+						<?php echo $form->label($model,'prefixSeparatorId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'prefixSeparatorId', $separatorsList, array(
+								'id' => 'prefixSeparatorId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
 					<div class="form-group">
 						<?php echo $form->label($model,'postfixId', array(
 							'class' => 'col-xs-3 control-label text-left'
@@ -204,6 +237,17 @@
 						<div class="col-xs-9">
 							<?php echo $form->dropDownList($model, 'postfixId', $postfixesList, array(
 								'id' => 'postfixId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group no-display">
+						<?php echo $form->label($model,'postfixSeparatorId', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'postfixSeparatorId', $separatorsList, array(
+								'id' => 'postfixSeparatorId',
 								'class' => 'form-control'
 							)); ?>
 						</div>
@@ -283,4 +327,23 @@
             <?php $this->endWidget(); ?>
 		</div>
 	</div>
+</div>
+<div class="modal fade error-popup" id="errorAddRulePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Ошибка!</h4>
+            </div>
+            <div class="modal-body">
+                <h4>При заполнении формы возникли следующие ошибки:</h4>
+                <div class="row">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
 </div>

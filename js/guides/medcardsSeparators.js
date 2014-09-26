@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#separators").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getseparators',
         datatype: "json",
-        colNames:['Код', 'Постфикс'],
+        colNames:['Код', 'Разделитель'],
         colModel:[
             {
                 name:'id',
@@ -21,7 +21,7 @@ $(document).ready(function() {
         sortname: 'id',
         viewrecords: true,
         sortorder: "desc",
-        caption:"Постфиксы",
+        caption:"Разделители",
         height: 300,
           ondblClickRow: editSeparator
     });

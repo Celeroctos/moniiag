@@ -49,11 +49,13 @@ class MedcardsController extends Controller {
 			$postfixesList[(string)$postfix['id']] = $postfix['value'];
 		}
 		$rulesList = $this->getMedcardsRules();
+		$separatorsList = $this->getSeparatorsList();
 	
 		$this->render('viewrules', array(
 			'prefixesList' => $prefixesList,
 			'postfixesList' => $postfixesList,
 			'rulesList' => $rulesList,
+			'separatorsList' => $separatorsList,
 			'typesList' => $this->typesList,
 			'model' => new FormMedcardRuleAdd()
 		));
@@ -122,6 +124,16 @@ class MedcardsController extends Controller {
 					$rule['postfix'] = 'Предустановленный: ГГГГ';
 				} elseif($rule['postfix_id'] == -4) {
 					$rule['postfix'] = 'Предустановленный: порядковый номер в разрезе года';
+				}
+				
+				if($rule['postfix_separator_id'] == null) {
+					$rule['postfix_separator_id'] = -1;
+					$rule['postfix_separator'] = '-';
+				}
+				
+				if($rule['prefix_separator_id'] == null) {
+					$rule['prefix_separator_id'] = -1;
+					$rule['prefix_separator'] = '-';
 				}
 				
 				if($rule['participle_mode_prefix'] === null) {
@@ -223,6 +235,39 @@ class MedcardsController extends Controller {
             echo $e->getMessage();
         }
     }
+	
+	public function actionGetSeparators() {
+        try {
+            $rows = $_GET['rows'];
+            $page = $_GET['page'];
+            $sidx = $_GET['sidx'];
+            $sord = $_GET['sord'];
+			
+			if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+                $filters = CJSON::decode($_GET['filters']);
+            } else {
+                $filters = false;
+            }
+
+            $model = new MedcardSeparator();
+            $num = $model->getRows($filters);
+
+            $totalPages = ceil(count($num) / $rows);
+            $start = $page * $rows - $rows;
+
+            $separators = $model->getRows($filters, $sidx, $sord, $start, $rows);
+            echo CJSON::encode(
+                array(
+                    'success' => true,
+                    'rows' => $separators,
+                    'total' => $totalPages,
+                    'records' => count($num))
+            );
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+	
 	
 	public function actionGetOnePrefix($id) {
         $prefix = MedcardPrefix::model()->findByPk($id);
@@ -360,14 +405,20 @@ class MedcardsController extends Controller {
 	
 	public function actionGetOneRule($id) {
         $rule = MedcardRule::model()->findByPk($id);
-		if($rule['parent_id'] == null) {
+		if($rule['parent_id'] === null) {
 			$rule['parent_id'] = -1;
 		}
-		if($rule['prefix_id'] == null) {
+		if($rule['prefix_id'] === null) {
 			$rule['prefix_id'] = -1;
 		}
-		if($rule['postfix_id'] == null) {
+		if($rule['postfix_id'] === null) {
 			$rule['postfix_id'] = -1;
+		}
+		if($rule['prefix_separator_id'] === null) {
+			$rule['prefix_separator_id'] = -1;
+		}
+		if($rule['postfix_separator_id'] === null) {
+			$rule['postfix_separator_id'] = -1;
 		}
 		if($rule['participle_mode_prefix'] === null) {
 			$rule['participle_mode_prefix'] = -1;
@@ -386,6 +437,19 @@ class MedcardsController extends Controller {
 
 	public function actionDeleteRule($id) {
         try {
+			if(MedcardHistory::model()->find('rule_id = :rule_id', array(':rule_id' => $id)) != null) {
+				echo CJSON::encode(
+					array(
+						'success' => false,
+						'errors' => array(
+							'rules' => array(
+								'Для данного правила существуют медкарты. Удаление правила недопустимо!'
+							)
+						)
+					)
+				);
+				exit();
+			}
             MedcardRule::model()->deleteByPk($id);
             echo CJSON::encode(array('success' => 'true',
 									 'text' => 'Правило успешно удалён.'));
@@ -397,18 +461,37 @@ class MedcardsController extends Controller {
     }
 
     private function addEditModelRule($rule, $model, $msg) {
+		if($model->postfixId != -1 && $model->prefixId != -1 && $model->postfixSeparatorId == $model->prefixSeparatorId) {
+			echo CJSON::encode(
+				array(
+					'success' => false,
+					'errors' => array(
+						'separators' => array(
+							'Для префикса и постфикса используется один и тот же разделитель, что недопустимо!'
+						)
+					)
+				)
+			);
+			exit();
+		}
         $rule->value = $model->typeId;
 		$rule->name = $model->name;
 		if($model->prefixId != -1) {
 			$rule->prefix_id = $model->prefixId;
+			$rule->prefix_separator_id = $model->prefixSeparatorId;
 		} else {
 			$rule->prefix_id = null;
+			$rule->prefix_separator_id = null;
 		}
+		
 		if($model->postfixId != -1) {
 			$rule->postfix_id = $model->postfixId;
+			$rule->postfix_separator_id = $model->postfixSeparatorId;
 		} else {
 			$rule->postfix_id = null;
+			$rule->postfix_separator_id = null;
 		}
+		
 		if($model->parentId != -1) {
 			$rule->parent_id = $model->parentId;
 			if($rule->participle_mode_prefix != -1) {
@@ -468,6 +551,104 @@ class MedcardsController extends Controller {
             }
         }
     }
+	
+	public function actionGetOneSeparator($id) {
+        $separator = MedcardSeparator::model()->findByPk($id);
+        echo CJSON::encode(
+			array(
+				'success' => true,
+                'data' => $separator
+			)
+        );
+    }
+
+	public function actionDeleteSeparator($id) {
+        try {
+            MedcardSeparator::model()->deleteByPk($id);
+            echo CJSON::encode(array('success' => 'true',
+									 'text' => 'Разделитель успешно удалён.'));
+        } catch(Exception $e) {
+            // Это нарушение целостности FK
+            echo CJSON::encode(array(
+				'success' => 'false',
+                'error' => 'На данную запись есть ссылки!'
+			));
+        }
+    }
+
+    private function addEditModelSeparator($separator, $model, $msg) {
+        $issetSeparator = MedcardSeparator::model()->find('value = :value', array(':value' => $model->value));
+		if($issetSeparator != null) {
+			echo CJSON::encode(array(
+					'success' => false,
+                    'errors' =>  array(
+						'value' => array(
+							'Такой разделитель уже существует в списке разделителей!'
+						)
+					)
+                )
+            );
+			exit();
+		}
+		$separator->value = $model->value;
+        if($separator->save()) {
+            echo CJSON::encode(array(
+					'success' => true,
+                    'text' =>  $msg
+                )
+            );
+        }
+    }
+
+    public function actionEditSeparator() {
+        $model = new FormMedcardSeparatorAdd();
+        if(isset($_POST['FormMedcardSeparatorAdd'])) {
+            $model->attributes = $_POST['FormMedcardSeparatorAdd'];
+            if($model->validate()) {
+                $separator = MedcardSeparator::model()->findByPk($_POST['FormMedcardSeparatorAdd']['id']);
+                $this->addEditModelSeparator($separator, $model, 'Разделитель успешно отредактирован.');
+            } else {
+                echo CJSON::encode(array(
+					'success' => 'false',
+                    'errors' => $model->errors
+					)
+				);
+            }
+        }
+    }
+
+    public function actionAddSeparator() {
+        $model = new FormMedcardSeparatorAdd();
+        if(isset($_POST['FormMedcardSeparatorAdd'])) {
+            $model->attributes = $_POST['FormMedcardSeparatorAdd'];
+            if($model->validate()) {
+                $postfix = new MedcardSeparator();
+                $this->addEditModelSeparator($postfix, $model, 'Разделитель успешно добавлен.');
+            } else {
+                echo CJSON::encode(array(
+					'success' => 'false',
+					'errors' => $model->errors
+					)
+				);
+            }
+        }
+    }
+	
+	private function getSeparatorsList($onlyNotUsed = false) {
+		$separatorsDb = $onlyNotUsed ? MedcardSeparator::model()->findAllNotUsed() :  MedcardSeparator::model()->findAll();
+		$separatorsList = array();
+		foreach($separatorsDb as $separator) {
+			$separatorsList[(string)$separator['id']] = $separator['value'];
+		}
+		return $separatorsList;
+	}
+	public function updateSeparatorsList() {
+		 echo CJSON::encode(array(
+			'success' => true,
+			'data' => $this->getSeparatorsList()
+			)
+		);
+	}
 
 }
 
