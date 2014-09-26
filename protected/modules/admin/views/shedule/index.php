@@ -350,7 +350,7 @@
                             <!-- Селект исключений -->
                             <div class="exceptionSelectContainer">
                                 Кроме:<select class="exceptionSelect" multiple="multiple">
-                                    <option value="-2">Даты в календаре</option>
+                                    <!--option value="-2">Даты в календаре</option-->
                                     <option value="1">Понедельника</option>
                                     <option value="2">Вторника</option>
                                     <option value="3">Среды</option>

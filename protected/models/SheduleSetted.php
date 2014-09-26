@@ -21,11 +21,11 @@ class SheduleSetted extends MisActiveRecord {
 
 
     // Получить все смены для сотрудника
-    public static function getAllForEmployer ($employerId)
+    public static function getAllForEmployer ($employerId,$dateBegin=false,$dateEnd=false)
     {
         $connection = Yii::app()->db;
         try {
-            $sheduleDays= $connection->createCommand()
+           /* $sheduleDays= $connection->createCommand()
                 ->select("*")
                 ->from(SheduleSetted::tableName().' dss')
                 ->leftJoin('mis.doctor_shedule_setted_be dssb', 'dss.date_id=dssb.id')
@@ -38,8 +38,13 @@ class SheduleSetted extends MisActiveRecord {
 
                 );
             return $sheduleDays->queryAll();
+           */
+
+
+
         } catch(Exception $e) {
             echo $e->getMessage();
+            exit();
         }
     }
 
@@ -98,6 +103,8 @@ class SheduleSetted extends MisActiveRecord {
         }
     }
 
+    // Это старый, ненужный код. Потом выбросить я думаю
+    /*
     // Получаем рабочий ли день $dayDate для врача $doctorId
     public static function getDoctorRegimeByDay($dayDate, $doctorId)
     {
@@ -186,7 +193,7 @@ class SheduleSetted extends MisActiveRecord {
                 //$resultArr[(string)$i - 1]['day'] = $i;
 
             return  $result;
-    }
+    }*/
 
     // Функция, которая прочёсывает массив рабочих дней в каждую из смен для одного врача и определяет
     //      индекс строки с расписанием для конекретной даты, конкретного дня недели для конкретного врача

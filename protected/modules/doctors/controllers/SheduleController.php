@@ -719,18 +719,74 @@ class SheduleController extends Controller {
     // Логика выдачи календаря:
     /* Выдаются даты + характеристика дат. Например, количество пациентов на день. */
     public function getCalendar($doctorId = false, $startYear = false, $startMonth = false, $startDay = false, $breakByErrors = true, $onlyWaitingLine = false) {
+
+        // Конструируем даты начала вывода расписания
+        $currentYear = null;
+        $currentMonth = null;
+        $currentDay = null;
+        if(isset($_GET['year'])) {
+            $currentYear = $_GET['year'];
+        } elseif($startYear !== false) {
+            $currentYear = $startYear;
+        } else {
+            $currentYear = date('Y');
+        }
+
+        if(isset($_GET['month'])) {
+            $currentMonth = $_GET['month'];
+        } elseif($startMonth !== false) {
+            $currentMonth = $startMonth;
+        } else {
+            $currentMonth = date('n');
+        }
+
+        if(isset($_GET['day'])) {
+            $currentDay = $_GET['day'];
+        } elseif($startDay !== false) {
+            $currentDay = $startDay;
+        } else {
+            $currentDay = date('j');
+        }
+
+        // Берём current-дату и получаем из неё дату начала
+        $dateBegin = $currentYear.'-'.$currentMonth.'-'.$currentDay;
+        // Получаем дату кончала периода
+        $dateEnd = strtotime( $dateBegin )+6*86400;
+        $dateEnd= date('Y-m-d', $dateEnd);
+
+
+        $timeTable = new Timetable();
+        $shedule = $timeTable->getRows(
+            array(
+                'doctorsIds' => array($doctorId),
+                'dateBegin' => $dateBegin,
+                'dateEnd' => $dateEnd
+            )
+        );
+
+
+        var_dump($shedule);
+        exit();
+
+
+        //var_dump($dateBegin);
+        //var_dump($dateEnd);
+        //exit();
+
+
+
+        /*
         //!!!!!
         //var_dump($doctorId);
         //var_dump($startYear);
         //var_dump($startMonth);
         //var_dump($startDay);
+        //exit();
         // Выбираем расписание врача
         if((isset($_GET['doctorid']) && (int)$_GET['doctorid'] != 0) || $doctorId !== false) {
             $doctorId = isset($_GET['doctorid']) ? (int)$_GET['doctorid'] : $doctorId;
             // Выбираем настройки расписания
             $settings = $this->getSettings();
-            //$shedule = SheduleSetted::model()->findAll('employee_id = :employee_id', array(':employee_id' => $doctorId));
-            $shedule = SheduleSetted::getAllForEmployer($doctorId);
             // Здесь проверяем день, месяц, год..
             if(isset($_GET['year'])) {
                 $this->currentYear = $_GET['year'];
@@ -756,14 +812,7 @@ class SheduleController extends Controller {
                 $this->currentDay = date('j');
             }
 
-            // Расписание не установлено
-            if(count($shedule) == 0 && $breakByErrors) {
-                echo CJSON::encode(array('success' => 'false',
-                    'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
-                exit();
-            } elseif(count($shedule) == 0) {
-                return array();
-            }
+
 
             // Количество дней в месяце
             $dayBegin = $startDay !== false ? $startDay : 1;
@@ -778,6 +827,26 @@ class SheduleController extends Controller {
                 $dayEnd = $startDay + 6;
             }
 
+            // $shedule = SheduleSetted::getAllForEmployer($doctorId, $dayBegin, $dayEnd);
+            $timeTable = new Timetable();
+            $shedule = $timeTable->getRows(
+                array(
+                    'doctorsIds' => array($doctorId),
+                    'dateBegin' => $dayBegin,
+                    'dateEnd' => $dayEnd
+                )
+            );
+
+            var_dump($shedule);
+            exit();
+            // Расписание не установлено
+            if(count($shedule) == 0 && $breakByErrors) {
+                echo CJSON::encode(array('success' => 'false',
+                    'data' => 'Запись невозможна: расписание для данного сотрудника не установлено.'));
+                exit();
+            } elseif(count($shedule) == 0) {
+                return array();
+            }
             // Здесь составляем карту расписания на каждый день: разбираем на общее расписание и исключения
             $usual = array();
             $usualData = array();
@@ -931,7 +1000,7 @@ class SheduleController extends Controller {
             }
 
             return $resultArr;
-        }
+        }*/
     }
 
 

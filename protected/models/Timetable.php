@@ -101,6 +101,21 @@ class Timetable extends MisActiveRecord {
                     }
                 }
 
+            // Если заданы даты начала и даты конца действия расписания - то учитываем эти условия
+            if ( (isset($filters['dateBegin']))&&(isset($filters['dateEnd'])) )
+            {
+                $timetables->andWhere('(  (  ( tt.date_begin < :begin  )AND(  tt.date_end > :end ) )
+                                        OR(  ( tt.date_begin < :begin  )AND(  tt.date_end > :begin )  )
+                                        OR(  ( tt.date_begin < :end  )AND(  tt.date_end > :end ))
+                                        OR(  ( tt.date_begin > :begin  )AND(  tt.date_end < :end ))
+                                       )',
+                                     array(
+                                         ':begin' => $filters['dateBegin'],
+                                         ':end' => $filters['dateEnd']
+                                     )
+                );
+            }
+
             if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
                 $timetables->order($sidx. ', tt.date_end '.$sord);
                 $timetables->limit($limit, $start);
