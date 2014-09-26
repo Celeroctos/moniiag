@@ -20,10 +20,17 @@ class WardsController extends Controller {
             foreach($enterprisesListDb as $value) {
                 $enterprisesList[(string)$value['id']] = $value['fullname'];
             }
+			
+			// Список правил
+			$rulesList = array();
+            foreach(MedcardRule::model()->findAll() as $value) {
+                $rulesList[(string)$value['id']] = $value['name'];
+            }
 
             $this->render('view', array(
                 'model' => $formAddEdit,
-                'typesList' => $enterprisesList
+                'typesList' => $enterprisesList,
+				'rulesList' => $rulesList
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -76,6 +83,7 @@ class WardsController extends Controller {
     private function addEditModel($ward, $model, $msg) {
         $ward->enterprise_id = $model->enterprise;
         $ward->name = $model->name;
+		$ward->rule_id = $model->ruleId;
 
         if($ward->save()) {
             echo CJSON::encode(array('success' => true,

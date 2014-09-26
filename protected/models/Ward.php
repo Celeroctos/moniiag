@@ -30,16 +30,18 @@ class Ward extends MisActiveRecord {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $wards = $connection->createCommand()
-            ->select('mw.*, e.shortname as enterprise_name')
+            ->select('mw.*, e.shortname as enterprise_name, mr.name as rule')
             ->from('mis.wards mw')
-            ->join('mis.enterprise_params e', 'mw.enterprise_id = e.id');
+            ->join('mis.enterprise_params e', 'mw.enterprise_id = e.id')
+			->leftJoin(MedcardRule::model()->tableName().' mr', 'mr.id = mw.rule_id');
 
         if($filters !== false) {
             $this->getSearchConditions($wards, $filters, array(
 
             ), array(
                 'mw' => array('id', 'name', 'enterprise_id'),
-                'e' => array('enterprise_name')
+                'e' => array('enterprise_name'),
+				'mr' => array('rule_id')
             ), array(
                 'enterprise_name' => 'shortname'
             ));

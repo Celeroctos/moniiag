@@ -65,6 +65,17 @@
                                     <?php echo $form->error($model,'enterprise'); ?>
                                 </div>
                             </div>
+							<div class="form-group">
+                                <?php echo $form->labelEx($model,'ruleId', array(
+                                    'class' => 'col-xs-3 control-label'
+                                )); ?>
+                                <div class="col-xs-9">
+                                    <?php echo $form->dropDownList($model, 'ruleId', $rulesList, array(
+                                        'id' => 'ruleId',
+                                        'class' => 'form-control'
+                                    )); ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -139,6 +150,17 @@
                                 <?php echo $form->error($model,'enterprise'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+							<?php echo $form->labelEx($model,'ruleId', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								<?php echo $form->dropDownList($model, 'ruleId', $rulesList, array(
+									'id' => 'ruleId',
+									'class' => 'form-control'
+								)); ?>
+							</div>
+						</div>
                     </div>
                 </div>
             </div>

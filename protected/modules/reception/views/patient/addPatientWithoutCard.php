@@ -16,6 +16,9 @@
         )
     ));
     ?>
+	<div class="newMedcardNumberBlock">
+		<strong>Пациенту будет выдан номер карты <span class="bigger"></span></strong>
+	</div>
     <div class="row">
         <div class="col-xs-5">
             <p>Данные по полису ОМС:</p>
