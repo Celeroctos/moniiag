@@ -104,10 +104,10 @@ class Timetable extends MisActiveRecord {
             // Если заданы даты начала и даты конца действия расписания - то учитываем эти условия
             if ( (isset($filters['dateBegin']))&&(isset($filters['dateEnd'])) )
             {
-                $timetables->andWhere('(  (  ( tt.date_begin < :begin  )AND(  tt.date_end > :end ) )
-                                        OR(  ( tt.date_begin < :begin  )AND(  tt.date_end > :begin )  )
-                                        OR(  ( tt.date_begin < :end  )AND(  tt.date_end > :end ))
-                                        OR(  ( tt.date_begin > :begin  )AND(  tt.date_end < :end ))
+                $timetables->andWhere('(  (  ( tt.date_begin <= :begin  )AND(  tt.date_end >= :end ) )
+                                        OR(  ( tt.date_begin <= :begin  )AND(  tt.date_end >= :begin )  )
+                                        OR(  ( tt.date_begin <= :end  )AND(  tt.date_end >= :end ))
+                                        OR(  ( tt.date_begin >= :begin  )AND(  tt.date_end <= :end ))
                                        )',
                                      array(
                                          ':begin' => $filters['dateBegin'],
@@ -122,6 +122,8 @@ class Timetable extends MisActiveRecord {
             }
 
 
+//var_dump($timetables);
+  //          exit();
 
             $timetables = $timetables->queryAll();
 
