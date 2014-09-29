@@ -12,7 +12,10 @@ class FormWardAdd extends CFormModel
         return array(
             array(
                 'name, enterprise, ruleId', 'required'
-            )
+            ),
+			array(
+				'id', 'safe'
+			)
         );
     }
 

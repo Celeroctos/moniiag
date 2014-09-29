@@ -1,18 +1,52 @@
 <?php
 class CardnumberGenerator extends CComponent {
 	private $prevNumber = null;
+	private $medcardNumberPrefix;
+	private $medcardNumberPostfix;
+	private $medcardNumber;
+	private $withSave; // generate with saving
+	private $clearPrevNumber; // clearing previos cardNumber. This is options, but recommended if you want generate cardNumber every function call
+	
+	public function __construct($withSave = false, $clearPrevNumber = false) {
+		$this->withSave = $withSave;
+		$this->clearPrevNumber = $clearPrevNumber;
+	}
+	
 	public function generateNumber($ruleId) {
 		$rule = MedcardRule::model()->findByPk($ruleId);
 		if($rule == null) {
 			return null;
 		}
-
-		$number = $this->generate($this->generatePrefix($rule), $this->generatePostfix($rule), $rule);
-		return $number;
+		
+		$savedNumber = Yii::app()->user->getState('savedCardNumber', -1);
+		if($this->clearPrevNumber) {
+			Yii::app()->user->setState('savedCardNumber', -1);
+		}		
+		if($savedNumber != -1) {
+			return $savedNumber;
+		} else {
+			$number = $this->generate($this->generatePrefix($rule), $this->generatePostfix($rule), $rule);
+			if($this->withSave) {
+				Yii::app()->user->setState('savedCardNumber', $number);
+			}
+			return $number;
+		}
 	}
 	
 	public function setPrevNumber($number) {
 		$this->prevNumber = $number;
+	}
+	
+	public function getPrefix() {
+		return $this->medcardNumberPrefix;
+	}
+	
+	public function getPostfix() {
+		return $this->medcardNumberPostfix;
+	}	
+	
+	public function getOnlyNumber() {
+		return $this->medcardNumber;
 	}
 	
 	private function generatePrefix($rule) {
@@ -102,6 +136,9 @@ class CardnumberGenerator extends CComponent {
 	}
 	
 	private function generate($prefix, $postfix, $rule) {
+		$this->medcardNumberPrefix = $prefix;
+		$this->medcardNumberPostfix = $postfix;
+		
 		if($rule->prefix_id == -2) {
 			$year = '20'.mb_substr($prefix, 0, mb_strlen($prefix) - 1);
 		} elseif($rule->prefix_id == -3) {
@@ -149,6 +186,7 @@ class CardnumberGenerator extends CComponent {
 					$number = $this->splicePostfix($prevRuleModel, $number);
 					$number = $number.$postfix;
 				}
+				// TODO : обработать случай выдачи номера. Вернуть чистый $number;
 				return $number;
 			}
 		}
@@ -170,6 +208,7 @@ class CardnumberGenerator extends CComponent {
 				$str = $prefix;
 			}
 			$str .= $number;
+			$this->medcardNumber = $number;
 			if($postfix != null) {
 				$str .= $postfix;
 			}

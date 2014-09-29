@@ -42,7 +42,7 @@ class WardsController extends Controller {
         if(isset($_POST['FormWardAdd'])) {
             $model->attributes = $_POST['FormWardAdd'];
             if($model->validate()) {
-                $ward = Ward::model()->find('id=:id', $_POST['FormWardAdd']['id']);
+                $ward = Ward::model()->findByPk($model->id);
 
                 $this->addEditModel($ward, $model, 'Новое отделение успешно добавлено.');
             } else {
@@ -71,7 +71,6 @@ class WardsController extends Controller {
             $model->attributes = $_POST['FormWardAdd'];
             if($model->validate()) {
                 $ward = new Ward();
-
                 $this->addEditModel($ward, $model, 'Новое отделение успешно добавлено.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
@@ -84,6 +83,7 @@ class WardsController extends Controller {
         $ward->enterprise_id = $model->enterprise;
         $ward->name = $model->name;
 		$ward->rule_id = $model->ruleId;
+
 
         if($ward->save()) {
             echo CJSON::encode(array('success' => true,
