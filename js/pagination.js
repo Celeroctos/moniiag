@@ -109,17 +109,25 @@
     //    handler - ������� ������ ������ ������. ���������� ��� ������� �� ���� �� ������ ���������
     //    totalPagesCount - ����� ���������� �������
     //   sortFieldName � sortOrder - ��������������� ������� ��� ������ �������
-    function printPagination(table, totalPagesCount)
+    function printPagination(table, totalPagesCount, paginationContainerSelector)
     {
         var NeedWriteFirstPageButton = true; // ����� �� ������� ������ "���� �� ������ ��������"
         var NeedWriteLastPageButton= true; // ����� �� ������� ������ "���� �� ��������� ��������"
         
         var NeedWriteNextPageButton= true; // ����� �� ������� ������ "���� �� ��������� ��������"
         var NeedWritePrevPageButton= true; // ����� �� ������� ������ "���� �� ���������� ��������"
-        
+
+        var PaginationContainer = null;
+
         // �������� �� �������� table ��� ��������� � ����������, ������������� ������ table
-        var PaginationContainer = $('#'+table+' tbody').parents('div').next().children('ul');
-    
+        if (paginationContainerSelector == undefined)
+        {
+            PaginationContainer = $('#'+table+' tbody').parents('div').next().children('ul');
+        }
+        else
+        {
+            PaginationContainer = $(paginationContainerSelector).children('ul');
+        }
         // ������ ��������� ��������� � ���������� (����� ��� ���� ��������)
         $(PaginationContainer).parent('div').addClass('no-display');
     

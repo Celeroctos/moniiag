@@ -35,6 +35,32 @@ class Doctor extends MisActiveRecord  {
         }
     }
 
+
+    public function getAllForSelect($forPregnant = false) {
+        try {
+            $connection = Yii::app()->db;
+            $doctors = $connection->createCommand()
+                ->select('d.*')
+                ->from('mis.doctors d');
+
+            if($forPregnant !== false) {
+                $doctors->join('mis.medpersonal m', 'd.post_id = m.id')
+                    ->where('m.is_for_pregnants = 1');
+            }
+            $doctors->order('d.last_name asc');
+            $doctors = $doctors->queryAll();
+
+            foreach($doctors as $key => &$doctor) {
+                $doctor['fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+            }
+
+            return $doctors;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
                     $limit = false, $choosedDiagnosis = array(), $greetingDate = false, $calendarType = 0, $isCallCenter = false) {
 

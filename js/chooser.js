@@ -1681,6 +1681,31 @@ $(document).ready(function() {
             'afterRemove' : function() {
 
             }
+        },
+        'wardChooser' : {
+            'primary' : 'id',
+            'url' : '/guides/wards/get?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'extraparams' : {
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.name));
+            },
+            'afterInsert' : function() {
+
+            },
+            'afterRemove' : function() {
+
+            }
         }
     };
 });

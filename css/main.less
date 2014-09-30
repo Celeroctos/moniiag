@@ -385,6 +385,17 @@ form span.required {
   margin-left: 0;
   text-align: center;
 }
+
+#wardSelect
+{
+  height: 200px !important;
+}
+
+#doctorsSelect
+{
+  height: 200px !important;
+}
+
 select[multiple="multiple"] {
   height: auto !important;
 }
@@ -1934,3 +1945,448 @@ form[id=template-edit-form] .btnAddValue
 .not-active {
 	opacity: 0.5;
 }
+
+/* Редактирование расписания */
+.doctorsWardsBlock
+{
+  text-align: center;
+}
+
+.timeTablesROTable
+{
+  border:1px;
+}
+.timeTablesROTable
+{
+  font-weight:bold;
+  width: 100%;
+  tr{
+    width: 100%;
+    td{
+      word-wrap: break-word;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #000000;
+    }
+    /*.roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD*/
+    .roomTD
+    {
+      width: 5%;
+      text-align: center;
+    }
+    .daysTD
+    {
+      width: 40%;
+      text-align: center;
+    }
+    .hoursOfWorkTD
+    {
+      width: 10%;
+      text-align: center;
+    }
+    .hoursOfGreetingTD
+    {
+      width: 10%;
+      text-align: center;
+    }
+    .limitTD
+    {
+      width: 15%;
+      text-align: center;
+    }
+    .factsTD
+    {
+      vertical-align: top;
+    }
+  }
+  thead{
+    text-align: center;
+  }
+}
+
+
+.oneFactROBlock
+{
+  table
+  {
+    width: 100%;
+    margin-bottom: 10px;
+    td{
+      word-wrap: break-word;
+      vertical-align: top;
+      border-style: none;
+    }
+    .oneFactTypeRO
+    {
+      width:60%;
+    }
+  }
+}
+
+.timeTablesEditTable
+{
+  .withBorderTDTimetableEditor
+  {
+    .roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD
+    {
+      border-style: solid;
+      border-width: 2px;
+      border-color: green;
+      .time-timetable
+      {
+        .input-group-addon
+        {
+          display:none;
+        }
+      }
+
+    }
+
+    .roomTD, .limitTD, .deleteTD
+    {
+      text-align: center;
+    }
+
+    .deleteTD
+    {
+      vertical-align: middle;
+    }
+  }
+  thead tr td
+  {
+    text-align: center;
+  }
+
+  .removeTimeTableRule
+  {
+    font-size: 24px;
+  }
+
+  /*td{
+
+  }*/
+
+  .addRuleButtons
+  {
+    button
+    {
+      font-size: 12px;
+      height: 45px;
+    }
+
+
+  }
+
+  .cabinetSelectEdit{width:50px; }
+
+  .daysOfWeekEdit
+  {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .daysOfWeekEdit td{
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left-style:solid ;
+    border-left-width:1px;
+  }
+  .daysEditingBottomBLock
+  {
+    margin-top: 10px;
+    vertical-align: top;
+    display:table;
+    .calendarBlock{
+      padding-right: 20px;
+      /*display:table-cell;*/
+      vertical-align: top;
+    }
+    .exceptionBlock{
+      vertical-align: top;
+      /*display:table-cell;*/
+    }
+
+    /*.oddCheckbox
+    {
+      display:inline-block;
+    }*/
+
+  }
+  .limitTD, .factsTD
+  {
+    vertical-align: top;
+  }
+  .limitBlock
+  {
+    text-align: center;
+    .limitQuantity{
+      width: 30px;
+    }
+  }
+  .limitTD
+  {
+    .time-control
+    {
+      text-align: center;
+      align: center;
+      left: 18px;
+      /*position: static;*/
+      .subfields
+      {
+        min-width: 70px;
+      }
+    }
+  }
+  .factsTD{
+    width:1%; /*Ширина ячейки по содержимому*/
+    text-align: center;
+    .rangeCheckbox
+    {
+      text-align: left;
+    }
+  }
+  .time-timetable
+  {
+    height: 25px;
+  }
+}
+
+
+.daysEditingBottomBLock
+{
+  .calendarBlock
+  {
+   /* width:40%;*/
+    margin-right: 20px;
+    display:inline-block;
+    div.date-timetable {
+      span {
+        display: block;
+       /* position: relative;*/
+        top: 2px;
+        left: 110px;
+        z-index: 99;
+        padding: 12px 24px;
+        border-left: solid 1px rgb(204, 204, 204);
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+        span.glyphicon-calendar {
+          left: -10px;
+          top: -5px;
+          padding: 0;
+          font-size: 22px;
+        }
+      }
+      width:50px;
+      display: inline-block;
+      margin-right: 15px;
+    }
+    .calendarBlockLabel
+    {
+      display:inline-block;
+      margin-top:-15px
+    }
+  }
+  .exceptionBlock
+  {
+      display:inline-block;
+      .exceptionSelectContainer
+      {
+        /*vertical-align: middle;*/
+        display: table;
+        /*vertical-align	: middle;*/
+        /*padding-top: auto;
+        padding-bottom: auto;*/
+        .exceptionSelect
+        {
+          display: table-cell;
+          vertical-align	: middle;
+        }
+
+      }
+
+
+  }
+
+}
+
+.addingNewSheduleContainer
+{
+  text-align: center;
+  /*margin-left: auto;
+  margin-right: auto;*/
+
+}
+
+.sheduleEditorFooter
+{
+  display:inline-block;
+  margin-top: 15px;
+  /*margin-left: 7%;*/
+  .date-control
+  {
+    padding-left: 0px;
+    .input-group-addon
+    {
+      left: 100px;
+      top: -13px;
+
+      width: 20px;
+      height: 30px;
+      span.glyphicon-calendar
+      {
+        font-size: 17px;
+        left: -9px;
+      }
+    }
+  }
+}
+.timeTableBegin, .timeTableEnd
+{
+  display:inline-block;
+  width:170px;
+}
+
+.timetableEditorHandlingButtons
+{
+  display:inline-block;
+}
+.lifetimeOfTimetable
+{
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 15px;
+}
+.saveSheduleButton, .cancelSheduleButton
+{
+  margin-top: 24px;
+}
+.daysEditingDatesBlock
+{
+  /*display:inline-block;*/
+  .daysOneDateContainer
+  {
+    background-color: rgb(245, 246, 206);
+    display:inline-block;
+    margin-right: 10px;
+    .daysOneDateValueRemove
+    {
+      color: rgb(255, 0, 0);
+    }
+  }
+}
+
+.factsDatesBlock
+{
+  text-align: left;
+  .factsItemContainer
+  {
+    background-color: rgb(245, 246, 206);
+    margin-bottom: 10px;
+    text-align: left;
+    .factTextCaptionReason
+    {
+      text-decoration: underline;
+    }
+    .factTextCaption
+    {
+      display:inline-block;
+    }
+    /*.factRemoveButtonContainer
+    {
+      display:inline-block;*/
+      .factRemoveButton
+      {
+        color: rgb(255, 0, 0);
+      }
+    /*}*/
+  }
+}
+
+/*.factsRangeDateCalendarContainer
+{
+  width: 100%;
+}*/
+
+.factsOneDateCalendarContainer  div.date-timetable, .factsRangeDateCalendarContainer  div.date-timetable
+{
+    span {
+      display: block;
+      /* position: relative;*/
+      top: 2px;
+      left: 110px;
+      z-index: 99;
+      padding: 12px 24px;
+      border-left: solid 1px rgb(204, 204, 204);
+      border-bottom-right-radius: 0px;
+      border-top-right-radius: 0px;
+      span.glyphicon-calendar {
+        left: -10px;
+        top: -5px;
+        padding: 0;
+        font-size: 22px;
+      }
+    }
+    width:50px;
+    display: inline-block;
+    margin-right: 15px;
+  }
+.timeTablesEditDoctorsWards, .timeTablesRODoctorsWards
+{
+  width: 100%;
+  font-weight: bold;
+  font-size: 14px;
+  color: #000055;
+  .oneRowDoctorsWardEditing, .oneRowDoctorsWardRO
+  {
+   /* padding-top: 100px;*/
+    border-top-style:solid ;
+    border-top-width:1px;
+    .doctorsColEditing, .doctorsColRO
+    {
+      width: 55%;
+    }
+    .wardsColEditing, .wardsColRO
+    {
+      width: 45%;
+      vertical-align: top;
+      padding-right: 100px;
+    }
+  }
+}
+
+.limitROBlock{
+  .limitObjectName
+  {
+    text-decoration: underline;
+  }
+}
+
+.timetableReadOnly
+{
+ margin-top: 35px;
+}
+
+.edititngSheduleArea
+{
+  margin-top: 25px;
+}
+.timeTableRODateTimesAction
+{
+  text-decoration: underline;
+  font-size: 14px;
+  color: #000055;
+}
+.timeTableEditDateTimesAction
+{
+  text-decoration: underline;
+  font-size: 14px;
+  color: #000055;
+}
+.timeTablesEditDoctorsWards
+{
+  font-size: 14px;
+  color: #000055;
+}
+
+/*=======================*/
