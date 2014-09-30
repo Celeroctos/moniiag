@@ -2,6 +2,12 @@
 class EmployeesController extends Controller {
     public $layout = 'application.modules.guides.views.layouts.index';
     public $defaultAction = 'view';
+	private $employeeCategories = array(
+		'Нет',
+		'Врач второй категории',
+		'Врач первой категории',
+		'Врач высшей категории'
+	);
 
     public function actionView() {
         try {
@@ -83,6 +89,7 @@ class EmployeesController extends Controller {
                 'wardsListForAdd' => $wardsListForAdd,
                 'degreesList' => $degreesList,
                 'enterprisesList' => $enterprisesList,
+				'categoriesList' => $this->employeeCategories,
                 'canEdit' => Yii::app()->user->checkAccess('editGuides')
             ));
         } catch(Exception $e) {
@@ -139,6 +146,7 @@ class EmployeesController extends Controller {
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
 		$employee->greeting_type = $model->greetingType;
+		$employee->categorie = $model->categorie;
         $employee->display_in_callcenter = $model->displayInCallcenter;
 
         if(!isset($_POST['notDateEnd'])) {
@@ -239,6 +247,11 @@ class EmployeesController extends Controller {
                 } else {
                     $employee['display_in_callcenter_desc'] = 'Нет';
                 }
+				
+				if($employee['categorie'] === null) {
+					$employee['categorie'] = 0;
+				} 
+				$employee['categorie_desc'] = $this->employeeCategories[$employee['categorie']];
             }
 
             echo CJSON::encode(
@@ -255,6 +268,9 @@ class EmployeesController extends Controller {
     public function actionGetone($id) {
         $model = new Employee();
         $employee = $model->getOne($id);
+		if($employee['categorie'] == null) {
+			$employee['categorie'] = 0;
+		}
         echo CJSON::encode(array('success' => true,
                                  'data' => $employee)
         );

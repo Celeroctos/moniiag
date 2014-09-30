@@ -11,11 +11,13 @@ $(document).ready(function() {
                   '',
                   'Степень',
                   'Звание',
+				  'Категория',
                   'Дата начала действия',
                   'Дата окончания действия',
                   'Отделение',
                   'Отображать в Call-центре',
                   '',
+				  '',
 				  ''],
         colModel:[
             {
@@ -82,6 +84,11 @@ $(document).ready(function() {
                     searchhidden: true
                 }
             },
+			{
+                name: 'categorie_desc',
+                index: 'categorie_desc',
+                width: 100,
+            },
             {
                 name: 'date_begin',
                 index: 'date_begin',
@@ -115,6 +122,11 @@ $(document).ready(function() {
 			{
 				name: 'greeting_type',
 				index: 'greeting_type',
+				hidden: true
+			},
+			{
+				name: 'categorie',
+				index: 'categorie',
 				hidden: true
 			}
         ],
@@ -307,6 +319,10 @@ $(document).ready(function() {
                             {
                                 modelField: 'display_in_callcenter',
                                 formField: 'displayInCallcenter'
+                            },
+							{
+                                modelField: 'categorie',
+                                formField: 'categorie'
                             }
                         ];
                         for(var i = 0; i < fields.length; i++) {
