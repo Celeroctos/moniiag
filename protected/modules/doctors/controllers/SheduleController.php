@@ -136,7 +136,17 @@ class SheduleController extends Controller {
         } else {
             $onlyWaitingLine = 0;
         }
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+
+        $timeTable = new Timetable();
+        $shedule = $timeTable->getRows(
+            array(
+                'doctorsIds' => array($doctor['employee_id']),
+                'dateBegin' => $curDate,
+                'dateEnd' => $curDate
+            )
+        );
+        $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
+        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
         $patients = $patients['result'];
 
         //var_dump(    $this->getTopComment(isset($medcard) ? $medcard : null)    );
@@ -215,7 +225,21 @@ class SheduleController extends Controller {
             $onlyWaitingLine = false;
         }
         // Получим пациентов
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+        //var_dump($curDate);
+        //exit();
+
+
+        $timeTable = new Timetable();
+        $shedule = $timeTable->getRows(
+            array(
+                'doctorsIds' => array($doctor['employee_id']),
+                'dateBegin' => $curDate,
+                'dateEnd' => $curDate
+            )
+        );
+        $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
+
+        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
         $patients = $patients['result'];
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
