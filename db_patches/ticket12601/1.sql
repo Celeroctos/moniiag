@@ -125,3 +125,5 @@ ALTER TABLE mis.medcards_separators
 COMMENT ON TABLE mis.medcards_separators
   IS 'Разделители номеров медицинских карт';
 COMMENT ON COLUMN mis.medcards_separators.value IS 'Сам разделитель';
+
+ALTER TABLE mis.wards ADD COLUMN rule_id INTEGER;
