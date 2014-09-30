@@ -135,6 +135,21 @@ class CardnumberGenerator extends CComponent {
 		return '';
 	}
 	
+	// Проверка существования карты по правилу у данного ОМС
+	public function isIssetMedcard($omsId, $ruleId) {
+		if($ruleId == -1) {
+			return null;
+		}
+		$rule = MedcardRule::model()->findByPk($ruleId);
+		if($rule == null) {
+			return null;
+		}
+		$prefix = $this->generatePrefix($rule);
+		$postfix = $this->generatePostfix($rule);
+		$medcard = MedcardHistory::model()->getByPrefixPostfixAndOms($prefix, $postfix, $omsId, $rule);
+		return $medcard != null;
+	}
+	
 	private function generate($prefix, $postfix, $rule) {
 		$this->medcardNumberPrefix = $prefix;
 		$this->medcardNumberPostfix = $postfix;

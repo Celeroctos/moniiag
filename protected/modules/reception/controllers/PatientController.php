@@ -983,7 +983,23 @@ class PatientController extends Controller {
     }
 
     private function checkIssetMedcardInYear($oms, $medcard) {
-        $year = date('Y');
+		$cardnumberGenerator = new CardnumberGenerator();
+		if(is_array($oms)) {
+			$id = $oms['id'];
+		} else {
+			$id = $oms->id;
+		}
+		$medcardSearched = $cardnumberGenerator->isIssetMedcard($id, Yii::app()->user->getState('medcardGenRuleId', -1));
+        if($medcardSearched) {
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array(
+                    'id' => array(
+                        'Карта для данного пациента в этом году уже создана!'
+                    )
+                )));
+            exit();
+        }
+		/*$year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
 	
 		if(is_array($oms)) {
@@ -1000,7 +1016,7 @@ class PatientController extends Controller {
                     )
                 )));
             exit();
-        }
+        }*/
     }
 
     // Добавление полиса
@@ -1183,6 +1199,7 @@ class PatientController extends Controller {
         $formModel->contact = $medcard->contact;
         $formModel->cardNumber = $medcard->card_number;
         $formModel->profession = $medcard->profession;
+		$formModel->cardNumber = $medcard->card_number;
     }
 
     public function getAddressStr($address, $showEmpty = false) {
@@ -1508,34 +1525,40 @@ class PatientController extends Controller {
     // Добавление медкарты
     private function addEditModelMedcard($medcard, $model, $oms = false) {
         // Добавление карты: нет id
-        // Создаём новую запись в логе
-		$newHistory = new MedcardHistory();
-		$newHistory->enterprise_id = Yii::app()->user->enterpriseId;
-		if(is_array($oms)) {
-			$newHistory->policy_id = $oms['id'];
-		} else {
-			$newHistory->policy_id = $oms->id;
-		}
-		$newHistory->rule_id = Yii::app()->user->medcardGenRuleId;
-		$newHistory->reg_date = date('Y-m-d h:i:s');
-		if($medcard->card_number == null) {
+		if($medcard->card_number == null) { // Совсем новая карта
 			$cardnumberGenerator = new CardnumberGenerator(false, true);
             $medcard->card_number = $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
             // Записываем текущую дату и ID пользователя, который создал медкарту
             $medcard->date_created =  date('Y-m-d H:i:s');
             $record = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
             $medcard->user_created = $record['employee_id'];
-			// Регистрация новой карты сопровождается записью в истории с одинаковым from-to
-			$newHistory->from = $medcard->card_number;
-			$newHistory->to = $medcard->card_number;
+			
+			// Создаём новую запись в логе
+			$newHistory = new MedcardHistory();
+			$newHistory->enterprise_id = Yii::app()->user->enterpriseId;
+			if(is_array($oms)) {
+				$newHistory->policy_id = $oms['id'];
+			} else {
+				$newHistory->policy_id = $oms->id;
+			}
+			$newHistory->rule_id = Yii::app()->user->medcardGenRuleId;
+			$newHistory->reg_date = date('Y-m-d h:i:s');
+			// Регистрация совсем новой карты сопровождается записью в истории с одинаковым from-to
+			if($model->cardNumber == null) {
+				$newHistory->from = $medcard->card_number;
+				$newHistory->to = $medcard->card_number;
+			} else {
+				$newHistory->from = $model->cardNumber;
+				$newHistory->to = $medcard->card_number;
+			}
+					
+			if(!$newHistory->save()) {
+				echo CJSON::encode(array('success' => true,
+										 'error' => 'Не могу сохранить точку в истории медкарт!'));
+				exit();
+			}
         }
-		
-		if(!$newHistory->save()) {
-            echo CJSON::encode(array('success' => true,
-                                     'error' => 'Не могу сохранить точку в истории медкарт!'));
-            exit();
-        }
-		
+
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
 		$medcard->address_str = $model->address;

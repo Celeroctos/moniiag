@@ -35,6 +35,22 @@ class MedcardHistory extends MisActiveRecord {
 
 		return $medcard->queryRow();
 	}
+	
+	public function getByPrefixPostfixAndOms($prefix, $postfix, $omsId, $rule) {
+		$connection = Yii::app()->db;
+        $medcard = $connection->createCommand()
+            ->select('m.*')
+            ->from('mis.medcards_history m')
+			->where('m.rule_id = :rule_id 
+					 AND m.policy_id = :policy_id', 
+					 array(
+						':rule_id' => $rule->id,
+						':policy_id' => $omsId
+					 ))
+			->andWhere(array('like', 'm.to', $prefix.'%'.$postfix));
+
+		return $medcard->queryRow();
+	}
 }
 
 ?>

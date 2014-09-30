@@ -2,7 +2,7 @@ $(document).ready(function() {
 	// Необязательная конфигурация. Пока в том же файле.
 	var config = {
 		'kdoReg' : {
-			'overlay' : $('#patient-withoutcard-form .row')
+			'overlay' : $('#patient-withoutcard-form .row, #patient-withcard-form .row')
 		}
 	};
 	
@@ -77,6 +77,8 @@ $(document).ready(function() {
 							alert(data.error);
 							$(config.overlay).find('.overlay').remove();
 							$(number).prop('disabled', false);
+							$(number).val(globalVariables.medcardData.number);
+							$(number).focus();
 							return false;
 						}
 					}
