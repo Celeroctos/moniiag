@@ -95,11 +95,25 @@ $(document).ready(function () {
             //
             if ($(this).is('#doctorsSelect')  )
             {
-                if ( $(this).find('option[value=-1]').is(':selected') )
+
+               /* if ( $(this).find('option[value=-1]').is(':selected') )
                 {
                     // Снять выделение с "Все врачи", выделить всех остальных
                     $('#doctorsSelect').find('option[value=-1]').prop('selected',false);
                     $('#doctorsSelect').find('option:not([value=-1])').prop('selected', true);
+                }*/
+                selectedValues = $('#doctorsSelect').find('option:selected');
+
+                // Перебираем элементы  снимаем выделение со всех, кроме первого опшиона
+                for (var i=1;i<$(selectedValues).length;i++)
+                {
+                    $((selectedValues)[i]).prop('selected', false);
+                }
+
+                // Если выбран "Все врачи" - надо закрыть редактор
+                if ( $((selectedValues)[0]).prop('value')==-1 )
+                {
+                    $('#edititngSheduleArea .cancelSheduleButton').trigger('click');
                 }
 
             }
@@ -194,8 +208,8 @@ $(document).ready(function () {
                 //     (если не открыт блок редактирования)
                 if (  $('#edititngSheduleArea').hasClass('no-display')  )
                 {
-                    // Если в списке докторов кто-то выбран
-                    if ( $('#doctorsSelect').find('option:selected').length!=0 )
+                    // Если в списке докторов кто-то выбран и не выбрано значение "Все врачи"
+                    if (    (   $('#doctorsSelect').find('option:selected').length!=0  )  && ( $('#doctorsSelect option[value=-1]').prop('selected')==false  )    )
                     {
                         $('.addingNewSheduleContainer').removeClass('no-display');
                     }
