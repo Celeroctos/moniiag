@@ -87,11 +87,12 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 					
 					if($fakeModel != null) {
 						$fakeModelData = $connection->createCommand()
-							->select('tfg.*, d.*, m.*, o.*, o.last_name as o_last_name, o.first_name as o_first_name, o.middle_name as o_middle_name, d.last_name as d_last_name, d.first_name as d_first_name, d.middle_name as d_middle_name')
+							->select('tfg.*, d.*, m.*, o.*, o.last_name as o_last_name, o.first_name as o_first_name, o.middle_name as o_middle_name, d.last_name as d_last_name, d.first_name as d_first_name, d.middle_name as d_middle_name, p.tasu_string as payment_type')
 							->from(TasuFakeGreetingsBuffer::model()->tableName().' tfg')
 							->leftJoin(Doctor::model()->tableName().' d', 'tfg.doctor_id = d.id')
 							->leftJoin(Medcard::model()->tableName().' m', 'tfg.card_number = m.card_number')
 							->leftJoin(Oms::model()->tableName().' o', 'm.policy_id = o.id')
+							->leftJoin(Payment::model()->tableName().' p', 'p.id = tfg.payment_type')
 							->where('tfg.doctor_id = :doctor_id
 									AND tfg.card_number = :card_number', 
 									array(
@@ -110,7 +111,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 						$bufferElement['oms_id'] = $fakeModelData['policy_id'];
 						$bufferElement['doctor_id'] = $fakeModel['doctor_id'];
 						$bufferElement['primary_diagnosis_id'] = $fakeModel['primary_diagnosis_id'];
-                
+						$bufferElement['payment_type'] = $fakeModel['payment_type'];
 					}
                 } else {
 					$counter++;

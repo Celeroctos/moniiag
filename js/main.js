@@ -654,7 +654,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
     );
 
     /* Двигающиеся модалки */
-    $('.modal').draggable();
+    $('.modal:not([id="addFakePopup"])').draggable();
 
     // По нажатию на кнопку "удалить" - спрашиваем подтверждение на удаление
     $('button[id^=delete]').on('click',function(e)

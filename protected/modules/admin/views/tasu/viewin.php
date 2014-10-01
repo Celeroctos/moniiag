@@ -228,6 +228,17 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'paymentType', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'paymentType', $tasuPaymentList, array(
+									'id' => 'paymentType',
+									'class' => 'form-control',
+								)); ?>
+							</div>
+						</div>
+						<div class="form-group">
 							<?php echo $form->labelEx($modelAddFake,'greetingDate', array(
 								'class' => 'col-xs-3 control-label'
 							)); ?>
@@ -246,6 +257,19 @@
 								<?php echo $form->textField($modelAddFake,'cardNumber', array(
 									'id' => 'cardNumber',
 									'class' => 'form-control'
+								)); ?>
+							</div>
+						</div>
+						<div class="borderBox no-display" id="fioCont">
+						</div>
+						<div class="form-group">
+							<div class="col-xs-3"></div>
+							<div class="col-xs-9">
+								<?php echo $form->checkBox($modelAddFake,'savePrimaryDiag', array(
+									'id' => 'savePrimaryDiag',
+									'class' => 'inline'
+								)); ?>
+								<?php echo $form->labelEx($modelAddFake,'savePrimaryDiag', array(
 								)); ?>
 							</div>
 						</div>
@@ -283,7 +307,9 @@
 						<button type="button" id="greeting-addfakeall-submit" class="btn btn-primary" data-dismiss="modal">Закончить ввод приёмов</button>
 					</div>
 					<div class="col-xs-7">
-						<table id="preGreetings"></table>
+						<div class="overflow-x">
+							<table id="preGreetings"></table>
+						</div>
 						<div class="btn-group" id="preGreetings-controls">
 							<button type="button" class="btn btn-default" id="deletePreGreeting">Удалить</button>
 							<button type="button" class="btn btn-default" id="clearPreGreetings">Очистить</button>

@@ -113,6 +113,7 @@
 			},
 			{
 				name: 'import_id',
+				index: 'import_id',
 				hidden: true
 			}
         ],
@@ -487,6 +488,11 @@
             alert('Не выбран врач!');
             return false;
         }
+		
+		if(typeof $('#paymentType').val() == 'undefined') {
+            alert('Не выбран тип оплаты!');
+            return false;
+        }
 
         if(primaryDiagnosis.length == 0) {
             alert('Не выбран первичный диагноз!');
@@ -518,7 +524,8 @@
 				'doctor_id' : $('#doctorId').val(),
 				'card_number' : $.trim($('#cardNumber').val()),
 				'greeting_date' : $.trim($('#greetingDate').val()),
-				'pr_diagnosis_id' : primaryDiagnosis[0].id
+				'pr_diagnosis_id' : primaryDiagnosis[0].id,
+				's_diagnosis_ids' : secondaryDiagnosisIds
 			},
             'cache' : false,
             'dataType' : 'json',
@@ -530,7 +537,8 @@
 						doctorId : $('#doctorId').val(),
 						primaryDiagnosis : primaryDiagnosis[0].id,
 						secondaryDiagnosis : secondaryDiagnosisIds,
-						greetingDate : $.trim($('#greetingDate').val())
+						greetingDate : $.trim($('#greetingDate').val()),
+						paymentType : $.trim($('#paymentType').val())
 					};
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
@@ -540,7 +548,9 @@
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
 						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
-						'diagnosis_code' : data.data.pr_diagnosis_code
+						'diagnosis_code' : data.data.pr_diagnosis_code,
+						'secondary_diagnosis_codes' : data.data.s_diagnosis_codes,
+						'payment_type' : $.trim($('#paymentType').val())
 					});
 
 					lastId++;
@@ -570,6 +580,7 @@
 		$('#greetingDate-cont').find('.day, .month, .year').val('');
 		$('#wardId').val(-1).trigger('change');*/
 		$('#deletePreGreeting').removeClass('disabled');
+		$('#fioCont').addClass('no-display').text('');
 		
 		$.fn["primaryDiagnosisChooser"].clearAll();
 		$.fn["secondaryDiagnosisChooser"].clearAll();
@@ -645,12 +656,12 @@
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач'],
+        colNames:['ID', '№ карты', 'ФИО пациента', 'Код диагноза', 'Коды вторичных диагнозов', 'Дата приёма', 'Врач', ''],
         colModel:[
 			{
 				name: 'id',
 				index: 'id',
-				hidden: true
+				width: 50
 			},
 			{
                 name: 'medcard',
@@ -667,6 +678,11 @@
                 index: 'diagnosis_code',
                 width: 100
             },
+			{
+				name: 'secondary_diagnosis_codes',
+				index: 'secondary_diagnosis_codes',
+				width: 200
+			},
             {
                 name: 'patient_day',
                 index: 'patient_day',
@@ -677,6 +693,11 @@
                 index:'doctor_fio',
                 width: 150
             },
+			{
+				name: 'payment_type',
+				index: 'payment_type',
+				hidden: true
+			}
         ],
         rowNum: 30,
         rowList:[10,20,30],
@@ -728,15 +749,55 @@
 	
 	// Зацикливаем беготню по форме
 	$('#cardNumber, #primaryDiagnosis').on('keydown', function(e) {
-		if(e.keyCode == 13) {
-			nextInput = $(this).parents('.form-group').next().find('input');
-			if(typeof $(nextInput).attr('disabled') != 'undefined') {
-				nextInput = $(this).parents('.form-group').next().next().find('input');
+		if(e.keyCode == 13 || e.keyCode == 9) {
+			if($(this).prop('id') == 'cardNumber' && $.trim($(this).val()) != '') { // Подгружать ФИО
+				getFioByCardNumber();
+			} else {
+				moveToNextInput(this);
 			}
-			$(nextInput).focus();
 			e.stopPropagation();
 		}
 	});
+	
+	$('#cardNumber').on('blur', function(e) {
+		getFioByCardNumber();
+	});
+	
+	function getFioByCardNumber() {
+		$('#cardNumber').prop('disabled', true);
+		$.ajax({
+			'url' : '/admin/tasu/getfio',
+			'data' : {
+				'card_number' : $.trim($('#cardNumber').val())
+			},
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET',
+			'success' : function(data, textStatus, jqXHR) {
+				if(data.success) {
+					$('#fioCont').removeClass('no-display').text('Пациент ' + data.data.patientFio);
+					$('#cardNumber').prop('disabled', false);
+					moveToNextInput($('#cardNumber'));
+				} else {
+					alert(data.error);
+					$('#cardNumber').prop('disabled', false);
+					$('#cardNumber').focus();
+				}
+			}
+		});
+	}
+	
+	function moveToNextInput(input) {
+		if($(input).parents('.form-group').next().hasClass('.form-group')) {
+			var nextInput = $(input).parents('.form-group').next().find('input');
+		} else {
+			var nextInput = $(input).parents('.form-group').next().next().find('input');
+		}
+		if(typeof $(nextInput).attr('disabled') != 'undefined') {
+			nextInput = $(input).parents('.form-group').next().next().find('input');
+		}
+		$(nextInput).focus();
+	}
 	
 	$('#greeting-addfake-submit').on('keydown', function(e) {
 		if(e.keyCode == 39) {

@@ -101,6 +101,7 @@ class TasuController extends Controller {
 					$fakeModel->doctor_id = $model->doctorId;
 					$fakeModel->primary_diagnosis_id = $model->primaryDiagnosis;
 					$fakeModel->greeting_date = $model->greetingDate;
+					$fakeModel->payment_type = $model->paymentType;
 					if(!$fakeModel->save()) {
 						echo CJSON::encode(array(
 							'success' => false,
@@ -635,6 +636,13 @@ class TasuController extends Controller {
 			$wardsList[(string)$value['id']] = $value['name'].', '.$value['enterprise_name'];
 		}
 		
+		// Список типов оплаты
+		$paymentsListDb = Payment::model()->getRows(false, 'id', 'asc');
+		$paymentsList = array();
+		foreach($paymentsListDb as $value) {
+			$paymentsList[(string)$value['id']] = $value['name'];
+		}
+		
 		// Список врачей
 		$doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
 
@@ -657,7 +665,8 @@ class TasuController extends Controller {
             'modelAddFake' => new FormTasuFakeBufferAdd(),
 			'modelFilter' => new FormTasuFilterExport(),
 			'wardsList' => $wardsList,
-			'doctorsList' => $doctorsList
+			'doctorsList' => $doctorsList,
+			'tasuPaymentList' => $paymentsList
         ));
     }
 
@@ -1676,7 +1685,11 @@ class TasuController extends Controller {
             $tasuTap->patientuid_40511 = $patient['PatientUID'];
             $tasuTap->fillingdate_36966 = $greeting['patient_day'];
             $tasuTap->doctoruid_47963 = $professional['ProfessionalUID'];
-            $tasuTap->medicalprogramm_28647 = 'ОМСМО';
+            if(isset($greeting['payment_type']) && $greeting['payment_type'] != null) {
+				$tasuTap->medicalprogramm_28647 = $greeting['payment_type'];
+			} else {
+				$tasuTap->medicalprogramm_28647 = 'ОМСМО';
+			}
             $tasuTap->serviceplace_59680 = '1';
             $tasuTap->dvnaction_51723 = '';
             $tasuTap->dvnsex_24796 = '0';
@@ -2747,6 +2760,36 @@ class TasuController extends Controller {
         );
     }
 	
+	// Получить ФИО пациента по номеру карты
+	public function actionGetFio() {
+		if(!isset($_GET['card_number'])) {
+			echo CJSON::encode(array(
+                'success' => false,
+                'error' => 'Нехватка данных!'
+			));
+			exit();
+		}
+		
+		// Проверка на существование такой медкарты
+		$medcard = Medcard::model()->findByPk($_GET['card_number']);
+		if($medcard == null) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'error' => 'Пациент с такой картой не найден!'
+			));
+			exit();
+		} else {
+			$oms = Oms::model()->findByPk($medcard->policy_id);
+		}
+		
+		echo CJSON::encode(array(
+			'success' => true,
+			'data' => array(
+				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name)
+			)
+		));
+	}
+	
 	public function actionGetFios() {
 		if(!isset($_GET['doctor_id']) || !isset($_GET['card_number']) || !isset($_GET['greeting_date']) || !isset($_GET['pr_diagnosis_id'])) {
 			echo CJSON::encode(array(
@@ -2837,12 +2880,27 @@ class TasuController extends Controller {
 		}
 		$prDiagCode = mb_substr($prDiag->description, 0, strpos($prDiag->description, ' '));
 		
+		// Вторичный диагноз, если существует
+		$secDiagCodes = '';
+		if(isset($_GET['s_diagnosis_ids'])) {
+			foreach($_GET['s_diagnosis_ids'] as $sDiagId) {
+				$secDiag = Mkb10::model()->findByPk($sDiagId);
+				if($secDiag != null) {
+					$secDiagCodes .= mb_substr($secDiag->description, 0, strpos($secDiag->description, ' ')).', ';
+				}
+			}
+		}
+		if($secDiagCodes != '') {
+			$secDiagCodes = mb_substr($secDiagCodes, 0, strlen($secDiagCodes) - 2);
+		}
+		
 		echo CJSON::encode(array(
 			'success' => true,
 			'data' => array(
 				'doctorFio' => $doctor->last_name.' '.$doctor->first_name.' '.($doctor->middle_name == null ? '' : $doctor->middle_name),
 				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name),
-				'pr_diagnosis_code' => $prDiagCode
+				'pr_diagnosis_code' => $prDiagCode,
+				's_diagnosis_codes' => $secDiagCodes
 			)
 		));
 	}

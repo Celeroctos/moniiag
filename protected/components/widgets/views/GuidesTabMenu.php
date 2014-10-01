@@ -38,4 +38,7 @@
 	<li <?php echo $controller == 'medcards' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Номера медкарт', array('/guides/medcards/viewprefixes')) ?>
     </li>
+	<li <?php echo $controller == 'payments' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Типы оплат', array('/guides/payments/view')) ?>
+    </li>
 </ul>
