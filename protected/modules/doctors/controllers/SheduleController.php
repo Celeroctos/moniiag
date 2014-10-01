@@ -1161,34 +1161,22 @@ class SheduleController extends Controller {
 
     private function checkByTimetable($timeTable, $dayDate)
     {
-      //  $dayDate = '2014-10-02';
-       // $weekNumber = $this->computeWeekNumber($dayDate);
-      //  var_dump($weekNumber);
-      //  exit();
+
         $currentDateToCompare = strtotime($dayDate);
-        //var_dump($timeTable);
-        //exit();
+
         // Берём и раскодируем правило в об'ект
         $timeTableObject = CJSON::decode($timeTable['json_data']);
-
-        //var_dump($timeTableObject );
-        //exit();
 
         $weekDayOfDayDate = date("w", strtotime($dayDate));
         $dayFromDate = date("j", strtotime($dayDate));
         if ($weekDayOfDayDate == 0) {$weekDayOfDayDate = 7;}
         // Считаем номер недели длля дня
         $weekNumberOfDayDate = $this->computeWeekNumber($dayDate);
-        //var_dump($timeTableObject );
-        //exit();
-
         $underFact = false;
 
         // Первое - перебираем обстоятельства
         foreach($timeTableObject['facts'] as $oneFact)
         {
-
-
             $dateBeginFact = strtotime($oneFact['begin']);
             // Если промежуток - проверяем, попадает ли день в этот промежуток. Иначе проверяем на равенство даты
             if ($oneFact['isRange']==1)
@@ -1211,13 +1199,8 @@ class SheduleController extends Controller {
             }
         }
 
-        //var_dump($underFact );
-        //exit();
-
         $ruleToApply = null;
 
-        //var_dump($timeTableObject);
-        //exit();
         // Перебираем правила
         foreach ($timeTableObject['rules'] as $oneRule)
         {
@@ -1238,8 +1221,6 @@ class SheduleController extends Controller {
                     }
                 }
             }
-
-
             // Если правило не выбрано и поднят флаг, что дата подпадает под факт - надо выйти из цикла - день считается
             //   выходным
             if ($ruleToApply!=null)
@@ -1254,21 +1235,6 @@ class SheduleController extends Controller {
                     break;
                 }
             }
-
-            /*
-            if (($ruleToApply==null) &&  ($underFact) || )
-            {
-                break;
-            }
-            else
-            {
-                // Если день не в факте - то тоже выходим
-                if ($underFact)
-                {
-                    break;
-                }
-            }*/
-
             // 2. Смотрим - попадает ли дата в дни недели, выбранные в правиле
             //   Если хотя бы один день недели выбран - смотрим, подпадает ли текущая дата под выбранные дни недели
             if (isset($oneRule['days']) && (count($oneRule['days'])>0))
@@ -1298,10 +1264,6 @@ class SheduleController extends Controller {
                 }
                 else
                 {
-                   /* var_dump('dfsdvfgfd');
-                    var_dump($dayDate);
-                    var_dump($ruleToApply);
-                    exit();*/
                     // Смотрим следующее правило
                     continue;
                 }
@@ -1348,31 +1310,7 @@ class SheduleController extends Controller {
             $ruleToApply = $oneRule;
             break;
         }
-
-       // var_dump('dsvghgn');
-       // var_dump($ruleToApply);
-
-
-       /* if ($ruleToApply!=null)
-        {
-            // Применяем правило
-            //var_dump($ruleToApply);
-            //exit();
-            $structureForDay['worked'] = true;
-            $structureForDay['restDay'] = false;
-
-        }
-        else
-        {
-            $structureForDay['worked'] = false;
-            $structureForDay['restDay'] = true;
-            //var_dump('Vykhodnoy den! Gulyaem!');
-            //exit();
-        }*/
-       // var_dump('sdfcxvfg');
         return $ruleToApply;
-        //var_dump($structureForDay);
-       // exit();
     }
 
     public function actionGetPatientsListByDate() {

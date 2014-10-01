@@ -752,6 +752,50 @@ class SheduleController extends Controller {
     }
 */
 
+    // Функция возвращает число пациентов, которые были отписаны при изменении расписания
+    private function unwritePatientsOnTimetableChanged($doctorId, $dateBegin=false,$dateEnd=false, $timeBegin = false,$timeEnd = false)
+    {
+        $result = 0;
+
+        // 1. Выбираем все приёмы у врача, которые старше сегодняшнего дня и текущего времени
+        // 2. Проверяем их на то, вывалились ли они из расписания. Если приём вывалился - его надо запомнить в список
+        // 3. Отписываем вывалившиеся приёмы и считаем их
+        $findCondition = '( doctor_id = :doctor )';
+        $findArray = array(':doctor'=>$doctorId);
+
+        if ($dateBegin===false)
+        {
+            $findCondition .= ' AND ( patient_day > '. date('Y-n-j') .')';
+        }
+
+        if ($timeBegin===false)
+        {
+            $findCondition .= 'AND ( (patient_time > ' .date('h:i:s'). ')) OR (patient_time is NULL)';
+        }
+
+        $sheduleByDayObject = new SheduleByDay();
+        $greetingToCheck = $sheduleByDayObject::model()->findAll(
+            $findCondition,
+            $findArray
+        );
+
+        // Далее для каждого приёма
+        $greetingsIdToDelete = array();
+        // смотрим - попадает ли он в расписание
+        foreach ($greetingToCheck as $oneGreeting)
+        {
+
+        }
+
+
+        // отписываем приёмы
+
+
+
+        return $result;
+    }
+
+    /* Метод скорее всего не нужен будет*/
     private function unwriteWritedPatientsEdit($dayBegin,$dayEnd,$doctorId,$times,$sheduleId)
     {
         try {
