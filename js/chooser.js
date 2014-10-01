@@ -8,6 +8,7 @@ $(document).ready(function() {
             var prevVal = null;
             var currentElements = []; // Список строк с элементами. Требуется для того, чтобы связать определённый span  с конкретной строкой
             var choosedElements = []; // Список выбранных элементов для текущего контрола (строки)
+			var lastUserInput = '';
             var numRecords = null;
             $.fn[$(chooser).attr('id')] = {
                 getChoosed: function() {
@@ -30,6 +31,9 @@ $(document).ready(function() {
                         delete choosersConfig[$(chooser).prop('id')].extraparams[key];
                     }
                 },
+				getLastUserInput: function() {
+					return lastUserInput;
+				},
                 clearAll: function() {
 					current = null;
                     choosedElements = [];
@@ -462,6 +466,7 @@ $(document).ready(function() {
                         }
                         // А если найден - повторно добавлять не надо
                         if(!isFound) {
+							lastUserInput = $(chooser).find('input').val();
                             if(withOutInsert != 1) {
                                 var span = $('<span>').addClass('item');
                                 // Возможность копирования в соседние chooser-ы

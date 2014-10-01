@@ -40,6 +40,12 @@
                 globalVariables.savingProcessing = false;
                 // Сбрасываем режим на дефолт
                 numCalls = 0;
+				// Если класс контента приёма имеет класс неотображения, это было сохранение при смене врача
+				if($('.greetingContentCont').hasClass('no-display')) {
+					$('.backDropForSaving').remove();
+					$('.modal-backdrop').hide();
+					//location.href = '/doctors/shedule/view?date=' + globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day;
+				}
                 getNewHistory();
                 if (isThisPrint) {
                     onSaveComplete();
@@ -54,6 +60,7 @@
 					}
                 }
                 $(".backDropForSaving").remove();
+				$('.modal-backdrop').hide();
             } else {
                 ++numCalls;
             }
@@ -121,39 +128,22 @@
 
     }
 
-    function onSaveComplete()
+	function onSaveComplete()
     {
-        if (printHandler == 'print-greeting-link') {
-            $('.activeGreeting .' + printHandler).trigger('print');
-            //  $('#printContentButton').trigger('end');
-        }
-        else {
-            if (printHandler == 'print-recomendation-link') {
-                $('.' + printHandler).trigger('print');
-            }
-            else {
-                // Закрываем приём
-                $('.' + printHandler).trigger('accept');
-            }
-        }
-    }
-
-    function onSaveComplete()
-    {
-        if (printHandler == 'print-greeting-link') {
-            $('.activeGreeting .' + printHandler).trigger('print');
-            //  $('#printContentButton').trigger('end');
-        }
-        else {
-            if (printHandler == 'print-recomendation-link') {
-                $('.' + printHandler).trigger('print');
-            }
-            else {
-                // Закрываем приём
-                // $('.' + printHandler).trigger('accept');
-                onCloseGreetingStart();
-            }
-        }
+		if (printHandler == 'print-greeting-link') {
+			$('.activeGreeting .' + printHandler).trigger('print');
+			//  $('#printContentButton').trigger('end');
+		}
+		else {
+			if (printHandler == 'print-recomendation-link') {
+				$('.' + printHandler).trigger('print');
+			}
+			else {
+				// Закрываем приём
+				// $('.' + printHandler).trigger('accept');
+				onCloseGreetingStart();
+			}
+		}
     }
 
     function getNewHistory()
@@ -211,6 +201,9 @@
 	setTimeout(autoSave, 30000);
 	
 	function autoSave() {
+		if($('.greetingContentCont').hasClass('no-display')) { // Если ничего не отображается, то и сохранять не надо
+			return false;
+		}
 		isThisPrint = false;
 		showMsgs = false;
 		onStartSave(true);
@@ -255,7 +248,7 @@
         // Show the backdrop
         if (overlaySuck==undefined || overlaySuck==false)
         {
-            $('<div class="modal-backdrop fade in  backDropForSaving"></div>').appendTo(document.body);
+            $('<div class="modal-backdrop fade in backDropForSaving"></div>').appendTo(document.body);
         }
 
         // Берём кнопки с классом
@@ -343,14 +336,13 @@
         $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
         $('#change-date-form').submit();
     });
+	
     $("#date-cont").trigger("refresh");
 
     $("#date-cont").on('changeMonth', function (e) {
         $("#date-cont").trigger("refresh", [e.date]);
     });
 
-    /*
-    //===============>
     // Сжатие-расширение селект-контролов
     expandSelectTimer = null;
     selectToExpand = null;
@@ -459,10 +451,7 @@
         }
     );
 
-    // <==================
-    */
 
-    //=================>
     expandingTimer = setInterval(onExpandTimerTick,250);
     isCursorInElement = false;
     elementUnderCursorOld = null;
@@ -557,11 +546,6 @@
 
     );
 
-   /* $(document).on('mousemove',function(){
-        console.log('я подвигался');
-
-    });*/
-
     $(document).on('scroll',
         function(e)
         {
@@ -570,7 +554,6 @@
 
         }
     );
-
     // <===============
     $('form[id=template-edit-form] select').on('keydown',
         function(e)
@@ -631,6 +614,8 @@
         }
 
         var daysWithPatients = globalVariables.patientsInCalendar;
+		console.log(daysWithPatients);
+		$('.day-with').removeClass('day-with');
         for (var i in daysWithPatients) {
             var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
             if (parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
@@ -638,6 +623,7 @@
             }
         }
     });
+	
     $('#date-cont').trigger('refresh');
 
     greetingIdToClose = null;
@@ -678,7 +664,6 @@ function startAcceptGreeting()
     onStartSave();
     // $(this).trigger('accept');
 }
-
 
     focusDiagnosisPlease = false;
 function acceptGreeting(greetingId)
@@ -830,6 +815,7 @@ $(document).on('click', '.medcard-history-showlink', function (e) {
 $('#historyPopup').on('shown.bs.modal', function (e) {
     var deps = filteredDeps;
     for (var i = 0; i < deps.length; i++) {
+
         mainDependenceElementsSet = $('#historyPopup select[id$="_' + deps[i].elementId + '"]');
         // В истории могут быть несколько элементов с одним и тем  же id, поэтому
         //   в переменной mainDependenceElementsSet могут храниться один или больше элемент
@@ -1645,10 +1631,16 @@ function changeControlState(dep, elementValue, container) {
 $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     var checkboxes = $(this).parents('form').find('input[type="checkbox"]');
     $(this).attr('disabled', true);
+	$(this).parents('form').find('.overlayCont').css({
+		'position' : 'static'
+	}).prepend($('<div>').addClass('overlay'));
     for (var i = 0; i < checkboxes.length; i++) {
         if ($(checkboxes[i]).prop('checked')) {
             $(this).attr('value', 'Подождите, приём начинается...');
             $('#templates-choose-form').submit();
+			/*$(checkboxes).each(function(index, element) {
+				$(element).prop('disabled', true);
+			});*/
             return;
         }
     }
@@ -1818,7 +1810,41 @@ $('#nextHistoryPoint').on('click', function () {
     $('#collapsePatientList').on('click', function(e) {
 
     });
-
+	
+	// Смена врача
+	$('#change-doctor-form select').on('change', function(e) {
+		$('#change-doctor-form select').prop('disabled', true); 
+		// Вставляем оверлей
+		$('.overlayCont').prepend($('<div>').prop('class', 'overlay').css({'marginLeft' : '10px'}));
+		$('.changeDate-cont').prepend($('<div>').prop('class', 'overlay'));
+		$('#refreshPatientList').trigger('click');
+	});
+	
+	// Показ комментария (скрытого)
+	$(document).on('mouseover', '#doctorPatientList tr:not(:first), #doctorWaitingList tr:not(:first)', function(e) {
+		$('#doctorPatientList tr, #doctorWaitingList tr').popover('destroy');
+		$(this).popover({
+            animation: true,
+            html: true,
+            placement: 'left',
+            title: '<strong>Комментарий:</strong>',
+            delay: {
+                show: 250,
+                hide: 250
+            },
+            container: $(this).find('td:first'),
+            content: function() {
+				return $('<div>').append($(this).find('.hiddenComment').html());
+			}
+		});
+	   $(this).popover('show');
+	   return false;
+	});
+	
+	$(document).on('mouseout', '#doctorPatientList tr:not(:first), #doctorWaitingList tr:not(:first)', function(e) {
+		$('#doctorPatientList tr, #doctorWaitingList tr').popover('destroy');
+	});
+	
     function updatePatientList(onlyWaitingList) {
         var url = '/doctors/shedule/updatepatientlist';
         var data = {
@@ -1826,7 +1852,8 @@ $('#nextHistoryPoint').on('click', function () {
                 date : globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day
             },
             currentPatient : $('#currentPatientId').val(),
-            currentGreeting : $('#greetingId').val()
+            currentGreeting : $('#greetingId').val(),
+			currentDoctor : $('#change-doctor-form').length > 0 ? $('#change-doctor-form select').val() : -1
         };
         if(typeof onlyWaitingList != 'undefined') {
             data.onlywaitinglist = 1;
@@ -1857,9 +1884,39 @@ $('#nextHistoryPoint').on('click', function () {
                         $('#doctorWaitingList').remove();
                         $(parentContainer).append(data.data);
                     }
+					if($('#change-doctor-form').length > 0) {
+						$('#change-doctor-form select').prop('disabled', false); 
+					}
+					$('.overlayCont .overlay').remove();
+					if($('.infoCont div').length > 0) { // Внутри есть данные по пациенту, а врач сменён
+						$('.infoCont div').remove();
+					}
+					// А это - приём. Его для начала надо сохранить
+					if($('#template-edit-form').length > 0 && !$('.greetingContentCont').hasClass('no-display')) { // Внутри есть данные по пациенту, а врач сменён
+						alert($('.greetingContentCont').hasClass('no-display'));
+						$('.greetingContentCont').addClass('no-display'); // Скрываем, потому что скриптам необходимо цеплять из блока данные
+						$('#sideMedcardContentSave').trigger('click');
+					}
                 }
             }
         });
+		
+		// Два независимых процесса
+		$.ajax({
+            'url' : '/doctors/shedule/refreshdayswithpatients',
+            'cache': false,
+            'dataType': 'json',
+            'error': function (data, textStatus, jqXHR) {
+                console.log(data);
+            },
+            'success': function (data, textStatus, jqXHR) {
+                if (data.success) {
+					globalVariables.patientsInCalendar = $.evalJSON(data.data);
+					$('.changeDate-cont').find('.overlay').remove();
+					$("#date-cont").trigger('changeMonth');
+				}
+			}
+		});
     }
 
     function updateExpanded() {
@@ -1889,7 +1946,7 @@ $('#nextHistoryPoint').on('click', function () {
     }
 
     $('#refreshPatientList').on('click', function(e) {
-            updatePatientList();
+		updatePatientList();
     });
 
     $('.patientListNav li').on('click', function() {

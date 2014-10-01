@@ -43,6 +43,7 @@ if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'
     $countClinical = count($diagnosises['clinicalSecondary']);
     if (($noteGreetingLength<=0)&&(($countClinical <=0) || ($countClinical ==false)))
     {
+        // Выводим МКБ
         // Если нет клинического - печатаем МКБ
         if (count($diagnosises['primary'])>0)
         {
@@ -51,7 +52,6 @@ if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'
                 ?><strong> <?php   echo $oneDiagnosis['description'];?></strong><?php
             }
             ?></div><?php
-
         }
     }
     else

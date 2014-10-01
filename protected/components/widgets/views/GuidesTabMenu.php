@@ -35,5 +35,7 @@
     <li <?php echo $controller == 'doctype' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Удостоверения личности', array('/guides/doctype/view')) ?>
     </li>
-
+	<li <?php echo $controller == 'medcards' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Номера медкарт', array('/guides/medcards/viewprefixes')) ?>
+    </li>
 </ul>

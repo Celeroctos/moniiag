@@ -1937,6 +1937,43 @@ a.accordion-toggle:hover {
   margin-bottom:10px;
 }
 
+
+.not-active {
+	opacity: 0.5;
+}
+
+/* Форма смена доктора в списке пациентов на приём */
+#change-doctor-form {
+	padding: 0;
+	div {
+		padding: 0 3px 0 0;
+	}
+	select {
+		margin-top: 10px;
+	}
+	label {
+		margin-top: 8px;
+	}
+}
+/* Компонент оверлея */
+.overlay {
+	width: 100%;
+	height: 100%;
+	background: url('/images/ajax-loader2.gif') no-repeat #A4A4A4;
+	background-position: center center;
+	position: absolute;
+	top: 0; 
+	left: 0;
+	-moz-opacity:0.6;
+    -khtml-opacity: 0.6;
+    opacity: 0.5;
+	z-index: 999;
+	border-radius: 5px;
+}
+.overlayCont {
+	position: relative;
+}
+
 form[id=template-edit-form] .btnAddValue
 {
   vertical-align: top;
@@ -1944,6 +1981,23 @@ form[id=template-edit-form] .btnAddValue
 }
 .not-active {
 	opacity: 0.5;
+}
+
+/* Контейнер просмотра динамики элемента */
+.showDynamicWrap {
+	position: relative;
+	.showDynamicIcon {
+		position: absolute;
+		left: 12px;
+		top: -7px;
+		width: 10px;
+		height: 10px;
+		cursor: pointer;
+		color: #DF0101;
+	}
+	.changesList {
+		color: #000000;
+	}
 }
 
 /* Редактирование расписания */
@@ -2383,10 +2437,27 @@ form[id=template-edit-form] .btnAddValue
   font-size: 14px;
   color: #000055;
 }
+
 .timeTablesEditDoctorsWards
 {
   font-size: 14px;
   color: #000055;
 }
 
-/*=======================*/
+/* Блок генератора номера медкарты */
+.newMedcardNumberBlock {
+	strong {
+		color: #298A08;
+		.bigger, .prefix, .postfix {
+			color: #FE2E9A;
+			cursor: pointer;
+		}
+		.number {
+			width: 100px;
+		}
+		.postfix, input, .prefix {
+			margin-left: 3px;
+		}
+	}
+
+}

@@ -333,7 +333,7 @@
 								$('#clearGreetings').attr({
 									'disabled' : false
 								});
-								 $('#importProgressbarP').prop({
+								$('#importProgressbarP').prop({
                                     'aria-valuenow' : '0'
                                 }).css('width', '0%');
 							});
@@ -373,6 +373,9 @@
 
             $('.successImport').on('click', function(e) {
                 $('#importContainer').slideUp(500, function() {
+					$('#importProgressbarP').prop({
+						'aria-valuenow' : '0'
+					}).css('width', '0%');
                     $("#greetings").trigger("reloadGrid");
                     $("#importHistory").trigger("reloadGrid");
                     $('.continueImport, .pauseImport').removeClass('no-display');
@@ -385,6 +388,11 @@
                     totalRows = null;
                     $('.numStringsAll').text(0);
                     $('.numStrings').text(0);
+					$('.numStringsAdded').text(0);
+                    $('.numStringsDiscarded').text(0);
+					$('.numStringsError').text(0);
+                    $('.numDoctorsAdded').text(0);
+					$('.numPatientsAdded').text(0);
                 }).addClass('no-display');
             });
         }).removeClass('no-display');
@@ -509,7 +517,8 @@
             'data' : {
 				'doctor_id' : $('#doctorId').val(),
 				'card_number' : $.trim($('#cardNumber').val()),
-				'greeting_date' : $.trim($('#greetingDate').val())
+				'greeting_date' : $.trim($('#greetingDate').val()),
+				'pr_diagnosis_id' : primaryDiagnosis[0].id
 			},
             'cache' : false,
             'dataType' : 'json',
@@ -525,14 +534,13 @@
 					};
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
-					
 					$('#preGreetings').addRowData((lastId).toString(), {
 						'id' : lastId,
 						'doctor_fio' : data.data.doctorFio, 
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
 						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
-						'diagnosis_code' : primaryDiagnosis[0].description.substr(0, primaryDiagnosis[0].description.indexOf(' '))
+						'diagnosis_code' : data.data.pr_diagnosis_code
 					});
 
 					lastId++;

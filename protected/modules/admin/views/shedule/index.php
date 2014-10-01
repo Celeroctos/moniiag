@@ -422,8 +422,6 @@
                         </div>
                         <b>По</b>
                         <div>
-
-
                             <div class="input-group date time-control time-timetable greetingHourEndTime">
                                 <input type="hidden" class="form-control">
                                 <span class="input-group-addon no-display">
@@ -438,14 +436,9 @@
                             </div>
 
                         </div>
-                        <div>
-
-
-
-                </td>
+                        <div></td>
                 <td class="shiftTD no-display">
                     <!-- Пока забиваем -->
-
                 </td>
                 <td class="limitTD">
                     <!-- Селект и три блока -->
@@ -527,6 +520,7 @@
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
                                     <input type="text" name="minute" placeholder="ММ" class="form-control minute">
                                 </div>
+
                             </div>
                         </div>
                         <div class="input-group date time-control time-timetable limitTime3End">

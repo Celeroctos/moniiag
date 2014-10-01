@@ -15,6 +15,7 @@ class PatientController extends Controller {
             'modelOms' => new FormOmsEdit()
         ));
     }
+	
 
     // Привязать карту к другому полису
     public function actionRebindOmsMedcard()
@@ -75,6 +76,16 @@ class PatientController extends Controller {
 
     }
 	
+	public function actionGenerateCardNumber() {
+		if(!isset($_GET['ruleid'])) {
+			echo CJSON::encode(array('success' => false));
+			exit();
+		}
+		$generator = new CardnumberGenerator();
+		//$generator->setPrevNumber('14/12345-Р');
+		$cardNumber = $generator->generateNumber($_GET['ruleid']);
+	}
+	
 	// Удалить ОМС
 	public function actionDeleteOms() {
 		if(!isset($_GET['omsid'])) {
@@ -84,6 +95,7 @@ class PatientController extends Controller {
 		Oms::model()->deleteByPk($_GET['omsid']);
 		echo CJSON::encode(array('success' => true));
 	}
+
 
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()
@@ -486,8 +498,10 @@ class PatientController extends Controller {
 
     // Просмотр страницы добавления карты к пациенту
     public function actionViewAdd() {
+		Yii::app()->user->setState('savedCardNumber', -1); // Сбросить предыдущий номер по F5
         $privilegesList = $this->getPrivileges();
-
+		$cardnumberGenerator = new CardnumberGenerator(true, true);
+		
         if(isset($_GET['patientid']) && !isset($_GET['mediateid'])) {
 
             $model = new Oms();
@@ -514,6 +528,7 @@ class PatientController extends Controller {
                 if($medcard != null) {
                     $medcard = Medcard::model()->findByPk($medcard['card_number']);
                     $this->fillFormMedcardModel($formModel, $medcard);
+					$cardnumberGenerator->setPrevNumber($medcard->card_number);
                     // Ищем привилегии
                     $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
                 } else {
@@ -537,7 +552,11 @@ class PatientController extends Controller {
                     'foundPriv' => count($privileges) > 0,
                     'id' => -1,
                     'actionAdd' => 'addcard',
-					'tasuStatus' => $tasuStatus
+					'tasuStatus' => $tasuStatus,
+					'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+					'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+					'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+					'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -548,7 +567,11 @@ class PatientController extends Controller {
                     'foundPriv' => false,
                     'policy_number' => -1,
                     'policy_id' => -1,
-                    'actionAdd' => 'add'
+                    'actionAdd' => 'add',
+					'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+					'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+					'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+					'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
             }
         } else {
@@ -579,17 +602,26 @@ class PatientController extends Controller {
                     'foundPriv' => false,
                     'fio' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name,
                     'policy_number' => $oms->oms_number,
-                    'actionAdd' => 'addcard'
+                    'actionAdd' => 'addcard',
+					'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+					'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+					'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+					'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
                 exit();
             }
+
             $model = new FormPatientAdd();
             $this->render('addPatientWithoutCard', array(
                 'model' => $model,
                 'regPoint' => date('Y'),
                 'privilegesList' => $privilegesList,
                 'foundPriv' => false,
-                'actioadd' => 'add'
+                'actionAdd' => 'add',
+				'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+				'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+				'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+				'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
             ));
         }
     }
@@ -606,15 +638,9 @@ class PatientController extends Controller {
                 $model->contact = "";
             if($model->validate()) {
                 $medcard = new Medcard();
-               // var_dump('!');
                 $oms = $this->checkUniqueOms($model);
-               // var_dump('?');
-               // var_dump($oms);
-               // exit();
                 // Если пациент с таким полисом найден, просто создаётся карта и подсоединяется полис
                 if($oms == null) {
-                    //var_dump('!');
-                    //exit();
                     $oms = new Oms();
                     $this->addEditModelOms($oms, $model);
                 } else {
@@ -622,7 +648,7 @@ class PatientController extends Controller {
                     $this->checkIssetMedcardInYear($oms, $medcard);
                 }
                 $this->checkUniqueMedcard($model);
-                $this->addEditModelMedcard($medcard, $model, $oms);;
+                $this->addEditModelMedcard($medcard, $model, $oms);
                 if($model->privilege != -1) {
                     $patientPrivelege = new PatientPrivilegie();
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
@@ -957,7 +983,23 @@ class PatientController extends Controller {
     }
 
     private function checkIssetMedcardInYear($oms, $medcard) {
-        $year = date('Y');
+		$cardnumberGenerator = new CardnumberGenerator();
+		if(is_array($oms)) {
+			$id = $oms['id'];
+		} else {
+			$id = $oms->id;
+		}
+		$medcardSearched = $cardnumberGenerator->isIssetMedcard($id, Yii::app()->user->getState('medcardGenRuleId', -1));
+        if($medcardSearched) {
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array(
+                    'id' => array(
+                        'Карта для данного пациента в этом году уже создана!'
+                    )
+                )));
+            exit();
+        }
+		/*$year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
 	
 		if(is_array($oms)) {
@@ -974,7 +1016,7 @@ class PatientController extends Controller {
                     )
                 )));
             exit();
-        }
+        }*/
     }
 
     // Добавление полиса
@@ -1157,6 +1199,7 @@ class PatientController extends Controller {
         $formModel->contact = $medcard->contact;
         $formModel->cardNumber = $medcard->card_number;
         $formModel->profession = $medcard->profession;
+		$formModel->cardNumber = $medcard->card_number;
     }
 
     public function getAddressStr($address, $showEmpty = false) {
@@ -1482,14 +1525,40 @@ class PatientController extends Controller {
     // Добавление медкарты
     private function addEditModelMedcard($medcard, $model, $oms = false) {
         // Добавление карты: нет id
-        if($medcard->card_number == null) {
-            $medcard->card_number = $this->getCardNumber();
+		if($medcard->card_number == null) { // Совсем новая карта
+			$cardnumberGenerator = new CardnumberGenerator(false, true);
+            $medcard->card_number = $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
             // Записываем текущую дату и ID пользователя, который создал медкарту
             $medcard->date_created =  date('Y-m-d H:i:s');
             $record = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
             $medcard->user_created = $record['employee_id'];
-
+			
+			// Создаём новую запись в логе
+			$newHistory = new MedcardHistory();
+			$newHistory->enterprise_id = Yii::app()->user->enterpriseId;
+			if(is_array($oms)) {
+				$newHistory->policy_id = $oms['id'];
+			} else {
+				$newHistory->policy_id = $oms->id;
+			}
+			$newHistory->rule_id = Yii::app()->user->medcardGenRuleId;
+			$newHistory->reg_date = date('Y-m-d h:i:s');
+			// Регистрация совсем новой карты сопровождается записью в истории с одинаковым from-to
+			if($model->cardNumber == null) {
+				$newHistory->from = $medcard->card_number;
+				$newHistory->to = $medcard->card_number;
+			} else {
+				$newHistory->from = $model->cardNumber;
+				$newHistory->to = $medcard->card_number;
+			}
+					
+			if(!$newHistory->save()) {
+				echo CJSON::encode(array('success' => true,
+										 'error' => 'Не могу сохранить точку в истории медкарт!'));
+				exit();
+			}
         }
+
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
 		$medcard->address_str = $model->address;
@@ -1528,7 +1597,7 @@ class PatientController extends Controller {
     // Генерация номера карты
     private function getCardNumber() {
         // Формат номера DDDDD/YY, где DDDDD – уникальный номер в разрезе года, YY  - 2 цифры года.
-        $year = date('Y');
+        /*$year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
 
         $medcard = new Medcard();
@@ -1542,7 +1611,8 @@ class PatientController extends Controller {
             $idPerYear = ++$parts[0];
         }
 
-        return $idPerYear.'/'.$code;
+        return $idPerYear.'/'.$code;*/
+		return $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
     }
 
     // Ищет всех записанных
@@ -2432,6 +2502,46 @@ class PatientController extends Controller {
         echo CJSON::encode(array('success' => true,
                                  'data' => 'Статус карт успешно изменён.'));
     }
+	
+	
+	public function actionCheckIssetCardNumber() {
+		if(!Yii::app()->request->getIsAjaxRequest() || !isset($_POST['cardnumber'])) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'error' => 'Нехватка данных!'
+			));
+			exit();
+		}
+		$issetMedcard = MedcardHistory::model()->find(
+			't.to = :to 
+			AND t.enterprise_id = :enterprise_id
+			AND t.rule_id = :rule_id',
+			array(
+				':to' => $_POST['cardnumber'],
+				':enterprise_id' => Yii::app()->user->enterpriseId,
+				':rule_id' => Yii::app()->user->medcardGenRuleId
+			)
+		);
+		if($issetMedcard != null) {
+			$medcard = Medcard::model()->findByPk($_POST['cardnumber']);
+			if($medcard != null) {
+				$oms = Oms::model()->findByPk($medcard->policy_id);
+				$fio = $oms->last_name.' '.$oms->first_name;
+				if($oms->middle_name != null) {
+					$fio .= ' '.$oms->middle_name;
+				}
+				$fio .= ', полис №'.$oms->oms_series.' '.$oms->oms_number.'!';
+			}
+						
+			echo CJSON::encode(array(
+				'success' => false,
+				'error' => 'Такой номер медкарты уже занят пациентом '.$fio
+			));
+		} else {
+			Yii::app()->user->setState('savedCardNumber', $_POST['cardnumber']); // Для генератора
+			echo CJSON::encode(array('success' => true));
+		}
+	}
 }
 
 

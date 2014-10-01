@@ -38,7 +38,6 @@ class PatientController extends Controller {
         exit();
     }
 
-
     public function actionSaveDiagnosis() {
         if(!isset($_GET['greeting_id'])) {
             exit('Не выбран приём!');

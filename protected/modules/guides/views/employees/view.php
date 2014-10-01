@@ -180,6 +180,18 @@
                                 <?php echo $form->error($model,'titulId'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'categorie', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'categorie', $categoriesList, array(
+                                    'id' => 'categorie',
+                                    'class' => 'form-control',
+                                    'options' => array('0' => array('selected' => true))
+                                )); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
 						<?php echo $form->labelEx($model,'dateBegin', array(
 											'class' => 'col-xs-3 control-label'
@@ -429,6 +441,18 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'titulId'); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'categorie', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'categorie', $categoriesList, array(
+                                    'id' => 'categorie',
+                                    'class' => 'form-control',
+                                    'options' => array('0' => array('selected' => true))
+                                )); ?>
                             </div>
                         </div>
                         <div class="form-group">

@@ -571,7 +571,8 @@
 	$(document).on('click', '.writePatientLink', function(e) {
 		$('.writePatientLink').popover('destroy');
 		var cardId = $(this).attr('href').substr(1);
-        var url = 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + cardId;
+		var url = 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + cardId;
+
 		popoverCont = this;
 		$(this).popover({
             animation: true,
