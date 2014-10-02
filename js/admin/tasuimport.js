@@ -483,7 +483,7 @@
 
 	$("#greeting-addfake-submit").on('click', function(e) {
 		var primaryDiagnosis = $.fn["primaryDiagnosisChooser"].getChoosed();
-
+console.log(primaryDiagnosis);
         if(typeof $('#doctorId').val() == 'undefined') {
             alert('Не выбран врач!');
             return false;
@@ -538,13 +538,16 @@
 						primaryDiagnosis : primaryDiagnosis[0].id,
 						secondaryDiagnosis : secondaryDiagnosisIds,
 						greetingDate : $.trim($('#greetingDate').val()),
-						paymentType : $.trim($('#paymentType').val())
+						paymentType : $.trim($('#paymentType').val()),
+						primaryDiagnosisData : primaryDiagnosis[0],
+						secondaryDiagnosisData : secondaryDiagnosisChoosed
 					};
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
 					$('#preGreetings').addRowData((lastId).toString(), {
 						'id' : lastId,
 						'doctor_fio' : data.data.doctorFio, 
+						'doctor_id' : $.trim($('#doctorId').val()),
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
 						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
@@ -582,7 +585,9 @@
 		$('#deletePreGreeting').removeClass('disabled');
 		$('#fioCont').addClass('no-display').text('');
 		
-		$.fn["primaryDiagnosisChooser"].clearAll();
+		if(!$('#savePrimaryDiag').prop('checked')) {
+			$.fn["primaryDiagnosisChooser"].clearAll();
+		}
 		$.fn["secondaryDiagnosisChooser"].clearAll();
 		// Сброс фокуса
 		$('#cardNumber').focus();
@@ -705,8 +710,24 @@
         viewrecords: true,
         sortorder: "desc",
         caption: "Список добавляемых приёмов",
-        height: 453
+        height: 453,
+		ondblClickRow: editPreGreeting
     });
+	
+	function editPreGreeting(rowid, iRow, iCol, e) {
+		var rowData = $('#preGreetings').jqGrid('getRowData',rowid);
+		$('#doctorIdEdit').val(rowData.doctor_id);
+		$('#paymentTypeEdit').val(rowData.payment_type);
+		$('#greetingDateEdit').val(rowData.patient_day.split('.').reverse().join('-')).trigger('change');
+		$('#cardNumberEdit').val(rowData.medcard);
+		$.fn['primaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + greetingsTempBuffer[rowData.id].primaryDiagnosisData.id), greetingsTempBuffer[rowData.id].primaryDiagnosisData);
+		var sDiagnosis = greetingsTempBuffer[rowData.id].secondaryDiagnosisData;
+		for(var i = 0; i < sDiagnosis.length; i++) {
+			$.fn['secondaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + sDiagnosis[i].id).text(sDiagnosis[i].description), sDiagnosis[i]);
+		}
+
+		$('#editPregreetingsRowPopup').modal({});
+	}
 	
 	$('#tasuimport-filter-btn').on('click', function() {
 		var greetingDate = $('#filterGreetingDate').val(); 
@@ -760,7 +781,9 @@
 	});
 	
 	$('#cardNumber').on('blur', function(e) {
-		getFioByCardNumber();
+		if($.trim($('#cardNumber').val()) != '') {
+			getFioByCardNumber();
+		}
 	});
 	
 	function getFioByCardNumber() {
@@ -788,15 +811,23 @@
 	}
 	
 	function moveToNextInput(input) {
-		if($(input).parents('.form-group').next().hasClass('.form-group')) {
-			var nextInput = $(input).parents('.form-group').next().find('input');
-		} else {
-			var nextInput = $(input).parents('.form-group').next().next().find('input');
+		var id = $(input).prop('id');
+		if(id == 'cardNumber') {
+			$('#savePrimaryDiag').focus();
 		}
-		if(typeof $(nextInput).attr('disabled') != 'undefined') {
-			nextInput = $(input).parents('.form-group').next().next().find('input');
+		if(id == 'savePrimaryDiag') {
+			if($('#primaryDiagnosis').prop('disabled') != 'undefined') {
+				$('#primaryDiagnosis').focus();
+			} else {
+				$('#secondaryDiagnosis').focus();
+			}
 		}
-		$(nextInput).focus();
+		if(id == 'primaryDiagnosis') {
+			$('#secondaryDiagnosis').focus();
+		}
+		if(id == 'secondaryDiagnosis') {
+			$('#greeting-addfake-submit').focus();
+		}
 	}
 	
 	$('#greeting-addfake-submit').on('keydown', function(e) {
