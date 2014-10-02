@@ -907,7 +907,7 @@ class SheduleController extends Controller {
             }
         // <=============
         }
-
+///exit();
         return $resultArr;
       //  var_dump($resultArr);
        // exit();

@@ -44,7 +44,35 @@ class Timetable extends MisActiveRecord {
         $weekNumberOfDayDate = $this->computeWeekNumber($dayDate);
         $underFact = false;
 
-        // Первое - перебираем обстоятельства
+        $ruleToApply = null;
+
+        // =====>
+        // 1. Перебираем правила и смотрим совпадение с датой
+        foreach ($timeTableObject['rules'] as $oneRule)
+        {
+            if (isset($oneRule['daysDates']))
+            {
+                foreach($oneRule['daysDates'] as $oneDate)
+                {
+                    $oneDateFromTimetable = strtotime($oneDate);
+                    if ($oneDateFromTimetable == $currentDateToCompare)
+                    {
+                        // Дата попадает в день, указанный в расписании
+                        $ruleToApply = $oneRule;
+
+                    }
+                }
+            }
+        }
+        // Если правило не нуль - то не проверяем дальше
+        if ($ruleToApply!=null)
+        {
+            return $ruleToApply;
+        }
+
+
+
+        // Перебираем обстоятельства
         foreach($timeTableObject['facts'] as $oneFact)
         {
             $dateBeginFact = strtotime($oneFact['begin']);
@@ -69,10 +97,132 @@ class Timetable extends MisActiveRecord {
             }
         }
 
-        $ruleToApply = null;
+        // Если обстоятельство нашли
+        if ($underFact)
+        {
+            return null;
+        }
+
+        foreach ($timeTableObject['rules'] as $oneRule)
+        {
+            // Переменные "есть дни" и "есть чётность", "совпадение по чётности", "совпадение по дням"
+            // Механизм следующий: перебираем правила, смотрим - если не указана ни чётность ни дни - то не применяется правило
+            //     в противном случае - флаг совпадения по критерию должен быть равен флагу наличия данного критерия
+            $dayWeekCoidance = false;
+            $oddanceCoidance = false;
+            $issetDays = false;
+            $issetOddance = false;
+            $ruleToApply = $oneRule;
+            if (isset($oneRule['days']) && (count($oneRule['days'])>0))
+            {
+                $issetDays = true;
+                if (isset ($oneRule['days'][$weekDayOfDayDate ])  )
+                {
+                    // Проверяем - подходит ли день под правило. Если нет - то вызываем continue
+                    //    если да - то даём проверить его на чётность (нечётность). Если и чётность/нечетность он не проходит
+                    //     -то вызываем continue уже в конце
+                    if ( count($oneRule['days'][$weekDayOfDayDate ])>0 )
+                    {
+                        // Ищем в массиве значение, равное номеру недели
+                        // если не нашли - сразу выходим
+                       // $wasDayFound = false;
+                        for ($i=0;$i<count($oneRule['days'][$weekDayOfDayDate ]);$i++)
+                        {
+                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate)
+                            {
+                               // $wasDayFound = true;
+                                $dayWeekCoidance = true;
+                            }
+                        }
+                        /*if (!$wasDayFound)
+                        {
+                            $ruleToApply = null;
+                        }*/
+                    }
+                    else
+                    {
+                       // $wasDayFound = true;
+                        $dayWeekCoidance = true;
+                    }
+                }
+               /* else
+                {
+                    // Смотрим следующее правило
+                    continue;
+                }*/
+
+            }
+
+            // 3. Смотрим - попадает ли дата в чётные/нечётные
+            //     Если указана чётность, то надо проверить - подпадает ли день под чётный/нечетный
+            if (isset($oneRule['oddance']))
+            {
+                $oddanceCoidance = true;
+                $issetOddance = true;
+                if ($oneRule['oddance']==1)
+                {
+                    // Если день нечётный - то выходим
+                    if ($dayFromDate % 2 == 1)
+                    {
+                        $oddanceCoidance = false;
+                    }
+
+
+                }
+                if ($oneRule['oddance']==0)
+                {
+                    // Если день чётный - то выходим
+                    if ($dayFromDate % 2 == 0)
+                    {
+                        $oddanceCoidance = false;
+                    }
+                }
+
+                // Проверим - если указано поле "кроме" и день попадает в значение этого поля
+                //   - то смотрим следующее правило
+                if (isset($oneRule['except']))
+                {
+                    if ( in_array($weekDayOfDayDate,$oneRule['except']) )
+                    {
+                        // Досвидос - нельзя применять данное правило
+                        $oddanceCoidance = false;
+                    }
+                }
+
+            }
+
+            // Если мы не нашли правило - идём на начало
+            if (
+                ($dayWeekCoidance!=$issetDays )
+                ||
+                ($oddanceCoidance!=$issetOddance)
+                || (($issetDays==false) &&($issetOddance==false) )
+            )
+            {
+                continue;
+            }
+            else
+            {
+               /* var_dump($dayWeekCoidance);
+                var_dump($issetDays);
+                var_dump($oddanceCoidance);
+                var_dump($issetOddance);
+                var_dump($dayDate);
+                var_dump($ruleToApply);*/
+                return $ruleToApply;
+            }
+
+            // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
+            //$ruleToApply = $oneRule;
+            //break;
+        }
+
+
+        return null;
+        // <=====
 
         // Перебираем правила
-        foreach ($timeTableObject['rules'] as $oneRule)
+        /*foreach ($timeTableObject['rules'] as $oneRule)
         {
             // 1. Попадает ли дата в одну из дат, заданных в правиле
             //    если попадает, то применяется она
@@ -179,8 +329,8 @@ class Timetable extends MisActiveRecord {
             // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
             $ruleToApply = $oneRule;
             break;
-        }
-        return $ruleToApply;
+        }*/
+        //return $ruleToApply;
     }
 
     public function afterSave() {
