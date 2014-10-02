@@ -483,7 +483,7 @@
 
 	$("#greeting-addfake-submit").on('click', function(e) {
 		var primaryDiagnosis = $.fn["primaryDiagnosisChooser"].getChoosed();
-console.log(primaryDiagnosis);
+
         if(typeof $('#doctorId').val() == 'undefined') {
             alert('Не выбран врач!');
             return false;
@@ -661,7 +661,7 @@ console.log(primaryDiagnosis);
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['ID', '№ карты', 'ФИО пациента', 'Код диагноза', 'Коды вторичных диагнозов', 'Дата приёма', 'Врач', ''],
+        colNames:['ID', '№ карты', 'ФИО пациента', 'Код диагноза', 'Коды вторичных диагнозов', 'Дата приёма', 'Врач', '', ''],
         colModel:[
 			{
 				name: 'id',
@@ -702,6 +702,11 @@ console.log(primaryDiagnosis);
 				name: 'payment_type',
 				index: 'payment_type',
 				hidden: true
+			},
+			{
+				name: 'doctor_id',
+				index: 'doctor_id',
+				hidden: true
 			}
         ],
         rowNum: 30,
@@ -716,11 +721,13 @@ console.log(primaryDiagnosis);
 	
 	function editPreGreeting(rowid, iRow, iCol, e) {
 		var rowData = $('#preGreetings').jqGrid('getRowData',rowid);
+		console.log(rowData);
 		$('#doctorIdEdit').val(rowData.doctor_id);
 		$('#paymentTypeEdit').val(rowData.payment_type);
 		$('#greetingDateEdit').val(rowData.patient_day.split('.').reverse().join('-')).trigger('change');
 		$('#cardNumberEdit').val(rowData.medcard);
-		$.fn['primaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + greetingsTempBuffer[rowData.id].primaryDiagnosisData.id), greetingsTempBuffer[rowData.id].primaryDiagnosisData);
+
+		$.fn['primaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + greetingsTempBuffer[rowData.id].primaryDiagnosisData.id).text(greetingsTempBuffer[rowData.id].primaryDiagnosisData.description), greetingsTempBuffer[rowData.id].primaryDiagnosisData);
 		var sDiagnosis = greetingsTempBuffer[rowData.id].secondaryDiagnosisData;
 		for(var i = 0; i < sDiagnosis.length; i++) {
 			$.fn['secondaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + sDiagnosis[i].id).text(sDiagnosis[i].description), sDiagnosis[i]);
