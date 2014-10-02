@@ -328,6 +328,19 @@ $(document).ready(function () {
         );
     });
 */
+    function openCancelledMessage(cancelledNumber, idPopup)
+    {
+        $(idPopup).find('.cancelledGreetingsMessage').removeClass('no-display');
+        $(idPopup).find('.cancelledGreetingsNumber').text(cancelledNumber);
+    }
+
+    function closeCancelledMessage(idPopup)
+    {
+        $(idPopup).find('.cancelledGreetingsMessage').addClass('no-display');
+    }
+
+
+
     function onSaveSheduleEnd(returningData)
     {
         if (returningData.success==true || returningData.success=='true')
@@ -335,6 +348,17 @@ $(document).ready(function () {
             // 1. Выводим сообщение, что всё хорошо
             // 2. Закрываем редактор
             // 3. Обновляем список выведенных графиков
+
+            // Если в ответе поле отменённые приёмы не равно нулю - надо вывести количество отменённых приёмов
+            if (returningData.cancelledGreeting>0)
+            {
+                openCancelledMessage(returningData.cancelledGreeting,'#successEditPopup' )
+            }
+            else
+            {
+                closeCancelledMessage('#successEditPopup');
+            }
+
             $('#successEditPopup').modal({});
             $.fn['timetableEditor'].closeEditing();
             refreshTimeTableList();
@@ -439,6 +463,44 @@ $(document).ready(function () {
         //startEdit(dataWithTimeTable);
         dataObject = $.parseJSON(dataWithTimeTable);
         $.fn['timetableEditor'].startAddingAnotherTimetable(dataObject.wardsWithDoctors);
+
+    });
+
+    $('#timetableButtonDelete').on('click',function(){
+        // Если не был нажат какой-то график, то выходим из обработчика
+        if (globalVariables.timetableToDelete == null)
+        {
+            return;
+        }
+
+        // Посылаем ajax-удаления
+        $.ajax({
+            'url' : '/index.php/admin/shedule/deletetimetable?timetableId='+globalVariables.timetableToDelete,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if (data.success==true)
+                {
+                    // Проверяем переменную с количеством удалённых приёмов и выводим её в поп-ап
+
+                    // Если в ответе поле отменённые приёмы не равно нулю - надо вывести количество отменённых приёмов
+                    if (data.cancelledGreeting>0)
+                    {
+                        openCancelledMessage(data.cancelledGreeting,'#onDeleteTimetablePopup' )
+                        $('#onDeleteTimetablePopup').modal({});
+                    }
+                    else
+                    {
+                        closeCancelledMessage('#onDeleteTimetablePopup');
+                    }
+
+                    // Удаляем блок с расписанием
+                    $('#doctorsSelect').trigger('change');
+                }
+            }
+        });
+
 
     });
 

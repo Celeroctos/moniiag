@@ -411,6 +411,7 @@
                                                     },*/
                                                     content: function() {
                                                         var ulInPopover = $('<ul>').addClass('patientList');
+                                                        console.log('dsfcxvfdfdsf');
                                                         for(var j = 0; j < data.data.length; j++) {
                                                             // Живая очередь обрабатывается иначе, чем обычная запись
                                                             if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
@@ -714,7 +715,7 @@
                 // От беременности
                 // Дальше играет роль только время. Поэтому оттолкнёмся от текущей даты даже
                 var now1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(primaryGreetingsTimeLimit[0]), parseInt(primaryGreetingsTimeLimit[1]));
-                var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[0]));
+                var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
                 if(now1.getTime() < now2.getTime()) {
                     return false;
                 }
@@ -722,7 +723,7 @@
             if($('#greetingType').val() == 2) { // Вторичный приём
                 if($('#canPregnant').val() == 1) { // Беременная
                     var now1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(pregnantGreetingsTimeLimit[0]), parseInt(pregnantGreetingsTimeLimit[1]));
-                    var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[0]));
+                    var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
                     if(now1.getTime() < now2.getTime()) {
                         return false;
                     }

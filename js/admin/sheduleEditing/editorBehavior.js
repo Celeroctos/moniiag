@@ -340,30 +340,7 @@ $(document).ready(function () {
         $('#deleteTemplatePopup').modal({});
     });
 
-    $('#timetableButtonDelete').on('click',function(){
-        // Если не был нажат какой-то график, то выходим из обработчика
-        if (globalVariables.timetableToDelete == null)
-        {
-            return;
-        }
 
-        // Посылаем ajax-удаления
-        $.ajax({
-            'url' : '/index.php/admin/shedule/deletetimetable?timetableId='+globalVariables.timetableToDelete,
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-              if (data.success==true)
-              {
-                  // Удаляем блок с расписанием
-                  $('#doctorsSelect').trigger('change');
-              }
-            }
-        });
-
-
-    });
 
 
 
