@@ -124,7 +124,7 @@ $(document).ready(function () {
         rulesNumber = timetableObject.rules.length-1;
 
         // Добавляем в редактор rulesNumber дополнительных строк
-        for (i=0;i<rulesNumber;i++)
+        for (ruleCounter=0;ruleCounter<rulesNumber;ruleCounter++)
         {
             $.fn['timetableEditor'].addRowInEditor();
         }

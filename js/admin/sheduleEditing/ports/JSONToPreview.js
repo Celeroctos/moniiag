@@ -14,8 +14,8 @@ $(document).ready(function () {
         printDoctors( $(timeTableTemplate).find('.timeTablesRODoctorsWards'), timetableObject.wardsWithDoctors  );
 
         // Выводим период начла и конца действия
-        $(timeTableTemplate).find('.timeTableROFrom').text( timetableObject.date_begin );
-        $(timeTableTemplate).find('.timeTableROTo').text( timetableObject.date_end );
+        $($(timeTableTemplate).find('.timeTableROFrom').text( timetableObject.date_begin.split('-').reverse().join('.')));
+        $($(timeTableTemplate).find('.timeTableROTo').text( timetableObject.date_end.split('-').reverse().join('.') ));
 
         // Переводим об'ект расписания в JSON и закидываем в специальные поля ID расписания и его JSON
         $(timeTableTemplate).find('.timeTableId').val(timetableObject.id);

@@ -718,6 +718,27 @@
     </div>
 </div>
 
+
+<div class="modal fade error-popup" id="onDeleteTimetablePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row cancelledGreetingsMessage no-display">
+                    <p>Количество приёмов, отменённых при удалении расписания: <span class="cancelledGreetingsNumber"></span><br>Их необходимо перезаписать на другое время</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="modal fade error-popup" id="successEditPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -728,6 +749,9 @@
             <div class="modal-body">
                 <div class="row">
                     <p>Расписание успешно сохранено</p>
+                </div>
+                <div class="row cancelledGreetingsMessage no-display">
+                    <p>Количество отменённых приёмов: <span class="cancelledGreetingsNumber"></span></p>
                 </div>
             </div>
             <div class="modal-footer">

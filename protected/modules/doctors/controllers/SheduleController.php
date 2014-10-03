@@ -228,10 +228,19 @@ class SheduleController extends Controller {
                 'dateEnd' => $curDate
             )
         );
-        $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
 
-        $patients = $patients['result'];
+        $patients = null;
+        if ( count($shedule)==0 )
+        {
+            $patients = $this->getPatientListWOTimeStamp($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
+        else
+        {
+            $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
+            $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
 
         //var_dump(    $this->getTopComment(isset($medcard) ? $medcard : null)    );
         //exit();
@@ -428,11 +437,20 @@ class SheduleController extends Controller {
                 'dateEnd' => $curDate
             )
         );
-        $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
 
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
 
-        $patients = $patients['result'];
+        $patients = null;
+        if (count($shedule)==0)
+        {
+            $patients = $this->getPatientListWOTimeStamp($doctor['employee_id'], $curDate,false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
+        else
+        {
+            $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
+            $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
 
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
@@ -1116,7 +1134,7 @@ class SheduleController extends Controller {
             }
         // <=============
         }
-
+///exit();
         return $resultArr;
       //  var_dump($resultArr);
        // exit();
@@ -1352,236 +1370,10 @@ class SheduleController extends Controller {
         }
     }
 
-    //private function computeWeekNumber($weekNumber, $dayOfWeek, $monthNumber, $year)
-    private function computeWeekNumber($dayToCount)
-    {
-
-        /*
-        НеделяМесяца = ( День(ЗаданнаяДата) +
-         НомерДняНедели( ПервыйДеньМесяца(ЗаданнаяДата) ) - 2 ) целочисленное_деление_на 7 + 1
-        */
-
-        return ((int) ((date("j", strtotime($dayToCount))+
-                    date("w", strtotime(
-                        date("m", strtotime($dayToCount))
-                        . "/01/" .
-                        date("Y", strtotime($dayToCount))))-2)/7)) + 1;
-    }
-
     private function checkByTimetable($timeTable, $dayDate)
     {
-      //  $dayDate = '2014-10-02';
-       // $weekNumber = $this->computeWeekNumber($dayDate);
-      //  var_dump($weekNumber);
-      //  exit();
-        $currentDateToCompare = strtotime($dayDate);
-        //var_dump($timeTable);
-        //exit();
-        // Берём и раскодируем правило в об'ект
-        $timeTableObject = CJSON::decode($timeTable['json_data']);
-
-        //var_dump($timeTableObject );
-        //exit();
-
-        $weekDayOfDayDate = date("w", strtotime($dayDate));
-        $dayFromDate = date("j", strtotime($dayDate));
-        if ($weekDayOfDayDate == 0) {$weekDayOfDayDate = 7;}
-        // Считаем номер недели длля дня
-        $weekNumberOfDayDate = $this->computeWeekNumber($dayDate);
-        //var_dump($timeTableObject );
-        //exit();
-
-        $underFact = false;
-
-        // Первое - перебираем обстоятельства
-        foreach($timeTableObject['facts'] as $oneFact)
-        {
-
-
-            $dateBeginFact = strtotime($oneFact['begin']);
-            // Если промежуток - проверяем, попадает ли день в этот промежуток. Иначе проверяем на равенство даты
-            if ($oneFact['isRange']==1)
-            {
-                $dateEndFact = strtotime($oneFact['end']);
-                if (($currentDateToCompare >=$dateBeginFact)&&($currentDateToCompare <=$dateEndFact ))
-                {
-                    $underFact = true;
-                    break;
-                }
-
-            }
-            else
-            {
-                if ($currentDateToCompare ==$dateBeginFact)
-                {
-                    $underFact = true;
-                    break;
-                }
-            }
-        }
-
-        //var_dump($underFact );
-        //exit();
-
-        $ruleToApply = null;
-
-        //var_dump($timeTableObject);
-        //exit();
-        // Перебираем правила
-        foreach ($timeTableObject['rules'] as $oneRule)
-        {
-            // 1. Попадает ли дата в одну из дат, заданных в правиле
-            //    если попадает, то применяется она
-            //   Иначе - если дата попадает в один из фактов - то дальше мы ничего не проверяем, оставляем дату как выходной
-            // Перебираем даты
-            if (isset($oneRule['daysDates']))
-            {
-                foreach($oneRule['daysDates'] as $oneDate)
-                {
-                    $oneDateFromTimetable = strtotime($oneDate);
-                    if ($oneDateFromTimetable == $currentDateToCompare)
-                    {
-                        // Дата попадает в день, указанный в расписании
-                        $ruleToApply = $oneRule;
-
-                    }
-                }
-            }
-
-
-            // Если правило не выбрано и поднят флаг, что дата подпадает под факт - надо выйти из цикла - день считается
-            //   выходным
-            if ($ruleToApply!=null)
-            {
-                break;
-            }
-            else
-            {
-                // Если под фактом - то тоже выходной
-                if ($underFact)
-                {
-                    break;
-                }
-            }
-
-            /*
-            if (($ruleToApply==null) &&  ($underFact) || )
-            {
-                break;
-            }
-            else
-            {
-                // Если день не в факте - то тоже выходим
-                if ($underFact)
-                {
-                    break;
-                }
-            }*/
-
-            // 2. Смотрим - попадает ли дата в дни недели, выбранные в правиле
-            //   Если хотя бы один день недели выбран - смотрим, подпадает ли текущая дата под выбранные дни недели
-            if (isset($oneRule['days']) && (count($oneRule['days'])>0))
-            {
-
-                if (isset ($oneRule['days'][$weekDayOfDayDate ])  )
-                {
-                    // Проверяем - подходит ли день под правило. Если нет - то вызываем continue
-                    //    если да - то даём проверить его на чётность (нечётность). Если и чётность/нечетность он не проходит
-                    //     -то вызываем continue уже в конце
-                    if ( count($oneRule['days'][$weekDayOfDayDate ])>0 )
-                    {
-                        // Ищем в массиве значение, равное номеру недели
-                        // если не нашли - сразу выходим
-                        $wasDayFound = false;
-                        for ($i=0;$i<count($oneRule['days'][$weekDayOfDayDate ]);$i++)
-                        {
-                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate)
-                            {
-                                $wasDayFound = true;
-                            }
-                        }
-                        if (!$wasDayFound)
-                            continue;
-                    }
-                    // Иначе мы уже де факто проверили - данный день указан, как рабочий в правиле
-                }
-                else
-                {
-                   /* var_dump('dfsdvfgfd');
-                    var_dump($dayDate);
-                    var_dump($ruleToApply);
-                    exit();*/
-                    // Смотрим следующее правило
-                    continue;
-                }
-
-            }
-
-            // 3. Смотрим - попадает ли дата в чётные/нечётные
-            //     Если указана чётность, то надо проверить - подпадает ли день под чётный/нечетный
-            if (isset($oneRule['oddance']))
-            {
-                if ($oneRule['oddance']==1)
-                {
-                    // Если день нечётный - то выходим
-                    if ($dayFromDate % 2 == 1)
-                    {
-                        continue;
-                    }
-
-
-                }
-                if ($oneRule['oddance']==0)
-                {
-                    // Если день чётный - то выходим
-                    if ($dayFromDate % 2 == 0)
-                    {
-                        continue;
-                    }
-                }
-
-                // Проверим - если указано поле "кроме" и день попадает в значение этого поля
-                //   - то смотрим следующее правило
-                if (isset($oneRule['except']))
-                {
-                    if ( in_array($weekDayOfDayDate,$oneRule['except']) )
-                    {
-                        // Досвидос - нельзя применять данное правило
-                        continue;
-                    }
-                }
-
-            }
-
-            // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
-            $ruleToApply = $oneRule;
-            break;
-        }
-
-       // var_dump('dsvghgn');
-       // var_dump($ruleToApply);
-
-
-       /* if ($ruleToApply!=null)
-        {
-            // Применяем правило
-            //var_dump($ruleToApply);
-            //exit();
-            $structureForDay['worked'] = true;
-            $structureForDay['restDay'] = false;
-
-        }
-        else
-        {
-            $structureForDay['worked'] = false;
-            $structureForDay['restDay'] = true;
-            //var_dump('Vykhodnoy den! Gulyaem!');
-            //exit();
-        }*/
-       // var_dump('sdfcxvfg');
-        return $ruleToApply;
-        //var_dump($structureForDay);
-       // exit();
+        $timeTableObject = new Timetable();
+        return $timeTableObject->getRuleFromTimetable($timeTable, $dayDate);
     }
 
     public function actionGetPatientsListByDate() {
@@ -1641,6 +1433,159 @@ class SheduleController extends Controller {
         $greetingToEdit->save();
         echo CJSON::encode(array('success' => true,
             'data' => array()));
+    }
+
+    // Функция, которая выдаёт пациентов без начального и конечного времени
+    private function getPatientListWOTimeStamp($doctorId, $formatDate, $withMediate = true, $onlyWaitingLine = false) {
+        $patientsList = array();
+        $sheduleByDay = new SheduleByDay();
+        $weekday = date('w', strtotime($formatDate)); // День недели (число)
+        $needMediate = 1;
+        if (!$withMediate);
+        $needMediate = true;
+
+        $patients = $sheduleByDay->getRows($formatDate, $doctorId, $needMediate, 0, $onlyWaitingLine);
+        //var_dump($patients);
+        //exit();
+        // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
+        $user = User::model()->findByPk(Yii::app()->user->id);
+        if($user == null) {
+            echo CJSON::encode(array('success' => 'false',
+                'data' => 'Ошибка! Неавторизованный пользователь.'));
+        }
+
+
+        //$sheduleElements = SheduleSetted::getMode($doctorId,$weekday,$formatDate);
+
+        //var_dump($formatDate);
+        //var_dump($sheduleElements);
+        //exit();
+        $settings = $this->getSettings();
+        // Выясняем время работы. Частные дни имеют приоритет по сравнению с обычными
+        $choosedType = 0;
+        /*foreach($sheduleElements as $sheduleElement) {
+			//var_dump("!");
+			//exit();
+            if($choosedType == 0 && $sheduleElement['type'] >= $choosedType) {
+				//var_dump("!");
+				//exit();
+				$timestampBegin = strtotime($sheduleElement['time_begin']);
+                $timestampEnd = strtotime($sheduleElement['time_end']);
+                $choosedType = $sheduleElement['type']; // Далее можно выбрать только частный день
+            }
+        }*/
+
+        //$timestampBegin  = strtotime($timeBegin);
+        //$timestampEnd  = strtotime($timeEnd);
+
+
+        $primaryGreetings = 0;
+        $secondaryGreetings = 0;
+
+        //if (count($sheduleElements)>0)
+        //{
+        $result = array();
+        $numRealPatients = 0; // Это для того, чтобы понять, заполнено ли всё
+        //$currentTimestamp = time();
+        $parts = explode('-', $formatDate);
+        $today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
+        // Определяем параметры цикла. В случае, если это живая очередь, отсчёт идёт по местам. В случае, если это запись, по времени.
+
+
+        if($onlyWaitingLine) {
+        //   $beginValue = 0;
+        //    $endValue = $settings['maxInWaitingLine'];
+            $increment = 1;
+        } else {
+        //    $beginValue = $timestampBegin;
+        //    $endValue = $timestampEnd;
+            $increment = $settings['timePerPatient'] * 60;
+        }
+
+
+        //var_dump($beginValue);
+        //var_dump($endValue);
+        //exit();
+
+            // Ищем пациента для такого времени. Если он найден, значит время занято
+            foreach($patients as $key => $patient) {
+                $timestamp = strtotime($patient['patient_time']);
+                    // Если пациент опосредованный, для него надо выбрать ФИО
+                    if($patient['mediate_id'] != null) {
+                        $mediatePatient = MediatePatient::model()->findByPk($patient['mediate_id']);
+                        if($mediatePatient != null) {
+                            $patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
+                            $patient['greetingStatus'] = $patient['greeting_status'];
+                        }
+                    }
+
+                    $result[] = array(
+                        'timeBegin' => date('G:i', strtotime($patient['patient_time'])),
+                        'timeEnd' => date('G:i', strtotime($patient['patient_time']) + $increment),
+                        'fio' => $patient['fio'],
+                        'isAllow' => 0, // Доступно ли время для записи или нет,
+                        'id' => $patient['id'],
+                        'type' => $patient['mediate_id'] != null ? 1 : 0,
+                        'cardNumber' => $patient['card_number'],
+                        'is_accepted' =>$patient['is_accepted'],
+                        'is_beginned' =>$patient['is_beginned'],
+                        'medcard_id' => $patient['card_number'],
+                        'patient_time' => date('G:i', strtotime($patient['patient_time'])),
+                        'comment' => $patient['comment'],
+                        'greetingType' => $patient['greeting_type'],
+                        'orderNumber' => $patient['order_number'],
+                        'greetingStatus' => $patient['greeting_status'],
+                    );
+                    if($patient['greeting_type'] == 1) {
+                        $primaryGreetings++;
+                    }
+                    if($patient['greeting_type'] == 2) {
+                        $secondaryGreetings++;
+                    }
+                    $isFound = true;
+                    $numRealPatients++;
+
+            }
+
+        /*
+            if(!$isFound) {
+                // var_dump($i + $increment);
+                // exit();
+                $result[] = array(
+                    'timeBegin' => date('G:i', $i),
+                    'timeEnd' => date('G:i', $i + $increment),
+                    'isAllow' => 1,
+                    'fio' => '',
+                    'id' => null,
+                    'cardNumber' => null,
+                    'orderNumber' => $i + 1
+                );
+
+            }
+        */
+        //}
+
+        // Если результата нет - выводим пустой список
+        if (!isset($result))
+        {
+
+            $result = array();
+            $numRealPatients = 0;
+        }
+
+        //var_dump($result);
+        //exit();
+
+      //  var_dump($result);
+      //  exit();
+
+        return array(
+            'result' => $result,
+            'allReserved' => $numRealPatients == count($result),
+            'numPlaces' => count($result),
+            'primaryGreetings' => $primaryGreetings,
+            'secondaryGreetings' => $secondaryGreetings
+        );
     }
 
 	private function getPatientList($doctorId, $formatDate, $timeBegin, $timeEnd, $withMediate = true, $onlyWaitingLine = false) {

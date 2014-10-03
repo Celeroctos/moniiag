@@ -88,22 +88,71 @@ $(document).ready(function () {
         }
     );
 
+
+    lastSavedDoctorsSelected = null;
     $('#wardSelect, #doctorsSelect').on(
         'change',
         function()
         {
+
+
+            // Смотрим - открыт ли редактор
+            if ( ! $('#edititngSheduleArea').hasClass('no-display') )
+            {
+                needSaveTimetable = false;
+                needSaveTimetable = confirm("Вы хотите сохранить введённое расписание?");
+                if (needSaveTimetable)
+                {
+                    newStateWards = $('#wardSelect').val();
+                    newStateDoctors = $('#doctorsSelect').val();
+                    // Сохраняем расписание
+
+                    // Выбираем "Все отделения"
+                    $('#wardSelect').find('option:selected').prop('selected',false);
+                    $('#wardSelect').find('option[value=-1]').prop('selected',true);
+                    // Возвращаем назад выбранного доктора
+                    $('#doctorsSelect').val(lastSavedDoctorsSelected);
+
+                    everyThingIsAllRight = saveTimetable();
+                    if (!everyThingIsAllRight)
+                    {
+                        return false;
+                    }
+                }
+
+
+            }
+
+
+
             //
             if ($(this).is('#doctorsSelect')  )
             {
-                if ( $(this).find('option[value=-1]').is(':selected') )
+
+
+
+               /* if ( $(this).find('option[value=-1]').is(':selected') )
                 {
                     // Снять выделение с "Все врачи", выделить всех остальных
                     $('#doctorsSelect').find('option[value=-1]').prop('selected',false);
                     $('#doctorsSelect').find('option:not([value=-1])').prop('selected', true);
+                }*/
+                selectedValues = $('#doctorsSelect').find('option:selected');
+
+                // Перебираем элементы  снимаем выделение со всех, кроме первого опшиона
+                for (var i=1;i<$(selectedValues).length;i++)
+                {
+                    $((selectedValues)[i]).prop('selected', false);
+                }
+
+                // Если выбран "Все врачи" - надо закрыть редактор
+                if ( $((selectedValues)[0]).prop('value')==-1 )
+                {
+                    $('#edititngSheduleArea .cancelSheduleButton').trigger('click');
                 }
 
             }
-
+            lastSavedDoctorsSelected = $('#doctorsSelect').val();
             refreshEditorDoctors();
             refreshTimeTableList();
         }
@@ -194,8 +243,8 @@ $(document).ready(function () {
                 //     (если не открыт блок редактирования)
                 if (  $('#edititngSheduleArea').hasClass('no-display')  )
                 {
-                    // Если в списке докторов кто-то выбран
-                    if ( $('#doctorsSelect').find('option:selected').length!=0 )
+                    // Если в списке докторов кто-то выбран и не выбрано значение "Все врачи"
+                    if (    (   $('#doctorsSelect').find('option:selected').length!=0  )  && ( $('#doctorsSelect option[value=-1]').prop('selected')==false  )    )
                     {
                         $('.addingNewSheduleContainer').removeClass('no-display');
                     }
@@ -314,6 +363,19 @@ $(document).ready(function () {
         );
     });
 */
+    function openCancelledMessage(cancelledNumber, idPopup)
+    {
+        $(idPopup).find('.cancelledGreetingsMessage').removeClass('no-display');
+        $(idPopup).find('.cancelledGreetingsNumber').text(cancelledNumber);
+    }
+
+    function closeCancelledMessage(idPopup)
+    {
+        $(idPopup).find('.cancelledGreetingsMessage').addClass('no-display');
+    }
+
+
+
     function onSaveSheduleEnd(returningData)
     {
         if (returningData.success==true || returningData.success=='true')
@@ -321,6 +383,17 @@ $(document).ready(function () {
             // 1. Выводим сообщение, что всё хорошо
             // 2. Закрываем редактор
             // 3. Обновляем список выведенных графиков
+
+            // Если в ответе поле отменённые приёмы не равно нулю - надо вывести количество отменённых приёмов
+            if (returningData.cancelledGreeting>0)
+            {
+                openCancelledMessage(returningData.cancelledGreeting,'#successEditPopup' )
+            }
+            else
+            {
+                closeCancelledMessage('#successEditPopup');
+            }
+
             $('#successEditPopup').modal({});
             $.fn['timetableEditor'].closeEditing();
             refreshTimeTableList();
@@ -345,7 +418,9 @@ $(document).ready(function () {
         }
     }
 
-    $(document).on('click','.saveSheduleButton',function (){
+    function saveTimetable()
+    {
+        result = false;
         // 1. Читаем данные из интерфейса
         // Читаем докторов
         doctorsIds = $('#doctorsSelect').val();
@@ -374,13 +449,23 @@ $(document).ready(function () {
             'dataType' : 'json',
             'data': timeTableDataContainer,
             'type' : 'GET',
+            'async': false,
             'success' : function(data, textStatus, jqXHR) {
+                if ((( data.success=='true' )||(  data.success==true )) )
+                {
+                    result = true;
+                }
+
                 // 3. Вызываем call-back
                 onSaveSheduleEnd(data);
             }
         });
 
+        return result;
+    }
 
+    $(document).on('click','.saveSheduleButton',function (){
+       saveTimetable();
     });
 
     function startEdit(timetableJSONData)
@@ -425,6 +510,44 @@ $(document).ready(function () {
         //startEdit(dataWithTimeTable);
         dataObject = $.parseJSON(dataWithTimeTable);
         $.fn['timetableEditor'].startAddingAnotherTimetable(dataObject.wardsWithDoctors);
+
+    });
+
+    $('#timetableButtonDelete').on('click',function(){
+        // Если не был нажат какой-то график, то выходим из обработчика
+        if (globalVariables.timetableToDelete == null)
+        {
+            return;
+        }
+
+        // Посылаем ajax-удаления
+        $.ajax({
+            'url' : '/index.php/admin/shedule/deletetimetable?timetableId='+globalVariables.timetableToDelete,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                if (data.success==true)
+                {
+                    // Проверяем переменную с количеством удалённых приёмов и выводим её в поп-ап
+
+                    // Если в ответе поле отменённые приёмы не равно нулю - надо вывести количество отменённых приёмов
+                    if (data.cancelledGreeting>0)
+                    {
+                        openCancelledMessage(data.cancelledGreeting,'#onDeleteTimetablePopup' )
+                        $('#onDeleteTimetablePopup').modal({});
+                    }
+                    else
+                    {
+                        closeCancelledMessage('#onDeleteTimetablePopup');
+                    }
+
+                    // Удаляем блок с расписанием
+                    $('#doctorsSelect').trigger('change');
+                }
+            }
+        });
+
 
     });
 
