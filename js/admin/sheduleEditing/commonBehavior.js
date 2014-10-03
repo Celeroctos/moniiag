@@ -6,6 +6,20 @@ $(document).ready(function () {
 
     InitPaginationList('existingTimeTablesList','tt.id','desc',refreshTimeTableList)
 
+    editorOpenFlag = false;
+
+    function startEditorTimer()
+    {
+        editorOpenFlag = true;
+        setTimeout(
+            function ()
+            {
+                editorOpenFlag = false;
+            },
+            200
+        );
+    }
+
     $('#wardSelect').on(
         'change',
         function(e)
@@ -97,7 +111,7 @@ $(document).ready(function () {
 
 
             // Смотрим - открыт ли редактор
-            if ( ! $('#edititngSheduleArea').hasClass('no-display') )
+            if ( ! $('#edititngSheduleArea').hasClass('no-display') && (!editorOpenFlag) )
             {
                 needSaveTimetable = false;
                 needSaveTimetable = confirm("Вы хотите сохранить введённое расписание?");
@@ -119,7 +133,11 @@ $(document).ready(function () {
                         return false;
                     }
                 }
-
+                else
+                {
+                    // Скрываем редактор
+                    $('#edititngSheduleArea .cancelSheduleButton').trigger('click');
+                }
 
             }
 
@@ -331,6 +349,7 @@ $(document).ready(function () {
         function()
         {
 
+            startEditorTimer();
             //test ='{"rules":[{"cabinet":"16","days":{},"except":["-2","1"],"limits":{"1":{},"2":{},"3":{}}}],"facts":[]} ';
             $.fn['timetableEditor'].startAdding();
             //$.fn['timetableEditor'].startEditing(test);
@@ -477,6 +496,7 @@ $(document).ready(function () {
 
     $(document).on('click','.changeSheduleButton',function()
         {
+            startEditorTimer();
             // Нужно закрыть редактирование предыдущего расписание, если редактор открыт
             //    Потом выбрать докторов, которые указаны в графике
             //      а затем открыть редактор для редактирования уже текущего графика
@@ -496,7 +516,7 @@ $(document).ready(function () {
     $(document).on('click', '.addAddingSheduleButton',function(){
         //$('.addingNewSheduleContainer button').trigger('click');
 
-
+        startEditorTimer();
         // Нужно закрыть редактирование предыдущего расписание, если редактор открыт
         //    Потом выбрать докторов, которые указаны в графике
         //      а затем открыть редактор для редактирования уже текущего графика
