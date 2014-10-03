@@ -359,7 +359,7 @@ class SheduleController extends Controller {
         );
 
         // Удаляем расписание
-        Timetable::model()->deleteByPk($idTimeTable['id_doctor']);
+        Timetable::model()->deleteByPk($idTimeTable);
         // Удаляем связь между докторами т расписаниями, у которых проставлено это расписание
 
 
