@@ -229,12 +229,12 @@ $(document).ready(function () {
             {
 
                 $('#edititngSheduleArea .timeTableEditFrom').text(
-                    $('#edititngSheduleArea .sheduleEndDateTime').val().split('-').reverse().join('.')
+                    $('#edititngSheduleArea .sheduleBeginDateTime').val().split('-').reverse().join('.')
 
                 );
 
                 $('#edititngSheduleArea .timeTableEditTo').text(
-                    $('#edititngSheduleArea .sheduleBeginDateTime').val().split('-').reverse().join('.')
+                    $('#edititngSheduleArea .sheduleEndDateTime').val().split('-').reverse().join('.')
 
                 );
                 $('.timeTableEditDateTimesAction').removeClass('no-display');
