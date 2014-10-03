@@ -88,13 +88,48 @@ $(document).ready(function () {
         }
     );
 
+
+    lastSavedDoctorsSelected = null;
     $('#wardSelect, #doctorsSelect').on(
         'change',
         function()
         {
+
+
+            // Смотрим - открыт ли редактор
+            if ( ! $('#edititngSheduleArea').hasClass('no-display') )
+            {
+                needSaveTimetable = false;
+                needSaveTimetable = confirm("Вы хотите сохранить введённое расписание?");
+                if (needSaveTimetable)
+                {
+                    newStateWards = $('#wardSelect').val();
+                    newStateDoctors = $('#doctorsSelect').val();
+                    // Сохраняем расписание
+
+                    // Выбираем "Все отделения"
+                    $('#wardSelect').find('option:selected').prop('selected',false);
+                    $('#wardSelect').find('option[value=-1]').prop('selected',true);
+                    // Возвращаем назад выбранного доктора
+                    $('#doctorsSelect').val(lastSavedDoctorsSelected);
+
+                    everyThingIsAllRight = saveTimetable();
+                    if (!everyThingIsAllRight)
+                    {
+                        return false;
+                    }
+                }
+
+
+            }
+
+
+
             //
             if ($(this).is('#doctorsSelect')  )
             {
+
+
 
                /* if ( $(this).find('option[value=-1]').is(':selected') )
                 {
@@ -117,7 +152,7 @@ $(document).ready(function () {
                 }
 
             }
-
+            lastSavedDoctorsSelected = $('#doctorsSelect').val();
             refreshEditorDoctors();
             refreshTimeTableList();
         }
@@ -383,7 +418,9 @@ $(document).ready(function () {
         }
     }
 
-    $(document).on('click','.saveSheduleButton',function (){
+    function saveTimetable()
+    {
+        result = false;
         // 1. Читаем данные из интерфейса
         // Читаем докторов
         doctorsIds = $('#doctorsSelect').val();
@@ -412,13 +449,23 @@ $(document).ready(function () {
             'dataType' : 'json',
             'data': timeTableDataContainer,
             'type' : 'GET',
+            'async': false,
             'success' : function(data, textStatus, jqXHR) {
+                if ((( data.success=='true' )||(  data.success==true )) )
+                {
+                    result = true;
+                }
+
                 // 3. Вызываем call-back
                 onSaveSheduleEnd(data);
             }
         });
 
+        return result;
+    }
 
+    $(document).on('click','.saveSheduleButton',function (){
+       saveTimetable();
     });
 
     function startEdit(timetableJSONData)

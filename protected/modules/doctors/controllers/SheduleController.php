@@ -145,10 +145,18 @@ class SheduleController extends Controller {
                 'dateEnd' => $curDate
             )
         );
-        $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
-        $patients = $patients['result'];
-
+        $patients = null;
+        if ( count($shedule)==0 )
+        {
+            $patients = $this->getPatientListWOTimeStamp($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
+        else
+        {
+            $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
+            $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
         //var_dump(    $this->getTopComment(isset($medcard) ? $medcard : null)    );
         //exit();
 
@@ -237,10 +245,19 @@ class SheduleController extends Controller {
                 'dateEnd' => $curDate
             )
         );
-        $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
 
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
-        $patients = $patients['result'];
+        $patients = null;
+        if (count($shedule)==0)
+        {
+            $patients = $this->getPatientListWOTimeStamp($doctor['employee_id'], $curDate,false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
+        else
+        {
+            $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
+            $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+            $patients = $patients['result'];
+        }
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
         $patientsListWidget->filterModel = $this->filterModel;
@@ -1206,6 +1223,159 @@ class SheduleController extends Controller {
         $greetingToEdit->save();
         echo CJSON::encode(array('success' => true,
             'data' => array()));
+    }
+
+    // Функция, которая выдаёт пациентов без начального и конечного времени
+    private function getPatientListWOTimeStamp($doctorId, $formatDate, $withMediate = true, $onlyWaitingLine = false) {
+        $patientsList = array();
+        $sheduleByDay = new SheduleByDay();
+        $weekday = date('w', strtotime($formatDate)); // День недели (число)
+        $needMediate = 1;
+        if (!$withMediate);
+        $needMediate = true;
+
+        $patients = $sheduleByDay->getRows($formatDate, $doctorId, $needMediate, 0, $onlyWaitingLine);
+        //var_dump($patients);
+        //exit();
+        // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
+        $user = User::model()->findByPk(Yii::app()->user->id);
+        if($user == null) {
+            echo CJSON::encode(array('success' => 'false',
+                'data' => 'Ошибка! Неавторизованный пользователь.'));
+        }
+
+
+        //$sheduleElements = SheduleSetted::getMode($doctorId,$weekday,$formatDate);
+
+        //var_dump($formatDate);
+        //var_dump($sheduleElements);
+        //exit();
+        $settings = $this->getSettings();
+        // Выясняем время работы. Частные дни имеют приоритет по сравнению с обычными
+        $choosedType = 0;
+        /*foreach($sheduleElements as $sheduleElement) {
+			//var_dump("!");
+			//exit();
+            if($choosedType == 0 && $sheduleElement['type'] >= $choosedType) {
+				//var_dump("!");
+				//exit();
+				$timestampBegin = strtotime($sheduleElement['time_begin']);
+                $timestampEnd = strtotime($sheduleElement['time_end']);
+                $choosedType = $sheduleElement['type']; // Далее можно выбрать только частный день
+            }
+        }*/
+
+        //$timestampBegin  = strtotime($timeBegin);
+        //$timestampEnd  = strtotime($timeEnd);
+
+
+        $primaryGreetings = 0;
+        $secondaryGreetings = 0;
+
+        //if (count($sheduleElements)>0)
+        //{
+        $result = array();
+        $numRealPatients = 0; // Это для того, чтобы понять, заполнено ли всё
+        //$currentTimestamp = time();
+        $parts = explode('-', $formatDate);
+        $today = ($parts[0] == date('Y') && $parts[1] == date('n') && $parts[2] == date('j'));
+        // Определяем параметры цикла. В случае, если это живая очередь, отсчёт идёт по местам. В случае, если это запись, по времени.
+
+
+        if($onlyWaitingLine) {
+        //   $beginValue = 0;
+        //    $endValue = $settings['maxInWaitingLine'];
+            $increment = 1;
+        } else {
+        //    $beginValue = $timestampBegin;
+        //    $endValue = $timestampEnd;
+            $increment = $settings['timePerPatient'] * 60;
+        }
+
+
+        //var_dump($beginValue);
+        //var_dump($endValue);
+        //exit();
+
+            // Ищем пациента для такого времени. Если он найден, значит время занято
+            foreach($patients as $key => $patient) {
+                $timestamp = strtotime($patient['patient_time']);
+                    // Если пациент опосредованный, для него надо выбрать ФИО
+                    if($patient['mediate_id'] != null) {
+                        $mediatePatient = MediatePatient::model()->findByPk($patient['mediate_id']);
+                        if($mediatePatient != null) {
+                            $patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
+                            $patient['greetingStatus'] = $patient['greeting_status'];
+                        }
+                    }
+
+                    $result[] = array(
+                        'timeBegin' => date('G:i', strtotime($patient['patient_time'])),
+                        'timeEnd' => date('G:i', strtotime($patient['patient_time']) + $increment),
+                        'fio' => $patient['fio'],
+                        'isAllow' => 0, // Доступно ли время для записи или нет,
+                        'id' => $patient['id'],
+                        'type' => $patient['mediate_id'] != null ? 1 : 0,
+                        'cardNumber' => $patient['card_number'],
+                        'is_accepted' =>$patient['is_accepted'],
+                        'is_beginned' =>$patient['is_beginned'],
+                        'medcard_id' => $patient['card_number'],
+                        'patient_time' => date('G:i', strtotime($patient['patient_time'])),
+                        'comment' => $patient['comment'],
+                        'greetingType' => $patient['greeting_type'],
+                        'orderNumber' => $patient['order_number'],
+                        'greetingStatus' => $patient['greeting_status'],
+                    );
+                    if($patient['greeting_type'] == 1) {
+                        $primaryGreetings++;
+                    }
+                    if($patient['greeting_type'] == 2) {
+                        $secondaryGreetings++;
+                    }
+                    $isFound = true;
+                    $numRealPatients++;
+
+            }
+
+        /*
+            if(!$isFound) {
+                // var_dump($i + $increment);
+                // exit();
+                $result[] = array(
+                    'timeBegin' => date('G:i', $i),
+                    'timeEnd' => date('G:i', $i + $increment),
+                    'isAllow' => 1,
+                    'fio' => '',
+                    'id' => null,
+                    'cardNumber' => null,
+                    'orderNumber' => $i + 1
+                );
+
+            }
+        */
+        //}
+
+        // Если результата нет - выводим пустой список
+        if (!isset($result))
+        {
+
+            $result = array();
+            $numRealPatients = 0;
+        }
+
+        //var_dump($result);
+        //exit();
+
+      //  var_dump($result);
+      //  exit();
+
+        return array(
+            'result' => $result,
+            'allReserved' => $numRealPatients == count($result),
+            'numPlaces' => count($result),
+            'primaryGreetings' => $primaryGreetings,
+            'secondaryGreetings' => $secondaryGreetings
+        );
     }
 
 	private function getPatientList($doctorId, $formatDate, $timeBegin, $timeEnd, $withMediate = true, $onlyWaitingLine = false) {

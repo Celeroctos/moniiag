@@ -45,7 +45,11 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($patients as $key => $patient) {
+    <?php
+    //var_dump($patients);
+    //exit();
+
+    foreach ($patients as $key => $patient) {
         // Если нет пацента - выводим пустую строку со временем
         if ($patient['id']==null)
         {
