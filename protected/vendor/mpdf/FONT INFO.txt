@@ -51,7 +51,7 @@ Arabic/Eastern fonts
 --------------------
 - XW Zar fonts can be downloaded from: http://www.redlers.com/downloadfont.html
 	(2 of these fonts are included in the release)
-	(original site in Farsi: http://wiki.irmug.org/index.php/XWZar)
+	(original site in Farsi: http://wiki.irmug.org/XWZar)
 - See below for more details and font names of the fonts used in mPDF 4.x
 
 

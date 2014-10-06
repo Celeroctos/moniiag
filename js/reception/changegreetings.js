@@ -60,11 +60,12 @@ $(document).ready(function() {
         $('#greetings-search-submit').trigger('begin');
 
 		$.ajax({
-            'url' : '/index.php/reception/shedule/search?'+ PaginationData,
+            'url' : '/reception/shedule/search?'+ PaginationData,
             'cache' : false,
             'dataType' : 'json',
 			'data' : {
 				'mediateonly' : 0,
+                'notBeginned': 1,
 				'filters' : $.toJSON(filters)
 			},
             'type' : 'GET',
@@ -172,7 +173,7 @@ $(document).ready(function() {
                 id : $(this).attr('href').substr(1)
             };
             $.ajax({
-                'url' : '/index.php/doctors/shedule/unwritepatient',
+                'url' : '/doctors/shedule/unwritepatient',
                 'data' : params,
                 'cache' : false,
                 'dataType' : 'json',
@@ -183,7 +184,10 @@ $(document).ready(function() {
                             $(link).parents('tr').remove();
                         });
                     } else {
+                        $('#cannotUnwritePopup p').text(data.data);
+                        $('#cannotUnwritePopup').modal({
 
+                        });
                     }
                     return;
                 }
@@ -197,9 +201,9 @@ $(document).ready(function() {
         // Опосредованных по одному адресу, обычных, с картами, - по другому
 
         if(!mediateData.isMediate) {
-            var url = '/index.php/reception/patient/writepatientsteptwo?callcenter=' + globalVariables.isCallCenter + '&cardid=' + mediateData.cardNumber + '&greeting_id=' + mediateData.id
+            var url = '/reception/patient/writepatientsteptwo?callcenter=' + globalVariables.isCallCenter + '&cardid=' + mediateData.cardNumber + '&greeting_id=' + mediateData.id
         } else {
-            var url = '/index.php/reception/patient/writepatientwithoutdata?callcenter=' + globalVariables.isCallCenter + '&greeting_id=' + mediateData.id;
+            var url = '/reception/patient/writepatientwithoutdata?callcenter=' + globalVariables.isCallCenter + '&greeting_id=' + mediateData.id;
         }
 
         location.href = 'http://' + location.host + url;

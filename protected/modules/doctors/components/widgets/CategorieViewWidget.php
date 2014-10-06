@@ -10,6 +10,7 @@ class CategorieViewWidget extends CWidget {
     public $medcard = null;
     public $currentDate = null;
 	private $historyElements = array(); // Массив истории элементов: по ним воссоздаётся шаблон
+    private $maxRecordIdByTemplateGreeting = -1;
     public $historyTree = array(); // Построенное дерево историии
     public $catsByTemplates = array(); // Категории по шаблону
     public $dividedCats = array(); // Поделённые категории
@@ -30,6 +31,15 @@ class CategorieViewWidget extends CWidget {
         {
             $this->templateName = MedcardTemplate::model()->findByPk($this->templateId);
             $this->templateName = $this->templateName['name'];
+
+            // А если ещё и id приёма - то ищем максимальный record_id для данного приёма для данного шаблона
+            if(is_null($this->greetingId)==false)
+            {
+                $this->maxRecordIdByTemplateGreeting = MedcardRecord::getMaxRecIdOnGreeting(
+                    $this->templateId,$this->greetingId
+                );
+            }
+
         }
 
         if($this->currentDate == null) {
@@ -59,7 +69,9 @@ class CategorieViewWidget extends CWidget {
         echo('--------');
         exit();
         //*/
-
+        //echo '<pre>';
+        //var_dump($categories);
+        //exit();
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
             'categories' => $categories,
             'model' => $this->formModel,
@@ -345,22 +357,19 @@ class CategorieViewWidget extends CWidget {
                 if(($id && !$path) || $this->previewMode) {
                     $elements = MedcardElement::model()->getElementsByCategorie($id);
                 } else {
-                    $elements = MedcardElementForPatient::model()->findAll(
-                        'history_id = :history_id
-                        AND greeting_id = :greeting_id
-                        AND medcard_id = :medcard_id
-                        AND categorie_id = :categorie_id
-                        AND path LIKE :path
-                        AND element_id != -1',
-                        array(
-                            ':greeting_id' => $this->greetingId,
-                            ':medcard_id' => $this->medcard['card_number'],
-                            ':history_id' => 1,
-                            ':categorie_id' => $categorieResult['id'],
-                            //':path' => $path.'%'
-                            ':path' => $path.'.%'
-                        )
-                    );
+                    // Здесь выбираются ЭЛЕМЕНТЫ (без категорий), если приём был начат раньше
+                    $elements = array();
+                    // Проверяем - если maxRecordIdByTemplateGreeting равно нулю, то присваиваем ему значение 1
+                    if (is_null($this->maxRecordIdByTemplateGreeting))
+                    {
+                        $this->maxRecordIdByTemplateGreeting = 1;
+                    }
+                    $mepObject = new MedcardElementForPatient();
+                    $elements = $mepObject->findElementsForGreeting(
+                        $this->greetingId,
+                        $this->medcard['card_number'],
+                        $categorieResult['id'],
+                        $path);
                 }
 
                 $numWrapped = 0; // Это число элементов, которые следуют за каким-то конкретным элементом
@@ -427,7 +436,7 @@ class CategorieViewWidget extends CWidget {
 						$elementResult['allow_add'] = $eCopy->allow_add;
 						$pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
-			$elementResult['is_required'] = $element['is_required'];
+						$elementResult['is_required'] = $element['is_required'];
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
                         $elementResult['config'] = CJSON::decode($element['config']);
@@ -451,20 +460,27 @@ class CategorieViewWidget extends CWidget {
                     if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null) {
                         $medguideValuesModel = new MedcardGuideValue();
                         $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id'], 'value', 'asc',  false, false, $elementResult['path'], $this->greetingId);
+                        //var_dump($medguideValues);
                         $guideValues = array();
 						if(count($medguideValues) > 0) {
+                           // var_dump($medguideValues);
                             $guideValues = array();
                             foreach($medguideValues as $value) {
                                 // Если значение из справочника равно "-3" и тип не равен 7ми, то добавим значение
-                                if (!(($value['id']==-3)&& ($elementResult['type']==7)))
-                                {
+                               // if (!(($value['id']==-3)&& ($elementResult['type']==7)))
+                                //{
+                                    //var_dump("!");
+                                    //var_dump($value['value']);
                                     $guideValues[$value['id']] = $value['value'];
-                                }
+                                //}
                             }
                             $elementResult['guide'] = $guideValues;
                         } else {
                             $elementResult['guide'] = array();
                         }
+                        //var_dump($elementResult['guide']);
+                        //echo ("|");
+
                     }
 
                     // Добавляем в форму
@@ -495,8 +511,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['num_wraps'] = $numWrapped;
                         $numWrapped = 0;
                     }
-
+                    //var_dump($elementResult);
                     $categorieResult['elements'][] = $elementResult;
+
                 }
 
                 usort($categorieResult['elements'], function($element1, $element2) {
@@ -542,6 +559,10 @@ class CategorieViewWidget extends CWidget {
                     }
                 } else {
                     if(!$this->previewMode) {
+
+                       //var_dump('!');
+                       // exit();
+
                         $categoriesChildren = MedcardElementForPatient::model()->findAll(
                             'categorie_id = :categorie_id
                             AND element_id = :element_id
@@ -558,6 +579,9 @@ class CategorieViewWidget extends CWidget {
                                 ':path' => $categorieResult['path'].'.%'
                             )
                         );
+
+
+
                     }
                 }
 				$categorieResult['children'] = array();
@@ -731,21 +755,24 @@ class CategorieViewWidget extends CWidget {
         ));
     }
 
-	public function getFieldsHistoryByDate($date, $medcardId,$recordId) {
+	public function getFieldsHistoryByDate($medcardId,$greetingId,$templateId) {
         $this->formModel = new FormTemplateDefault();
-		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId,$recordId);
+		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($medcardId,$greetingId,$templateId);
         // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
-		//var_dump($this->historyElements);
-		///exit();
+		//var_dump('sdfgsdfzxd');
+       // echo '<pre>';
+       // var_dump($this->historyElements);
+		//exit();
 		
 		$this->makeTree('getTreeNode');
         $this->sortTree();
-        //var_dump($this->historyTree);
+       //var_dump($this->historyTree);
         //exit();
         // Теперь поделим категории
         $this->divideTreebyCats();
-        //var_dump($this->dividedCats);
-        //exit();
+       /* var_dump('3cvgfbhdhgarc');
+         echo '<pre>' ;var_dump($this->dividedCats);
+        exit();*/
 		$greeting  = null;
         // Рассортируем
 		// Вытащим приёмы

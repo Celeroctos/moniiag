@@ -79,7 +79,7 @@
         'id' => 'tasu-uploaded-file',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/addcard'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/addcard'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -294,7 +294,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/tasu/addfieldtemplate'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/tasu/addfieldtemplate'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#field-template-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -358,7 +358,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/tasu/addkeytemplate'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/tasu/addkeytemplate'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#key-template-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -394,4 +394,4 @@
 <script type="text/javascript">
     globalVariables.uploadInfoFieldName = '<?php echo ini_get("session.upload_progress.name"); ?>';
 </script>
-<iframe id="fileIframe" name='fileIframe'  class='no-display' src="<?php echo Yii::app()->request->baseUrl; ?>/index.php/admin/tasu/view?iframe"></iframe>
+<iframe id="fileIframe" name='fileIframe'  class='no-display' src="<?php echo Yii::app()->request->baseUrl; ?>/admin/tasu/view?iframe"></iframe>

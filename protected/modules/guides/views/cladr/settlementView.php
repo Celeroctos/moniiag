@@ -39,7 +39,7 @@ $this->widget('application.modules.guides.components.widgets.claddr.settlementAd
                 'id' => 'settlement-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/settlementedit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/settlementedit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -116,7 +116,7 @@ $this->widget('application.modules.guides.components.widgets.claddr.settlementAd
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/cladr/settlementedit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/cladr/settlementedit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#settlement-edit-form").trigger("success", [data, textStatus, jqXHR])

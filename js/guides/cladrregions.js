@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#regions").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/cladr/regionget',
+        url: globalVariables.baseUrl + '/guides/cladr/regionget',
         datatype: "json",
         colNames:['ID',
                   'Код КЛАДР',
@@ -108,7 +108,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/regiongetone?id=' + currentRow,
+                'url' : '/guides/cladr/regiongetone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -150,7 +150,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/regiondelete?id=' + currentRow,
+                'url' : '/guides/cladr/regiondelete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

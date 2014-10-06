@@ -10,17 +10,17 @@ $(document).ready(function() {
                         '<a href="#" title="Посмотреть информацию по пациенту">' + data[i].last_name + ' ' + data[i].first_name + ' ' + data[i].middle_name + '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
+                        '<a href="http://moniiag.toonftp.ru/reception/patient/editomsview/?omsid=' + data[i].id + '">' +
                             data[i].oms_number +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
+                        '<a href="http://moniiag.toonftp.ru/reception/patient/editcardview/?cardid=' + data[i].card_number + '">' +
                             data[i].card_number +
                         '</a>' +
                     '</td>' +
                     '<td>' +
-                        '<a href="http://moniiag.toonftp.ru/index.php/reception/patient/addpregnant/?cardid=' + data[i].card_number + '">' +
+                        '<a href="http://moniiag.toonftp.ru/reception/patient/addpregnant/?cardid=' + data[i].card_number + '">' +
                             '<span class="glyphicon glyphicon-edit"></span>' +
                         '</a>' +
                     '</td>' +

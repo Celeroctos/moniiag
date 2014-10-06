@@ -10,7 +10,7 @@ class UsersController extends Controller {
                 if($userIdent->authenticate()) {
                     Yii::app()->user->login($userIdent);
                     echo CJSON::encode(array('success' => 'true',
-                                             'data' => Yii::app()->request->baseUrl.'/index.php'.Yii::app()->user->startpageUrl));
+                                             'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl));
                     exit();
                 } else {
 

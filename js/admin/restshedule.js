@@ -15,7 +15,7 @@ $(document).ready(function() {
     {
         // Подкачать аяксом выходные текущего года
         $.ajax({
-            'url' : '/index.php/admin/shedule/getholidays?currentYear=' + globalVariables.currentYear,
+            'url' : '/admin/shedule/getholidays?currentYear=' + globalVariables.currentYear,
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -314,7 +314,7 @@ $(document).ready(function() {
         /*
         // Иначе делаем ajax-запрос и выясняем, можно ли
         $.ajax({
-            'url': '/index.php/admin/shedule/isgreeting?begin=' + dateString + '&end=' + dateString,
+            'url': '/admin/shedule/isgreeting?begin=' + dateString + '&end=' + dateString,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -351,7 +351,7 @@ $(document).ready(function() {
             'setGridParam',
             {
                 url: globalVariables.baseUrl +
-                    '/index.php/admin/shedule/getwrittenpatients?' +
+                    '/admin/shedule/getwrittenpatients?' +
                     'doctorsIds=' + $.toJSON(getSelectedDoctors()) +
                     '&begin=' + dateToChange +
                     '&end=' + dateToChange,
@@ -572,7 +572,7 @@ $(document).ready(function() {
              /* Кодируем в JSON, чтобы не нагружать метод $.ajax. Он ругается */
         };
         $.ajax({
-            'url' : '/index.php/admin/shedule/saverestdays',
+            'url' : '/admin/shedule/saverestdays',
             'data' : params,
             'cache' : false,
             'dataType' : 'json',

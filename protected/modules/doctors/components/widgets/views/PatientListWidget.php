@@ -29,15 +29,17 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
             Время приёма
         </td>
         <?php } ?>
+		<?php if (Yii::app()->user->checkAccess('canChangeGreetingStatus')) { ?>
         <td>
             Статус приёма
         </td>
+		<?php } ?>
         <td>
         </td>
-        <!--<td>
-        </td>-->
+		<?php if (Yii::app()->user->checkAccess('canCloseGreetings')) { ?>
         <td>
         </td>
+		<?php } ?>
         <?php if ($currentPatient !== false && Yii::app()->user->checkAccess('canPrintMovement')) { ?>
             <td>
             </td>
@@ -91,13 +93,16 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
 				echo $patient['fio'];
 			}
 			?>
+			<div class="no-display hiddenComment">
+				<?php echo $patient['comment']; ?>
+			</div>
         </td>
         <?php if(!$isWaitingLine) { ?>
         <td>
             <?php echo $patient['patient_time']; ?>
         </td>
         <?php } ?>
-
+		<?php if (Yii::app()->user->checkAccess('canChangeGreetingStatus')) { ?>
         <td class="greetingStatusCell">
             <div id="status-container<?php echo $patient['id'];?>">
             <input type="radio" id="greetingStatus<?php echo $patient['id'];?>"
@@ -107,6 +112,7 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
             <div>
             <?php // echo $patient['greetingStatus']; ?>
         </td>
+		<?php } ?>
         <td>
             <?php 
 				if($patient['medcard_id'] != null) {
@@ -119,7 +125,7 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
                             </td>-->
         <td>
             <?php
-            if (!($patient['is_accepted'] == 1 || $patient['is_beginned'] != 1)) {
+            if (($patient['id'] == $currentSheduleId)&&Yii::app()->user->checkAccess('canCloseGreetings') && !($patient['is_accepted'] == 1 || $patient['is_beginned'] != 1)) {
                 echo CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '#' . $patient['id'],
                     array('title' => 'Закончить приём',
                         'class' => 'accept-greeting-link'));
@@ -130,7 +136,8 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
             <td>
                 <?php echo $patient['id'] == $currentSheduleId ? CHtml::link('<span class="glyphicon glyphicon-print"></span>', '#' . $patient['id'],
                     array('title' => 'Печать листа приёма',
-                        'class' => 'print-greeting-link')) : ''; ?>
+                          'class' => 'print-greeting-link')) : ''; 
+				?>
             </td>
         <?php } ?>
         </tr>

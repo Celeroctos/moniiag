@@ -1,8 +1,8 @@
 $(document).ready(function () {
     $("#elements").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/elements/get',
+        url: globalVariables.baseUrl + '/admin/elements/get',
         datatype: "json",
-        colNames: ['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Метка для администратора', 'Размер', 'Перенос строки', 'Позиция', 'Полный путь', '', '', '', '', ''],
+        colNames: ['Код', 'Тип', 'Справочник', 'Категория', 'Метка до', 'Метка после', 'Метка для администратора', 'Размер', 'Перенос строки', 'Позиция', 'Полный путь', 'Мониторинг', '', '', '', '', '', ''],
         colModel: [
             {
                 name: 'id',
@@ -59,6 +59,11 @@ $(document).ready(function () {
                 index: 'path',
                 width: 150
             },
+			{
+				name: 'show_dynamic_desc',
+				index: 'show_dynamic_desc',
+				width: 150
+			},
             {
                 name: 'categorie_id',
                 index: 'categorie_id',
@@ -83,7 +88,12 @@ $(document).ready(function () {
                 name: 'is_wrapped',
                 index: 'is_wrapped',
                 hidden: true
-            }
+            },
+			{
+				name: 'show_dynamic',
+				index: 'show_dynamic',
+				hidden: true
+			},
         ],
         rowNum: 25,
         rowList: [10, 25],
@@ -132,7 +142,7 @@ $(document).ready(function () {
         }
     );
 
-    var url = globalVariables.baseUrl + '/index.php/admin/elements/getdependenceslist';
+    var url = globalVariables.baseUrl + '/admin/elements/getdependenceslist';
     $("#dependences").jqGrid({
         url: url,
         datatype: "local",
@@ -337,7 +347,7 @@ function editElement() {
     if (currentRow != null) {
         // Надо вынуть данные для редактирования
         $.ajax({
-            'url': '/index.php/admin/elements/getone?id=' + currentRow,
+            'url': '/admin/elements/getone?id=' + currentRow,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -347,67 +357,79 @@ function editElement() {
                     var form = $('#editElementPopup form')
                     // Соответствия формы и модели
                     var fields = [
-                            {
-                                modelField: 'id',
-                                formField: 'id'
-                            },
-                            {
-                                modelField: 'type',
-                                formField: 'type'
-                            },
-                            {
-                                modelField: 'categorie_id',
-                                formField: 'categorieId'
-                            },
-                            {
-                                modelField: 'label',
-                                formField: 'label'
-                            },
-                            {
-                                modelField: 'guide_id',
-                                formField: 'guideId'
-                            },
-                            {
-                                modelField: 'allow_add',
-                                formField: 'allowAdd'
-                            },
-                            {
-                                modelField: 'is_required',
-                                formField: 'isRequired'
-                            },
-                            {
-                                modelField: 'label_after',
-                                formField: 'labelAfter'
-                            },
-                            {
-                                modelField: 'size',
-                                formField: 'size'
-                            },
-                            {
-                                modelField: 'is_wrapped',
-                                formField: 'isWrapped'
-                            },
-                            {
-                                modelField: 'position',
-                                formField: 'position'
-                            },
-                            {
-                                modelField: 'config',
-                                formField: 'config'
-                            },
-                            {
-                                modelField: 'default_value',
-                                formField: 'defaultValue'
-                            },
-                             {
-                                 modelField: 'default_value',
-                                 formField: 'defaultValueText'
-                             },
-                            {
-                                modelField: 'label_display',
-                                formField: 'labelDisplay'
-                            }
-                        ];
+						{
+							modelField: 'id',
+							formField: 'id'
+						},
+						{
+							modelField: 'type',
+							formField: 'type'
+						},
+						{
+							modelField: 'categorie_id',
+							formField: 'categorieId'
+						},
+						{
+							modelField: 'label',
+							formField: 'label'
+						},
+						{
+							modelField: 'guide_id',
+							formField: 'guideId'
+						},
+						{
+							modelField: 'allow_add',
+							formField: 'allowAdd'
+						},
+						{
+							modelField: 'is_required',
+							formField: 'isRequired'
+						},
+						{
+							modelField: 'label_after',
+							formField: 'labelAfter'
+						},
+						{
+							modelField: 'size',
+							formField: 'size'
+						},
+						{
+							modelField: 'is_wrapped',
+							formField: 'isWrapped'
+						},
+						{
+							modelField: 'position',
+							formField: 'position'
+						},
+						{
+							modelField: 'config',
+							formField: 'config'
+						},
+						{
+							modelField: 'default_value',
+							formField: 'defaultValue'
+						},
+						{
+							modelField: 'default_value',
+							formField: 'defaultValueText'
+						},
+						{
+							modelField: 'label_display',
+							formField: 'labelDisplay'
+						},
+						{
+							modelField: 'show_dynamic',
+							formField: 'showDynamic'
+						}
+					];
+					
+					if(data.data['type'] == 4) {
+						// Блокировать поле отслеживания динамики
+					   $('#editElementPopup #showDynamic').prop('disabled', true);
+					} else {
+					   $('#editElementPopup #showDynamic').prop('disabled', false);
+					}
+					
                     for (var i = 0; i < fields.length; i++) {
                         // Подгрузка значений справочника для дефолтного значения
                         if (fields[i].formField == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
@@ -418,7 +440,11 @@ function editElement() {
                         form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         // Таблица
                         if (fields[i].formField == 'config') {
-                            var config = $.parseJSON(data.data['config']);
+							if(typeof data.data['config'] != 'object') {
+								var config = $.parseJSON(data.data['config']);
+							} else {
+								var config = data.data['config'];
+							}
                             if (data.data['type'] == 4) {
                                 printHeadersTable(
                                     config,
@@ -607,7 +633,7 @@ $("#deleteElement").click(function () {
     if (currentRow != null) {
         // Надо вынуть данные для редактирования
         $.ajax({
-            'url': '/index.php/admin/elements/delete?id=' + currentRow,
+            'url': '/admin/elements/delete?id=' + currentRow,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -630,8 +656,15 @@ $("#deleteElement").click(function () {
 
 // Открытие списка справочников
 $("select#type").on('change', function (e) {
-    // Если это список с выбором
     var form = $(this).parents('form');
+	// Таблица. Для неё нельзя отслеживать динамику (пока)
+	if($(this).val() == 4) {
+		form.find("#showDynamic").prop('disabled', true);
+	} else {
+		form.find("#showDynamic").prop('disabled', false);
+	}
+	
+    // Если это список с выбором
     if ($(this).val() == 2 || $(this).val() == 3 || $(this).val() == 7) {
         form.find("select#guideId").prop('disabled', false);
         form.find("select#allowAdd").prop('disabled', false);
@@ -724,7 +757,7 @@ $('#editElementDependences').on('click', function () {
     if (currentRow != null) {
         // Надо вынуть данные для редактирования зависимостей
         $.ajax({
-            'url': '/index.php/admin/elements/getdependences?id=' + currentRow,
+            'url': '/admin/elements/getdependences?id=' + currentRow,
             'cache': false,
             'dataType': 'json',
             'type': 'GET',
@@ -964,7 +997,7 @@ $('#saveDependencesBtn').on('click', function (e) {
     var controlAction = $('#controlActions').val();
 
     $.ajax({
-        'url': '/index.php/admin/elements/savedependences' +
+        'url': '/admin/elements/savedependences' +
             '',
         'data': {
             'values': $.toJSON(controlValues),
@@ -1171,7 +1204,7 @@ $('select#guideId').on('change', function (e, currentValue) {
     $(defaultSelect).attr('disabled', true);
 
     $.ajax({
-        'url': '/index.php/admin/guides/getvalues',
+        'url': '/admin/guides/getvalues',
         'data': {
             'id': $(this).val()
         },

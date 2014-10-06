@@ -1,8 +1,8 @@
 $(document).ready(function() {
     $("#wards").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/wards/get',
+        url: globalVariables.baseUrl + '/guides/wards/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип учреждения'],
+        colNames:['Код', 'Наименование', 'Тип учреждения', 'Правило создания номеров карт', ''],
         colModel:[
             {
                 name:'id',
@@ -18,7 +18,17 @@ $(document).ready(function() {
                 name: 'enterprise_name',
                 index:'enterprise_name',
                 width: 150
-            }
+            },
+			{
+				name: 'rule',
+				index: 'rule',
+				width: 250
+			},
+			{
+				name: 'rule_id',
+				index: 'rule_d',
+				hidden: true
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -106,7 +116,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/wards/getone?id=' + currentRow,
+                'url' : '/guides/wards/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -127,7 +137,11 @@ $(document).ready(function() {
                             {
                                 modelField: 'enterprise_id',
                                 formField: 'enterprise'
-                            }
+                            },
+							{
+								modelField: 'rule_id',
+								formField: 'ruleId'
+							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
@@ -149,7 +163,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/wards/delete?id=' + currentRow,
+                'url' : '/guides/wards/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

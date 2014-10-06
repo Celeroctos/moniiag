@@ -1,19 +1,14 @@
 ﻿$(document).ready(function() {
 	function initGreetingsGrid(id, pagerId, title) {
 		$(id).jqGrid({
-			url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings',
+			url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings',
 			datatype: "json",
-			colNames:['Код', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма', 'Статус', 'Проведён в МИС'],
+			colNames:['Код', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач', 'Статус', 'Проведён в МИС'],
 			colModel:[
 				{
 					name:'id',
 					index:'id',
 					width: 50
-				},
-				{
-					name: 'doctor_fio',
-					index:'doctor_fio',
-					width: 150
 				},
 				{
 					name: 'medcard',
@@ -26,8 +21,18 @@
 					width: 170
 				},
 				{
+					name: 'pr_diag_code',
+					index: 'pr_diag_code',
+					width: 100
+				},
+				{
 					name: 'patient_day',
 					index: 'patient_day',
+					width: 120
+				},
+				{
+					name: 'doctor_fio',
+					index:'doctor_fio',
 					width: 150
 				},
 				{
@@ -38,7 +43,7 @@
 				{
 					name: 'in_mis_desc',
 					index: 'in_mis_desc',
-					width: 150
+					width: 140
 				}
 			],
 			rowNum: 30,
@@ -72,9 +77,9 @@
 	initGreetingsGrid("#historyGreetings", '#historyGreetingsPager', "Список выгруженных приёмов");
 
 	$("#importHistory").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/tasu/getbufferhistorygreetings',
+        url: globalVariables.baseUrl + '/admin/tasu/getbufferhistorygreetings',
         datatype: "json",
-        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', ''],
+        colNames:['ID', 'Количество выгруженных записей', 'Дата создания', 'Статус', 'Лог', 'Отменить', ''],
         colModel:[
             {
                 name: 'id',
@@ -97,7 +102,18 @@
                 width: 150
             },
 			{
+				name: 'log',
+				index: 'log',
+				width: 50
+			},
+			{
+				name: 'cancel',
+				index: 'cancel',
+				width: 70
+			},
+			{
 				name: 'import_id',
+				index: 'import_id',
 				hidden: true
 			}
         ],
@@ -127,6 +143,43 @@
         }
     );
 	
+	// Фикс для того, чтобы узнать информацию о столбце: нативно по одиночному клику такая информация не выводится
+    $("#importHistory").click(function(e) {
+        var el = e.target;
+        if (el.nodeName !== "TD") {
+            el = $(el, this.rows).closest("td");
+        }
+		if($(el).find('a').length == 0) {
+			return false;
+		}
+
+        var iCol = $(el).index();
+        var nCol = $(el).siblings().length;
+        var row = $(el,this.rows).closest("tr.jqgrow");
+        var rowId = row[0].id;
+        if(iCol == 5) {
+			if(!window.confirm('Вы действительно хотите отменить выгрузку?')) {
+				return false;
+			}
+			$.ajax({
+				'url' : '/admin/tasu/cancelimport',
+				'cache' : false,
+				'data' : {
+					'bufferid' : $(el).find('a').prop('id').substr(1)
+				},
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success) {
+						alert('Выгрузка успешно отменена!');
+						$("#greetings, #importHistory").trigger('reloadGrid');
+					}
+				}
+			});
+			return false;
+		}
+    });
+	
 	$('#clearGreetings').on('click', function(e) {
 	    $('#confirmPopup').modal({});
 	});
@@ -140,7 +193,7 @@
         });
 
         $.ajax({
-            'url' : '/index.php/admin/tasu/clearbuffer',
+            'url' : '/admin/tasu/clearbuffer',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -163,7 +216,7 @@
             'disabled' : true
         }).text('Формируется список приёмов...');
         $.ajax({
-            'url' : '/index.php/admin/tasu/addallgreetings',
+            'url' : '/admin/tasu/addallgreetings',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -198,7 +251,7 @@
 			var numErrors = 0;
             function makeImport() {
                 $.ajax({
-                    'url' : '/index.php/admin/tasu/importgreetings',
+                    'url' : '/admin/tasu/importgreetings',
                     'cache' : false,
                     'data' : {
                         currentGreeting : currentGreeting,
@@ -281,7 +334,7 @@
 								$('#clearGreetings').attr({
 									'disabled' : false
 								});
-								 $('#importProgressbarP').prop({
+								$('#importProgressbarP').prop({
                                     'aria-valuenow' : '0'
                                 }).css('width', '0%');
 							});
@@ -321,6 +374,9 @@
 
             $('.successImport').on('click', function(e) {
                 $('#importContainer').slideUp(500, function() {
+					$('#importProgressbarP').prop({
+						'aria-valuenow' : '0'
+					}).css('width', '0%');
                     $("#greetings").trigger("reloadGrid");
                     $("#importHistory").trigger("reloadGrid");
                     $('.continueImport, .pauseImport').removeClass('no-display');
@@ -333,6 +389,11 @@
                     totalRows = null;
                     $('.numStringsAll').text(0);
                     $('.numStrings').text(0);
+					$('.numStringsAdded').text(0);
+                    $('.numStringsDiscarded').text(0);
+					$('.numStringsError').text(0);
+                    $('.numDoctorsAdded').text(0);
+					$('.numPatientsAdded').text(0);
                 }).addClass('no-display');
             });
         }).removeClass('no-display');
@@ -340,7 +401,7 @@
 
     $('#addGreeting').on('click', function(e) {
         $.ajax({
-            'url' : '/index.php/admin/tasu/getnotbufferedgreetings',
+            'url' : '/admin/tasu/getnotbufferedgreetings',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -375,7 +436,7 @@
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/tasu/deletefrombuffer?id=' + currentRow,
+                'url' : '/admin/tasu/deletefrombuffer?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -427,6 +488,11 @@
             alert('Не выбран врач!');
             return false;
         }
+		
+		if(typeof $('#paymentType').val() == 'undefined') {
+            alert('Не выбран тип оплаты!');
+            return false;
+        }
 
         if(primaryDiagnosis.length == 0) {
             alert('Не выбран первичный диагноз!');
@@ -453,11 +519,13 @@
 		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		 $.ajax({
-            'url' : '/index.php/admin/tasu/getfios',
+            'url' : '/admin/tasu/getfios',
             'data' : {
 				'doctor_id' : $('#doctorId').val(),
 				'card_number' : $.trim($('#cardNumber').val()),
-				'greeting_date' : $.trim($('#greetingDate').val())
+				'greeting_date' : $.trim($('#greetingDate').val()),
+				'pr_diagnosis_id' : primaryDiagnosis[0].id,
+				's_diagnosis_ids' : secondaryDiagnosisIds
 			},
             'cache' : false,
             'dataType' : 'json',
@@ -469,17 +537,23 @@
 						doctorId : $('#doctorId').val(),
 						primaryDiagnosis : primaryDiagnosis[0].id,
 						secondaryDiagnosis : secondaryDiagnosisIds,
-						greetingDate : $.trim($('#greetingDate').val())
+						greetingDate : $.trim($('#greetingDate').val()),
+						paymentType : $.trim($('#paymentType').val()),
+						primaryDiagnosisData : primaryDiagnosis[0],
+						secondaryDiagnosisData : secondaryDiagnosisChoosed
 					};
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
-					
 					$('#preGreetings').addRowData((lastId).toString(), {
 						'id' : lastId,
 						'doctor_fio' : data.data.doctorFio, 
+						'doctor_id' : $.trim($('#doctorId').val()),
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
-						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.')
+						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
+						'diagnosis_code' : data.data.pr_diagnosis_code,
+						'secondary_diagnosis_codes' : data.data.s_diagnosis_codes,
+						'payment_type' : $.trim($('#paymentType').val())
 					});
 
 					lastId++;
@@ -509,8 +583,11 @@
 		$('#greetingDate-cont').find('.day, .month, .year').val('');
 		$('#wardId').val(-1).trigger('change');*/
 		$('#deletePreGreeting').removeClass('disabled');
+		$('#fioCont').addClass('no-display').text('');
 		
-		$.fn["primaryDiagnosisChooser"].clearAll();
+		if(!$('#savePrimaryDiag').prop('checked')) {
+			$.fn["primaryDiagnosisChooser"].clearAll();
+		}
 		$.fn["secondaryDiagnosisChooser"].clearAll();
 		// Сброс фокуса
 		$('#cardNumber').focus();
@@ -519,7 +596,7 @@
     $("#greeting-addfakeall-submit").on('click', function(e) {
 		console.log(greetingsTempBuffer);
         $.ajax({
-            'url' : '/index.php/admin/tasu/addfakegreetingtobuffer',
+            'url' : '/admin/tasu/addfakegreetingtobuffer',
             'data' : {
 				'form' : $.toJSON(greetingsTempBuffer),
 			},
@@ -564,7 +641,7 @@
 	$('#wardId').on('change', function() {
 		$(this).attr('disabled', true);
 		$.ajax({
-			'url' : '/index.php/guides/employees/getbyward?id=' + $(this).val(),
+			'url' : '/guides/employees/getbyward?id=' + $(this).val(),
 			'cache' : false,
 			'dataType' : 'json',
 			'success' : function(data, textStatus, jqXHR) {
@@ -584,33 +661,53 @@
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['', 'Врач', 'Медкарта', 'ФИО пациента', 'Дата приёма'],
+        colNames:['ID', '№ карты', 'ФИО пациента', 'Код диагноза', 'Коды вторичных диагнозов', 'Дата приёма', 'Врач', '', ''],
         colModel:[
 			{
 				name: 'id',
 				index: 'id',
-				hidden: true
+				width: 50
 			},
-            {
-                name: 'doctor_fio',
-                index:'doctor_fio',
-                width: 150
-            },
-            {
+			{
                 name: 'medcard',
                 index:'medcard',
                 width: 100
             },
-            {
+			{
                 name: 'patient_fio',
                 index:'patient_fio',
                 width: 170
             },
+			{
+                name: 'diagnosis_code',
+                index: 'diagnosis_code',
+                width: 100
+            },
+			{
+				name: 'secondary_diagnosis_codes',
+				index: 'secondary_diagnosis_codes',
+				width: 200
+			},
             {
                 name: 'patient_day',
                 index: 'patient_day',
+                width: 120
+            },
+			{
+                name: 'doctor_fio',
+                index:'doctor_fio',
                 width: 150
-            }
+            },
+			{
+				name: 'payment_type',
+				index: 'payment_type',
+				hidden: true
+			},
+			{
+				name: 'doctor_id',
+				index: 'doctor_id',
+				hidden: true
+			}
         ],
         rowNum: 30,
         rowList:[10,20,30],
@@ -618,8 +715,26 @@
         viewrecords: true,
         sortorder: "desc",
         caption: "Список добавляемых приёмов",
-        height: 453
+        height: 453,
+		ondblClickRow: editPreGreeting
     });
+	
+	function editPreGreeting(rowid, iRow, iCol, e) {
+		var rowData = $('#preGreetings').jqGrid('getRowData',rowid);
+		console.log(rowData);
+		$('#doctorIdEdit').val(rowData.doctor_id);
+		$('#paymentTypeEdit').val(rowData.payment_type);
+		$('#greetingDateEdit').val(rowData.patient_day.split('.').reverse().join('-')).trigger('change');
+		$('#cardNumberEdit').val(rowData.medcard);
+
+		$.fn['primaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + greetingsTempBuffer[rowData.id].primaryDiagnosisData.id).text(greetingsTempBuffer[rowData.id].primaryDiagnosisData.description), greetingsTempBuffer[rowData.id].primaryDiagnosisData);
+		var sDiagnosis = greetingsTempBuffer[rowData.id].secondaryDiagnosisData;
+		for(var i = 0; i < sDiagnosis.length; i++) {
+			$.fn['secondaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + sDiagnosis[i].id).text(sDiagnosis[i].description), sDiagnosis[i]);
+		}
+
+		$('#editPregreetingsRowPopup').modal({});
+	}
 	
 	$('#tasuimport-filter-btn').on('click', function() {
 		var greetingDate = $('#filterGreetingDate').val(); 
@@ -631,7 +746,7 @@
 		// Перезагружаем таблицу
 		$('#greetings').jqGrid('setGridParam',
             {
-                url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings' + urlParams,
+                url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings' + urlParams,
                 page: 1
 			}
 		);
@@ -644,7 +759,7 @@
 			var row = $('#importHistory').jqGrid('getRowData', currentRow);
 			$('#historyGreetings').jqGrid('setGridParam',
 				{
-					url: globalVariables.baseUrl + '/index.php/admin/tasu/getbuffergreetings?import_id=' + row.import_id,
+					url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings?import_id=' + row.import_id,
 					page: 1
 				}
 			);
@@ -662,15 +777,65 @@
 	
 	// Зацикливаем беготню по форме
 	$('#cardNumber, #primaryDiagnosis').on('keydown', function(e) {
-		if(e.keyCode == 13) {
-			nextInput = $(this).parents('.form-group').next().find('input');
-			if(typeof $(nextInput).attr('disabled') != 'undefined') {
-				nextInput = $(this).parents('.form-group').next().next().find('input');
+		if(e.keyCode == 13 || e.keyCode == 9) {
+			if($(this).prop('id') == 'cardNumber' && $.trim($(this).val()) != '') { // Подгружать ФИО
+				getFioByCardNumber();
+			} else {
+				moveToNextInput(this);
 			}
-			$(nextInput).focus();
 			e.stopPropagation();
 		}
 	});
+	
+	$('#cardNumber').on('blur', function(e) {
+		if($.trim($('#cardNumber').val()) != '') {
+			getFioByCardNumber();
+		}
+	});
+	
+	function getFioByCardNumber() {
+		$('#cardNumber').prop('disabled', true);
+		$.ajax({
+			'url' : '/admin/tasu/getfio',
+			'data' : {
+				'card_number' : $.trim($('#cardNumber').val())
+			},
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET',
+			'success' : function(data, textStatus, jqXHR) {
+				if(data.success) {
+					$('#fioCont').removeClass('no-display').text('Пациент ' + data.data.patientFio);
+					$('#cardNumber').prop('disabled', false);
+					moveToNextInput($('#cardNumber'));
+				} else {
+					alert(data.error);
+					$('#cardNumber').prop('disabled', false);
+					$('#cardNumber').focus();
+				}
+			}
+		});
+	}
+	
+	function moveToNextInput(input) {
+		var id = $(input).prop('id');
+		if(id == 'cardNumber') {
+			$('#savePrimaryDiag').focus();
+		}
+		if(id == 'savePrimaryDiag') {
+			if($('#primaryDiagnosis').prop('disabled') != 'undefined') {
+				$('#primaryDiagnosis').focus();
+			} else {
+				$('#secondaryDiagnosis').focus();
+			}
+		}
+		if(id == 'primaryDiagnosis') {
+			$('#secondaryDiagnosis').focus();
+		}
+		if(id == 'secondaryDiagnosis') {
+			$('#greeting-addfake-submit').focus();
+		}
+	}
 	
 	$('#greeting-addfake-submit').on('keydown', function(e) {
 		if(e.keyCode == 39) {

@@ -59,7 +59,17 @@ class ElementsController extends Controller {
             $elements = $model->getRows($filters, $sidx, $sord, $start, $rows);
             $typesList = $model->getTypesList();
             foreach($elements as $key => &$element) {
-                $temp = $element['type'];
+                if($element['config'] != null) {
+					$element['config'] = CJSON::decode($element['config']);
+					if(isset($element['config']['showDynamic'])) {
+						$element['show_dynamic_desc'] = 'Да'; 
+						$element['show_dynamic'] = 1;
+					}
+				} else {
+					$element['show_dynamic_desc'] = 'Нет'; 
+					$element['show_dynamic'] = 0;
+				}
+				$temp = $element['type'];
                 $element['type_id'] = $temp;
                 $element['type'] = $typesList[$element['type']];
                 if($element['guide_id'] == null) {
@@ -81,7 +91,7 @@ class ElementsController extends Controller {
         }
     }
 
-       public function actionEdit() {
+   public function actionEdit() {
         $model = new FormElementAdd();
         if(isset($_POST['FormElementAdd'])) {
             $model->attributes = $_POST['FormElementAdd'];
@@ -202,13 +212,13 @@ class ElementsController extends Controller {
                 $element->default_value = null;
             }
         }
-
+		
+		$config = array();
         if($model->type == 4) {
-            $element->config = $model->config;
+            $config += $model->config;
         }
-
-        if($model->type == 5) {
-            if($model->numberFieldMaxValue != null && $model->numberFieldMinValue != null && $model->numberFieldMaxValue < $model->numberFieldMinValue) {
+		if($model->type == 5) {
+			if($model->numberFieldMaxValue != null && $model->numberFieldMinValue != null && $model->numberFieldMaxValue < $model->numberFieldMinValue) {
                 echo CJSON::encode(array('success' => false,
                         'errors' => array(
                             'maxminvalue' => array(
@@ -219,16 +229,19 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-            $config = array(
+
+			$config += CJSON::encode(array(
                 'maxValue' => $model->numberFieldMaxValue,
                 'minValue' => $model->numberFieldMinValue,
                 'step' => $model->numberStep
-            );
-            $element->config = CJSON::encode($config);
-        }
+            ));
+		}
+
+		if($model->showDynamic) {
+			$config['showDynamic'] = 1;
+		}
 		
-		if ($model->type == 6)
-		{
+		if ($model->type == 6) {
             // Проверим - больше ли максимальное значение минимального
             if (strtotime($model->dateFieldMaxValue)<strtotime($model->dateFieldMinValue))
             {
@@ -242,12 +255,13 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-			$config = array(
+			$config += CJSON::encode(array(
 				'maxValue' => $model->dateFieldMaxValue,
 				'minValue' => $model->dateFieldMinValue
-				);
-			$element->config = CJSON::encode($config);
+			));
 		}
+
+		$element->config = CJSON::encode($config); 
 
         // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
         $partOfPath = $this->getElementPath($element->categorie_id);
@@ -334,6 +348,16 @@ class ElementsController extends Controller {
         if(($element['default_value'] == null) && ($element['type']!=0)&&($element['type']!=1)) {
             $element['default_value'] = -1;
         }
+		if($element['config'] != null) {
+			$element['config'] = CJSON::decode($element['config']);
+			if(isset($element['config']['showDynamic'])) {
+				$element['show_dynamic'] = 1;
+			} else {
+				$element['show_dynamic'] = 0;
+			}
+		} else {
+			$element['show_dynamic'] = 0;
+		}
 
         // Нужно выяснить - есть ли на элементе зависимости (если есть - нужно зыблокировать некоторые варианты в селекте типа)
         $existanceDependencies = MedcardElementDependence::model()->findAll(

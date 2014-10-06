@@ -1,4 +1,12 @@
 $(document).ready(function() {
+
+    $.fn['categories'] = {
+        initSelectOnClick: function(controlToInit)
+        {
+            initSelectControlClick(controlToInit);
+        }
+    }
+
     $('button[id^=ba]').filter('[id*=history]').prop('disabled', true);
     $('button[id^=ba]').filter(':not([id*=history])').on('click', function(e) {
         var elementId = $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
@@ -97,8 +105,18 @@ $(document).ready(function() {
         if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#addGreetingComboValuePopup').modal('hide');
             $("#add-greeting-value-form")[0].reset(); // Сбрасываем форму
-            $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
-            $(globalVariables.domElement).val(ajaxData.id);
+            if (  $(globalVariables.domElement).is('select') )
+            {
+                $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
+                $(globalVariables.domElement).val(ajaxData.id);
+            }
+            else
+            {
+                if (  $(globalVariables.domElement).is('input') )
+                {
+                    $.fn[ $(globalVariables.domElement).attr('id') ].addSelected(ajaxData.id,ajaxData.display);
+                }
+            }
         } else {
             showErrors(ajaxData);
         }
@@ -123,9 +141,12 @@ $(document).ready(function() {
         });
     }
 
+    // Старый код, потом выкинуть
+    /*
     $('.accordion-inner select').each(function(index, element) {
         var currentValue = $(element).val();
-        $(element).on('change', function(e) {
+        //$(element).on('change', function(e) {
+        $(document).on('change',element, function(e) {
             if($(this).val() == '-3') {
                 globalVariables.domElement = element;
                 var elementId =  $(element).attr('id').substr($(element).attr('id').lastIndexOf('_') + 1);
@@ -138,6 +159,75 @@ $(document).ready(function() {
             }
         });
     });
+    */
+
+
+
+    $('.accordion-inner select').each(function(index,element){
+        initSelectControlClick(element);
+    });
+    function initSelectControlClick(element)
+    {
+        var currentValue = $(element).val();
+        $(element).on('change', function(e) {
+       // $(document).on('change',element, function(e) {
+            if($(this).val() == '-3') {
+                globalVariables.domElement = element;
+                var elementId = undefined;
+                if ($(this).attr('id')!=undefined)
+                {
+                    elementId =  $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
+                }
+                else
+                {
+                    // Иначе берём в родителе input
+                    hiddenInput = $($(this).parents()[0]).find('input[type=hidden]');
+                    elementIdRaw = $(hiddenInput).attr('id');
+                    elementId = elementIdRaw.substr(elementIdRaw.lastIndexOf('_')+1);
+                }
+                $('#addGreetingComboValuePopup #controlId').val(elementId);
+                $('#addGreetingComboValuePopup').modal({});
+                $(element).val(currentValue);
+                return false;
+            } else {
+                currentValue = $(this).val();
+            }
+        });
+    }
+
+/*
+    lastSelectValue = undefined;
+    $(document).on('click','.accordion-inner select',function()
+    {
+        lastSelectValue = $(element).val();
+    });
+
+    $(document).on('change','.accordion-inner select',function()
+    {
+            if($(this).val() == '-3') {
+                globalVariables.domElement = this;
+                var elementId = undefined;
+                if ($(this).attr('id')!=undefined)
+                {
+                    elementId =  $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
+                }
+                else
+                {
+                    // Иначе берём в родителе input
+                    hiddenInput = $($(this).parents()[0]).find('input[type=hidden]');
+                    elementIdRaw = $(hiddenInput).attr('id');
+                    elementId = elementIdRaw.substr(elementIdRaw.lastIndexOf('_')+1);
+                }
+                $('#addGreetingComboValuePopup #controlId').val(elementId);
+                $('#addGreetingComboValuePopup').modal({});
+                $(this).val(currentValue);
+                return false;
+            } else {
+                currentValue = $(this).val();
+            }
+        }
+    );*/
+
 
 
     $('.templatesListNav a').click(function (e) {
@@ -251,5 +341,135 @@ $(document).ready(function() {
             $(tabs[i]).tab('show');
         }
     });
+	
+	var popoverCont = null;
+	// Просмотр динамики параметров
+	$(document).on('click', '.showDynamicIcon', function(e) {
+		popoverCont = $(this);
+		$(this).popover({
+            animation: true,
+            html: true,
+            placement: 'right',
+            title: 'Динамика изменения параметра',
+            delay: {
+                show: 300,
+                hide: 300
+            },
+            container: $(this),
+            content: function() {
+				var table = $('<table>').css({
+					'width' : '100%'
+				}).addClass('table');
+				var diff1TdHeader = $('<td>').text('Разница с текущим');
+				var diff2TdHeader = $('<td>').text('Разница с предыдущим');
+				$(table).append($('<thead>').append($('<tr>').addClass('bold').append($('<td>').text('Дата'), $('<td>').text('Значение'), diff1TdHeader, diff2TdHeader)), $('<tbody>'));
+				var elementId = $(this).next().prop('id');
+				var currentValue = $(this).next().val();
+				var ajaxGif =  $('<img>').prop({
+                    'src' : '/images/ajax-loader.gif',
+                    'width' : 32,
+                    'height' : 32,
+                    'alt' : 'Загрузка...'
+                });
+				var container = $('<div>');
+				$.ajax({
+					'url' : '/doctors/shedule/getparamhistory',
+					'cache' : false,
+					'dataType' : 'json',
+					'data' : {
+						'element' : elementId,
+						'medcard' : globalVariables.medcardNumber,
+						'greetingId' : $('#greetingId').val()
+					},
+					'type' : 'GET',
+					'success' : function(data, textStatus, jqXHR) {
+						if(data.success == true) {
+							$(table).find('tbody tr:not(:first)').remove();
+							var data = data.data;
+							if(data.length > 0 && data[0].type == 5) {
+								$(diff1TdHeader).removeClass('no-display');
+								$(diff2TdHeader).removeClass('no-display');
+							} else {
+								$(diff1TdHeader).addClass('no-display');
+								$(diff2TdHeader).addClass('no-display');
+							}
+							var prevValue = null;
+							for(var i = 0; i < data.length; i++) {
+								var tr = $('<tr>').append(
+									$('<td>').text(data[i].change_date),
+									$('<td>').text(data[i].value)
+								);
+								if(data[i].type == 5) { // Тип numberField
+									var diff1 = parseFloat(currentValue) - parseFloat(data[i].value);
+									if(i > 0 && prevValue != null) {
+										var diff2 = prevValue - parseFloat(data[i].value);
+									} else {
+										var diff2 = 0;
+									}
+									prevValue = parseFloat(data[i].value);
+									
+									var diffTd1 = $('<td>').addClass('bold').text(diff1);
+									var diffTd2 = $('<td>').addClass('bold').text(diff2);
+									
+									if(diff1 > 0) {
+										$(diffTd1).addClass('text-danger');
+									} else if(diff1 < 0) {
+										$(diffTd1).addClass('text-success');
+									}
+									
+									if(diff2 > 0) {
+										$(diffTd2).addClass('text-danger');
+									} else if(diff2 < 0) {
+										$(diffTd2).addClass('text-success');
+									}
+									$(tr).append(diffTd1, diffTd2);
+								} 
+								$(table).find('tbody').append(tr);
+							}
+							$(ajaxGif).remove();
+							$(container).append(table);
+						} 
+					}
+				});
+				return $(container).addClass('changesList').append(ajaxGif);
+			}
+		});
+		
+	    $(this).popover('show');
+		
+		var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+			position: 'absolute',
+			cursor: 'pointer',
+			left: '480px'
+		});
 
+		$(span).on('click', function(e) {
+			$(popoverCont).popover('destroy');
+			$(span).remove();
+			e.stopPropagation();
+			return false;
+		});
+		
+		$(this).find('.popover-title').css({
+			'color' : '#000000',
+			'fontWeight' : 'bold'
+		}).text('Динамика изменения параметра');
+		
+		$(this).find('.popover-content, .popover-title').css({
+			'width' : '100%'
+		}).on('click', function(e) {
+			e.stopPropagation();
+			return false;
+		});
+		
+		$(this).find('.popover').css({
+			'cursor' : 'default',
+			'width' : '500px',
+			'max-width' : '500px',
+			'min-width' : '500px'
+		}).append(span);
+
+	    e.stopPropagation();
+	    return false;
+	});
 });

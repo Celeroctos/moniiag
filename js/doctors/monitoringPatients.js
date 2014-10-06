@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#patientsOnMonitor").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/doctors/patient/getmonitoring',
+        url: globalVariables.baseUrl + '/doctors/patient/getmonitoring',
         datatype: "json",
         colNames:['ФИО', 'Тип мониторинга', 'Код',''],
         colModel:[
@@ -92,7 +92,7 @@ $(document).ready(function() {
         if (currentRow != null) {
             // Обращаемся по аяксу за результатом
             $.ajax({
-                'url': '/index.php/doctors/patient/getmonitoringresults?monId=' + currentRow,
+                'url': '/doctors/patient/getmonitoringresults?monId=' + currentRow,
                 'cache': false,
                 'dataType': 'json',
                 'type': 'GET',

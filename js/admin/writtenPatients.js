@@ -63,7 +63,7 @@ $(document).ready(function () {
             id: idGreetingToUnwrite
         };
         $.ajax({
-            'url': '/index.php/doctors/shedule/unwritepatient',
+            'url': '/doctors/shedule/unwritepatient',
             'data': params,
             'cache': false,
             'dataType': 'json',
@@ -81,19 +81,20 @@ $(document).ready(function () {
                     // Проверим - опосредованный поциэнт или нет
                     if (medcardId=='')
                     {
-                        newLink = '<a href=\"/index.php/reception/patient/writepatientwithoutdata?unwritedGreetingId='+ idGreetingToUnwrite +'\" target=\"_blank\">Перезаписать</a>';
+                        newLink = '<a href=\"/reception/patient/writepatientwithoutdata?unwritedGreetingId='+ idGreetingToUnwrite +'\" target=\"_blank\">Перезаписать</a>';
                     }
                     else
                     {
-                        newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?unwritedGreetingId='+ idGreetingToUnwrite +'&cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
+                        newLink = '<a href=\"/reception/patient/writepatientsteptwo/?unwritedGreetingId='+ idGreetingToUnwrite +'&cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
                     }
 
-                    //var newLink = '<a href=\"/index.php/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
+                    //var newLink = '<a href=\"/reception/patient/writepatientsteptwo/?cardid=' + medcardId + '\" target=\"_blank\">Перезаписать</a>';
                     rowData.unwrite = newLink;
                     $('#writtenPatients').jqGrid('setRowData', currentRow, rowData);
 
 
                 }
+
 
                 return;
             }

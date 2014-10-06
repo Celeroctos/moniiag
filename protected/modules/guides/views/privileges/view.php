@@ -28,7 +28,7 @@
                 'id' => 'privilege-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/privileges/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/privileges/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -69,7 +69,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/privileges/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/privileges/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#privilege-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -97,7 +97,7 @@
                 'id' => 'privilege-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/privileges/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/privileges/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -142,7 +142,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/privileges/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/privileges/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#privilege-edit-form").trigger("success", [data, textStatus, jqXHR])

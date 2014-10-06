@@ -34,20 +34,43 @@ $templatesIndex = $keysOfTemplates[0];
 //var_dump($diagnosises['noteGreeting']);
 //exit();
 
-if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
+if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
-    ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
-    if (strlen($diagnosises['noteGreeting'])>0)
-    {
 
-        ?><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
-    }
-    if (count($diagnosises['clinicalSecondary'])>0)
+    ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
+    // Если строка с примечанием пустая и не выбран никакой клинический диагноз в чюююзере
+    $noteGreetingLength = strlen($diagnosises['noteGreeting']);
+    $countClinical = count($diagnosises['clinicalSecondary']);
+    if (($noteGreetingLength<=0)&&(($countClinical <=0) || ($countClinical ==false)))
     {
-        $wasPrintedDiag = false;
-        foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+        // Выводим МКБ
+        // Если нет клинического - печатаем МКБ
+        if (count($diagnosises['primary'])>0)
         {
-            ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+            foreach ($diagnosises['primary'] as $oneDiagnosis)
+            {
+                ?><strong> <?php   echo $oneDiagnosis['description'];?></strong><?php
+            }
+            ?></div><?php
+        }
+    }
+    else
+    {
+        // Выводим клинические диагнозы
+        if (strlen($diagnosises['noteGreeting'])>0)
+        {
+
+            ?><strong><br><?php echo $diagnosises['noteGreeting']; ?></strong><?php
+        }
+        if (count($diagnosises['clinicalSecondary'])>0)
+        {
+            //var_dump("!");
+            //exit();
+            $wasPrintedDiag = false;
+            foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+            {
+                ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+            }
         }
     }
     ?></div><?php

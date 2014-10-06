@@ -271,7 +271,6 @@
                                     <nobr><input type="checkbox" name="weekDayNumber1_5" />5ый</nobr><br />
                                 </td>
                                 <td>
-
                                     <nobr><input type="checkbox" name="weekDayNumber2_1" />1ый</nobr><br />
                                     <nobr><input type="checkbox" name="weekDayNumber2_2" />2ой</nobr><br />
                                     <nobr><input type="checkbox" name="weekDayNumber2_3" />3ий</nobr><br />
@@ -420,11 +419,9 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <b>По</b>
                         <div>
-
                             <div class="input-group date time-control time-timetable greetingHourEndTime">
                                 <input type="hidden" class="form-control">
                                 <span class="input-group-addon no-display">
@@ -439,13 +436,9 @@
                             </div>
 
                         </div>
-                        <div>
-
-
-                </td>
+                        <div></td>
                 <td class="shiftTD no-display">
                     <!-- Пока забиваем -->
-
                 </td>
                 <td class="limitTD">
                     <!-- Селект и три блока -->
@@ -527,6 +520,7 @@
                                     <input type="text" name="hour" placeholder="ЧЧ" class="form-control hour">
                                     <input type="text" name="minute" placeholder="ММ" class="form-control minute">
                                 </div>
+
                             </div>
                         </div>
                         <div class="input-group date time-control time-timetable limitTime3End">

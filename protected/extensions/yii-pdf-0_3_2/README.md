@@ -45,7 +45,7 @@ If you do so - **you must keep the order of array items!**
 						'_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
 					),
 					'class'=>'mpdf', // the literal class filename to be loaded from the vendors folder.
-					/*'defaultParams'	  => array( // More info: http://mpdf1.com/manual/index.php?tid=184
+					/*'defaultParams'	  => array( // More info: http://mpdf1.com/manual?tid=184
 						'mode'				=> '', //  This parameter specifies the mode of the new document.
 						'format'			=> 'A4', // format A4, A5, ...
 						'default_font_size' => 0, // Sets the default document font size in points (pt)

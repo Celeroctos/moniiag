@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#mkb10").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/mkb10/get?nodeid=0',
+        url: globalVariables.baseUrl + '/guides/mkb10/get?nodeid=0',
         datatype: "json",
         colNames:['Код', 'Описание', 'Родитель'],
         colModel:[

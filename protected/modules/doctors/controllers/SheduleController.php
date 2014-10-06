@@ -13,12 +13,20 @@ class SheduleController extends Controller {
 
     public function actionView() {
 		$medcardRecordId = 0;
+        if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$doctorId = Yii::app()->user->doctorId;
+			Yii::app()->user->setState('currentGreetingsDoctor', $doctorId);
+		} else {
+			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+		$doctor = Doctor::model()->findByPk($doctorId);
+
         if(isset($_GET['cardid']) && trim($_GET['cardid']) != '') {
             
 			// Проверим, есть ли такая медкарта вообще
             $medcardFinded = Medcard::model()->findByPk($_GET['cardid']);
             if($medcardFinded != null) {
-				$medcardRecordId = MedcardElementForPatient::getMaxRecordId($_GET['cardid'])+1;
+				$medcardRecordId = MedcardElementForPatient::getMaxRecordId($_GET['cardid']) + 1;
 				$this->currentPatient = trim($_GET['cardid']);
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getOne($this->currentPatient);
@@ -37,7 +45,13 @@ class SheduleController extends Controller {
                 } else {
                    $openedTab = 0; // Обычная запись
                 }
-                if(isset($_POST['templatesList'])) {
+				// Здесь проверим: если текущий врач не совпадает с врачом пациента, не показывать экран с инфой и выбором шаблонов
+				if($greeting->doctor_id != $doctorId) {
+					$this->currentPatient = false;
+					$openedTab = 0;
+				}
+
+                if(isset($_POST['templatesList']) && $greeting->doctor_id == $doctorId) {
                     //var_dump('!');
                     //exit();
                     // Шаблоны выбраны. Нужно их обработать.
@@ -73,11 +87,11 @@ class SheduleController extends Controller {
                     }
 
                     $templatesListWithTemplateData = array();
-                    $requiredDiagnosis = array();
+                    $currentRequiredDiagnosis = array();
                     foreach($_POST['templatesList'] as $key => $id) {
                         $templModel = MedcardTemplate::model()->findByPk($id);
                         $templatesListWithTemplateData[] = $templModel;
-                        $requiredDiagnosis['t'.$id] = array(
+                        $currentRequiredDiagnosis ['t'.$id] = array(
                             'name' => $templModel->name,
                             'isReq' => $templModel->primary_diagnosis
                         );
@@ -92,12 +106,22 @@ class SheduleController extends Controller {
                             return 0;
                         }
                     });
-
                     $templatesList = $templatesListWithTemplateData;
+
+                    // Отсортируем шаблончики рекоммендаций
+                    usort($referenceTemplatesList, function($template1, $template2) {
+                        if($template1['index'] > $template2['index']) {
+                            return 1;
+                        } elseif($template1['index'] < $template2['index']) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
 
                     //var_dump ($templatesList);
                     //exit();
-                } else {
+                } elseif($greeting->doctor_id == $doctorId) {
                     $canEditMedcard = 0;
                     $templatesChoose = 1;
                     // Получим должность пользователя
@@ -105,7 +129,67 @@ class SheduleController extends Controller {
                     // Получим разрешённые для него шаблоны
                     $medcardTemplates = new MedcardTemplate();
                     $templatesList = $medcardTemplates->getTemplatesByEmployee($medworkerId);
+                    // Отсортируем шаблоны по порядку
+                    usort($templatesList, function($template1, $template2) {
+                        if($template1['index'] > $template2['index']) {
+                            return 1;
+                        } elseif($template1['index']< $template2['index']) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                    // Нужно получить шаблоны, которые были выбраны раньше в приёме (если были выбраны)
+                    $medcardRecordObj = new MedcardRecord();
+                    $oldTemplatesForGreeting = $medcardRecordObj->getSavedTemplatesForGreeting($_GET['rowid']);
+
+                    $oldRequiredDiagnosis = array();
+                    foreach($oldTemplatesForGreeting as $oneTemplate) {
+                        $oldRequiredDiagnosis['t'.$oneTemplate['id']] = array(
+                            'name' => $oneTemplate['name'],
+                            'isReq' => $oneTemplate['primary_diagnosis']
+                        );
+                    }
                 }
+
+
+
+                // Теперь нужно смиксовать в итоговый массив шаблонов массивы текущие и массивы старых приёмов
+                if ((isset($currentRequiredDiagnosis)) || ( isset($oldRequiredDiagnosis) ))
+                {
+                    $requiredDiagnosis = array();
+                    // Перебираем текущие шаблоны (выбранные)
+                    if (isset($currentRequiredDiagnosis))
+                    {
+                        // Перебираем старые шаблоны
+                        foreach($currentRequiredDiagnosis as $key => $oneTemplate )
+                        {
+                            $requiredDiagnosis[$key] = $oneTemplate ;
+                        }
+                    }
+                    // Перебираем старые шаблоны
+                    if (isset($oldRequiredDiagnosis))
+                    {
+                        foreach($oldRequiredDiagnosis as $key => $oneTemplate )
+                        {
+                            if (!isset($requiredDiagnosis[$key]))
+                            {
+                                $requiredDiagnosis[$key] = $oneTemplate ;
+                            }
+                        }
+                    }
+                    // Отсортируем шаблоны по порядку
+                    usort($templatesList, function($template1, $template2) {
+                        if($template1['index'] > $template2['index']) {
+                            return 1;
+                        } elseif($template1['index']< $template2['index']) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    });
+                }
+
             }
         }
         if(!isset($templatesChoose)) {
@@ -123,24 +207,23 @@ class SheduleController extends Controller {
 
         $this->filterModel = new FormSheduleFilter();
 
-        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients());
+        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients($doctorId));
         $curDate = $this->getCurrentDate();
 
         $parts = explode('-', $curDate);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
 
-        $userId = Yii::app()->user->id;
-        $doctor = User::model()->findByPk($userId);
         if(isset($openedTab) && $openedTab == 1) {
             $onlyWaitingLine = 1;
         } else {
             $onlyWaitingLine = 0;
         }
 
+
         $timeTable = new Timetable();
         $shedule = $timeTable->getRows(
             array(
-                'doctorsIds' => array($doctor['employee_id']),
+                'doctorsIds' => array($doctor['id']),
                 'dateBegin' => $curDate,
                 'dateEnd' => $curDate
             )
@@ -148,15 +231,16 @@ class SheduleController extends Controller {
         $patients = null;
         if ( count($shedule)==0 )
         {
-            $patients = $this->getPatientListWOTimeStamp($doctor['employee_id'], $curDate, false, $onlyWaitingLine);
+            $patients = $this->getPatientListWOTimeStamp($doctor['id'], $curDate, false, $onlyWaitingLine);
             $patients = $patients['result'];
         }
         else
         {
             $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
-            $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+            $patients = $this->getPatientList($doctor['id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
             $patients = $patients['result'];
         }
+
         //var_dump(    $this->getTopComment(isset($medcard) ? $medcard : null)    );
         //exit();
 
@@ -164,6 +248,35 @@ class SheduleController extends Controller {
         $doctorNumberComments = count(CommentOms::getComments(isset($medcard) ? $medcard : null));
         //var_dump($medcard);
         //exit();
+		
+		// Список врачей
+		$doctorsList = array('-1' => 'Я');
+		$filterDoctorForm = new FormFilterDoctor();
+		if (Yii::app()->user->checkAccess('canChangeDoctor')) { 
+			$doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
+			foreach($doctorsListDb as $value) {
+				if($value['last_name'] == null) {
+					$value['middle_name'] = '';
+				}
+				if($value['tabel_number'] == null) {
+					$value['tabel_number'] = 'отсутствует';
+				}
+
+				$doctorsList[(string)$value['id']] = $value['last_name'].' '.$value['first_name'].' '.$value['middle_name'].', '.$value['post'].', '.$value['ward'].', табельный номер '.$value['tabel_number'];
+			}
+		}
+		
+		asort($doctorsList);
+		
+		// Режим медсестры: принимающий доктор может не совпадать с реальным
+		if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$userId = Yii::app()->user->id;
+			$doctor = User::model()->findByPk($userId);
+			$currentDoctorId = $doctor['employee_id'];
+		} else {
+			$currentDoctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+		
 		$this->render('index', array(
             'patients' => $patients,
             'patientsInCalendar' => $patientsInCalendar,
@@ -199,9 +312,65 @@ class SheduleController extends Controller {
             'requiredDiagnosis' => isset($requiredDiagnosis) ? $requiredDiagnosis : array(),
 			'medcardRecordId' => $medcardRecordId,
             'templateModel' =>  new  FormTemplateDefault(),
-            'openedTab' => isset($openedTab) ? $openedTab : 0
+            'openedTab' => isset($openedTab) ? $openedTab : 0,
+			'doctorsList' => $doctorsList,
+			'modelDoctorFilter' => $filterDoctorForm,
+			'currentGreetingsDoctor' => $currentDoctorId
         ));
     }
+	
+	public function actionGetParamHistory() {
+		if(!Yii::app()->request->getIsAjaxRequest() || !isset($_GET['element']) || !isset($_GET['medcard'])) {
+			echo CJSON::encode(array(
+                'success' => false
+            ));
+            exit();
+		}
+		
+		list($preKey, $prefix, $undottedPath, $elementId) = explode('_', $_GET['element']);
+		$dottedPath = implode('.', explode('|', $undottedPath));
+		$historyElements = MedcardElementForPatient::model()->findAll(
+			'element_id = :element_id
+			AND medcard_id = :medcard_id
+			AND path = :path
+			ORDER BY change_date ASC',
+			array(
+				':element_id' => $elementId,
+				':medcard_id' => $_GET['medcard'],
+				':path' => $dottedPath
+			)
+		);
+		$answer = array();
+		foreach($historyElements as $element) {
+			if($element['greeting_id'] == $_GET['greetingId']) {
+				//continue;
+			}
+			
+			if($element['type'] == 2 || $element['type'] == 3) {
+				$value = MedcardGuideValue::model()->findByPk($element['value']);
+				if($value != null) {
+					if($value == -1) {
+						$element['value'] = 'Не выбрано';
+					} else {
+						$element['value'] = $value->value;
+					}
+				} else {
+					$element['value'] = 'Не выбрано';
+				}
+			}
+			$temp = array(
+				'change_date' => $element['change_date'],
+				'value' => $element['value'],
+				'type' => $element['type']
+			);
+			$answer[] = $temp;
+		}
+		
+		echo CJSON::encode(array(
+            'success' => true,
+            'data' => $answer
+        ));
+	}
 
     public function actionGetPrimaryDiagnosis() {
         if(!isset($_GET['greeting_id'])) {
@@ -225,14 +394,34 @@ class SheduleController extends Controller {
         $parts = explode('-', $curDateRaw);
         $curDate = $parts[2].'.'.$parts[1].'.'.$parts[0];
         // Получим доктора
-        $userId = Yii::app()->user->id;
-        $doctor = User::model()->findByPk($userId);
+        if(!isset($_POST['currentDoctor']) || $_POST['currentDoctor'] == -1) {
+			// Если не занесен в сессию конкретный доктор, то, значит, берём текущего пользователя
+			if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1 || $_POST['currentDoctor'] == -1) {
+				$doctorId = Yii::app()->user->doctorId;
+			} else {
+				$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+			}
+			$doctor = Doctor::model()->findByPk($doctorId);
+		} else {
+			$doctor = Doctor::model()->findByPk($_POST['currentDoctor']);
+			// Проверка, что такой врач вообще есть
+			if($doctor != null) {
+				$doctorId = $doctor['id'];
+			} else {
+				$doctorId = Yii::app()->user->doctorId;
+				$doctor = Doctor::model()->findByPk($doctorId);
+			}
+		}
+
+		Yii::app()->user->setState('currentGreetingsDoctor', $doctorId);
+		
         if(isset($_POST['onlywaitinglist']) && $_POST['onlywaitinglist'] == 1) {
             $onlyWaitingLine = true;
         } else {
             $onlyWaitingLine = false;
         }
         // Получим пациентов
+
         //var_dump($curDate);
         //exit();
 
@@ -240,22 +429,21 @@ class SheduleController extends Controller {
         $timeTable = new Timetable();
         $shedule = $timeTable->getRows(
             array(
-                'doctorsIds' => array($doctor['employee_id']),
+                'doctorsIds' => array($doctor['id']),
                 'dateBegin' => $curDate,
                 'dateEnd' => $curDate
             )
         );
-
         $patients = null;
         if (count($shedule)==0)
         {
-            $patients = $this->getPatientListWOTimeStamp($doctor['employee_id'], $curDate,false, $onlyWaitingLine);
+            $patients = $this->getPatientListWOTimeStamp($doctor['id'], $curDate,false, $onlyWaitingLine);
             $patients = $patients['result'];
         }
         else
         {
             $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
-            $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+            $patients = $this->getPatientList($doctor['id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
             $patients = $patients['result'];
         }
         // Создадим сам виджет
@@ -389,21 +577,32 @@ class SheduleController extends Controller {
         ob_end_clean();
         $result = $commentsListWidget->getCommentsList($onePatientComments);
 
-
-
         echo CJSON::encode(array('success' => true,
                                     'data' => $result
         ));
-
     }
-
-
 
     // Получить даты, в которых у врача есть пациенты
-    private function getDaysWithPatients() {
+    private function getDaysWithPatients($doctorId) {
         $shedule = new SheduleByDay();
-        return $shedule->getDaysWithPatients(Yii::app()->user->id);
+        return $shedule->getDaysWithPatients($doctorId);
     }
+	
+	public function actionRefreshDaysWithPatients() {
+		 if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
+			$userId = Yii::app()->user->id;
+			$doctor = User::model()->findByPk($userId);
+			$doctorId = $doctor['employee_id'];
+		} else {
+			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
+		}
+
+        $patientsInCalendar = CJSON::encode($this->getDaysWithPatients($doctorId));
+		echo CJSON::encode(array('success' => true,
+                                 'data' =>  $patientsInCalendar
+        ));
+
+	}
 
     // Получить текущую дату
     private function getCurrentDate() {
@@ -426,36 +625,23 @@ class SheduleController extends Controller {
         return $date;
     }
 
-	private function getNewRecordState($historyCategorieElement, $value, $recordId )
+	private function stepToNextState($historyCategorieElement, $value, $recordId )
 	{
-		$historyCategorieElementNext = new MedcardElementForPatient();
-        $historyCategorieElementNext->value = $value;
-        $historyCategorieElementNext->history_id = $historyCategorieElement['history_id'] + 1;
-		$historyCategorieElementNext->is_record = 1;
-		$historyCategorieElementNext->record_id = $recordId + 1;
-        $historyCategorieElementNext->medcard_id = $historyCategorieElement['medcard_id'];
-		$historyCategorieElementNext->template_page_id= $historyCategorieElement['template_page_id'];
-        $historyCategorieElementNext->greeting_id = $historyCategorieElement['greeting_id'];
-        $historyCategorieElementNext->categorie_name = $historyCategorieElement['categorie_name'];
-        $historyCategorieElementNext->path = $historyCategorieElement['path'];
-        $historyCategorieElementNext->is_wrapped = $historyCategorieElement['is_wrapped'];
-        $historyCategorieElementNext->categorie_id = $historyCategorieElement['categorie_id'];
-        $historyCategorieElementNext->element_id = $historyCategorieElement['element_id'];
-        $historyCategorieElementNext->label_before = $historyCategorieElement['label_before'];
-        $historyCategorieElementNext->label_after = $historyCategorieElement['label_after'];
-        $historyCategorieElementNext->size = $historyCategorieElement['size'];
-		$historyCategorieElementNext->change_date = date('Y-m-d H:i');		
-        $historyCategorieElementNext->type = $historyCategorieElement['type'];
-		$historyCategorieElementNext->allow_add = $historyCategorieElement['allow_add'];
-        $historyCategorieElementNext->guide_id = $historyCategorieElement['guide_id'];
-        $historyCategorieElementNext->config = $historyCategorieElement['config'];
-				
-		return $historyCategorieElementNext;
+       // var_dump($value);
+       // exit();
+        $historyCategorieElement['value'] = $value;
+        $historyCategorieElement['history_id'] = $historyCategorieElement['history_id'] + 1;
+		$historyCategorieElement['is_record'] = 1;
+		$historyCategorieElement['record_id'] = $recordId + 1;
+		$historyCategorieElement['change_date'] = date('Y-m-d H:i');
 	}
 
     // Редактирование данных пациента
     public function actionPatientEdit()
 	{
+
+      //  var_dump($_POST);
+      //  exit();
 
 		// Метод работает так: Сначала прочитываем из формы ид тех элементов, которые правятся в результате приёма.
 		//  Затем с помощью условия WHERE IN и id-шников из формы, они считываются сразу одним запросом, 
@@ -468,6 +654,8 @@ class SheduleController extends Controller {
             echo CJSON::encode(array('success' => false,
                                      'text' => 'Ошибка запроса.'));
         }
+
+        //var_dump()
 
         $transaction = Yii::app()->db->beginTransaction();
 
@@ -515,15 +703,9 @@ class SheduleController extends Controller {
             }
             else
             {
-               /* if ($_POST['FormTemplateDefault']['templateId']=='10')
-                {
-                    var_dump(  CJSON::decode('[]')  );
-                    exit();
-                }*/
                 // Сначала раскодируем из JSON значени (во всяком случае попробуем)
                 $decodedObject = CJSON::decode($value);
                 // Если мы что-то получили - проверим на пустоту объект
-               // if ($decodedObject != NULL)
                 if (!is_null($decodedObject))
                 {
                     if (count($decodedObject)!=0)
@@ -561,51 +743,64 @@ class SheduleController extends Controller {
             $pathsOfElements[] = $path;
             $controlsToSave[$field] = $value;
         }
-        //if (count($pathsOfElements)>0)
-        //{
             $historyElements = MedcardElementForPatient::model()->getLatestStateOfGreeting
             (
                         $_POST['FormTemplateDefault']['greetingId'],
                         $pathsOfElements
                         );
             $historyElementsPaths = array();
+            //var_dump($historyElements );
+        //exit();
             foreach ($historyElements as $oneHistoryElement)
             {
+               // $oneHistoryElement->save();
                 $historyElementsPaths[$oneHistoryElement['path']] = $oneHistoryElement;
             }
             $wasSaved = false;
+
+            //var_dump($pathsToFields);
+            //exit();
+
             foreach($controlsToSave as $field => $value)
             {
+                //var_dump($field);
+                //var_dump($value);
                 if(is_array($value)) {
                     $value = CJSON::encode($value);
-                }
-                //var_dump($pathsToFields);
-               // exit();
 
-                /*if (!isset($historyElementsPaths[$pathsToFields[$field]]))
-                {
-                    var_dump($historyElementsPaths);
-                    var_dump($pathsToFields);
-                    var_dump($pathsOfElements);
-                    exit();
-                }*/
+                }
 
                 $historyCategorieElement = $historyElementsPaths[$pathsToFields[$field]];
-                $historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
+                //$historyCategorieElementNext = $this->getNewRecordState($historyCategorieElement, $value, $recordId );
+                //var_dump($historyCategorieElement);
+                //exit();
+                $this->stepToNextState($historyCategorieElement, $value, $recordId );
+                /*$newElementState = new MedcardElementForPatient();
+                //$newElementState->attributes = $historyCategorieElement;
+
+                foreach($historyCategorieElement as $attrKey => $oneAttr)
+                {
+                    $newElementState->$attrKey = $oneAttr;
+                }*/
 
                 $answerCurrentDate = true;
-                if(!$historyCategorieElementNext->save())
+
+                //var_dump($newElementState);
+                //exit();
+
+                if(!$historyCategorieElement->save())
                 {
                     ob_end_clean();
                     echo CJSON::encode(array('success' => true,
                                                  'text' => 'Ошибка сохранения записи.'));
-                    exit();
+
                 }
                 else
                 {
                     $wasSaved = true;
                 }
-
+               // var_dump("!");
+               // exit();
             }
         if ($wasSaved)
         {
@@ -622,7 +817,7 @@ class SheduleController extends Controller {
         }
         //}
         $transaction->commit();
-
+       // exit();
         $response = array(
 			'success' => true,
             'text' => 'Данные успешно сохранены.'
@@ -679,6 +874,16 @@ class SheduleController extends Controller {
             if($sheduleElement != null) {
                 // Проверим - установлен ли первичый диагноз. Если нет - выводим сообщение
                 $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
+                if ($_GET['needDiagnosis']=='1')
+                {
+                    if (count($primaryDiagnosis) == 0){
+                        echo CJSON::encode(array('success' => false,
+                            'needdiagnose' => true,
+                            'text' => 'Введите основной диагноз!'));
+                        return;
+                    }
+                }
+
                 //var_dump($primaryDiagnosis);
                 //exit();
                 
@@ -720,7 +925,6 @@ class SheduleController extends Controller {
                         }
                     }
                 //}
-
             }
         }
         echo CJSON::encode(array('success' => true,
@@ -1735,13 +1939,29 @@ class SheduleController extends Controller {
                 $dataToWrite['middle_name'] = $mediateData['middle_name'];
                 $dataToWrite['phone'] = $mediateData['phone'];
             }
-            $sheduleElement->delete();
-            $this->saveGreetingDataToSession($dataToWrite);
+
+            // Проверим - если приём начат - никакого удаления!
+            if ($sheduleElement->is_beginned!=1)
+            {
+
+                $sheduleElement->delete();
+                $this->saveGreetingDataToSession($dataToWrite);
+                echo CJSON::encode(array('success' => 'true',
+                    'data' => 'Пациент успешно отписан!'));
+            }
+            else
+            {
+                echo CJSON::encode(array('success' => 'false',
+                    'data' => 'Невозможно отменить данный приём, так как он уже начат!'));
+            }
+            return;
+           // $sheduleElement->delete();
+           // $this->saveGreetingDataToSession($dataToWrite);
            // var_dump($_SESSION['unwritedGreetings']);
            // exit();
         }
 
-        echo CJSON::encode(array('success' => 'true',
-            'data' => 'Пациент успешно отписан!'));
+        echo CJSON::encode(array('success' => 'false',
+            'data' => 'Какая-то не понятная ошибка. Вы меня сильно озадачили!'));
     }
 }

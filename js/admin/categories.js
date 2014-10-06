@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#categories").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/categories/get',
+        url: globalVariables.baseUrl + '/admin/categories/get',
         datatype: "json",
         colNames:['Код', 'Название', 'Родитель', 'Динамическая', 'Позиция', 'Полный путь', 'Раскрыта', '','', ''],
         colModel:[
@@ -141,7 +141,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/categories/getone?id=' + currentRow,
+                'url' : '/admin/categories/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -195,7 +195,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/categories/delete?id=' + currentRow,
+                'url' : '/admin/categories/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

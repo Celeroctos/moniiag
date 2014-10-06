@@ -9,7 +9,7 @@
         'id' => 'restcalendar-shedule-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/restedit'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/restedit'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -37,7 +37,7 @@
     <div class="form-group">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить',
-            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/admin/shedule/restedit'),
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/shedule/restedit'),
             array(
                 'success' => 'function(data, textStatus, jqXHR) {
 $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
@@ -127,7 +127,7 @@ $("#restcalendar-shedule-form").trigger("success", [data, textStatus, jqXHR])
             <div class="modal-body">
                 <div class="row">
                     <p>Расписание успешно изменено.</p>
-                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/index.php/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
+                    <p id = "messageRewritePatients" class = "no-display">Количество пациентов, которых необходимо перезаписать на другое время: <span id = "numberPatientsToRewrite"></span>. Нажмите <a href="/reception/patient/viewrewrite">сюда</a>, чтобы посмотреть их список</p>
                 </div>
             </div>
             <div class="modal-footer">

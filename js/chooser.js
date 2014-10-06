@@ -8,6 +8,7 @@ $(document).ready(function() {
             var prevVal = null;
             var currentElements = []; // Список строк с элементами. Требуется для того, чтобы связать определённый span  с конкретной строкой
             var choosedElements = []; // Список выбранных элементов для текущего контрола (строки)
+			var lastUserInput = '';
             var numRecords = null;
             $.fn[$(chooser).attr('id')] = {
                 getChoosed: function() {
@@ -30,7 +31,11 @@ $(document).ready(function() {
                         delete choosersConfig[$(chooser).prop('id')].extraparams[key];
                     }
                 },
+				getLastUserInput: function() {
+					return lastUserInput;
+				},
                 clearAll: function() {
+					current = null;
                     choosedElements = [];
                     $(chooser).find('.choosed span').remove();
                     $(chooser).find('input').prop('disabled', false);
@@ -130,6 +135,7 @@ $(document).ready(function() {
 
                     // Нажатие Enter переносит в список выбранных
                     if(e.keyCode == 13) {
+						console.log(current);
                         // Если в чюююузер ничего не вбито - переходим в другой контрол
                         wasChangedFocus = false;
                         if ($(chooser).find('input').val()=='')
@@ -460,6 +466,7 @@ $(document).ready(function() {
                         }
                         // А если найден - повторно добавлять не надо
                         if(!isFound) {
+							lastUserInput = $(chooser).find('input').val();
                             if(withOutInsert != 1) {
                                 var span = $('<span>').addClass('item');
                                 // Возможность копирования в соседние chooser-ы
@@ -527,7 +534,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.last_name + ' ' + row.first_name + ' ' + row.middle_name));
             },
-            'url' : '/index.php/guides/employees/get?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'url' : '/guides/employees/get?page=1&rows=10&sidx=id&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -555,7 +562,7 @@ $(document).ready(function() {
                 }
                 $(ul).append($('<li>').text(text));
             },
-            'url' : '/index.php/guides/employees/get?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'url' : '/guides/employees/get?page=1&rows=10&sidx=id&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -579,7 +586,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/search?onlyingreetings=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'url' : '/reception/patient/search?onlyingreetings=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -603,7 +610,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/search?cancelled=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'url' : '/reception/patient/search?cancelled=1&page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -623,7 +630,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/searchmediate/?page=1&rows=10&sidx=id&sord=desc&filters=',
+            'url' : '/reception/patient/searchmediate/?page=1&rows=10&sidx=id&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -660,7 +667,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                     return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/SearchAllWritten/?page=1&rows=10&sidx=last_name&sord=desc&filters=',
+            'url' : '/reception/patient/SearchAllWritten/?page=1&rows=10&sidx=last_name&sord=desc&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -689,7 +696,7 @@ $(document).ready(function() {
             'displayFunc' : function(row) {
                 return row.last_name + ' ' + row.first_name + ' ' + row.middle_name;
             },
-            'url' : '/index.php/reception/patient/search?page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
+            'url' : '/reception/patient/search?page=1&rows=10&sidx=id&sord=desc&distinct=1&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -712,7 +719,7 @@ $(document).ready(function() {
             'movingFunc' : function(data) {
                 return $('<li>').prop('id', 'r' + data.id).text(data.description);
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&onlylevel=3&filters=',
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&onlylevel=3&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -732,7 +739,30 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
+                'onlylikes' : typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+		'primaryDiagnosisChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+			//'alwaysLanguage' : 'en',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
                 'onlylikes' : typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
@@ -757,7 +787,7 @@ $(document).ready(function() {
             'rowAddHandler': function (ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url': '/index.php/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url': '/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters': {
                 'groupOp': 'AND',
                 'rules': [
@@ -776,7 +806,29 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
+                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+		'secondaryDiagnosisChooser2' : {
+            'primary' : 'id',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+			//'alwaysLanguage' : 'en',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
                 'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
@@ -796,7 +848,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
                 'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
@@ -824,7 +876,7 @@ $(document).ready(function() {
             {
                 $('#insuranceRegionsChooserAdd').trigger('change');
             },
-            'url' :'/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' :'/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -849,7 +901,7 @@ $(document).ready(function() {
             {
                 $('#insuranceRegionsChooserEdit').trigger('change');
             },
-            'url' :'/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' :'/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -870,7 +922,7 @@ $(document).ready(function() {
             'rowAddHandler': function (ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            'url': '/index.php/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url': '/guides/mkb10/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters': {
                 'groupOp': 'AND',
                 'rules': [
@@ -887,8 +939,8 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text(row.description));
             },
-            /* 'url' : '/index.php/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=', */
-            'url' : '/index.php/admin/diagnosis/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            /* 'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&onlylikes=1&filters=', */
+            'url' : '/admin/diagnosis/getclinical?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'extraparams' : {
                 // Здесь - специальность, но она даётся извне
                 'medworkerid' : null
@@ -910,7 +962,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrRegion'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getregionform',
+                    'url' : '/reception/address/getregionform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -964,7 +1016,7 @@ $(document).ready(function() {
 
                 // Переходим на следующий контрол на странице
             },
-            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -982,7 +1034,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrRegion'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getregionform',
+                    'url' : '/reception/address/getregionform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1001,7 +1053,7 @@ $(document).ready(function() {
                 // Переходим на следующий контрол на странице
 
             },
-            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1019,7 +1071,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrRegion'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getregionform',
+                    'url' : '/reception/address/getregionform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1053,7 +1105,7 @@ $(document).ready(function() {
                 // Переходим на следующий контрол на странице
 
             },
-            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1071,7 +1123,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrDistrict'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getdistrictform',
+                    'url' : '/reception/address/getdistrictform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1119,7 +1171,7 @@ $(document).ready(function() {
             {
                 $(  '#'+chooserId).trigger('rowadd');
             },
-            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1137,7 +1189,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrDistrict'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getdistrictform',
+                    'url' : '/reception/address/getdistrictform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1156,7 +1208,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr )+ '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1174,7 +1226,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrDistrict'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getdistrictform',
+                    'url' : '/reception/address/getdistrictform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1208,7 +1260,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr) + '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1226,7 +1278,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrRegion'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getregionform',
+                    'url' : '/reception/address/getregionform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1270,7 +1322,7 @@ $(document).ready(function() {
                 // Переходим на следующий контрол на странице
 
             },
-            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1288,7 +1340,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrSettlement'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getsettlementform',
+                    'url' : '/reception/address/getsettlementform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1327,7 +1379,7 @@ $(document).ready(function() {
             {
                 $(  '#'+chooserId).trigger('rowadd');
             },
-            'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1345,7 +1397,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrSettlement'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getsettlementform',
+                    'url' : '/reception/address/getsettlementform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1365,7 +1417,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1383,7 +1435,7 @@ $(document).ready(function() {
             'bindedWindowSelector' : $('#addNewCladrStreet'),
             'beforeWindowShow' : function(callback) {
                 $.ajax({
-                    'url' : '/index.php/reception/address/getstreetform',
+                    'url' : '/reception/address/getstreetform',
                     'cache' : false,
                     'dataType' : 'json',
                     'type' : 'GET',
@@ -1405,7 +1457,7 @@ $(document).ready(function() {
             'afterRemove' : function() {
 
             },
-            'url' : '/index.php/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'extraparams' : {
                 //'region' : $.fn['regionChooser'].getChoosed(),
                // 'district' : $.fn['districtChooser'].getChoosed(),
@@ -1449,7 +1501,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1503,7 +1555,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/regionget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1549,7 +1601,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode( row.code_cladr )+ '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/districtget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1586,7 +1638,7 @@ $(document).ready(function() {
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('[' + $.fn.reduceCladrCode(row.code_cladr) + '] ' + row.name));
             },
-            'url' : '/index.php/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/settlementget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'filters' : {
                 'groupOp' : 'AND',
                 'rules': [
@@ -1610,7 +1662,7 @@ $(document).ready(function() {
             'afterDelete' : function() {
 
             },
-            'url' : '/index.php/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/guides/cladr/streetget?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'extraparams' : {
                 //'region' : $.fn['regionChooser'].getChoosed(),
                 // 'district' : $.fn['districtChooser'].getChoosed(),
@@ -1630,7 +1682,7 @@ $(document).ready(function() {
         'insuranceChooser' : {
             'primary' : 'id',
             'maxChoosed' : 1,
-            'url' : '/index.php/guides/insurances/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'url' : '/guides/insurances/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
 
             },
@@ -1657,7 +1709,7 @@ $(document).ready(function() {
         },
         'userChooser' : {
             'primary' : 'id',
-            'url' : '/index.php/admin/users/get?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'url' : '/admin/users/get?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
             'extraparams' : {
             },
             'filters' : {

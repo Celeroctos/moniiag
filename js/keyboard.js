@@ -14,7 +14,7 @@ $(document).ready(function(e) {
     //         подвязать переход в меню и из него
     //   3.Для подготовленной конфигурации подвязываем обработчики
     
-    //alert('http://mis.my/index.php/reception/patient/viewsearch'.match('\.php/reception/patient/viewsearch'))
+    //alert('http://mis.my/reception/patient/viewsearch'.match('\.php/reception/patient/viewsearch'))
     
     // Берём href
     var pageAddr = window.location.href;

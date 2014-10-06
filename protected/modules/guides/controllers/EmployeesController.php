@@ -2,6 +2,12 @@
 class EmployeesController extends Controller {
     public $layout = 'application.modules.guides.views.layouts.index';
     public $defaultAction = 'view';
+	private $employeeCategories = array(
+		'Нет',
+		'Врач второй категории',
+		'Врач первой категории',
+		'Врач высшей категории'
+	);
 
     public function actionView() {
         try {
@@ -83,6 +89,7 @@ class EmployeesController extends Controller {
                 'wardsListForAdd' => $wardsListForAdd,
                 'degreesList' => $degreesList,
                 'enterprisesList' => $enterprisesList,
+				'categoriesList' => $this->employeeCategories,
                 'canEdit' => Yii::app()->user->checkAccess('editGuides')
             ));
         } catch(Exception $e) {
@@ -139,6 +146,7 @@ class EmployeesController extends Controller {
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
 		$employee->greeting_type = $model->greetingType;
+		$employee->categorie = $model->categorie;
         $employee->display_in_callcenter = $model->displayInCallcenter;
 
         if(!isset($_POST['notDateEnd'])) {
@@ -232,13 +240,18 @@ class EmployeesController extends Controller {
                 $employee['fio'] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'];
                 $employee['more_info'] = '<a href="#'.$employee['id'].'" class="more_info" title="Посмотреть подробную информацию по '.$employee['fio'].'"><span class="glyphicon glyphicon-share-alt"></span>
 </a>';
-                $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
+                $employee['contact_see'] = '<a href="'.CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/contacts/view').'?enterpriseid='.$employee['enterprise_id'].'&wardid='.$employee['ward_id'].'&employeeid='.$employee['id'].'" class="more_info" title="Посмотреть контакты '.$employee['fio'].'"><span class="glyphicon glyphicon-earphone"></span>
 </a>';
                 if($employee['display_in_callcenter'] == 1) {
                     $employee['display_in_callcenter_desc'] = 'Да';
                 } else {
                     $employee['display_in_callcenter_desc'] = 'Нет';
                 }
+				
+				if($employee['categorie'] === null) {
+					$employee['categorie'] = 0;
+				} 
+				$employee['categorie_desc'] = $this->employeeCategories[$employee['categorie']];
             }
 
             echo CJSON::encode(
@@ -255,6 +268,9 @@ class EmployeesController extends Controller {
     public function actionGetone($id) {
         $model = new Employee();
         $employee = $model->getOne($id);
+		if($employee['categorie'] == null) {
+			$employee['categorie'] = 0;
+		}
         echo CJSON::encode(array('success' => true,
                                  'data' => $employee)
         );
@@ -262,7 +278,7 @@ class EmployeesController extends Controller {
 
     public function actionGetByWard($id) {
         $model = new Employee();
-        $employees = $model->getByWard($id);
+        $employees = $model->getByWard($id, -1);
 
         echo CJSON::encode(array('success' => true,
                                  'data' => $employees)

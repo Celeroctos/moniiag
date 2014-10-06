@@ -37,7 +37,7 @@
     <div class="form-group">
         <?php echo CHtml::ajaxSubmitButton(
             'Фильтровать',
-            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/filter'),
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/filter'),
             array(
                 'success' => 'function(data, textStatus, jqXHR) {
                                     $("#employee-filter-form").trigger("success", [data, textStatus, jqXHR])
@@ -80,7 +80,7 @@
                 'id' => 'employee-add-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/add'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/add'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -180,6 +180,18 @@
                                 <?php echo $form->error($model,'titulId'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'categorie', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'categorie', $categoriesList, array(
+                                    'id' => 'categorie',
+                                    'class' => 'form-control',
+                                    'options' => array('0' => array('selected' => true))
+                                )); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
 						<?php echo $form->labelEx($model,'dateBegin', array(
 											'class' => 'col-xs-3 control-label'
@@ -275,7 +287,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Вторичный'), array(
+                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Повторный'), array(
                                     'id' => 'greetingType',
                                     'class' => 'form-control'
                                 )); ?>
@@ -301,7 +313,7 @@
                 <!--<button type="button" class="btn btn-primary">Добавить</button>-->
                 <?php echo CHtml::ajaxSubmitButton(
                     'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/add'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/add'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#employee-add-form").trigger("success", [data, textStatus, jqXHR])
@@ -329,7 +341,7 @@
                 'id' => 'employee-edit-form',
                 'enableAjaxValidation' => true,
                 'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/edit'),
+                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/edit'),
                 'htmlOptions' => array(
                     'class' => 'form-horizontal col-xs-12',
                     'role' => 'form'
@@ -431,6 +443,18 @@
                                 <?php echo $form->error($model,'titulId'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'categorie', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'categorie', $categoriesList, array(
+                                    'id' => 'categorie',
+                                    'class' => 'form-control',
+                                    'options' => array('0' => array('selected' => true))
+                                )); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
                         <?php echo $form->labelEx($model,'dateBegin', array(
                         'class' => 'col-xs-3 control-label'
@@ -526,7 +550,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Вторичный'), array(
+                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Повторный'), array(
                                     'id' => 'greetingType',
                                     'class' => 'form-control'
                                 )); ?>
@@ -551,7 +575,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/guides/employees/edit'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                 $("#employee-edit-form").trigger("success", [data, textStatus, jqXHR])

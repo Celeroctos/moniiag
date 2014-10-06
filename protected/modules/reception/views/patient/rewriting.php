@@ -179,7 +179,7 @@
                             'id' => 'patient-search-form',
                             'enableAjaxValidation' => true,
                             'enableClientValidation' => true,
-                            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/search'),
+                            'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/search'),
                             'htmlOptions' => array(
                                 'class' => 'form-horizontal col-xs-12',
                                 'role' => 'form'

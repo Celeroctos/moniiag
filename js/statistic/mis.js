@@ -3,7 +3,7 @@ $(document).ready(function() {
 	/*$('#wardId, #medpersonalId').on('change', function() {
 		$('#wardId, #medpersonalId').attr('disabled', true);
 		$.ajax({
-			'url' : '/index.php/guides/employees/getbywardandmedworker?wardid=' + $('#wardId').val() + '&medworkerid='  + $('#medpersonalId').val(),
+			'url' : '/guides/employees/getbywardandmedworker?wardid=' + $('#wardId').val() + '&medworkerid='  + $('#medpersonalId').val(),
 			'cache' : false,
 			'dataType' : 'json',
 			'success' : function(data, textStatus, jqXHR) {
@@ -55,7 +55,7 @@ $(document).ready(function() {
 		var filters = getFilters();
 		$(this).trigger('begin');
 		$.ajax({
-            'url' : '/index.php/statistic/mis/getstat/?filters=' + $.toJSON(filters),
+            'url' : '/statistic/mis/getstat/?filters=' + $.toJSON(filters),
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',

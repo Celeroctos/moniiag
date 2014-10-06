@@ -98,6 +98,12 @@ if(isset($categorie['id'])) {
                                         exit();
                                     }*/
                        	        if($element['type'] == 0) {
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										<span class="showDynamicWrap">
+											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
+									<?php	
+									}
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -113,12 +119,23 @@ if(isset($categorie['id'])) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->textField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										</span>
+									<?php	
+									}
                                     if($element['label_after'] != null) {
                                     ?>
                                         <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                 } elseif($element['type'] == 1) {
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										<span class="showDynamicWrap">
+											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
+									<?php	
+									}
                                     $options =  array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -134,12 +151,23 @@ if(isset($categorie['id'])) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->textArea($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
-                                    if($element['label_after'] != null) {
+                                    if(isset($element['config']['showDynamic'])) {
+									?>
+										</span>
+									<?php	
+									}
+									if($element['label_after'] != null) {
                                         ?>
                                         <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
                                     }
                                 } elseif($element['type'] == 2) {
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										<span class="showDynamicWrap">
+											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
+									<?php	
+									}
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -162,7 +190,12 @@ if(isset($categorie['id'])) {
                                     // Добавим пустое значение к выпадающему списку
                                     $element['guide'][""] = 'Не выбрано';
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
-                                    if($element['label_after'] != null) {
+                                    if(isset($element['config']['showDynamic'])) {
+									?>
+										</span>
+									<?php	
+									}
+									if($element['label_after'] != null) {
                                         ?>
                                         <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
@@ -173,16 +206,18 @@ if(isset($categorie['id'])) {
                                     }
                                     if($element['allow_add'] && $canEditMedcard) {
                                         ?>
-                                        <button type="button" id="ba<?php echo '_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'];  ?>" class="btn btn-default btn-sm">
+                                        <button type="button" id="ba<?php echo '_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'];  ?>" class="btnAddValue btn btn-default btn-sm">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                         <?php
                                     }
                                 } elseif($element['type'] == 3) {
-                                   /* if ($element['id']==95)
-                                    {
-                                    var_dump($element);
-                                    exit();}*/
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										<span class="showDynamicWrap">
+											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
+									<?php	
+									}
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -204,7 +239,12 @@ if(isset($categorie['id'])) {
                                     <?php
                                     }
                                     echo $form->dropDownList($model,'f'.$element['undotted_path'].'_'.$element['id'], $element['guide'], $options);
-                                    if($element['label_after'] != null) {
+                                    if(isset($element['config']['showDynamic'])) {
+									?>
+										</span>
+									<?php	
+									}
+									if($element['label_after'] != null) {
                                         ?>
                                         <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
                                     <?php
@@ -218,7 +258,7 @@ if(isset($categorie['id'])) {
                                         <button type="button" id="ba<?php
                                             //echo '_'.$prefix.'_'.$element['guide_id'];
                                             echo '_'.$prefix.'_'.$element['id'];
-                                        ?>" class="btn btn-default btn-sm">
+                                        ?>" class="btnAddValue btn btn-default btn-sm">
                                             <span class="glyphicon glyphicon-plus"></span>
                                         </button>
                                     <?php
@@ -265,7 +305,7 @@ if(isset($categorie['id'])) {
                                             <tr>
                                                 <?php
                                                 //if(isset($element['config']['rows'][$i])) {
-                                                if(isset($element['config']['rows'])) {
+                                                if((isset($element['config']['rows'])) && ( count($element['config']['rows']) > 0  )) {
                                                    // Проверим - если счётчик меньше длины rows - выводим знаение из массива rows
                                                    //   Иначе - выведем пустую клеточку в таблице
                                                     //var_dump($element['config']['rows']);
@@ -330,6 +370,12 @@ if(isset($categorie['id'])) {
                                     ?>
                                 <?php
                                 }  if($element['type'] == 5) { // numberField
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										<span class="showDynamicWrap">
+											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
+									<?php	
+									}
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
@@ -356,10 +402,21 @@ if(isset($categorie['id'])) {
                                         $options['disabled'] = 'disabled';
                                     }
                                     echo $form->numberField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
-                                if($element['label_after'] != null) {
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										</span>
+									<?php	
+									}
+									if($element['label_after'] != null) {
 										?><label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label><?php
                                     }
                                 } if($element['type'] == 6) { // dateField
+									if(isset($element['config']['showDynamic'])) {
+									?>
+										<span class="showDynamicWrap">
+											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
+									<?php	
+									}
                                     $options = array(
                                         'id' => 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id'],
                                         'class' => 'form-control',
@@ -420,7 +477,11 @@ if(isset($categorie['id'])) {
                                        }
                                        ?>
                                     </script>
-                                    <?php
+									<?php if(isset($element['config']['showDynamic'])) {
+									?>
+										</span>
+									<?php 
+									}
                                     if($element['label_after'] != null) {
                                         ?>
                                         <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
@@ -507,7 +568,7 @@ if(isset($categorie['id'])) {
                                             <button type="button" id="ba<?php
                                             //echo '_'.$prefix.'_'.$element['guide_id'];
                                             echo '_'.$prefix.'_'.$element['id'];
-                                            ?>" class="btn btn-default btn-sm">
+                                            ?>" class="btnAddValue btn btn-default btn-sm">
                                                 <span class="glyphicon glyphicon-plus"></span>
                                             </button>
                                         <?php

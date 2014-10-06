@@ -163,7 +163,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 	Slanted small final sigma.  Remedies
 	bug #24993: U+03C2 "Greek small letter final sigma" not slanted in
 	Free Sans Oblique
-	https://savannah.gnu.org/bugs/index.php?24993
+	https://savannah.gnu.org/bugs?24993
 
 2008-12-07 Stevan_White
 	* FreeSans.sfd, FreeSerif.sfd, FreeSerifBold.sfd, FreeSerifBoldItalic.sfd, FreeSerifItalic.sfd:
@@ -197,7 +197,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 
 	Replaced U+0387 GREEK ANO TELEIA with top dot of colon.
 	See bug #24987: U+0387 GREEK ANO TELEIA too low
-	https://savannah.gnu.org/bugs/index.php?24987
+	https://savannah.gnu.org/bugs?24987
 
 	* FreeSerif.sfd:
 
@@ -649,7 +649,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 	Also made a historical ligature ('hlig') table for u+0587.
 	
 	Toward bug #15183: missing characters from Armenian range
-	https://savannah.gnu.org/bugs/index.php?15183
+	https://savannah.gnu.org/bugs?15183
 
 	* FreeSansOblique.sfd:
 
@@ -1082,14 +1082,14 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 	Applied patch from Daniel J
 	Remedies bug
 		FreeSerif: Missing glyphs with palatal hook
-		https://savannah.gnu.org/bugs/index.php?24298
+		https://savannah.gnu.org/bugs?24298
 	Adding several letters to Phoenetic Extensions range U+1D80-BF
 
 	* FreeMono.sfd, FreeMonoBold.sfd, FreeMonoBoldOblique.sfd, FreeMonoOblique.sfd:
 
 	Made four characters U+200C-F to be zero-width
 	Remedy to bug #23593: Mono 0-width chars: zero-width or space?
-		https://savannah.gnu.org/bugs/index.php?23593
+		https://savannah.gnu.org/bugs?23593
 
 	* FreeSerif.sfd:
 
@@ -1899,7 +1899,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 	Deleted Telugu range.
 	It didn't represent a complete writing system for the language.
 	
-	See notes at https://savannah.gnu.org/bugs/index.php?23202
+	See notes at https://savannah.gnu.org/bugs?23202
 	Serif: Telugu range missing many characters; many wrong
 
 	Got a copy of the original Tikkana font,
@@ -2120,7 +2120,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 	* FreeMono.sfd:
 
 	Extensible parenthesis symbols weight/terminators
-	Toward bug # 23064: https://savannah.gnu.org/bugs/index.php?23064
+	Toward bug # 23064: https://savannah.gnu.org/bugs?23064
 	Rounded a bunch of terminators
 
 2008-04-22 Steve White
@@ -2524,7 +2524,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 	
 	Completely re-did horizontal spacing of SerifItalic and SerifBoldItalic.
 	See bug #17912, poor kerning in Cyrillic oblique...
-	https://savannah.gnu.org/bugs/index.php?17912
+	https://savannah.gnu.org/bugs?17912
 	It looked like chaos to me. 
 	Only so much can be done: the font is flawed.
 	But I think the changes make text readable in these faces.
@@ -2725,7 +2725,7 @@ $Id: ChangeLog,v 1.254 2009/01/04 16:12:59 Stevan_White Exp $
 		renamed it to uFFFF, re-linked others by hand
 
 		commaaccent
-			http://diacritics.typo.cz/index.php?id=9
+			http://diacritics.typo.cz?id=9
 		should be u+0326 but wasn't linked to anything 
 
 	* FreeSansBold.sfd:

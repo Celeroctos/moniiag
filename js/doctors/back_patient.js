@@ -137,7 +137,7 @@ $(document).ready(function() {
         
         // Дёргаем Ajax
         $.ajax({
-            'url' : '/index.php/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
+            'url' : '/doctors/shedule/acceptcomplete/?id=' + greetingId.toString(),
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -168,7 +168,7 @@ $(document).ready(function() {
         $('#historyPopup .medcardNumber').text('№ ' + medcardId);
         $('#historyPopup .historyDate').text(date);
         $.ajax({
-            'url' : '/index.php/doctors/patient/gethistorymedcard',
+            'url' : '/doctors/patient/gethistorymedcard',
             'data' : {
                 medcardid : medcardId,
                 date : date
@@ -242,7 +242,7 @@ $(document).ready(function() {
     // Печать листа приёма, само действие
     $('.print-greeting-link').on('print', function(e) {
         var id = $(this).attr('href').substr(1);
-        var printWin = window.open('/index.php/doctors/print/printgreeting/?greetingid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id,'','width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
         printWin.focus();
         return false;
     });
@@ -262,7 +262,7 @@ $(document).ready(function() {
         }
 
         $.ajax({
-            'url' : '/index.php/doctors/patient/savediagnosis',
+            'url' : '/doctors/patient/savediagnosis',
             'data' : {
                 'primary' : $.toJSON(primaryIds),
                 'secondary' : $.toJSON(secondaryIds),
@@ -312,7 +312,7 @@ $(document).ready(function() {
     // Просмотр медкарты в попапе
     $(document).on('click', '.editMedcard', function(e) {
         $.ajax({
-            'url' : '/index.php/reception/patient/getmedcarddata',
+            'url' : '/reception/patient/getmedcarddata',
             'data' : {
                 'cardid' : $(this).prop('href').substr($(this).prop('href').lastIndexOf('#') + 1)
             },
@@ -361,7 +361,7 @@ $(document).ready(function() {
         var accClone = $(accParent).clone();
         // Теперь нужно отклонировать элемент. Для этого мы подадим запрос, результатом которого станет категория (кусок дерева)
         $.ajax({
-            'url' : '/index.php/doctors/patient/cloneelement',
+            'url' : '/doctors/patient/cloneelement',
             'data' : {
                 'pr_key' : prKey
             },
@@ -468,7 +468,7 @@ $(document).ready(function() {
         var accParent = $(this).parents('.accordion')[0];
         var prKey = $(this).find('span.pr-key').text();
         $.ajax({
-            'url' : '/index.php/doctors/patient/uncloneelement',
+            'url' : '/doctors/patient/uncloneelement',
             'data' : {
                 'pr_key' : prKey
             },

@@ -4,7 +4,7 @@ $(document).ready(function () {
     //    который запросит комментарии для данного пациента и откроет поп-ап с ними (комментариями)
 
     $(document).on('click','#moreCommentsButton',function(){
-        var url = '/index.php/doctors/shedule/getallpatientcomments?cardId='+$('#currentPatientId').val();
+        var url = '/doctors/shedule/getallpatientcomments?cardId='+$('#currentPatientId').val();
 
         $.ajax({
             'url': url,

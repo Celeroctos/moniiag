@@ -3,7 +3,7 @@ $form = $this->beginWidget('CActiveForm', array(
     'id' => 'patient-edit-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/editpatient'),
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/shedule/editpatient'),
     'htmlOptions' => array(
         'class' => 'form-horizontal col-xs-12',
         'role' => 'form'
@@ -29,7 +29,7 @@ echo $form->hiddenField($model,'greetingId', array(
     <div class="form-group submitEditPatient">
         <?php echo CHtml::ajaxSubmitButton(
             'Сохранить',
-            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/doctors/shedule/patientedit'),
+            CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/shedule/patientedit'),
             array(
                 'success' => 'function(data, textStatus, jqXHR) {
                                 $("#patient-edit-form").trigger("success", [data, textStatus, jqXHR])

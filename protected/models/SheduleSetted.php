@@ -27,7 +27,7 @@ class SheduleSetted extends MisActiveRecord {
         try {
            /* $sheduleDays= $connection->createCommand()
                 ->select("*")
-                ->from(SheduleSetted::tableName().' dss')
+                ->from(SheduleSetted::model()->tableName().' dss')
                 ->leftJoin('mis.doctor_shedule_setted_be dssb', 'dss.date_id=dssb.id')
                 ->where(
 
@@ -66,7 +66,7 @@ class SheduleSetted extends MisActiveRecord {
 		try {
 			$sheduleDays= $connection->createCommand()
 				->select("*")
-				->from(SheduleSetted::tableName().' dss')
+				->from(SheduleSetted::model()->tableName().' dss')
 				->join('mis.doctor_shedule_setted_be dssb', 'dss.date_id=dssb.id')
 				->where(
 		

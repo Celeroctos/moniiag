@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#cabinets").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/cabinets/get',
+        url: globalVariables.baseUrl + '/guides/cabinets/get',
         datatype: "json",
         colNames:['Код',
                   'Учреждение',
@@ -132,7 +132,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cabinets/getone?id=' + currentRow,
+                'url' : '/guides/cabinets/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -184,7 +184,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cabinets/delete?id=' + currentRow,
+                'url' : '/guides/cabinets/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -210,7 +210,7 @@ $(document).ready(function() {
         var enterpriseCode = $(this).val();
         if(enterpriseCode != -1) { // В том случае, если это не "Нет учреждения", подгрузим отделения его..
             $.ajax({
-                'url' : '/index.php/guides/wards/getbyenterprise?id=' + enterpriseCode,
+                'url' : '/guides/wards/getbyenterprise?id=' + enterpriseCode,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

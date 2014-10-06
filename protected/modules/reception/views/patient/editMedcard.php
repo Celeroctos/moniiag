@@ -18,7 +18,7 @@
         'id' => 'patient-medcard-edit-form',
         'enableAjaxValidation' => true,
         'enableClientValidation' => true,
-        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+        'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editcard'),
         'htmlOptions' => array(
             'class' => 'form-horizontal col-xs-12',
             'role' => 'form'
@@ -45,7 +45,7 @@
             <div class="add-patient-submit">
                 <?php echo CHtml::ajaxSubmitButton(
                     'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/index.php/reception/patient/editcard'),
+                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/reception/patient/editcard'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
                                     $("#patient-medcard-edit-form").trigger("success", [data, textStatus, jqXHR])

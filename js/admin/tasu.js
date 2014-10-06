@@ -33,7 +33,7 @@ $(document).ready(function() {
 
     $('#tasuIn').on('afterUpload', function() {
         $.ajax({
-            'url' : '/index.php/admin/tasu/reloadfileslist',
+            'url' : '/admin/tasu/reloadfileslist',
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET',
@@ -134,7 +134,7 @@ $(document).ready(function() {
 
     $('#keyTemplatesList').on('reload', function() {
         $.ajax({
-            'url' : '/index.php/admin/tasu/getkeystemplates',
+            'url' : '/admin/tasu/getkeystemplates',
             'data' : {
                 'table' : $('#tableList').val()
             },
@@ -153,7 +153,7 @@ $(document).ready(function() {
 
     $('#fieldTemplatesList').on('reload', function() {
         $.ajax({
-            'url' : '/index.php/admin/tasu/getfieldstemplates',
+            'url' : '/admin/tasu/getfieldstemplates',
             'data' : {
                 'table' : $('#tableList').val()
             },
@@ -203,7 +203,7 @@ $(document).ready(function() {
     // Удаление шаблонов
     $('#fieldTemplatesList tbody').on('click', 'tr td a span', function() {
         $.ajax({
-            'url' : '/index.php/admin/tasu/deletefieldstemplate',
+            'url' : '/admin/tasu/deletefieldstemplate',
             'data' : {
               'id' : $(this).parents('a').prop('id').substr(2)
             },
@@ -221,7 +221,7 @@ $(document).ready(function() {
     });
     $('#keyTemplatesList tbody').on('click', 'tr td a span', function() {
         $.ajax({
-            'url' : '/index.php/admin/tasu/deletekeystemplate',
+            'url' : '/admin/tasu/deletekeystemplate',
             'data' : {
                 'id' : $(this).parents('a').prop('id').substr(2)
             },
@@ -248,7 +248,7 @@ $(document).ready(function() {
         }
         var _this = this;
         $.ajax({
-            'url' : '/index.php/admin/tasu/' + urlPart,
+            'url' : '/admin/tasu/' + urlPart,
             'data' : {
                 'id' : id
             },
@@ -311,7 +311,7 @@ $(document).ready(function() {
         function Import() {
             if(!isPaused) {
                 $.ajax({
-                    'url' : '/index.php/admin/tasu/import',
+                    'url' : '/admin/tasu/import',
                     'data' : {
                         'table' : table,
                         'fields' : $.toJSON(fieldsJson),

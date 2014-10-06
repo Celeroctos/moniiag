@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#districts").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/guides/cladr/districtget',
+        url: globalVariables.baseUrl + '/guides/cladr/districtget',
         datatype: "json",
         colNames:['ID',
                   'Регион',
@@ -118,7 +118,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/districtgetone?id=' + currentRow,
+                'url' : '/guides/cladr/districtgetone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -173,7 +173,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/guides/cladr/districtdelete?id=' + currentRow,
+                'url' : '/guides/cladr/districtdelete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

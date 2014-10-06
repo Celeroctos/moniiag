@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#workForDay").jqGrid({
-      //  url: globalVariables.baseUrl + '/index.php/guides/employees/get',
+      //  url: globalVariables.baseUrl + '/guides/employees/get',
         datatype: "json",
         colNames:[
             'ЭМК (Новый)',
@@ -89,7 +89,7 @@ $(document).ready(function() {
         // Надо бы обновить грид...
        // $('#workForDay').jqGrid('clearGridData');
         $("#workForDay").jqGrid('setGridParam',{
-            url : globalVariables.baseUrl + '/index.php/reception/reports/getreportforday?date=' + $('#reportDate').val(),
+            url : globalVariables.baseUrl + '/reception/reports/getreportforday?date=' + $('#reportDate').val(),
             page: 1
         });
 
@@ -170,7 +170,7 @@ $(document).ready(function() {
     /*
     $("#motion-history").jqGrid('setGridParam',{
         'datatype' : 'json',
-        'url' : globalVariables.baseUrl + '/index.php/reception/patient/gethistorymotion/?omsid=' + omsId
+        'url' : globalVariables.baseUrl + '/reception/patient/gethistorymotion/?omsid=' + omsId
     }).trigger("reloadGrid");
     */
     //console.log("'"+$('#workForDay').getGridParam('url')+"'");

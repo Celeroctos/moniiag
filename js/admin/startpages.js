@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $("#startpages").jqGrid({
-        url: globalVariables.baseUrl + '/index.php/admin/roles/getstartpages',
+        url: globalVariables.baseUrl + '/admin/roles/getstartpages',
         datatype: "json",
         colNames:['Код', 'Название', 'Адрес', 'Приоритет'],
         colModel:[
@@ -109,7 +109,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/roles/getonestartpage?id=' + currentRow,
+                'url' : '/admin/roles/getonestartpage?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -158,7 +158,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/index.php/admin/roles/deletestartpage?id=' + currentRow,
+                'url' : '/admin/roles/deletestartpage?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
