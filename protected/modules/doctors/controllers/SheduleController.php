@@ -1077,8 +1077,28 @@ class SheduleController extends Controller {
                 $resultArr[$i]['worked'] = true;
                 $resultArr[$i]['restDay'] = false;
 
-                $resultArr[$i]['beginTime'] = $ruleToApply['greetingBegin'];
-                $resultArr[$i]['endTime'] = $ruleToApply['greetingEnd'];
+                if (isset ($ruleToApply['greetingBegin']))
+                {
+                    $resultArr[$i]['beginTime'] = $ruleToApply['greetingBegin'];
+                }
+
+                if (isset ($ruleToApply['greetingEnd']))
+                {
+                    $resultArr[$i]['endTime'] = $ruleToApply['greetingEnd'];
+                }
+
+                // Вставляем лимиты
+                //$resultArr[$i]['limits'] = array();
+                $resultArr[$i]['limits']['callCenter'] = $ruleToApply['limits'][1];
+                $resultArr[$i]['limits']['reception'] = $ruleToApply['limits'][2];
+                $resultArr[$i]['limits']['internet'] = $ruleToApply['limits'][3];
+
+                // Если есть лимиты, то надо их вернуть клиенту
+                //var_dump($ruleToApply);
+                //exit();
+
+               // var_dump($resultArr[$i]);
+              //  exit();
 
             }
             else
@@ -1413,8 +1433,12 @@ class SheduleController extends Controller {
         $result = $this->getPatientList($_GET['doctorid'], $this->currentYear.'-'.$this->currentMonth.'-'.$this->currentDay
             ,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'] , true, $onlyWaitingLine);
 
+        $limits = $ruleToApply['limits'];
+
         echo CJSON::encode(array('success' => 'true',
-                                 'data' => $result['result']));
+                                 'data' => $result['result'],
+                                 'limits' => $limits
+        ));
     }
 
     public function actionChangeGreetingStatus($greetingId=false,$newValue=false)
