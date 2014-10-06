@@ -1450,12 +1450,17 @@ class TasuController extends Controller {
 			}
 			
 			$givedDate = implode('', explode('-', $medcard->gived_date));
+			if($medcard->doctype == 1) {
+				$docserie = mb_substr($medcard->serie, 0, 2).' '.mb_substr($medcard->serie, 3);
+			} else {
+				$docserie = $medcard->serie;
+			}
 			
 			$sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
                         ".$patientRow['PatientUID'].",
                         0,
                         '14',
-                        '".$medcard->serie."',
+                        '".$docserie."',
                         '".$medcard->docnumber."',
                         '00',
                         '".$oms->last_name."',
@@ -1770,7 +1775,9 @@ class TasuController extends Controller {
                 }
 
                 // Добавляем услуги
-                $this->setTapServices($tapDiagnosis, $greeting, $oms);
+				if($tapDiagnosis['type'] == 0) {
+					$this->setTapServices($tapDiagnosis, $greeting, $oms);
+				}
             } catch(Exception $e) {
                 $this->numErrors++;
                 return false;
@@ -1796,7 +1803,7 @@ class TasuController extends Controller {
 			if($fullYears >= 18) {
 				$tasuTapService->servicecode_20924 = '2329600';
 			} else {
-				$tasuTapService->servicecode_20924 = '132600';
+				$tasuTapService->servicecode_20924 = '1329600';
 			}
             $tasuTapService->count_23546 = 1;
 

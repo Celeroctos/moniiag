@@ -14,12 +14,12 @@ class SheduleController extends Controller {
     public function actionView() {
 		$medcardRecordId = 0;
         if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1) {
-			$userId = Yii::app()->user->id;
-			$doctor = User::model()->findByPk($userId);
-			$doctorId = $doctor['employee_id'];
+			$doctorId = Yii::app()->user->doctorId;
+			Yii::app()->user->setState('currentGreetingsDoctor', $doctorId);
 		} else {
 			$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
 		}
+		$doctor = Doctor::model()->findByPk($doctorId);
 
         if(isset($_GET['cardid']) && trim($_GET['cardid']) != '') {
             
@@ -223,13 +223,13 @@ class SheduleController extends Controller {
         $timeTable = new Timetable();
         $shedule = $timeTable->getRows(
             array(
-                'doctorsIds' => array($doctor['employee_id']),
+                'doctorsIds' => array($doctor['id']),
                 'dateBegin' => $curDate,
                 'dateEnd' => $curDate
             )
         );
         $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+        $patients = $this->getPatientList($doctor['id'], $curDate,$ruleToApply['greetingBegin'] ,$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
 
         $patients = $patients['result'];
 
@@ -389,21 +389,19 @@ class SheduleController extends Controller {
         if(!isset($_POST['currentDoctor']) || $_POST['currentDoctor'] == -1) {
 			// Если не занесен в сессию конкретный доктор, то, значит, берём текущего пользователя
 			if(Yii::app()->user->getState('currentGreetingsDoctor', -1) == -1 || $_POST['currentDoctor'] == -1) {
-				$userId = Yii::app()->user->id;
-				$doctor = User::model()->findByPk($userId);
-				$doctorId = $doctor['employee_id'];
+				$doctorId = Yii::app()->user->doctorId;
 			} else {
 				$doctorId = Yii::app()->user->getState('currentGreetingsDoctor');
 			}
+			$doctor = Doctor::model()->findByPk($doctorId);
 		} else {
 			$doctor = Doctor::model()->findByPk($_POST['currentDoctor']);
 			// Проверка, что такой врач вообще есть
 			if($doctor != null) {
 				$doctorId = $doctor['id'];
 			} else {
-				$userId = Yii::app()->user->id;
-				$doctor = User::model()->findByPk($userId);
-				$doctorId = $doctor['employee_id'];
+				$doctorId = Yii::app()->user->doctorId;
+				$doctor = Doctor::model()->findByPk($doctorId);
 			}
 		}
 
@@ -423,14 +421,14 @@ class SheduleController extends Controller {
         $timeTable = new Timetable();
         $shedule = $timeTable->getRows(
             array(
-                'doctorsIds' => array($doctor['employee_id']),
+                'doctorsIds' => array($doctor['id']),
                 'dateBegin' => $curDate,
                 'dateEnd' => $curDate
             )
         );
         $ruleToApply = $this->checkByTimetable($shedule[0], $curDate);
 
-        $patients = $this->getPatientList($doctor['employee_id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
+        $patients = $this->getPatientList($doctor['id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
 
         $patients = $patients['result'];
 
