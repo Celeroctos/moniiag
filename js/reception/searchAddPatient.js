@@ -1105,9 +1105,14 @@
             var region = $.fn['regionChooser'].getChoosed()[0].name + ', ';
             var regionId = $.fn['regionChooser'].getChoosed()[0].id;
         } else {
-            var region = '';
-            var regionId = null;
+            //var region = '';
+            //var regionId = null;
+            // Выводим сообщение о том, что нельзя без региона сохранять адрес
+            alert('Поле "Регион" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.');
+            return false;
         }
+
+        // Проверяем - если не указана улица, надо об этом вывести пользователю и спросить что желать дальше
 
         if($.fn['districtChooser'].getChoosed().length > 0) {
             var district = $.fn['districtChooser'].getChoosed()[0].name + ', ';
@@ -1129,6 +1134,12 @@
             var street = $.fn['streetChooser'].getChoosed()[0].name + ', ';
             var streetId = $.fn['streetChooser'].getChoosed()[0].id;
         } else {
+            // Улица не задана
+            //   Надо спросить - продолжить ли
+            if (! confirm('Вы не заполнили поле "Улица". Сохранить адрес без улицы?'))
+            {
+                return false;
+            }
             var street = '';
             var streetId = null;
         }
