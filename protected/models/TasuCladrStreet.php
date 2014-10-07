@@ -16,25 +16,24 @@ class TasuCladrStreet extends MisActiveRecord {
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = $this->getDbConnection();
-        $streets = $connection->createCommand()
-            ->select('tcst.*')
-            ->from(TasuCladrStreet::tableName().' tcst');
+        $sql = "DECLARE @uid integer;
 
-        if($filters !== false) {
-            $this->getSearchConditions($streets, $filters, array(
-            ), array(
-            ), array(
-            ));
-        }
+		SET ROWCOUNT ".$start.";
 
-        if($sidx !== false && $sord !== false ) {
-            $streets->order($sidx.' '.$sord);
-        }
-        if($start !== false && $limit !== false) {
-            $streets->limit($limit, $start);
-        }
+		SELECT @uid = p.uid
+		  FROM PDPStdStorage.".TasuCladrStreet::tableName()." p
+		  ORDER BY p.uid ASC;
 
-        return $streets->queryAll();
+		SET ROWCOUNT ".$limit.";
+
+		SELECT p.*
+		  FROM PDPStdStorage.".TasuCladrStreet::tableName()." p
+		  WHERE p.uid >= @uid
+		  ORDER BY p.uid ASC;
+
+		SET ROWCOUNT 0;";
+
+        return $connection->createCommand($sql)->queryAll();
     }
 
     public function getNumRows() {

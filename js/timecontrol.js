@@ -207,7 +207,7 @@
                     } else {
                             if($(this).val().length == 0 && (e.keyCode == 48 || e.keyCode == 96)) {
                                 lastNullEntered = true;
-                                return false;
+                               // return false;
                             }
                         // ������� ������-�����, tab � backspace ���������, ��������� ������� ����
                         if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {
@@ -270,7 +270,7 @@
 
                     var selected = getSelected(this);
                     // �������� �� ������������ �������� ����� ������
-                    if((e.keyCode > 48 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 106)) { // ��� ������ ������� �����, ����
+                    if((e.keyCode >= 48 && e.keyCode < 58) || (e.keyCode > 96 && e.keyCode < 106)) { // ��� ������ ������� �����, ����
 						// ������� ����, ���� ��� ���� ����������
                         if($.trim(selected) != '') {
                             $(this).val('');
@@ -281,8 +281,9 @@
 						}
                         // ��� ������
                         var minute = parseInt('' + $(this).val() + String.fromCharCode(e.keyCode));
+                        var minuteStr = '' + $(this).val() + String.fromCharCode(e.keyCode);
                         // ������ �� ����� ���� ������ ���� � ������ 59
-                        if(!(minute > -1 && minute < 60)) {
+                        if(!(minute > -1 && minute < 60) || (minuteStr.length>=3) ) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
@@ -292,7 +293,7 @@
 			// �������� ������� ���� ����������
                         if($(this).val().length == 0 && (e.keyCode == 48 || e.keyCode == 96)) {
                            lastNullEntered = true;
-                           return false;
+                          // return false;
                         }
                         // ������� ������-�����, tab � backspace ���������, ��������� ������� ����
                         if(e.keyCode != 9 && e.keyCode != 8 && e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 16 && e.keyCode != 48 && e.keyCode != 96) {

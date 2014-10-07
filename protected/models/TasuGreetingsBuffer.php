@@ -21,7 +21,10 @@ class TasuGreetingsBuffer extends MisActiveRecord {
                 ->leftJoin(Oms::tableName().' o', 'm.policy_id = o.id')
 				->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
 				->leftJoin(PatientDiagnosis::tableName().' p', 'p.greeting_id = tgb.greeting_id')
-				->where('p.type = 0 OR tgb.fake_id IS NOT NULL');
+				->where('p.type = 0 OR tgb.fake_id IS NOT NULL OR NOT EXISTS(
+					SELECT * 
+					FROM '.PatientDiagnosis::tableName().' p2 
+					WHERE greeting_id = tgb.greeting_id)');
 			
 			if($importId === false) {
 				$buffer->andWhere('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id) FROM '.TasuGreetingsBuffer::tableName().' tgb2)');
@@ -56,6 +59,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             }
             if($start !== false && $limit !== false && $doctorId === false) {
                 $buffer->limit($limit, $start);
+
             }
 
 			$bufferResult = $buffer->queryAll();
@@ -64,6 +68,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 			$counter = 0;
 			$counterStart = 0;
             foreach($bufferResult as $key => &$bufferElement) {
+
                 if($bufferElement['fake_id'] != null) {			
                     $fakeModel = TasuFakeGreetingsBuffer::model()->findByPk($bufferElement['fake_id']);
 					
@@ -82,11 +87,12 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 					
 					if($fakeModel != null) {
 						$fakeModelData = $connection->createCommand()
-							->select('tfg.*, d.*, m.*, o.*, o.last_name as o_last_name, o.first_name as o_first_name, o.middle_name as o_middle_name, d.last_name as d_last_name, d.first_name as d_first_name, d.middle_name as d_middle_name')
+							->select('tfg.*, d.*, m.*, o.*, o.last_name as o_last_name, o.first_name as o_first_name, o.middle_name as o_middle_name, d.last_name as d_last_name, d.first_name as d_first_name, d.middle_name as d_middle_name, p.tasu_string as payment_type')
 							->from(TasuFakeGreetingsBuffer::model()->tableName().' tfg')
 							->leftJoin(Doctor::model()->tableName().' d', 'tfg.doctor_id = d.id')
 							->leftJoin(Medcard::model()->tableName().' m', 'tfg.card_number = m.card_number')
 							->leftJoin(Oms::model()->tableName().' o', 'm.policy_id = o.id')
+							->leftJoin(Payment::model()->tableName().' p', 'p.id = tfg.payment_type')
 							->where('tfg.doctor_id = :doctor_id
 									AND tfg.card_number = :card_number', 
 									array(
@@ -105,7 +111,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 						$bufferElement['oms_id'] = $fakeModelData['policy_id'];
 						$bufferElement['doctor_id'] = $fakeModel['doctor_id'];
 						$bufferElement['primary_diagnosis_id'] = $fakeModel['primary_diagnosis_id'];
-                
+						$bufferElement['payment_type'] = $fakeModel['payment_type'];
 					}
                 } else {
 					$counter++;
@@ -135,12 +141,21 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             if($lastBufferId['max_import_id'] == null || $lastBufferId['max_import_id'] == 0) {
                 $lastBufferId['max_import_id'] = 1;
             } else {
-                // Проверим, не закрыта ли данная выгрузка
-                $issetInHistory = TasuGreetingsBufferHistory::model()->find('import_id = :import_id', array(':import_id' => $lastBufferId['max_import_id']));
+                // Проверим, не закрыта ли данная выгрузка. Состояние "отменённая выгрузка" (2) не считается.
+                $issetInHistory = TasuGreetingsBufferHistory::model()->find('import_id = :import_id AND status = 1', array(':import_id' => $lastBufferId['max_import_id']));
                 if($issetInHistory != null) {
-                    $lastBufferId['max_import_id']++;
+					// Посмотрим, остались ли невыгруженные строки-приёмы (ошибки)
+					$numErrors = $connection->createCommand()
+						->select('COUNT(*) as num')
+						->from(TasuGreetingsBuffer::tableName().' tgb')
+						->where('import_id = :import_id AND status = 0', array(':import_id' => $lastBufferId['max_import_id']))
+						->queryRow();
+					
+					if($numErrors['num'] == 0) {
+						$lastBufferId['max_import_id']++;
+					}
                 }
-            }
+			}
 
             return $lastBufferId;
         } catch(Exception $e) {

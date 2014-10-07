@@ -292,7 +292,7 @@ $('input').on('focus', function (e) {
 });
 
 // Ставим классы для различения контролов времени и даты
-$('div.date').addClass('date-control');
+$('div.date:not(.date-timetable)').addClass('date-control');
 $('div.time-control').removeClass('date-control');
 
 /* Панель быстрого доступа */
@@ -654,7 +654,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
     );
 
     /* Двигающиеся модалки */
-    $('.modal').draggable();
+    $('.modal:not([id="addFakePopup"])').draggable();
 
     // По нажатию на кнопку "удалить" - спрашиваем подтверждение на удаление
     $('button[id^=delete]').on('click',function(e)

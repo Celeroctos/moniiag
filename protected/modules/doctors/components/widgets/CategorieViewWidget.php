@@ -436,7 +436,7 @@ class CategorieViewWidget extends CWidget {
 						$elementResult['allow_add'] = $eCopy->allow_add;
 						$pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
-			$elementResult['is_required'] = $element['is_required'];
+						$elementResult['is_required'] = $element['is_required'];
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
                         $elementResult['config'] = CJSON::decode($element['config']);

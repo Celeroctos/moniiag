@@ -113,6 +113,7 @@
 			},
 			{
 				name: 'import_id',
+				index: 'import_id',
 				hidden: true
 			}
         ],
@@ -333,7 +334,7 @@
 								$('#clearGreetings').attr({
 									'disabled' : false
 								});
-								 $('#importProgressbarP').prop({
+								$('#importProgressbarP').prop({
                                     'aria-valuenow' : '0'
                                 }).css('width', '0%');
 							});
@@ -373,6 +374,9 @@
 
             $('.successImport').on('click', function(e) {
                 $('#importContainer').slideUp(500, function() {
+					$('#importProgressbarP').prop({
+						'aria-valuenow' : '0'
+					}).css('width', '0%');
                     $("#greetings").trigger("reloadGrid");
                     $("#importHistory").trigger("reloadGrid");
                     $('.continueImport, .pauseImport').removeClass('no-display');
@@ -385,6 +389,11 @@
                     totalRows = null;
                     $('.numStringsAll').text(0);
                     $('.numStrings').text(0);
+					$('.numStringsAdded').text(0);
+                    $('.numStringsDiscarded').text(0);
+					$('.numStringsError').text(0);
+                    $('.numDoctorsAdded').text(0);
+					$('.numPatientsAdded').text(0);
                 }).addClass('no-display');
             });
         }).removeClass('no-display');
@@ -479,6 +488,11 @@
             alert('Не выбран врач!');
             return false;
         }
+		
+		if(typeof $('#paymentType').val() == 'undefined') {
+            alert('Не выбран тип оплаты!');
+            return false;
+        }
 
         if(primaryDiagnosis.length == 0) {
             alert('Не выбран первичный диагноз!');
@@ -509,7 +523,9 @@
             'data' : {
 				'doctor_id' : $('#doctorId').val(),
 				'card_number' : $.trim($('#cardNumber').val()),
-				'greeting_date' : $.trim($('#greetingDate').val())
+				'greeting_date' : $.trim($('#greetingDate').val()),
+				'pr_diagnosis_id' : primaryDiagnosis[0].id,
+				's_diagnosis_ids' : secondaryDiagnosisIds
 			},
             'cache' : false,
             'dataType' : 'json',
@@ -521,18 +537,23 @@
 						doctorId : $('#doctorId').val(),
 						primaryDiagnosis : primaryDiagnosis[0].id,
 						secondaryDiagnosis : secondaryDiagnosisIds,
-						greetingDate : $.trim($('#greetingDate').val())
+						greetingDate : $.trim($('#greetingDate').val()),
+						paymentType : $.trim($('#paymentType').val()),
+						primaryDiagnosisData : primaryDiagnosis[0],
+						secondaryDiagnosisData : secondaryDiagnosisChoosed
 					};
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
-					
 					$('#preGreetings').addRowData((lastId).toString(), {
 						'id' : lastId,
 						'doctor_fio' : data.data.doctorFio, 
+						'doctor_id' : $.trim($('#doctorId').val()),
 						'medcard' : $.trim($('#cardNumber').val()),
 						'patient_fio' : data.data.patientFio,
 						'patient_day' : $.trim($('#greetingDate').val()).split('-').reverse().join('.'),
-						'diagnosis_code' : primaryDiagnosis[0].description.substr(0, primaryDiagnosis[0].description.indexOf(' '))
+						'diagnosis_code' : data.data.pr_diagnosis_code,
+						'secondary_diagnosis_codes' : data.data.s_diagnosis_codes,
+						'payment_type' : $.trim($('#paymentType').val())
 					});
 
 					lastId++;
@@ -562,8 +583,11 @@
 		$('#greetingDate-cont').find('.day, .month, .year').val('');
 		$('#wardId').val(-1).trigger('change');*/
 		$('#deletePreGreeting').removeClass('disabled');
+		$('#fioCont').addClass('no-display').text('');
 		
-		$.fn["primaryDiagnosisChooser"].clearAll();
+		if(!$('#savePrimaryDiag').prop('checked')) {
+			$.fn["primaryDiagnosisChooser"].clearAll();
+		}
 		$.fn["secondaryDiagnosisChooser"].clearAll();
 		// Сброс фокуса
 		$('#cardNumber').focus();
@@ -637,12 +661,12 @@
 	// Табличка пре-приёмов
 	$("#preGreetings").jqGrid({
         datatype: "json",
-        colNames:['', '№ карты', 'ФИО пациента', 'Код диагноза', 'Дата приёма', 'Врач'],
+        colNames:['ID', '№ карты', 'ФИО пациента', 'Код диагноза', 'Коды вторичных диагнозов', 'Дата приёма', 'Врач', '', ''],
         colModel:[
 			{
 				name: 'id',
 				index: 'id',
-				hidden: true
+				width: 50
 			},
 			{
                 name: 'medcard',
@@ -659,6 +683,11 @@
                 index: 'diagnosis_code',
                 width: 100
             },
+			{
+				name: 'secondary_diagnosis_codes',
+				index: 'secondary_diagnosis_codes',
+				width: 200
+			},
             {
                 name: 'patient_day',
                 index: 'patient_day',
@@ -669,6 +698,16 @@
                 index:'doctor_fio',
                 width: 150
             },
+			{
+				name: 'payment_type',
+				index: 'payment_type',
+				hidden: true
+			},
+			{
+				name: 'doctor_id',
+				index: 'doctor_id',
+				hidden: true
+			}
         ],
         rowNum: 30,
         rowList:[10,20,30],
@@ -676,8 +715,26 @@
         viewrecords: true,
         sortorder: "desc",
         caption: "Список добавляемых приёмов",
-        height: 453
+        height: 453,
+		ondblClickRow: editPreGreeting
     });
+	
+	function editPreGreeting(rowid, iRow, iCol, e) {
+		var rowData = $('#preGreetings').jqGrid('getRowData',rowid);
+		console.log(rowData);
+		$('#doctorIdEdit').val(rowData.doctor_id);
+		$('#paymentTypeEdit').val(rowData.payment_type);
+		$('#greetingDateEdit').val(rowData.patient_day.split('.').reverse().join('-')).trigger('change');
+		$('#cardNumberEdit').val(rowData.medcard);
+
+		$.fn['primaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + greetingsTempBuffer[rowData.id].primaryDiagnosisData.id).text(greetingsTempBuffer[rowData.id].primaryDiagnosisData.description), greetingsTempBuffer[rowData.id].primaryDiagnosisData);
+		var sDiagnosis = greetingsTempBuffer[rowData.id].secondaryDiagnosisData;
+		for(var i = 0; i < sDiagnosis.length; i++) {
+			$.fn['secondaryDiagnosisChooser2'].addChoosed($('<li>').prop('id', 'p' + sDiagnosis[i].id).text(sDiagnosis[i].description), sDiagnosis[i]);
+		}
+
+		$('#editPregreetingsRowPopup').modal({});
+	}
 	
 	$('#tasuimport-filter-btn').on('click', function() {
 		var greetingDate = $('#filterGreetingDate').val(); 
@@ -720,15 +777,65 @@
 	
 	// Зацикливаем беготню по форме
 	$('#cardNumber, #primaryDiagnosis').on('keydown', function(e) {
-		if(e.keyCode == 13) {
-			nextInput = $(this).parents('.form-group').next().find('input');
-			if(typeof $(nextInput).attr('disabled') != 'undefined') {
-				nextInput = $(this).parents('.form-group').next().next().find('input');
+		if(e.keyCode == 13 || e.keyCode == 9) {
+			if($(this).prop('id') == 'cardNumber' && $.trim($(this).val()) != '') { // Подгружать ФИО
+				getFioByCardNumber();
+			} else {
+				moveToNextInput(this);
 			}
-			$(nextInput).focus();
 			e.stopPropagation();
 		}
 	});
+	
+	$('#cardNumber').on('blur', function(e) {
+		if($.trim($('#cardNumber').val()) != '') {
+			getFioByCardNumber();
+		}
+	});
+	
+	function getFioByCardNumber() {
+		$('#cardNumber').prop('disabled', true);
+		$.ajax({
+			'url' : '/admin/tasu/getfio',
+			'data' : {
+				'card_number' : $.trim($('#cardNumber').val())
+			},
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET',
+			'success' : function(data, textStatus, jqXHR) {
+				if(data.success) {
+					$('#fioCont').removeClass('no-display').text('Пациент ' + data.data.patientFio);
+					$('#cardNumber').prop('disabled', false);
+					moveToNextInput($('#cardNumber'));
+				} else {
+					alert(data.error);
+					$('#cardNumber').prop('disabled', false);
+					$('#cardNumber').focus();
+				}
+			}
+		});
+	}
+	
+	function moveToNextInput(input) {
+		var id = $(input).prop('id');
+		if(id == 'cardNumber') {
+			$('#savePrimaryDiag').focus();
+		}
+		if(id == 'savePrimaryDiag') {
+			if($('#primaryDiagnosis').prop('disabled') != 'undefined') {
+				$('#primaryDiagnosis').focus();
+			} else {
+				$('#secondaryDiagnosis').focus();
+			}
+		}
+		if(id == 'primaryDiagnosis') {
+			$('#secondaryDiagnosis').focus();
+		}
+		if(id == 'secondaryDiagnosis') {
+			$('#greeting-addfake-submit').focus();
+		}
+	}
 	
 	$('#greeting-addfake-submit').on('keydown', function(e) {
 		if(e.keyCode == 39) {

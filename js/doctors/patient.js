@@ -344,7 +344,116 @@
     });
 
     // Сжатие-расширение селект-контролов
+
     //=================>
+
+    expandSelectTimer = null;
+    selectToExpand = null;
+
+
+    $('form[id=template-edit-form] select[multiple]').mouseenter(
+        function(e)
+        {
+
+            onActivate(this);
+
+        }
+
+    );
+
+    $('form[id=template-edit-form] select[multiple]').mousemove(
+        function(e)
+        {
+
+            onActivate(this);
+
+        }
+
+    );
+
+    //$('form[id=template-edit-form] select[multiple]').on('mouseover',
+
+    function onActivate(element)
+    {
+        selectToExpand = element;
+        // Запускаем таймер
+        if(wasScroll)
+        {
+            expandSelectTimer = setTimeout(expandSelect,250);
+        }
+        else
+        {
+            expandSelectTimer = setTimeout(expandSelect,3000);
+        }
+    }
+
+    //$('form[id=template-edit-form] select[multiple]').on('focus',
+    $(document).on('focus','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+           expandSelect();
+        }
+    );
+
+    function expandSelect()
+    {
+        clearTimeout(expandSelectTimer);
+        expandSelectTimer = null;
+        if (wasScroll)
+        {
+            // Устанавливаем таймер на туеву кучу времени вперёд
+
+            expandSelectTimer = setTimeout(expandSelect,2000);
+        }
+        else
+        {
+            $(selectToExpand).attr("size", $(selectToExpand).find('option').length );
+            // Сбрасываем таймер
+
+        }
+    }
+
+    $(document).on('blur','form[id=template-edit-form] select[multiple]',
+    //   $('form[id=template-edit-form] select[multiple]').on('blur',
+    function(e)
+        {
+            // Нужно удалить расширение
+          $(this).removeAttr("size");
+          clearTimeout(expandSelectTimer);
+            expandSelectTimer = null;
+        }
+    );
+
+    $('form[id=template-edit-form] select[multiple]').mouseleave(
+    //    $(document).on('mouseout','form[id=template-edit-form] select[multiple]',
+        function(e)
+        {
+            clearTimeout(expandSelectTimer);
+            expandSelectTimer = null;
+            // Убираем расширение только если this не в фокусе
+            if ( ! $(e.currentTarget).is(':focus') )
+            {
+                $(e.currentTarget).removeAttr("size");
+            }
+        }
+    );
+
+    wasScroll = false;
+
+    $(document).on('scroll',
+        function(e)
+        {
+            console.log('я прокрутился');
+            wasScroll = true;
+            setTimeout(function(){
+                wasScroll = false;
+            },5000);
+
+            // Если есть таймер - перезапускаем его
+
+        }
+    );
+
     expandingTimer = setInterval(onExpandTimerTick,250);
     isCursorInElement = false;
     elementUnderCursorOld = null;
@@ -1524,6 +1633,9 @@ function changeControlState(dep, elementValue, container) {
 $('#templates-choose-form input[type="submit"]').on('click', function (e) {
     var checkboxes = $(this).parents('form').find('input[type="checkbox"]');
     $(this).attr('disabled', true);
+	$(this).parents('form').find('.overlayCont').css({
+		'position' : 'static'
+	}).prepend($('<div>').addClass('overlay'));
     for (var i = 0; i < checkboxes.length; i++) {
         if ($(checkboxes[i]).prop('checked')) {
             $(this).attr('value', 'Подождите, приём начинается...');

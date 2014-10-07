@@ -41,20 +41,9 @@ if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'
     // Если строка с примечанием пустая и не выбран никакой клинический диагноз в чюююзере
     $noteGreetingLength = strlen($diagnosises['noteGreeting']);
     $countClinical = count($diagnosises['clinicalSecondary']);
-    //var_dump($diagnosises);
-    //var_dump($countClinical );
-    //exit();
-
-
-
-if (($noteGreetingLength<=0)&&(($countClinical <=0) || ($countClinical ==false)))
+    if (($noteGreetingLength<=0)&&(($countClinical <=0) || ($countClinical ==false)))
     {
-
         // Выводим МКБ
-
-        //var_dump(strlen($diagnosises['noteGreeting']));
-        //var_dump(count($diagnosises['clinicalSecondary'])<=0);
-        //exit();
         // Если нет клинического - печатаем МКБ
         if (count($diagnosises['primary'])>0)
         {

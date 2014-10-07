@@ -20,10 +20,17 @@ class WardsController extends Controller {
             foreach($enterprisesListDb as $value) {
                 $enterprisesList[(string)$value['id']] = $value['fullname'];
             }
+			
+			// Список правил
+			$rulesList = array();
+            foreach(MedcardRule::model()->findAll() as $value) {
+                $rulesList[(string)$value['id']] = $value['name'];
+            }
 
             $this->render('view', array(
                 'model' => $formAddEdit,
-                'typesList' => $enterprisesList
+                'typesList' => $enterprisesList,
+				'rulesList' => $rulesList
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -35,7 +42,7 @@ class WardsController extends Controller {
         if(isset($_POST['FormWardAdd'])) {
             $model->attributes = $_POST['FormWardAdd'];
             if($model->validate()) {
-                $ward = Ward::model()->find('id=:id', $_POST['FormWardAdd']['id']);
+                $ward = Ward::model()->findByPk($model->id);
 
                 $this->addEditModel($ward, $model, 'Новое отделение успешно добавлено.');
             } else {
@@ -64,7 +71,6 @@ class WardsController extends Controller {
             $model->attributes = $_POST['FormWardAdd'];
             if($model->validate()) {
                 $ward = new Ward();
-
                 $this->addEditModel($ward, $model, 'Новое отделение успешно добавлено.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
@@ -76,6 +82,8 @@ class WardsController extends Controller {
     private function addEditModel($ward, $model, $msg) {
         $ward->enterprise_id = $model->enterprise;
         $ward->name = $model->name;
+		$ward->rule_id = $model->ruleId;
+
 
         if($ward->save()) {
             echo CJSON::encode(array('success' => true,
@@ -108,7 +116,9 @@ class WardsController extends Controller {
             echo CJSON::encode(
                 array('rows' => $wards,
                       'total' => $totalPages,
-                      'records' => count($num))
+                      'records' => count($num),
+                      'success' => true
+                )
             );
         } catch(Exception $e) {
             echo $e->getMessage();

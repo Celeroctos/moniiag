@@ -50,14 +50,16 @@
                                         <form id="templates-choose-form" class="form-horizontal col-xs-12" method="post"
                                               role="form"
                                               action="<?php CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/shedule/view?cardid=' . $medcard['card_number'] . '&date=' . $currentDate . '&rowid=' . $currentSheduleId); ?>">
-                                            <?php foreach ($templatesList as $key => $template) { ?>
-                                                <div class="form-group">
-                                                    <input type="checkbox" value="<?php echo $template['id']; ?>"
-                                                           name="templatesList[<?php echo $key; ?>]">
-                                                    <label
-                                                        class="control-label"><?php echo $template['name']; ?></label>
-                                                </div>
-                                            <?php } ?>
+                                            <div class="overlayCont">
+												<?php foreach ($templatesList as $key => $template) { ?>
+													<div class="form-group">
+														<input type="checkbox" value="<?php echo $template['id']; ?>"
+															   name="templatesList[<?php echo $key; ?>]">
+														<label
+															class="control-label"><?php echo $template['name']; ?></label>
+													</div>
+												<?php } ?>
+											</div>
                                             <div class="form-group">
                                                 <?php echo CHtml::submitButton(
                                                     'Начать приём',

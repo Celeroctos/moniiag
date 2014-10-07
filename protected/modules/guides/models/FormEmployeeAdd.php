@@ -15,6 +15,7 @@ class FormEmployeeAdd extends FormMisDefault
 	public $greetingType;
     public $displayInCallcenter;
     public $id;
+	public $categorie;
 
 
     public function rules()
@@ -24,7 +25,7 @@ class FormEmployeeAdd extends FormMisDefault
                 'firstName, lastName, postId, dateBegin, wardCode, greetingType, displayInCallcenter', 'required'
             ),
             array(
-                'degreeId, titulId, tabelNumber', 'numerical'
+                'degreeId, titulId, tabelNumber, categorie', 'numerical'
             ),
             array(
                 'dateEnd, middleName', 'safe'
@@ -47,7 +48,8 @@ class FormEmployeeAdd extends FormMisDefault
             'dateEnd' => 'Дата конца действия',
             'wardCode' => 'Отделение',
 			'greetingType' => 'Тип приёмов',
-            'displayInCallcenter' => 'Отображать в колл-центре'
+            'displayInCallcenter' => 'Отображать в колл-центре',
+			'categorie' => 'Категория врача'
         );
     }
 }

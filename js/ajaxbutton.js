@@ -1,7 +1,7 @@
 ﻿$(document).ready(function() {
 	var buttonSelectors = [
 		'#patient-search-submit',
-		'#doctor-search-submit',
+		//'#doctor-search-submit',
         '#logs-search-submit',
 		//'.add-patient-submit input',
         '#medcardContentSave',

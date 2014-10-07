@@ -1,6 +1,14 @@
 <?php
 class PatientController extends Controller {
     public function actionGetHistoryMedcard() {
+       /* echo '<pre>';
+        var_dump($_GET);
+        echo '<pre>';
+        var_dump($_POST);
+        exit();
+*/
+
+
         if(!Yii::app()->request->isAjaxRequest) {
             exit('Error!');
         }
@@ -17,13 +25,18 @@ class PatientController extends Controller {
             $_GET['greetingId'],
             $_GET['templateId']
 
-        ); // Получаем поля для всех полей относительно хистори
+        );
+       // echo '<pre>';
+        //var_dump($historyArr);
+//        exit();
+
+
+         // Получаем поля для всех полей относительно хистори
 		ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));
         exit();
     }
-
 
     public function actionSaveDiagnosis() {
         if(!isset($_GET['greeting_id'])) {

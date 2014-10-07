@@ -1,6 +1,14 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/767e5633/jquery.yiiactiveform.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/searchAddPatient.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/cardnumberGenerator.js" ></script>
+<script type="text/javascript">
+	globalVariables.medcardData = {
+		'prefix' : '<?php echo $medcardNumberPrefix; ?>',
+		'postfix' : '<?php echo $medcardNumberPostfix; ?>',
+		'number' : '<?php echo $medcardNumber; ?>'
+	}
+</script>
 <?php if(Yii::app()->user->checkAccess('addPatient')) { ?>
 <h4>Регистрация / перерегистрация карты к существующему пациенту (<?php echo $regPoint; ?> год)</h4>
 <p class="text-left">
@@ -22,6 +30,9 @@
         )
     ));
     ?>
+	<div class="newMedcardNumberBlock" id="kdoReg">
+		<strong>Пациенту будет выдан номер карты <span class="bigger"><?php echo $newCardNumber; ?></span></strong>
+	</div>
     <div class="row">
         <div class="col-xs-6">
             <?php echo $form->hiddenField($model,'mediateId', array(
@@ -29,6 +40,10 @@
             )); ?>
             <?php echo $form->hiddenField($model,'policy', array(
                 'id' => 'policy',
+                'class' => 'form-control'
+            )); ?>
+			 <?php echo $form->hiddenField($model,'cardNumber', array(
+                'id' => 'cardNumber',
                 'class' => 'form-control'
             )); ?>
             <p>Данные медицинской карты:</p>
