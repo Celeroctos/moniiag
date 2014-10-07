@@ -1237,7 +1237,7 @@ class TasuController extends Controller {
                         NULL,
                         '',
                         NULL,
-                        '',
+                        '".$medcard->contact."',
                         '',
                         '".$medcard->work_place.", ".$medcard->work_address."',
                         '".$medcard->profession."',
@@ -1451,7 +1451,7 @@ class TasuController extends Controller {
 			
 			$givedDate = implode('', explode('-', $medcard->gived_date));
 			if($medcard->doctype == 1) {
-				$docserie = mb_substr($medcard->serie, 0, 2).' '.mb_substr($medcard->serie, 3);
+				$docserie = mb_substr($medcard->serie, 0, 2).' '.mb_substr($medcard->serie, 2);
 			} else {
 				$docserie = $medcard->serie;
 			}
@@ -1478,11 +1478,11 @@ class TasuController extends Controller {
             //var_dump($sql);
             // Вынимаем данные об адресе из МИС-базы
 
-            $addressData = $this->getAddressObjects(CJSON::decode($medcard->address));
+            //$addressData = $this->getAddressObjects(CJSON::decode($medcard->address));
             $addressRegData = $this->getAddressObjects(CJSON::decode($medcard->address_reg));
 
             // Запихнём адреса в ТАСУ
-            $sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
+            /*$sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
                 0,
                 ".$patientRow['PatientUID'].",
                 '1',
@@ -1501,12 +1501,12 @@ class TasuController extends Controller {
                 ".($addressData['postindex'] != null ? '"'.$addressData['postindex'].'"' : 'NULL').",
                 0";
 
-            $conn->createCommand($sql)->execute();
+            $conn->createCommand($sql)->execute();*/
 
             $sql = "EXEC PDPStdStorage.dbo.p_patsetaddress_06599
                 0,
                 ".$patientRow['PatientUID'].",
-                '2',
+                '1',
                 '643',
                 '".($addressRegData['region'] != null ? $addressRegData['region']->code_cladr : '')."',
                 '".($addressRegData['district'] != null ? $addressRegData['district']->code_cladr : '')."',
@@ -1775,7 +1775,7 @@ class TasuController extends Controller {
                 }
 
                 // Добавляем услуги
-				if($tapDiagnosis['type'] == 0) {
+				if($diagnosis['type'] == 0) {
 					$this->setTapServices($tapDiagnosis, $greeting, $oms);
 				}
             } catch(Exception $e) {
