@@ -528,6 +528,7 @@
                                                             $(li).appendTo(ulInPopover);
                                                         }
 
+                                                        /*
                                                         // Ограничение на кол-во приёмов колл-центра и регистратуры
                                                         if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1 && $(ulInPopover).find('li.withPatient').length >= callCenterGreetingsLimit) {
 // Логика неверна: здесь нужно считать количество записанных постфактум
@@ -548,6 +549,43 @@
                                                                 }
                                                             }
                                                         }
+                                                        */
+
+                                                        if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1)
+                                                        {
+                                                            // Call-центр
+                                                            // Есть ли
+                                                            customQuantityLimit = false;
+                                                            if (data.limits[1]['quantity']!=undefined)
+                                                            {
+                                                                if (  $(ulInPopover).find('li.withPatient').length >= data.limits[1]['quantity'] )
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Центр');
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if($(ulInPopover).find('li.withPatient').length >= callCenterGreetingsLimit)
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Центр');
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            // Регистратура
+                                                            customQuantityLimit = false;
+                                                            if (data.limits[2]['quantity']!=undefined)
+                                                            {
+                                                                if (  $(ulInPopover).find('li.withPatient').length >= data.limits[2]['quantity'] )
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Регистратуру');
+                                                                }
+                                                            }
+                                                        }
+
+
+
 
                                                         return ulInPopover;
                                                     },
@@ -725,12 +763,14 @@
             }
         }
 
+
+
         if(isFull) { // Полная проверка
 
 
             //======>
 
-            definedCustomLimits = false;
+           definedCustomLimits = false;
             // Если определены limits - то прогоняем по ним
             if (limits!=undefined)
             {
@@ -745,7 +785,7 @@
 
                     if (limits['1']['begin']!=undefined)
                     {
-                        definedCustomLimits = true;
+                  //      definedCustomLimits = true;
                         startTimeSplittedCC = (limits['1']['begin']).split(':');
                         startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(startTimeSplittedCC[0]), parseInt(startTimeSplittedCC[1]));
                     }
@@ -767,7 +807,7 @@
                     }
                     if (endTime !=null)
                     {
-                        if (currentTime.getTime() >  endTime.getTime())
+                        if (currentTime.getTime() >=  endTime.getTime())
                         {
                             return false;
                         }
@@ -783,7 +823,7 @@
 
                     if (limits['2']['begin']!=undefined)
                     {
-                        definedCustomLimits = true;
+                    //    definedCustomLimits = true;
                         startTimeSplittedReg = (limits['2']['begin']).split(':');
                         startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(startTimeSplittedReg[0]), parseInt(startTimeSplittedReg[1]));
                     }
@@ -805,7 +845,7 @@
                     }
                     if (endTime !=null)
                     {
-                        if (currentTime.getTime() >  endTime.getTime())
+                        if (currentTime.getTime() >=  endTime.getTime())
                         {
                             return false;
                         }
