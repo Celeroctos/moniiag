@@ -202,12 +202,20 @@ $(document).ready(function() {
         {
             if (omsTypeValue!='6')
             {
-                if ($.fn['regionPolicyChooser'].getChoosed() > 0)
+                if ($.fn['regionPolicyChooser'].getChoosed() <= 0)
                 {
-
+                    alert('Поле "Регион" должно быть заполнено для этого типа полюсов');
+                    result = false;
                 }
-                alert('dfxzcdsf');
-                return false;
+
+                if (result)
+                {
+                    if ($.fn['insuranceChooser'].getChoosed() <= 0)
+                    {
+                        alert('Поле "Страховая компания" должно быть заполнено для этого типа полюсов');
+                        result = false;
+                    }
+                }
             }
         }
 
