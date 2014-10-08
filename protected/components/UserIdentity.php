@@ -33,6 +33,7 @@ class UserIdentity extends CUserIdentity
                 }
             }
 
+
             // Данные юзера
             $this->setState('login', $record->login);
             $this->setState('id', $record->id);
