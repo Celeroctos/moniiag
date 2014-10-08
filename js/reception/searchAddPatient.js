@@ -201,6 +201,7 @@
         isRightOmsNumber = $.fn.checkOmsNumber();
         if (!isRightOmsNumber)
         {
+            cancelSaving = true;
             return false;
         }
 
@@ -962,13 +963,22 @@
                     $('#regionPolicyChooser .variants').addClass('no-display');
                     $('#regionPolicyChooser .variants').css('display', '');
 
+                    $('#insuranceChooser .choosed').empty();
+                    $('#insuranceChooser input').removeAttr('disabled', '');
+                    $('#insuranceHidden input').val('');
+                    $.fn['insuranceChooser'].clearAll();
                     if (insId!='' && insId!=null)
                     {
-                        $('#insuranceChooser .choosed').html(
+                       /* $('#insuranceChooser .choosed').html(
                             "<span class=\"item\"" +
                             "id=\"r"+ insId +"\">" + insName +
                                 "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                        );*/
+
+                        $.fn['insuranceChooser'].addChoosed(
+                            $('<li>').prop('id', 'r' + insId).text(insName), { id:insId,  name: insName  }
                         );
+
 
                         // Заблочим чюзер
                         $('#insuranceChooser input').attr('disabled', '');
@@ -978,18 +988,27 @@
                     }
                     else
                     {
-                        $('#insuranceChooser .choosed').empty();
-                        $('#insuranceChooser input').removeAttr('disabled', '');
-                        $('#insuranceHidden input').val('');
+
                     }
 
+                    $.fn['regionPolicyChooser'].clearAll();
+
+                    $('#regionPolicyChooser input').removeAttr('disabled', '');
+
+
+                    $('#policyRegionHidden input').val('');
+                    $.fn['regionPolicyChooser'].clearAll();
                     // Запишем в чюзер регион
                     if (regId!='' && regId!=null)
                     {
-                        $('#regionPolicyChooser .choosed').html(
+                        /*$('#regionPolicyChooser .choosed').html(
                             "<span class=\"item\"" +
                                 "id=\"r"+ regId +"\">" + regName +
                                 "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                        );*/
+
+                        $.fn['regionPolicyChooser'].addChoosed(
+                            $('<li>').prop('id', 'r' + regId).text(regName), { id:regId,  name: regName  }
                         );
 
                         // Заблочим чюзер
@@ -1001,12 +1020,7 @@
                     else
                     {
                         //$('#regionPolicyChooser .choosed').empty();
-                        $.fn['regionPolicyChooser'].clearAll();
 
-                        $('#regionPolicyChooser input').removeAttr('disabled', '');
-
-
-                        $('#policyRegionHidden input').val('');
                     }
 
                     $(document).trigger('omsnumberpopulate');
@@ -1105,11 +1119,11 @@
             var region = $.fn['regionChooser'].getChoosed()[0].name + ', ';
             var regionId = $.fn['regionChooser'].getChoosed()[0].id;
         } else {
-            //var region = '';
-            //var regionId = null;
+            var region = '';
+            var regionId = null;
             // Выводим сообщение о том, что нельзя без региона сохранять адрес
-            alert('Поле "Регион" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.');
-            return false;
+            //alert('Поле "Регион" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.');
+            //return false;
         }
 
         // Проверяем - если не указана улица, надо об этом вывести пользователю и спросить что желать дальше
@@ -1126,8 +1140,10 @@
             var settlement = $.fn['settlementChooser'].getChoosed()[0].name + ', ';
             var settlementId = $.fn['settlementChooser'].getChoosed()[0].id;
         } else {
-            var settlement = '';
-            var settlementId = null;
+            //var settlement = '';
+            //var settlementId = null;
+            alert('Поле "Населённый пункт" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.');
+            return false;
         }
 
         if($.fn['streetChooser'].getChoosed().length > 0) {
