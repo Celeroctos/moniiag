@@ -1778,6 +1778,7 @@ class TasuController extends Controller {
 				if($diagnosis['type'] == 0) {
 					$this->setTapServices($tapDiagnosis, $greeting, $oms);
 				}
+
             } catch(Exception $e) {
                 $this->numErrors++;
                 return false;

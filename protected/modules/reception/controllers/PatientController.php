@@ -497,28 +497,29 @@ class PatientController extends Controller {
     }
 
     // Просмотр страницы добавления карты к пациенту
+    // Просмотр страницы добавления карты к пациенту
     public function actionViewAdd() {
-		Yii::app()->user->setState('savedCardNumber', -1); // Сбросить предыдущий номер по F5
+        Yii::app()->user->setState('savedCardNumber', -1); // Сбросить предыдущий номер по F5
         $privilegesList = $this->getPrivileges();
-		$cardnumberGenerator = new CardnumberGenerator(true, true);
-		
+        $cardnumberGenerator = new CardnumberGenerator(true, true);
+
         if(isset($_GET['patientid']) && !isset($_GET['mediateid'])) {
 
             $model = new Oms();
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
             if($patient != null) {
-				// Если нет региона и страховой компании, то подгрузить их
-				$tasuStatus = true;
-				try {
-					$tasuController = Yii::app()->createController('admin/tasu');
-					$result = $tasuController[0]->getTasuPatientByPolicy($patient);
-					/*if($result === -1) {
-						$tasuStatus = false;
-					}*/
-				} catch(Exception $e) {
-					$tasuStatus = false;
-				}
+                // Если нет региона и страховой компании, то подгрузить их
+                $tasuStatus = true;
+                try {
+                    $tasuController = Yii::app()->createController('admin/tasu');
+                    $result = $tasuController[0]->getTasuPatientByPolicy($patient);
+                    /*if($result === -1) {
+                        $tasuStatus = false;
+                    }*/
+                } catch(Exception $e) {
+                    $tasuStatus = false;
+                }
 
                 // Нужно найти последнюю медкарту, чтобы по ней заполнить данными
                 $medcardModel = new Medcard();
@@ -528,7 +529,7 @@ class PatientController extends Controller {
                 if($medcard != null) {
                     $medcard = Medcard::model()->findByPk($medcard['card_number']);
                     $this->fillFormMedcardModel($formModel, $medcard);
-					$cardnumberGenerator->setPrevNumber($medcard->card_number);
+                    $cardnumberGenerator->setPrevNumber($medcard->card_number);
                     // Ищем привилегии
                     $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
                 } else {
@@ -552,11 +553,11 @@ class PatientController extends Controller {
                     'foundPriv' => count($privileges) > 0,
                     'id' => -1,
                     'actionAdd' => 'addcard',
-					'tasuStatus' => $tasuStatus,
-					'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
-					'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
-					'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
-					'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
+                    'tasuStatus' => $tasuStatus,
+                    'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                    'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                    'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                    'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -568,10 +569,10 @@ class PatientController extends Controller {
                     'policy_number' => -1,
                     'policy_id' => -1,
                     'actionAdd' => 'add',
-					'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
-					'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
-					'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
-					'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
+                    'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                    'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                    'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                    'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
             }
         } else {
@@ -603,10 +604,10 @@ class PatientController extends Controller {
                     'fio' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name,
                     'policy_number' => $oms->oms_number,
                     'actionAdd' => 'addcard',
-					'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
-					'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
-					'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
-					'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
+                    'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                    'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                    'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                    'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
                 exit();
             }
@@ -618,10 +619,10 @@ class PatientController extends Controller {
                 'privilegesList' => $privilegesList,
                 'foundPriv' => false,
                 'actionAdd' => 'add',
-				'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
-				'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
-				'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
-				'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
+                'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
             ));
         }
     }
