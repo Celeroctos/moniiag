@@ -195,6 +195,22 @@ $(document).ready(function() {
 
                 break;
         }
+
+        // Надо проверить - если тип полиса выбран не нуль, то надо контролировать на непустоту регион и страховую компанию
+
+        if (result)
+        {
+            if (omsTypeValue!='6')
+            {
+                if ($.fn['regionPolicyChooser'].getChoosed() > 0)
+                {
+
+                }
+                alert('dfxzcdsf');
+                return false;
+            }
+        }
+
         return result;
     }
 
