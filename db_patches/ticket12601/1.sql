@@ -89,6 +89,7 @@ CREATE TABLE mis.medcards_rules
   participle_mode_postfix integer, -- Режим работы с предыдущим постфиксом. 0 - замена, 1 - добавление к старым новых
   prefix_separator_id integer, -- ID разделителя префикса
   postfix_separator_id integer, -- ID разделителя постфикса
+  last_number character varying(250) -- Последний номер для такого правила
   CONSTRAINT medcards_rules_pkey PRIMARY KEY (id)
 )
 WITH (
@@ -127,4 +128,6 @@ COMMENT ON TABLE mis.medcards_separators
 COMMENT ON COLUMN mis.medcards_separators.value IS 'Сам разделитель';
 
 ALTER TABLE mis.wards ADD COLUMN rule_id INTEGER;
+
 UPDATE mis.wards SET rule_id = 15;
+UPDATE mis.medcards_rules SET last_number = '' WHERE id = 15;
