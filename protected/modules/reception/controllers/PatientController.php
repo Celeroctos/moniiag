@@ -682,6 +682,7 @@ class PatientController extends Controller {
     // Проверка на уникальность данных в медкарте
     private function checkUniqueMedcard($model) {
         // На момент создания пациента не должно быть идентичного с номером СНИЛС и паспортом (серии + номер)
+        $medcardSearched = null;
         if(trim($model->snils) != '') {
             $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie)', array(
                 ':snils' => $model->snils,
@@ -689,11 +690,18 @@ class PatientController extends Controller {
                 ':serie' => $model->serie)
             );
         } else {
-            $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
-                ':docnumber' => $model->docnumber,
-                ':serie' => $model->serie)
-            );
+            if (!(($model->docnumber=='')&&($model->serie=='')))
+            {
+                $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
+                    ':docnumber' => $model->docnumber,
+                    ':serie' => $model->serie)
+                );
+            }
         }
+
+       //var_dump($medcardSearched );
+      // exit();
+
         if($medcardSearched != null) {
             echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
