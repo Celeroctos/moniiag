@@ -999,7 +999,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
 			});
 		},
 		setSessionInterval: function(value, _this) {
-			clearTimeout(_this.sessionTimer);
+			/*clearTimeout(_this.sessionTimer);
 			console.log('Timer reseted.');
 			_this.sessionTimer = setTimeout(function() {
 				$.ajax({
@@ -1013,7 +1013,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
 						}
 					},
 				});
-			}, value * 1000);
+			}, value * 1000);*/
 		},
 		checkOnlineData: function() {
 			$.ajax({

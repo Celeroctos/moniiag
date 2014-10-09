@@ -21,48 +21,77 @@
     }
     );
 
-    var numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
+    globalVariables.numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
-    $("#template-edit-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
-        var ajaxData = $.parseJSON(ajaxData);
+    $("#template-edit-form").on('complete', function (eventObj, dataFromQuery, status, jqXHR) {
+        console.log("savingCompleted");
+        var ajaxData = {'success':false};
+        try
+        {
+            ajaxData = $.parseJSON(dataFromQuery);
+        }
+        catch (e)
+        {
+
+        }
         onSectionSave(ajaxData);
     });
 
+    globalVariables.isSavingErrors = false;
     // Вызывается при событии сохранения одной секции приёма (шаблона или диагнозов)
     function onSectionSave(ajaxData)
     {
         console.log(ajaxData);
-        if (ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
+
+        if (ajaxData.success == undefined || ajaxData.success!=true) {
+            // Поднимаем флаг, что есть ошибки
+            globalVariables.isSavingErrors = true;
+        }
+        //else
+        //{ // Запрос прошёл удачно, закрываем окно для добавления нового кабинета, перезагружаем jqGrid
            // if ($(".submitEditPatient").length - 1 == numCalls) { // (-1) - на запрос сохранения диагноза
-            if ($(".submitEditPatient").length == numCalls) {
+            if ($(".submitEditPatient").length == globalVariables.numCalls) {
                 // Сбрасываем, что есть несохранённые данные
                 globalVariables.isUnsavedUserData = false;
                 globalVariables.savingProcessing = false;
                 // Сбрасываем режим на дефолт
-                numCalls = 0;
+                globalVariables.numCalls = 0;
 				// Если класс контента приёма имеет класс неотображения, это было сохранение при смене врача
 				if($('.greetingContentCont').hasClass('no-display')) {
 					$('.backDropForSaving').remove();
 					$('.modal-backdrop').hide();
 					//location.href = '/doctors/shedule/view?date=' + globalVariables.year + '-' + globalVariables.month + '-' + globalVariables.day;
 				}
-                getNewHistory();
-                if (isThisPrint) {
-                    onSaveComplete();
-                }
-                else {
-                    //  $('#medcardContentSave').trigger('end');
-					if(showMsgs) {
-						$('#successEditPopup').modal({});
-					} else {
-						showMsgs = true
-						setTimeout(autoSave, 30000);
-					}
-                }
                 $(".backDropForSaving").remove();
-				$('.modal-backdrop').hide();
+                $('.modal-backdrop').hide();
+                getNewHistory();
+
+                // Проверка на то, есть ли ошибки
+                if (! globalVariables.isSavingErrors)
+                {
+                    if (isThisPrint) {
+                        onSaveComplete();
+                    }
+                    else {
+                        //  $('#medcardContentSave').trigger('end');
+                        if(showMsgs) {
+                            $('#successEditPopup').modal({});
+                        } else {
+                            showMsgs = true
+                            setTimeout(autoSave, 30000);
+                        }
+                    }
+                }
+                else
+                {
+                    if(showMsgs || isThisPrint) {
+                        // Выводим сообщение, что произошла какая-то ошибка
+                        alert ('Извините, при сохранении произошли ошибки. Попробуйте ещё раз сохранить приём');
+                    }
+                }
+                globalVariables.isSavingErrors = false;
             } else {
-                ++numCalls;
+                ++globalVariables.numCalls;
             }
 
             // Вставляем новую запись в список истории
@@ -77,9 +106,10 @@
                     $('#accordionH .accordion-inner div:first').before(newDiv);
                 }
             }
-        } else {
+        //}
+        /*else {
 
-        }
+        }*/
     }
 
     // Функция печати и самого приёма и рекоммендаций (т.е. всего, что выбрано в поп-апе)
@@ -1056,13 +1086,25 @@ $('#submitDiagnosis').on('click', function (e) {
         'cache': false,
         'dataType': 'json',
         'type': 'GET',
-        'success': function (data, textStatus, jqXHR) {
+        /*'success': function (data, textStatus, jqXHR) {
             if (data.success == true) {
                 //   $('#successDiagnosisPopup').modal({});
                 onSectionSave(data);
             }
             else
                 console.log(data);
+        },*/
+        'complete': function (data, textStatus, jqXHR) {
+            var ajaxData = {'success':false};
+            try
+            {
+                ajaxData = $.parseJSON(data.responseText);
+            }
+            catch (e)
+            {
+
+            }
+            onSectionSave(ajaxData);
         }
     });
 });
