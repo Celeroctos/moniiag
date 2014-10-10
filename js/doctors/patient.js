@@ -1119,6 +1119,8 @@ $('#onlyLikeDiagnosis').click(function (e) {
     }
 });
 
+    $('#onlyLikeDiagnosis').click();
+
 
 // Это для того, чтобы занести в диагнозы всё то, что было при загрузке страницы: первичные
 (function (choosers) {
