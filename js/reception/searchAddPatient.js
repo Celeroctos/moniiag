@@ -1114,16 +1114,15 @@
     });
     // --- End 17.06.2014 ---
 
-    $('#editAddressPopup .editSubmit').on('click', function(e) {
+
+    function saveAddress()
+    {
         if($.fn['regionChooser'].getChoosed().length > 0) {
             var region = $.fn['regionChooser'].getChoosed()[0].name + ', ';
             var regionId = $.fn['regionChooser'].getChoosed()[0].id;
         } else {
             var region = '';
             var regionId = null;
-            // Выводим сообщение о том, что нельзя без региона сохранять адрес
-            //alert('Поле "Регион" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.');
-            //return false;
         }
 
         // Проверяем - если не указана улица, надо об этом вывести пользователю и спросить что желать дальше
@@ -1140,22 +1139,14 @@
             var settlement = $.fn['settlementChooser'].getChoosed()[0].name + ', ';
             var settlementId = $.fn['settlementChooser'].getChoosed()[0].id;
         } else {
-            //var settlement = '';
-            //var settlementId = null;
-            alert('Поле "Населённый пункт" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.');
-            return false;
+            var settlement = '';
+            var settlementId = null;
         }
 
         if($.fn['streetChooser'].getChoosed().length > 0) {
             var street = $.fn['streetChooser'].getChoosed()[0].name + ', ';
             var streetId = $.fn['streetChooser'].getChoosed()[0].id;
         } else {
-            // Улица не задана
-            //   Надо спросить - продолжить ли
-            if (! confirm('Вы не заполнили поле "Улица". Сохранить адрес без улицы?'))
-            {
-                return false;
-            }
             var street = '';
             var streetId = null;
         }
@@ -1164,22 +1155,22 @@
         if($.trim(house) == '') {
             house = '';
         } else {
-			house += ', '
-		}
+            house += ', '
+        }
 
         var building = $('#building').val();
         if($.trim(building) == '') {
             building = '';
         } else {
-			building += ', ';
-		}
+            building += ', ';
+        }
 
         var flat = $('#flat').val();
         if($.trim(flat) == '') {
             flat = '';
         } else {
-			flat += ', ';
-		}
+            flat += ', ';
+        }
 
         var postindex = $('#postindex').val();
         if($.trim(postindex) == '') {
@@ -1208,6 +1199,42 @@
         }
 
         $('#editAddressPopup').modal('hide');
+    }
+
+    $('#editAddressPopup .editSubmit').on('click', function(e) {
+        // Проверка данных
+        // 1. Проверим - если не указан нас пункт и не указано, что регион = 77 или 78, то выводим пользователю какой он плохой
+        if($.fn['settlementChooser'].getChoosed().length <= 0)
+        {
+            //regId = null;
+            var regionId = null;
+            if($.fn['regionChooser'].getChoosed().length > 0) {
+                regionId = $.fn['regionChooser'].getChoosed()[0].code_cladr;
+            }
+
+            if (! ((regionId=='77')||(regionId=='78')||(regionId==77)||(regionId==78)))
+            {
+                $('#needCityPopup').modal({});
+                return;
+            }
+        }
+
+        // Проверим наличие улицы
+        if($.fn['streetChooser'].getChoosed().length <= 0)
+        {
+            // Вызываем специальный поп-ап, по нажатию кнопочки в котором будет сразу вызвано сохранение адреса
+            $('#noStreetPopup').modal({});
+        }
+        else
+        {
+            // Вызываем сохранение адреса
+            saveAddress();
+        }
+
+    });
+
+    $('.saveAddressWithoutStreet').on( 'click',function(e){
+        saveAddress();
     });
 
     $('#editAddressPopup').on('hidden.bs.modal', function(e) {
