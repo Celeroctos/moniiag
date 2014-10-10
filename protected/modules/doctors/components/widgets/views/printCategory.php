@@ -142,7 +142,7 @@
                                 }
 
                                     ?>
-                                <?php echo $element['label']; ?> <strong><span class="elementValuePrinting"><?php echo $element['value']; ?></span></strong> <?php echo $element['label_after']; ?>
+                               <strong><span class="elementValuePrinting"><?php echo $element['label']; ?></span></strong> <?php echo $element['value']; ?> <strong><span class="elementValuePrinting"><?php echo $element['label_after']; ?></span></strong>
                                 <?php
 						}
 					}

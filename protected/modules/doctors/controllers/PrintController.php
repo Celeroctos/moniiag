@@ -421,6 +421,9 @@ class PrintController extends Controller {
         $patient = Oms::model()->findByPk($medcard['policy_id']);
         $parts = explode('-', $patient['birthday']);
 
+        $dateFormatter = new DateFormatterMis($patient['birthday']);
+        $greetingInfo['full_age'] = $dateFormatter->getFullAge();
+
         $greetingInfo['full_years'] = date('Y') - $parts[0];
         //var_dump($greetingInfo['full_years'] );
        // exit();
