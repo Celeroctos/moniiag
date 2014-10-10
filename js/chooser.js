@@ -808,7 +808,6 @@ $(document).ready(function() {
             },
             'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
-                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
             'filters' : {
                 'groupOp' : 'AND',
@@ -850,7 +849,6 @@ $(document).ready(function() {
             },
             'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
-                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
             'filters' : {
                 'groupOp' : 'AND',
