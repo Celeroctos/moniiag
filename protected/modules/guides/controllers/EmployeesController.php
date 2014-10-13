@@ -9,6 +9,11 @@ class EmployeesController extends Controller {
 		'Врач высшей категории'
 	);
 
+    public function getDoctorCategories()
+    {
+        return $this->employeeCategories;
+    }
+
     public function actionView() {
         try {
             // Модель формы для добавления и редактирования записи

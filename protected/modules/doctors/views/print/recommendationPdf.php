@@ -131,5 +131,11 @@ foreach ($templates as $oneTemplate)
 }
 ?>
 <!-- Выведем ФИО врача -->
-<br/><br/><strong><span style="font-size:14px;">Врач: <?php  echo $greeting['doctor_spec'].' '.$greeting['doctor_fio'];  ?></span></strong>
+<br/><br/><strong><span style="font-size:14px;">Врач: <?php  echo trim($greeting['doctor_spec'].' '.$greeting['doctor_fio']) ;
+        // Если строка с регалиями
+        if ($greeting['doctor_regalia']!='')
+        {
+            echo (', '.$greeting['doctor_regalia']);
+        }
+        ?></span></strong>
 <!--?php exit();
