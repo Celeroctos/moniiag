@@ -402,6 +402,7 @@ class ElementsController extends Controller {
                  'dependences' => $dependencesArr,
                  'comboValues' => $comboValues,
                  'controls' => $controls,
+                 'notPrintedValues' => $elementModel['not_printing_values'],
                  'actions' => array(
                      'Нет',
                      'Скрыть',
@@ -446,6 +447,54 @@ class ElementsController extends Controller {
             $dependencesArr[] = $dependence;
         }
         return $dependencesArr;
+    }
+
+    public function actionSaveNonPrintableValues()
+    {
+        //var_dump($_GET);
+        //exit();
+        $elementId = $_GET['element'];
+        $valueId = $_GET['valueId'];
+        $actionToDo = $_GET['action'];
+
+        // Прочитать невыводимые элементы из базы
+        $elementToChange = MedcardElement::model()->findByPk($elementId);
+        // Берём у него поле
+        $arrayNonPrintables = CJSON::decode( $elementToChange['not_printing_values'] );
+
+        // Теперь ищем в массиве
+        $needleKey = array_search($valueId, $arrayNonPrintables);
+        //var_dump($needleKey);
+        //exit();
+        if ($needleKey===false)
+        {
+            if ($actionToDo==true || $actionToDo=='true')
+            {
+                // Вставить элемент
+                array_push($arrayNonPrintables, $valueId  );
+            }// Иначе ничего не делаем
+        }
+        else
+        {
+            if ($actionToDo==false || $actionToDo=='false')
+            {
+                // Удалить элемент
+                array_splice($arrayNonPrintables, $needleKey,1);
+            }// Иначе ничего не делаем
+        }
+        $newArrayString = CJSON::encode($arrayNonPrintables);
+        $elementToChange['not_printing_values'] = $newArrayString;
+        $elementToChange->save();
+
+        // Возвращаем назад строку
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'notPrintValues' => $newArrayString
+                )
+            )
+        );
+
     }
 
     // Сохранить все зависимости. Есть зависимость == "Нет", это означает, что строку из базы зависимостей надо удалить

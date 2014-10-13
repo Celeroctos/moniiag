@@ -884,13 +884,18 @@
                 <h4 class="modal-title">Редактирование зависимостей значений элемента</h4>
             </div>
             <div class="modal-body">
+                <input id="valuesNotToPrint" type="hidden">
                 <div class="row">
                     <div class="col-xs-5" id="controlValuesPanel">
                         <h5>Значения выбранного списка</h5>
                         <div class="row">
                             <select id="controlValues" multiple="multiple" class="form-control">
                             </select>
+                            <span class="notPrintIfThisValueContainer no-display"><input type="checkbox" id="notPrintIfThisValue">Не печатать при выборе данного значения</span>
                         </div>
+                        <!--div class="row">
+
+                        </div-->
                     </div>
                     <div class="col-xs-5 no-display" id="controlDependencesPanel">
                         <h5>Список элементов управления</h5>

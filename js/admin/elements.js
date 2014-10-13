@@ -799,6 +799,8 @@ $('#editElementDependences').on('click', function () {
                     $('#editDependencesPopup').on('shown.bs.modal', function (e) {
                         testDirection();
                     });
+                    //
+                    $('#valuesNotToPrint').val( data.notPrintedValues );
                     $('#editDependencesPopup').modal({});
                 } else {
 
@@ -808,17 +810,100 @@ $('#editElementDependences').on('click', function () {
     }
 });
 
+    function installNotPrintValue(valueOfElement)
+    {
+        // Сначала устанавливаем как "невыбрано"
+        $('#notPrintIfThisValue').prop('checked',false);
+        // Берём из поля непечатаемых значений массив ИД элементов, по которым элемент не печатается
+        try
+        {
+            nonPrintables = $.parseJSON($('#valuesNotToPrint').val());
+            // Смотрим - есть ли в списке nonPrintables значение, выбранное в элементе
+            selectedValue = $($('#controlValues').find(':selected')[0]).attr('value');
+
+            // Имеем искомое значение и список значений, в котором надо найти данное значение
+            for (i=0;i<nonPrintables.length;i++)
+            {
+                if (nonPrintables[i]==selectedValue)
+                {
+                    // Устанавливаем чекбокс
+                    $('#notPrintIfThisValue').prop('checked',true);
+
+                    // Выходим из цикла
+                    break;
+
+                }
+            }
+        }
+        catch (Exc)
+        {
+
+        }
+
+    }
+
 $('#controlValues').on('change', function (e) {
     if ($(this).val() != null && $(this).val().length > 0) {
         $('#controlDependencesPanel').removeClass('no-display');
     } else {
         $('#controlDependencesPanel').addClass('no-display');
     }
+
+    // Для выбора непечатаемого значения проверяем отдельно
+    if ($(this).val() != null && $(this).val().length == 1) {
+        $('.notPrintIfThisValueContainer').removeClass('no-display');
+        // Установить значение этого чекбокса
+        installNotPrintValue($(this).val()[0]);
+    }
+    else
+    {
+        $('.notPrintIfThisValueContainer').addClass('no-display');
+    }
     $('#controlDependencesPanel').find('h5:eq(1), .row:eq(1)').addClass('no-display');
     $('#saveDependencesBtn').addClass('no-display');
     $('#controlDependencesList').val([]);
     $('#controlActions').val([]);
 });
+
+    $('#notPrintIfThisValue').on('change',function(e){
+       console.log('Non-print checkbox changed');
+        // Нужно отправить ajax-запрос "не печатать элемент при таком-то значении"
+
+        console.log( $(this).prop('checked') );
+
+        selectedValue = $('#controlValues').find(':selected');
+
+        // Если выбрано больше одного опшена - то выходим (хотя при нормальной работе системы такого не должно быть)
+        if ( selectedValue.length!=1 )
+        {
+            return;
+        }
+        elementId = currentRow;
+        selectedFlag = $(this).prop('checked');
+
+        dataForAjax = {
+            element: elementId,
+            valueId: $($(selectedValue)[0]).prop('value'),
+            action: selectedFlag
+        };
+
+
+        $.ajax({
+            'url': '/admin/elements/savenonprintablevalues',
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'data':dataForAjax,
+            'success': function (data, textStatus, jqXHR) {
+                // Тут надо взять новое значение массива непечатаемых элементов из ответа и вставить в спрятанное поле
+                if (data.success==true || data.success=='true')
+                {
+                    $('#valuesNotToPrint').val(data.data.notPrintValues);
+                }
+            }
+        });
+
+    });
 
 function is_int(mixed_var) {
     var result = false;
