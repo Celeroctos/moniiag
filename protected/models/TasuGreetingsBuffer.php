@@ -94,10 +94,12 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 							->leftJoin(Oms::model()->tableName().' o', 'm.policy_id = o.id')
 							->leftJoin(Payment::model()->tableName().' p', 'p.id = tfg.payment_type')
 							->where('tfg.doctor_id = :doctor_id
-									AND tfg.card_number = :card_number', 
+									AND tfg.card_number = :card_number
+									AND tfg.greeting_date = :greeting_date', 
 									array(
 										':doctor_id' => $fakeModel['doctor_id'],
-										':card_number' => $fakeModel['card_number']
+										':card_number' => $fakeModel['card_number'],
+										':greeting_date' => $fakeModel['greeting_date']
 									))
 							->queryRow();
 							
@@ -111,9 +113,21 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 						$bufferElement['oms_id'] = $fakeModelData['policy_id'];
 						$bufferElement['doctor_id'] = $fakeModel['doctor_id'];
 						$bufferElement['primary_diagnosis_id'] = $fakeModel['primary_diagnosis_id'];
-						$bufferElement['payment_type'] = $fakeModel['payment_type'];
+						$bufferElement['payment_type'] = $fakeModelData['payment_type'];
+						$bufferElement['secondary_diagnosis_ids'] = array();
+						// Вторичные диагнозы
+						$secDiags = TasuFakeGreetingsBufferSecDiag::model()->findAll('buffer_id = :buffer_id', array(':buffer_id' => $fakeModel['id']));
+						foreach($secDiags as $secDiag) {
+							$bufferElement['secondary_diagnosis_ids'][] = $secDiag['diagnosis_id'];
+						}
 					}
                 } else {
+					// Вторичные диагнозы
+					$bufferElement['secondary_diagnosis_ids'] = array();
+					$secDiags = PatientDiagnosis::model()->findAll('greeting_id = :greeting_id AND type = 1', array(':greeting_id' => $bufferElement['greeting_id']));
+					foreach($secDiags as $secDiag) {
+						$bufferElement['secondary_diagnosis_ids'][] = $secDiag['mkb10_id'];
+					}
 					$counter++;
 				}
 				

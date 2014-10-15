@@ -102,6 +102,7 @@ class TasuController extends Controller {
 					$fakeModel->primary_diagnosis_id = $model->primaryDiagnosis;
 					$fakeModel->greeting_date = $model->greetingDate;
 					$fakeModel->payment_type = $model->paymentType;
+					$fakeModel->service_id = $model->serviceId;
 					if(!$fakeModel->save()) {
 						echo CJSON::encode(array(
 							'success' => false,
@@ -643,9 +644,20 @@ class TasuController extends Controller {
 			$paymentsList[(string)$value['id']] = $value['name'];
 		}
 		
+		// Список услуг
+		$servicesListDb = MedService::model()->getRows(false, 'id', 'asc');
+		$serviceCodesList = array();
+		$defaultService = false;
+		foreach($servicesListDb as $value) {
+			// Дефолтная услуга
+			if($value['is_default'] == 1) {
+				$defaultService = $value['id'];
+			}
+			$serviceCodesList[(string)$value['id']] = $value['name'].' ('.$value['tasu_code'].')';
+		}
+		
 		// Список врачей
 		$doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
-
 		$doctorsList = array();
 		foreach($doctorsListDb as $value) {
 			if($value['last_name'] == null) {
@@ -666,7 +678,9 @@ class TasuController extends Controller {
 			'modelFilter' => new FormTasuFilterExport(),
 			'wardsList' => $wardsList,
 			'doctorsList' => $doctorsList,
-			'tasuPaymentList' => $paymentsList
+			'tasuPaymentList' => $paymentsList,
+			'serviceCodesList' => $serviceCodesList,
+			'defaultService' => $defaultService
         ));
     }
 
@@ -750,6 +764,19 @@ class TasuController extends Controller {
 				$element['pr_diag_code'] = mb_substr($diagnosisPr->description, 0, mb_strpos($diagnosisPr->description, ' '));
 			} else {
 				$element['pr_diag_code'] = '';
+			}
+			
+			$element['sec_diag_codes'] = '';
+			foreach($element['secondary_diagnosis_ids'] as $diagId) {
+				$diagnosisSec = Mkb10::model()->findByPk($diagId);
+				if($diagnosisSec != null) {
+					$element['sec_diag_codes'] .= mb_substr($diagnosisSec->description, 0, mb_strpos($diagnosisSec->description, ' ')).', ';
+				} else {
+					$element['sec_diag_codes'] .= '';
+				}
+			}
+			if($element['sec_diag_codes'] != '') {
+				$element['sec_diag_codes'] = mb_substr($element['sec_diag_codes'], 0, mb_strlen($element['sec_diag_codes']) - 2);
 			}
 
             array_push($resultBuffer, $element);

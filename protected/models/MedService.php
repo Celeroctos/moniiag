@@ -37,7 +37,7 @@ class MedService extends MisActiveRecord {
             $this->getSearchConditions($services, $filters, array(
 
             ), array(
-                'm' => array('id', 'name', 'code')
+                'm' => array('id', 'name', 'tasu_code')
             ), array(
 
             ));

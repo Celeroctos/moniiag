@@ -11,12 +11,13 @@ class FormTasuFakeBufferAdd extends CFormModel
 	public $wardId;
 	public $paymentType;
 	public $savePrimaryDiag;
+	public $serviceCode;
 
     public function rules()
     {
         return array(
             array(
-                'cardNumber, doctorId, primaryDiagnosis, greetingDate, paymentType', 'required'
+                'cardNumber, doctorId, primaryDiagnosis, greetingDate, paymentType, serviceCode', 'required'
             ),
             array(
                 'id, secondaryDiagnosis, wardId, savePrimaryDiag', 'safe'
@@ -34,7 +35,8 @@ class FormTasuFakeBufferAdd extends CFormModel
             'greetingDate' => 'Дата приёма',
 			'wardId' => 'Отделение',
 			'paymentType' => 'Тип оплаты',
-			'savePrimaryDiag' => 'Не очищать первичный диагноз после сохранения приёма'
+			'savePrimaryDiag' => 'Не очищать первичный диагноз после сохранения приёма',
+			'serviceCode' => 'Код услуги'
         );
     }
 }

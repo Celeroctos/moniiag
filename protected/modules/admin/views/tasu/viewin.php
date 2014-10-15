@@ -239,6 +239,21 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'serviceCode', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'serviceCode', $serviceCodesList, array(
+									'id' => 'serviceCode',
+									'class' => 'form-control',
+									'options' => array(
+										$defaultService => array('selected' => true)
+									)
+								)); 
+								?>
+							</div>
+						</div>
+						<div class="form-group">
 							<?php echo $form->labelEx($modelAddFake,'greetingDate', array(
 								'class' => 'col-xs-3 control-label'
 							)); ?>
@@ -387,6 +402,17 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'serviceCode', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'serviceCode', $serviceCodesList, array(
+									'id' => 'serviceCodeEdit',
+									'class' => 'form-control',
+								)); ?>
+							</div>
+						</div>
+						<div class="form-group">
 							<?php echo $form->labelEx($modelAddFake,'greetingDate', array(
 								'class' => 'col-xs-3 control-label'
 							)); ?>
@@ -432,6 +458,8 @@
 									'class' => 'form-control'
 								)); ?>
 							</div>
+						</div>
+						<div class="borderBox no-display" id="fioContEdit">
 						</div>
 						<div class="form-group chooser" id="primaryDiagnosisChooser2">
 							<?php echo $form->labelEx($modelAddFake,'primaryDiagnosis', array(
