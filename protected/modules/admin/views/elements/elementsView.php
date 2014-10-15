@@ -207,6 +207,21 @@
                                 <?php echo $form->error($model,'showDynamic'); ?>
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'hideLabelBefore', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'hideLabelBefore', array('Нет', 'Да'), array(
+                                    'id' => 'hideLabelBefore',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'hideLabelBefore'); ?>
+                            </div>
+                        </div>
+
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(
@@ -630,6 +645,20 @@
                                 <?php echo $form->error($model,'showDynamic'); ?>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'hideLabelBefore', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'hideLabelBefore', array('Нет', 'Да'), array(
+                                    'id' => 'hideLabelBefore',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'hideLabelBefore'); ?>
+                            </div>
+                        </div>
+
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(

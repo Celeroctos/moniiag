@@ -34,6 +34,71 @@
 			else
 			{
 				$element = $child['element'];
+
+                    // Тут мы должны проверить - если у элемента значение,
+                    //      при котором он не печататается - то его не нужно печатать
+
+                    /*if ($element['not_printing_values']!=NULL &&  $element['not_printing_values']!='')
+                    {
+                        //var_dump('sdvsdfv3zdc');
+                        //exit();
+                        // Раскодируем массив значений
+                        $arrayValues = CJSON::decode(  $element['not_printing_values'] );
+
+                        //var_dump($arrayValues);
+                        //exit();
+
+                        if ($arrayValues!=null)
+                        {
+
+                            // Вот тут надо выполнить саму проверку
+                            $elementValue = CJSON::decode($element['value']);
+                            if ($elementValue==null)
+                            {
+                                // Значит берём значение напрямую из элемента без декодирования
+                                $elementValue = $element['value'];
+                            }
+
+                            // Теперь имеем следующую ситуацию
+                            // Есть значение элемента. Оно является либо массивом, либо одиночным значением
+                            //   Т.О. его надо либо перебрать как массив, либо взять и найти поиском в массиве значений
+                            if (is_array($elementValue))
+                            {
+                                // Перебираем elementValue
+                                $wasFoundNotPrint = false;
+
+                                foreach ($elementValue as $oneElementValue)
+                                {
+                                    if(in_array($oneElementValue,$arrayValues))
+                                    {
+                                        $wasFoundNotPrint=true;
+                                        break;
+                                    }
+                                }
+
+                                if ($wasFoundNotPrint==true)
+                                {
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+
+                                var_dump($element);
+                                var_dump($elementValue);
+                                var_dump($arrayValues);
+                                exit();
+
+                                if (in_array($elementValue,$arrayValues))
+                                {
+                                    //var_dump('sdfsdder3rdfc');
+                                    //exit();
+                                    continue;
+                                }
+                            }
+                        }
+                    }*/
+
 					if ($element['value']!='' && $element['value']!=null)
 					{
 						if ($element['type']=='4')
@@ -142,7 +207,16 @@
                                 }
 
                                     ?>
-                                <?php echo $element['label']; ?> <strong><span class="elementValuePrinting"><?php echo $element['value']; ?></span></strong> <?php echo $element['label_after']; ?>
+                                <?php
+
+                              //var_dump($element);
+                               // Проверим - если у элемента не установлено "Прятать метку до" - печатаем метка
+                               if ($element['hide_label_before']!=1 )
+                               {
+                                   echo $element['label'];
+                               }
+
+                               ?> <strong><span class="elementValuePrinting"><?php echo $element['value']; ?></span></strong> <?php echo $element['label_after']; ?>
                                 <?php
 						}
 					}

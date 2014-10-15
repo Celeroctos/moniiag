@@ -420,7 +420,11 @@ function editElement() {
 						{
 							modelField: 'show_dynamic',
 							formField: 'showDynamic'
-						}
+						},
+                        {
+                            modelField: 'hide_label_before',
+                            formField: 'hideLabelBefore'
+                        }
 					];
 					
 					if(data.data['type'] == 4) {

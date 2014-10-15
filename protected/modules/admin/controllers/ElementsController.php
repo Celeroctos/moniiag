@@ -97,6 +97,9 @@ class ElementsController extends Controller {
             $model->attributes = $_POST['FormElementAdd'];
             // Проверим - изменился ли тип у элемента,
 
+            //var_dump($model);
+            //exit();
+
             if ($_POST['FormElementAdd']['id']!='')
             {
 
@@ -186,6 +189,7 @@ class ElementsController extends Controller {
         $element->position = $model->position;
         $element->label_display = $model->labelDisplay;
         $element->is_required = $model->isRequired;
+        $element->hide_label_before = $model->hideLabelBefore;
         
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
@@ -267,6 +271,9 @@ class ElementsController extends Controller {
         $partOfPath = $this->getElementPath($element->categorie_id);
         $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
         $element->path = $partOfPath.'.'.$element->position;
+
+        //var_dump($element);
+        //exit();
 
         if($element->save()) {
             echo CJSON::encode(array('success' => true,
@@ -462,6 +469,8 @@ class ElementsController extends Controller {
         // Берём у него поле
         $arrayNonPrintables = CJSON::decode( $elementToChange['not_printing_values'] );
 
+        if ($arrayNonPrintables==null)
+            $arrayNonPrintables = array();
         // Теперь ищем в массиве
         $needleKey = array_search($valueId, $arrayNonPrintables);
         //var_dump($needleKey);

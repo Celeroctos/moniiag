@@ -460,6 +460,7 @@ class PrintController extends Controller {
             $changedElements = MedcardElementForPatient::model()->findGreetingTemplate($greetingId,$templateId);
         }
 
+       // echo '<pre>';
         //var_dump($changedElements );
         //exit();
         // =====>
@@ -468,6 +469,86 @@ class PrintController extends Controller {
         //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
         //      }
 //exit();
+
+        $indexToDelete = array();
+        // Вот в этой точке надо "почистить" массив от невыводимых элементов
+        for($i=0;$i<count($changedElements );$i++)
+        {
+            if ($changedElements[$i]['not_printing_values']!=NULL &&  $changedElements[$i]['not_printing_values']!='')
+            {
+                //var_dump('sdvsdfv3zdc');
+                //exit();
+                // Раскодируем массив значений
+                $arrayValues = CJSON::decode(  $changedElements[$i]['not_printing_values'] );
+
+                //var_dump($arrayValues);
+                //exit();
+
+                if ($arrayValues!=null)
+                {
+
+                    // Вот тут надо выполнить саму проверку
+                    $elementValue = CJSON::decode($changedElements[$i]['value']);
+                    if ($elementValue==null)
+                    {
+                        // Значит берём значение напрямую из элемента без декодирования
+                        $elementValue = $changedElements[$i]['value'];
+                    }
+
+                    // Теперь имеем следующую ситуацию
+                    // Есть значение элемента. Оно является либо массивом, либо одиночным значением
+                    //   Т.О. его надо либо перебрать как массив, либо взять и найти поиском в массиве значений
+                    if (is_array($elementValue))
+                    {
+                        // Перебираем elementValue
+                        $wasFoundNotPrint = false;
+
+                        foreach ($elementValue as $oneElementValue)
+                        {
+                            if(in_array($oneElementValue,$arrayValues))
+                            {
+                                $wasFoundNotPrint=true;
+                                break;
+                            }
+                        }
+
+                        if ($wasFoundNotPrint==true)
+                        {
+                            array_push($indexToDelete,$i);
+                        }
+                    }
+                    else
+                    {
+
+                        //var_dump($element);
+                        //var_dump($elementValue);
+                        //var_dump($arrayValues);
+                        //exit();
+
+                        if (in_array($elementValue,$arrayValues))
+                        {
+                            //var_dump('sdfsdder3rdfc');
+                            //exit();
+                            array_push($indexToDelete,$i);
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        //var_dump($indexToDelete);
+        //exit();
+
+        // Идём в обратную сторону по массиву ненужных элементов и удаляем их массива изменённых элементов
+        for ($i=count($indexToDelete)-1;$i>=0;$i--)
+        {
+            array_splice($changedElements, $indexToDelete[$i],1);
+        }
+        //echo "<pre>";
+        //var_dump($changedElements);
+        //exit();
+
         if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
@@ -546,6 +627,9 @@ class PrintController extends Controller {
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
                 $mPDF->WriteHTML($stylesheet, 1);
                 $htmlForPdf = '';
+
+                //var_dump($sortedElements);
+                //exit();
 
                 // Если печатаем рекомендации - печатаем их по-другому, в другой совершенно форме:
                 if ($printRecom)
