@@ -102,6 +102,45 @@ $form = $this->beginWidget('CActiveForm', array(
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="needCityPopup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Ошибочка вышла!</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p>Поле "Населённый пункт" необходимо заполнить при редактировании адреса. Пожалуйста, заполните это поле, либо отмените редактирование.</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+    <div class="modal fade error-popup" id="noStreetPopup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Подтверждение</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <p>Вы не заполнили поле "Улица". Сохранить адрес без улицы?</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success saveAddressWithoutStreet" data-dismiss="modal">Да</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <?php $this->endWidget(); ?>
 <?php
 $this->widget('application.modules.guides.components.widgets.claddr.regionAdder', array(
