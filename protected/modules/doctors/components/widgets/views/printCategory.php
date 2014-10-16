@@ -42,7 +42,7 @@
 							// Редактируемая таблица. Её надо раздербанить по ячейкам и вывести
 							?>
 							<br></br>
-							<table class="tableForPrint">
+							<table style="border-collapse: collapse;">
 							<tbody>
 							<?php 
 							if(isset($configOfTable['cols']) && count($configOfTable['cols']) > 0) 
@@ -53,13 +53,13 @@
 								if(isset($configOfTable['rows']) && count($configOfTable['rows']) > 0) 
 								{
 								?>
-									<td></td>
+									<td style="border-width:1px; border-style:solid; border-color:#000000;"></td>
 									<?php
 								}
 								for($i = 0; $i < count($configOfTable['cols']); $i++)
 								{
 								?>
-									<td>
+									<td style="border-width:1px; border-style:solid; border-color:#000000;">
 									<?php
 									echo $configOfTable['cols'][$i];
 									?>
@@ -79,7 +79,7 @@
 								if(isset($configOfTable['rows'][$i]))
 								{
 								?>
-									<td>
+									<td style="border-width:1px; border-style:solid;  border-color:#000000;">
 									<?php 
 									echo $configOfTable['rows'][$i]; 
 									?>
@@ -91,7 +91,7 @@
 								for($j = 0; $j < $configOfTable['numCols']; $j++)
 								{
 								?>
-									<td class="content-<?php echo $i.'_'.$j; ?>">
+									<td style="border-width:1px; border-style:solid; border-color:#000000;" class="content-<?php echo $i.'_'.$j; ?>">
 									<?php
 									if(isset($valuesArr[$i][$j]))
 									{
