@@ -369,18 +369,9 @@
                                 )
                             ));
                             ?>
+
                             <div class="form-group">
-                                <label for="onlyLikeDiagnosis"
-                                   class="col-xs-3 control-label" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                    Выбирать только из списка "любимых" диагнозов
-                                </label>
-                                <div class="col-xs-9">
-                                    <input type="checkbox" id="onlyLikeDiagnosis">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="doctor" class="col-xs-3 control-label">Клинические
-                                    диагноз / диагнозы:</label>
+                                <label for="doctor" class="col-xs-3 control-label">Клинический диагноз</label>
                                 <div class="col-xs-9">
                                     <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>
                                 </div>
@@ -407,8 +398,8 @@
                                 </div>
                             </div>
                             <div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
-                                <label for="doctor" class="col-xs-3 control-label">Клинические
-                                    диагноз / диагнозы:</label>
+                                <label for="doctor" class="col-xs-3 control-label"><!--Клинические
+                                    диагноз / диагнозы:--></label>
                                 <div class="col-xs-9">
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="clinicalSecondaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
@@ -427,6 +418,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label for="onlyLikeDiagnosis"
+                                       class="col-xs-3 control-label" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                    Выбирать только из списка "любимых" диагнозов
+                                </label>
+                                <div class="col-xs-9">
+                                    <input type="checkbox" id="onlyLikeDiagnosis">
+                                </div>
+                            </div>
+
                             <div class="form-group chooser" id="primaryDiagnosisChooser">
                             <label for="doctor" class="col-xs-3 control-label">Основной диагноз по МКБ-10:</label>
                                 <div class="col-xs-9">
@@ -443,6 +444,9 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                             <div class="form-group chooser" id="complicationsDiagnosisChooser">
                                 <label for="doctor" class="col-xs-3 control-label">Осложнения основного диагноза по МКБ-10:</label>
                                 <div class="col-xs-9">
