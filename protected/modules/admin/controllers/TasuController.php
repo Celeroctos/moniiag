@@ -102,7 +102,7 @@ class TasuController extends Controller {
 					$fakeModel->primary_diagnosis_id = $model->primaryDiagnosis;
 					$fakeModel->greeting_date = $model->greetingDate;
 					$fakeModel->payment_type = $model->paymentType;
-					$fakeModel->service_id = $model->serviceId;
+					$fakeModel->service_id = $model->serviceCode;
 					if(!$fakeModel->save()) {
 						echo CJSON::encode(array(
 							'success' => false,
@@ -777,6 +777,10 @@ class TasuController extends Controller {
 			}
 			if($element['sec_diag_codes'] != '') {
 				$element['sec_diag_codes'] = mb_substr($element['sec_diag_codes'], 0, mb_strlen($element['sec_diag_codes']) - 2);
+			}
+			
+			if((isset($element['service_tasu_code']) && $element['service_tasu_code'] == null) || !isset($element['service_tasu_code'])) {
+				$element['service'] = 'Нет';
 			}
 
             array_push($resultBuffer, $element);

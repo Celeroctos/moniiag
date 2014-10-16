@@ -87,19 +87,16 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 					
 					if($fakeModel != null) {
 						$fakeModelData = $connection->createCommand()
-							->select('tfg.*, d.*, m.*, o.*, o.last_name as o_last_name, o.first_name as o_first_name, o.middle_name as o_middle_name, d.last_name as d_last_name, d.first_name as d_first_name, d.middle_name as d_middle_name, p.tasu_string as payment_type')
+							->select('tfg.*, d.*, m.*, o.*, o.last_name as o_last_name, o.first_name as o_first_name, o.middle_name as o_middle_name, d.last_name as d_last_name, d.first_name as d_first_name, d.middle_name as d_middle_name, p.tasu_string as payment_type, ms.name as service_name, ms.tasu_code as service_tasu_code')
 							->from(TasuFakeGreetingsBuffer::model()->tableName().' tfg')
 							->leftJoin(Doctor::model()->tableName().' d', 'tfg.doctor_id = d.id')
 							->leftJoin(Medcard::model()->tableName().' m', 'tfg.card_number = m.card_number')
 							->leftJoin(Oms::model()->tableName().' o', 'm.policy_id = o.id')
 							->leftJoin(Payment::model()->tableName().' p', 'p.id = tfg.payment_type')
-							->where('tfg.doctor_id = :doctor_id
-									AND tfg.card_number = :card_number
-									AND tfg.greeting_date = :greeting_date', 
+							->leftJoin(MedService::model()->tableName().' ms', 'ms.id = tfg.service_id')
+							->where('tfg.id = :fake_id', 
 									array(
-										':doctor_id' => $fakeModel['doctor_id'],
-										':card_number' => $fakeModel['card_number'],
-										':greeting_date' => $fakeModel['greeting_date']
+										':fake_id' => $bufferElement['fake_id']
 									))
 							->queryRow();
 							
@@ -114,6 +111,8 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 						$bufferElement['doctor_id'] = $fakeModel['doctor_id'];
 						$bufferElement['primary_diagnosis_id'] = $fakeModel['primary_diagnosis_id'];
 						$bufferElement['payment_type'] = $fakeModelData['payment_type'];
+						$bufferElement['service'] = $fakeModelData['service_name']; 
+						$bufferElement['service_tasu_code'] = $fakeModelData['service_tasu_code'];
 						$bufferElement['secondary_diagnosis_ids'] = array();
 						// Вторичные диагнозы
 						$secDiags = TasuFakeGreetingsBufferSecDiag::model()->findAll('buffer_id = :buffer_id', array(':buffer_id' => $fakeModel['id']));

@@ -3,7 +3,7 @@
 		$(id).jqGrid({
 			url: globalVariables.baseUrl + '/admin/tasu/getbuffergreetings',
 			datatype: "json",
-			colNames:['Код', '№ карты', 'ФИО пациента', 'Д-осн', 'Д-2', 'Дата', 'Врач', 'Статус', 'Проведён в МИС'],
+			colNames:['Код', '№ карты', 'ФИО пациента', 'Д-осн', 'Д-2', 'Дата', 'Врач', 'Статус', 'Проведён в МИС', 'Услуга'],
 			colModel:[
 				{
 					name:'id',
@@ -49,6 +49,11 @@
 					name: 'in_mis_desc',
 					index: 'in_mis_desc',
 					width: 130
+				},
+				{
+					name: 'service',
+					index: 'service',
+					width: 100
 				}
 			],
 			rowNum: 30,
@@ -554,7 +559,7 @@
 						paymentType : $.trim($('#paymentType').val()),
 						primaryDiagnosisData : primaryDiagnosis[0],
 						secondaryDiagnosisData : secondaryDiagnosisChoosed,
-						serviceId : $.trim($('#serviceCode').val())
+						serviceCode : $.trim($('#serviceCode').val())
 					};
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
