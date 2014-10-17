@@ -990,12 +990,12 @@ class TasuController extends Controller {
 				if(!$this->isErrorElement) {
 					$bufferGreetingModel->status = 1;
 					if(!$bufferGreetingModel->save()) {
-						$this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id;
-						$this->logStr .= "[Ошибка] Невозможно изменить статус приёма в буфере c ID".$bufferGreetingModel->id."\r\n";
+						$this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно изменить статус приёма в буфере c ID'.$bufferGreetingModel->id." (карта ".$element['medcard'].", дата ".$element['patient_day'].")";
+						$this->logStr .= "[Ошибка] Невозможно изменить статус приёма в буфере c ID".$bufferGreetingModel->id." (карта ".$element['medcard'].", дата ".$element['patient_day'].")\r\n";
 						$this->isErrorElement = true;
 					} else {
-						$this->log[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id.' успешно изменён.';
-						$this->logStr .= "[OK] Статус приёма в буфере c ID".$bufferGreetingModel->id." успешно изменён.\r\n";
+						$this->log[] = '<strong class="text-success">[OK]</strong> Статус приёма в буфере c ID'.$bufferGreetingModel->id." (карта ".$element['medcard'].", дата ".$element['patient_day'].") успешно изменён.";
+						$this->logStr .= "[OK] Статус приёма в буфере c ID".$bufferGreetingModel->id." (карта ".$element['medcard'].", дата ".$element['patient_day'].") успешно изменён.\r\n";
 					}
 				} else {
 					$this->isErrorElement = false;
@@ -1066,8 +1066,8 @@ class TasuController extends Controller {
             $result = $this->addTasuPatient($medcard, $oms);
             if($result === false) {
                 $this->numErrors++;
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить пациента с ОМС '.$oms->oms_number.' ('.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.')';
-				$this->logStr .= "[Ошибка] Невозможно добавить пациента с ОМС ".$oms->oms_number." (".$oms->last_name." ".$oms->first_name." ".$oms->middle_name.")\r\n";
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить пациента с ОМС '.$oms->oms_number.' ('.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.'), карта '.$greeting['medcard'].', дата '.$greeting['patient_day'];
+				$this->logStr .= "[Ошибка] Невозможно добавить пациента с ОМС ".$oms->oms_number." (".$oms->last_name." ".$oms->first_name." ".$oms->middle_name."), карта ".$greeting['medcard']."), карта ".$greeting['medcard'].", дата ".$greeting['patient_day']."\r\n";
                 $this->isErrorElement = true;
 				return false;
             } else {
@@ -1147,13 +1147,13 @@ class TasuController extends Controller {
                 // Добавляем MKБ-10 диагнозы к приёму
                 $this->setMKB10ByTap($tap, $greeting, $oms, $medcard);
             } else {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' в базу: возможно, полис пациента записан в неправильном формате...?.';
-				$this->logStr .= "[Ошибка] Невозможно добавить приём с ID".$greeting['greeting_id']." в базу: возможно, полис пациента записан в неправильном формате...?\r\n";
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' (карта '.$medcard->card_number.', дата '.$greeting['patient_day'].') в базу: возможно, полис пациента записан в неправильном формате...?.';
+				$this->logStr .= "[Ошибка] Невозможно добавить приём с ID".$greeting['greeting_id']." (карта ".$medcard->card_number.", дата ".$greeting['patient_day'].") в базу: возможно, полис пациента записан в неправильном формате...?\r\n";
 				$this->isErrorElement = true;
             }
         } else {
-            $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента для приёма с ID'.$greeting['greeting_id'].' в ТАСУ: возможно, пациент не создался в ТАСУ...?.';
-			$this->logStr .= "[Ошибка] Невозможно найти пациента для приёма с ID".$greeting['greeting_id']." в ТАСУ: возможно, пациент не создался в ТАСУ...?\r\n";
+            $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента для приёма с ID'.$greeting['greeting_id'].'  (карта '.$medcard->card_number.', дата '.$greeting['patient_day'].') в ТАСУ: возможно, пациент не создался в ТАСУ...?.';
+			$this->logStr .= "[Ошибка] Невозможно найти пациента для приёма с ID".$greeting['greeting_id']." (карта ".$medcard->card_number.", дата ".$greeting['patient_day'].") в ТАСУ: возможно, пациент не создался в ТАСУ...?\r\n";
 			$this->isErrorElement = true;
 		}
     }
@@ -1657,8 +1657,8 @@ class TasuController extends Controller {
 
             $policyRow = $conn->createCommand($sql)->queryRow();
             if($policyRow == null) {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].'!';
-				$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']."!r\n";
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].' (карта '.$medcard->card_number.', '.$greeting['patient_day'].')!';
+				$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']." (карта ".$medcard->card_number.", ".$greeting['patient_day'].")!r\n";
                 $this->isErrorElement = true;
 				return false;
             }
@@ -1686,8 +1686,8 @@ class TasuController extends Controller {
 						AND [_unmdtbl13955].version_end = '.$this->version_end;
                 $addressRow = $conn->createCommand($sql)->queryAll();
                 if($addressRow == null) {
-                    $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].' по адресу регистрации!';
-					$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']." по адресу регистрации!\r\n";
+                    $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].' (карта '.$medcard->card_number.', '.$greeting['patient_day'].') по адресу регистрации!';
+					$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']." (карта ".$medcard->card_number.", ".$greeting['patient_day'].") по адресу регистрации!\r\n";
                     $this->isErrorElement = true;
 					return false;
                 }
@@ -1738,8 +1738,8 @@ class TasuController extends Controller {
             $tasuTap->dvnnumber_55059 = '';
 
             if(!$tasuTap->save()) {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно сохранить TAP для пациента с ID '.$patient['PatientUID'].'!';
-				$this->logStr .= "[Ошибка] Невозможно сохранить TAP для пациента с ID ".$patient['PatientUID']."!\r\n";
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно сохранить TAP для пациента с ID '.$patient['PatientUID'].' (карта '.$medcard->card_number.', '.$greeting['patient_day'].')!';
+				$this->logStr .= "[Ошибка] Невозможно сохранить TAP для пациента с ID ".$patient['PatientUID']." (карта ".$medcard->card_number.", ".$greeting['patient_day'].")!\r\n";
 				$this->isErrorElement = true;
                 throw new Exception();
             }
@@ -1907,11 +1907,11 @@ class TasuController extends Controller {
         if($doctor == null || $doctor->tabel_number == null) {
             if($doctor == null) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач для приёма '.$greeting['id'].' не существует!';
-				$this->logStr .= "[Ошибка] Врач для приёма ".$greeting['id']." не существует!\r\n";
+				$this->logStr .= "[Ошибка] Врач для приёма ".$greeting['id']." (карта ".$greeting['medcard'].", ".$greeting['patient_day'].") не существует!\r\n";
 				$this->isErrorElement = true;
 			} elseif($doctor->tabel_number == null) {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач для приёма '.$greeting['id'].' не имеет табельного номера!';
-				$this->logStr .= "[Ошибка] Врач для приёма ".$greeting['id']." не имеет табельного номера!";
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Врач '.$doctor->last_name.' '.$doctor->first_name.' '.($doctor->middle_name == null ? '': $doctor->middle_name).', ID='.$doctor->id.' для приёма '.$greeting['id'].' (карта '.$greeting['medcard'].', '.$greeting['patient_day'].') не имеет табельного номера!';
+				$this->logStr .= "[Ошибка]  Врач ".$doctor->last_name." ".$doctor->first_name." ".($doctor->middle_name == null ? "": $doctor->middle_name).", ID=".$doctor->id." для приёма ".$greeting['id']." (карта ".$greeting['medcard'].", ".$greeting['patient_day'].") не имеет табельного номера!";
 				$this->isErrorElement = true;
             }
             return false;
