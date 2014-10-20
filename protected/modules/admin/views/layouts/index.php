@@ -46,7 +46,7 @@
 <div class="container-fluid" id="content">
     <div class="row main-container">
         <div class="col-xs-2">
-            <?php $this->widget('application.components.widgets.SideMenu') ?>
+            <?php $this->widget('application.components.widgets.SideMenu'); ?>
         </div>
         <div class="col-xs-9">
             <?php echo $content; ?>
@@ -58,18 +58,6 @@
 		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span><nobr>
 </div>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/bottom_navbar.js"></script>
-<nav class="navbar navbar-fixed-bottom" role="navigation" id="navbarTools">
-	<div class="arrow">
-		<span class="glyphicon glyphicon-collapse-up"></span>
-	</div>
-	<div class="mainCont">
-		<strong>
-			Сейчас я сотрудник
-		</strong>
-		<select name="currentEmployeeRole" id="currentEmployeeRole" class="form-control">
-		</select>
-		<button id="submitEmployeeRole" class="btn submitEmployeeRole">OK</button>
-	</div>
-</nav>
+<?php $this->widget('application.components.widgets.FooterPanel'); ?>
 </body>
 </html>
