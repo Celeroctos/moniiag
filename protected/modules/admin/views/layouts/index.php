@@ -57,5 +57,19 @@
 <div class ="buttonUpContainer">
 		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span><nobr>
 </div>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/bottom_navbar.js"></script>
+<nav class="navbar navbar-fixed-bottom" role="navigation" id="navbarTools">
+	<div class="arrow">
+		<span class="glyphicon glyphicon-collapse-up"></span>
+	</div>
+	<div class="mainCont">
+		<strong>
+			Сейчас я сотрудник
+		</strong>
+		<select name="currentEmployeeRole" id="currentEmployeeRole" class="form-control">
+		</select>
+		<button id="submitEmployeeRole" class="btn submitEmployeeRole">OK</button>
+	</div>
+</nav>
 </body>
 </html>
