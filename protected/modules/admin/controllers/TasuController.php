@@ -1413,8 +1413,8 @@ class TasuController extends Controller {
                 return false;
             }
 			
-			// В едином номере всё пишется в одно поле
-			if($oms->type == 5) {
+			// В едином и временном номере всё пишется в одно поле
+			if($oms->type == 5 || $oms->type == 3) {
 				$serie = '';
 				$number = $policyParts[0].$policyParts[1];
 			} else {
