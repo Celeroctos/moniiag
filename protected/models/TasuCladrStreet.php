@@ -21,13 +21,13 @@ class TasuCladrStreet extends MisActiveRecord {
 		SET ROWCOUNT ".$start.";
 
 		SELECT @uid = p.uid
-		  FROM PDPStdStorage.".TasuCladrStreet::tableName()." p
+		  FROM PDPStdStorage.".TasuCladrStreet::model()->tableName()." p
 		  ORDER BY p.uid ASC;
 
 		SET ROWCOUNT ".$limit.";
 
 		SELECT p.*
-		  FROM PDPStdStorage.".TasuCladrStreet::tableName()." p
+		  FROM PDPStdStorage.".TasuCladrStreet::model()->tableName()." p
 		  WHERE p.uid >= @uid
 		  ORDER BY p.uid ASC;
 
@@ -40,7 +40,7 @@ class TasuCladrStreet extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $numStreets = $connection->createCommand()
             ->select('COUNT(*) as num')
-            ->from(TasuCladrStreet::tableName().' tcst')
+            ->from(TasuCladrStreet::model()->tableName().' tcst')
             ->queryRow();
         return $numStreets['num'];
     }

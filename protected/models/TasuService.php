@@ -18,7 +18,7 @@ class TasuService extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $services = $connection->createCommand()
             ->select('tm.*')
-            ->from(TasuService::tableName().' tm')
+            ->from(TasuService::model()->tableName().' tm')
             ->where("tm.version_end = :version", array(':version' => $version));
 
         if($filters !== false) {

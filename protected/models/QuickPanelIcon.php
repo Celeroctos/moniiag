@@ -28,7 +28,7 @@ class QuickPanelIcon extends MisActiveRecord {
         $connection = Yii::app()->db;
         $icons = $connection->createCommand()
             ->select('qp.*')
-            ->from(QuickPanelIcon::tableName().' qp')
+            ->from(QuickPanelIcon::model()->tableName().' qp')
             ->where('qp.user_id = :user_id', array(':user_id' => $userId));
 
         return $icons->queryAll();

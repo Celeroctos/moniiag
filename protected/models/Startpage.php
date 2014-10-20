@@ -23,7 +23,7 @@ class Startpage extends MisActiveRecord  {
         $connection = Yii::app()->db;
         $startpages = $connection->createCommand()
             ->select('s.*')
-            ->from(Startpage::tableName().' s');
+            ->from(Startpage::model()->tableName().' s');
 
         if($filters !== false) {
             $this->getSearchConditions($startpages, $filters, array(
@@ -49,7 +49,7 @@ class Startpage extends MisActiveRecord  {
             $connection = Yii::app()->db;
             $startpage = $connection->createCommand()
                 ->select('s.*')
-                ->from(Startpage::tableName().' s')
+                ->from(Startpage::model()->tableName().' s')
                 ->where('s.id = :id', array(':id' => $id))
                 ->queryRow();
 

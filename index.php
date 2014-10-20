@@ -1,4 +1,6 @@
 <?php
+
+error_reporting(E_ALL ^ E_DEPRECATED);
 ob_start();
 // change the following paths if necessary
 $yii=dirname(__FILE__).'/../yii/yii.php';

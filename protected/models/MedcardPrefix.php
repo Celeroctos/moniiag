@@ -18,7 +18,7 @@ class MedcardPrefix extends MisActiveRecord {
         $connection = Yii::app()->db;
         $prefixes = $connection->createCommand()
             ->select('mp.*')
-            ->from(MedcardPrefix::tableName().' mp');
+            ->from(MedcardPrefix::model()->tableName().' mp');
 
         if($filters !== false) {
             $this->getSearchConditions($prefixes, $filters, array(

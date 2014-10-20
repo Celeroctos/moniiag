@@ -15,24 +15,24 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 		    $connection = Yii::app()->db;
             $buffer = $connection->createCommand()
                 ->select('tgb.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard, dsbd.is_beginned, dsbd.is_accepted, o.oms_number, o.id as oms_id, dsbd.doctor_id, p.mkb10_id as primary_diagnosis_id')
-                ->from(TasuGreetingsBuffer::tableName().' tgb')
-                ->leftJoin(SheduleByDay::tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
-                ->leftJoin(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
-                ->leftJoin(Oms::tableName().' o', 'm.policy_id = o.id')
-				->leftJoin(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
-				->leftJoin(PatientDiagnosis::tableName().' p', 'p.greeting_id = tgb.greeting_id')
+                ->from(TasuGreetingsBuffer::model()->tableName().' tgb')
+                ->leftJoin(SheduleByDay::model()->tableName().' dsbd', 'tgb.greeting_id = dsbd.id')
+                ->leftJoin(Medcard::model()->tableName().' m', 'dsbd.medcard_id = m.card_number')
+                ->leftJoin(Oms::model()->tableName().' o', 'm.policy_id = o.id')
+				->leftJoin(Doctor::model()->tableName().' d', 'd.id = dsbd.doctor_id')
+				->leftJoin(PatientDiagnosis::model()->tableName().' p', 'p.greeting_id = tgb.greeting_id')
 				->where('p.type = 0 OR tgb.fake_id IS NOT NULL OR NOT EXISTS(
 					SELECT * 
-					FROM '.PatientDiagnosis::tableName().' p2 
+					FROM '.PatientDiagnosis::model()->tableName().' p2
 					WHERE greeting_id = tgb.greeting_id)');
 			
 			if($importId === false) {
-				$buffer->andWhere('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id) FROM '.TasuGreetingsBuffer::tableName().' tgb2)');
+				$buffer->andWhere('tgb.import_id = (SELECT DISTINCT MAX(tgb2.import_id) FROM '.TasuGreetingsBuffer::model()->tableName().' tgb2)');
 			} else {
 				$buffer->andWhere('tgb.import_id = :import_id', array(':import_id' => $importId));
 			}
 			
-			$buffer->andWhere('EXISTS(SELECT * FROM '.SheduleByDay::tableName().' dsbd2 WHERE dsbd2.id = dsbd.id) OR tgb.fake_id IS NOT NULL');
+			$buffer->andWhere('EXISTS(SELECT * FROM '.SheduleByDay::model()->tableName().' dsbd2 WHERE dsbd2.id = dsbd.id) OR tgb.fake_id IS NOT NULL');
 			
 			if($importId === false) {
 				$buffer->andWhere('tgb.status = 0'); // Получить всё то, что не выгружено
@@ -135,7 +135,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             $connection = Yii::app()->db;
             $lastBufferId = $connection->createCommand()
                 ->select('MAX(tgb.import_id) as max_import_id')
-                ->from(TasuGreetingsBuffer::tableName().' tgb')
+                ->from(TasuGreetingsBuffer::model()->tableName().' tgb')
                 ->queryRow();
 
             if($lastBufferId['max_import_id'] == null || $lastBufferId['max_import_id'] == 0) {
@@ -147,7 +147,7 @@ class TasuGreetingsBuffer extends MisActiveRecord {
 					// Посмотрим, остались ли невыгруженные строки-приёмы (ошибки)
 					$numErrors = $connection->createCommand()
 						->select('COUNT(*) as num')
-						->from(TasuGreetingsBuffer::tableName().' tgb')
+						->from(TasuGreetingsBuffer::model()->tableName().' tgb')
 						->where('import_id = :import_id AND status = 0', array(':import_id' => $lastBufferId['max_import_id']))
 						->queryRow();
 					
@@ -168,12 +168,12 @@ class TasuGreetingsBuffer extends MisActiveRecord {
             $connection = Yii::app()->db;
             $notBuffered = $connection->createCommand()
                 ->select('dsbd.*, CONCAT(o.last_name, \' \', o.first_name, \' \', o.middle_name ) as patient_fio, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name ) as doctor_fio, dsbd.patient_day, m.card_number as medcard')
-                ->from(SheduleByDay::tableName().' dsbd')
-                ->join(Medcard::tableName().' m', 'dsbd.medcard_id = m.card_number')
-                ->join(Oms::tableName().' o', 'm.policy_id = o.id')
-                ->join(Doctor::tableName().' d', 'd.id = dsbd.doctor_id')
+                ->from(SheduleByDay::model()->tableName().' dsbd')
+                ->join(Medcard::model()->tableName().' m', 'dsbd.medcard_id = m.card_number')
+                ->join(Oms::model()->tableName().' o', 'm.policy_id = o.id')
+                ->join(Doctor::model()->tableName().' d', 'd.id = dsbd.doctor_id')
                 ->where('NOT EXISTS (SELECT *
-                                     FROM '.TasuGreetingsBuffer::tableName().' tgb
+                                     FROM '.TasuGreetingsBuffer::model()->tableName().' tgb
                                      WHERE tgb.greeting_id = dsbd.id)')
 				->andWhere('dsbd.is_accepted = 1');
 

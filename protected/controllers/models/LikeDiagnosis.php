@@ -20,7 +20,7 @@ class LikeDiagnosis extends MisActiveRecord  {
         $mkb10 = $connection->createCommand()
             ->select('ml.*, m.*')
             ->from($this->tableName().' ml')
-            ->join(Mkb10::tableName().' m', 'm.id = ml.mkb10_id')
+            ->join(Mkb10::model()->tableName().' m', 'm.id = ml.mkb10_id')
             ->where('ml.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
 
         if($filters !== false) {

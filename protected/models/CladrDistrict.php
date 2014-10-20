@@ -14,8 +14,8 @@ class CladrDistrict extends MisActiveRecord {
         $connection = Yii::app()->db;
         $districts = $connection->createCommand()
             ->select('cd.*, cr.id as region_id, cr.name as region')
-            ->from(CladrDistrict::tableName().' cd')
-            ->leftJoin(CladrRegion::tableName(). ' cr', 'cd.code_region = cr.code_cladr');
+            ->from(CladrDistrict::model()->tableName().' cd')
+            ->leftJoin(CladrRegion::model()->tableName(). ' cr', 'cd.code_region = cr.code_cladr');
            // ->where('code_cladr!=\'000\'');
 
         if (!$nullCodeCladrShow)
@@ -47,8 +47,8 @@ class CladrDistrict extends MisActiveRecord {
             $connection = Yii::app()->db;
             $district = $connection->createCommand()
                 ->select('cd.*, cr.name as region, cr.id as region_id')
-                ->from(CladrDistrict::tableName().' cd')
-                ->leftJoin(CladrRegion::tableName().' cr', 'cr.code_cladr = cd.code_region')
+                ->from(CladrDistrict::model()->tableName().' cd')
+                ->leftJoin(CladrRegion::model()->tableName().' cr', 'cr.code_cladr = cd.code_region')
                 ->where('cd.id = :id', array(':id' => $id))
                 ->queryRow();
 

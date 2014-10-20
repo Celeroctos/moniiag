@@ -14,8 +14,8 @@ class DistribDiagnosis extends MisActiveRecord  {
         $connection = Yii::app()->db;
         $mkb10 = $connection->createCommand()
             ->select('md.*, cd.*')
-            ->from(DistribDiagnosis::tableName().' md')
-            ->join(ClinicalDiagnosis::tableName().' cd', 'cd.id = md.mkb10_id')
+            ->from(DistribDiagnosis::model()->tableName().' md')
+            ->join(ClinicalDiagnosis::model()->tableName().' cd', 'cd.id = md.mkb10_id')
             ->where('md.employee_id = :employee_id', array(':employee_id' => $employeeId));
 
         if($filters !== false) {
@@ -39,8 +39,8 @@ class DistribDiagnosis extends MisActiveRecord  {
         $connection = Yii::app()->db;
         $medworker = $connection->createCommand()
             ->select('md.*, cd.*')
-            ->from(DistribDiagnosis::tableName().' md')
-            ->join(ClinicalDiagnosis::tableName().' cd', 'cd.id = md.mkb_id')
+            ->from(DistribDiagnosis::model()->tableName().' md')
+            ->join(ClinicalDiagnosis::model()->tableName().' cd', 'cd.id = md.mkb_id')
             ->where('md.employee_id = :employee_id', array(':employee_id' => $employeeId));
 
         return $medworker->queryAll();

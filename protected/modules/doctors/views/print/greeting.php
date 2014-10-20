@@ -5,7 +5,7 @@
 
 <div class="header">
     <h3>
-        <nobr><?php echo $greeting['date']; ?>, <?php echo $greeting['patient_initials']; ?>, <?php echo $greeting['full_age']; ?>, <?php echo $greeting['card_number']; ?></nobr>
+        <nobr><?php echo $greeting['date']; ?>, <?php echo $greeting['patient_initials']; ?>, <?php echo $greeting['full_years']; ?> лет, <?php echo $greeting['card_number']; ?></nobr>
     <br/>
         <nobr><?php echo $greeting['doctor_spec']; ?> <?php echo $greeting['doctor_initials']; ?></nobr>
     </h3>
@@ -37,7 +37,7 @@
                         <?php
 
                         // Вызываем виджет категории
-                        $printCategorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
+                        $printCategorieWidget = CWidget::model()->createWidget('application.modules.doctors.components.widgets.printCategory', array(
                             'categoryToPrint' => $categorie
                         ));
                         $printCategorieWidget->run();

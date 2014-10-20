@@ -15,7 +15,7 @@ class MedService extends MisActiveRecord {
             $connection = Yii::app()->db;
             $service = $connection->createCommand()
                 ->select('m.*')
-                ->from(MedService::tableName().' m')
+                ->from(MedService::model()->tableName().' m')
                 ->where('m.id = :id', array(':id' => $id))
                 ->queryRow();
 
@@ -31,7 +31,7 @@ class MedService extends MisActiveRecord {
         $connection = Yii::app()->db;
         $services = $connection->createCommand()
             ->select('m.*')
-            ->from(MedService::tableName().' m');
+            ->from(MedService::model()->tableName().' m');
 
         if($filters !== false) {
             $this->getSearchConditions($services, $filters, array(

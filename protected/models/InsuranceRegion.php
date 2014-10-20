@@ -18,8 +18,8 @@ class InsuranceRegion extends MisActiveRecord  {
             $connection = Yii::app()->db;
             $regions = $connection->createCommand()
                 ->select('ir.*, r.*')
-                ->from(InsuranceRegion::tableName().' ir')
-                ->join(CladrRegion::tableName().' r', 'ir.region_id = r.id')
+                ->from(InsuranceRegion::model()->tableName().' ir')
+                ->join(CladrRegion::model()->tableName().' r', 'ir.region_id = r.id')
                 ->where('ir.insurance_id = :ins', array(':ins' => $insuranceId));
 
             return $regions->queryAll();

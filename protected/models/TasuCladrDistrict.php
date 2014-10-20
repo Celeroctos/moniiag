@@ -18,7 +18,7 @@ class TasuCladrDistrict extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $disctricts = $connection->createCommand()
             ->select('tcr.*')
-            ->from(TasuCladrDistrict::tableName().' tcr');
+            ->from(TasuCladrDistrict::model()->tableName().' tcr');
 
         if($filters !== false) {
             $this->getSearchConditions($disctricts, $filters, array(
