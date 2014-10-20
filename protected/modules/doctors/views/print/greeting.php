@@ -37,7 +37,7 @@
                         <?php
 
                         // Вызываем виджет категории
-                        $printCategorieWidget = CWidget::model()->createWidget('application.modules.doctors.components.widgets.printCategory', array(
+                        $printCategorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
                             'categoryToPrint' => $categorie
                         ));
                         $printCategorieWidget->run();
