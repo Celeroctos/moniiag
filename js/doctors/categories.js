@@ -28,7 +28,7 @@ $(document).ready(function() {
 
 
     $('input[type="number"]').on('keydown', function(e) {
-        if((!(e.keyCode >= 48 && e.keyCode < 58) && !(e.keyCode >= 96 && e.keyCode < 106)) && e.keyCode != 8 && e.keyCode != 190 && e.keyCode != 188 && e.keyCode != 9 && e.keyCode != 46) {
+        if((!(e.keyCode >= 48 && e.keyCode < 58) && !(e.keyCode >= 96 && e.keyCode < 106)) && e.keyCode != 8 && e.keyCode != 190 && e.keyCode != 188 && e.keyCode != 9 && e.keyCode != 46 && e.keyCode != 13) {
             return false;
         }
         else
