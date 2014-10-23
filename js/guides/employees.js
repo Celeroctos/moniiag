@@ -162,6 +162,16 @@ $(document).ready(function() {
 
         });
     });
+	
+	$('.employeeSettingsNav li').on('click', function() {
+        $('.employeeSettingsNav li').removeClass('active');
+        $(this).addClass('active');
+        $('#mainEmployeeSettingsCont, #accessEmployeeSettingsCont').addClass('no-display');
+        var tabId = $(this).find('a').attr('id');
+        $('#' + tabId + 'Cont').removeClass('no-display');
+    });
+	
+	$('.actionsGroupsTablist li:first').addClass('active').find('a').tab('show');
 
     $("#employee-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
@@ -264,7 +274,29 @@ $(document).ready(function() {
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
                     if(data.success == true) {
-                        // Заполняем форму значениями
+						// Открываем режим вкладок (права доступа), если есть пользователь
+						if(data.data.user_to_employee != null) {
+							$('.employeeSettingsNav, #linkedUser').removeClass('no-display');
+							$('#linkedUser span.username').text(data.data.user_to_employee.username);
+							$('#linkedUser span.login').text(data.data.user_to_employee.login);
+							
+							$('.actionsGroupsTablist li.active, .employeeSettingsTab').removeClass('active');
+							$('.actionsGroupsTablist li:first, .employeeSettingsTab:first').addClass('active');
+											
+							// Проставим экшены в права
+							$('input[type="checkbox"]').prop('checked', false); // Анальный баг: невозможно сбросить чекбокс..
+							roleAccess = data.data.actions;
+							for(var i = 0; i < roleAccess.length; i++) {
+								$('input[name="action' + roleAccess[i] + '"]').prop('checked', true);
+							}
+							
+						} else {
+							$('#accessEmployeeSettingsCont, #linkedUser, .employeeSettingsNav').addClass('no-display');
+						}
+						
+						$('#mainEmployeeSettings').trigger('click');
+						
+						// Заполняем форму значениями
                         var form = $('#editEmployeePopup form')
                         // Соответствия формы и модели
                         var fields = [
@@ -336,6 +368,7 @@ $(document).ready(function() {
                         }
                         $('#dateBeginEdit-cont input[type=hidden]').trigger('change');
                         $('#dateEndEdit-cont input[type=hidden]').trigger('change');
+
                         $("#editEmployeePopup").modal({
 
                         });
@@ -347,6 +380,16 @@ $(document).ready(function() {
 
 
     $("#editEmployee").click(editEmployee);
+	
+	var roleAccess = [];
+	$(document).on('click', 'input[name^="action"]', function(e) {
+		var id = parseInt($(this).prop('name').substr(6));
+		if($(this).prop('checked') && roleAccess.indexOf(id) == -1) { // Only that not in beginning
+			$(this).parents('label').addClass('accessDiff');
+		} else {
+			$(this).parents('label').removeClass('accessDiff');
+		}
+	});
 
     $("#deleteEmployee").click(function() {
         var currentRow = $('#employees').jqGrid('getGridParam','selrow');

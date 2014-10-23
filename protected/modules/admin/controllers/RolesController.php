@@ -20,7 +20,7 @@ class RolesController extends Controller {
             }
             $actions[$action['groupname']][$action['id']] = $action['name'];
         }
-
+		
         $pagesListDb = MenuPage::model()->getAll();
         $pagesList = array('-1' => 'Нет');
         foreach($pagesListDb as $page) {

@@ -79,6 +79,17 @@ class EmployeesController extends Controller {
             foreach($degreesListDb as $value) {
                 $degreesList[(string)$value['id']] = $value['name'];
             }
+			
+			// Список галочек прав
+			$actionModel = new RoleAction();
+			$actionsList = $actionModel->getRows(false);
+			$actions =  array();
+			foreach($actionsList as $key => $action) {
+				if(!isset($actions[$action['groupname']])) {
+					$actions[$action['groupname']] = array();
+				}
+				$actions[$action['groupname']][$action['id']] = $action['name'];
+			}
 
             $this->render('view', array(
                 'model' => $formAddEdit,
@@ -90,7 +101,8 @@ class EmployeesController extends Controller {
                 'degreesList' => $degreesList,
                 'enterprisesList' => $enterprisesList,
 				'categoriesList' => $this->employeeCategories,
-                'canEdit' => Yii::app()->user->checkAccess('editGuides')
+                'canEdit' => Yii::app()->user->checkAccess('editGuides'),
+				'actions' => $actions
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -137,6 +149,36 @@ class EmployeesController extends Controller {
     }
 
     private function addEditModel($employee, $model, $msg) {
+		if($employee) {
+			// Проставляем права
+			$actionModel = new RoleAction();
+			$actions = $actionModel->getRows(false);
+			// Выберем все, которые лежат на данную роль. Если ни одного нет, значит результат будет пуст.
+			$checkedModel = new CheckedAction();
+			// Обновление экшенов через удаление
+			$checkedModel->deleteByEmployee($employee->id);
+
+			foreach($actions as $key => $action) {
+				// Если экшн есть - проставляем
+				if(isset($_POST['action'.$action['id']])) {
+					// Проверяем, какой это экшн: если он есть у сотрук
+					$checked = new CheckedAction();
+					$checked->action_id = $action['id'];
+					$checked->role_id = $role->id;
+					$checked->employee_id = $employee->id;
+					if(!$checked->save()) {
+						echo CJSON::encode(array('success' => false,
+												 'text' => 'Невозможно сохранить действие.'));
+					}
+				} else { // Если не существует - проверим, есть ли экшн для роли. Если есть, то нужно автоматически записать правило "исключить для сотрудника, но применить для роли в целом"
+					$issetAccess = CheckedAction::model()->find('action_id = :action_id AND role_id = :role_id', array(
+						'action_id' => $action['id'],
+						'role_id' => $role->id
+					));
+				}
+			}
+		}
+	
         $employee->first_name = $model->firstName;
         $employee->middle_name = $model->middleName;
         $employee->last_name = $model->lastName;
@@ -271,7 +313,22 @@ class EmployeesController extends Controller {
 		if($employee['categorie'] == null) {
 			$employee['categorie'] = 0;
 		}
-        echo CJSON::encode(array('success' => true,
+		// Проверяем привязку сотрудника хоть к какому-нибудь пользователю
+		$issetUser = User::model()->find('employee_id = :employee_id', array(':employee_id' => $id));
+		$employee['user_to_employee'] = $issetUser;
+        if($issetUser) {
+			$user = User::model()->getOne($issetUser['id']);
+			$actionModel = new CheckedAction();
+			$actionsArr = array();
+			foreach($user['role_id'] as $roleId) {
+				$actions = $actionModel->getByRole($roleId);
+				foreach($actions as $key => $action) {
+					$actionsArr[] = $action['action_id'];
+				}
+			}
+			$employee['actions'] = $actionsArr;
+		}
+		echo CJSON::encode(array('success' => true,
                                  'data' => $employee)
         );
     }
