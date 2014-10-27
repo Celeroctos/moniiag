@@ -22,9 +22,10 @@ class User extends MisActiveRecord  {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         $connection = Yii::app()->db;
         $users = $connection->createCommand()
-            ->select('u.login, u.username, u.employee_id, u.id, CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name) as employee')
-            ->from('mis.users u')
-            ->leftJoin('mis.doctors d', 'd.id = u.employee_id');
+            ->select('u.login, u.username, u.id')
+            ->from('mis.users u');
+            //->leftJoin('mis.doctors d', 'd.id = u.employee_id');
+			//CONCAT(d.last_name, \' \', d.first_name, \' \', d.middle_name) as employee
 
         if($filters !== false) {
             $this->getSearchConditions($users, $filters, array(
@@ -34,16 +35,37 @@ class User extends MisActiveRecord  {
             ));
         }
 
-        if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+        if($sidx !== false && $sord !== false) {
             $users->order($sidx.' '.$sord);
-            $users->limit($limit, $start);
         }
+		
+		if($start !== false && $limit !== false) {
+			$users->limit($limit, $start);
+		}
 
         $users = $users->queryAll();
         $numUsers = count($users);
         if($numUsers > 0) {
             // Выбираем роли
             for($i = 0; $i < $numUsers; $i++) {
+				// Выбираем сотрудников к юзеру
+				$employees = Doctor::model()->findAll('user_id = :user_id', array(':user_id' => $users[$i]['id']));
+				$numEmployees = count($employees);
+				$users[$i]['employee_id'] = array();
+				$users[$i]['employee'] = '';
+				for($j = 0; $j < $numEmployees; $j++) {
+					$fio = $employees[$j]['last_name'].' '.$employees[$j]['first_name'].' '.($employees[$j]['middle_name'] == null ? '' : $employees[$j]['middle_name']);
+					$users[$i]['employee_id'][] = array( 
+						'id' => $employees[$j]['id'],
+						'fio' => $fio
+					);
+					if($j < $numEmployees - 1) {
+						$users[$i]['employee'] .= $fio.', ';
+					} else {
+						$users[$i]['employee'] .= $fio;
+					}
+				}
+ 			
                 $rolesToUser = RoleToUser::model()->findAllRolesByUser($users[$i]['id']);
                 $users[$i]['role_id'] = array();
                 $users[$i]['rolename'] = '';

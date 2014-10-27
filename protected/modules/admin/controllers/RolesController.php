@@ -152,6 +152,7 @@ class RolesController extends Controller {
                 $checked = new CheckedAction();
                 $checked->action_id = $action['id'];
                 $checked->role_id = $role->id;
+				$checked->employee_id = -1;
                 if(!$checked->save()) {
                     echo CJSON::encode(array('success' => false,
                                              'text' => 'Невозможно сохранить действие.'));

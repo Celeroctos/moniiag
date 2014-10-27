@@ -61,5 +61,20 @@ class SystemController extends Controller {
         $settings = $settingModel->getRows($filters);
         return $settings;
     }
+	
+	// Миграция userId to mis.doctors
+	private function actionMigrationUserIdToDoctor() {
+		$users = User::model()->findAll();
+		foreach($users as $user) {
+			if($user['employee_id'] != null) {
+				$doctor = Doctor::model()->findByPk($user['employee_id']);
+				if($doctor != null) {
+					$doctor->user_id = $user['id'];
+					$doctor->save();
+				}
+			}
+		}
+		echo '[SUCESS]';
+	}
 }
 ?>

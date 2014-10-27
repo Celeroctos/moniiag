@@ -281,6 +281,7 @@ $(document).ready(function() {
 							$('#linkedUser span.login').text(data.data.user_to_employee.login);
 							
 							$('.actionsGroupsTablist li.active, .employeeSettingsTab').removeClass('active');
+							$('.accessDiff').removeClass('accessDiff');
 							$('.actionsGroupsTablist li:first, .employeeSettingsTab:first').addClass('active');
 											
 							// Проставим экшены в права
@@ -288,6 +289,18 @@ $(document).ready(function() {
 							roleAccess = data.data.actions;
 							for(var i = 0; i < roleAccess.length; i++) {
 								$('input[name="action' + roleAccess[i] + '"]').prop('checked', true);
+							}
+							
+							// Покрасим экшены, которые удалены у сотрудника
+							detachedActions = data.data.actions_detached;
+							for(var i = 0; i < detachedActions.length; i++) {
+								$('input[name="action' + detachedActions[i] + '"]').parents('label').addClass('accessDiff');
+							}
+							
+							// Покрасим экшены, которые добавлены сотруднику. И проставим их.
+							attachedActions = data.data.actions_attached;
+							for(var i = 0; i < attachedActions.length; i++) {
+								$('input[name="action' + attachedActions[i] + '"]').prop('checked', true).parents('label').addClass('accessDiff');
 							}
 							
 						} else {
@@ -382,9 +395,10 @@ $(document).ready(function() {
     $("#editEmployee").click(editEmployee);
 	
 	var roleAccess = [];
+	var detachedActions = [];
+	var attachedActions = [];
 	$(document).on('click', 'input[name^="action"]', function(e) {
-		var id = parseInt($(this).prop('name').substr(6));
-		if($(this).prop('checked') && roleAccess.indexOf(id) == -1) { // Only that not in beginning
+		if(!$(this).parents('label').hasClass('accessDiff')) { // Only that not in beginning
 			$(this).parents('label').addClass('accessDiff');
 		} else {
 			$(this).parents('label').removeClass('accessDiff');

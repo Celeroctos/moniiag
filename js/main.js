@@ -232,9 +232,22 @@ $(document).ready(function () {
         globalVariables.wrongPassword = false;
         globalVariables.wrongLogin = false;
         if (ajaxData.success == 'true') { // Логин прошёл удачно
-            /*$('#loginSuccessPopup').modal({
-            });*/
-            location.href = ajaxData.data;
+			// Тут много сотрудников..
+            if(typeof ajaxData.data == 'object') {
+				var select = $('#choose-employee-form #employeeId');
+				$(select).find('option').remove();
+				var employees = ajaxData.data;
+				for(var i = 0; i < employees.length; i++) {
+					$(select).append($('<option>').prop({
+						'value' : employees[i].id
+					}).text(employees[i].last_name + ' ' + employees[i].first_name + (employees[i].middle_name != null ? ' ' + employees[i].middle_name : '') + ', табельный номер ' + employees[i].tabel_number));
+				}
+				$('#loginEmployeeChoose').modal({
+					'keyboard' : false
+				});
+			} else {
+				location.href = ajaxData.data;
+			}
         } else if (ajaxData.success == 'notFoundLogin' ||ajaxData.success == 'wrongPassword' ) {
             if (ajaxData.success == 'notFoundLogin')
             {
@@ -253,6 +266,15 @@ $(document).ready(function () {
     });
 }
 });
+
+	$("#choose-employee-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
+		var ajaxData = $.parseJSON(ajaxData);
+		if(ajaxData.success == 'true') { 
+			location.href = ajaxData.data;
+		} else {
+			// TODO
+		}
+	});
 
     $('#loginNotFoundPopup').on('hidden.bs.modal',function(){
         // Если неправильный логин - выделяем логин

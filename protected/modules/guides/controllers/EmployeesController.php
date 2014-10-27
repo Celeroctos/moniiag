@@ -112,6 +112,7 @@ class EmployeesController extends Controller {
     public function actionEdit() {
         $model = new FormEmployeeAdd();
         if(isset($_POST['FormEmployeeAdd'])) {
+			
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
                 if(!isset($_POST['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
@@ -157,24 +158,51 @@ class EmployeesController extends Controller {
 			$checkedModel = new CheckedAction();
 			// Обновление экшенов через удаление
 			$checkedModel->deleteByEmployee($employee->id);
+			// Найдём роль
+			$userToEmployee = User::model()->find('employee_id = :employee_id', array(':employee_id' => $employee->id));
+			if($userToEmployee != null) { // К сотруднику может быть не прикреплён юзер..
+				$rolesToUser = RoleToUser::model()->findAllRolesByUser($userToEmployee->id);
+				$rolesIds = array();
+				$num = count($rolesToUser);
+				for($i = 0; $i < $num; $i++) {
+					$rolesIds[] = $rolesToUser[$i]['id'];
+				}
+				foreach($actions as $key => $action) {
+					$criteria = new CDbCriteria;
+					$criteria->compare('role_id', $rolesIds);
+					$criteria->compare('action_id', $action['id']);
+				
+					$issetAccess = CheckedAction::model()->find($criteria);
+					// Если экшн есть - проставляем
+					if(isset($_POST['action'.$action['id']])) {
+						// Проверяем, какой это экшн: если он есть у сотрудника, то записывать такой экшн не надо.
+						if(!$issetAccess) {
+							$checked = new CheckedAction();
+							$checked->action_id = $action['id'];
+							$checked->role_id = -1;
+							$checked->employee_id = $employee->id;
+							$checked->mode = 0; // Добавить к роли	
 
-			foreach($actions as $key => $action) {
-				// Если экшн есть - проставляем
-				if(isset($_POST['action'.$action['id']])) {
-					// Проверяем, какой это экшн: если он есть у сотрук
-					$checked = new CheckedAction();
-					$checked->action_id = $action['id'];
-					$checked->role_id = $role->id;
-					$checked->employee_id = $employee->id;
-					if(!$checked->save()) {
-						echo CJSON::encode(array('success' => false,
-												 'text' => 'Невозможно сохранить действие.'));
+							if(!$checked->save()) {
+								echo CJSON::encode(array('success' => false,
+														 'text' => 'Невозможно сохранить изменённые права сотрудника.'));
+								exit();
+							}
+						}
+					} else { // Если не существует - проверим, есть ли экшн для роли. Если есть, то нужно автоматически записать правило "исключить для сотрудника, но применить для роли в целом"
+						if($issetAccess) {
+							$checked = new CheckedAction();
+							$checked->action_id = $action['id'];
+							$checked->employee_id = $employee->id;
+							$checked->role_id = -1;
+							$checked->mode = 1; // Исключить для сотрудника;
+							if(!$checked->save()) {
+								echo CJSON::encode(array('success' => false,
+														 'text' => 'Невозможно сохранить изменённые права сотрудника.'));
+								exit();
+							}
+						}
 					}
-				} else { // Если не существует - проверим, есть ли экшн для роли. Если есть, то нужно автоматически записать правило "исключить для сотрудника, но применить для роли в целом"
-					$issetAccess = CheckedAction::model()->find('action_id = :action_id AND role_id = :role_id', array(
-						'action_id' => $action['id'],
-						'role_id' => $role->id
-					));
 				}
 			}
 		}
@@ -317,16 +345,38 @@ class EmployeesController extends Controller {
 		$issetUser = User::model()->find('employee_id = :employee_id', array(':employee_id' => $id));
 		$employee['user_to_employee'] = $issetUser;
         if($issetUser) {
+			// Теперь выбираем все галочки тупо для сотрудника
+			$actionsDetached = array(); // Удалённые экшены из роли посредством задания их для сотрудника
+			$actionsAttached = array(); // Добавленные экшены на сотрудника
+			$actionsToEmployee = CheckedAction::model()->findAll('employee_id = :employee_id', array(
+				':employee_id' => $employee['id']
+			));
+			$num = count($actionsToEmployee);
+			for($i = 0; $i < $num; $i++) {
+				if($actionsToEmployee[$i]->mode == 0) { // Включить в права
+					$actionsAttached[] = $actionsToEmployee[$i]->action_id;
+				} elseif($actionsToEmployee[$i]->mode == 1) { // Исключить из прав. Сам экшн кладётся в спец. массив для того ,чтобы можно было отобразить в интерфейсе
+					$actionsDetached[] = $actionsToEmployee[$i]->action_id;
+				}
+			}
+			
 			$user = User::model()->getOne($issetUser['id']);
 			$actionModel = new CheckedAction();
 			$actionsArr = array();
 			foreach($user['role_id'] as $roleId) {
 				$actions = $actionModel->getByRole($roleId);
 				foreach($actions as $key => $action) {
-					$actionsArr[] = $action['action_id'];
+					$issetAlready = array_search($action['action_id'], $actionsAttached) !== false || array_search($action['action_id'], $actionsDetached) !== false;
+
+					if(!$issetAlready) { // В противном случае, это либо приаттаченные, либо детаченные экшены для сотрудника
+						$actionsArr[] = $action['action_id'];
+					}
 				}
 			}
+			
 			$employee['actions'] = $actionsArr;
+			$employee['actions_detached'] = $actionsDetached;
+			$employee['actions_attached'] = $actionsAttached;
 		}
 		echo CJSON::encode(array('success' => true,
                                  'data' => $employee)

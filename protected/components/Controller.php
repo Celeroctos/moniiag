@@ -33,13 +33,14 @@ class Controller extends CController {
             $filterChain->run();
             return;
         }
+
         if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
             // Если гость, то не давать заходить куда-то
             $this->redirect('/');
         } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
             $this->redirect(Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl);
         }
-		
+
         $roleModel = new Role();
         $currentRoles = $roleModel->getCurrentUserRoles();
 

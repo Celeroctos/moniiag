@@ -34,6 +34,7 @@ class MainNavBar extends CWidget {
         if(Yii::app()->user->isGuest) {
             $loginForm = new FormLogin();
             $answer['loginFormModel'] = $loginForm;
+			$answer['modelChooseEmployee'] = new FormChooseEmployee();
             $this->render('application.components.widgets.views.MainNavBarUnlogged', $answer);
         } else {
             $answer['userName'] = Yii::app()->user->username;
