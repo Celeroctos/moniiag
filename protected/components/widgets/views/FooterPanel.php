@@ -9,7 +9,7 @@
 		<select name="currentEmployeeRole" id="currentEmployeeRole" class="form-control">
 		<?php
 			foreach($employees as $key => $item) {
-				echo "<option value=\"{$key}\">{$item}</option>";
+				echo "<option value=\"{$key}\" ".(Yii::app()->user->doctorId == $key ? "selected=\"selected\" " : "").">{$item}</option>";
 			}
 		?>
 		</select>

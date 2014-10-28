@@ -8,9 +8,9 @@ class UsersController extends Controller {
                 $userIdent = new UserIdentity($formModel->login, $formModel->password);
                 if($userIdent->authenticateStep1()) {
                     Yii::app()->user->login($userIdent);
-					if(isset(Yii::app()->user->startpageUrl) && Yii::app()->user->getState('startpageUrl', -1) != -1) { // Если не требуется второго шага аутентификации..
+					if(isset(Yii::app()->user->doctorId) && Yii::app()->user->getState('doctorId', -1) != -1) { // Если не требуется второго шага аутентификации..
 						echo CJSON::encode(array('success' => 'true',
-												 'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->getState('startpageUrl')));
+												 'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl));
 						exit();
 					} else {
 						echo CJSON::encode(array(
@@ -59,10 +59,10 @@ class UsersController extends Controller {
 			if($form->validate()) {
 				$userIdent = new UserIdentity(Yii::app()->user->login, Yii::app()->user->password);
 				// На всякий случай ещё раз проходим первую стадию аутентификации
-				if($userIdent->authenticateStep1() && $userIdent->authenticateStep2(false, $form)) {
+				if($userIdent->authenticateStep1() && $userIdent->authenticateStep2(false, $form)) {;
 					echo CJSON::encode(array(
 						'success' => 'true',
-						'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->getState('startpageUrl')
+						'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl
 						)
 					);
 					exit();

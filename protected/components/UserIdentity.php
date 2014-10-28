@@ -14,6 +14,7 @@ class UserIdentity extends CUserIdentity {
 				
 		$roles = RoleToUser::model()->findAllRolesByUser($record->id);
 		$currentPriority = -1;
+		$url = '';
 		foreach($roles as $role) {
 			if($currentPriority < $role['priority']) {
 				$currentPriority = $role['priority'];
@@ -21,14 +22,15 @@ class UserIdentity extends CUserIdentity {
 			}
 		}
 
-		$this->setState('id', $record->id);
-		$this->setState('roleId', $roles);
-		$this->setState('login', $record->login);
-		$this->setState('password', $this->password);
+		Yii::app()->user->setState('id', $record->id);
+		Yii::app()->user->setState('roleId', $roles);
+		Yii::app()->user->setState('login', $record->login);
+		Yii::app()->user->setState('password', $this->password);
+		Yii::app()->user->setState('startpageUrl', $url);
 		// Проверяем, сколько сотрудников прикреплено к пользователю. Если больше одного - выводить окно для выбора сотрудника в методе на уровень выше	
 		$numEmployeesToUser = count(Doctor::model()->findAll('user_id = :user_id', array(':user_id' => $record->id)));
 		if($numEmployeesToUser == 1) { // Если всего один, то сразу вынимать все данные
-			$this->authenticateStep2($record);
+			$this->authenticateStep2($record, Doctor::model()->find('user_id = :user_id', array(':user_id' => $record->id)));
 		}
         
 		return !$this->errorCode;
@@ -47,21 +49,20 @@ class UserIdentity extends CUserIdentity {
 		} else {
 			$ward = null;
 		}
-		$url = '';
 
 		// Данные юзера
-		$this->setState('username', $record->username);
-		$this->setState('doctorId', $employee->id);
-		$this->setState('medworkerId', $employee->post_id);
-		$this->setState('enterpriseId', $ward != null ? $ward->enterprise_id : null);
-		$this->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
-		$this->setState('startpageUrl', $url);
-		$this->setState('medcardGenRuleId', $ward != null ? $ward->rule_id : null); 
+		Yii::app()->user->setState('username', $record->username);
+		Yii::app()->user->setState('doctorId', $employee->id);
+		Yii::app()->user->setState('medworkerId', $employee->post_id);
+		Yii::app()->user->setState('enterpriseId', $ward != null ? $ward->enterprise_id : null);
+		Yii::app()->user->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
+		Yii::app()->user->setState('medcardGenRuleId', $ward != null ? $ward->rule_id : null); 
 		if(isset($_SESSION['fontSize'])) {
-			$this->setState('fontSize', $_SESSION['fontSize']);
+			Yii::app()->user->setState('fontSize', $_SESSION['fontSize']);
 		} else {
-			$this->setState('fontSize', 12);
+			Yii::app()->user->setState('fontSize', 12);
 		}
+
 		return true;
 	}
 

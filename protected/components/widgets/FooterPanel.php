@@ -11,7 +11,10 @@ class FooterPanel extends CWidget {
 	
 	// Получить список сотрубников для текущего пользователя
 	private function getEmployeesForCurrentUser() {
-		$employeesIds = array(Yii::app()->user->getState('doctorId')); // To future
+		$employeesIds = array();
+		foreach(Doctor::model()->findAll('user_id = :user_id', array(':user_id' => Yii::app()->user->id)) as $key => $doctor) {
+			$employeesIds[] = $doctor['id'];
+		}
 		$employees = array();
 		foreach($employeesIds as $id) {
 			$employee = Doctor::model()->findByPk($id);
