@@ -159,9 +159,9 @@ class EmployeesController extends Controller {
 			// Обновление экшенов через удаление
 			$checkedModel->deleteByEmployee($employee->id);
 			// Найдём роль
-			$userToEmployee = User::model()->find('employee_id = :employee_id', array(':employee_id' => $employee->id));
-			if($userToEmployee != null) { // К сотруднику может быть не прикреплён юзер..
-				$rolesToUser = RoleToUser::model()->findAllRolesByUser($userToEmployee->id);
+			$employeeToUser = Doctor::model()->findByPk($employee->id);
+			if($employeeToUser->user_id != null) { // К сотруднику может быть не прикреплён юзер..
+				$rolesToUser = RoleToUser::model()->findAllRolesByUser($employeeToUser->user_id);
 				$rolesIds = array();
 				$num = count($rolesToUser);
 				for($i = 0; $i < $num; $i++) {

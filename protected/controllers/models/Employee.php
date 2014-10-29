@@ -71,7 +71,7 @@ class Employee extends MisActiveRecord  {
             $employees->andWhere('w.enterprise_id=:enterprise_id', array(':enterprise_id' => $enterpriseId));
         }
         if($onlyFree) {
-            $employees->andWhere('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)');
+            $employees->andWhere('d.user_id IS NULL');
         }
 
         if($filters !== false) {
