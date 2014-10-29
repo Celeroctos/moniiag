@@ -86,6 +86,6 @@
         <source src="/content/audio/signal.wav" type="audio/wav">
     </audio>
 </div-->
-
+<?php $this->widget('application.components.widgets.FooterPanel'); ?>
 </body>
 </html>
