@@ -342,7 +342,12 @@ class EmployeesController extends Controller {
 			$employee['categorie'] = 0;
 		}
 		// Проверяем привязку сотрудника хоть к какому-нибудь пользователю
-		$issetUser = User::model()->find('employee_id = :employee_id', array(':employee_id' => $id));
+		$doctorModel = Doctor::model()->findByPk($id);
+		if($doctorModel->user_id != null) {
+			$issetUser = User::model()->findByPk($doctorModel->user_id);
+		} else {
+			$issetUser = null;
+		}
 		$employee['user_to_employee'] = $issetUser;
         if($issetUser) {
 			// Теперь выбираем все галочки тупо для сотрудника

@@ -13,6 +13,7 @@ class UsersController extends Controller {
 												 'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl));
 						exit();
 					} else {
+						Yii::app()->user->setState('authStep', 1);
 						echo CJSON::encode(array(
 							'success' => 'true',
 							'data' => Doctor::model()->findAll('user_id = :user_id', array(':user_id' => Yii::app()->user->id))
@@ -68,6 +69,7 @@ class UsersController extends Controller {
 					exit();
 				}
 			} else {
+				var_dump($form->getErrors());
 				echo CJSON::encode(array(
 					'success' => 'false',
 					'errors' => array(

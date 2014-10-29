@@ -27,6 +27,12 @@ class UserIdentity extends CUserIdentity {
 		Yii::app()->user->setState('login', $record->login);
 		Yii::app()->user->setState('password', $this->password);
 		Yii::app()->user->setState('startpageUrl', $url);
+		if(isset($_SESSION['fontSize'])) {
+			Yii::app()->user->setState('fontSize', $_SESSION['fontSize']);
+		} else {
+			Yii::app()->user->setState('fontSize', 12);
+		}
+
 		// Проверяем, сколько сотрудников прикреплено к пользователю. Если больше одного - выводить окно для выбора сотрудника в методе на уровень выше	
 		$numEmployeesToUser = count(Doctor::model()->findAll('user_id = :user_id', array(':user_id' => $record->id)));
 		if($numEmployeesToUser == 1) { // Если всего один, то сразу вынимать все данные
@@ -57,12 +63,7 @@ class UserIdentity extends CUserIdentity {
 		Yii::app()->user->setState('enterpriseId', $ward != null ? $ward->enterprise_id : null);
 		Yii::app()->user->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
 		Yii::app()->user->setState('medcardGenRuleId', $ward != null ? $ward->rule_id : null); 
-		if(isset($_SESSION['fontSize'])) {
-			Yii::app()->user->setState('fontSize', $_SESSION['fontSize']);
-		} else {
-			Yii::app()->user->setState('fontSize', 12);
-		}
-
+		Yii::app()->user->setState('authStep', -1);  
 		return true;
 	}
 

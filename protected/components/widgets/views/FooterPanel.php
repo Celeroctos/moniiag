@@ -1,3 +1,4 @@
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/footerpanel.js"></script>
 <nav class="navbar navbar-fixed-bottom" role="navigation" id="navbarTools">
 	<div class="arrow">
 		<span class="glyphicon glyphicon-collapse-up"></span>
