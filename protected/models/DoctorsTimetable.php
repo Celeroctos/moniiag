@@ -1,6 +1,6 @@
 <?php
-class DoctorsTimetable extends MisActiveRecord {
 
+class DoctorsTimetable extends MisActiveRecord {
 
     public static function model($className=__CLASS__)
     {
@@ -80,16 +80,76 @@ class DoctorsTimetable extends MisActiveRecord {
             var_dump($Exc);
             exit();
         }
-
-
-
     }
 
-    public function tableName()
-    {
+	public function getDoctorsPerDate($date) {
+		$weekday = date('w', strtotime($date));
+		try {
+			$rules = Yii::app()->db->createCommand()
+				->select("*")
+				->from($this->tableName().' dt')
+				->join(Doctor::tableName().' d', 'dt.id_doctor = d.id')
+				->join(Timetable::tableName().' t', 'dt.id_timetable = t.id');
+			$doctors = $rules->queryAll();
+			foreach ($doctors as $i => $doctor) {
+				$rules = json_decode($doctor['timetable_rules']);
+				foreach ($rules->rules as $rule) {
+					$isFound = false;
+					foreach ($rule->days as $day) {
+						if (intval($day) == $weekday) {
+							$isFound = true;
+							break;
+						}
+					}
+					if (!$isFound) {
+						unset($doctors[$i]);
+					}
+				}
+			}
+			return $doctors;
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'error' => $e->getMessage()
+			));
+			exit();
+		}
+	}
+
+	public function getDoctorsPerDates($date) {
+		$weekday = date('w', strtotime($date));
+		try {
+			$rules = Yii::app()->db->createCommand()
+				->select("*")
+				->from($this->tableName().' dt')
+				->join(Doctor::tableName().' d', 'dt.id_doctor = d.id')
+				->join(Timetable::tableName().' t', 'dt.id_timetable = t.id');
+			$doctors = $rules->queryAll();
+			foreach ($doctors as $i => $doctor) {
+				$rules = json_decode($doctor['timetable_rules']);
+				foreach ($rules->rules as $rule) {
+					$isFound = false;
+					foreach ($rule->days as $day) {
+						if (intval($day) == $weekday) {
+							$isFound = true;
+							break;
+						}
+					}
+					if (!$isFound) {
+						unset($doctors[$i]);
+					}
+				}
+			}
+			return $doctors;
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'error' => $e->getMessage()
+			));
+			exit();
+		}
+	}
+
+    public function tableName() {
         return 'mis.doctors_timetables';
     }
 
 }
-
-?>

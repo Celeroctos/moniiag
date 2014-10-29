@@ -1,465 +1,543 @@
 <?php
-class Timetable extends MisActiveRecord {
 
-    public $EntryID = null;
+class Timetable extends CActiveRecord {
 
-    public static function model($className=__CLASS__)
-    {
-        return parent::model($className);
-    }
+	/**
+	 * @return string
+	 * 		Timetable's table name
+	 */
+	public function tableName() {
+		return 'mis.timetable';
+	}
 
-    public function primaryKey()
-    {
-        return 'id';
-        // Для составного первичного ключа следует использовать массив:
-        // return array('pk1', 'pk2');
-    }
+	/**
+	 * @return string
+	 * 		Primary key's name
+	 */
+	public function primaryKey() {
+		return 'id';
+	}
 
-    private function computeWeekNumber($dayToCount)
-    {
+	/**
+	 * @param $pk int
+	 * 		Primary key identifier
+	 * @return mixed
+	 * 		Mixed rule's object
+	 */
+	public function getTimetableByPk($pk) {
+		return $this->getByID($pk);
+	}
 
-        /*
-        НеделяМесяца = ( День(ЗаданнаяДата) +
-         НомерДняНедели( ПервыйДеньМесяца(ЗаданнаяДата) ) - 2 ) целочисленное_деление_на 7 + 1
-        */
+	/**
+	 * @param $id int
+	 * 		Timetable's identifier number
+	 * @return mixed
+	 * 		Mixed object with Found object
+	 */
+	public function getByID($id) {
+		try {
+			assert(is_integer($id),
+				"Identifier must be integer value	");
 
-        return ((int) ((date("j", strtotime($dayToCount))+
-                date("w", strtotime(
-                    date("m", strtotime($dayToCount))
-                    . "/01/" .
-                    date("Y", strtotime($dayToCount))))-2)/7)) + 1;
-    }
+			$timetable = $this->getDbConnection()->createCommand()
+				->select()
+				->from($this->tableName())
+				->where("id = :id")
+				->bindParam(":id", $id)
+				->query();
 
-    public function getRuleFromTimetable($timeTable, $dayDate)
-    {
-        $currentDateToCompare = strtotime($dayDate);
+			if (!$timetable->getRowCount()) {
+				return null;
+			}
 
-        // Берём и раскодируем правило в об'ект
-        $timeTableObject = CJSON::decode($timeTable['json_data']);
+			return $timetable->read();
 
-        $weekDayOfDayDate = date("w", strtotime($dayDate));
-        $dayFromDate = date("j", strtotime($dayDate));
-        if ($weekDayOfDayDate == 0) {$weekDayOfDayDate = 7;}
-        // Считаем номер недели длля дня
-        $weekNumberOfDayDate = $this->computeWeekNumber($dayDate);
-        $underFact = false;
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
-        $ruleToApply = null;
+	/**
+	 * @param $beginDate string
+	 * 		Timetable's begin date
+	 * @return array
+	 * 		Array with Found timetables
+	 */
+	public function getByBeginDate($beginDate) {
+		try {
+			assert(is_string($beginDate),
+				"Begin date must be string value");
 
-        // =====>
-        // 1. Перебираем правила и смотрим совпадение с датой
-        foreach ($timeTableObject['rules'] as $oneRule)
-        {
-            if (isset($oneRule['daysDates']))
-            {
-                foreach($oneRule['daysDates'] as $oneDate)
-                {
-                    $oneDateFromTimetable = strtotime($oneDate);
-                    if ($oneDateFromTimetable == $currentDateToCompare)
-                    {
-                        // Дата попадает в день, указанный в расписании
-                        $ruleToApply = $oneRule;
+			return $this->getDbConnection()->createCommand()
+				->select()
+				->from($this->tableName())
+				->where("date_begin = :date_begin")
+				->bindParam(":date_begin", $beginDate)
+				->queryAll();
 
-                    }
-                }
-            }
-        }
-        // Если правило не нуль - то не проверяем дальше
-        if ($ruleToApply!=null)
-        {
-            return $ruleToApply;
-        }
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
+	/**
+	 * @param $endDate string
+	 * 		Timetable's begin date
+	 * @return array
+	 * 		Array with Found timetables
+	 */
+	public function getByEndDate($endDate) {
+		try {
+			assert(is_string($endDate),
+				"End date must be string value");
 
+			return $this->getDbConnection()->createCommand()
+				->select()
+				->from($this->tableName())
+				->where("date_end = :date_end")
+				->bindParam(":date_end", $endDate)
+				->queryAll();
 
-        // Перебираем обстоятельства
-        foreach($timeTableObject['facts'] as $oneFact)
-        {
-            $dateBeginFact = strtotime($oneFact['begin']);
-            // Если промежуток - проверяем, попадает ли день в этот промежуток. Иначе проверяем на равенство даты
-            if ($oneFact['isRange']==1)
-            {
-                $dateEndFact = strtotime($oneFact['end']);
-                if (($currentDateToCompare >=$dateBeginFact)&&($currentDateToCompare <=$dateEndFact ))
-                {
-                    $underFact = true;
-                    break;
-                }
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
-            }
-            else
-            {
-                if ($currentDateToCompare ==$dateBeginFact)
-                {
-                    $underFact = true;
-                    break;
-                }
-            }
-        }
+	/**
+	 * @param $currentDate string
+	 * 		Timetable's begin date
+	 * @return array
+	 * 		Array with Found timetables
+	 */
+	public function getBetweenDates($currentDate) {
+		try {
+			assert(is_string($currentDate),
+				"Current date must be string value");
 
-        // Если обстоятельство нашли
-        if ($underFact)
-        {
-            return null;
-        }
+			return $this->getDbConnection()->createCommand()
+				->select()
+				->from($this->tableName())
+				->where(":date >= date_begin AND :date <= date_end")
+				->bindParam(":date", $currentDate)
+				->queryAll();
 
-        foreach ($timeTableObject['rules'] as $oneRule)
-        {
-            // Переменные "есть дни" и "есть чётность", "совпадение по чётности", "совпадение по дням"
-            // Механизм следующий: перебираем правила, смотрим - если не указана ни чётность ни дни - то не применяется правило
-            //     в противном случае - флаг совпадения по критерию должен быть равен флагу наличия данного критерия
-            $dayWeekCoidance = false;
-            $oddanceCoidance = false;
-            $issetDays = false;
-            $issetOddance = false;
-            $ruleToApply = $oneRule;
-            if (isset($oneRule['days']) && (count($oneRule['days'])>0))
-            {
-                $issetDays = true;
-                if (isset ($oneRule['days'][$weekDayOfDayDate ])  )
-                {
-                    // Проверяем - подходит ли день под правило. Если нет - то вызываем continue
-                    //    если да - то даём проверить его на чётность (нечётность). Если и чётность/нечетность он не проходит
-                    //     -то вызываем continue уже в конце
-                    if ( count($oneRule['days'][$weekDayOfDayDate ])>0 )
-                    {
-                        // Ищем в массиве значение, равное номеру недели
-                        // если не нашли - сразу выходим
-                       // $wasDayFound = false;
-                        for ($i=0;$i<count($oneRule['days'][$weekDayOfDayDate ]);$i++)
-                        {
-                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate)
-                            {
-                               // $wasDayFound = true;
-                                $dayWeekCoidance = true;
-                            }
-                        }
-                        /*if (!$wasDayFound)
-                        {
-                            $ruleToApply = null;
-                        }*/
-                    }
-                    else
-                    {
-                       // $wasDayFound = true;
-                        $dayWeekCoidance = true;
-                    }
-                }
-               /* else
-                {
-                    // Смотрим следующее правило
-                    continue;
-                }*/
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
-            }
+	/**
+	 * @param $doctorId string
+	 * 		Doctor's identifier number
+	 * @return array
+	 * 		Array with Found timetables
+	 */
+	public function getByDoctorID($doctorId) {
+		try {
+			assert(is_integer($doctorId),
+				"Doctor's identifier must be integer value");
 
-            // 3. Смотрим - попадает ли дата в чётные/нечётные
-            //     Если указана чётность, то надо проверить - подпадает ли день под чётный/нечетный
-            if (isset($oneRule['oddance']))
-            {
-                $oddanceCoidance = true;
-                $issetOddance = true;
-                if ($oneRule['oddance']==1)
-                {
-                    // Если день нечётный - то выходим
-                    if ($dayFromDate % 2 == 1)
-                    {
-                        $oddanceCoidance = false;
-                    }
+			return $this->getDbConnection()->createCommand()
+				->select()
+				->from($this->tableName())
+				->where(":doctor_id = doctor_id")
+				->bindParam(":doctor_id", $doctorId)
+				->queryAll();
 
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
-                }
-                if ($oneRule['oddance']==0)
-                {
-                    // Если день чётный - то выходим
-                    if ($dayFromDate % 2 == 0)
-                    {
-                        $oddanceCoidance = false;
-                    }
-                }
+	/**
+	 * Find all doctors, which work in
+	 * current date
+	 *
+	 * @param $beginDate string
+	 * 		Begin workday
+	 * @param $endDate string
+	 * 		End workday
+	 * @param $useFacts bool
+	 * 		Shall we use doctor's facts
+	 * @param $tableFilter array
+	 * 		Don't confuse with $filter in MisActiveRecord/getSearchConditions!
+	 * 		filter {
+	 * 			rules {
+	 *				weekday [array|integer]
+	 * 				begin_time [string]
+	 * 				end_time [string]
+	 * 			}
+	 * 			limits {
+	 *				quantity [integer]
+	 * 				time [string]
+	 * 			}
+	 * 		}
+	 * 		It has another filters, cuz we will attach tables
+	 * 		to it's query dynamically (performance ftw)
+	 *
+	 * @return array
+	 * 		Array with found doctors
+	 */
+	public function getDoctorsByRange($beginDate, $endDate, $useFacts = true, $tableFilter = null) {
+		try {
+			assert(is_string($beginDate) && is_string($endDate),
+				"Begin/End dates must be string value");
 
-                // Проверим - если указано поле "кроме" и день попадает в значение этого поля
-                //   - то смотрим следующее правило
-                if (isset($oneRule['except']))
-                {
-                    if ( in_array($weekDayOfDayDate,$oneRule['except']) )
-                    {
-                        // Досвидос - нельзя применять данное правило
-                        $oddanceCoidance = false;
-                    }
-                }
+			$query = $this->getDbConnection()->createCommand()
+				/*
+				 * We will select only doctors
+				 * from this query
+				 */
+				->selectDistinct("d.*")
+				/*
+				 * Basic table is doctor's timetable
+				 * with doctor's identifier (reference)
+				 */
+				->from("mis.timetable as t")
+				/*
+				 * Default join is doctors that has
+				 * attached to this timetable
+				 */
+				->leftJoin("mis.doctors as d",
+					"t.doctor_id = d.id");
 
-            }
+			/*
+			 * Join table with rules only if we
+			 * have something in table filter
+			 */
+			if ($tableFilter !== null && count($tableFilter) > 0) {
+				$query->leftJoin("mis.timetable_rules as tr",
+					"tr.timetable_id = t.id");
+			} else {
+				if ($useFacts === false) {
+					return $query->queryAll();
+				}
+			}
 
-            // Если мы не нашли правило - идём на начало
-            if (
-                ($dayWeekCoidance!=$issetDays )
-                ||
-                ($oddanceCoidance!=$issetOddance)
-                || (($issetDays==false) &&($issetOddance==false) )
-            )
-            {
-                continue;
-            }
-            else
-            {
-               /* var_dump($dayWeekCoidance);
-                var_dump($issetDays);
-                var_dump($oddanceCoidance);
-                var_dump($issetOddance);
-                var_dump($dayDate);
-                var_dump($ruleToApply);*/
-                return $ruleToApply;
-            }
+			$this->applyFilters($query, $tableFilter);
 
-            // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
-            //$ruleToApply = $oneRule;
-            //break;
-        }
+			if ($useFacts === true) {
+				$this->applyFacts($query, $beginDate, $endDate);
+			}
 
+			return $query->query();
 
-        return null;
-        // <=====
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
-        // Перебираем правила
-        /*foreach ($timeTableObject['rules'] as $oneRule)
-        {
-            // 1. Попадает ли дата в одну из дат, заданных в правиле
-            //    если попадает, то применяется она
-            //   Иначе - если дата попадает в один из фактов - то дальше мы ничего не проверяем, оставляем дату как выходной
-            // Перебираем даты
-            if (isset($oneRule['daysDates']))
-            {
-                foreach($oneRule['daysDates'] as $oneDate)
-                {
-                    $oneDateFromTimetable = strtotime($oneDate);
-                    if ($oneDateFromTimetable == $currentDateToCompare)
-                    {
-                        // Дата попадает в день, указанный в расписании
-                        $ruleToApply = $oneRule;
+	/**
+	 * @param string $date
+	 * 		Current date
+	 * @param bool   $useFacts
+	 * 		Shall we use facts in search
+	 * @param array  $tableFilter
+	 *		Array with filters (description upper)
+	 * @return array
+	 * 		Found doctors
+	 */
+	public function getDoctorsByDate($date, $useFacts = true, $tableFilter = null) {
+		return $this->getDoctorsByRange($date, $date, $useFacts, $tableFilter);
+	}
 
-                    }
-                }
-            }
-            // Если правило не выбрано и поднят флаг, что дата подпадает под факт - надо выйти из цикла - день считается
-            //   выходным
-            if ($ruleToApply!=null)
-            {
-                break;
-            }
-            else
-            {
-                // Если под фактом - то тоже выходной
-                if ($underFact)
-                {
-                    break;
-                }
-            }
-            // 2. Смотрим - попадает ли дата в дни недели, выбранные в правиле
-            //   Если хотя бы один день недели выбран - смотрим, подпадает ли текущая дата под выбранные дни недели
-            if (isset($oneRule['days']) && (count($oneRule['days'])>0))
-            {
+	/**
+	 * @param string $beginDate
+	 * 		Current date
+	 * @param bool   $useFacts
+	 * 		Shall we use facts in search
+	 * @param array  $tableFilter
+	 *		Array with filters (description upper)
+	 * @return array
+	 * 		Found doctors
+	 */
+	public function getDoctorsByWeek($beginDate, $useFacts = true, $tableFilter = null) {
 
-                if (isset ($oneRule['days'][$weekDayOfDayDate ])  )
-                {
-                    // Проверяем - подходит ли день под правило. Если нет - то вызываем continue
-                    //    если да - то даём проверить его на чётность (нечётность). Если и чётность/нечетность он не проходит
-                    //     -то вызываем continue уже в конце
-                    if ( count($oneRule['days'][$weekDayOfDayDate ])>0 )
-                    {
-                        // Ищем в массиве значение, равное номеру недели
-                        // если не нашли - сразу выходим
-                        $wasDayFound = false;
-                        for ($i=0;$i<count($oneRule['days'][$weekDayOfDayDate ]);$i++)
-                        {
-                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate)
-                            {
-                                $wasDayFound = true;
-                            }
-                        }
-                        if (!$wasDayFound)
-                            continue;
-                    }
-                    // Иначе мы уже де факто проверили - данный день указан, как рабочий в правиле
-                }
-                else
-                {
-                    // Смотрим следующее правило
-                    continue;
-                }
+		assert(is_string($beginDate),
+			"Date must be string value");
 
-            }
+		$dt = DateTime::createFromFormat(
+			"Y-m-d", $beginDate);
 
-            // 3. Смотрим - попадает ли дата в чётные/нечётные
-            //     Если указана чётность, то надо проверить - подпадает ли день под чётный/нечетный
-            if (isset($oneRule['oddance']))
-            {
-                if ($oneRule['oddance']==1)
-                {
-                    // Если день нечётный - то выходим
-                    if ($dayFromDate % 2 == 1)
-                    {
-                        continue;
-                    }
+		$endDate = $dt->setTimestamp($dt->getTimestamp() + 7 * 24 * 3600)
+			->format("Y-m-d");
 
+		return $this->getDoctorsByRange($beginDate, $endDate, $useFacts, $tableFilter);
+	}
 
-                }
-                if ($oneRule['oddance']==0)
-                {
-                    // Если день чётный - то выходим
-                    if ($dayFromDate % 2 == 0)
-                    {
-                        continue;
-                    }
-                }
+	/**
+	 * @param array $filters
+	 * @param bool $sidx
+	 * @param bool $sord
+	 * @param bool $start
+	 * @param bool $limit
+	 * @return int
+	 */
+	public function getNumRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+		return count($this->getRowsIds($filters, $sidx, $sord, $start, $limit));
+	}
 
-                // Проверим - если указано поле "кроме" и день попадает в значение этого поля
-                //   - то смотрим следующее правило
-                if (isset($oneRule['except']))
-                {
-                    if ( in_array($weekDayOfDayDate,$oneRule['except']) )
-                    {
-                        // Досвидос - нельзя применять данное правило
-                        continue;
-                    }
-                }
+	/**
+	 * @param array $filters
+	 * @param bool  $sidx
+	 * @param bool  $sord
+	 * @param bool  $start
+	 * @param bool  $limit
+	 * @return array
+	 */
+	private function getRowsIds($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+		try {
+			$timetables = $this->getDbConnection()->createCommand()
+				->selectDistinct('tt.id, tt.date_end')
+				->from(Timetable::tableName().' tt')
+				->join(Doctor::tableName(). ' d', 'd.id = tt.doctor_id')
+				->leftJoin(Ward::tableName(). ' w', 'w.id = d.ward_code');
 
-            }
+			// Смотрим - если заданы врачи - пришпиливаем к запросу врачей
+			if ($filters['doctorsIds'] != NULL) {
+				$timetables->andWhere('d.id in ('. implode(',',$filters['doctorsIds']) .')');
+			} else {
+				// Иначе - проверяем флаг "без отделения"
+				if ($filters['woWardFlag'] == true) {
+					$timetables->andWhere('d.ward_code is NULL');
+				} else {
+					if ($filters['wardsIds'] != NULL) {
+						// Иначе проверяем заданные отделения
+						$timetables->andWhere('d.ward_code in ('. implode(',',$filters['wardsIds']) .')');
+					}
+				}
+			}
 
-            // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
-            $ruleToApply = $oneRule;
-            break;
-        }*/
-        //return $ruleToApply;
-    }
+			// Если заданы даты начала и даты конца действия расписания - то учитываем эти условия
+			if ((isset($filters['dateBegin'])) && (isset($filters['dateEnd']))) {
+				$timetables->andWhere('(
+						(tt.date_begin <= :begin AND tt.date_end >= :end)   OR
+						(tt.date_begin <= :begin AND tt.date_end >= :begin) OR
+						(tt.date_begin <= :end   AND tt.date_end >= :end)   OR
+						(tt.date_begin >= :begin AND tt.date_end <= :end))',
+					array(
+						':begin' => $filters['dateBegin'],
+						':end'   => $filters['dateEnd']
+					)
+				);
+			}
 
-    public function afterSave() {
-        try{
-            // Надо будет разобраться почему без вот этой вот конструкции не возвращается назад ID-шник только что добавленной записи
-            $this->EntryID = Yii::app()->db->getLastInsertID('mis.timetable_id_seq');
-        }
-        catch(Exception $Exc)
-        {
+			if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+				$timetables->order($sidx. ', tt.date_end '.$sord);
+				$timetables->limit($limit, $start);
+			}
 
-        }
-        return parent::afterSave();
-    }
+			return $timetables->queryAll();
 
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 
-    public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false)
-    {
-        $timeTablesIds = $this->getRowsIds($filters, $sidx, $sord , $start , $limit );
+	/**
+	 * @param CDbCommand $query
+	 * 		Query object with future results
+	 * @param array      $tableFilter
+	 * 		Filters with timetable conditions
+	 */
+	private function applyFilters($query, $tableFilter) {
 
-        // А теперь для каждого расписания (столько расписаний, сколько на одной странице в спискоте, т.е. штук 15) выбираем
-        //   - date_begin
-        //   - date_end
-        //   - json
-        //   - id (само собой)
-        //   -doctors
-        //    в массиве doctors имеем распределение докторов по отделениям
+		/*
+		* Check timetable rules, likes weekdays, cabinet
+		* or begin and end times. It will join all necessary
+		* tables to query and append where statements to it
+		*/
+		if (isset($tableFilter['rules']) && count($tableFilter['rules'])) {
 
-        $timeTableObject = new Timetable();
-        $timeTableDoctorsObject = new DoctorsTimetable();
+			$rules = $tableFilter['rules'];
 
-        foreach ($timeTablesIds as &$oneTableId)
-        {
-            // Берём данные по самому расписанию
-            $timetableBody = $timeTableObject::model()->findByPk( $oneTableId['id'] );
-            //$oneTableId['id'] = $timetableBody['id'];
-            $oneTableId['date_begin'] = $timetableBody['date_begin'];
-            $oneTableId['date_end'] = $timetableBody['date_end'];
-            $oneTableId['json_data'] = $timetableBody['timetable_rules'];
-            $oneTableId['wardsWithDoctors'] = $timeTableDoctorsObject->getDoctorsWardsByShedule($oneTableId['id']);
+			assert(is_array($rules),
+				"Rules must have array type");
 
+			/*
+			 * We will search only that doctors
+			 * that can assume patients in set weekdays
+			 */
+			if (isset($rules['weekday']) && count($rules['weekday'])) {
 
-        }
+				$query->leftJoin("mis.timetable_rule_date as trd",
+					"trd.rule_id = tr.id");
 
-        return $timeTablesIds;
-    }
+				$weekdays = $rules['weekday'];
 
+				if (is_array($weekdays)) {
+					$query->andWhere("trd.day in (".implode(",", $weekdays).")");
+				} else if (is_integer($weekdays)) {
+					$query->andWhere(":day = trd.day", array(
+						":day" => $weekdays
+					));
+				} else {
+					assert(true, "Weekday can only be integer or array value");
+				}
+			}
+		}
 
-    public function getNumRows($filters, $sidx = false, $sord = false, $start = false, $limit = false)
-    {
-        // Получим строки с ID и посчитаем их
-        return count(  $this->getRowsIds($filters, $sidx, $sord , $start , $limit ) );
-    }
+		/*
+		 * Also we can check out doctor's limits
+		 * likes begin/end time limit and patient's quantity
+		 */
+		if (isset($tableFilter['limits']) && count($tableFilter['limits'])) {
 
-    private function getRowsIds($filters, $sidx = false, $sord = false, $start = false, $limit = false)
-    {
-        try
-        {
-            $connection = $this->getDbConnection();
-            $timetables = $connection->createCommand()
-                ->selectDistinct('tt.id, tt.date_end')
-                ->from(Timetable::tableName().' tt')
-                ->join(DoctorsTimetable::tableName(). ' dtt', 'dtt.id_timetable = tt.id')
-                ->join(Doctor::tableName(). ' d', 'd.id =dtt.id_doctor')
-                ->leftJoin(Ward::tableName(). ' w', 'w.id = d.ward_code');
+			$query->leftJoin("mis.timetable_rule_limit as trl",
+				"trl.rule_id = tr.id");
 
-                // Смотрим - если заданы врачи - пришпиливаем к запросу врачей
-                if ($filters['doctorsIds']!=NULL)
-                {
-                    $timetables->andWhere('d.id in ('. implode(',',$filters['doctorsIds']) .')');
-                }
-                else
-                {
-                    // Иначе - проверяем флаг "без отделения"
-                    if ($filters['woWardFlag']==true)
-                    {
-                        $timetables->andWhere('d.ward_code is NULL');
-                    }
-                    else
-                    {
-                       if ($filters['wardsIds']!=NULL)
-                       {
-                           // Иначе проверяем заданные отделения
-                           $timetables->andWhere('d.ward_code in ('. implode(',',$filters['wardsIds']) .')');
-                       }
-                    }
-                }
+			$limits = $tableFilter['limits'];
 
-            // Если заданы даты начала и даты конца действия расписания - то учитываем эти условия
-            if ( (isset($filters['dateBegin']))&&(isset($filters['dateEnd'])) )
-            {
-                $timetables->andWhere('(  (  ( tt.date_begin <= :begin  )AND(  tt.date_end >= :end ) )
-                                        OR(  ( tt.date_begin <= :begin  )AND(  tt.date_end >= :begin )  )
-                                        OR(  ( tt.date_begin <= :end  )AND(  tt.date_end >= :end ))
-                                        OR(  ( tt.date_begin >= :begin  )AND(  tt.date_end <= :end ))
-                                       )',
-                                     array(
-                                         ':begin' => $filters['dateBegin'],
-                                         ':end' => $filters['dateEnd']
-                                     )
-                );
-            }
+			/*
+			 * Check out doctor's quantity
+			 * limit
+			 */
+			if (isset($limits['quantity'])) {
+				$query->andWhere("trl.quantity is not null")
+					->andWhere(":quantity >= trl.quantity", array(
+						":quantity" => $limits['quantity']
+					));
+			}
 
-            if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
-                $timetables->order($sidx. ', tt.date_end '.$sord);
-                $timetables->limit($limit, $start);
-            }
+			/*
+			 * Check out doctor's time limit, only
+			 * if it on track
+			 */
+			if (isset($limits['time'])) {
+				$query->andWhere("trl.begin_time is not null and trl.end_time trl.end_time is not null")
+					->andWhere(":time >= trl.begin_time and :time <= trl.end_time", array(
+						":time" => $limits['time']
+					));
+			}
+		}
+	}
 
+	/**
+	 * @param CDbCommand $query
+	 *      Query object with future results
+	 * @param string $beginDate
+	 * 		Begin date
+	 * @param string|null $endDate
+	 * 		End date
+	 */
+	private function applyFacts($query, $beginDate, $endDate = null) {
 
-//var_dump($timetables);
-  //          exit();
+		if ($endDate === null) {
+			$endDate = $beginDate;
+		}
 
-            $timetables = $timetables->queryAll();
+		$query->leftJoin("mis.timetable_facts as tf", "tf.timetable_id = t.id")
+			->andWhere("(tf.is_range is null or case
+				when tf.is_range = true then
+					:begin_date < tf.begin_date and :end_date > tf.end_date
+				else
+					:begin_date < tf.begin_date and :end_date > tf.begin_date end)",
+			array(
+				":begin_date" => $beginDate,
+				":end_date"   => $endDate
+			));
+	}
 
-           // var_dump($timetables );
-           // exit();
-            return $timetables;
-        }
-        catch (Exception $Exc)
-        {
-            var_dump($Exc);
-            exit();
-        }
-    }
+	/**
+	 * @param string $dayToCount
+	 * 		Day to count
+	 * @return int
+	 */
+	private function computeWeekNumber($dayToCount) {
+		/*
+		 * НеделяМесяца = ( День(ЗаданнаяДата) +
+		 * НомерДняНедели( ПервыйДеньМесяца(ЗаданнаяДата) ) - 2 ) целочисленное_деление_на 7 + 1
+		*/
+		return ((int)((date("j", strtotime($dayToCount)) + date("w", strtotime(
+				date("m", strtotime($dayToCount))."/01/".
+				date("Y", strtotime($dayToCount)))) - 2) / 7)) + 1;
+	}
 
-    public function tableName()
-    {
-        return 'mis.timetable';
-    }
+	/**
+	 * @param array $filters
+	 * @param bool  $sidx
+	 * @param bool  $sord
+	 * @param bool  $start
+	 * @param bool  $limit
+	 */
+	public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
+		try {
+			$timetables = $this->getDbConnection()->createCommand()
+				->selectDistinct('tt.*')
+				->from(Timetable::tableName().' tt')
+				->join(Doctor::tableName(). ' d', 'd.id = tt.doctor_id')
+				->leftJoin(Ward::tableName(). ' w', 'w.id = d.ward_code');
 
+			// Смотрим - если заданы врачи - пришпиливаем к запросу врачей
+			if ($filters['doctorsIds'] != NULL) {
+				$timetables->andWhere('d.id in ('. implode(',',$filters['doctorsIds']) .')');
+			} else {
+				// Иначе - проверяем флаг "без отделения"
+				if ($filters['woWardFlag'] == true) {
+					$timetables->andWhere('d.ward_code is NULL');
+				} else {
+					if ($filters['wardsIds'] != NULL) {
+						// Иначе проверяем заданные отделения
+						$timetables->andWhere('d.ward_code in ('. implode(',',$filters['wardsIds']) .')');
+					}
+				}
+			}
+
+			// Если заданы даты начала и даты конца действия расписания - то учитываем эти условия
+			if ((isset($filters['dateBegin'])) && (isset($filters['dateEnd']))) {
+				$timetables->andWhere('(
+						(tt.date_begin <= :begin AND tt.date_end >= :end)   OR
+						(tt.date_begin <= :begin AND tt.date_end >= :begin) OR
+						(tt.date_begin <= :end   AND tt.date_end >= :end)   OR
+						(tt.date_begin >= :begin AND tt.date_end <= :end))',
+					array(
+						':begin' => $filters['dateBegin'],
+						':end'   => $filters['dateEnd']
+					)
+				);
+			}
+
+			if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
+				$timetables->order($sidx. ', tt.date_end '.$sord);
+				$timetables->limit($limit, $start);
+			}
+
+			return $timetables->queryAll();
+
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'file'    => $e->getFile(),
+				'line'    => $e->getLine()
+			)); die;
+		}
+	}
 }
-
-?>

@@ -64,7 +64,7 @@ class Doctor extends MisActiveRecord  {
         // Теперь нужно выяснить сотрудников, которые могут принимать в этот день
         if($greetingDate !== false && $greetingDate !== null) {
             // Теперь мы знаем, каких врачей выбирать, с каким днём
-            $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
+            $doctorsPerDay = DoctorsTimetable::model()->getAllPerDate($greetingDate);
             $doctorIds = array();
             $num = count($doctorsPerDay);
             for($i = 0; $i < $num; $i++) {

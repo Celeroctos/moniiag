@@ -66,12 +66,12 @@ class DoctorsController extends Controller {
         //var_dump($filters);
         //exit();
         //$filters['rules'] = array();
+		$test = count($num);
 
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
 
         // Посмотрим на то, какой календарь мы показываем сейчас
         $calendarTypeSetting = Setting::model()->find('name = :name', array(':name' => 'calendarType'))->value;
-
 
         if($calendarTypeSetting == 1) {
             $calendarController = Yii::app()->createController('doctors/shedule');
@@ -79,17 +79,17 @@ class DoctorsController extends Controller {
 
         // Если дата не задана, считаем, что дата начала показа органайзера - от текущей даты
         if($calendarTypeSetting == 1) {
-            if($this->greetingDate == null || $this->greetingDate == false) {
-                $beginYear = date('Y');
-                $beginMonth = date('n');
-                $beginDay = date('j');
-            } else {
-                $parts = explode('-', $this->greetingDate);
-                $beginYear = $parts[0];
-                $beginMonth = $parts[1];
-                $beginDay = $parts[2];
-            }
-        }
+			if ($this->greetingDate == null || $this->greetingDate == false) {
+				$beginYear = date('Y');
+				$beginMonth = date('n');
+				$beginDay = date('j');
+			} else {
+				$parts = explode('-', $this->greetingDate);
+				$beginYear = $parts[0];
+				$beginMonth = $parts[1];
+				$beginDay = $parts[2];
+			}
+		}
 
         if(isset($_GET['onlywaitingline']) && $_GET['onlywaitingline'] == 1) {
             $onlyWaitingLine = 1;
@@ -123,7 +123,8 @@ class DoctorsController extends Controller {
             'success' => true,
             'data' => $doctors,
             'total' => $totalPages,
-            'records' => count($num)
+            'records' => count($num),
+			'test' => $test
         );
         if($calendarTypeSetting == 1) {
             $answer['year'] = $beginYear;

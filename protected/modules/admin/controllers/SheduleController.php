@@ -114,7 +114,6 @@ class SheduleController extends Controller {
         // Сохраняем расписание
         $timeTableModel->save();
 
-
         // Проверияем срок действия расписания
         $timetableId = null;
         if ($timeTableModel->EntryID!=null)
@@ -818,11 +817,10 @@ class SheduleController extends Controller {
             $maxGreetingDate = strtotime(date('Y-n-j'));
             $greetingDays = array();
             // Найдём максимальное число, на которое отменяется хотя бы один приём
-            foreach ($greetingToCheck as $oneGreeting)
-            {
-
+            foreach ($greetingToCheck as $oneGreeting) {
 
                 $greetingPatientDay = strtotime($oneGreeting['patient_day']);
+
                 if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )
                 {
                     array_push( $greetingDays ,  $oneGreeting['patient_day']);
@@ -1722,7 +1720,6 @@ class SheduleController extends Controller {
                 $oneDoctor['type'] = $oneDay['type'];
 
                 $result[ substr($oneDay['date'],0,10)][] = $oneDoctor;
-
             }
 
         }

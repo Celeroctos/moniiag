@@ -15,13 +15,13 @@ class SheduleController extends Controller {
         $page = $_GET['page'];
         $sidx = $_GET['sidx'];
         $sord = $_GET['sord'];
+
         $notBeginned = $_GET['notBeginned'];
         $notBeginnedFlag = false;
-        if ($notBeginned==1)
-        {
+
+        if ($notBeginned == 1) {
             $notBeginnedFlag = true;
         }
-
 
         $model = new SheduleByDay();
 

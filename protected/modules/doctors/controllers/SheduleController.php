@@ -1394,6 +1394,10 @@ class SheduleController extends Controller {
 
     private function checkByTimetable($timeTable, $dayDate)
     {
+		print "<pre>";
+		print_r($timeTable);
+		print "</pre>";
+		die;
         $timeTableObject = new Timetable();
         return $timeTableObject->getRuleFromTimetable($timeTable, $dayDate);
     }
@@ -1917,7 +1921,7 @@ class SheduleController extends Controller {
             $_SESSION['unwritedGreetings'] = array();
         }
 
-        // Проверим - если в сессии больше, чем 10 приёмов - то удалим старые с начала массива
+        // Проверим - если в сессии больше, чем 100 приёмов - то удалим старые с начала массива
         if (count($_SESSION['unwritedGreetings'])>=$maxArraySize)
         {
             while (count($_SESSION['unwritedGreetings'])>=$maxArraySize)
