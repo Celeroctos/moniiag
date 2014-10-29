@@ -53,7 +53,7 @@ class Controller extends CController {
 		// Выясняем права пользователя относительно текущего сотрудника. Что добавить, что не учитывать
 		$actionsDetached = array(); // Удалённые экшены из роли посредством задания их для сотрудника
 		$actionsAttached = array(); // Добавленные экшены на сотрудника
-		$actionsToEmployee = CheckedAction::model()->findAllWithKeysByEmployee(Yii::app()->user->doctorId);
+		$actionsToEmployee = isset(Yii::app()->user->doctorId) ? CheckedAction::model()->findAllWithKeysByEmployee(Yii::app()->user->doctorId) : array();
 
 		$num = count($actionsToEmployee);
 		for($i = 0; $i < $num; $i++) {
