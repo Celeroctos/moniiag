@@ -2528,25 +2528,56 @@ form[id=template-edit-form] .btnAddValue
 		.gradient(#31B404, #BFFF00);
 		height: 30px;
 	}
-	.arrow {
+	.arrow, #footerTabPanel li {
 		height: 25px;
-		width: 50px;
-		margin: 25px 0 0 50px;
 		border-top-right-radius: 8px;
 		border-top-left-radius: 8px;
-		background: #BCE6FF;
 		color: #ffffff;
 		cursor: pointer;
+	}
+	.arrow {
+		width: 50px;
+		margin: 25px 0 0 50px;
+		background: #BCE6FF;
 		span {
 			font-size: 20px;
 			padding: 0 0 0 15px;
 			margin-top: -2px;
 		}
 	}
+	
 	.mainCont {
 		height: 50px;
 		margin-top: 0px;
+		#footerTabPanel {
+			position: absolute;
+			margin: -25px 0 0 100px;
+			li {
+				float: left;
+				margin-right: -10px;
+				list-style: none;
+				padding: 5px 15px 0 15px;
+				font-weight: bold;
+				position: relative;
+			}
+			.panel1 {
+				background: #BCE6FF;
+				z-index: 99;
+			}
+			.panel2 {
+				background: #FFC6C6;
+				z-index: 98;
+			}
+		}
+	}
+	.footerPanel {
+	
+	}
+	#panel1 {
 		.gradient(#81BEF7, #4F85B2, #BCE6FF);
+	}
+	#panel2 {
+		.gradient(#FFC6C6, E22D2D);
 	}
 	strong {
 		margin-left: 10px;

@@ -4,16 +4,22 @@
 		<span class="glyphicon glyphicon-collapse-up"></span>
 	</div>
 	<div class="mainCont">
-		<strong>
-			Сейчас я сотрудник
-		</strong>
-		<select name="currentEmployeeRole" id="currentEmployeeRole" class="form-control">
-		<?php
-			foreach($employees as $key => $item) {
-				echo "<option value=\"{$key}\" ".(Yii::app()->user->doctorId == $key ? "selected=\"selected\" " : "").">{$item}</option>";
-			}
-		?>
-		</select>
-		<button id="submitEmployeeRole" class="btn submitEmployeeRole">OK</button>
+		<ul id="footerTabPanel">
+			<li class="panel1">Пользователь</li>
+			<li class="panel2">Инструменты</li>
+		</ul>
+		<div id="panel1" class="footerPanel">
+			<strong>
+				Сейчас я сотрудник
+			</strong>
+			<select name="currentEmployeeRole" id="currentEmployeeRole" class="form-control">
+			<?php
+				foreach($employees as $key => $item) {
+					echo "<option value=\"{$key}\" ".(Yii::app()->user->doctorId == $key ? "selected=\"selected\" " : "").">{$item}</option>";
+				}
+			?>
+			</select>
+			<button id="submitEmployeeRole" class="btn submitEmployeeRole">OK</button>
+		</div>
 	</div>
 </nav>
