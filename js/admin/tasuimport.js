@@ -435,7 +435,8 @@
 
     $('#addFakeGreeting').on('click', function(e) {
 		$('#addFakePopup').modal({
-			keyboard: false
+			keyboard: false, // Sic!
+			backdrop: 'static'
 		});
     });
 

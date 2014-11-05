@@ -645,7 +645,7 @@ class TasuController extends Controller {
 		}
 		
 		// Список услуг
-		$servicesListDb = MedService::model()->getRows(false, 'id', 'asc');
+		$servicesListDb = MedService::model()->getRows(false, 'name', 'asc');
 		$serviceCodesList = array();
 		$defaultService = false;
 		foreach($servicesListDb as $value) {
