@@ -238,7 +238,7 @@ class SheduleSetted extends MisActiveRecord {
                 ->selectDistinct('ss.employee_id')
                 ->from(SheduleSetted::tableName().' ss')
                 ->where('NOT EXISTS(SELECT ss2.* FROM '.SheduleSetted::tableName().' ss2 WHERE weekday IS NULL AND day = :date)', array(':date' => $date));
-            return $doctors->queryAll();
+			return $doctors->queryAll();
         } catch(Exception $e) {
             echo $e->getMessage();
         }

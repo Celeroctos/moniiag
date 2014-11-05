@@ -98,9 +98,9 @@ class Doctor extends MisActiveRecord  {
           if($greetingDate !== false && $greetingDate !== null) {
               // Теперь мы знаем, каких врачей выбирать, с каким днём
               if($calendarType == 0) {
-                 $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
-              } else { // Это выбирает врачей в промежутке
-                 $doctorsPerDay = SheduleSetted::model()->getAllPerDates($greetingDate);
+                $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
+			  } else { // Это выбирает врачей в промежутке
+                $doctorsPerDay = SheduleSetted::model()->getAllPerDates($greetingDate);
               }
               $doctorIds = array();
               $num = count($doctorsPerDay);
@@ -110,11 +110,12 @@ class Doctor extends MisActiveRecord  {
               $doctor->andWhere(array('in', 'd.id', $doctorIds));
           }
 
-          if ($sidx && $sord && $limit) {
-              $doctor->order($sidx.' '.$sord);
-              $doctor->limit($limit, $start);
+          if ($sidx && $sord) {
+			$doctor->order($sidx.' '.$sord);
           }
-
+		  if($limit && $start) {
+			$doctor->limit($limit, $start);
+		  }
 
         $doctors = $doctor->queryAll();
         return $doctors;

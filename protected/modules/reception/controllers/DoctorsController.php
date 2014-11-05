@@ -102,7 +102,8 @@ class DoctorsController extends Controller {
             if($doctor['middle_name'] == null) {
                 $doctor['middle_name'] = '';
             }
-            $nearFree = $this->getNearFreeDay($doctor['id']);
+            //$nearFree = $this->getNearFreeDay($doctor['id']);
+			$nearFree = false; // Dirty hack, TODO normal
             $doctor['nearFree'] = $nearFree !== false ? $nearFree : '';
             $doctor['cabinet'] = '';
             if($nearFree) {
@@ -125,6 +126,7 @@ class DoctorsController extends Controller {
             'total' => $totalPages,
             'records' => count($num)
         );
+		
         if($calendarTypeSetting == 1) {
             $answer['year'] = $beginYear;
             $answer['month'] = $beginMonth;

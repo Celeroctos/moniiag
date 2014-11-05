@@ -157,7 +157,19 @@ class EmployeesController extends Controller {
         $employee->ward_code = $model->wardCode;
 
         if($employee->save()) {
-
+			// TODO normal
+			// Dirty Fix: расписание врачей
+			$shedule = new SheduleSetted();
+			$shedule->employee_id = $employee->id;
+			if(!$shedule->save()) {
+				echo CJSON::encode(
+					array('success' => false,
+						  'error' => 'Не могу создать точку расписания для сотрудника!'
+					)
+				);
+			}
+			// End of dirty fix
+			
             // Если текущий юзер привязан к изменяемому сотруднику... Может измениться ФИО
             if(Yii::app()->user->doctorId == $employee->id) {
                 Yii::app()->user->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
@@ -166,14 +178,15 @@ class EmployeesController extends Controller {
                 $updateFio = 0;
             }
 
-            echo CJSON::encode(array('success' => true,
-                                     'data' => array(
-                                         'text' => $msg,
-                                         'updateFio' => $updateFio,
-                                         'fio' => Yii::app()->user->fio
-                                     )
-                                )
-                            );
+            echo CJSON::encode(
+				array('success' => true,
+					  'data' => array(
+						 'text' => $msg,
+						 'updateFio' => $updateFio,
+						 'fio' => Yii::app()->user->fio
+					 )
+				)
+			);
         }
     }
 
