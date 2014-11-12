@@ -2515,11 +2515,6 @@ form[id=template-edit-form] .btnAddValue
 #navbarTools {
 	height: 50px;
 	/* Панель выбора текущей роли */
-	select, button {
-		position: relative;
-		top: 10px;
-		display: inline-block;
-	}
 	#currentEmployeeRole  {
 		margin-left: 10px;
 		width: 200px;
@@ -2528,14 +2523,14 @@ form[id=template-edit-form] .btnAddValue
 		.gradient(#31B404, #BFFF00);
 		height: 30px;
 	}
-	.arrow, #footerTabPanel li {
+	.arrow-panel, #footerTabPanel li {
 		height: 25px;
 		border-top-right-radius: 8px;
 		border-top-left-radius: 8px;
 		color: #ffffff;
 		cursor: pointer;
 	}
-	.arrow {
+	.arrow-panel {
 		width: 50px;
 		margin: 25px 0 0 50px;
 		background: #BCE6FF;
@@ -2566,21 +2561,37 @@ form[id=template-edit-form] .btnAddValue
 				z-index: 99;
 			}
 			.panel2 {
-				background: #FFC6C6;
+				background: #DBC7B8;
 				z-index: 98;
 			}
 		}
 	}
 	.footerPanel {
 		height: 50px;
-		position: relative;
-		z-index: 10;
+		position: absolute;
+		width: 100%;
 	}
 	#panel1 {
 		.gradient(#81BEF7, #4F85B2, #BCE6FF);
+		z-index: 15;
+		select, button {
+			position: relative;
+			top: 10px;
+			display: inline-block;
+		}
 	}
 	#panel2 {
-		.gradient(#FFC6C6, E22D2D);
+		.gradient(#D69F77, #D8B499, #DBC7B8);
+		z-index: 14;
+		ul {
+			list-style: none;
+			overflow: hidden;
+			li {
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+			}
+		}
 	}
 	strong {
 		margin-left: 10px;
@@ -2613,4 +2624,22 @@ form[id=template-edit-form] .btnAddValue
 }
 .actionsGroupsTablist {
 	margin-bottom: 5px;
+}
+.calcBBPopover {
+	top: -150px !important;
+	height: 180px;
+	min-width: 500px;
+	.arrow {
+		top: 160px !important;
+	}
+	.popover-title {
+		font-weight: bold;
+	}
+	.popover-content {
+		width: 500px;
+		min-width: 500px;
+		label {
+			top: 5px;
+		}
+	}
 }

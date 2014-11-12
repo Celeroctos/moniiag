@@ -1,6 +1,6 @@
 $(document).ready(function() {
-	$('#navbarTools .arrow').on('click', function(e) {
-		var panelArrow = $('#navbarTools .arrow');
+	$('#navbarTools .arrow-panel').on('click', function(e) {
+		var panelArrow = $('#navbarTools .arrow-panel');
 		if ($(panelArrow).find('span').hasClass('glyphicon-collapse-down')) {
 			$('#footerTabPanel').animate({ 
 				'marginTop' : '0'
@@ -57,5 +57,115 @@ $(document).ready(function() {
 		$('#footerTabPanel li:not(.active)').css({
 			'zIndex' : 10
 		});
+		var classes = $(this).prop('class').split(' ');
+		for(var i = 0; i < classes.length; i++) {
+			if(/^panel/i.test(classes[i])) {
+				$('.footerPanel').filter('.active').removeClass('active').css({
+					'zIndex': 90
+				});
+				$('#' + classes[i]).addClass('active').css({
+					'zIndex' : 98
+				});
+				$('#navbarTools .arrow-panel').css({
+					'background': $(this).css('background')
+				});
+			}
+		}
 	});
+	
+	$('#toolsList img').on('mouseover', function(e) {
+		$(this).effect('bounce');
+	});
+	
+	/* Калькулятор беременности */
+	$('#calcBBToolLink').on('click', function(e) {
+		$(this).parent().popover({
+            animation: true,
+            html: true,
+            placement: 'right',
+            title: 'Калькулятор беременности',
+			template: "<div class=\"popover calcBBPopover\" role=\"tooltip\"><div class=\"arrow\"></div><h3 class=\"popover-title\"></h3><div class=\"popover-content\"></div></div>",
+            delay: {
+                show: 300,
+                hide: 300
+            },
+            container: $(this).parent(),
+			content: function() {
+				var methods = [
+					{ 
+						display : 'По первому дню последней менструации',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По раннему УЗИ',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По дате переноса эмбриона (при ЭКО)',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По дате первых замеченных шевелений',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По предполагаемой дате зачатия',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По дате овуляции',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По дате инсеминации',
+						func: function() {
+						
+						}
+					},
+					{ 
+						display : 'По первой явке в женскую консультацию.',
+						func: function() {
+						
+						}
+					}
+				];
+				var calcMethodCombo = $('<select>').prop({
+					'class' : 'form-control'
+				});
+				for(var i = 0; i < methods.length; i++) {
+					$(calcMethodCombo).append($('<option>').prop({
+						'value' : i
+					}).text(methods[i].display));
+				}
+				
+				return $('<div>').append($('<div>').prop({
+					'class' : 'form-group'
+				}).append($('<label>').prop({
+					'class' : 'col-xs-5 control-label'
+				}).text('Выберите метод расчёта'), $('<div>').prop({
+					'class' : 'col-xs-7'
+				}).append(calcMethodCombo)));
+			}
+        });
+	});
+	
+	$('.calcBBPopover').on('click', function(e) {
+		e.stopPropagation();
+		alert(1);
+		return false;
+	});
+	
+	$(this).parent().popover('show');
 });
