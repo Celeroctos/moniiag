@@ -5,7 +5,7 @@
 	</div>
 	<div class="mainCont">
 		<ul id="footerTabPanel">
-			<li class="panel1">Пользователь</li>
+			<li class="panel1 active">Пользователь</li>
 			<li class="panel2">Инструменты</li>
 		</ul>
 		<div id="panel1" class="footerPanel">
@@ -20,6 +20,8 @@
 			?>
 			</select>
 			<button id="submitEmployeeRole" class="btn submitEmployeeRole">OK</button>
+		</div>
+		<div id="panel2" class="footerPanel">
 		</div>
 	</div>
 </nav>

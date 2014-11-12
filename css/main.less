@@ -2551,7 +2551,8 @@ form[id=template-edit-form] .btnAddValue
 		margin-top: 0px;
 		#footerTabPanel {
 			position: absolute;
-			margin: -25px 0 0 100px;
+			margin: 0 0 0 100px;
+			z-index: 9;
 			li {
 				float: left;
 				margin-right: -10px;
@@ -2571,7 +2572,9 @@ form[id=template-edit-form] .btnAddValue
 		}
 	}
 	.footerPanel {
-	
+		height: 50px;
+		position: relative;
+		z-index: 10;
 	}
 	#panel1 {
 		.gradient(#81BEF7, #4F85B2, #BCE6FF);

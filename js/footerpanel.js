@@ -2,16 +2,25 @@ $(document).ready(function() {
 	$('#navbarTools .arrow').on('click', function(e) {
 		var panelArrow = $('#navbarTools .arrow');
 		if ($(panelArrow).find('span').hasClass('glyphicon-collapse-down')) {
-			$(panelArrow).find('span').removeClass('glyphicon-collapse-down').addClass('glyphicon-collapse-up');
-			$(panelArrow).animate({ 
-				'marginTop' : '25px'
-			}, 500, function () {
+			$('#footerTabPanel').animate({ 
+				'marginTop' : '0'
+			}, 200, function() {
 				$(panelArrow).find('span').removeClass('glyphicon-collapse-down').addClass('glyphicon-collapse-up');
-			}); 
+				$(panelArrow).animate({ 
+					'marginTop' : '25px'
+				}, 500, function () {
+					$(panelArrow).find('span').removeClass('glyphicon-collapse-down').addClass('glyphicon-collapse-up');
+				}); 
+			});
 		} else {
 			$(panelArrow).animate({ 
 				'marginTop' : '-25px'
 			}, 500, function () {
+				$('#footerTabPanel').animate({ 
+					'marginTop' : '-25px'
+				}, 200, function() {
+					// Empty now
+				});
 				$(panelArrow).find('span').removeClass('glyphicon-collapse-up').addClass('glyphicon-collapse-down');
 			}); 
 		}
@@ -37,6 +46,16 @@ $(document).ready(function() {
 					alert('Произошла ошибка при переключении сотрудника.');
 				}
 			}
+		});
+	});
+	
+	$('#footerTabPanel li').on('click', function(e) {
+		$('#footerTabPanel li.active').removeClass('active');
+		$(this).css({
+			'zIndex' : 999
+		}).addClass('active');
+		$('#footerTabPanel li:not(.active)').css({
+			'zIndex' : 10
 		});
 	});
 });
