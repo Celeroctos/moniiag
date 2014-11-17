@@ -58,9 +58,9 @@ class Controller extends CController {
 		$num = count($actionsToEmployee);
 		for($i = 0; $i < $num; $i++) {
 			if($actionsToEmployee[$i]['mode'] == 0) { // Включить в права
-				$actionsAttached[] = $actionsToEmployee[$i]['action_id'];
+				$actionsAttached[(string)$actionsToEmployee[$i]['action_id']] = $actionsToEmployee[$i]['accessKey'];
 			} elseif($actionsToEmployee[$i]['mode'] == 1) { // Исключить из прав. Сам экшн кладётся в спец. массив для того ,чтобы можно было отобразить в интерфейсе
-				$actionsDetached[] = $actionsToEmployee[$i]['action_id'];
+				$actionsDetached[(string)$actionsToEmployee[$i]['action_id']] = $actionsToEmployee[$i]['accessKey'];
 			}
 		}
 
@@ -68,17 +68,17 @@ class Controller extends CController {
         $auth = Yii::app()->authManager;
         $role = $auth->createRole('r'.$currentRoles['id'], '');
         $result = $auth->assign('r'.$currentRoles['id'], Yii::app()->user->getId()); // Текущему юзеру назначаем эту роль
-        foreach($currentRoles['actions'] as $id => $action) {
-			if(array_search($id, $actionsDetached) === false && array_search($id, $actionsAttached) === false) {
+		foreach($currentRoles['actions'] as $id => $action) {
+			if(array_key_exists($id, $actionsDetached) === false && array_key_exists($id, $actionsAttached) === false) {
 				$auth->createOperation($action);
 				$role->addChild($action);
 			}
         }
-		
+
 		// Создаём иерархию дополнительно для сотрудника
 		foreach($actionsAttached as $key => $action) {
-			$auth->createOperation($action['accessKey']);
-			$role->addChild($action['accessKey']);
+			$auth->createOperation($action);
+			$role->addChild($action);
 		}
 		
 		// Теперь пишем лог
