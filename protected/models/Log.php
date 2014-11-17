@@ -15,7 +15,7 @@ class Log extends MisActiveRecord {
             $connection = Yii::app()->db;
             $log = $connection->createCommand()
                 ->select('l.*')
-                ->from(Log::tableName().' l')
+                ->from(Log::model()->tableName().' l')
                 ->where('m.id = :id', array(':id' => $id))
                 ->queryRow();
 
@@ -31,8 +31,8 @@ class Log extends MisActiveRecord {
         $connection = Yii::app()->db;
         $logs = $connection->createCommand()
             ->select('l.*, u.login')
-			->from(Log::tableName().' l')
-			->leftJoin(User::tableName().' u', 'u.id = l.user_id');
+			->from(Log::model()->tableName().' l')
+			->leftJoin(User::model()->tableName().' u', 'u.id = l.user_id');
 
         if($filters !== false) {
             $this->getSearchConditions($logs, $filters, array(
@@ -58,7 +58,7 @@ class Log extends MisActiveRecord {
 		$connection = Yii::app()->db;
         $logs = $connection->createCommand()
             ->select('COUNT(l.*) as num')
-            ->from(Log::tableName().' l');
+            ->from(Log::model()->tableName().' l');
 			
 		if($filters !== false) {
             $this->getSearchConditions($logs, $filters, array(

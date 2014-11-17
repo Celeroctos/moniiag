@@ -14,7 +14,7 @@ class CladrRegion extends MisActiveRecord {
         $connection = Yii::app()->db;
         $regions = $connection->createCommand()
             ->select('cr.*')
-            ->from(CladrRegion::tableName().' cr');
+            ->from(CladrRegion::model()->tableName().' cr');
 
         if($filters !== false) {
             $this->getSearchConditions($regions, $filters, array(
@@ -24,7 +24,7 @@ class CladrRegion extends MisActiveRecord {
             ));
         }
 
-        // Если есть фильтр по полю name - то вставляем условие or where на код кладр
+        // пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ name - пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ or where пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
         if (isset ($filters['rules'][0]['field']))
         {
             if ($filters['rules'][0]['field']=='name')
@@ -50,7 +50,7 @@ class CladrRegion extends MisActiveRecord {
             $connection = Yii::app()->db;
             $region = $connection->createCommand()
                 ->select('cr.*')
-                ->from(CladrRegion::tableName().' cr')
+                ->from(CladrRegion::model()->tableName().' cr')
                 ->where('cr.id = :id', array(':id' => $id))
                 ->queryRow();
 

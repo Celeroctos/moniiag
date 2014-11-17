@@ -39,7 +39,7 @@ class TasuAllOms extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $numoms = $connection->createCommand()
             ->select('COUNT(*) as num')
-            ->from(TasuAllOms::tableName().' upu')
+            ->from(TasuAllOms::model()->tableName().' upu')
 			->where("REPLACE([upu].[ENP], CHAR(32), '') != ''")
             ->queryRow();
         return $numoms['num'];

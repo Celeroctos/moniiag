@@ -391,10 +391,10 @@ class Timetable extends MisActiveRecord {
             $connection = $this->getDbConnection();
             $timetables = $connection->createCommand()
                 ->selectDistinct('tt.id, tt.date_end')
-                ->from(Timetable::tableName().' tt')
-                ->join(DoctorsTimetable::tableName(). ' dtt', 'dtt.id_timetable = tt.id')
-                ->join(Doctor::tableName(). ' d', 'd.id =dtt.id_doctor')
-                ->leftJoin(Ward::tableName(). ' w', 'w.id = d.ward_code');
+                ->from(Timetable::model()->tableName().' tt')
+                ->join(DoctorsTimetable::model()->tableName(). ' dtt', 'dtt.id_timetable = tt.id')
+                ->join(Doctor::model()->tableName(). ' d', 'd.id =dtt.id_doctor')
+                ->leftJoin(Ward::model()->tableName(). ' w', 'w.id = d.ward_code');
 
                 // Смотрим - если заданы врачи - пришпиливаем к запросу врачей
                 if ($filters['doctorsIds']!=NULL)

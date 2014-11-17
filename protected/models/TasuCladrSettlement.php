@@ -18,7 +18,7 @@ class TasuCladrSettlement extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $settlements = $connection->createCommand()
             ->select('tcs.*')
-            ->from(TasuCladrSettlement::tableName().' tcs');
+            ->from(TasuCladrSettlement::model()->tableName().' tcs');
 
         if($filters !== false) {
             $this->getSearchConditions($settlements, $filters, array(

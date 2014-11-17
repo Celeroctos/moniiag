@@ -40,16 +40,16 @@ class SheduleSetted extends MisActiveRecord {
 
             $doctors = $connection->createCommand()
                     ->selectDistinct('ss.employee_id')
-                    ->from(SheduleSetted::tableName().' ss')
+                    ->from(SheduleSetted::model()->tableName().' ss')
                     ->where('weekday = :weekday AND NOT EXISTS(SELECT ss2.* FROM '
-                        .SheduleSetted::tableName()
+                        .SheduleSetted::model()->tableName()
                         .' ss2 WHERE weekday IS NULL AND day = :date)',
                     array(':weekday' => $weekday, ':date' => $date));
 
             /*
             $doctors = $connection->createCommand()
                 ->selectDistinct('ss.employee_id')
-                ->from(SheduleSetted::tableName().' ss')
+                ->from(SheduleSetted::model()->tableName().' ss')
                 ->where('weekday = :weekday ',
                     array(':weekday' => $weekday));
             */

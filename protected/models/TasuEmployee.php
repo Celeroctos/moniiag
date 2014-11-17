@@ -19,7 +19,7 @@ class TasuEmployee extends MisActiveRecord {
 			$connection = TasuEmployee::getDbConnection();
 			$max = $connection->createCommand()
 				->select('MAX(te.uid) as num')
-				->from(TasuEmployee::tableName().' te');
+				->from(TasuEmployee::model()->tableName().' te');
 			$row = $max->queryRow();
 			return $row['num'];
         } catch(Exception $e) {
@@ -31,7 +31,7 @@ class TasuEmployee extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $employees = $connection->createCommand()
             ->select('te.*')
-            ->from(TasuEmployee::tableName().' te')
+            ->from(TasuEmployee::model()->tableName().' te')
             ->where('te.version_end = :version_end', array(':version_end' => '9223372036854775807'));
 
         if($filters !== false) {
@@ -55,7 +55,7 @@ class TasuEmployee extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $numEmployees = $connection->createCommand()
             ->select('COUNT(*) as num')
-            ->from(TasuEmployee::tableName().' te')
+            ->from(TasuEmployee::model()->tableName().' te')
             ->queryRow();
         return $numEmployees['num'];
     }

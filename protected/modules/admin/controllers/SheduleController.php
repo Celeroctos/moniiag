@@ -3,7 +3,9 @@ class SheduleController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
 
     public function actionView() {
-        //var_dump("ля-ля");
+
+        //$DFM = new DateFormatterMis('1990-02-12');
+        //var_dump($DFM->getFullAge());
         //exit();
 
         $ward = new Ward();

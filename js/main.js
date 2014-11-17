@@ -799,25 +799,38 @@ $('select[multiple="multiple"]').each(function(index, select) {
     $.fn.switchFocusToNext = function()
     {
         // Выбираем все focus-able элементы
-        var focusables = $(':tabbable');
+        var focusables = $(':tabbable, .controlTableContentCell');
         for (i=0;i<focusables.length;i++)
         {
             // Проверяем - является ли и-тый элемент из фокусабельных элементом,
             //    на котором сейчас стоит фокус
             if ($(focusables[i])[0] == $(document.activeElement)[0])
             {
+
+                elementToFocus = null;
                 // Тут может быть две ситуации - либо элемент последний в массиве
                 //   либо нет
                 if (i==focusables.length-1)
                 {
                     // Фокусируемся на первый элемент
-                    $(focusables[0]).focus();
+                    //$(focusables[0]).focus();
+                    elementToFocus = $(focusables[0]);
+
                 }
                 else
                 {
                     // Фокусируемся на следующий по номеру элемент
-                    $(focusables[i+1]).focus();
+                    //$(focusables[i+1]).focus();
+                    elementToFocus = $(focusables[0]);
                 }
+
+                // Если элемент имеет класс controlTableContentCell, то на него нужно запустить событие клик
+                if ( $(elementToFocus).hasClass('controlTableContentCell')  )
+                {
+                    $(elementToFocus).trigger('click');
+                }
+
+                $(elementToFocus).focus();
                 break;
             }
         }
@@ -837,7 +850,8 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
 
             // Смотрим что в фокусе - если
-            focusedElement = $($(':focus')[0]);
+            //focusedElement = $($(':focus')[0]);
+            focusedElement = $(document.activeElement);
             // Дальше может быть следующее развитие ситуации.
             //   Если в фокусе такой элемент, который не должен засабмитить форму, то нужно перекинуть
             //     фокус на следующий focusable элемент.
@@ -915,7 +929,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
             else
             {
                 // Иначе берём таббабельные элементы из формы и
-                tabblesElements = $(containingForm).find(':tabbable');
+                tabblesElements = $(containingForm).find(':tabbable, .controlTableContentCell');
                 for (i=0;i<tabblesElements.length;i++)
                 {
                     // Проверяем - является ли и-тый элемент из фокусабельных элементом,
@@ -924,16 +938,24 @@ $('select[multiple="multiple"]').each(function(index, select) {
                     {
                         // Тут может быть две ситуации - либо элемент последний в массиве
                         //   либо нет
+                        elementToFocus = null;
                         if (i==tabblesElements.length-1)
                         {
                             // Фокусируемся на первый элемент
-                            $(tabblesElements[0]).focus();
+                            //$(tabblesElements[0]).focus();
+                            elementToFocus = $(tabblesElements[0]);
                         }
                         else
                         {
                             // Фокусируемся на следующий по номеру элемент
-                            $(tabblesElements[i+1]).focus();
+                            //$(tabblesElements[i+1]).focus();
+                            elementToFocus = $(tabblesElements[i+1]);
                         }
+                        if (  $(elementToFocus).hasClass('controlTableContentCell')  )
+                        {
+                            $(elementToFocus).trigger('click');
+                        }
+                        $(elementToFocus).focus();
                         break;
                     }
                 }

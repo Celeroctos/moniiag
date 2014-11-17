@@ -11,11 +11,11 @@ $desc=array (
   'StemV' => 165,
   'MissingWidth' => 540,
 );
-$up=-63;
-$ut=44;
-$ttffile='Z:/home/moniiag.my/www/protected/vendor/mpdf/ttfonts/DejaVuSerifCondensed-Bold.ttf';
+$up=0;
+$ut=0;
+$ttffile='Z:/home/mis.my/www/protected/vendor/mpdf/ttfonts/DejaVuSerifCondensed-Bold.ttf';
 $TTCfontID='0';
-$originalsize=283140;
+$originalsize=283130;
 $sip=false;
 $smp=false;
 $BMPselected=true;

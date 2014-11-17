@@ -4,7 +4,9 @@ $(document).ready(function() {
         datatype: "json",
         colNames:['ID',
                   'Код услуги в ТАСУ',
-                  'Описание'
+                  'Описание',
+				  'По умолчанию',
+				  ''
                   ],
         colModel:[
             {
@@ -21,7 +23,17 @@ $(document).ready(function() {
                 name: 'name',
                 index: 'name',
                 width: 400
-            }
+            },
+			{
+				name: 'is_default_desc',
+				index: 'is_default_desc',
+				width: 100
+			},
+			{
+				name: 'is_default',
+				index: 'is_default',
+				hidden: true
+			}
         ],
         rowNum: 30,
         rowList:[10,20,30],
@@ -131,7 +143,11 @@ $(document).ready(function() {
                             {
                                 modelField: 'name',
                                 formField: 'name'
-                            }
+                            },
+							{
+								modelField: 'is_default',
+								formField: 'isDefault'
+							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);

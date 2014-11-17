@@ -1535,6 +1535,7 @@ class PatientController extends Controller {
     private function addEditModelMedcard($medcard, $model, $oms = false) {
         // Добавление карты: нет id
 		if($medcard->card_number == null) { // Совсем новая карта
+			Yii::app()->user->setState('savedCardNumber', -1);
 			$cardnumberGenerator = new CardnumberGenerator(false, true);
             $medcard->card_number = $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
             // Записываем текущую дату и ID пользователя, который создал медкарту

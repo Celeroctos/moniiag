@@ -23,7 +23,7 @@ class TasuKeysTemplate extends MisActiveRecord {
         $connection = Yii::app()->db;
         $templates = $connection->createCommand()
             ->select('tktl.*')
-            ->from(TasuKeysTemplate::tableName().' tktl');
+            ->from(TasuKeysTemplate::model()->tableName().' tktl');
 
         if($filters !== false) {
             $this->getSearchConditions($templates, $filters, array(

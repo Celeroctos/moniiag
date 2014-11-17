@@ -421,6 +421,9 @@ class PrintController extends Controller {
         $patient = Oms::model()->findByPk($medcard['policy_id']);
         $parts = explode('-', $patient['birthday']);
 
+        $dateFormatter = new DateFormatterMis($patient['birthday']);
+        $greetingInfo['full_age'] = $dateFormatter->getFullAge();
+
         $greetingInfo['full_years'] = date('Y') - $parts[0];
         //var_dump($greetingInfo['full_years'] );
        // exit();
@@ -445,9 +448,6 @@ class PrintController extends Controller {
         $dateParts = explode('-', $greeting['patient_day']);
         $greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
 
-        //var_dump($printRecom);
-        //exit();
-
         if (!$printRecom)
         {
             $changedElements = MedcardElementForPatient::model()->findAllPerGreeting($greetingId);
@@ -459,15 +459,8 @@ class PrintController extends Controller {
             //   Поидее если у нас $printRecom = true, то templateId должен быть задан тоже
             $changedElements = MedcardElementForPatient::model()->findGreetingTemplate($greetingId,$templateId);
         }
-
-        //var_dump($changedElements );
-        //exit();
         // =====>
-        //  foreach ($changedElements as $oneEl)
-        //   {
-        //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
-        //      }
-//exit();
+
         if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
@@ -483,9 +476,6 @@ class PrintController extends Controller {
         // Создадим виджет
         $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
 
-        //var_dump($changedElements);
-        //exit();
-
         // Запихнём виджету те элементы, которые мы вытащили по приёму
         $categorieWidget->setHistoryElements($changedElements);
 
@@ -499,8 +489,6 @@ class PrintController extends Controller {
 
         // Вытащим диагнозы
         //=======>
-        //var_dump($sortedElements );
-        //exit();
 
         $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
@@ -508,9 +496,6 @@ class PrintController extends Controller {
         $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
         $noteDiagnosis = $greeting['note'];
-
-        //var_dump($cd);
-        //exit();
 
         // Соберём их в об'ект
         $diagnosises = array(
@@ -521,12 +506,6 @@ class PrintController extends Controller {
             'complicating' => $cd,
             'noteGreeting' => $noteDiagnosis
         );
-
-        //var_dump($diagnosises );
-        //exit();
-
-        //var_dump($sortedElements);
-        //exit();
         if($greetingIn === false) {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
@@ -535,17 +514,10 @@ class PrintController extends Controller {
                 {
                     $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0,'',8,8,8,8,8,8);
                 }
-
-                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
-                $mPDF->WriteHTML($stylesheet, 1);
-
-                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.less');
-                $mPDF->WriteHTML($stylesheet, 1);
-
-
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
                 $mPDF->WriteHTML($stylesheet, 1);
-                $htmlForPdf = '';
+
+               $htmlForPdf = '';
 
                 // Если печатаем рекомендации - печатаем их по-другому, в другой совершенно форме:
                 if ($printRecom)
@@ -567,6 +539,7 @@ class PrintController extends Controller {
                             'diagnosises' => $diagnosises
                         ), true);
                 }
+
 
                 $mPDF->WriteHTML(
                     $htmlForPdf

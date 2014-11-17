@@ -57,6 +57,17 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<?php echo $form->label($model,'cardType', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'cardType', array('Амбулаторная', 'Стационарная'), array(
+								'id' => 'cardType',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
 						<?php echo $form->label($model,'prefixId', array(
 							'class' => 'col-xs-3 control-label text-left'
 						)); ?>
@@ -204,6 +215,17 @@
 						<div class="col-xs-9">
 							<?php echo $form->textField($model, 'name', array(
 								'id' => 'name',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo $form->label($model,'cardType', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($model, 'cardType', array('Амбулаторная', 'Стационарная'), array(
+								'id' => 'cardType',
 								'class' => 'form-control'
 							)); ?>
 						</div>

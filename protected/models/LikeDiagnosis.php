@@ -19,8 +19,8 @@ class LikeDiagnosis extends MisActiveRecord  {
         $connection = Yii::app()->db;
         $mkb10 = $connection->createCommand()
             ->select('ml.*, m.*')
-            ->from(LikeDiagnosis::tableName().' ml')
-            ->join(Mkb10::tableName().' m', 'm.id = ml.mkb10_id')
+            ->from(LikeDiagnosis::model()->tableName().' ml')
+            ->join(Mkb10::model()->tableName().' m', 'm.id = ml.mkb10_id')
             ->where('ml.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
 
         if($filters !== false) {
@@ -48,8 +48,8 @@ class LikeDiagnosis extends MisActiveRecord  {
         $connection = Yii::app()->db;
         $medworker = $connection->createCommand()
             ->select('ld.*, m.*')
-            ->from(LikeDiagnosis::tableName().' ld')
-            ->join(Mkb10::tableName().' m', 'm.id = ld.mkb10_id')
+            ->from(LikeDiagnosis::model()->tableName().' ld')
+            ->join(Mkb10::model()->tableName().' m', 'm.id = ld.mkb10_id')
             ->where('ld.medworker_id = :medworker_id', array(':medworker_id' => $medworkerId));
 
         return $medworker->queryAll();

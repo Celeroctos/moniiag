@@ -154,6 +154,12 @@ class MedcardsController extends Controller {
 					$rule['participle_mode_postfix_desc'] = 'Замена';
 				} 
 				
+				if($rule['type'] == 1) {
+					$rule['type_desc'] = 'Стационарная';
+				} else {
+					$rule['type_desc'] = 'Амбулаторная';
+				}
+				
 				$rule['rule'] = $this->typesList[$rule['value']];
 			}
 			
@@ -509,6 +515,9 @@ class MedcardsController extends Controller {
 		} else {
 			$rule->parent_id = null;
 		}
+		
+		$rule->type = $model->cardType;
+		
         if($rule->save()) {
             echo CJSON::encode(array(
 					'success' => true,
