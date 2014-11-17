@@ -60,10 +60,15 @@ $(document).ready(function() {
 		var classes = $(this).prop('class').split(' ');
 		for(var i = 0; i < classes.length; i++) {
 			if(/^panel/i.test(classes[i])) {
-				$('.footerPanel').filter('.active').removeClass('active').css({
-					'zIndex': 90
+				$('.footerPanel').filter('.active').fadeOut(500, function() {
+					$(this).removeClass('active').css({
+						'zIndex': 90
+					});
 				});
-				$('#' + classes[i]).addClass('active').css({
+				
+				$('#' + classes[i]).fadeIn('slow', function() {
+					$('#' + classes[i]).addClass('active');
+				}).css({
 					'zIndex' : 98
 				});
 				$('#navbarTools .arrow-panel').css({
@@ -79,7 +84,8 @@ $(document).ready(function() {
 	
 	/* Калькулятор беременности */
 	$('#calcBBToolLink').on('click', function(e) {
-		$(this).parent().popover({
+		var parentCont = $(this).parent();
+		$(parentCont).popover({
             animation: true,
             html: true,
             placement: 'right',
@@ -159,13 +165,26 @@ $(document).ready(function() {
 				}).append(calcMethodCombo)));
 			}
         });
+		
+		$(parentCont).on('shown.bs.popover', function(e) {		
+			var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+				position: 'absolute',
+				cursor: 'pointer',
+				left: '480px'
+			});
+				
+			$(span).on('click', function(e) {
+				$(parentCont).popover('destroy');
+				$('#toolsList .popover').remove(); // Shit. Not destroys automat. 
+				return false;
+			});
+
+			$('#toolsList .popover span.glyphicon').remove();
+			$('#toolsList .popover-title').append(span);
+			
+			$(parentCont).on('click', '.popover', function(e) {
+				return false;
+			});
+		})
 	});
-	
-	$('.calcBBPopover').on('click', function(e) {
-		e.stopPropagation();
-		alert(1);
-		return false;
-	});
-	
-	$(this).parent().popover('show');
 });
