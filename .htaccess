@@ -23,4 +23,8 @@ ExpiresByType image/png "access plus 1 year"
 ExpiresByType image/jpg "access plus 1 year"
 ExpiresByType image/x-icon "access 1 year"
 ExpiresByType application/x-shockwave-flash "access 1 year"
+<<<<<<< HEAD
 </IfModule>
+=======
+</IfModule>
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c

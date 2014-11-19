@@ -435,8 +435,12 @@
 
     $('#addFakeGreeting').on('click', function(e) {
 		$('#addFakePopup').modal({
+<<<<<<< HEAD
 			keyboard: false, // Sic!
 			backdrop: 'static'
+=======
+			keyboard: false
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 		});
     });
 
@@ -903,6 +907,14 @@
 		
 	});
 	
+<<<<<<< HEAD
+=======
+	$('#saveEditPregreetingRow').on('click', function(e) {
+		var currentRow = $('#preGreetings').jqGrid('getGridParam', 'selrow');
+		var rowData = $('#preGreetings').jqGrid('getRowData', rowid);
+	});
+	
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 	$('#tasuimport-filter-btn').on('click', function() {
 		var greetingDate = $('#filterGreetingDate').val(); 
 		var doctorId = $('#filterDoctorId').val(); 
@@ -943,7 +955,11 @@
 	$('#greetingDate-cont #greetingDate').val(currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate());
 	
 	// Зацикливаем беготню по форме
+<<<<<<< HEAD
 	$('#cardNumber, #primaryDiagnosis, #secondaryDiagnosis, #cardNumberEdit').on('keydown', function(e) {
+=======
+	$('#cardNumber, #primaryDiagnosis, #cardNumberEdit').on('keydown', function(e) {
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 		if(e.keyCode == 13 || e.keyCode == 9) {
 			if(($(this).prop('id') == 'cardNumber' || $(this).prop('id') == 'cardNumberEdit') && $.trim($(this).val()) != '') { // Подгружать ФИО
 				getFioByCardNumber($(this).prop('id'));

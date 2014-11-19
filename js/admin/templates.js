@@ -79,11 +79,15 @@ $(document).ready(function() {
         }
     );
 
-
     $("#addTemplate").click(function() {
         $('#addTemplatePopup').modal({
-
         });
+    });
+
+    $("#designTemplate").click(function() {
+        $('#designTemplatePopup').modal({
+
+        }).draggable("disable").disableSelection();
     });
 
     $("#template-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
@@ -139,7 +143,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/templates/getone?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/templates/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -199,7 +203,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/templates/delete?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/templates/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -232,7 +236,7 @@ $(document).ready(function() {
             }).text('Подождите, шаблон вызывается...');
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/templates/show?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/templates/show?id=' + currentRow,
                 'cache' : false,
                 'type' : 'GET',
                 'dataType' : 'json',

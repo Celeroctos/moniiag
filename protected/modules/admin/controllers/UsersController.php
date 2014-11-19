@@ -72,11 +72,17 @@ class UsersController extends Controller {
     public function actionGetone($id) {
         $model = new User();
         $user = $model->getOne($id);
-        if($user['employee_id'] != null) {
-            // Выбираем ещё и сотрудника вдовесок к юзеру
-            $employee = Employee::model()->getOne($user['employee_id']);
-            if($employee != null) {
-                $user['employee_fio'] = $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.$employee['ward'].' отделение, '.$employee['enterprise'].')';
+        if($user != null) {
+            // Выбираем ещё и сотрудников вдовесок к юзеру
+            $employees = Employee::model()->getByUserId($id);
+			$user['employees'] = array();
+            if(count($employees) > 0) {
+				foreach($employees as $employee) {
+					$user['employees'][] = array(
+						'employee_fio' => $employee['last_name'].' '.$employee['first_name'].' '.$employee['middle_name'].' ('.$employee['ward'].' отделение, '.$employee['enterprise'].')',
+						'employee_id' => $employee['id']
+					);
+				}
             }
         }
 
@@ -210,12 +216,25 @@ class UsersController extends Controller {
         $user->username = $model->username;
         $user->login = $model->login;
         $user->role_id = $model->roleId;
-        $user->employee_id = $model->employeeId;
-
+        //$user->employee_id = $model->employeeId;
+		
         if($user->save()) {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));
         }
+		
+		Doctor::model()->updateAll(array(
+			'user_id' => null
+		), 'user_id = :user_id', array(
+			':user_id' => $user->id
+		));
+		
+		$num = count($model->employeeId);
+		for($i = 0; $i < $num; $i++) {
+			Doctor::model()->updateByPk($model->employeeId[$i], array(
+				'user_id' => $user->id
+			));
+		}
 
         // Теперь ставим роли
         RoleToUser::model()->deleteAll('user_id = :user_id', array(':user_id' => $user->id));

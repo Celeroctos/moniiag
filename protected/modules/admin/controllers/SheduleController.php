@@ -826,6 +826,7 @@ class SheduleController extends Controller {
 
                 $greetingPatientDay = strtotime($oneGreeting['patient_day']);
                 if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )
+<<<<<<< HEAD
                 {
                     array_push( $greetingDays ,  $oneGreeting['patient_day']);
                 }
@@ -833,6 +834,15 @@ class SheduleController extends Controller {
                 {
                     $maxGreetingDate = $greetingPatientDay;
                 }
+=======
+                {
+                    array_push( $greetingDays ,  $oneGreeting['patient_day']);
+                }
+                if ($greetingPatientDay > $maxGreetingDate)
+                {
+                    $maxGreetingDate = $greetingPatientDay;
+                }
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 
             }
 
@@ -914,6 +924,7 @@ class SheduleController extends Controller {
                          //   $greetingsIdToDelete[] = $oneGreeting['id'];
                         }
                     }
+<<<<<<< HEAD
 
 
                 }
@@ -923,6 +934,14 @@ class SheduleController extends Controller {
            // var_dump($greetingsIdToDelete);
            // exit();
 
+=======
+                }
+            }
+
+           // var_dump($greetingsIdToDelete);
+           // exit();
+
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
             // отписываем приёмы, которые мы набрали
             if (  count($greetingsIdToDelete) > 0 )
             {

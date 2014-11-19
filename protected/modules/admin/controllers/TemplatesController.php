@@ -1,12 +1,20 @@
 <?php
+
 class TemplatesController extends Controller {
+
     public $layout = 'application.modules.admin.views.layouts.index';
+
     private $pagesList = array( // Страницы
         'Основная медкарта',
         'Раздел рекомендаций'
     );
 
+    public function getPagesList() {
+        return $this->pagesList;
+    }
+
     public function actionView() {
+
         // Категории
         $categoriesModel = new MedcardCategorie();
         $categories = $categoriesModel->getRows(false, 'name', 'asc');
@@ -28,10 +36,6 @@ class TemplatesController extends Controller {
             'pagesList' => $this->pagesList,
             'categoriesList' => $categoriesList
         ));
-    }
-
-    public function getPagesList() {
-        return $this->pagesList;
     }
 
     public function actionGet() {
@@ -91,8 +95,8 @@ class TemplatesController extends Controller {
             }
             echo CJSON::encode(
                 array('rows' => $templates,
-                      'total' => $totalPages,
-                      'records' => count($num))
+                    'total' => $totalPages,
+                    'records' => count($num))
             );
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -122,7 +126,7 @@ class TemplatesController extends Controller {
                 $this->addEditModel($template, $model, 'Элемент успешно добавлен.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
-                                         'errors' => $model->errors));
+                    'errors' => $model->errors));
             }
         }
 
@@ -166,7 +170,7 @@ class TemplatesController extends Controller {
 
         if($template->save()) {
             echo CJSON::encode(array('success' => true,
-                                     'text' => $msg));
+                'text' => $msg));
         }
     }
 
@@ -181,7 +185,7 @@ class TemplatesController extends Controller {
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
-                                     'error' => $errorTextMessage ));
+                'error' => $errorTextMessage ));
         }
     }
 
@@ -189,7 +193,7 @@ class TemplatesController extends Controller {
         $model = new MedcardTemplate();
         $template = $model->getOne($id);
         echo CJSON::encode(array('success' => true,
-                                 'data' => $template)
+                'data' => $template)
         );
     }
 
@@ -217,5 +221,3 @@ class TemplatesController extends Controller {
         );
     }
 }
-
-?>

@@ -645,7 +645,11 @@ class TasuController extends Controller {
 		}
 		
 		// Список услуг
+<<<<<<< HEAD
 		$servicesListDb = MedService::model()->getRows(false, 'name', 'asc');
+=======
+		$servicesListDb = MedService::model()->getRows(false, 'id', 'asc');
+>>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 		$serviceCodesList = array();
 		$defaultService = false;
 		foreach($servicesListDb as $value) {
@@ -2457,18 +2461,18 @@ class TasuController extends Controller {
 			return true;
 		}		
 
+		// Меняем тактику: если режим работы без тасу, делаем его автономным
+		$tasuMode = Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'tasuMode'));
+		if($tasuMode->value == 1) { // Режим неработы с ТАСУ
+			return -1;
+		}
+
         $conn2 = Yii::app()->db2;
 		$conn3 = Yii::app()->db3;
 
 		/*if(!$conn2->getActive() || !$conn3->getActive()) {
 			return -1; // Нет соединения
 		}*/
-
-		// Меняем тактику: если режим работы без тасу, делаем его автономным
-		$tasuMode = Setting::model()->find('module_id = -1 AND name = :name', array(':name' => 'tasuMode'));
-		if($tasuMode->value == 1) { // Режим неработы с ТАСУ
-			return -1;
-		}
 		if($oms->oms_series == null) {
 			$policyParts = explode(' ', trim($oms->oms_number));
 			// Неправильный номер полиса по формату....?
