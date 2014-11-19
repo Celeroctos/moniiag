@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 addDefaultCharset UTF8
 
 RewriteEngine on
@@ -28,3 +29,6 @@ ExpiresByType application/x-shockwave-flash "access 1 year"
 =======
 </IfModule>
 >>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
+=======
+addDefaultCharset UTF8
+>>>>>>> 1d8529e08a83abc2f405cc02b0fa28f1243ccc3f
