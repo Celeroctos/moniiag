@@ -481,6 +481,12 @@ function editElement() {
                                 $('#editElementPopup #dateFieldMaxValue').trigger('change');
                                 $('#editElementPopup #dateFieldMinValue').trigger('change');
                             }
+							
+							if(config && config.hasOwnProperty('directLink')) {
+								$('#editElementPopup #directLink').val(config.directLink);
+							} else {
+								$('#editElementPopup #directLink').val(0);
+							}
                         }
                     }
                     // Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в

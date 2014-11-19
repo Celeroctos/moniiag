@@ -603,7 +603,7 @@ var dateControlConfigs =
                             });
                             return false;
                         }
-                        if(length == 4 && !(year >= 1900 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2] + yearParts[3]))) {
+                        if(length == 4 && !(year >= 1900 /* && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2] + yearParts[3]) */)) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });

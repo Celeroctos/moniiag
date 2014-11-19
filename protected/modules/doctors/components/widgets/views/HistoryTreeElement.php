@@ -94,8 +94,17 @@
                                 } else {
                                     $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                 }
-
-                                echo $form->textField($model,'f'.$element['id'], $options);
+								
+								if(isset($element['config'], $element['config']['directLink']) && $element['config']['directLink'] == 1) {
+									echo "<div class=\"input-group linkfieldGroup\">";
+								}
+                                
+								echo $form->textField($model,'f'.$element['id'], $options);
+	
+								if(isset($element['config'], $element['config']['directLink']) && $element['config']['directLink'] == 1) {
+									echo "<span class=\"input-group-addon glyphicon glyphicon-arrow-right greeting-glyphicon-arrow-right\" title=\"Перейти по ссылке\" style=\"display: inline-block;\"></span>
+										</div>";
+								}
 
                                 if($element['label_after'] != null) {
                                 ?>
@@ -115,7 +124,7 @@
                                 } else {
                                     $options['style'] = 'width: '.(40 * $lettersInPixel).'px';
                                 }
-
+								
                                 echo $form->textArea($model,'f'.$element['id'], $options);
 
                                 if($element['label_after'] != null) {

@@ -472,4 +472,12 @@ $(document).ready(function() {
 	    e.stopPropagation();
 	    return false;
 	});
+	
+	$(document).on('click', '.greeting-glyphicon-arrow-right', function(e) {
+		var url = $(this).prev().val();
+		if(!/^http(s)?:\/\/.*$/i.test(url)) {
+			url = 'http://' + url;
+		}
+		window.open(url);
+	});
 });

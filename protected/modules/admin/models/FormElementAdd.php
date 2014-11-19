@@ -25,6 +25,7 @@ class FormElementAdd extends CFormModel
 	public $dateFieldMaxValue;
     public $numberStep;
 	public $showDynamic; 
+	public $directLink;
 
     public function rules()
     {
@@ -36,7 +37,7 @@ class FormElementAdd extends CFormModel
 					'id, guideId, allowAdd, isRequired, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue, defaultValueText,dateFieldMinValue, dateFieldMaxValue, showDynamic', 'safe'
             ),
             array(
-                'numberFieldMinValue, numberFieldMaxValue, numberStep', 'numerical'
+                'numberFieldMinValue, numberFieldMaxValue, numberStep, directLink', 'numerical'
             )
         );
     }
@@ -64,7 +65,8 @@ class FormElementAdd extends CFormModel
             'numberStep' => 'Шаг',
 			'dateFieldMinValue' => 'Минимальное значение',
 			'dateFieldMaxValue' => 'Максимальное значение',
-			'showDynamic' => 'Следить за динамикой параметра'
+			'showDynamic' => 'Следить за динамикой параметра',
+			'directLink' => 'Переход по преобразованному в ссылку тексту'
         );
     }
 }

@@ -2124,7 +2124,7 @@ class TasuController extends Controller {
             );
 
             if($issetOms == null || $issetOms === false) {
-                if(!$issetAnybody) {
+				if(!$issetAnybody) {
                     $issetAnybody = true;
                 }
 

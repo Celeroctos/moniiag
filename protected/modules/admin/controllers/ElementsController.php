@@ -214,6 +214,10 @@ class ElementsController extends Controller {
         }
 		
 		$config = array();
+		if($model->directLink !== null) {
+			$config['directLink'] = $model->directLink;
+		}
+		
         if($model->type == 4) {
             $config += $model->config;
         }

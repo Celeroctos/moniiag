@@ -52,6 +52,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['cladrRegions']) ? $timestamps['cladrRegions'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncRegions">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -84,6 +89,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['cladrDistricts']) ? $timestamps['cladrDistricts'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncDistricts">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -116,6 +126,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['cladrSettlements']) ? $timestamps['cladrSettlements'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncSettlements">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -148,6 +163,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['cladrStreets']) ? $timestamps['cladrStreets'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncStreets">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -180,6 +200,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['patients']) ? $timestamps['patients'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncPatients">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -212,6 +237,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['doctors']) ? $timestamps['doctors'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncDoctors">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -244,6 +274,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['oms']) ? $timestamps['doctors'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncOms">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -265,7 +300,7 @@
             </div>
         </div>
     </div>
-	<div id="accordion9" class="accordion">
+	<div id="accordion9" class="accordion syncAccordion">
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a href="#collapse9" data-parent="#accordion9" data-toggle="collapse" class="accordion-toggle" data-toggle="tooltip" data-placement="right" title="Врачи"><strong>Страховые компании</strong></a>
@@ -276,6 +311,11 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['oms']) ? $timestamps['insurances'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text">                                                     
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncInsurances">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
