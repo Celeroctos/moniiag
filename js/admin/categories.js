@@ -141,7 +141,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/categories/getone?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/categories/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -195,7 +195,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/categories/delete?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/categories/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

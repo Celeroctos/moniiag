@@ -228,6 +228,32 @@
 							</div>
 						</div>
 						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'paymentType', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'paymentType', $tasuPaymentList, array(
+									'id' => 'paymentType',
+									'class' => 'form-control',
+								)); ?>
+							</div>
+						</div>
+						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'serviceCode', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'serviceCode', $serviceCodesList, array(
+									'id' => 'serviceCode',
+									'class' => 'form-control',
+									'options' => array(
+										$defaultService => array('selected' => true)
+									)
+								)); 
+								?>
+							</div>
+						</div>
+						<div class="form-group">
 							<?php echo $form->labelEx($modelAddFake,'greetingDate', array(
 								'class' => 'col-xs-3 control-label'
 							)); ?>
@@ -246,6 +272,19 @@
 								<?php echo $form->textField($modelAddFake,'cardNumber', array(
 									'id' => 'cardNumber',
 									'class' => 'form-control'
+								)); ?>
+							</div>
+						</div>
+						<div class="borderBox no-display" id="fioCont">
+						</div>
+						<div class="form-group">
+							<div class="col-xs-3"></div>
+							<div class="col-xs-9">
+								<?php echo $form->checkBox($modelAddFake,'savePrimaryDiag', array(
+									'id' => 'savePrimaryDiag'
+								)); ?>
+								<?php echo $form->labelEx($modelAddFake,'savePrimaryDiag', array(
+									'class' => 'inline'
 								)); ?>
 							</div>
 						</div>
@@ -283,7 +322,9 @@
 						<button type="button" id="greeting-addfakeall-submit" class="btn btn-primary" data-dismiss="modal">Закончить ввод приёмов</button>
 					</div>
 					<div class="col-xs-7">
-						<table id="preGreetings"></table>
+						<div class="overflow-x">
+							<table id="preGreetings"></table>
+						</div>
 						<div class="btn-group" id="preGreetings-controls">
 							<button type="button" class="btn btn-default" id="deletePreGreeting">Удалить</button>
 							<button type="button" class="btn btn-default" id="clearPreGreetings">Очистить</button>
@@ -314,6 +355,150 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="editPregreetingsRowPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Редактировать приём</h4>
+            </div>
+			 <?php
+            $form = $this->beginWidget('CActiveForm', array(
+                'id' => 'greeting-editfake-form',
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => true,
+                'htmlOptions' => array(
+                    'class' => 'form-horizontal col-xs-12',
+                    'role' => 'form'
+                )
+            ));
+            ?>
+            <div class="modal-body">
+                <div class="row">
+					<div class="col-xs-11">
+						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'doctorId', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'doctorId', $doctorsList, array(
+									'id' => 'doctorIdEdit',
+									'class' => 'form-control',
+								)); ?>
+							</div>
+						</div>
+						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'paymentType', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'paymentType', $tasuPaymentList, array(
+									'id' => 'paymentTypeEdit',
+									'class' => 'form-control',
+								)); ?>
+							</div>
+						</div>
+						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'serviceCode', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								 <?php echo $form->dropDownList($modelAddFake, 'serviceCode', $serviceCodesList, array(
+									'id' => 'serviceCodeEdit',
+									'class' => 'form-control',
+								)); ?>
+							</div>
+						</div>
+						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'greetingDate', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div id="greetingDate-cont3" class="col-xs-5 input-group date">
+								<?php echo $form->hiddenField($modelAddFake,'greetingDate', array(
+									'id' => 'greetingDateEdit',
+									'class' => 'form-control col-xs-3'
+								)); ?>
+								<span class="input-group-addon">
+									<span class="glyphicon-calendar glyphicon">
+									</span>
+								</span>
+								<div class="subcontrol">
+									<div class="date-ctrl-up-buttons">
+										<div class="btn-group">
+											<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+											<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+											<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+										</div>
+									</div>
+									<div class="form-inline subfields">
+										<input type="text" name="day" placeholder="ДД" class="form-control day">
+										<input type="text" name="month" placeholder="ММ" class="form-control month">
+										<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+									</div>	
+									<div class="date-ctrl-down-buttons">
+										<div class="btn-group">
+											<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+											<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+											<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<?php echo $form->labelEx($modelAddFake,'cardNumber', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								<?php echo $form->textField($modelAddFake,'cardNumber', array(
+									'id' => 'cardNumberEdit',
+									'class' => 'form-control'
+								)); ?>
+							</div>
+						</div>
+						<div class="borderBox no-display" id="fioContEdit">
+						</div>
+						<div class="form-group chooser" id="primaryDiagnosisChooser2">
+							<?php echo $form->labelEx($modelAddFake,'primaryDiagnosis', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								<?php echo $form->textField($modelAddFake,'primaryDiagnosis', array(
+									'id' => 'primaryDiagnosisEdit',
+									'class' => 'form-control'
+								)); ?>
+								<ul class="variants no-display">
+								</ul>
+								<div class="choosed">
+								</div>
+							</div>
+						</div>
+						<div class="form-group chooser" id="secondaryDiagnosisChooser2">
+							<?php echo $form->labelEx($modelAddFake,'secondaryDiagnosis', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+							<div class="col-xs-9">
+								<?php echo $form->textField($modelAddFake,'secondaryDiagnosis', array(
+									'id' => 'secondaryDiagnosisEdit',
+									'class' => 'form-control'
+								)); ?>
+								<ul class="variants no-display">
+								</ul>
+								<div class="choosed">
+								</div>
+							</div>
+						</div>
+					</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+				<button type="button" class="btn btn-success" id="saveEditPregreetingRow">Сохранить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+			<?php $this->endWidget(); ?>
         </div>
     </div>
 </div>

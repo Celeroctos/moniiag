@@ -70,13 +70,13 @@
 						<ul class="nav nav-tabs actionsGroupsTablist" role="tablist">
 						<?php 
 							$counter = 0;
-							foreach($actions as $key => $actionGroup) { ?>
+							foreach($actions as $key => $actionGroup) : ?>
 							<li>
 								<a href="#t<?php echo $counter; ?>" role="tab" data-toggle="tab"><?php echo $key; ?></a>
 							</li>
 						<?php
 								$counter++;
-							} 
+							endforeach; 
 						?>
 						</ul>
                         <div class="tab-content">

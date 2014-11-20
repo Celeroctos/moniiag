@@ -1,35 +1,29 @@
 $(document).ready(function() {
     // По нажатию клавиши в контроле поиска
-    $('#searchValue').on('keyup', function(e)
-                         {
-                            
-                            // В $('#searchValue').val() лежит строка, которую ввёл пользователь
-                            // Нужно перебрать все значения из списка
-                            var enteredValue = $('#searchValue').val();
-                            var itemsStore = ($('.medguide-list')[0]);
-                            //console.log(items);
-                            var items = $(itemsStore).find('li');
-                            // Перебираем items
-                            for (i=0;i<items.length;i++) {
-                                var currentItem = items[i];
-                                
-                                // Внутри - берём ссылку и вытаскиваем текст из неё
-                                var internalText = $($(currentItem).find ('a')[0]).text();
-                                
-                                if ((internalText.toUpperCase()).indexOf(enteredValue.toUpperCase())>=0) {
-                                    // Делаем тэг li - выдимым
-                                    $(currentItem).removeClass('no-display');
-                                }
-                                else
-                                {
-                                    $(currentItem).addClass('no-display');
-                                }
-                                
-                            }
-                            
-                            
-                         });
-    
+    $('#searchValue').on('keyup', function(e) {
+        // В $('#searchValue').val() лежит строка, которую ввёл пользователь
+        // Нужно перебрать все значения из списка
+        var enteredValue = $('#searchValue').val();
+        var itemsStore = ($('.medguide-list')[0]);
+        //console.log(items);
+        var items = $(itemsStore).find('li');
+        // Перебираем items
+        for (i=0;i<items.length;i++) {
+            var currentItem = items[i];
+
+            // Внутри - берём ссылку и вытаскиваем текст из неё
+            var internalText = $($(currentItem).find ('a')[0]).text();
+
+            if ((internalText.toUpperCase()).indexOf(enteredValue.toUpperCase())>=0) {
+                // Делаем тэг li - выдимым
+                $(currentItem).removeClass('no-display');
+            }
+            else
+            {
+                $(currentItem).addClass('no-display');
+            }
+        }
+     });
     
     $("#medguides").jqGrid({
         url: globalVariables.baseUrl + '/admin/guides/getvalues?id=' + globalVariables.currentGuideId,
@@ -45,7 +39,7 @@ $(document).ready(function() {
                 name: 'value',
                 index:'value',
                 width: 500
-            },
+            }
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -127,13 +121,12 @@ $(document).ready(function() {
         }
     });
 
-
     function editGuide() {
         var currentRow = $('#medguides').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/guides/getonevalue?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/guides/getonevalue?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -156,7 +149,6 @@ $(document).ready(function() {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
                         $("#editMedGuidePopup").modal({
-
                         });
                     }
                 }

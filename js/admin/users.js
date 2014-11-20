@@ -209,11 +209,20 @@ $(document).ready(function() {
                                 'value' : allowForAssociate[i].employee_id
                             }).text(allowForAssociate[i].employee_fio));
                         }
+						
+						var comboVal = [];
+						for(var i = 0; i < user.employees.length; i++) {
+							$('select#employeeId').append($('<option value="' + user.employees[i].employee_id + '">' + user.employees[i].employee_fio + '</option>'));
+							comboVal.push(user.employees[i].employee_id);
+						}
 
-                        $('select#employeeId').append($('<option value="' + user.employee_id + '">' + user.employee_fio + '</option>')).val(user.employee_id);
+						$('select#employeeId').val(comboVal);
 
                         for(var i = 0; i < fields.length; i++) {
-                            form.find('#' + fields[i].formField).val(user[fields[i].modelField]);
+							// Сотрудники уже поставлены
+							if(fields[i].formField != 'employeeId') {
+								form.find('#' + fields[i].formField).val(user[fields[i].modelField]);
+							}
                         }
                         $("#editUserPopup").modal({
 
