@@ -84,12 +84,6 @@ $(document).ready(function() {
         });
     });
 
-    $("#designTemplate").click(function() {
-        $('#designTemplatePopup').modal({
-
-        }).draggable("disable").disableSelection();
-    });
-
     $("#template-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
         if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
@@ -136,7 +130,6 @@ $(document).ready(function() {
             });
         }
     });
-
 
     function editTemplate() {
         var currentRow = $('#templates').jqGrid('getGridParam','selrow');
@@ -256,11 +249,39 @@ $(document).ready(function() {
                         $('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
 
                         $('#errorAddTemplatePopup').modal({
-
                         });
                     }
                 }
             })
         }
     }
+
+    function designTemplate() {
+        var currentRow;
+        if((currentRow = $('#templates').jqGrid('getGridParam','selrow')) == null) {
+            return false;
+        }
+        $.ajax({
+            'url' : globalVariables.baseUrl + '/admin/templates/getcategories?id=' + currentRow,
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET',
+            'success' : function(data, textStatus, jqXHR) {
+                console.log(data);
+                if(data.success != true) {
+                    console.log(data);
+                    return false;
+                }
+                var template = data.template;
+                for (var i in template.categories) {
+                    TemplateEngine.createCategory(template.categories[i]);
+                }
+                var form = $('#editTemplatePopup').find('form');
+                $('#designTemplatePopup').modal().draggable("disable")
+                    .disableSelection();
+            }
+        });
+    }
+
+    $("#designTemplate").click(designTemplate);
 });

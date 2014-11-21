@@ -199,6 +199,7 @@ class TemplatesController extends Controller {
 
     // Просмотр шаблона
     public function actionShow() {
+
         $categorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
             'currentPatient' => null,
             'templateType' => 0,
@@ -214,9 +215,54 @@ class TemplatesController extends Controller {
 
         $templateView = $categorieWidget->run();
         ob_end_clean();
+        
         echo CJSON::encode(array(
                 'success' => true,
                 'data' => $templateView
+            )
+        );
+    }
+
+    public function actionGetCategories($id) {
+
+        // cast category identifier to int (just in case)
+        $id = intval($id);
+
+        $templateModel = new MedcardTemplate();
+        $categoryModel = new MedcardCategorie();
+
+        // fetch template by it's identifier
+        $template = $templateModel->getOne($id);
+
+        // decode template's categories array
+        $categories = json_decode($template['categorie_ids']);
+
+        // we wil store here all fetched categories
+        $templateCategories = array();
+
+        foreach ($categories as $i => $id) {
+
+            // fetch category from db
+            $category = $categoryModel->getOne($id);
+
+            // fetch category children
+            $category["children"] = $categoryModel->getChildren($category["id"]);
+
+            // fetch all category elements
+            $categoryElements = $categoryModel->getElements($id);
+
+            // store category elements in category object
+            $category["elements"] = $categoryElements;
+
+            // push category to array
+            $templateCategories[] = $category;
+        }
+
+        // save all found categories as template field
+        $template["categories"] = $templateCategories;
+
+        echo CJSON::encode(array('success' => true,
+                'template' => $template
             )
         );
     }

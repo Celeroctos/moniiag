@@ -24,6 +24,7 @@ class MedcardTemplate extends MisActiveRecord {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+        return array();
     }
 
     public function getTemplatesByEmployee($id, $pageId = 0)
@@ -83,7 +84,9 @@ class MedcardTemplate extends MisActiveRecord {
     }
 
     public function getTemplateIndexes() {
+
         $connection = Yii::app()->db;
+
         $templates = $connection->createCommand()
             ->selectDistinct('me.index')
             ->from(MedcardTemplate::tableName().' me')
@@ -92,5 +95,3 @@ class MedcardTemplate extends MisActiveRecord {
         return $templates->queryAll();
     }
 }
-
-?>

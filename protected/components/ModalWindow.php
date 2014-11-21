@@ -24,6 +24,14 @@ abstract class ModalWindow extends CWidget {
     }
 
     /**
+     * @return bool - If modal window should have custom width then override
+     *      this method and return your value (for example, 1000px or 70%)
+     */
+    public function customWidth() {
+        return false;
+    }
+
+    /**
      * @return string - path to modal window's view (renderer). You can simply
      *      return class's name via __CLASS__ macros
      */

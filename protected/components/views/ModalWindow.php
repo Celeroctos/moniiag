@@ -10,11 +10,12 @@
  *   3. getData - returns data, which have to be sent into view renderer
  *   4. getModalID - returns an javascript element identifier
  *   5. getErrorClass - returns name of error class in popup window
+ *   6. customWidth - returns custom modal window's width
  */
 ?>
 
 <div class="modal fade <? print $self->getErrorClass(); ?>" id="<? print $self->getModalID(); ?>">
-    <div class="modal-dialog">
+    <div class="modal-dialog" <? print $self->customWidth() != false ? "style=\"width:".$self->customWidth()."\"" : "" ?>>
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">

@@ -10,5 +10,5 @@
 </div>
 
 <? $this->widget("application.modals.admin.templates.AddGuide"); ?>
-<? $this->widget("application.modals.admin.templates.EditGuide"); ?>
 <? $this->widget("application.modals.admin.templates.AddGuideError"); ?>
+<? $this->widget("application.modals.admin.templates.EditGuide"); ?>

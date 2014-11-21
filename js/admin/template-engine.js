@@ -2,8 +2,10 @@
  * @type {TemplateEngine} - Base template engine API object
  */
 var TemplateEngine = TemplateEngine || {
-        getWidgets : undefined,
-        getFactory : undefined
+        getWidgets     : function() {},
+        getFactory     : function() {},
+        createCategory : function() {},
+        createElement  : function() {}
     };
 
 (function(TemplateEngine) {
@@ -11,10 +13,10 @@ var TemplateEngine = TemplateEngine || {
     "use strict";
 
      /**
-     * @param [condition] {...Boolean} - Assertion expression
-     * @param [message] {String} - Error message to throw
+      * @param [message] {String} - Error message to throw
+      * @param [condition] {...Boolean} - Assertion expression
      */
-    var assert = function(condition, message) {
+    var assert = function(message, condition) {
         if (arguments.length <= 0) {
             throw new Error("Assertion Failed : \"?\"");
         } else {
@@ -75,7 +77,10 @@ var TemplateEngine = TemplateEngine || {
             return true;
         }
         for (var i in this._childrenNode) {
-            if (this._childrenNode.hasOwnProperty(i) && node === this._childrenNode[i]) {
+            if (!this._childrenNode.hasOwnProperty(i)) {
+                continue;
+            }
+            if (node === this._childrenNode[i]) {
                 return true;
             }
         }
@@ -205,67 +210,12 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @constructor - Allows to other classes to
-     *      declare flags and store in itself, every
-     *      flag can be declared by it's name and
-     *      default state
-     */
-    var Flaggable = function() {
-        this._flagList = [];
-    };
-
-    /**
-     * @param options {{String}, [{Boolean}]} - String parameter is
-     *      flag's name (required) and boolean parameter is
-     *      it's state (false as default)
-     * @returns {Boolean} - Return true if flag has been successfully
-     *      declared in flaggable object
-     */
-    Flaggable.prototype.flag = function(options) {
-        if (!options["name"] || typeof options["name"] !== "String") {
-            return false;
-        }
-        for (var i in this._flagList) {
-            if (!this._flagList.hasOwnProperty(i)) {
-                continue;
-            }
-            if (this._flagList[i]["name"] === options["name"]) {
-                return false;
-            }
-        }
-        this._flagList.push(options);
-        return true;
-    };
-
-    /**
-     * @param options {{String}, [{Boolean}]} - Read about
-     *      options upper
-     * @returns {Boolean} - Return true if flag has been successfully
-     *      remove from flaggable object
-     */
-    Flaggable.prototype.unflag = function(options) {
-        if (!options['name'] || typeof options['name'] !== "String") {
-            return false;
-        }
-        for (var i in this._flagList) {
-            if (!this._flagList.hasOwnProperty(i)) {
-                continue;
-            }
-            if (this._flagList[i]['name'] === options['name']) {
-                this._flagList.splice(i, 1);
-            }
-        }
-        return true;
-    };
-
-    /**
      * @param [selector] {jQuery} - Some selector
      * @constructor - Selectable is an object that can
      *      store jQuery's selector
      */
     var Selectable = function(selector) {
-        Selectable.prototype.selector.call(this, selector || assert(true,
-            "Selector can't be null or undefined"));
+        Selectable.prototype.selector.call(this, selector ||  assert(true, "Selector can't be null or undefined"));
     };
 
     /**
@@ -586,6 +536,16 @@ var TemplateEngine = TemplateEngine || {
         return true;
     };
 
+    var createCategory = function() {
+        var c = factory.create(treeContainer, "category")
+            .selector().detach().appendTo(
+            treeContainer.selector().children(".dd-list")
+        ).data("instance");
+        if (!lastCategory) {
+            makeCategoryActive(c);
+        }
+    };
+
     factory.register("widget", {
         class: [
             "template-engine-widget"
@@ -659,14 +619,8 @@ var TemplateEngine = TemplateEngine || {
                 style: "text-align: center;"
             }).appendTo(this.selector());
             factory.create(this, "container-tree");
-            $("<button>Добавить</button>").appendTo(bar).click(function(e) {
-                var c = factory.create(treeContainer, "category")
-                    .selector().detach().appendTo(
-                        treeContainer.selector().children(".dd-list")
-                ).data("instance");
-                if (!lastCategory) {
-                    makeCategoryActive(c);
-                }
+            $("<button>Добавить</button>").appendTo(bar).click(function() {
+                createCategory();
             });
         }
     });
@@ -690,7 +644,6 @@ var TemplateEngine = TemplateEngine || {
                 element = element.clone(
                     parent, ui.helper
                 );
-                console.log(element);
                 ui.helper.data(
                     "instance", element
                 );
@@ -742,7 +695,6 @@ var TemplateEngine = TemplateEngine || {
             this.selector().sortable()
                 .droppable({
                     drop: function(e, ui) {
-                        $('#addTemplatePopup').modal();
                         appendElement(ui);
                     }
                 });
@@ -967,6 +919,15 @@ var TemplateEngine = TemplateEngine || {
 
     TemplateEngine.getFactory = function() {
         return factory;
+    };
+
+    TemplateEngine.createCategory = function(categoryInfo) {
+        createCategory();
+        console.log(categoryInfo);
+    };
+
+    TemplateEngine.createElement = function() {
+
     };
 
 })(TemplateEngine);

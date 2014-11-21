@@ -10,5 +10,5 @@
 </div>
 
 <? $this->widget("application.modals.admin.templates.AddCategory"); ?>
-<? $this->widget("application.modals.admin.templates.EditCategory"); ?>
 <? $this->widget("application.modals.admin.templates.AddCategoryError"); ?>
+<? $this->widget("application.modals.admin.templates.EditCategory"); ?>
