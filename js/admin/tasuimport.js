@@ -51,8 +51,8 @@
 					width: 130
 				},
 				{
-					name: 'service',
-					index: 'service',
+					name: 'service_tasu_code',
+					index: 'service_tasu_code',
 					width: 100
 				}
 			],
