@@ -980,11 +980,11 @@
 				if(data.success) {
 					$('#' + fieldId).prop('disabled', false);
 					if(fieldId == 'cardNumber') {
-						$('#fioCont').removeClass('no-display').text(data.data.patientFio);
+						$('#fioCont').removeClass('no-display').text(data.data.patientFio + ', ' + data.data.birthdayYear);
 						moveToNextInput($('#cardNumber'));
 					}
 					if(fieldId == 'cardNumberEdit') {
-						$('#fioContEdit').removeClass('no-display').text(data.data.patientFio);
+						$('#fioContEdit').removeClass('no-display').text(data.data.patientFio + ', ' + data.data.birthdayYear);
 					}
 				} else {
 					alert(data.error);

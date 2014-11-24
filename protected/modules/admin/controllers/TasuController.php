@@ -658,7 +658,7 @@ class TasuController extends Controller {
 			if($value['is_default'] == 1) {
 				$defaultService = $value['id'];
 			}
-			$serviceCodesList[(string)$value['id']] = $value['tasu_code'].' - '.$value['name'];
+			$serviceCodesList[(string)$value['id']] = str_replace('.', '', $value['tasu_code']).' - '.$value['name'];
 		}
 		
 		// Список врачей
@@ -1100,7 +1100,12 @@ class TasuController extends Controller {
 				var_dump($e);
 				exit();
 			}
-
+				
+			// Обновим информацию о фио пациента
+			$this->updateFioInTasu($oms, $patients[0]['PatientUID']);
+			// И о паспорте
+			$this->updateDulInTasu($medcard, $patients[0]['PatientUID']);
+			
 			if($medcardRow != null && $medcardRow['number_50713'] != $medcard->card_number) { // Сработало условие, при котором надо перерегистрировать карту
 				// Обновим запись о медкарте в ТАСУ
 				$sql = "ALTER TABLE dbo.t_book_65067 DISABLE TRIGGER trt_book_65067_update";
@@ -1118,7 +1123,7 @@ class TasuController extends Controller {
 				}
 				
 				$sql = "ALTER TABLE dbo.t_book_65067 ENABLE TRIGGER trt_book_65067_update";
-				$conn->createCommand($sql)->execute();
+				$conn->createCommand($sql)->execute();				
 			} elseif($medcardRow == null) {
 				// Создать медкарту
 				// Максимальный UID
@@ -1158,7 +1163,7 @@ class TasuController extends Controller {
             $patient = $patients[0];
             // Добавляем приём (талон, ТАП) к пациенту
             $tap = $this->addTasuTap($patient, $greeting, $oms, $medcard);
-            if($tap !== false && $tap != -1) {
+            if($tap instanceof TasuTap) {
                 $this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' добавлен в базу ТАСУ.';
 				$this->logStr .= "[OK] ТАП на приём ".$greeting['greeting_id']." добавлен в базу ТАСУ.\r\n";
                 // Добавляем MKБ-10 диагнозы к приёму
@@ -1177,6 +1182,66 @@ class TasuController extends Controller {
 			$this->isErrorElement = true;
 		}
     }
+	
+	private function updateFioInTasu($oms, $patientUid) {
+		$conn = Yii::app()->db2;
+		
+		$sql = "ALTER TABLE dbo.t_patient_10905 DISABLE TRIGGER trt_patient_10905_update";
+		$conn->createCommand($sql)->execute();
+
+		$sql = "UPDATE PDPStdStorage.dbo.t_patient_10905 
+				SET 
+					[fam_18565] = '".$oms->last_name."',
+					[im_53316] = '".$oms->first_name."',
+					[ot_48206] = '".$oms->middle_name."'
+				WHERE 
+					[uid] = ".$patientUid." 
+					AND [version_end] = '".$this->version_end."'";
+		try {
+			$conn->createCommand($sql)->execute();
+		} catch(Exception $e) {
+			var_dump($e);
+			exit();
+		}
+		
+		$sql = "ALTER TABLE dbo.t_patient_10905 ENABLE TRIGGER trt_patient_10905_update";
+		$conn->createCommand($sql)->execute();
+	
+	}
+	
+	private function updateDulInTasu($medcard, $patientUid) {
+		$conn = Yii::app()->db2;
+		
+		$sql = "ALTER TABLE dbo.t_dul_44571 DISABLE TRIGGER trt_dul_44571_update";
+		$conn->createCommand($sql)->execute();
+		
+		$givedDate = implode('', explode('-', $medcard->gived_date));
+		if($medcard->doctype == 1) { // Удаляем пробелы из паспортной серии и режем по-нормальному
+			$medcard->serie = str_replace(' ', '', $medcard->serie);
+			$docserie = mb_substr(trim($medcard->serie), 0, 2).' '.mb_substr(trim($medcard->serie), 2);
+		} else {
+			$docserie = $medcard->serie;
+		}
+		
+		$sql = "UPDATE PDPStdStorage.dbo.t_dul_44571
+			SET 
+				[dulseries_30145] = '".$docserie."',
+				[dulnumber_50657] = '".$medcard->docnumber."',
+				[issuedate_42162] = '".$givedDate."'
+			WHERE 
+				[patientuid_53984] = ".$patientUid." 
+				AND [version_end] = '".$this->version_end."'";
+				
+		try {
+			$conn->createCommand($sql)->execute();
+		} catch(Exception $e) {
+			var_dump($e);
+			exit();
+		}
+		
+		$sql = "ALTER TABLE dbo.t_dul_44571 ENABLE TRIGGER trt_dul_44571_update";
+		$conn->createCommand($sql)->execute();
+	}
 
     private function searchTasuPatient($greeting, $oms) {
         $conn = Yii::app()->db2;
@@ -1270,7 +1335,7 @@ class TasuController extends Controller {
 			
 			$sql = "ALTER TABLE dbo.t_patient_10905 DISABLE TRIGGER trt_patient_10905_update";
 			$conn->createCommand($sql)->execute();
-			
+
             // Пациент такой должен быть всего один
 			$birthday = implode('', explode('-', $oms->birthday));
             $sql = "EXEC PDPStdStorage.dbo.p_patset_20892
@@ -1461,16 +1526,12 @@ class TasuController extends Controller {
 			}
 			
 			// Свидетельство о рождении...
-			if($oms->type == 2) {
-				$oms->type = 3;
-			}
-			// Вид на жительство...
-			if($oms->type == 3) {
-				$oms->type = 11;
-			}
-			// Паспорт иностранного гражданина..
-			if($oms->type == 4) {
-				$oms->type = 9;
+			if($medcard->doctype == 2) {
+				$medcard->doctype = '03';
+			} elseif($medcard->doctype == 3) { // Вид на жительство...
+				$medcard->doctype = '11';
+			} elseif($medcard->doctype == 4) { // Паспорт иностранного гражданина..
+				$medcard->doctype = '09';
 			}
 			
 			$givedate = $oms->givedate;
@@ -1482,7 +1543,7 @@ class TasuController extends Controller {
 			
 			$sql = "ALTER TABLE dbo.t_policy_43176 DISABLE TRIGGER trt_policy_43176_update";
 			$conn->createCommand($sql)->execute();
-            
+
 			$sql = "EXEC PDPStdStorage.dbo.p_patsetpol_48135
                         ".$patientRow['PatientUID'].",
                         0,
@@ -1546,24 +1607,20 @@ class TasuController extends Controller {
 			$conn->createCommand($sql)->execute();
 			
 			$givedDate = implode('', explode('-', $medcard->gived_date));
-			if($medcard->doctype == 1) { // Территориальный полис xx xx
-				if(trim(mb_strlen($medcard->serie)) == 4) { // Пробел в серии не поставили...
-					$docserie = mb_substr(trim($medcard->serie), 0, 2).' '.mb_substr(trim($medcard->serie), 2);
-				}
-				if(trim(mb_strlen($medcard->serie)) == 5) { // Пробел в серии поставили...
-					$docserie = mb_substr(trim($medcard->serie), 0, 2).' '.mb_substr(trim($medcard->serie), 3);
-				}
+			if($medcard->doctype == 1) { // Удаляем пробелы из паспортной серии и режем по-нормальному
+				$medcard->serie = str_replace(' ', '', $medcard->serie);
+				$docserie = mb_substr(trim($medcard->serie), 0, 2).' '.mb_substr(trim($medcard->serie), 2);
 			} else {
 				$docserie = $medcard->serie;
 			}
-			
+
 			$sql = "ALTER TABLE dbo.t_dul_44571 DISABLE TRIGGER trt_dul_44571_update";
 			$conn->createCommand($sql)->execute();
-			
+
 			$sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
                         ".$patientRow['PatientUID'].",
                         0,
-                        '14',
+                        '".$medcard->doctype."',
                         '".$docserie."',
                         '".$medcard->docnumber."',
                         '00',
@@ -1578,7 +1635,12 @@ class TasuController extends Controller {
                         '',
                         NULL";
 
-            $result = $conn->createCommand($sql)->execute();
+            try {
+				$result = $conn->createCommand($sql)->execute();
+			} catch(Exception $e) {
+				var_dump($e);
+				exit();
+			}
 			
 			$sql = "ALTER TABLE dbo.t_dul_44571 ENABLE TRIGGER trt_dul_44571_update";
 			$conn->createCommand($sql)->execute();
@@ -2940,7 +3002,8 @@ class TasuController extends Controller {
 		echo CJSON::encode(array(
 			'success' => true,
 			'data' => array(
-				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name)
+				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name),
+				'birthdayYear' => explode('-', $oms->birthday)[0]
 			)
 		));
 	}
