@@ -640,16 +640,17 @@ class TasuController extends Controller {
 		// Список типов оплаты
 		$paymentsListDb = Payment::model()->getRows(false, 'id', 'asc');
 		$paymentsList = array();
+		$defaultPaymentType = false;
 		foreach($paymentsListDb as $value) {
+			// Дефолтный тип оплаты
+			if($value['is_default'] == 1) {
+				$defaultPaymentType = $value['id'];
+			}
 			$paymentsList[(string)$value['id']] = $value['name'];
 		}
 		
 		// Список услуг
-<<<<<<< HEAD
 		$servicesListDb = MedService::model()->getRows(false, 'name', 'asc');
-=======
-		$servicesListDb = MedService::model()->getRows(false, 'id', 'asc');
->>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 		$serviceCodesList = array();
 		$defaultService = false;
 		foreach($servicesListDb as $value) {
@@ -684,7 +685,8 @@ class TasuController extends Controller {
 			'doctorsList' => $doctorsList,
 			'tasuPaymentList' => $paymentsList,
 			'serviceCodesList' => $serviceCodesList,
-			'defaultService' => $defaultService
+			'defaultService' => $defaultService,
+			'defaultPaymentType' => $defaultPaymentType
         ));
     }
 

@@ -45,6 +45,7 @@ class PaymentsController extends Controller {
     private function addEditModel($payment, $model, $msg) {
         $payment->name = $model->name;
         $payment->tasu_string = $model->tasuString;
+		$payment->is_default = $model->isDefault;
 
         if($payment->save()) {
             echo CJSON::encode(array('success' => true,
@@ -88,6 +89,13 @@ class PaymentsController extends Controller {
             $start = $page * $rows - $rows;
 
             $payments = $model->getRows($filters, $sidx, $sord, $start, $rows);
+			foreach($payments as &$payment) {
+				if($payment['is_default']) {
+					$payment['is_default_desc'] = 'Да';
+				} else {
+					$payment['is_default_desc'] = 'Нет';
+				}
+			}
 
             echo CJSON::encode(
                 array('rows' => $payments,

@@ -5,6 +5,7 @@ class FormPaymentAdd extends FormMisDefault
     public $name;
     public $tasuString;
 	public $id;
+	public $isDefault;
 
     public function rules()
     {
@@ -13,7 +14,7 @@ class FormPaymentAdd extends FormMisDefault
                 'name, tasuString', 'required'
             ),
             array(
-                'id', 'numerical'
+                'id, isDefault', 'numerical'
             ),
 			array(
 				'id', 'safe'
@@ -27,7 +28,8 @@ class FormPaymentAdd extends FormMisDefault
         return array(
             'id' => 'Код',
             'name' => 'Название',
-            'tasuString' => 'Строка для ТАСУ'
+            'tasuString' => 'Строка для ТАСУ',
+			'isDefault' => 'По умолчанию или нет'
         );
     }
 }
