@@ -7,3 +7,12 @@ COMMENT ON COLUMN mis.payment_types.is_default IS 'Дефолтное значение типа оплат
 
 UPDATE mis.payment_types SET is_default = 0;
 UPDATE mis.payment_types SET is_default = 1 WHERE id = 2;
+
+-- Column: is_default
+
+-- ALTER TABLE mis.medservices DROP COLUMN is_default;
+
+ALTER TABLE mis.medservices ADD COLUMN is_default integer;
+COMMENT ON COLUMN mis.medservices.is_default IS 'Значение по умолчанию или нет';
+
+UPDATE mis.medservices SET is_default = 0;
