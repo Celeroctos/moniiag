@@ -20,6 +20,12 @@
                         <p><strong>Дата последней синхронизации: <span class="text-danger"><?php echo isset($timestamps['medservices']) ? $timestamps['medservices'] : 'синхронизация не производилась'; ?></span></strong></p>
                         <input type="button" class="btn btn-success syncBtn" value="Синхронизировать" />
                     </div>
+					<div class="form-group beginFromCont">
+						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   
+						<div class="col-xs-2">
+							<input class="beginFrom" class="form-control" type="text" value="0">                                                    
+						</div>
+					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncMedservices">
                         <h5><strong>Прогресс синхронизации</strong></h5>
                         <div class="progress progress-striped active">
@@ -54,7 +60,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text" value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncRegions">
@@ -91,7 +97,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text" value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncDistricts">
@@ -128,7 +134,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text" value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncSettlements">
@@ -165,7 +171,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text"  value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncStreets">
@@ -202,7 +208,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text"  value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncPatients">
@@ -239,7 +245,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text"  value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncDoctors">
@@ -276,7 +282,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text"  value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncOms">
@@ -313,7 +319,7 @@
                     </div>
 					<div class="form-group beginFromCont">
 						<label class="col-xs-3 control-label required" for="FormEnterpriseAdd_shortName">Начать со строки</label>                   <div class="col-xs-2">
-							<input class="beginFrom" class="form-control" type="text">                                                     
+							<input class="beginFrom" class="form-control" type="text"  value="0">                                                     
 						</div>
 					</div>
                     <div class="row borderedBox default-margin-top progressBox no-display default-margin-right" id="syncInsurances">

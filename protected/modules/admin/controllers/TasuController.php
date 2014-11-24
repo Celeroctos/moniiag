@@ -650,7 +650,7 @@ class TasuController extends Controller {
 		}
 		
 		// Список услуг
-		$servicesListDb = MedService::model()->getRows(false, 'name', 'asc');
+		$servicesListDb = MedService::model()->getRows(false, 'tasu_code', 'asc');
 		$serviceCodesList = array();
 		$defaultService = false;
 		foreach($servicesListDb as $value) {
@@ -658,7 +658,7 @@ class TasuController extends Controller {
 			if($value['is_default'] == 1) {
 				$defaultService = $value['id'];
 			}
-			$serviceCodesList[(string)$value['id']] = $value['name'].' ('.$value['tasu_code'].')';
+			$serviceCodesList[(string)$value['id']] = $value['tasu_code'].' - '.$value['name'];
 		}
 		
 		// Список врачей
@@ -1065,6 +1065,10 @@ class TasuController extends Controller {
 
     private function moveGreetingToTasuDb($greeting) {
 		$oms = Oms::model()->findByPk($greeting['oms_id']);
+		// Fix for statuses, if status equals 0
+		if($oms != null && $oms->status == 0) {
+			$this->getTasuPatientByPolicy($oms, 1);
+		}
 		$medcard = Medcard::model()->findByPk($greeting['medcard']);
 						
         $patients = $this->searchTasuPatient($greeting, $oms);
@@ -1918,8 +1922,14 @@ class TasuController extends Controller {
             $tasuTapService->created_by = 2;
             $tasuTapService->diagnosisuid_34765 = $tapDiagnosis->uid;
 			if($fullYears >= 18) {
-				$tasuTapService->servicecode_20924 = '2329600';
+				if(isset($bufferElement['service_tasu_code'])) {
+					$codeForTasu = str_replace('.', '', $bufferElement['service_tasu_code']);
+					$tasuTapService->servicecode_20924 = $codeForTasu;
+				} else {
+					$tasuTapService->servicecode_20924 = '2329600';
+				}
 			} else {
+				// Для тех, кому меньше 18, пока оставляем всё, как есть
 				$tasuTapService->servicecode_20924 = '1329600';
 			}
             $tasuTapService->count_23546 = 1;
@@ -2111,7 +2121,8 @@ class TasuController extends Controller {
         $conn = Yii::app()->db;
         $sql = "INSERT INTO mis.oms (first_name, middle_name, last_name, oms_number, oms_series, gender, birthday, type, givedate, enddate, status, oms_series_number) VALUES";
         $issetAnybody = false;
-
+		$buffer = array();
+		
         foreach($omss as $oms) {
             $this->processed++;
 
@@ -2121,11 +2132,13 @@ class TasuController extends Controller {
             $issetOms = Oms::model()->find('
 				(t.oms_number = :oms_number
 				AND t.oms_series = :oms_series)
-				OR t.oms_number = :oms_series_number',
+				OR t.oms_number = :oms_series_number
+				OR t.oms_number = :oms_withspace_number',
                 array(
                     ':oms_series' => $serie,
                     ':oms_number' => $number,
-					':oms_series_number' => $serie.$number
+					':oms_series_number' => $serie.$number,
+					':oms_withspace_number' => $serie.' '.$number
                 )
             );
 
@@ -2137,6 +2150,10 @@ class TasuController extends Controller {
                 $omsNumber = $serie.$number;
                 $omsNumber = str_replace('-', '', $omsNumber);
                 $omsNumber = str_replace(' ', '', $omsNumber);
+				
+				if(array_search($omsNumber, $buffer) !== false) {
+					continue;
+				}
 
                 if($oms['DATE_E'] != null && $oms['DATE_E'] != '') {
                     if(strtotime($oms['DATE_E']) < strtotime(date('Y-m-d'))) {
@@ -2170,7 +2187,9 @@ class TasuController extends Controller {
                         ($oms['DATE_E'] == '' ? 'NULL' : "'".$oms['DATE_E']."'").",
 						".$omsStatus.",".
                         "'".$omsNumber."'),";
-
+					
+					$buffer[] = $omsNumber;
+					
                     $this->numAdded++;
                 } catch(Exception $e) {
                     $this->numErrors++;
@@ -2256,6 +2275,7 @@ class TasuController extends Controller {
 				AND [t].version_end = ".$this->version_end;
 
 		$tasuOmsProc = $conn->createCommand($sql);
+		$buffer = array();
 		
         foreach($patients as $patient) {
             $this->processed++;
@@ -2265,15 +2285,30 @@ class TasuController extends Controller {
                 continue;
             } 
 			
-            $issetPatient = Oms::model()->find('(t.oms_series = :oms_series AND t.oms_number = :oms_number) 
-				OR t.oms_number = :oms_serie_number',
+			$tasuOms['series_14820'] = trim($tasuOms['series_14820']);
+			$tasuOms['number_12574'] = trim($tasuOms['number_12574']);
+			
+			$omsNumber = $tasuOms['series_14820'].$tasuOms['number_12574'];
+			$omsNumber = str_replace('-', '', $omsNumber);
+			$omsNumber = str_replace(' ', '', $omsNumber);
+			
+			if(array_search($omsNumber, $buffer) !== false) {
+				continue;
+			}
+			
+            $issetPatient = Oms::model()->find('
+				(t.oms_series = :oms_series 
+				AND t.oms_number = :oms_number) 
+				OR t.oms_number = :oms_serie_number
+				OR t.oms_number = :oms_withspace_number',
                 array(
-                    ':oms_series' => trim($tasuOms['series_14820']),
-                    ':oms_number' => trim($tasuOms['number_12574']),
-					':oms_serie_number' => $tasuOms['series_14820'].' '.$tasuOms['number_12574']
+                    ':oms_series' => $tasuOms['series_14820'],
+                    ':oms_number' => $tasuOms['number_12574'],
+					':oms_series_number' => $tasuOms['series_14820'].$tasuOms['number_12574'],
+					':oms_withspace_number' => $tasuOms['series_14820'].' '.$tasuOms['number_12574']
                 )
             );
-			
+
 			$sql = 'SELECT [t].[coderegion_54021] 
 					FROM PDPStdStorage.dbo.t_smo_30821 [t]
 					WHERE [t].[uid] = '.$tasuOms['smouid_25976'];
@@ -2293,11 +2328,6 @@ class TasuController extends Controller {
 			
                 // Добавляем пациента, если его нет
                 try {
-
-                    $omsNumber = $tasuOms['series_14820'].$tasuOms['number_12574'];
-                    $omsNumber = str_replace('-', '', $omsNumber);
-                    $omsNumber = str_replace(' ', '', $omsNumber);
-
                     $newOms = new Oms();
                     $newOms->first_name = $patient['im_53316'];
                     $newOms->last_name = $patient['fam_18565'];
@@ -2330,6 +2360,7 @@ class TasuController extends Controller {
                     }
 
                     $issetPatient = $newOms;
+					$buffer[] = $omsNumber;
 
                 } catch(Exception $e) {
                     $this->numErrors++;
@@ -2962,6 +2993,7 @@ class TasuController extends Controller {
 
 		// Проверка на существование такой медкарты
 		$medcard = Medcard::model()->findByPk($_GET['card_number']);
+		$omsStatusOld = 'unknown';
 		if($medcard == null) {
 			echo CJSON::encode(array(
 				'success' => false,
@@ -2974,6 +3006,19 @@ class TasuController extends Controller {
 			exit();
 		} else {
 			$oms = Oms::model()->findByPk($medcard->policy_id);
+			$omsStatusOld = $oms->status;
+			if($oms != null) {
+				$this->getTasuPatientByPolicy($oms, 1); // Принудительно обновить статус
+			} else {
+				echo CJSON::encode(array(
+					'success' => false,
+					'errors' => array(
+						'oms' => array(
+							'ОМС пациента не найден!'
+						)
+					)
+				));
+			}
 		}
 		// Проверка на существование такого врача
 		$doctor = Doctor::model()->findByPk($_GET['doctor_id']);
@@ -3024,7 +3069,9 @@ class TasuController extends Controller {
 				'doctorFio' => $doctor->last_name.' '.$doctor->first_name.' '.($doctor->middle_name == null ? '' : $doctor->middle_name),
 				'patientFio' => $oms->last_name.' '.$oms->first_name.' '.($oms->middle_name == null ? '' : $oms->middle_name),
 				'pr_diagnosis_code' => $prDiagCode,
-				's_diagnosis_codes' => $secDiagCodes
+				's_diagnosis_codes' => $secDiagCodes,
+				'oms_status' => $oms->status,
+				'oms_status_old' => $omsStatusOld
 			)
 		));
 	}
