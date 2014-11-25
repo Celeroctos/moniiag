@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 addDefaultCharset UTF8
+=======
+>>>>>>> c96da615365c7e21b2f750b59e37246563983d71
 RewriteEngine on
 
 # if a directory or a file exists, use it directly
@@ -22,5 +25,8 @@ ExpiresByType image/png "access plus 1 year"
 ExpiresByType image/jpg "access plus 1 year"
 ExpiresByType image/x-icon "access 1 year"
 ExpiresByType application/x-shockwave-flash "access 1 year"
+<<<<<<< HEAD
 
+=======
+>>>>>>> c96da615365c7e21b2f750b59e37246563983d71
 </IfModule>

@@ -896,6 +896,10 @@
 >>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 
 <? $this->widget("application.modals.admin.templates.AddElement"); ?>
-<? $this->widget("application.modals.admin.templates.EditElement"); ?>
 <? $this->widget("application.modals.admin.templates.AddElementError"); ?>
+<<<<<<< HEAD
 <? $this->widget("application.modals.admin.templates.EditDependences"); ?>
+=======
+<? $this->widget("application.modals.admin.templates.EditElement"); ?>
+<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
+>>>>>>> c96da615365c7e21b2f750b59e37246563983d71

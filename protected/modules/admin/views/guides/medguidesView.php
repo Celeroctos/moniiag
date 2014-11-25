@@ -14,7 +14,7 @@
     </div>
 
     <? $this->widget("application.modals.admin.templates.AddMedGuide"); ?>
-    <? $this->widget("application.modals.admin.templates.EditMedGuide"); ?>
     <? $this->widget("application.modals.admin.templates.AddMedGuideError"); ?>
+    <? $this->widget("application.modals.admin.templates.EditMedGuide"); ?>
 
 <?php endif; ?>

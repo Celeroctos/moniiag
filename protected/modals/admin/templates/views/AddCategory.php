@@ -8,8 +8,7 @@
         'class' => 'form-horizontal col-xs-12',
         'role' => 'form'
     )
-));
-?>
+)); ?>
 
 <div class="modal-body">
     <div class="row">

@@ -102,7 +102,6 @@ class CategoriesController extends Controller {
                     'errors' => $model->errors));
             }
         }
-
     }
 
     private function addEditModel($categorie, $model, $msg) {
@@ -122,10 +121,14 @@ class CategoriesController extends Controller {
             }
         }
         $categorie->name = $model->name;
-		$categorie->parent_id = $model->parentId;
+		if ($model->parentId) {
+			$categorie->parent_id = $model->parentId;
+		}
         $categorie->is_dynamic = $model->isDynamic;
         $savedPosition = $categorie->position;
-        $categorie->position = $model->position;
+		if ($model->position) {
+			$categorie->position = $model->position;
+		}
         if($categorie->parent_id != -1) {
             $partOfPath = $this->getCategoriePath(MedcardCategorie::model()->findByPk($categorie->parent_id));
             $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));

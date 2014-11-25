@@ -1,0 +1,229 @@
+.template-engine-widget {
+    overflow: hidden;
+}
+
+/*
+    Stylize glyphicons
+*/
+.template-engine-category .glyphicon {
+    margin-left: 2px;
+}
+.template-engine-category .glyphicon {
+    cursor: pointer; color: #3c3c3c;
+}
+.template-engine-category .glyphicon:hover {
+    cursor: pointer; color: #7b1010;
+}
+
+/*
+    Center fix for remove button on category element (in result
+    container with categories) and the same fix for glyphicon for
+    items in categories but with 2(0) pixels offset
+*/
+.template-engine-category .glyphicon {
+    transform: translateY(7px); font-size: 12px;
+}
+.template-engine-category .glyphicon:hover {
+    transform: translateY(7px); font-size: 12px;
+}
+.template-engine-item .glyphicon {
+    transform: translateY(1px); font-size: 12px;
+}
+.template-engine-item .glyphicon:hover {
+    transform: translateY(1px); font-size: 12px;
+}
+
+.template-engine-category-collection {
+    background: #a6a6a6;
+    min-height: 500px;
+    width: 80%;
+    margin-left: 15px;
+    margin-right: 10px;
+    float: left;
+    height: 500px;
+    border-radius: 5px;
+    border: solid dimgray 1px;
+}
+
+.template-engine-items {
+    min-height: 53px;
+    height: auto;
+    margin-left: 5px;
+    width: calc(100% - 165px);
+    border: dotted #ffffff 1px;
+    border-radius: 5px;
+}
+
+.template-engine-item {
+    border: solid dimgray 1px;
+}
+
+.template-engine-items .template-engine-item {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+.template-engine-template {
+    float: left;
+    background: #ffffff;
+    color: #fff;
+}
+
+.template-engine-nestable {
+    margin: 3px;
+}
+
+.template-engine-item, .template-engine-handle {
+    border-radius: 5px;
+    color: black;
+    text-align: center;
+    background: lightblue;
+    width: 150px;
+    height: 45px;
+    font-size: 16px;
+    margin: 3px;
+    padding: 5px;
+    min-width: 25px;
+}
+
+.template-engine-handle {
+    background-color: lightcoral;
+    margin: 0;
+    padding: 0;
+    width: 120px;
+}
+
+.template-engine-items .template-engine-item {
+    display: inline-block;
+    width: auto;
+    white-space: nowrap;
+    float: left;
+}
+
+.template-engine-template .template-engine-item div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.template-engine-list {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.template-engine-list .template-engine-list {
+    padding-left: 25px;
+}
+
+.dd-collapsed .template-engine-list {
+    display: none;
+}
+
+.template-engine-category-static {
+    background-color: #fff7ae;
+}
+
+.template-engine-category, .dd-empty, .dd-placeholder {
+    display: block;
+    position: relative;
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*font-size: 13px;*/
+    line-height: 40px;
+    float: none;
+}
+
+.template-engine-category div {
+    display: inline-block;
+}
+
+.template-engine-category {
+    height: auto !important;
+    min-height: 50px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.template-engine-handle {
+    display: block;
+    min-height: 50px;
+    height: 50px;
+    max-height: 50px;
+    width: 120px;
+    padding: 5px 10px;
+    color: #333;
+    text-align: center;
+}
+
+.template-engine-handle-wrapper {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    background-color: lightcoral;
+    border: solid dimgray 1px;
+}
+
+.template-engine-handle:hover {
+    cursor: pointer;
+}
+
+.template-engine-category > button {
+    display: block;
+    position: relative;
+    cursor: pointer;
+    float: left;
+    width: 25px;
+    /*height: 35px;*/
+    height: auto;
+    /*margin: 5px 0;*/
+    /*padding: 0;*/
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    border: 0;
+    background: transparent;
+    font-size: 12px;
+    line-height: 1;
+    text-align: center;
+    font-weight: bold;
+}
+
+.template-engine-category > button:before {
+    content: '+';
+    display: block;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    text-indent: 0;
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.template-engine-category > button[data-action="collapse"]:before {
+    content: '-';
+}
+
+.dd-placeholder, .dd-empty {
+    /*min-height: 50px;*/
+    /*background: #d0d9dd;*/
+    /*-webkit-box-sizing: border-box;*/
+       /*-moz-box-sizing: border-box;*/
+            /*box-sizing: border-box;*/
+    /*border: 1px dashed #b6bcbf;*/
+}
+
+.dd-dragel {
+    position: absolute;
+    /*pointer-events: none;*/
+    z-index: 9999;
+    margin-left: -1px;
+    margin-top: -1px;
+}

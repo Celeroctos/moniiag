@@ -84,7 +84,6 @@ $(document).ready(function() {
 
     $("#addCategorie").click(function() {
         $('#addCategoriePopup').modal({
-
         });
     });
 
@@ -118,7 +117,6 @@ $(document).ready(function() {
             // Перезагружаем таблицу
             $("#categories").trigger("reloadGrid");
             $("#categorie-edit-form")[0].reset();
-
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddCategoriePopup .modal-body .row p').remove();
@@ -128,13 +126,10 @@ $(document).ready(function() {
                     $('#errorAddCategoriePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-
             $('#errorAddCategoriePopup').modal({
-
-            });
+            }).css("z-index", 1052).disableSelection();
         }
     });
-
 
     function editCategorie() {
         var currentRow = $('#categories').jqGrid('getGridParam','selrow');
