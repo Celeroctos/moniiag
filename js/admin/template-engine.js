@@ -1196,7 +1196,32 @@ var TemplateEngine = TemplateEngine || {
 			))
 		}
 		// append category to category collection
-		collection.afterDrop(c).append(c);
+		if (!(collection instanceof CategoryCollection)) {
+			CategoryCollection.prototype.afterDrop.call(
+				collection, c
+			).append(c);
+			c.selector().detach().appendTo(
+				collection.selector().children(".template-engine-list")
+			);
+		} else {
+			collection.afterDrop(c).append(c);
+		}
+		// append children categories to parent
+		if (model.children) {
+			if (!c.selector().children(".template-engine-list").length) {
+				c.selector().append(
+					$("<ol></ol>", {
+						class: "template-engine-list"
+					})
+				);
+			}
+			for (var i in model.children) {
+				if (!model.children.hasOwnProperty(i)) {
+					continue;
+				}
+				_registerCategory(c, model.children[i]);
+			}
+		}
 		// return self
 		return TemplateEngine;
 	};
