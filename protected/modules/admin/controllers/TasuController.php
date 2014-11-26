@@ -946,7 +946,7 @@ class TasuController extends Controller {
 
     public function actionImportGreetings() {
         // Делаем выборку чанка приёмов с целью последующей выгрузки
-        $currentGreeting = isset($_GET['currentGreeting']) ? $_GET['currentGreeting'] : false;
+        $currentGreeting = isset($_GET['currentGreeting']) && $_GET['currentGreeting'] != null ? $_GET['currentGreeting'] : false;
         $limit = isset($_GET['rowsPerQuery']) ? $_GET['rowsPerQuery'] : false;
         $sord = 'asc';
         $sidx = 'id';
@@ -957,6 +957,7 @@ class TasuController extends Controller {
         $this->log = array();
         $this->lastId = null;
         $importId = null;
+
         if(isset($_GET['totalRows']) && $_GET['totalRows'] == null) {
             $rows = TasuGreetingsBuffer::model()->getLastBuffer(false);
             $this->totalRows = count($rows);
@@ -973,6 +974,7 @@ class TasuController extends Controller {
         } else {
             $this->totalRows = null;
         }
+
         // Смотрим буфер
         foreach($buffer as $element) {
             $bufferGreetingModel = TasuGreetingsBuffer::model()->findByPk($element['id']);
@@ -1030,8 +1032,17 @@ class TasuController extends Controller {
 		// Делаем контрольный запрос. Если на выборку контрольного запроса выбирается 0 строк, то, значит, это окончание выгрузки. Надо перенести выгрузку в историю
         $moreBuffer = TasuGreetingsBuffer::model()->getLastBuffer(false, $sidx, $sord, $start, $limit, $this->lastId);
         if(count($moreBuffer) == 0) {
+			// Найдём все невыгруженные записи (ошибки. Это количество отнять от общего)
+			$numErrors = TasuGreetingsBuffer::model()->count(
+				'import_id = :import_id
+				AND status = :status',
+				array(
+					':import_id' => $importId,
+					':status' => 0
+				)
+			);
             $historyBuffer = new TasuGreetingsBufferHistory();
-            $historyBuffer->num_rows = $this->totalRows;
+            $historyBuffer->num_rows = $this->totalRows - $numErrors;
             $historyBuffer->create_date = date('Y-m-d h:i');
             $historyBuffer->status = 1; // Выгружено
             $historyBuffer->import_id = $importId;
@@ -1045,6 +1056,17 @@ class TasuController extends Controller {
 				$this->logStr .= "[OK] Выгрузка с ID".$importId." успешно сохранена в истории выгрузок.\r\n";
 				$this->isErrorElement = true;
             }
+			// Обновим importId для невыгруженных
+			TasuGreetingsBuffer::model()->updateAll(
+				array('import_id' => $importId + 1),
+				'import_id = :import_id
+				AND status = :status',
+				array(
+					':import_id' => $importId,
+					':status' => 0
+				)
+			);
+			
 			Yii::app()->user->setState('tasuLog', -1);
         }
 
@@ -1072,6 +1094,7 @@ class TasuController extends Controller {
 		$medcard = Medcard::model()->findByPk($greeting['medcard']);
 						
         $patients = $this->searchTasuPatient($greeting, $oms);
+
         // Добавление пациента, если такой не найден
         if(count($patients) == 0 || !$patients) {
             $result = $this->addTasuPatient($medcard, $oms);
@@ -1158,7 +1181,7 @@ class TasuController extends Controller {
 				$this->logStr .= "[OK] В ТАСУ успешно создана медкарта ".$medcard->card_number.".\r\n";
 			}
 		}
-		
+
         if(count($patients) > 0) {
             $patient = $patients[0];
             // Добавляем приём (талон, ТАП) к пациенту
@@ -1172,8 +1195,8 @@ class TasuController extends Controller {
 				$this->log[] = '<strong class="text-success">[OK]</strong> ТАП на приём '.$greeting['greeting_id'].' уже существует в ТАСУ.';
 				$this->logStr .= "[OK] ТАП на приём ".$greeting['greeting_id']." уже существует в ТАСУ.\r\n";
 			} else {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' (карта '.$medcard->card_number.', дата '.$greeting['patient_day'].') в базу: возможно, полис пациента записан в неправильном формате...?.';
-				$this->logStr .= "[Ошибка] Невозможно добавить приём с ID".$greeting['greeting_id']." (карта ".$medcard->card_number.", дата ".$greeting['patient_day'].") в базу: возможно, полис пациента записан в неправильном формате...?\r\n";
+                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно добавить приём с ID'.$greeting['greeting_id'].' (карта '.$medcard->card_number.', дата '.$greeting['patient_day'].') в базу: возможно, полис пациента (номер '.$oms->oms_series.' '.$oms->oms_number.') записан в неправильном формате...?.';
+				$this->logStr .= "[Ошибка] Невозможно добавить приём с ID".$greeting['greeting_id']." (карта ".$medcard->card_number.", дата ".$greeting['patient_day'].") в базу: возможно, полис пациента (номер ".$oms->oms_series.' '.$oms->oms_number.") записан в неправильном формате...?\r\n";
 				$this->isErrorElement = true;
             }
         } else {
@@ -1237,6 +1260,7 @@ class TasuController extends Controller {
 		} catch(Exception $e) {
 			var_dump($e);
 			exit();
+			
 		}
 		
 		$sql = "ALTER TABLE dbo.t_dul_44571 ENABLE TRIGGER trt_dul_44571_update";
@@ -1245,7 +1269,7 @@ class TasuController extends Controller {
 
     private function searchTasuPatient($greeting, $oms) {
         $conn = Yii::app()->db2;
-        try {
+		try {
             if($oms->oms_series == null) { // Старый тип структуры базы
                 // Номер полиса состоит из двух частей: серия (пробел) номер
                 $policyParts = explode(' ', trim($greeting['oms_number']));
@@ -1265,7 +1289,7 @@ class TasuController extends Controller {
                 $policyParts[1] = $oms->oms_number;
             }
 			
-			if($oms->type == 5) { // Единый полис ОМС в одном поле, в номере
+			if($oms->type == 5 || $oms->type == 3) { // Единый полис ОМС в одном поле, в номере
 				$serie = '';
 				$number = trim($policyParts[0]).trim($policyParts[1]);
 			} else {
@@ -1295,16 +1319,18 @@ class TasuController extends Controller {
 	                  ((([p].[series_14820] = '".$serie."') AND ([p].[number_12574] = '".$number."')
 	                  AND ([pat].[closeregistrationcause_59292] IS NULL)))
 	                  AND [pat].version_end = ".$this->version_end."
-					  AND [pat].birthday_38523 = '".$oms->birthday."'";
+					  AND [pat].birthday_38523 = '".implode('', explode('-', $oms->birthday))."'";
 //var_dump($sql);
 		
             $resultPatient = $conn->createCommand($sql)->queryAll();
 		//	if($greeting['id'] == 6638) {
 				//var_dump($sql);
 			//}
-
             return $resultPatient;
         } catch(Exception $e) {
+		//	var_dump($e);
+		//	var_dump($oms);
+		//	exit();
             $this->numErrors++;
             return false;
         }
@@ -1476,6 +1502,7 @@ class TasuController extends Controller {
 					exit();
 				}
 			}
+
 			// Если не подгружены данные по полису из ТАСУ, самое время это сделать
 			if($oms->insurance == null || $oms->region == null) {
 				$this->getTasuPatientByPolicy($oms);
@@ -1513,9 +1540,11 @@ class TasuController extends Controller {
             $smoRow = $conn->createCommand($sql)->queryRow();
             	
 			if($smoRow == null) {
+				$this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти страховую компанию с кодом региона '.$regionCode.' и кодом СМО '.$smoCode.' у пациента с номером карты '.$medcard->card_number.'!';
+				$this->logStr .= '[Ошибка] Невозможно найти страховую компанию с кодом региона '.$regionCode.' и кодом СМО '.$smoCode.' у пациента с номером карты '.$medcard->card_number.'!\r\n';
                 return false;
             }
-			
+
 			// В едином и временном номере всё пишется в одно поле
 			if($oms->type == 5 || $oms->type == 3) {
 				$serie = '';
@@ -1603,47 +1632,7 @@ class TasuController extends Controller {
 			
 			}
 			
-			$sql = "ALTER TABLE dbo.t_policy_43176 ENABLE TRIGGER trt_policy_43176_update";
-			$conn->createCommand($sql)->execute();
-			
-			$givedDate = implode('', explode('-', $medcard->gived_date));
-			if($medcard->doctype == 1) { // Удаляем пробелы из паспортной серии и режем по-нормальному
-				$medcard->serie = str_replace(' ', '', $medcard->serie);
-				$docserie = mb_substr(trim($medcard->serie), 0, 2).' '.mb_substr(trim($medcard->serie), 2);
-			} else {
-				$docserie = $medcard->serie;
-			}
-
-			$sql = "ALTER TABLE dbo.t_dul_44571 DISABLE TRIGGER trt_dul_44571_update";
-			$conn->createCommand($sql)->execute();
-
-			$sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
-                        ".$patientRow['PatientUID'].",
-                        0,
-                        '".$medcard->doctype."',
-                        '".$docserie."',
-                        '".$medcard->docnumber."',
-                        '00',
-                        '".$oms->last_name."',
-                        '".$oms->first_name."',
-                        '".$oms->middle_name."',
-                        0,
-                        '".(($oms->gender == 1) ? 1 : 2)."',
-                        '".$birthday."',
-                        '".$givedDate."',
-                        NULL,
-                        '',
-                        NULL";
-
-            try {
-				$result = $conn->createCommand($sql)->execute();
-			} catch(Exception $e) {
-				var_dump($e);
-				exit();
-			}
-			
-			$sql = "ALTER TABLE dbo.t_dul_44571 ENABLE TRIGGER trt_dul_44571_update";
-			$conn->createCommand($sql)->execute();
+			$this->addTasuDul($medcard, $oms, $patientRow['PatientUID']);
 			
             //var_dump($sql);
             // Вынимаем данные об адресе из МИС-базы
@@ -1700,6 +1689,54 @@ class TasuController extends Controller {
             return false;
         }
     }
+	
+	private function addTasuDul($medcard, $oms, $patientUID) {
+		$conn = Yii::app()->db2;
+		
+		$sql = "ALTER TABLE dbo.t_policy_43176 ENABLE TRIGGER trt_policy_43176_update";
+		$conn->createCommand($sql)->execute();
+		
+		$givedDate = implode('', explode('-', $medcard->gived_date));
+		$birthday = implode('', explode('-', $oms->birthday));
+		
+		if($medcard->doctype == 1) { // Удаляем пробелы из паспортной серии и режем по-нормальному
+			$medcard->serie = str_replace(' ', '', $medcard->serie);
+			$docserie = mb_substr(trim($medcard->serie), 0, 2).' '.mb_substr(trim($medcard->serie), 2);
+		} else {
+			$docserie = $medcard->serie;
+		}
+
+		$sql = "ALTER TABLE dbo.t_dul_44571 DISABLE TRIGGER trt_dul_44571_update";
+		$conn->createCommand($sql)->execute();
+
+		$sql = "EXEC PDPStdStorage.dbo.p_patsetdul_54915
+					".$patientUID.",
+					0,
+					'".$medcard->doctype."',
+					'".$docserie."',
+					'".$medcard->docnumber."',
+					'00',
+					'".$oms->last_name."',
+					'".$oms->first_name."',
+					'".$oms->middle_name."',
+					0,
+					'".(($oms->gender == 1) ? 1 : 2)."',
+					'".$birthday."',
+					'".$givedDate."',
+					NULL,
+					'',
+					NULL";
+
+		try {
+			$result = $conn->createCommand($sql)->execute();
+		} catch(Exception $e) {
+			var_dump($e);
+			exit();
+		}
+		
+		$sql = "ALTER TABLE dbo.t_dul_44571 ENABLE TRIGGER trt_dul_44571_update";
+		$conn->createCommand($sql)->execute();
+	}
 
     /* Получить объекты, соотнесённые с адресом */
     private function getAddressObjects($addressDataJson) {
@@ -1761,7 +1798,7 @@ class TasuController extends Controller {
             }
 			
 			// В едином номере всё пишется в одно поле
-			if($oms->type == 5) {
+			if($oms->type == 5 || $oms->type == 3) {
 				$serie = '';
 				$number = $policyParts[0].$policyParts[1];
 			} else {
@@ -1779,7 +1816,7 @@ class TasuController extends Controller {
 						AND [a].version_end = ".$this->version_end;
 
             $omsRow = $conn->createCommand($sql)->queryRow();
-            if($omsRow == null) {
+			if($omsRow == null) {
                 $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти полис '.$serie.' '.$number.'!';
 				$this->logStr .= "[Ошибка] Невозможно найти полис ".$serie." ".$number."!\r\n";
                 $this->isErrorElement = true;
@@ -1795,11 +1832,11 @@ class TasuController extends Controller {
 						AND [_unmdtbl6510].version_end = ".$this->version_end;
 
             $policyRow = $conn->createCommand($sql)->queryRow();
-            if($policyRow == null) {
-                $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти пациента с ID '.$patient['PatientUID'].' (карта '.$medcard->card_number.', '.$greeting['patient_day'].')!';
-				$this->logStr .= "[Ошибка] Невозможно найти пациента с ID ".$patient['PatientUID']." (карта ".$medcard->card_number.", ".$greeting['patient_day'].")!r\n";
-                $this->isErrorElement = true;
-				return false;
+			if($policyRow == null) {
+                /*  $this->log[] = '<strong class="text-danger">[Ошибка]</strong> Невозможно найти документ для пациента с ID '.$patient['PatientUID'].' (карта '.$medcard->card_number.', '.$greeting['patient_day'].')!';
+				$this->logStr .= "[Ошибка] Невозможно найти документ для пациента с ID ".$patient['PatientUID']." (карта ".$medcard->card_number.", ".$greeting['patient_day'].")!r\n";
+                $this->isErrorElement = true; */
+				$this->addTasuDul($medcard, $oms, $patient['PatientUID']);
             }
 
             $sql = 'SELECT
@@ -2585,7 +2622,7 @@ class TasuController extends Controller {
 				$number = $policyParts[1];
 			}
 				
-			if($oms->type == 5) {
+			if($oms->type == 5 || $oms->type == 3) {
 				$number = $series.$number;
 				$series = '';
 			}
@@ -2593,7 +2630,7 @@ class TasuController extends Controller {
 			$series = $oms->oms_series;
 			$number = $oms->oms_number;
 			
-			if($oms->type == 5) {
+			if($oms->type == 5 || $oms->type == 3) {
 				$series = '';
 				$number = $oms->oms_series.$oms->oms_number;
 			} else {
