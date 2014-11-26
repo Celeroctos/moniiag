@@ -230,11 +230,11 @@ class ElementsController extends Controller {
                 exit();
             }
 
-			$config += CJSON::encode(array(
-                'maxValue' => $model->numberFieldMaxValue,
-                'minValue' => $model->numberFieldMinValue,
-                'step' => $model->numberStep
-            ));
+			
+                $config['maxValue'] = $model->numberFieldMaxValue;
+                $config['minValue'] = $model->numberFieldMinValue;
+                $config['step'] = $model->numberStep;
+            
 		}
 
 		if($model->showDynamic) {
@@ -255,10 +255,9 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-			$config += CJSON::encode(array(
-				'maxValue' => $model->dateFieldMaxValue,
-				'minValue' => $model->dateFieldMinValue
-			));
+			
+				$config['maxValue'] = $model->dateFieldMaxValue;
+				$config['minValue'] = $model->dateFieldMinValue;
 		}
 
 		$element->config = CJSON::encode($config); 
