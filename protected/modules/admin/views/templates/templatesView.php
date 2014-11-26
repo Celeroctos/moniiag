@@ -4,6 +4,8 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/nestable.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/template-engine.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/templates.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/elements.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/categories.js"></script>
 <table id="templates"></table>
 <div id="templatesPager"></div>
 <div class="btn-group default-margin-top">
@@ -19,3 +21,10 @@
 <? $this->widget('application.modals.admin.templates.EditTemplate') ?>
 <? $this->widget('application.modals.admin.templates.ShowTemplate') ?>
 <? $this->widget('application.modals.admin.templates.DesignTemplate') ?>
+<? $this->widget("application.modals.admin.templates.AddCategory"); ?>
+<? $this->widget("application.modals.admin.templates.AddCategoryError"); ?>
+<? $this->widget("application.modals.admin.templates.EditCategory"); ?>
+<? $this->widget("application.modals.admin.templates.AddElement"); ?>
+<? $this->widget("application.modals.admin.templates.AddElementError"); ?>
+<? $this->widget("application.modals.admin.templates.EditElement"); ?>
+<? $this->widget("application.modals.admin.templates.EditDependences"); ?>

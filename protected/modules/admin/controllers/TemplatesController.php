@@ -129,7 +129,6 @@ class TemplatesController extends Controller {
                     'errors' => $model->errors));
             }
         }
-
     }
 
     private function addEditModel($template, $model, $msg) {
@@ -173,6 +172,12 @@ class TemplatesController extends Controller {
                 'text' => $msg));
         }
     }
+
+	public function actionAddCategory($id) {
+		print json_encode(array(
+			'test' => MedcardTemplate::model()->getTemplateCategories($id)
+		));
+	}
 
     public function actionDelete($id) {
         $errorTextMessage = 'На данную запись есть ссылки!';
@@ -243,7 +248,7 @@ class TemplatesController extends Controller {
         foreach ($categories as $i => $id) {
 
             // fetch category from db
-            $category = $categoryModel->getOne($id);
+            $category = $categoryModel->getOne(intval($id));
 
             // fetch category children
             $category["children"] = $categoryModel->getChildren($category["id"]);

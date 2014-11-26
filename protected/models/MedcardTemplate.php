@@ -42,6 +42,42 @@ class MedcardTemplate extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+
+	public function getTemplateCategories($id) {
+		try {
+			$row = Yii::app()->db->createCommand()
+				->select('json_array_elements(CAST(categorie_ids AS json))')
+				->from('mis.medcard_templates')
+				->where('id = :id', array(':id' => $id))
+				->queryRow();
+			return $row["json_array_elements"];
+		} catch(Exception $e) {
+			echo json_encode(array(
+				"status" => false,
+				"message" => $e->getMessage()
+			)); die;
+		}
+		return null;
+	}
+
+	public function addCategoryToTemplate($id) {
+		try {
+			$connection = Yii::app()->db;
+
+			$categories = $connection->createCommand()
+				->select('json_array_elements(CAST(categorie_ids AS json))')
+				->from('mis.medcard_templates')
+				->where('id = :id', array(':id' => $id))
+				->queryRow();
+
+		} catch(Exception $e) {
+			echo json_encode(array(
+				"status" => false,
+				"message" => $e->getMessage()
+			)); die;
+		}
+		return null;
+	}
     
     public function getTemplatesByPageId($id) {
         try {

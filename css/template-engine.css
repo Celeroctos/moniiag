@@ -2,107 +2,113 @@
     overflow: hidden;
 }
 
-.template-engine-droppable {
-    border: solid black 1px;
-    border-radius: 2px;
+/*
+    Stylize glyphicons
+*/
+.template-engine-category .glyphicon {
+    margin-left: 2px;
+}
+.template-engine-category .glyphicon {
+    cursor: pointer; color: #3c3c3c;
+}
+.template-engine-category .glyphicon:hover {
+    cursor: pointer; color: #7b1010;
 }
 
-.template-engine-container {
+/*
+    Center fix for remove button on category element (in result
+    container with categories) and the same fix for glyphicon for
+    items in categories but with 2(0) pixels offset
+*/
+.template-engine-category .glyphicon {
+    transform: translateY(7px); font-size: 12px;
+}
+.template-engine-category .glyphicon:hover {
+    transform: translateY(7px); font-size: 12px;
+}
+.template-engine-item .glyphicon {
+    transform: translateY(1px); font-size: 12px;
+}
+.template-engine-item .glyphicon:hover {
+    transform: translateY(1px); font-size: 12px;
+}
+
+.template-engine-category-collection {
+    background: #a6a6a6;
+    min-height: 500px;
+    width: 80%;
+    margin-left: 15px;
+    margin-right: 10px;
     float: left;
+    height: 500px;
+    border-radius: 5px;
+    border: solid dimgray 1px;
 }
 
-.template-engine-result {
-    background: #666;
-    width: 514px;
-    height: 300px;
+.template-engine-items {
+    min-height: 53px;
+    height: auto;
+    margin-left: 5px;
+    width: calc(100% - 165px);
+    border: dotted #ffffff 1px;
+    border-radius: 5px;
 }
 
-.template-engine-tree-widget,
-.template-engine-result,
-.template-engine-search {
-    height: 400px;
+.template-engine-item {
+    border: solid dimgray 1px;
 }
 
-.template-engine-search {
-    background: #666;
-}
-
-.template-engine-tree {
+.template-engine-items .template-engine-item {
+    box-sizing: border-box;
     width: 100%;
+    height: 100%;
+    margin: 0;
 }
 
 .template-engine-template {
-}
-
-.template-engine-selected {
-    color: white;
-    border: 2px solid black;
-}
-
-.template-engine-tree-widget,
-.template-engine-template {
-    background: #999;
+    float: left;
+    background: #ffffff;
     color: #fff;
 }
 
-.template-engine-tree-widget {
-    background: #666;
-    width: 300px;
+.template-engine-nestable {
+    margin: 3px;
 }
 
-.template-engine-template {
-    width: 150px;
-}
-
-.template-engine-element {
+.template-engine-item, .template-engine-handle {
     border-radius: 5px;
     color: black;
     text-align: center;
     background: lightblue;
-    height: 32px;
-    margin: 2px 2px;
+    width: 150px;
+    height: 45px;
     font-size: 16px;
-    padding: 3px;
+    margin: 3px;
+    padding: 5px;
+    min-width: 25px;
 }
 
-.template-engine-category {
+.template-engine-handle {
+    background-color: lightcoral;
+    margin: 0;
+    padding: 0;
+    width: 120px;
 }
 
-.template-engine-mark {
-    font-size: 18px;
-    padding-right: 5px;
-    padding-left: 5px;
+.template-engine-items .template-engine-item {
+    display: inline-block;
+    width: auto;
+    white-space: nowrap;
     float: left;
-    margin-right: 1px;
-    width: 10px;
 }
 
-.template-engine-element div {
+.template-engine-template .template-engine-item div {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
 }
 
-.template-engine-result .template-engine-element {
-    float: left;
-}
-
-.template-engine-tree-widget {
-    width: 300px;
-}
-
-.dd {
-    position: relative;
-    display: block;
-    margin: 0;
-    padding: 0;
-    max-width: 600px;
-    list-style: none;
-    font-size: 13px;
-    line-height: 20px;
-}
-
-.dd-list {
+.template-engine-list {
     display: block;
     position: relative;
     margin: 0;
@@ -110,49 +116,75 @@
     list-style: none;
 }
 
-.dd-list .dd-list {
-    padding-left: 30px;
+.template-engine-list .template-engine-list {
+    padding-left: 25px;
 }
-.dd-collapsed .dd-list {
+
+.dd-collapsed .template-engine-list {
     display: none;
 }
 
-.dd-item, .dd-empty, .dd-placeholder {
+.template-engine-category-static {
+    background-color: #fff7ae;
+}
+
+.template-engine-category, .dd-empty, .dd-placeholder {
     display: block;
     position: relative;
-    margin: 0; padding: 0;
-    font-size: 13px;
-    line-height: 20px;
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*font-size: 13px;*/
+    line-height: 40px;
+    float: none;
 }
 
-.dd-handle {
+.template-engine-category div {
+    display: inline-block;
+}
+
+.template-engine-category {
+    height: auto !important;
+    min-height: 50px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.template-engine-handle {
     display: block;
-    height: 30px;
-    margin: 3px 3px;
+    min-height: 50px;
+    height: 50px;
+    max-height: 50px;
+    width: 120px;
     padding: 5px 10px;
     color: #333;
-    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.template-engine-handle-wrapper {
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
     background-color: lightcoral;
-    -webkit-border-radius: 2px;
-            border-radius: 2px;
-    -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    border: solid dimgray 1px;
 }
 
-.dd-handle:hover {
-    color: #2ea8e5;
-    background: #fff;
+.template-engine-handle:hover {
+    cursor: pointer;
 }
 
-.dd-item > button {
+.template-engine-category > button {
     display: block;
     position: relative;
     cursor: pointer;
     float: left;
     width: 25px;
-    height: 20px;
-    margin: 5px 0;
-    padding: 0;
+    /*height: 35px;*/
+    height: auto;
+    /*margin: 5px 0;*/
+    /*padding: 0;*/
     text-indent: 100%;
     white-space: nowrap;
     overflow: hidden;
@@ -164,31 +196,34 @@
     font-weight: bold;
 }
 
-.dd-item > button:before {
+.template-engine-category > button:before {
     content: '+';
     display: block;
     position: absolute;
     width: 100%;
     text-align: center;
     text-indent: 0;
+    color: #ffffff;
+    font-size: 15px;
 }
 
-.dd-item > button[data-action="collapse"]:before {
+.template-engine-category > button[data-action="collapse"]:before {
     content: '-';
 }
 
 .dd-placeholder, .dd-empty {
-    margin: 5px 0;
-    padding: 0;
-    min-height: 30px;
-    background: #f2fbff;
-    border: 1px dashed #b6bcbf;
-    -moz-box-sizing: border-box;
-         box-sizing: border-box;
+    /*min-height: 50px;*/
+    /*background: #d0d9dd;*/
+    /*-webkit-box-sizing: border-box;*/
+       /*-moz-box-sizing: border-box;*/
+            /*box-sizing: border-box;*/
+    /*border: 1px dashed #b6bcbf;*/
 }
 
 .dd-dragel {
     position: absolute;
-    pointer-events: none;
+    /*pointer-events: none;*/
     z-index: 9999;
+    margin-left: -1px;
+    margin-top: -1px;
 }

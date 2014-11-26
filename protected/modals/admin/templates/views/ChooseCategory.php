@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/template-engine.css">
 <div class="modal-body">
     <div class="row">
-		<div class="template-engine-widget"></div>
+		<h1>Hello, World</h1>
     </div>
 </div>
 <div class="modal-footer">
