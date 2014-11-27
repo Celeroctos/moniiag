@@ -51,8 +51,8 @@
 					width: 130
 				},
 				{
-					name: 'service',
-					index: 'service',
+					name: 'service_tasu_code',
+					index: 'service_tasu_code',
 					width: 100
 				}
 			],
@@ -535,6 +535,8 @@
 			secondaryDiagnosisIds.push(secondaryDiagnosisChoosed[i].id);
 		}
 		
+		$("#greeting-addfake-submit").attr('disabled', true);
+		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		 $.ajax({
             'url' : '/admin/tasu/getfios',
@@ -606,6 +608,8 @@
                         'z-index' : '1051'
                     }).modal({});
 				}
+				
+				$("#greeting-addfake-submit").attr('disabled', false);
 			}
 		});
 	});
@@ -836,6 +840,8 @@
 			secondaryDiagnosisIds.push(secondaryDiagnosisChoosed[i].id);
 		}
 		
+		$(this).attr('disabled', true);
+		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		$.ajax({
             'url' : '/admin/tasu/getfios',
@@ -898,6 +904,7 @@
                         'z-index' : '1051'
                     }).modal({});
 				}
+				$('#saveEditPregreetingRow').attr('disabled', false);
 			}
 		});
 		
@@ -980,11 +987,11 @@
 				if(data.success) {
 					$('#' + fieldId).prop('disabled', false);
 					if(fieldId == 'cardNumber') {
-						$('#fioCont').removeClass('no-display').text(data.data.patientFio);
+						$('#fioCont').removeClass('no-display').text(data.data.patientFio + ', ' + data.data.birthdayYear);
 						moveToNextInput($('#cardNumber'));
 					}
 					if(fieldId == 'cardNumberEdit') {
-						$('#fioContEdit').removeClass('no-display').text(data.data.patientFio);
+						$('#fioContEdit').removeClass('no-display').text(data.data.patientFio + ', ' + data.data.birthdayYear);
 					}
 				} else {
 					alert(data.error);
@@ -998,7 +1005,7 @@
 	function moveToNextInput(input) {
 		var id = $(input).prop('id');
 		if(id == 'cardNumber') {
-			$('#savePrimaryDiag').focus();
+			$('#primaryDiagnosis').focus();
 		}
 		if(id == 'savePrimaryDiag') {
 			if($('#primaryDiagnosis').prop('disabled') != 'undefined') {
