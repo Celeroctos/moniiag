@@ -119,7 +119,7 @@
         if ( $('#greetingPrintNeed input:checked').length>0 )
         {
             var id = $('#greetingId').val();
-            var printWin = window.open('/moniiag/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+            var printWin = window.open('/doctors/print/printgreeting/?greetingid=' + id, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
             $(printWin).on('load',
                 function () {
                     this.focus();
