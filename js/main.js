@@ -800,7 +800,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
     {
         // Выбираем все focus-able элементы
         var focusables = $(':tabbable, .controlTableContentCell');
-        for (i=0;i<focusables.length;i++)
+		for (i=0;i<focusables.length;i++)
         {
             // Проверяем - является ли и-тый элемент из фокусабельных элементом,
             //    на котором сейчас стоит фокус
