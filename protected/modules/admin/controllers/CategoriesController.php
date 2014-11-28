@@ -146,8 +146,11 @@ class CategoriesController extends Controller {
         }
 
         if($isOk) {
-            echo CJSON::encode(array('success' => true,
-                                     'text' => $msg));
+            echo CJSON::encode(array(
+                'success' => true,
+                'text' => $msg,
+                'category' => $categorie
+            ));
         }
     }
 

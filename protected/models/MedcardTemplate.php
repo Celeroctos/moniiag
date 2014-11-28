@@ -46,7 +46,7 @@ class MedcardTemplate extends MisActiveRecord {
 	public function getTemplateCategories($id) {
 		try {
 			$row = Yii::app()->db->createCommand()
-				->select('json_array_elements(CAST(categorie_ids AS json))')
+				->select('json_array_elements(cast(categorie_ids AS json))')
 				->from('mis.medcard_templates')
 				->where('id = :id', array(':id' => $id))
 				->queryRow();
@@ -60,24 +60,57 @@ class MedcardTemplate extends MisActiveRecord {
 		return null;
 	}
 
-	public function addCategoryToTemplate($id) {
+	public function addCategoryToTemplate($id, $categoryID) {
 		try {
 			$connection = Yii::app()->db;
-
-			$categories = $connection->createCommand()
-				->select('json_array_elements(CAST(categorie_ids AS json))')
+			$template = $connection->createCommand()
+				->select('categorie_ids')
 				->from('mis.medcard_templates')
 				->where('id = :id', array(':id' => $id))
 				->queryRow();
-
+            $categories = json_decode($template["categorie_ids"]);
+            $categories[] = $categoryID;
+            $this->updateByPk($id, array(
+                'categorie_ids' => json_encode($categories)
+            ));
 		} catch(Exception $e) {
 			echo json_encode(array(
 				"status" => false,
 				"message" => $e->getMessage()
 			)); die;
 		}
-		return null;
+		return array();
 	}
+
+    public function removeCategoryFromTemplate($id, $categoryID) {
+        try {
+            $connection = Yii::app()->db;
+            $template = $connection->createCommand()
+                ->select('categorie_ids')
+                ->from('mis.medcard_templates')
+                ->where('id = :id', array(':id' => $id))
+                ->queryRow();
+            $categories = json_decode($template["categorie_ids"]);
+            foreach ($categories as $i => &$cid) {
+                if (intval($categoryID) === intval($cid)) {
+                    array_splice($categories, $i, 1);
+                    break;
+                }
+            }
+            $this->updateByPk($id, array(
+                'categorie_ids' => json_encode($categories)
+            ));
+        } catch(Exception $e) {
+            echo json_encode(array(
+                "status" => false,
+                "message" => $e->getMessage()
+            )); die;
+        }
+        return array(
+            'id' => $id,
+            'categories' => $categories
+        );
+    }
     
     public function getTemplatesByPageId($id) {
         try {

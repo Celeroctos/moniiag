@@ -132,12 +132,15 @@ class TemplatesController extends Controller {
     }
 
     private function addEditModel($template, $model, $msg) {
+
         $template->name = $model->name;
         $template->page_id = $model->pageId;
+
         // Проверяем индекс
         $issetIndex = MedcardTemplate::model()->find('index = :index', array(
             'index' => $model->index
         ));
+
         if($issetIndex != null && $issetIndex->id != $template->id) {
             $indexes = MedcardTemplate::model()->getTemplateIndexes();
             $answer = array(
@@ -161,6 +164,7 @@ class TemplatesController extends Controller {
 
         $template->index = $model->index;
         $template->primary_diagnosis = $model->primaryDiagnosisFilled;
+
         if($model->categorieIds != null) {
             $template->categorie_ids = CJSON::encode($model->categorieIds);
         } else {
@@ -168,16 +172,13 @@ class TemplatesController extends Controller {
         }
 
         if($template->save()) {
-            echo CJSON::encode(array('success' => true,
-                'text' => $msg));
+            echo CJSON::encode(array(
+                'success' => true,
+                'text' => $msg,
+                'model' => $model
+            ));
         }
     }
-
-	public function actionAddCategory($id) {
-		print json_encode(array(
-			'test' => MedcardTemplate::model()->getTemplateCategories($id)
-		));
-	}
 
     public function actionDelete($id) {
         $errorTextMessage = 'На данную запись есть ссылки!';
@@ -226,6 +227,21 @@ class TemplatesController extends Controller {
                 'data' => $templateView
             )
         );
+    }
+
+    public function actionAddCategoryToTemplate($tid, $cid) {
+        MedcardTemplate::model()->addCategoryToTemplate(intval($tid), intval($cid));
+        echo json_encode(array(
+            'status' => true
+        ));
+    }
+
+    public function actionRemoveCategoryFromTemplate($tid, $cid) {
+        $t = MedcardTemplate::model()->removeCategoryFromTemplate(intval($tid), intval($cid));
+        echo json_encode(array(
+            'status' => true,
+            't' => $t
+        ));
     }
 
     public function actionGetCategories($id) {

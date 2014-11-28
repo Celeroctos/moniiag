@@ -260,242 +260,301 @@ $(document).ready(function() {
 		}
 	};
 
+    var collection = null;
+    var element = null;
+
+    $("#categorie-add-form").on('success', function(eventObj, ajaxData) {
+        // parse response
+        ajaxData = $.parseJSON(ajaxData)
+        // check status
+        if (!ajaxData.success) {
+            console.log(ajaxData);
+            throw new Error("Assert");
+        }
+        // update data
+        collection.model(ajaxData.category, true);
+        collection.update();
+        // if collection not category, then we're appending element
+        // to template (need to update it's list with categories)
+        if (!TemplateEngine.isCategory(parent)) {
+            $.ajax({
+                'url' : globalVariables.baseUrl + "/admin/templates/addcategorytotemplate?tid="
+                    + collection.parent().field("id") + "&cid=" + collection.field("id"),
+                'cache' : false,
+                //'dataType' : 'json',
+                'type' : 'GET'
+            }).always(function(data) {
+                //console.log(data);
+            })
+        }
+    });
+
+    $("#categorie-edit-form").on('success', function(eventObj, ajaxData) {
+        // parse response
+        var ajaxData = $.parseJSON(ajaxData);
+        // update category after edit
+        collection.model(ajaxData.category, true);
+        collection.update();
+        //collection.fetch(globalVariables.baseUrl + "/admin/categories/getone?id=" + collection.field("id"));
+    });
+
+    $("#element-add-form").on('success', function (eventObj, ajaxData) {
+        var ajaxData = $.parseJSON(ajaxData);
+    });
+
+    $("#element-edit-form").on('success', function (eventObj, ajaxData) {
+        that.fetch(globalVariables.baseUrl + "/admin/elements/getone?id=" + element.field("id"));
+    });
+
+    var onAppendCategory = function(that) {
+        var parentID;
+        var parent = that.parent();
+        if (TemplateEngine.isCategory(parent)) {
+            if (parent.length() > 0) {
+                parentID = parent.field("id");
+            } else {
+                return false;
+            }
+        } else {
+            parentID = -1;
+        }
+        collection = that;
+        // Заполняем форму значениями
+        var form = $('#addCategoriePopup form')
+        // Соответствия формы и модели
+        applyFieldsToForm(that, form, [{
+            modelField: 'name',
+            formField: 'name'
+        }, {
+            modelField: 'parent_id',
+            formField: 'parentId',
+            hidden: true,
+            value: parentID
+        }, {
+            modelField: 'is_dynamic',
+            formField: 'isDynamic'
+        }, {
+            modelField: 'position',
+            formField: 'position',
+            hidden: true,
+            value: that.offset()
+        }, {
+            modelField: 'is_wrapped',
+            formField: 'isWrapped'
+        }]);
+        $('#addCategoriePopup').modal();
+    };
+
+    var onEditCategory = function(that) {
+        collection = that;
+        // Заполняем форму значениями
+        var form = $('#editCategoriePopup form')
+        // Соответствия формы и модели
+        applyFieldsToForm(that, form, [{
+            modelField: 'id',
+            formField: 'id'
+        }, {
+            modelField: 'name',
+            formField: 'name'
+        }, {
+            modelField: 'parent_id',
+            formField: 'parentId',
+            hidden: true
+        }, {
+            modelField: 'is_dynamic',
+            formField: 'isDynamic'
+        }, {
+            modelField: 'position',
+            formField: 'position',
+            hidden: true
+        }, {
+            modelField: 'is_wrapped',
+            formField: 'isWrapped'
+        }]);
+        editCategoryPopup.modal().draggable("disable")
+            .disableSelection().css("z-index", 1051);
+    };
+
+    var onRemoveCategory = function(that) {
+        $.ajax({
+            'url' : globalVariables.baseUrl + '/admin/categories/delete?id=' + that.field("id"),
+            'cache' : false,
+            'dataType' : 'json',
+            'type' : 'GET'
+        });
+        if (!TemplateEngine.isCategory(collection.parent())) {
+            $.ajax({
+                'url' : globalVariables.baseUrl + "/admin/templates/removecategoryfromtemplate?tid="
+                    + collection.parent().field("id") + "&cid=" + collection.field("id"),
+                'cache' : false,
+                'dataType' : 'json',
+                'type' : 'GET'
+            });
+        }
+    };
+
+    var onAppendElement = function(that) {
+
+    };
+
+    var onEditElement = function(that) {
+        var data = {
+            data: that.model()
+        };
+        if (!TemplateEngine.isItem(that)) {
+            return false;
+        }
+        element = that;
+        // Заполняем форму значениями
+        var form = $('#editElementPopup form')
+        // Соответствия формы и модели
+        var fields = [{
+            modelField: 'id',
+            formField: 'id'
+        }, {
+            modelField: 'type',
+            formField: 'type'
+        }, {
+            modelField: 'categorie_id',
+            formField: 'categorieId',
+            hidden: true
+        }, {
+            modelField: 'label',
+            formField: 'label'
+        }, {
+            modelField: 'guide_id',
+            formField: 'guideId'
+        }, {
+            modelField: 'allow_add',
+            formField: 'allowAdd'
+        }, {
+            modelField: 'is_required',
+            formField: 'isRequired'
+        }, {
+            modelField: 'label_after',
+            formField: 'labelAfter'
+        }, {
+            modelField: 'size',
+            formField: 'size'
+        }, {
+            modelField: 'is_wrapped',
+            formField: 'isWrapped'
+        }, {
+            modelField: 'position',
+            formField: 'position',
+            hidden: true
+        }, {
+            modelField: 'config',
+            formField: 'config'
+        }, {
+            modelField: 'default_value',
+            formField: 'defaultValue'
+        }, {
+            modelField: 'default_value',
+            formField: 'defaultValueText'
+        }, {
+            modelField: 'label_display',
+            formField: 'labelDisplay'
+        }, {
+            modelField: 'show_dynamic',
+            formField: 'showDynamic'
+        }, {
+            modelField: 'hide_label_before',
+            formField: 'hideLabelBefore'
+        }
+        ];
+        $('#editElementPopup #showDynamic').prop('disabled', data.data['type'] == 4);
+        for (var i = 0; i < fields.length; i++) {
+            // Подгрузка значений справочника для дефолтного значения
+            if (fields[i].formField == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
+                // Это значение ставится асинхронно
+                $('select#guideId').trigger('change', [data.data[fields[i].modelField]]);
+                continue;
+            }
+            var formField = form.find('#' + fields[i].formField).val(
+                data.data[fields[i].modelField]
+            );
+            if (fields[i].disabled) {
+                formField.attr("disabled", "disabled");
+            }
+            // Таблица
+            if (fields[i].formField == 'config') {
+                if(typeof data.data['config'] != 'object') {
+                    var config = $.parseJSON(data.data['config']);
+                } else {
+                    var config = data.data['config'];
+                }
+                if (data.data['type'] == 4) {
+                    printHeadersTable(config,
+                        $('#editElementPopup .table-config-headers tbody'),
+                        $('#editElementPopup .colsHeaders'),
+                        $('#editElementPopup .rowsHeaders'),
+                        $('#editElementPopup #numRows'),
+                        $('#editElementPopup #numCols')
+                    );
+                    printDefaultValuesTable(config.numCols, config.numRows);
+                    if (config.values != undefined && config.values != null) {
+                        writeDefValuesFromConfig(config.values);
+                    }
+                }
+                if (data.data['type'] == 5) {
+                    $('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
+                    $('#editElementPopup #numberFieldMaxValue').val(config.maxValue);
+                    $('#editElementPopup #numberFieldMinValue').val(config.minValue);
+                    $('#editElementPopup #numberStep').val(config.step);
+                }
+                if (data.data['type'] == 6) {
+                    $('#editElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
+                    if (config != null && config != '') {
+                        $('#editElementPopup #dateFieldMaxValue').val(config.maxValue);
+                        $('#editElementPopup #dateFieldMinValue').val(config.minValue);
+                    } else {
+                        // Если конфига нет - надо просто поставить пустое значение
+                        $('#editElementPopup #dateFieldMaxValue').val('');
+                        $('#editElementPopup #dateFieldMinValue').val('');
+                    }
+                    // Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
+                    $('#editElementPopup #dateFieldMaxValue').trigger('change');
+                    $('#editElementPopup #dateFieldMinValue').trigger('change');
+                }
+            }
+        }
+        // Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
+        //    в изменении типа
+        if (data.data.is_dependencies == 1) {
+            $('#element-edit-form select#type option:not([value=2]):not([value=3])').addClass('no-display');
+        } else {
+            $('#element-edit-form select#type option').removeClass('no-display');
+        }
+        $.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
+        editElementPopup.modal().draggable("disable")
+            .disableSelection();
+    };
+
 	var registerTemplateEngine = function(template) {
 		// restart template engine to remove all
 		// categories and it's elements
 		TemplateEngine.registerTemplate(template)
+            // Categories actions
+            .onAppend("category", function() {
+                onAppendCategory(this);
+            })
 			.onEdit("category", function() {
-				var that = this;
-				// Заполняем форму значениями
-				var form = $('#editCategoriePopup form')
-				// Соответствия формы и модели
-				applyFieldsToForm(this, form, [{
-					modelField: 'id',
-					formField: 'id'
-				}, {
-					modelField: 'name',
-					formField: 'name'
-				}, {
-					modelField: 'parent_id',
-					formField: 'parentId',
-					hidden: true
-				}, {
-					modelField: 'is_dynamic',
-					formField: 'isDynamic'
-				}, {
-					modelField: 'position',
-					formField: 'position',
-					hidden: true
-				}, {
-					modelField: 'is_wrapped',
-					formField: 'isWrapped'
-				}]);
-				editCategoryPopup.modal().draggable("disable")
-					.disableSelection().css("z-index", 1051);
-				editCategoryPopup.on("hide.bs.modal", function() {
-					that.fetch(globalVariables.baseUrl + "/admin/categories/getone?id=" + that.field("id"));
-				});
+				onEditCategory(this);
 			})
-			.onAppend("category", function() {
-				var that = this;
-				var parentID = -1;
-				var parent = that.parent();
-				if (TemplateEngine.isCategory(parent)) {
-					if (!parent.length()) {
-						return false;
-					} else {
-						parentID = parent.field("id");
-					}
-				} else {
-					console.log(parent);
-				}
-				// Заполняем форму значениями
-				var form = $('#addCategoriePopup form')
-				// Соответствия формы и модели
-				applyFieldsToForm(this, form, [{
-					modelField: 'name',
-					formField: 'name'
-				}, {
-					modelField: 'parent_id',
-					formField: 'parentId',
-					hidden: true,
-					value: parentID
-				}, {
-					modelField: 'is_dynamic',
-					formField: 'isDynamic'
-				}, {
-					modelField: 'position',
-					formField: 'position',
-					hidden: true,
-					value: 0x7b
-				}, {
-					modelField: 'is_wrapped',
-					formField: 'isWrapped'
-				}]);
-				$('#addCategoriePopup').modal()
-					.on("hide.bs.modal", function() {
-						// check for empty template
-						if (!that.length()) {
-							return true;
-						}
-						// send request to add category
-						$.ajax({
-							'url' : globalVariables.baseUrl + '/admin/templates/addcategory?id=' + currentRow,
-							'cache' : false,
-							'dataType' : 'json',
-							'type' : 'GET',
-							'success' : function(data, textStatus, jqXHR) {
-								// check data for success and terminate execution
-								// if we have any errors
-								if(data.success != true) {
-									console.log(data); return false;
-								}
-								console.log(data);
-							}
-						});
-						// update data
-						that.fetch(globalVariables.baseUrl + "/admin/categories/getone?id=" + that.field("id"));
-					});
-			})
-			.onEdit("static", function() {
-				// TODO Add static context linkage
-			})
+            .onRemove("category", function() {
+                onRemoveCategory(this);
+            })
+            // Elements actions
+            .onAppend(null, function() {
+                onAppendElement(this);
+            })
 			.onEdit(null, function() {
-				if (!TemplateEngine.isItem(this)) {
-					return false;
-				}
-				// Заполняем форму значениями
-				var form = $('#editElementPopup form')
-				// Соответствия формы и модели
-				var fields = [{
-						modelField: 'id',
-						formField: 'id'
-					}, {
-						modelField: 'type',
-						formField: 'type'
-					}, {
-						modelField: 'categorie_id',
-						formField: 'categorieId',
-						disabled: true
-					}, {
-						modelField: 'label',
-						formField: 'label'
-					}, {
-						modelField: 'guide_id',
-						formField: 'guideId'
-					}, {
-						modelField: 'allow_add',
-						formField: 'allowAdd'
-					}, {
-						modelField: 'is_required',
-						formField: 'isRequired'
-					}, {
-						modelField: 'label_after',
-						formField: 'labelAfter'
-					}, {
-						modelField: 'size',
-						formField: 'size'
-					}, {
-						modelField: 'is_wrapped',
-						formField: 'isWrapped'
-					}, {
-						modelField: 'position',
-						formField: 'position',
-						disabled: true
-					}, {
-						modelField: 'config',
-						formField: 'config'
-					}, {
-						modelField: 'default_value',
-						formField: 'defaultValue'
-					}, {
-						modelField: 'default_value',
-						formField: 'defaultValueText'
-					}, {
-						modelField: 'label_display',
-						formField: 'labelDisplay'
-					}, {
-						modelField: 'show_dynamic',
-						formField: 'showDynamic'
-					}, {
-						modelField: 'hide_label_before',
-						formField: 'hideLabelBefore'
-					}
-				];
-				var data = {
-					data: this.model()
-				};
-				$('#editElementPopup #showDynamic').prop('disabled', data.data['type'] == 4);
-				for (var i = 0; i < fields.length; i++) {
-					// Подгрузка значений справочника для дефолтного значения
-					if (fields[i].formField == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
-						// Это значение ставится асинхронно
-						$('select#guideId').trigger('change', [data.data[fields[i].modelField]]);
-						continue;
-					}
-					var formField = form.find('#' + fields[i].formField).val(
-						data.data[fields[i].modelField]
-					);
-					if (fields[i].disabled) {
-						formField.attr("disabled", "disabled");
-					}
-					// Таблица
-					if (fields[i].formField == 'config') {
-						if(typeof data.data['config'] != 'object') {
-							var config = $.parseJSON(data.data['config']);
-						} else {
-							var config = data.data['config'];
-						}
-						if (data.data['type'] == 4) {
-							printHeadersTable(config,
-								$('#editElementPopup .table-config-headers tbody'),
-								$('#editElementPopup .colsHeaders'),
-								$('#editElementPopup .rowsHeaders'),
-								$('#editElementPopup #numRows'),
-								$('#editElementPopup #numCols')
-							);
-							printDefaultValuesTable(config.numCols, config.numRows);
-							if (config.values != undefined && config.values != null) {
-								writeDefValuesFromConfig(config.values);
-							}
-						}
-						if (data.data['type'] == 5) {
-							$('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
-							$('#editElementPopup #numberFieldMaxValue').val(config.maxValue);
-							$('#editElementPopup #numberFieldMinValue').val(config.minValue);
-							$('#editElementPopup #numberStep').val(config.step);
-						}
-						if (data.data['type'] == 6) {
-							$('#editElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
-							if (config != null && config != '') {
-								$('#editElementPopup #dateFieldMaxValue').val(config.maxValue);
-								$('#editElementPopup #dateFieldMinValue').val(config.minValue);
-							} else {
-								// Если конфига нет - надо просто поставить пустое значение
-								$('#editElementPopup #dateFieldMaxValue').val('');
-								$('#editElementPopup #dateFieldMinValue').val('');
-							}
-							// Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
-							$('#editElementPopup #dateFieldMaxValue').trigger('change');
-							$('#editElementPopup #dateFieldMinValue').trigger('change');
-						}
-					}
-				}
-				// Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
-				//    в изменении типа
-				if (data.data.is_dependencies == 1) {
-					$('#element-edit-form select#type option:not([value=2]):not([value=3])').addClass('no-display');
-				} else {
-					$('#element-edit-form select#type option').removeClass('no-display');
-				}
-				$.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
-				editElementPopup.modal().draggable("disable")
-					.disableSelection();
-				var that = this;
-				editElementPopup.on("hide.bs.modal", function() {
-					that.fetch(globalVariables.baseUrl + "/admin/elements/getone?id=" + that.field("id"));
-				});
-			});
+                onEditElement(this);
+			})
+            .onRemove(null, function() {
+
+            })
 	};
 
     function designTemplate() {
@@ -512,7 +571,8 @@ $(document).ready(function() {
 				// check data for success and terminate execution
 				// if we have any errors
                 if(data.success != true) {
-                    console.log(data); return false;
+                    console.log(data);
+                    return false;
                 }
 				// register template engine with some template, it
 				// will restart engine and append current categories

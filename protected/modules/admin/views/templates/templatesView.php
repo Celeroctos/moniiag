@@ -28,3 +28,4 @@
 <? $this->widget("application.modals.admin.templates.AddElementError"); ?>
 <? $this->widget("application.modals.admin.templates.EditElement"); ?>
 <? $this->widget("application.modals.admin.templates.EditDependences"); ?>
+<? $this->widget("application.modals.admin.templates.RemoveCategory"); ?>

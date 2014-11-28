@@ -264,6 +264,31 @@ var TemplateEngine = TemplateEngine || {
         return totalDefined;
     };
 
+    /**
+     * Get previous node (might work fast)
+     * @returns {Node|null} - Previous node's node
+     */
+    Node.prototype.previous = function() {
+        if (!this._parentNode) {
+            return null;
+        }
+        if (this._parentNode._childrenNode[this._parentIndex] == this) {
+            if (this._parentIndex > 0) {
+                return this._parentNode._childrenNode[this._parentIndex - 1];
+            }
+            return null;
+        }
+        for (var i in this._parentNode._childrenNode) {
+            if (this._parentNode._childrenNode[i] != this) {
+                continue;
+            }
+            if (i > 0) {
+                return this._parentNode._childrenNode[i - 1];
+            }
+            return null;
+        }
+    };
+
     /*
       __  __  ___  ___  ___ _
      |  \/  |/ _ \|   \| __| |
@@ -273,44 +298,74 @@ var TemplateEngine = TemplateEngine || {
      */
 
     var Model = function(model) {
-        this._model = model || this.defaults();
+        this._model = clone(model || this.defaults());
+        this._native = clone(model || this.defaults());
     };
 
     Model.prototype.defaults = function() {
         throw new Error("Model/default() : \"You must override that method and return default model\"");
     };
 
-    Model.prototype.model = function(model) {
+    Model.prototype.model = function(model, native) {
         if (model !== undefined) {
-            this._model = model;
+            if (native) {
+                this._native = clone(model);
+            }
+            this._model = clone(model);
         }
         return this._model;
     };
 
+    Model.prototype.isUpToTime = function() {
+        // if native model is undefined
+        if (!this._native) {
+            return true;
+        }
+        // fetch models keys
+        var modelKeys = Object.keys(this._model);
+        // look though all keys and compare native keys with model's
+        for (var key in modelKeys) {
+            if (!modelKeys.hasOwnProperty(key)) {
+                return false;
+            }
+            if (this._native[modelKeys[key]] != this._model[modelKeys[key]] || this._model[modelKeys[key]] == undefined) {
+                return false;
+            }
+        }
+        // we will return true only if model is fully equal to native
+        return true;
+    };
+
 	Model.prototype.length = function() {
+        if (this._model["id"] === undefined) {
+            return 0;
+        }
 		return Object.keys(this.model()).length;
 	};
 
-	Model.prototype.fetch = function(url) {
-		// create this closure
-		var that = this;
+	Model.prototype.fetch = function(url, sync) {
+        // create this closure
+        var that = this;
+        // on success event
+        var hook = function(data, textStatus, jqXHR) {
+            // check data for success and terminate execution
+            // if we have any errors
+            if(data.success != true) {
+                console.log(data); return false;
+            }
+            // update component's model
+            that.model(data.data);
+            // update element
+            that.update();
+        };
 		// send ajax request
 		$.ajax({
 			'url' : url,
 			'cache' : false,
 			'dataType' : 'json',
 			'type' : 'GET',
-			'success' : function(data, textStatus, jqXHR) {
-				// check data for success and terminate execution
-				// if we have any errors
-				if(data.success != true) {
-					console.log(data); return false;
-				}
-				// update component's model
-				that.model(data.data);
-				// update element
-				that.update();
-			}
+            'sync' : sync || false,
+			'success' : hook
 		});
 	};
 
@@ -455,9 +510,29 @@ var TemplateEngine = TemplateEngine || {
         assert("Component/render() : \"You must override 'render' method\"");
     };
 
+    Component.prototype.glyphicon = function() {
+        if (!this.length()) {
+            return "glyphicon glyphicon-floppy-save";
+        } else if (!this.isUpToTime()) {
+            return "glyphicon glyphicon-asterisk";
+        }
+        return "glyphicon glyphicon-pencil";
+    };
+
 	Component.prototype.defaults = function() {
 		return {};
 	};
+
+    Component.prototype.offset = function() {
+        // find previous node
+        var prevNode = this.previous();
+        // if we havn't prev node, then category has only one element
+        if (!prevNode) {
+            return 1;
+        }
+
+        return 127;
+    };
 
 	Component.prototype.update = function() {
 		// after update we have to detach old selector
@@ -648,6 +723,7 @@ var TemplateEngine = TemplateEngine || {
 			class: "glyphicon glyphicon-remove",
 			style: "margin-right: 1px; margin-left: 3px;"
 		}).click(function() {
+            TemplateEngine._triggerRemove(that);
 			that.remove()
 		});
         var s = $("<div></div>", {
@@ -759,12 +835,8 @@ var TemplateEngine = TemplateEngine || {
 		} catch (ignore) {
 			name = "Категория";
 		}
-		var glyphicon = "glyphicon glyphicon-pencil";
-		if (!this.length()) {
-			glyphicon = "glyphicon glyphicon-floppy-save";
-		}
 		var editButton = $("<span></span>", {
-			class: glyphicon,
+			class: this.glyphicon(),
 			style: "margin-right: 5px;"
 		}).click(function() {
 			TemplateEngine._triggerEdit(that);
@@ -774,6 +846,7 @@ var TemplateEngine = TemplateEngine || {
 			style: "margin-right: 5px;"
 		}).click(function() {
 			that.remove()
+            TemplateEngine._triggerRemove(that);
 		});
         var s = $("<li></li>", {
             class: "template-engine-category"
@@ -830,7 +903,17 @@ var TemplateEngine = TemplateEngine || {
         var that = this;
         // apply sortable
         this.selector().find(".template-engine-items").sortable({
-            appendTo: document.body
+            appendTo: document.body,
+            update: function(e, ui) {
+                var item = ui.item;
+                var index = 1;
+                item.parent(".template-engine-items").children(".template-engine-item").each(function(i, child) {
+                    var instance = $(child).data("instance");
+                    instance.field("position", index);
+                    ++index;
+                });
+                console.log(that);
+            }
         }).droppable({
             accept: function(helper) {
                 // get helper's instance
@@ -1030,6 +1113,16 @@ var TemplateEngine = TemplateEngine || {
 				// remove from item's parent and append to another
                 Node.prototype.remove.call(itemInstance.parent(), itemInstance);
                 Node.prototype.append.call(parentInstance, itemInstance);
+                // if we've moved category, then if we've moved saved node
+                // then we have to change it's glyphicon and action for update
+                if (itemInstance.length() > 0 && parentInstance.length() > 0) {
+                    if (!(parentInstance instanceof CategoryCollection)) {
+                        itemInstance.field("parent_id", parentInstance.field("id"));
+                    } else {
+                        itemInstance.field("parent_id", -1);
+                    }
+                }
+                itemInstance.update();
             }
         });
     };
@@ -1184,22 +1277,30 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	var _registerCategory = function(collection, model) {
+        // get element list
+        var elements = model["elements"];
+        var children = model["children"];
+        // reset extra fields
+        model["elements"] = undefined;
+        model["children"] = undefined;
 		// set default model name (bug on server)
 		model["name"] = model["name"] || "Категория";
 		// create new category without parent and selector
 		var c = new Category(null, model, null);
 		// look though elements in category's model and
 		// append it to just created category
-		for (var i in model["elements"]) {
-			c.append(new Item(c, model["elements"][i], null,
-				_getTemplateByID(model["elements"][i]["type"])
+		for (var i in elements) {
+			c.append(new Item(c, elements[i], null,
+				_getTemplateByID(elements[i]["type"])
 			))
 		}
 		// append category to category collection
 		if (!(collection instanceof CategoryCollection)) {
+            // fix for categories (need to disable draggable)
 			CategoryCollection.prototype.afterDrop.call(
 				collection, c
 			).append(c);
+            // detach selector and append to list (container fix)
 			c.selector().detach().appendTo(
 				collection.selector().children(".template-engine-list")
 			);
@@ -1207,7 +1308,7 @@ var TemplateEngine = TemplateEngine || {
 			collection.afterDrop(c).append(c);
 		}
 		// append children categories to parent
-		if (model.children) {
+		if (children) {
 			if (!c.selector().children(".template-engine-list").length) {
 				c.selector().append(
 					$("<ol></ol>", {
@@ -1215,11 +1316,11 @@ var TemplateEngine = TemplateEngine || {
 					})
 				);
 			}
-			for (var i in model.children) {
-				if (!model.children.hasOwnProperty(i)) {
+			for (var i in children) {
+				if (!children.hasOwnProperty(i)) {
 					continue;
 				}
-				_registerCategory(c, model.children[i]);
+				_registerCategory(c, children[i]);
 			}
 		}
 		// return self
@@ -1242,8 +1343,9 @@ var TemplateEngine = TemplateEngine || {
 		return TemplateEngine;
 	};
 
-	var actionMapEdit = [];
 	var actionMapAppend = [];
+    var actionMapEdit = [];
+    var actionMapRemove = [];
 
 	var _onAction = function(key, action, map) {
 		var actions;
@@ -1279,6 +1381,10 @@ var TemplateEngine = TemplateEngine || {
 		return _onAction(key, action, actionMapAppend);
 	};
 
+    TemplateEngine.onRemove = function(key, action) {
+        return _onAction(key, action, actionMapRemove);
+    };
+
 	var _trigger = function(item, map) {
 		var template;
 		if (!(item instanceof Item)) {
@@ -1306,6 +1412,12 @@ var TemplateEngine = TemplateEngine || {
 	TemplateEngine._triggerAppend = function(item) {
 		_trigger(item, actionMapAppend);
 	};
+
+    TemplateEngine._triggerRemove = function(item) {
+        if (item.length() > 0) {
+            _trigger(item, actionMapRemove);
+        }
+    };
 
 	TemplateEngine.isCategory = function(item) {
 		return item instanceof Category;

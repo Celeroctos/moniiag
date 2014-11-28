@@ -21,10 +21,10 @@
     items in categories but with 2(0) pixels offset
 */
 .template-engine-category .glyphicon {
-    transform: translateY(7px); font-size: 12px;
+    transform: translateY(3px); font-size: 12px;
 }
 .template-engine-category .glyphicon:hover {
-    transform: translateY(7px); font-size: 12px;
+    transform: translateY(3px); font-size: 12px;
 }
 .template-engine-item .glyphicon {
     transform: translateY(1px); font-size: 12px;
@@ -40,7 +40,7 @@
     margin-left: 15px;
     margin-right: 10px;
     float: left;
-    height: 500px;
+    height: auto;
     border-radius: 5px;
     border: solid dimgray 1px;
 }
@@ -56,6 +56,11 @@
 
 .template-engine-item {
     border: solid dimgray 1px;
+    height: 50px;
+}
+
+.template-engine-items .template-engine-item {
+    line-height: 40px;
 }
 
 .template-engine-items .template-engine-item {
@@ -134,8 +139,11 @@
     /*margin: 0;*/
     /*padding: 0;*/
     /*font-size: 13px;*/
-    line-height: 40px;
     float: none;
+}
+
+.template-engine-category .template-engine-items {
+    /*line-height: 40px;*/
 }
 
 .template-engine-category div {
@@ -146,7 +154,6 @@
     height: auto !important;
     min-height: 50px;
     width: 100%;
-    margin-bottom: 5px;
 }
 
 .template-engine-handle {
