@@ -300,6 +300,7 @@ var TemplateEngine = TemplateEngine || {
     var Model = function(model) {
         this._model = clone(model || this.defaults());
         this._native = clone(model || this.defaults());
+		this._hashed = null;
     };
 
     Model.prototype.defaults = function() {
@@ -310,6 +311,7 @@ var TemplateEngine = TemplateEngine || {
         if (model !== undefined) {
             if (native) {
                 this._native = clone(model);
+				this._hashed = this.hash();
             }
             this._model = clone(model);
         }
@@ -332,6 +334,22 @@ var TemplateEngine = TemplateEngine || {
                 return false;
             }
         }
+		// check elements hashes
+		//if (!this._hashed) {
+		//	return false;
+		//} else {
+		//	return this._hashed !== this.hash();
+		//}
+		if (this instanceof Category) {
+			for (var i in this.children()) {
+				if (!this.children().hasOwnProperty(i)) {
+					continue;
+				}
+				if (!this.children()[i].isUpToTime()) {
+					return false;
+				}
+			}
+		}
         // we will return true only if model is fully equal to native
         return true;
     };
@@ -510,6 +528,10 @@ var TemplateEngine = TemplateEngine || {
         assert("Component/render() : \"You must override 'render' method\"");
     };
 
+	Component.prototype.hash = function() {
+		assert("Component/hash() : \"You must override 'hash' method\"");
+	};
+
     Component.prototype.glyphicon = function() {
         if (!this.length()) {
             return "glyphicon glyphicon-floppy-save";
@@ -518,6 +540,29 @@ var TemplateEngine = TemplateEngine || {
         }
         return "glyphicon glyphicon-pencil";
     };
+
+	Component.prototype._renderSaveButton = function() {
+		var that = this;
+		return $("<span></span>", {
+			class: "glyphicon glyphicon-pencil"
+		}).click(function() {
+			TemplateEngine._triggerEdit(that);
+		});
+	};
+
+	Component.prototype._renderEditButton = function() {
+	};
+
+	Component.prototype._renderRemoveButton = function() {
+		var that = this;
+		return $("<span></span>", {
+			class: "glyphicon glyphicon-remove",
+			style: "margin-right: 1px; margin-left: 3px;"
+		}).click(function() {
+			TemplateEngine._triggerRemove(that);
+			that.remove()
+		});
+	};
 
 	Component.prototype.defaults = function() {
 		return {};
@@ -637,6 +682,10 @@ var TemplateEngine = TemplateEngine || {
         }
     };
 
+	Template.prototype.hash = function() {
+		return 0;
+	};
+
     Template.prototype.drag = function() {
         this.selector().draggable({
             helper: function(e) {
@@ -684,6 +733,10 @@ var TemplateEngine = TemplateEngine || {
         });
     };
 
+	TemplateCollection.prototype.hash = function() {
+		return Category.prototype.hash.call(this);
+	};
+
     /*
       ___ _____ ___ __  __
      |_ _|_   _| __|  \/  |
@@ -714,18 +767,18 @@ var TemplateEngine = TemplateEngine || {
 
     Item.prototype.render = function() {
 		var that = this;
-		var editButton = $("<span></span>", {
-			class: "glyphicon glyphicon-pencil"
-		}).click(function() {
-			TemplateEngine._triggerEdit(that);
-		});
-		var removeButton = $("<span></span>", {
-			class: "glyphicon glyphicon-remove",
-			style: "margin-right: 1px; margin-left: 3px;"
-		}).click(function() {
-            TemplateEngine._triggerRemove(that);
-			that.remove()
-		});
+		//var editButton = $("<span></span>", {
+		//	class: "glyphicon glyphicon-pencil"
+		//}).click(function() {
+		//	TemplateEngine._triggerEdit(that);
+		//});
+		//var removeButton = $("<span></span>", {
+		//	class: "glyphicon glyphicon-remove",
+		//	style: "margin-right: 1px; margin-left: 3px;"
+		//}).click(function() {
+         //   TemplateEngine._triggerRemove(that);
+		//	that.remove()
+		//});
         var s = $("<div></div>", {
             style: "cursor: default;",
             class: "template-engine-item"
@@ -734,7 +787,9 @@ var TemplateEngine = TemplateEngine || {
 				html: this.template().title()
 			})
 		).append(
-			removeButton
+			this._renderEditButton()
+		).append(
+			this._renderRemoveButton()
 		);
 		if (this.template().key() === "static") {
 			s.addClass("template-engine-category-static");
@@ -745,6 +800,18 @@ var TemplateEngine = TemplateEngine || {
 		return s;
     };
 
+	Item.prototype.hash = function() {
+		if (this.length() > 0) {
+			try {
+				return (this.field("position") << 16) | this.field("categorie_id");
+			} catch (ignore) {
+				return -1;
+			}
+		} else {
+			return -1;
+		}
+	};
+
     Item.prototype.clone = function(parent, model, selector) {
         return new Item(parent, model, selector || null, this.template());
     };
@@ -752,7 +819,7 @@ var TemplateEngine = TemplateEngine || {
     Item.prototype.defaults = function() {
         return {
             "type": 0,
-            "categorie-id": 0,
+            "categorie_id": 0,
             "label": "{label-before}",
             "guide_id": 0,
             "allow_add": false,
@@ -820,15 +887,16 @@ var TemplateEngine = TemplateEngine || {
 		// and render new selector, set it to it's item
 		// and attach to parent
 		toDetach.parent().append(
-			this.selector(this.render(toDetach.children(
-				".template-engine-items"
-			)))
+			this.selector(this.render(
+				toDetach.children(".template-engine-items"),
+				toDetach.children(".template-engine-list")
+			))
 		);
 		// detach old selector
 		toDetach.detach();
 	};
 
-    Category.prototype.render = function(items) {
+    Category.prototype.render = function(items, categories) {
 		var that = this;
 		try {
 			var name = this.field("name");
@@ -873,12 +941,24 @@ var TemplateEngine = TemplateEngine || {
 			items || $("<div></div>", {
                 class: "template-engine-items"
             })
-        );
-		s.find(".template-engine-handle-wrapper").dblclick(function() {
-			TemplateEngine._triggerEdit(that);
-		});
+		).append(
+			categories || $("<ol></ol>", {
+				class: "template-engine-list"
+			})
+		);
 		return s;
     };
+
+	Category.prototype.hash = function() {
+		var hash = Item.prototype.hash.call(this);
+		for (var i in this.children()) {
+			if (!this.children().hasOwnProperty(i)) {
+				continue;
+			}
+			hash = 31 * hash + this.children()[i].hash();
+		}
+		return hash;
+	};
 
     Category.prototype.append = function(element) {
         // fetch container with items
@@ -913,6 +993,7 @@ var TemplateEngine = TemplateEngine || {
                     ++index;
                 });
                 console.log(that);
+				that.update();
             }
         }).droppable({
             accept: function(helper) {
@@ -1045,6 +1126,10 @@ var TemplateEngine = TemplateEngine || {
         }).append(dd);
     };
 
+	CategoryCollection.prototype.hash = function() {
+		return Category.prototype.hash.call(this);
+	};
+
     CategoryCollection.prototype.append = function(element) {
         if (this === element) {
             return false;
@@ -1170,6 +1255,10 @@ var TemplateEngine = TemplateEngine || {
 
 	Widget.prototype.getTemplateCollection = function() {
 		return this._templateCollection;
+	};
+
+	Widget.prototype.hash = function() {
+		return 0;
 	};
 
 	Widget.prototype.getCategoryCollection = function() {
@@ -1331,9 +1420,7 @@ var TemplateEngine = TemplateEngine || {
 		// restart current collection
 		TemplateEngine.restart();
 		// initialize collection with template model
-		WidgetCollection.widget().getCategoryCollection()
-			.model(model);
-		// attach categories to collection
+collection
 		for (var i in model.categories) {
 			_registerCategory(WidgetCollection.widget().getCategoryCollection(),
 				model.categories[i]
