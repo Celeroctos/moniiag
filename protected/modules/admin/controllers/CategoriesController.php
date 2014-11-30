@@ -81,11 +81,15 @@ class CategoriesController extends Controller {
         if(isset($_POST['FormCategorieAdd'])) {
             $model->attributes = $_POST['FormCategorieAdd'];
             if($model->validate()) {
-                $categorie = MedcardCategorie::model()->find('id=:id', array(':id' => $_POST['FormCategorieAdd']['id']));
+                $categorie = MedcardCategorie::model()->find('id=:id', array(
+					':id' => $_POST['FormCategorieAdd']['id']
+				));
                 $this->addEditModel($categorie, $model, 'Категория успешно добавлена.');
             } else {
-                echo CJSON::encode(array('success' => 'false',
-                                         'errors' => $model->errors));
+                echo CJSON::encode(array(
+					'success' => 'false',
+					'errors' => $model->errors
+				));
             }
         }
     }
@@ -98,15 +102,39 @@ class CategoriesController extends Controller {
                 $categorie = new MedcardCategorie();
                 $this->addEditModel($categorie, $model, 'Категория успешно добавлена.');
             } else {
-                echo CJSON::encode(array('success' => 'false',
-                    'errors' => $model->errors));
+                echo CJSON::encode(array(
+					'success' => 'false',
+                    'errors' => $model->errors
+				));
             }
         }
     }
 
     private function addEditModel($categorie, $model, $msg) {
-        $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :parent_id', array(':position' => $model->position, ':parent_id' => $model->parentId));
-        $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->parentId));
+
+		/*
+		 * Простите, но что это за хрень такая? Почему происходит проверка соответствия позиций
+		 * и родителей всех элементов как категорий, так и элементов? Т.е элементы, которые
+		 * лежат в родителях не принадлежат их собственному их контексту или просто нет жестких
+		 * связей? Мало того, что она падает с ошибкой, так еще и работает неправильно. Если
+		 * так трудно настроить связи с несколькими шаблонами и категориями и нет желания
+		 * создавать новую таблицу, то почему просто нельзя была сделать статические категории,
+		 * который являются псевдоклоном существующих (решение далеко не самое лучше, но, хотя-бы,
+		 * решило бы огромное количество проблем, связанных с дальнешей разработкой)? Я могу сказать
+		 * сразу, что вот весь этот админский модуль упадет не меньше 50 раз со всякими различными
+		 * самыми тупыми и идотскими ошибками. Как можно было разрабатывать систему так, что в нее
+		 * даже ничего нового добавить нельзя, нет ни нормальной архитектуры, ни какого-либо API для
+		 * взаимодейтсвия с существующими компонентами, нарушены все понятий системы, какие только есть!
+		 */
+
+		/* $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :parent_id', array(
+			':position' => $model->position,
+			':parent_id' => $model->parentId
+		));
+        $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(
+			':position' => $model->position,
+			':categorie_id' => $model->parentId
+		));
         if($issetPositionInCats != null || $issetPositionInElements != null) {
             if(($issetPositionInCats != null && $issetPositionInCats->id != $categorie->id) || $issetPositionInElements != null) {
                 echo CJSON::encode(array('success' => false,
@@ -119,16 +147,21 @@ class CategoriesController extends Controller {
                 );
                 exit();
             }
-        }
+        } */
+
         $categorie->name = $model->name;
+
 		if ($model->parentId) {
 			$categorie->parent_id = $model->parentId;
 		}
+
         $categorie->is_dynamic = $model->isDynamic;
         $savedPosition = $categorie->position;
+
 		if ($model->position) {
 			$categorie->position = $model->position;
 		}
+
         if($categorie->parent_id != -1) {
             $partOfPath = $this->getCategoriePath(MedcardCategorie::model()->findByPk($categorie->parent_id));
             $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
@@ -136,10 +169,13 @@ class CategoriesController extends Controller {
         } else {
             $categorie->path = $categorie->position; // Корневой элемент в графе
         }
+
         $categorie->is_wrapped = $model->isWrapped;
         $isOk = $categorie->save();
 
-        // Теперь считаем путь элемента. В том случае, если позиции до изменения категории не совпадают с позициями после изменения, нужно пересчитать все зависимые элементы, которыми могут быть категории и элементы
+        // Теперь считаем путь элемента. В том случае, если позиции до изменения категории не
+		// совпадают с позициями после изменения, нужно пересчитать все зависимые элементы,
+		// которыми могут быть категории и элементы
         // Если это новая категория, то она не вторгается в иерархию, менять пути не надо
         if($categorie->id != null && $savedPosition != $model->position) {
             $this->changePaths($categorie->id);

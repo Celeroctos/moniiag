@@ -69,7 +69,7 @@ class MedcardTemplate extends MisActiveRecord {
 				->where('id = :id', array(':id' => $id))
 				->queryRow();
             $categories = json_decode($template["categorie_ids"]);
-            $categories[] = $categoryID;
+            array_push($categories, $categoryID);
             $this->updateByPk($id, array(
                 'categorie_ids' => json_encode($categories)
             ));

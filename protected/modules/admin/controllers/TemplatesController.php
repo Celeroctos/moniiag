@@ -244,6 +244,25 @@ class TemplatesController extends Controller {
         ));
     }
 
+	private function assignChildren(&$row, $model) {
+
+		$id = intval($row["id"]);
+
+		// fetch category children
+		$children = $model->getChildren($id);
+
+		// assign children to every child
+		foreach ($children as $i => &$child) {
+			$this->assignChildren($child, $model);
+		}
+
+		// assign children array
+		$row["children"] = $children;
+
+		// fetch all category elements and assign to category
+		$row["elements"] = $model->getElements($id);
+	}
+
     public function actionGetCategories($id) {
 
         // cast category identifier to int (just in case)
@@ -266,14 +285,7 @@ class TemplatesController extends Controller {
             // fetch category from db
             $category = $categoryModel->getOne(intval($id));
 
-            // fetch category children
-            $category["children"] = $categoryModel->getChildren($category["id"]);
-
-            // fetch all category elements
-            $categoryElements = $categoryModel->getElements($id);
-
-            // store category elements in category object
-            $category["elements"] = $categoryElements;
+			$this->assignChildren($category, $categoryModel);
 
             // push category to array
             $templateCategories[] = $category;

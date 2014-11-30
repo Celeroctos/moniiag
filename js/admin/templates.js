@@ -74,7 +74,7 @@ $(document).ready(function() {
     );
 
     $("#addTemplate").click(function() {
-        $('#addTemplatePopup').modal();
+        $('#addTemplatePopup').modal().draggable("disable");
     });
 
     $("#template-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
@@ -246,10 +246,10 @@ $(document).ready(function() {
 		for(var i = 0; i < fields.length; i++) {
 			var formField = form.find('#' + fields[i].formField);
 			if (fields[i].value) {
-				formField.val(fields[i].value);
+				formField[0].value = fields[i].value;
 			} else {
 				if (item.length() > 0) {
-					formField.val(item.field(fields[i].modelField));
+					formField[0].value = item.field(fields[i].modelField);
 				}
 			}
 			if (fields[i].hidden) {
@@ -261,7 +261,6 @@ $(document).ready(function() {
 	};
 
     var collection = null;
-    var element = null;
 
     $("#categorie-add-form").on('success', function(eventObj, ajaxData) {
         // parse response
@@ -276,13 +275,13 @@ $(document).ready(function() {
         collection.update();
         // if collection not category, then we're appending element
         // to template (need to update it's list with categories)
-        if (!TemplateEngine.isCategory(parent)) {
+        if (!TemplateEngine.isCategory(collection.parent())) {
             $.ajax({
-                'url' : globalVariables.baseUrl + "/admin/templates/addcategorytotemplate?tid="
+                'url': globalVariables.baseUrl + "/admin/templates/addcategorytotemplate?tid="
                     + collection.parent().field("id") + "&cid=" + collection.field("id"),
-                'cache' : false,
-                //'dataType' : 'json',
-                'type' : 'GET'
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET'
             }).always(function(data) {
                 //console.log(data);
             })
@@ -295,15 +294,42 @@ $(document).ready(function() {
         // update category after edit
         collection.model(ajaxData.category, true);
         collection.update();
-        //collection.fetch(globalVariables.baseUrl + "/admin/categories/getone?id=" + collection.field("id"));
+        // if collection not category, then we're appending element
+        // to template (need to update it's list with categories)
+        if (!TemplateEngine.isCategory(collection.parent())) {
+            $.ajax({
+                'url': globalVariables.baseUrl + "/admin/templates/addcategorytotemplate?tid="
+                    + collection.parent().field("id") + "&cid=" + collection.field("id"),
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET'
+            }).always(function(data) {
+                //console.log(data);
+            })
+        } else {
+			var cc = TemplateEngine.getCategoryCollection();
+            $.ajax({
+                'url': globalVariables.baseUrl + "/admin/templates/removecategoryfromtemplate?tid="
+                + cc.field("id") + "&cid=" + collection.field("id"),
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET'
+            }).always(function(data) {
+                //console.log(data);
+            })
+        }
     });
 
     $("#element-add-form").on('success', function (eventObj, ajaxData) {
         var ajaxData = $.parseJSON(ajaxData);
+        console.log(ajaxData);
     });
 
     $("#element-edit-form").on('success', function (eventObj, ajaxData) {
-        that.fetch(globalVariables.baseUrl + "/admin/elements/getone?id=" + element.field("id"));
+        // parse response
+        var ajaxData = $.parseJSON(ajaxData);
+        console.log(ajaxData);
+        //that.fetch(globalVariables.baseUrl + "/admin/elements/getone?id=" + collection.field("id"));
     });
 
     var onAppendCategory = function(that) {
@@ -342,37 +368,59 @@ $(document).ready(function() {
             modelField: 'is_wrapped',
             formField: 'isWrapped'
         }]);
-        $('#addCategoriePopup').modal();
+		// show modal window
+        $('#addCategoriePopup').modal().draggable("disable");
     };
 
     var onEditCategory = function(that) {
         collection = that;
         // Заполняем форму значениями
-        var form = $('#editCategoriePopup form')
-        // Соответствия формы и модели
-        applyFieldsToForm(that, form, [{
-            modelField: 'id',
-            formField: 'id'
-        }, {
-            modelField: 'name',
-            formField: 'name'
-        }, {
-            modelField: 'parent_id',
-            formField: 'parentId',
-            hidden: true
-        }, {
-            modelField: 'is_dynamic',
-            formField: 'isDynamic'
-        }, {
-            modelField: 'position',
-            formField: 'position',
-            hidden: true
-        }, {
-            modelField: 'is_wrapped',
-            formField: 'isWrapped'
-        }]);
-        editCategoryPopup.modal().draggable("disable")
-            .disableSelection().css("z-index", 1051);
+        var form = $('#editCategoriePopup form');
+		// Соответствия формы и модели
+		applyFieldsToForm(that, form, [{
+			modelField: 'id',
+			formField: 'id'
+		}, {
+			modelField: 'name',
+			formField: 'name'
+		}, {
+			modelField: 'parent_id',
+			formField: 'parentId',
+			hidden: true,
+			value: that.field("parent_id")
+		}, {
+			modelField: 'is_dynamic',
+			formField: 'isDynamic'
+		}, {
+			modelField: 'position',
+			formField: 'position',
+			hidden: true,
+			value: that.offset()
+		}, {
+			modelField: 'is_wrapped',
+			formField: 'isWrapped'
+		}]);
+		// if we've applied some changes then we will
+		// update category else edit it
+		if (that.compare()) {
+			// display modal window
+			editCategoryPopup.modal().draggable("disable")
+				.disableSelection().css("z-index", 1051);
+		} else {
+			// find all children with not saved state
+			// and save it automatically
+			for (var i in that.children()) {
+				if (!that.children()[i]) {
+					continue;
+				}
+				if (!that.children()[i].compare()) {
+					onEditCategory(that.children()[i]);
+				}
+			}
+			// trigger click button on primary (don't know
+			// how to invoke submit via ajax)
+			form.find(".btn-primary").trigger("click");
+		}
     };
 
     var onRemoveCategory = function(that) {
@@ -404,7 +452,7 @@ $(document).ready(function() {
         if (!TemplateEngine.isItem(that)) {
             return false;
         }
-        element = that;
+        collection = that;
         // Заполняем форму значениями
         var form = $('#editElementPopup form')
         // Соответствия формы и модели
@@ -527,8 +575,7 @@ $(document).ready(function() {
             $('#element-edit-form select#type option').removeClass('no-display');
         }
         $.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
-        editElementPopup.modal().draggable("disable")
-            .disableSelection();
+        editElementPopup.modal().draggable("disable").disableSelection();
     };
 
 	var registerTemplateEngine = function(template) {

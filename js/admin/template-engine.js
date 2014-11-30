@@ -249,6 +249,22 @@ var TemplateEngine = TemplateEngine || {
         }
     };
 
+	/**
+	 * Sort node elements and update it's indexes
+	 * @param callback - Sort callback
+	 */
+	Node.prototype.sort = function(callback) {
+		this._childrenNode.sort(callback);
+		for (var i in this._childrenNode) {
+			if (!this._childrenNode[i]) {
+				continue;
+			}
+			this._childrenNode[i].index(+i);
+		}
+		var total = this.count();
+		this._childrenNode.splice(total, this._childrenNode.length - total);
+	};
+
     /**
      * Compute count of elements in node
      * @returns {Number} - Total count of elements
@@ -274,12 +290,15 @@ var TemplateEngine = TemplateEngine || {
         }
         if (this._parentNode._childrenNode[this._parentIndex] == this) {
             if (this._parentIndex > 0) {
-                return this._parentNode._childrenNode[this._parentIndex - 1];
+				var j = this._parentIndex - 1;
+				while (!this._parentNode._childrenNode[j--] && j > 0) {
+				}
+                return this._parentNode._childrenNode[j + 1];
             }
             return null;
         }
         for (var i in this._parentNode._childrenNode) {
-            if (this._parentNode._childrenNode[i] != this) {
+            if (this._parentNode._childrenNode[i] != this || !this._parentNode._childrenNode[i]) {
                 continue;
             }
             if (i > 0) {
@@ -300,25 +319,23 @@ var TemplateEngine = TemplateEngine || {
     var Model = function(model) {
         this._model = clone(model || this.defaults());
         this._native = clone(model || this.defaults());
-		this._hashed = null;
     };
 
     Model.prototype.defaults = function() {
-        throw new Error("Model/default() : \"You must override that method and return default model\"");
+        throw new Error("Model/defaults() : \"You must override 'defaults' method\"");
     };
 
     Model.prototype.model = function(model, native) {
         if (model !== undefined) {
             if (native) {
                 this._native = clone(model);
-				this._hashed = this.hash();
             }
             this._model = clone(model);
         }
         return this._model;
     };
 
-    Model.prototype.isUpToTime = function() {
+    Model.prototype.compare = function() {
         // if native model is undefined
         if (!this._native) {
             return true;
@@ -334,22 +351,6 @@ var TemplateEngine = TemplateEngine || {
                 return false;
             }
         }
-		// check elements hashes
-		//if (!this._hashed) {
-		//	return false;
-		//} else {
-		//	return this._hashed !== this.hash();
-		//}
-		if (this instanceof Category) {
-			for (var i in this.children()) {
-				if (!this.children().hasOwnProperty(i)) {
-					continue;
-				}
-				if (!this.children()[i].isUpToTime()) {
-					return false;
-				}
-			}
-		}
         // we will return true only if model is fully equal to native
         return true;
     };
@@ -528,17 +529,13 @@ var TemplateEngine = TemplateEngine || {
         assert("Component/render() : \"You must override 'render' method\"");
     };
 
-	Component.prototype.hash = function() {
-		assert("Component/hash() : \"You must override 'hash' method\"");
-	};
-
     Component.prototype.glyphicon = function() {
-        if (!this.length()) {
-            return "glyphicon glyphicon-floppy-save";
-        } else if (!this.isUpToTime()) {
-            return "glyphicon glyphicon-asterisk";
-        }
-        return "glyphicon glyphicon-pencil";
+		if (!this.length()) {
+			return "glyphicon glyphicon-floppy-save";
+		} else if (!this.compare()) {
+			return "glyphicon glyphicon-asterisk";
+		}
+		return "glyphicon glyphicon-pencil";
     };
 
 	Component.prototype._renderSaveButton = function() {
@@ -551,6 +548,13 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	Component.prototype._renderEditButton = function() {
+		var that = this;
+		return $("<span></span>", {
+			class: that.glyphicon(),
+			style: "margin-right: 5px;"
+		}).click(function() {
+			TemplateEngine._triggerEdit(that);
+		});
 	};
 
 	Component.prototype._renderRemoveButton = function() {
@@ -569,14 +573,7 @@ var TemplateEngine = TemplateEngine || {
 	};
 
     Component.prototype.offset = function() {
-        // find previous node
-        var prevNode = this.previous();
-        // if we havn't prev node, then category has only one element
-        if (!prevNode) {
-            return 1;
-        }
-
-        return 127;
+		assert("Component/offset() : \"You must implement 'offset' method\"");
     };
 
 	Component.prototype.update = function() {
@@ -733,10 +730,6 @@ var TemplateEngine = TemplateEngine || {
         });
     };
 
-	TemplateCollection.prototype.hash = function() {
-		return Category.prototype.hash.call(this);
-	};
-
     /*
       ___ _____ ___ __  __
      |_ _|_   _| __|  \/  |
@@ -767,31 +760,20 @@ var TemplateEngine = TemplateEngine || {
 
     Item.prototype.render = function() {
 		var that = this;
-		//var editButton = $("<span></span>", {
-		//	class: "glyphicon glyphicon-pencil"
-		//}).click(function() {
-		//	TemplateEngine._triggerEdit(that);
-		//});
-		//var removeButton = $("<span></span>", {
-		//	class: "glyphicon glyphicon-remove",
-		//	style: "margin-right: 1px; margin-left: 3px;"
-		//}).click(function() {
-         //   TemplateEngine._triggerRemove(that);
-		//	that.remove()
-		//});
         var s = $("<div></div>", {
             style: "cursor: default;",
             class: "template-engine-item"
         }).append(
 			$("<div></div>", {
-				html: this.template().title()
+				html: that.template().title(),
+				style: "margin-right: 5px"
 			})
 		).append(
-			this._renderEditButton()
+			that._renderEditButton()
 		).append(
-			this._renderRemoveButton()
+			that._renderRemoveButton()
 		);
-		if (this.template().key() === "static") {
+		if (that.template().key() === "static") {
 			s.addClass("template-engine-category-static");
 		}
 		s.dblclick(function() {
@@ -799,18 +781,6 @@ var TemplateEngine = TemplateEngine || {
 		});
 		return s;
     };
-
-	Item.prototype.hash = function() {
-		if (this.length() > 0) {
-			try {
-				return (this.field("position") << 16) | this.field("categorie_id");
-			} catch (ignore) {
-				return -1;
-			}
-		} else {
-			return -1;
-		}
-	};
 
     Item.prototype.clone = function(parent, model, selector) {
         return new Item(parent, model, selector || null, this.template());
@@ -833,9 +803,32 @@ var TemplateEngine = TemplateEngine || {
             "label_display": "{default-label-display}",
             "is_required": true,
             "not_printing_values": "",
-            "hide_label-before": false
+            "hide_label_before": false
         };
     };
+
+	Item.prototype.offset = function() {
+		try {
+			return +this.field("position");
+		} catch (e) {
+			// find previous node
+			var prev = this.previous();
+			// look though all previous nodes and
+			// try to find any declared, if can't
+			// then it will ba saved with 1 index
+			while (prev) {
+				if (!(prev instanceof Item)) {
+					break;
+				}
+				try {
+					return +prev.field("position") + 1;
+				} catch (e) {
+					prev = prev.previous();
+				}
+			}
+			return 1;
+		}
+	};
 
     /**
      * @param [value] {Item|String|undefined} - Item or
@@ -870,6 +863,24 @@ var TemplateEngine = TemplateEngine || {
         return new Category(parent, model, selector);
     };
 
+    Category.prototype.compare = function() {
+        // compare models
+        if (!Model.prototype.compare.call(this)) {
+            return false;
+        }
+        // check other elements for categories
+        for (var i in this.children()) {
+            if (!this.children()[i]) {
+                continue;
+            }
+            if (!this.children()[i].compare()) {
+                return false;
+            }
+        }
+        // we will return true only if model is fully equal to native
+        return true;
+    };
+
     Category.prototype.defaults = function() {
         return {
             "name": "{default-name}",
@@ -881,19 +892,49 @@ var TemplateEngine = TemplateEngine || {
         };
     };
 
+	Category.prototype.offset = function() {
+		try {
+			return +this.field("position");
+		} catch (e) {
+			// find previous node
+			var prevNode = this.previous();
+			// look though all previous nodes and
+			// try to find any declared, if can't
+			// then it will ba saved with 1 index
+			while (prevNode) {
+				if (!(prevNode instanceof Category)) {
+					break;
+				}
+				try {
+					return +prevNode.field("position") + 1;
+				} catch (e) {
+					prevNode = prevNode.previous();
+				}
+			}
+			return 1;
+		}
+	};
+
 	Category.prototype.update = function() {
+		// update all children
+		for (var i in this.children()) {
+			if (!this.children()[i]) {
+				continue;
+			}
+			this.children()[i].update();
+		}
 		// after update we have to detach old selector
-		var toDetach = this.selector();
+		var selector = this.selector();
 		// and render new selector, set it to it's item
 		// and attach to parent
-		toDetach.parent().append(
+		selector.parent().append(
 			this.selector(this.render(
-				toDetach.children(".template-engine-items"),
-				toDetach.children(".template-engine-list")
+				selector.children(".template-engine-items"),
+				selector.children(".template-engine-list")
 			))
 		);
 		// detach old selector
-		toDetach.detach();
+		selector.detach();
 	};
 
     Category.prototype.render = function(items, categories) {
@@ -903,21 +944,8 @@ var TemplateEngine = TemplateEngine || {
 		} catch (ignore) {
 			name = "Категория";
 		}
-		var editButton = $("<span></span>", {
-			class: this.glyphicon(),
-			style: "margin-right: 5px;"
-		}).click(function() {
-			TemplateEngine._triggerEdit(that);
-		});
-		var removeButton = $("<span></span>", {
-			class: "glyphicon glyphicon-remove",
-			style: "margin-right: 5px;"
-		}).click(function() {
-			that.remove()
-            TemplateEngine._triggerRemove(that);
-		});
         var s = $("<li></li>", {
-            class: "template-engine-category"
+            class: "template-engine-category dd-item"
         }).append(
 			$("<div></div>", {
 				style: "float: left;"
@@ -927,38 +955,26 @@ var TemplateEngine = TemplateEngine || {
 					style: "float: left;"
 				}).append(
 					$("<div></div>", {
-						class: "template-engine-handle",
+						class: "template-engine-handle dd-handle",
 						style: "float: left;",
 						html: name
 					})
 				).append(
-					editButton
+					that._renderEditButton()
 				).append(
-					removeButton
+					that._renderRemoveButton()
 				)
 			)
         ).append(
 			items || $("<div></div>", {
                 class: "template-engine-items"
             })
-		).append(
-			categories || $("<ol></ol>", {
-				class: "template-engine-list"
-			})
 		);
+		if (categories) {
+			s.append(categories);
+		}
 		return s;
     };
-
-	Category.prototype.hash = function() {
-		var hash = Item.prototype.hash.call(this);
-		for (var i in this.children()) {
-			if (!this.children().hasOwnProperty(i)) {
-				continue;
-			}
-			hash = 31 * hash + this.children()[i].hash();
-		}
-		return hash;
-	};
 
     Category.prototype.append = function(element) {
         // fetch container with items
@@ -992,7 +1008,6 @@ var TemplateEngine = TemplateEngine || {
                     instance.field("position", index);
                     ++index;
                 });
-                console.log(that);
 				that.update();
             }
         }).droppable({
@@ -1047,12 +1062,6 @@ var TemplateEngine = TemplateEngine || {
                     // selector)
                     me.remove();
                 }
-                // add remove button to selector
-                //item.selector().append(
-                //    $("<button>-</button>").click(function() {
-                //        $(this).parent(".template-engine-item").data("instance").remove();
-                //    })
-                //);
             }
         });
     };
@@ -1115,7 +1124,7 @@ var TemplateEngine = TemplateEngine || {
 
     CategoryCollection.prototype.render = function() {
         var dd = $("<div></div>", {
-            class: "dd template-engine-nestable"
+            class: "dd template-engine-nestable dd"
         }).append(
             $("<ol></ol>", {
                 class: "template-engine-list"
@@ -1188,6 +1197,7 @@ var TemplateEngine = TemplateEngine || {
 			itemClass: "template-engine-category",
 			handleClass: "template-engine-handle",
 			rootClass: "template-engine-nestable",
+			placeClass: "template-engine-placeholder",
 			expandBtnHTML: "",
 			collapseBtnHTML: "",
 			maxDepth: 500,
@@ -1198,16 +1208,35 @@ var TemplateEngine = TemplateEngine || {
 				// remove from item's parent and append to another
                 Node.prototype.remove.call(itemInstance.parent(), itemInstance);
                 Node.prototype.append.call(parentInstance, itemInstance);
-                // if we've moved category, then if we've moved saved node
-                // then we have to change it's glyphicon and action for update
+                // if we've moved category and saved node then we have to change
+                // it's glyphicon and action for update
                 if (itemInstance.length() > 0 && parentInstance.length() > 0) {
                     if (!(parentInstance instanceof CategoryCollection)) {
                         itemInstance.field("parent_id", parentInstance.field("id"));
                     } else {
                         itemInstance.field("parent_id", -1);
                     }
+                } else {
+                    itemInstance.field("parent_id", -1);
                 }
-                itemInstance.update();
+				// update all indexes
+				$(parent).children(".template-engine-category").each(function(i, child) {
+					$(child).data("instance").field("position", i);
+				});
+				// reorder children with new position
+				parentInstance.sort(function(left, right) {
+					return +left.field("position") - +right.field("position");
+				});
+				// update item instance only after order
+				itemInstance.update();
+				// if we havn't changed parent then we've change
+				// categories/items position, that means that we
+				// must update item's parent
+				if (itemInstance.field("parent_id") != -1 && parentInstance === itemInstance.parent()) {
+					parentInstance.update();
+				}
+				// TODO fix that
+				//TemplateEngine.getCategoryCollection().update();
             }
         });
     };
@@ -1372,8 +1401,10 @@ var TemplateEngine = TemplateEngine || {
         // reset extra fields
         model["elements"] = undefined;
         model["children"] = undefined;
-		// set default model name (bug on server)
-		model["name"] = model["name"] || "Категория";
+		// avoid categories wo name (cuz weak reference)
+		if (!model["name"]) {
+			return false;
+		}
 		// create new category without parent and selector
 		var c = new Category(null, model, null);
 		// look though elements in category's model and
@@ -1401,7 +1432,7 @@ var TemplateEngine = TemplateEngine || {
 			if (!c.selector().children(".template-engine-list").length) {
 				c.selector().append(
 					$("<ol></ol>", {
-						class: "template-engine-list"
+						class: "template-engine-list dd-list"
 					})
 				);
 			}
@@ -1419,9 +1450,29 @@ var TemplateEngine = TemplateEngine || {
 	TemplateEngine.registerTemplate = function(model) {
 		// restart current collection
 		TemplateEngine.restart();
-		// initialize collection with template model
-collection
+        // append model to collection
+		var collection = WidgetCollection.widget().getCategoryCollection();
+		collection.model(model, true);
+		// initialize collection with template model collection
 		for (var i in model.categories) {
+			var isContains = false;
+			for (var j in collection.children()) {
+				if (!collection.children()[j]) {
+					continue;
+				}
+				try {
+					var jid = +collection.children()[j].field("id");
+				} catch (e) {
+					continue;
+				}
+				if (jid == +model.categories[i]["id"]) {
+					isContains = true;
+					break;
+				}
+			}
+			if (isContains) {
+				continue;
+			}
 			_registerCategory(WidgetCollection.widget().getCategoryCollection(),
 				model.categories[i]
 			);
@@ -1521,6 +1572,10 @@ collection
 		// reset action hooks
 		actionMapEdit = [];
 		actionMapAppend = [];
+	};
+
+	TemplateEngine.getCategoryCollection = function() {
+		return WidgetCollection.widget().getCategoryCollection();
 	};
 
 })(TemplateEngine);
