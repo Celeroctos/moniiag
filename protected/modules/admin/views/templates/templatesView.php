@@ -6,6 +6,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/templates.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/elements.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/categories.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/common.js"></script>
 <table id="templates"></table>
 <div id="templatesPager"></div>
 <div class="btn-group default-margin-top">

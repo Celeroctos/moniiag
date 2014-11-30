@@ -1,5 +1,33 @@
 $(document).ready(function() {
 
+	var elementFormModel = new FormModelManager(
+		"id," +
+		"type," +
+		"/categorie_id," +
+		"label," +
+		"guide_id," +
+		"allow_add," +
+		"is_required," +
+		"label_after," +
+		"size," +
+		"is_wrapped," +
+		"/position," +
+		"config," +
+		"default_value," +
+		"label_display," +
+		"show_dynamic," +
+		"hide_label_before"
+	);
+
+	var categoryFormModel = new FormModelManager(
+		"id," +
+		"name," +
+		"/parent_id," +
+		"is_dynamic," +
+		"/position," +
+		"is_wrapped"
+	);
+
 	var editCategoryPopup = $("#editCategoriePopup");
 	var designTemplatePopup = $("#designTemplatePopup");
 	var editElementPopup = $("#editElementPopup");
@@ -79,7 +107,8 @@ $(document).ready(function() {
 
     $("#template-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
-        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+        if(ajaxData.success == true) {
+        	// Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#addTemplatePopup').modal('hide');
             // Перезагружаем таблицу
             $("#templates").trigger("reloadGrid");
@@ -93,16 +122,14 @@ $(document).ready(function() {
                     $('#errorAddTemplatePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-
-            $('#errorAddTemplatePopup').modal({
-
-            });
+            $('#errorAddTemplatePopup').modal();
         }
     });
 
     $("#template-edit-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
         var ajaxData = $.parseJSON(ajaxData);
-        if(ajaxData.success == true) { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
+        if(ajaxData.success == true) {
+        	// Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#editTemplatePopup').modal('hide');
             // Перезагружаем таблицу
             $("#templates").trigger("reloadGrid");
@@ -117,91 +144,91 @@ $(document).ready(function() {
                     $('#errorAddTemplatePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-
-            $('#errorAddTemplatePopup').modal({
-
-            });
+            $('#errorAddTemplatePopup').modal();
         }
     });
 
     function editTemplate() {
         var currentRow = $('#templates').jqGrid('getGridParam','selrow');
-        if(currentRow != null) {
-            // Надо вынуть данные для редактирования
-            $.ajax({
-                'url' : globalVariables.baseUrl + '/admin/templates/getone?id=' + currentRow,
-                'cache' : false,
-                'dataType' : 'json',
-                'type' : 'GET',
-                'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == true) {
-                        // Заполняем форму значениями
-                        var form = $('#editTemplatePopup form')
-                        // Соответствия формы и модели
-                        var fields = [{
-                                modelField: 'id',
-                                formField: 'id'
-                            }, {
-                                modelField: 'name',
-                                formField: 'name'
-                            }, {
-                                modelField: 'categorie_ids',
-                                formField: 'categorieIds'
-                            }, {
-                                modelField: 'page_id',
-                                formField: 'pageId'
-                            }, {
-                                modelField: 'primary_diagnosis',
-                                formField: 'primaryDiagnosisFilled'
-                            }, {
-                                modelField: 'index',
-                                formField: 'index'
-                            }
-                        ];
-                        for(var i = 0; i < fields.length; i++) {
-                            var node = form.find('#' + fields[i].formField);
-                            // Выпадающий список с несколькими значениями
-                            if(node.attr('multiple') == 'multiple') {
-                                data.data[fields[i].modelField] = $.parseJSON(data.data[fields[i].modelField]);
-                            }
-                            node.val(data.data[fields[i].modelField]);
-                        }
-
-                        $("#editTemplatePopup").modal({
-
-                        });
-                    }
-                }
-            })
-        }
+		if(currentRow == null) {
+			return false;
+		}
+		var success = function(data) {
+			if(data.success != true) {
+				return false;
+			}
+			// Заполняем форму значениями
+			var form = $('#editTemplatePopup form')
+			// Соответствия формы и модели
+			var fields = [
+				{
+					modelField: 'id',
+					formField: 'id'
+				}, {
+					modelField: 'name',
+					formField: 'name'
+				}, {
+					modelField: 'categorie_ids',
+					formField: 'categorieIds'
+				}, {
+					modelField: 'page_id',
+					formField: 'pageId'
+				}, {
+					modelField: 'primary_diagnosis',
+					formField: 'primaryDiagnosisFilled'
+				}, {
+					modelField: 'index',
+					formField: 'index'
+				}
+			];
+			for(var i = 0; i < fields.length; i++) {
+				var node = form.find('#' + fields[i].formField);
+				// Выпадающий список с несколькими значениями
+				if(node.attr('multiple') == 'multiple') {
+					data.data[fields[i].modelField] = $.parseJSON(
+						data.data[fields[i].modelField]
+					);
+				}
+				node.val(data.data[fields[i].modelField]);
+			}
+			$("#editTemplatePopup").modal();
+		};
+		// Надо вынуть данные для редактирования
+		$.ajax({
+			'url': globalVariables.baseUrl + '/admin/templates/getone?id=' + currentRow,
+			'cache': false,
+			'dataType': 'json',
+			'type': 'GET',
+			'success': success
+		})
     }
 
     $("#editTemplate").click(editTemplate);
 
     $("#deleteTemplate").click(function() {
         var currentRow = $('#templates').jqGrid('getGridParam','selrow');
-        if(currentRow != null) {
-            // Надо вынуть данные для редактирования
-            $.ajax({
-                'url' : globalVariables.baseUrl + '/admin/templates/delete?id=' + currentRow,
-                'cache' : false,
-                'dataType' : 'json',
-                'type' : 'GET',
-                'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == 'true') {
-                        $("#templates").trigger("reloadGrid");
-                    } else {
-                        // Удаляем предыдущие ошибки
-                        $('#errorAddTemplatePopup .modal-body .row p').remove();
-                        $('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
-
-                        $('#errorAddTemplatePopup').modal({
-
-                        });
-                    }
-                }
-            })
-        }
+		if(currentRow == null) {
+			return true;
+		}
+		var success = function(data) {
+			if(data.success == 'true') {
+				$("#templates").trigger("reloadGrid");
+			} else {
+				// Удаляем предыдущие ошибки
+				$('#errorAddTemplatePopup .modal-body .row p').remove();
+				$('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
+				// Отображаем модальное окно
+				$('#errorAddTemplatePopup').modal();
+			}
+		};
+		// Надо вынуть данные для редактирования
+		$.ajax({
+			'url': globalVariables.baseUrl + '/admin/templates/delete?id=' + currentRow,
+			'cache': false,
+			'dataType': 'json',
+			'type': 'GET',
+			'success': success
+		});
     });
 
     $('#showTemplate').on('click', function(e) {
@@ -210,36 +237,36 @@ $(document).ready(function() {
 
     function showTemplate() {
         var currentRow = $('#templates').jqGrid('getGridParam','selrow');
-        if(currentRow != null) {
-            $('#showTemplate').prop({
-                'disabled' : true
-            }).text('Подождите, шаблон вызывается...');
-            // Надо вынуть данные для редактирования
-            $.ajax({
-                'url' : globalVariables.baseUrl + '/admin/templates/show?id=' + currentRow,
-                'cache' : false,
-                'type' : 'GET',
-                'dataType' : 'json',
-                'success' : function(data, textStatus, jqXHR) {
-                    if(data.success) {
-                        $('#showTemplatePopup .modal-body .row').html(data.data);
-                        $('#showTemplatePopup .btn-sm').prop('disabled', true);
-                        $('#showTemplatePopup').modal({});
-                        $("#templates").trigger("reloadGrid");
-                        $('#showTemplate').attr({
-                            'disabled' : false
-                        }).text('Просмотр шаблона');
-                    } else {
-                        // Удаляем предыдущие ошибки
-                        $('#errorAddTemplatePopup .modal-body .row p').remove();
-                        $('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
-
-                        $('#errorAddTemplatePopup').modal({
-                        });
-                    }
-                }
-            })
-        }
+		if(currentRow == null) {
+			return false;
+		}
+		var success = function(data) {
+			if(data.success) {
+				$('#showTemplatePopup .modal-body .row').html(data.data);
+				$('#showTemplatePopup .btn-sm').prop('disabled', true);
+				$('#showTemplatePopup').modal({});
+				$("#templates").trigger("reloadGrid");
+				$('#showTemplate').attr({
+					'disabled' : false
+				}).text('Просмотр шаблона');
+			} else {
+				// Удаляем предыдущие ошибки
+				$('#errorAddTemplatePopup .modal-body .row p').remove();
+				$('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
+				$('#errorAddTemplatePopup').modal();
+			}
+		};
+		$('#showTemplate').prop({
+			'disabled' : true
+		}).text('Подождите, шаблон вызывается...');
+		// Надо вынуть данные для редактирования
+		$.ajax({
+			'url': globalVariables.baseUrl + '/admin/templates/show?id=' + currentRow,
+			'cache': false,
+			'type': 'GET',
+			'dataType': 'json',
+			'success': success
+		})
     }
 
 	var applyFieldsToForm = function(item, form, fields) {
@@ -264,28 +291,15 @@ $(document).ready(function() {
 
     $("#categorie-add-form").on('success', function(eventObj, ajaxData) {
         // parse response
-        ajaxData = $.parseJSON(ajaxData)
+        ajaxData = $.parseJSON(ajaxData);
         // check status
-        if (!ajaxData.success) {
+        if (ajaxData.success != true) {
             console.log(ajaxData);
             throw new Error("Assert");
         }
         // update data
         collection.model(ajaxData.category, true);
         collection.update();
-        // if collection not category, then we're appending element
-        // to template (need to update it's list with categories)
-        if (!TemplateEngine.isCategory(collection.parent())) {
-            $.ajax({
-                'url': globalVariables.baseUrl + "/admin/templates/addcategorytotemplate?tid="
-                    + collection.parent().field("id") + "&cid=" + collection.field("id"),
-                'cache': false,
-                'dataType': 'json',
-                'type': 'GET'
-            }).always(function(data) {
-                //console.log(data);
-            })
-        }
     });
 
     $("#categorie-edit-form").on('success', function(eventObj, ajaxData) {
@@ -294,30 +308,6 @@ $(document).ready(function() {
         // update category after edit
         collection.model(ajaxData.category, true);
         collection.update();
-        // if collection not category, then we're appending element
-        // to template (need to update it's list with categories)
-        if (!TemplateEngine.isCategory(collection.parent())) {
-            $.ajax({
-                'url': globalVariables.baseUrl + "/admin/templates/addcategorytotemplate?tid="
-                    + collection.parent().field("id") + "&cid=" + collection.field("id"),
-                'cache': false,
-                'dataType': 'json',
-                'type': 'GET'
-            }).always(function(data) {
-                //console.log(data);
-            })
-        } else {
-			var cc = TemplateEngine.getCategoryCollection();
-            $.ajax({
-                'url': globalVariables.baseUrl + "/admin/templates/removecategoryfromtemplate?tid="
-                + cc.field("id") + "&cid=" + collection.field("id"),
-                'cache': false,
-                'dataType': 'json',
-                'type': 'GET'
-            }).always(function(data) {
-                //console.log(data);
-            })
-        }
     });
 
     $("#element-add-form").on('success', function (eventObj, ajaxData) {
@@ -329,8 +319,47 @@ $(document).ready(function() {
         // parse response
         var ajaxData = $.parseJSON(ajaxData);
         console.log(ajaxData);
-        //that.fetch(globalVariables.baseUrl + "/admin/elements/getone?id=" + collection.field("id"));
     });
+
+	designTemplatePopup.find(".btn-primary").click(function() {
+		var cc = TemplateEngine.getCategoryCollection();
+		var update = function(item) {
+			if (!item.has("id")) {
+				return false;
+			}
+			for (var i in item.children()) {
+				if (!item.children(i)) {
+					continue;
+				}
+				update(item.children(i));
+			}
+			if (TemplateEngine.isCategory(item)) {
+				onEditCategory(item);
+			}
+			return true;
+		};
+		update(cc);
+		designTemplatePopup.modal("hide");
+		var json = "[";
+		for (var i in cc.children()) {
+			if (!cc.children(i) || !cc.children(i).has("id")) {
+				continue;
+			}
+			json += cc.children(i).field("id") + ",";
+		}
+		if (json.length > 1) {
+			json = json.substring(0, json.length - 1);
+		}
+		json += "]";
+		// set request on server to update template categories
+		$.ajax({
+		    'url': globalVariables.baseUrl + "/admin/templates/utc?tid="
+		        + collection.parent().field("id") + "&cids=" + json,
+		    'cache': false,
+		    'dataType': 'json',
+		    'type': 'GET'
+		});
+	});
 
     var onAppendCategory = function(that) {
         var parentID;
@@ -363,7 +392,7 @@ $(document).ready(function() {
             modelField: 'position',
             formField: 'position',
             hidden: true,
-            value: that.offset()
+            value: that.field("position")
         }, {
             modelField: 'is_wrapped',
             formField: 'isWrapped'
@@ -395,28 +424,18 @@ $(document).ready(function() {
 			modelField: 'position',
 			formField: 'position',
 			hidden: true,
-			value: that.offset()
+			value: that.field("position")
 		}, {
 			modelField: 'is_wrapped',
 			formField: 'isWrapped'
 		}]);
 		// if we've applied some changes then we will
 		// update category else edit it
-		if (that.compare()) {
+		if (that.has("id")) {
 			// display modal window
 			editCategoryPopup.modal().draggable("disable")
 				.disableSelection().css("z-index", 1051);
 		} else {
-			// find all children with not saved state
-			// and save it automatically
-			for (var i in that.children()) {
-				if (!that.children()[i]) {
-					continue;
-				}
-				if (!that.children()[i].compare()) {
-					onEditCategory(that.children()[i]);
-				}
-			}
 			// trigger click button on primary (don't know
 			// how to invoke submit via ajax)
 			form.find(".btn-primary").trigger("click");
@@ -430,19 +449,9 @@ $(document).ready(function() {
             'dataType' : 'json',
             'type' : 'GET'
         });
-        if (!TemplateEngine.isCategory(collection.parent())) {
-            $.ajax({
-                'url' : globalVariables.baseUrl + "/admin/templates/removecategoryfromtemplate?tid="
-                    + collection.parent().field("id") + "&cid=" + collection.field("id"),
-                'cache' : false,
-                'dataType' : 'json',
-                'type' : 'GET'
-            });
-        }
     };
 
     var onAppendElement = function(that) {
-
     };
 
     var onEditElement = function(that) {
@@ -600,7 +609,6 @@ $(document).ready(function() {
                 onEditElement(this);
 			})
             .onRemove(null, function() {
-
             })
 	};
 

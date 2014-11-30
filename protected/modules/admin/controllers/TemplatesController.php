@@ -229,20 +229,12 @@ class TemplatesController extends Controller {
         );
     }
 
-    public function actionAddCategoryToTemplate($tid, $cid) {
-        MedcardTemplate::model()->addCategoryToTemplate(intval($tid), intval($cid));
-        echo json_encode(array(
-            'status' => true
-        ));
-    }
-
-    public function actionRemoveCategoryFromTemplate($tid, $cid) {
-        $t = MedcardTemplate::model()->removeCategoryFromTemplate(intval($tid), intval($cid));
-        echo json_encode(array(
-            'status' => true,
-            't' => $t
-        ));
-    }
+	public function actionUtc($tid, $cids) {
+		MedcardTemplate::model()->setTemplateCategories($tid, $cids);
+		echo json_encode(array(
+			'status' => true
+		));
+	}
 
 	private function assignChildren(&$row, $model) {
 

@@ -18,9 +18,7 @@ class MedcardTemplate extends MisActiveRecord {
                 ->from('mis.medcard_templates mt')
                 ->where('mt.id = :id', array(':id' => $id))
                 ->queryRow();
-
             return $template;
-
         } catch(Exception $e) {
             echo $e->getMessage();
         }
@@ -73,6 +71,20 @@ class MedcardTemplate extends MisActiveRecord {
             $this->updateByPk($id, array(
                 'categorie_ids' => json_encode($categories)
             ));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				"status" => false,
+				"message" => $e->getMessage()
+			)); die;
+		}
+		return array();
+	}
+
+	public function setTemplateCategories($id, $cids) {
+		try {
+			$this->updateByPk($id, array(
+				'categorie_ids' => $cids
+			));
 		} catch(Exception $e) {
 			echo json_encode(array(
 				"status" => false,

@@ -71,13 +71,19 @@
 }
 
 .template-engine-template {
+    position: fixed;
     float: left;
     background: #ffffff;
     color: #fff;
+    right: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .template-engine-nestable {
-    margin: 3px;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
 }
 
 .template-engine-item, .template-engine-handle {
@@ -136,14 +142,13 @@
 .template-engine-category, .dd-empty, .dd-placeholder {
     display: block;
     position: relative;
-    /*margin: 0;*/
-    /*padding: 0;*/
-    /*font-size: 13px;*/
+    margin: 0;
+    padding: 0;
     float: none;
 }
 
 .template-engine-category .template-engine-items {
-    /*line-height: 40px;*/
+    line-height: 40px;
 }
 
 .template-engine-category div {
@@ -182,55 +187,19 @@
     cursor: pointer;
 }
 
-.template-engine-category > button {
-    display: block;
-    position: relative;
-    cursor: pointer;
-    float: left;
-    width: 25px;
-    /*height: 35px;*/
-    height: auto;
-    /*margin: 5px 0;*/
-    /*padding: 0;*/
-    text-indent: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    border: 0;
-    background: transparent;
-    font-size: 12px;
-    line-height: 1;
-    text-align: center;
-    font-weight: bold;
-}
-
-.template-engine-category > button:before {
-    content: '+';
-    display: block;
-    position: absolute;
+.template-engine-placeholder, .dd-empty {
+    padding: 0;
+    background: #8c8c8c;
+    border: 1px dashed #b6bcbf;
+    box-sizing: border-box;
     width: 100%;
-    text-align: center;
-    text-indent: 0;
-    color: #ffffff;
-    font-size: 15px;
-}
-
-.template-engine-category > button[data-action="collapse"]:before {
-    content: '-';
-}
-
-.dd-placeholder, .dd-empty {
-    /*min-height: 50px;*/
-    /*background: #d0d9dd;*/
-    /*-webkit-box-sizing: border-box;*/
-       /*-moz-box-sizing: border-box;*/
-            /*box-sizing: border-box;*/
-    /*border: 1px dashed #b6bcbf;*/
+    height: 50px;
+    margin: 0 0 5px;
 }
 
 .dd-dragel {
     position: absolute;
-    /*pointer-events: none;*/
+    pointer-events: none;
     z-index: 9999;
-    margin-left: -1px;
-    margin-top: -1px;
+    height: 50px;
 }

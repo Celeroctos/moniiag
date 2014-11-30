@@ -238,15 +238,14 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param [children] {Array|undefined}
+     * @param [index] {Number}
      * @returns {Array} - Get all node's children
      */
-    Node.prototype.children = function(children) {
-        if (children != undefined) {
-            this._childrenNode = children;
-        } else {
-            return this._childrenNode;
-        }
+    Node.prototype.children = function(index) {
+		if (index != undefined) {
+			return this._childrenNode[index];
+		}
+		return this._childrenNode;
     };
 
 	/**
@@ -337,22 +336,15 @@ var TemplateEngine = TemplateEngine || {
 
     Model.prototype.compare = function() {
         // if native model is undefined
-        if (!this._native) {
-            return true;
-        }
-        // fetch models keys
-        var modelKeys = Object.keys(this._model);
-        // look though all keys and compare native keys with model's
-        for (var key in modelKeys) {
-            if (!modelKeys.hasOwnProperty(key)) {
-                return false;
-            }
-            if (this._native[modelKeys[key]] != this._model[modelKeys[key]] || this._model[modelKeys[key]] == undefined) {
-                return false;
-            }
-        }
-        // we will return true only if model is fully equal to native
-        return true;
+        if (this._native && this._model) {
+			if (!this.has("id")) {
+				return false;
+			}
+			return this._native["position"] == this._model["position"] &&
+				this._native["parent_id"] == this._model["position"];
+        } else {
+			return true;
+		}
     };
 
 	Model.prototype.length = function() {
@@ -366,7 +358,7 @@ var TemplateEngine = TemplateEngine || {
         // create this closure
         var that = this;
         // on success event
-        var hook = function(data, textStatus, jqXHR) {
+        var hook = function(data) {
             // check data for success and terminate execution
             // if we have any errors
             if(data.success != true) {
@@ -397,6 +389,10 @@ var TemplateEngine = TemplateEngine || {
         }
         return this._model[field];
     };
+
+	Model.prototype.has = function(field) {
+		return this._model[field] != undefined;
+	};
 
     /*
       ___ ___ _    ___ ___ _____ _   ___ _    ___
@@ -518,6 +514,7 @@ var TemplateEngine = TemplateEngine || {
         if (this.drop) {
             this.drop();
         }
+		this.field("position", this.index() + 1);
     };
 
     extend(Component, Node);
@@ -530,12 +527,11 @@ var TemplateEngine = TemplateEngine || {
     };
 
     Component.prototype.glyphicon = function() {
-		if (!this.length()) {
-			return "glyphicon glyphicon-floppy-save";
-		} else if (!this.compare()) {
-			return "glyphicon glyphicon-asterisk";
+		if (!this.length() || !this.has("id")) {
+			return "glyphicon glyphicon-floppy-save"
+		} else {
+			return "glyphicon glyphicon-pencil";
 		}
-		return "glyphicon glyphicon-pencil";
     };
 
 	Component.prototype._renderSaveButton = function() {
@@ -563,8 +559,8 @@ var TemplateEngine = TemplateEngine || {
 			class: "glyphicon glyphicon-remove",
 			style: "margin-right: 1px; margin-left: 3px;"
 		}).click(function() {
+			that.remove();
 			TemplateEngine._triggerRemove(that);
-			that.remove()
 		});
 	};
 
@@ -577,15 +573,19 @@ var TemplateEngine = TemplateEngine || {
     };
 
 	Component.prototype.update = function() {
-		// after update we have to detach old selector
-		var toDetach = this.selector();
-		// and render new selector, set it to it's item
-		// and attach to parent
-		toDetach.parent().append(
-			this.selector(this.render())
+		// replace current selector with new
+		this.selector().replaceWith(
+			this.render()
 		);
-		// detach old selector
-		toDetach.detach();
+		//// after update we have to detach old selector
+		//var toDetach = this.selector()
+		//// and render new selector, set it to it's item
+		//// and attach to parent
+		//toDetach.parent().append(
+		//	this.selector(this.render())
+		//);
+		//// detach old selector
+		//toDetach.detach();
 	};
 
     /**
@@ -923,18 +923,24 @@ var TemplateEngine = TemplateEngine || {
 			}
 			this.children()[i].update();
 		}
-		// after update we have to detach old selector
-		var selector = this.selector();
-		// and render new selector, set it to it's item
-		// and attach to parent
-		selector.parent().append(
-			this.selector(this.render(
-				selector.children(".template-engine-items"),
-				selector.children(".template-engine-list")
-			))
+		this.selector().replaceWith(
+			this.render(
+				this.selector().children(".template-engine-items"),
+				this.selector().children(".template-engine-list")
+			)
 		);
-		// detach old selector
-		selector.detach();
+		//// after update we have to detach old selector
+		//var selector = this.selector();
+		//// and render new selector, set it to it's item
+		//// and attach to parent
+		//selector.parent().append(
+		//	this.selector(this.render(
+		//		selector.children(".template-engine-items"),
+		//		selector.children(".template-engine-list")
+		//	))
+		//);
+		//// detach old selector
+		//selector.detach();
 	};
 
     Category.prototype.render = function(items, categories) {
@@ -1067,47 +1073,6 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /*
-       ___   _ _____ ___ ___  ___  _____   __          _   ___ _____ _____   ___ _____ ___  ___
-      / __| /_\_   _| __/ __|/ _ \| _ \ \ / /  ___    /_\ / __|_   _|_ _\ \ / /_\_   _/ _ \| _ \
-     | (__ / _ \| | | _| (_ | (_) |   /\ V /  |___|  / _ \ (__  | |  | | \ V / _ \| || (_) |   /
-      \___/_/ \_\_| |___\___|\___/|_|_\ |_|         /_/ \_\___| |_| |___| \_/_/ \_\_| \___/|_|_\
-
-     */
-
-    var CategoryActivator = function() {
-        this._activeCategory = null;
-        this._activeClass = "template-engine-selected";
-    };
-
-    CategoryActivator.prototype.activate = function(category) {
-        if (!arguments.length) {
-            return this.deactivate();
-        }
-        if (this._activeCategory) {
-            this.deactivate();
-        }
-        this._activeCategory.selector().addClass(
-            this._activeClass
-        );
-        this._activeCategory = category;
-    };
-
-    CategoryActivator.prototype.deactivate = function(category) {
-        this._activeCategory.selector().removeClass(
-            this._activeClass
-        );
-        this._activeCategory = null;
-    };
-
-    CategoryActivator.prototype.has = function() {
-        return this._activeCategory != null;
-    };
-
-    CategoryActivator.prototype.active = function() {
-        return this._activeCategory;
-    };
-
-    /*
        ___   _ _____ ___ ___  ___  _____   __         ___ ___  _    _    ___ ___ _____ ___ ___  _  _
       / __| /_\_   _| __/ __|/ _ \| _ \ \ / /  ___   / __/ _ \| |  | |  | __/ __|_   _|_ _/ _ \| \| |
      | (__ / _ \| | | _| (_ | (_) |   /\ V /  |___| | (_| (_) | |__| |__| _| (__  | |  | | (_) | .` |
@@ -1134,6 +1099,10 @@ var TemplateEngine = TemplateEngine || {
             class: "template-engine-category-collection"
         }).append(dd);
     };
+
+	CategoryCollection.prototype.update = function() {
+		// don't update category collection
+	};
 
 	CategoryCollection.prototype.hash = function() {
 		return Category.prototype.hash.call(this);
@@ -1205,6 +1174,10 @@ var TemplateEngine = TemplateEngine || {
 				// get item and parent instances (to reappend child)
                 var itemInstance = $(item).data("instance");
                 var parentInstance = $(parent).data("instance") || that;
+				// if we have some parameter null, then skip update
+				if (!item || !parent || !itemInstance || !parentInstance) {
+					return false;
+				}
 				// remove from item's parent and append to another
                 Node.prototype.remove.call(itemInstance.parent(), itemInstance);
                 Node.prototype.append.call(parentInstance, itemInstance);
@@ -1220,21 +1193,22 @@ var TemplateEngine = TemplateEngine || {
                     itemInstance.field("parent_id", -1);
                 }
 				// update all indexes
-				$(parent).children(".template-engine-category").each(function(i, child) {
-					$(child).data("instance").field("position", i);
+				var index = 1;
+				$(parent).children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
+					$(child).data("instance").field("position", index++);
 				});
 				// reorder children with new position
 				parentInstance.sort(function(left, right) {
 					return +left.field("position") - +right.field("position");
 				});
 				// update item instance only after order
-				itemInstance.update();
+				parentInstance.update();
 				// if we havn't changed parent then we've change
 				// categories/items position, that means that we
 				// must update item's parent
-				if (itemInstance.field("parent_id") != -1 && parentInstance === itemInstance.parent()) {
-					parentInstance.update();
-				}
+				//if (itemInstance.field("parent_id") != -1 && parentInstance === itemInstance.parent()) {
+				//	parentInstance.update();
+				//}
 				// TODO fix that
 				//TemplateEngine.getCategoryCollection().update();
             }
