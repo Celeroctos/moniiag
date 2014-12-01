@@ -321,8 +321,11 @@ $(document).ready(function() {
 		if (!collection) {
 			return true;
 		}
+		// parse response
         var ajaxData = $.parseJSON(ajaxData);
-        console.log(ajaxData);
+		// set element's model
+		collection.model(ajaxData.element, true);
+		collection.update();
     });
 
     $("#element-edit-form").on('success', function (eventObj, ajaxData) {
@@ -330,9 +333,11 @@ $(document).ready(function() {
 		if (!collection) {
 			return true;
 		}
-        // parse response
-        var ajaxData = $.parseJSON(ajaxData);
-        console.log(ajaxData);
+		// parse response
+		var ajaxData = $.parseJSON(ajaxData);
+		// set element's model
+		collection.model(ajaxData.element, true);
+		collection.update();
     });
 
 	designTemplatePopup.find(".btn-primary").click(function() {
@@ -601,8 +606,10 @@ $(document).ready(function() {
             var formField = form.find('#' + fields[i].formField).val(
                 data.data[fields[i].modelField]
             );
-            if (fields[i].disabled) {
-                formField.attr("disabled", "disabled");
+            if (fields[i].hidden) {
+				formField.parent(".col-xs-9").parent(".form-group")
+					.css("visibility", "hidden")
+					.css("position", "absolute");
             }
             // Таблица
             if (fields[i].formField == 'config') {
@@ -657,6 +664,18 @@ $(document).ready(function() {
         editElementPopup.modal().draggable("disable").disableSelection();
     };
 
+	var onRemoveElement = function(that) {
+		if (!that.has("id")) {
+			return false;
+		}
+		$.ajax({
+			'url' : globalVariables.baseUrl + '/admin/elements/delete?id=' + that.field("id"),
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET'
+		});
+	};
+
 	var registerTemplateEngine = function(template) {
 		// restart template engine to remove all
 		// categories and it's elements
@@ -679,6 +698,7 @@ $(document).ready(function() {
                 onEditElement(this);
 			})
             .onRemove(null, function() {
+				onRemoveElement(this);
             })
 	};
 

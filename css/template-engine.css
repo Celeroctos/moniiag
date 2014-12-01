@@ -21,22 +21,23 @@
     items in categories but with 2(0) pixels offset
 */
 .template-engine-category .glyphicon {
-    transform: translateY(3px); font-size: 12px;
+    transform: translateY(5px); font-size: 12px;
 }
 .template-engine-category .glyphicon:hover {
-    transform: translateY(3px); font-size: 12px;
+    transform: translateY(5px); font-size: 12px;
 }
 .template-engine-item .glyphicon {
-    transform: translateY(1px); font-size: 12px;
+    transform: translateY(-2px); font-size: 12px;
 }
 .template-engine-item .glyphicon:hover {
-    transform: translateY(1px); font-size: 12px;
+    transform: translateY(-2px); font-size: 12px;
 }
 
 .template-engine-category-collection {
+    display: block;
     background: #a6a6a6;
     min-height: 500px;
-    width: 80%;
+    width: calc(100% - 195px);
     margin-left: 15px;
     margin-right: 10px;
     float: left;
@@ -49,7 +50,7 @@
     min-height: 53px;
     height: auto;
     margin-left: 5px;
-    width: calc(100% - 165px);
+    width: calc(100% - 170px);
     border: dotted #ffffff 1px;
     border-radius: 5px;
 }
@@ -60,14 +61,13 @@
 }
 
 .template-engine-items .template-engine-item {
-    line-height: 40px;
-}
-
-.template-engine-items .template-engine-item {
     box-sizing: border-box;
-    width: 100%;
+    line-height: 38px;
     height: 100%;
     margin: 0;
+    width: auto;
+    display: inline-block;
+    float: left;
 }
 
 .template-engine-template {
@@ -104,13 +104,6 @@
     margin: 0;
     padding: 0;
     width: 120px;
-}
-
-.template-engine-items .template-engine-item {
-    display: inline-block;
-    width: auto;
-    white-space: nowrap;
-    float: left;
 }
 
 .template-engine-template .template-engine-item div {

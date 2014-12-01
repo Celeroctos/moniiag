@@ -804,19 +804,52 @@ var TemplateEngine = TemplateEngine || {
 
     extend(Item, Component);
 
+	Item.prototype.update = function() {
+		// replace current selector with new
+		this.selector().replaceWith(
+			this.render().data("instance", this)
+		);
+	};
+
     Item.prototype.render = function() {
 		var that = this;
         var s = $("<div></div>", {
-            style: "cursor: default;",
+            style: "cursor: default; box-sizing: border-box;",
             class: "template-engine-item"
-        }).append(
+        });
+		if (this.has("label")) {
+			s.append($("<div></div>", {
+				html: this.field("label"),
+				style:
+					"float: left;" +
+					"border: dotted black 1px;" +
+					"border-radius: 5px;" +
+					"padding-right: 2px;" +
+					"padding-left: 2px;"
+			}));
+		}
+		s.append(
 			$("<div></div>", {
 				html: that.template().title(),
-				style: "float: left; width: 100%; display: inline-block;"
+				style:
+					"float: left;" +
+					"margin-right: 2px;" +
+					"margin-left: 2px"
 			})
-		).append(
+		);
+		if (this.has("label_after") && this.field("label_after").length) {
+			s.append($("<div></div>", {
+				html: this.field("label_after"),
+				style:
+					"border: dotted black 1px;" +
+					"border-radius: 5px;" +
+					"padding-right: 2px;" +
+					"padding-left: 2px;"
+			}));
+		}
+		s.append(
 			$("<div></div>", {
-				style: "float: none;"
+				style: "float: none; margin-left: 5px;"
 			}).append(
 				that._renderEditButton()
 			).append(
@@ -826,9 +859,6 @@ var TemplateEngine = TemplateEngine || {
 		if (that.template().key() === "static") {
 			s.addClass("template-engine-category-static");
 		}
-		s.dblclick(function() {
-			TemplateEngine._triggerEdit(that);
-		});
 		return s;
     };
 
@@ -837,7 +867,8 @@ var TemplateEngine = TemplateEngine || {
     };
 
     Item.prototype.defaults = function() {
-        return {
+		return {};
+        /* return {
             "type": 0,
             "categorie_id": 0,
             "label": "{label-before}",
@@ -854,7 +885,7 @@ var TemplateEngine = TemplateEngine || {
             "is_required": true,
             "not_printing_values": "",
             "hide_label_before": false
-        };
+        }; */
     };
 
 	Item.prototype.offset = function() {

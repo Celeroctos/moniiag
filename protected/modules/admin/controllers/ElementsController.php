@@ -152,18 +152,21 @@ class ElementsController extends Controller {
                 $element = new MedcardElement();
                 $this->addEditModel($element, $model, 'Элемент успешно добавлен.');
             } else {
-                echo CJSON::encode(array('success' => 'false',
-                                         'errors' => $model->errors));
+                echo CJSON::encode(array(
+					'success' => 'false',
+					'errors' => $model->errors));
             }
         }
 
     }
 
     private function addEditModel($element, $model, $msg) {
+
         // Посмотрим, нет ли уже элемента с такой позицией в данной категории: категории или элемента:
-        $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
+        /*$issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
         $issetPositionInElements = MedcardElement::model()->find('position = :position AND categorie_id = :categorie_id', array(':position' => $model->position, ':categorie_id' => $model->categorieId));
-        if($issetPositionInCats != null || $issetPositionInElements != null) {
+
+		if($issetPositionInCats != null || $issetPositionInElements != null) {
             if(($issetPositionInElements != null && $issetPositionInElements->id != $element->id) || $issetPositionInCats != null) {
                 echo CJSON::encode(array('success' => false,
                         'errors' => array(
@@ -175,7 +178,7 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-        }
+        }*/
 
         $element->type = $model->type;
         $element->categorie_id = $model->categorieId;
@@ -203,12 +206,9 @@ class ElementsController extends Controller {
         } else {
           //  $element->allow_add = 0;
             // Если текст или текстовая область - берём другое поле модели
-            if ($model->type == 0 || $model->type == 1)
-            {
+            if ($model->type == 0 || $model->type == 1) {
                 $element->default_value = $model->defaultValueText;
-            }
-            else
-            {
+            } else {
                 $element->default_value = null;
             }
         }
@@ -255,10 +255,10 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-			$config += CJSON::encode(array(
+			$config += array(
 				'maxValue' => $model->dateFieldMaxValue,
 				'minValue' => $model->dateFieldMinValue
-			));
+			);
 		}
 
 		$element->config = CJSON::encode($config); 
@@ -269,8 +269,11 @@ class ElementsController extends Controller {
         $element->path = $partOfPath.'.'.$element->position;
 
         if($element->save()) {
-            echo CJSON::encode(array('success' => true,
-                                     'text' => $msg));
+            echo CJSON::encode(array(
+				'success' => true,
+				'text' => $msg,
+				'element' => $element
+			));
         }
     }
 
