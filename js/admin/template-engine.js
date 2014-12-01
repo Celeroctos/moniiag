@@ -619,19 +619,12 @@ var TemplateEngine = TemplateEngine || {
     };
 
 	Component.prototype.update = function() {
+		// render new selector
+		var s = this.render().data("instance", this);
 		// replace current selector with new
-		this.selector().replaceWith(
-			this.render().data("instance", this)
-		);
-		//// after update we have to detach old selector
-		//var toDetach = this.selector()
-		//// and render new selector, set it to it's item
-		//// and attach to parent
-		//toDetach.parent().append(
-		//	this.selector(this.render())
-		//);
-		//// detach old selector
-		//toDetach.detach();
+		this.selector().replaceWith(s);
+		// replace instance's selector
+		this.selector(s);
 	};
 
     /**
@@ -831,13 +824,6 @@ var TemplateEngine = TemplateEngine || {
 		});
 	};
 
-	Item.prototype.update = function() {
-		// render new selector and replace with previous
-		this.selector().replaceWith(
-			this.render().data("instance", this)
-		);
-	};
-
     Item.prototype.render = function() {
 		var that = this;
         var s = $("<div></div>", {
@@ -877,28 +863,6 @@ var TemplateEngine = TemplateEngine || {
 
     Item.prototype.clone = function(parent, model, selector) {
         return new Item(parent, model, selector || null, this.template());
-    };
-
-    Item.prototype.defaults = function() {
-		return {};
-        /* return {
-            "type": 0,
-            "categorie_id": 0,
-            "label": "{label-before}",
-            "guide_id": 0,
-            "allow_add": false,
-            "label_after": "{label-after}",
-            "size": 100,
-            "is_wrapped": false,
-            "path": "",
-            "position": 1,
-            "config": "",
-            "default_value": "{default}",
-            "label_display": "{default-label-display}",
-            "is_required": true,
-            "not_printing_values": "",
-            "hide_label_before": false
-        }; */
     };
 
 	Item.prototype.offset = function() {
@@ -1092,7 +1056,9 @@ var TemplateEngine = TemplateEngine || {
                     return true;
                 }
                 // check template for category type
-                return me.key() !== "category";
+                return me.key() !== "category" &&
+					me.key() !== "clone" &&
+					me.key() !== "static";
             },
             drop: function(e, ui) {
                 // get selector
@@ -1120,23 +1086,22 @@ var TemplateEngine = TemplateEngine || {
                     }
                     // get original element's instance
                     me = ui.draggable.data("instance");
-                    // now we can attach instance's clone
-                    // to new category (we can't simply
-                    // move item, cuz we don't know kind
-                    // of element and every element appended
-                    // to it's parent node and selector, so
-                    // we can create it's clone and append
-                    // to another element, whereupon remove
-                    // old item)
-                    item = me.clone();
-                    that.append(item);
-                    // remove element from old parent (it will remove
-                    // it from it's parent and detach from parent's
-                    // selector)
-                    me.remove();
-					// after update set parent identifier
-					if (me.parent().has("id")) {
-						me.field("categorie_id", me.parent().field("id"));
+					// append instance to new parent (it will
+					// be removed from old automatically)
+					Node.prototype.append.call(that, me);
+					// detach current selector
+					me.selector().detach();
+					// render new selector and append to parent's children
+					that.selector().children(
+						".template-engine-items"
+					).append(
+						me.selector(
+							me.render().data("instance", me)
+						)
+					);
+					// after render set instance's parent identifier
+					if (that.has("id")) {
+						me.field("categorie_id", that.field("id"));
 					}
                 }
             }
@@ -1383,8 +1348,9 @@ var TemplateEngine = TemplateEngine || {
     var collection = WidgetCollection._templateCollection;
 
 	// register basic templates
-    collection.append(new Template(collection, "category",      "Категория"),         -2);
-	collection.append(new Template(collection, "static",        "Категория"),         -1);
+    collection.append(new Template(collection, "category",      "Категория",          -3));
+	collection.append(new Template(collection, "clone",         "Клонировать",        -2));
+	collection.append(new Template(collection, "static",        "Подключить",         -1));
     collection.append(new Template(collection, "text",          "Текстовое поле",      0));
     collection.append(new Template(collection, "text-area",     "Текстовая область",   1));
     collection.append(new Template(collection, "number",        "Числовое поле",       5));
@@ -1401,8 +1367,15 @@ var TemplateEngine = TemplateEngine || {
     collection.append(new Template(collection, "semicolon", ";"));*/
 
 	// highlight static and dynamic categories in template view
-    collection.find("category").selector() .css("background-color", "lightcoral");
-	collection.find("static").selector().addClass("template-engine-category-static");
+
+	collection.find("category").selector()
+		.addClass("template-engine-coral");
+
+	collection.find("static").selector()
+		.addClass("template-engine-category-static");
+
+	collection.find("clone").selector()
+		.addClass("template-engine-category-static");
 
 	/*
 	    _   ___ ___

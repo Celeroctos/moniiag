@@ -358,6 +358,9 @@ $(document).ready(function() {
 					item.field("parent_id", -1);
 				}
 				categoryFormModel.append($('#editCategoriePopup form'), function(field, info) {
+					if (!item.has(info.native)) {
+						return null;
+					}
 					return item.field(info.native);
 				});
 				categoryFormModel.form().find(".btn-primary").trigger("click");
@@ -449,44 +452,24 @@ $(document).ready(function() {
 				return null;
 			}
 		});
-        $('#addCategoriePopup').modal().draggable("disable");
+        $('#addCategoriePopup').modal().draggable("disable")
+			.css("z-index", 1051);
     };
 
     var onEditCategory = function(that) {
+		// save this instance
         collection = that;
-        // Заполняем форму значениями
-        var form = $('#editCategoriePopup form');
-		// Соответствия формы и модели
-		applyFieldsToForm(that, form, [{
-			modelField: 'id',
-			formField: 'id'
-		}, {
-			modelField: 'name',
-			formField: 'name'
-		}, {
-			modelField: 'parent_id',
-			formField: 'parentId',
-			hidden: true,
-			value: that.field("parent_id")
-		}, {
-			modelField: 'is_dynamic',
-			formField: 'isDynamic'
-		}, {
-			modelField: 'position',
-			formField: 'position',
-			hidden: true,
-			value: that.field("position")
-		}, {
-			modelField: 'is_wrapped',
-			formField: 'isWrapped'
-		}]);
-		// if we've applied some changes then we will
-		// update category else edit it
-		if (!that.compare()) {
-			// display modal window
-			editCategoryPopup.modal().draggable("disable")
-				.disableSelection().css("z-index", 1051);
-		}
+		categoryFormModel.append($('#editCategoriePopup form'), function(field, info) {
+			if (info.hidden) {
+				field.parent(".col-xs-9").parent(".form-group")
+					.css("visibility", "hidden")
+					.css("position", "absolute");
+			}
+			return that.field(info.native);
+		});
+		// display modal window
+		editCategoryPopup.modal().draggable("disable")
+			.css("z-index", 1051);
     };
 
     var onRemoveCategory = function(that) {

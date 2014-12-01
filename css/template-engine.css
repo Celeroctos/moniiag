@@ -71,13 +71,14 @@
 }
 
 .template-engine-template {
-    position: fixed;
+    /*position: fixed;*/
+    margin-left: 5px;
     float: left;
     background: #ffffff;
     color: #fff;
     right: 25px;
-    margin-top: auto;
-    margin-bottom: auto;
+    /*margin-top: auto;*/
+    /*margin-bottom: auto;*/
 }
 
 .template-engine-nestable {
@@ -128,8 +129,12 @@
     display: none;
 }
 
+.template-engine-coral {
+    background-color: lightcoral;
+}
+
 .template-engine-category-static {
-    background-color: #fff7ae;
+    background-color: #fff7b6;
 }
 
 .template-engine-category, .dd-empty, .dd-placeholder {
