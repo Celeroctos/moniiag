@@ -17,6 +17,8 @@ var TemplateEngine = TemplateEngine || {
 
     "use strict";
 
+	var CATEGORY_STRING_LIMIT = 15;
+
     /*
        ___ ___  __  __ __  __  ___  _  _
       / __/ _ \|  \/  |  \/  |/ _ \| \| |
@@ -978,6 +980,9 @@ var TemplateEngine = TemplateEngine || {
 			var name = this.field("name");
 		} catch (ignore) {
 			name = "Категория";
+		}
+		if (name.length > CATEGORY_STRING_LIMIT) {
+			name = name.substring(0, CATEGORY_STRING_LIMIT) + "...";
 		}
         var s = $("<li></li>", {
             class: "template-engine-category dd-item"

@@ -13,7 +13,7 @@ class DesignTemplate extends ModalWindow {
      *      this method and return your value (for example, 1000px or 70%)
      */
     public function customWidth() {
-        return "1000px";
+        return "90%";
     }
 
     /**

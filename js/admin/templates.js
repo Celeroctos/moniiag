@@ -102,7 +102,7 @@ $(document).ready(function() {
     );
 
     $("#addTemplate").click(function() {
-        $('#addTemplatePopup').modal().draggable("disable");
+        $('#addTemplatePopup').removeData("modal").modal().draggable("disable");
     });
 
     $("#template-add-form").on('success', function(eventObj, ajaxData, status, jqXHR) {
@@ -122,7 +122,7 @@ $(document).ready(function() {
                     $('#errorAddTemplatePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-            $('#errorAddTemplatePopup').modal();
+            $('#errorAddTemplatePopup').removeData("modal").modal();
         }
     });
 
@@ -144,7 +144,7 @@ $(document).ready(function() {
                     $('#errorAddTemplatePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-            $('#errorAddTemplatePopup').modal();
+            $('#errorAddTemplatePopup').removeData("modal").modal();
         }
     });
 
@@ -191,7 +191,7 @@ $(document).ready(function() {
 				}
 				node.val(data.data[fields[i].modelField]);
 			}
-			$("#editTemplatePopup").modal();
+			$("#editTemplatePopup").removeData("modal").modal();
 		};
 		// Надо вынуть данные для редактирования
 		$.ajax({
@@ -462,9 +462,9 @@ $(document).ready(function() {
 		collection = that;
 		categoryFormModel.append($('#addCategoriePopup form'), function(field, info) {
 			if (info.hidden) {
-				//field.parent(".col-xs-9").parent(".form-group")
-				//	.css("visibility", "hidden")
-				//	.css("position", "absolute");
+				field.parent(".col-xs-9").parent(".form-group")
+					.css("visibility", "hidden")
+					.css("position", "absolute");
 				return that.field(info.native);
 			} else {
 				return null;
@@ -736,26 +736,28 @@ $(document).ready(function() {
         if((currentRow = $('#templates').jqGrid('getGridParam','selrow')) == null) {
             return false;
         }
+		var success = function(data) {
+			// check data for success and terminate execution
+			// if we have any errors
+			if(data.success != true) {
+				console.log(data);
+				return false;
+			}
+			// register template engine with some template, it
+			// will restart engine and append current categories
+			registerTemplateEngine(data.template);
+			// display template engine designer modal window
+			$('#designTemplatePopup').removeData("modal").modal({
+				backdrop: 'static',
+				keyboard: false
+			}).draggable("disable").disableSelection();
+		};
         $.ajax({
-            'url' : globalVariables.baseUrl + '/admin/templates/getcategories?id=' + currentRow,
-            'cache' : false,
-            'dataType' : 'json',
-            'type' : 'GET',
-            'success' : function(data, textStatus, jqXHR) {
-				// check data for success and terminate execution
-				// if we have any errors
-                if(data.success != true) {
-                    console.log(data);
-                    return false;
-                }
-				// register template engine with some template, it
-				// will restart engine and append current categories
-				registerTemplateEngine(data.template);
-				// display template engine designer modal window
-                $('#designTemplatePopup').modal({
-					keyboard: false
-				}).draggable("disable").disableSelection();
-            }
+            'url': globalVariables.baseUrl + '/admin/templates/getcategories?id=' + currentRow,
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'success': success
         });
     }
 

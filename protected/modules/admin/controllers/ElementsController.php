@@ -108,7 +108,7 @@ class ElementsController extends Controller {
 
                 // Если у старого элемента тип 2 или 3 - проверяем зависимости
 
-                if (($oldElementState['type']==2 )||($oldElementState['type']==3 ))
+                if ($oldElementState['type'] == 2 || $oldElementState['type'] == 3)
                 {
                     $existanceDependencies = MedcardElementDependence::model()->findAll(
                         'element_id = :ahead_element OR dep_element_id = :back_element',
@@ -117,14 +117,14 @@ class ElementsController extends Controller {
                    // var_dump($existanceDependencies);
                    // exit();
                     // Если счёт зависимостей больше нуля и тип изменился - выводим сообщение об ошибке
-                    if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['type']!=$oldElementState['type']))
+                    if (isset($_POST['FormElementAdd']['type']) && count($existanceDependencies) > 0 && $_POST['FormElementAdd']['type'] != $oldElementState['type'])
                     {
                         echo CJSON::encode(array('success' => 'false',
                             'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён тип элемента. Если на элементе заданы зависимости, то нельзя менять его тип.')) ));
                         exit();
                     }
                     // Если счёт зависимостей больше нуля и изменился ИД справочника - также выводим сообщение об ошибке
-                    if ((count($existanceDependencies)>0) && ($_POST['FormElementAdd']['guideId']!=$oldElementState['guide_id']))
+                    if (isset($_POST['FormElementAdd']['guideId']) && count($existanceDependencies) > 0 && $_POST['FormElementAdd']['guideId'] != $oldElementState['guide_id'])
                     {
                         echo CJSON::encode(array('success' => 'false',
                             'errors' => array(array( 'Не удалось изменить элемент, так как при редактировании был изменён справочник элемента. Если на элементе заданы зависимости, то нельзя менять его справочник.')) ));
