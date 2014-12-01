@@ -297,11 +297,11 @@ $(document).ready(function() {
             console.log(ajaxData);
             throw new Error("Assert");
         }
-		// update parent_id list
-		appendParentSelectID(collection);
         // update data
         collection.model(ajaxData.category, true);
         collection.update();
+		// update parent_id list
+		appendParentSelectID(collection);
     });
 
     $("#categorie-edit-form").on('success', function(eventObj, ajaxData) {
@@ -415,6 +415,18 @@ $(document).ready(function() {
 				html: category.field("name")
 			})
 		);
+		$('#addElementPopup form').find("#parentId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#editElementPopup form').find("#parentId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
 	};
 
 	var removeParentSelectID = function(category) {
@@ -425,6 +437,12 @@ $(document).ready(function() {
 			"option[value=\"" + category.field("id") + "\"]"
 		).remove();
 		$('#editCategoriePopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#addElementPopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#editElementPopup form').find("#parentId").children(
 			"option[value=\"" + category.field("id") + "\"]"
 		).remove();
 	};
@@ -444,9 +462,9 @@ $(document).ready(function() {
 		collection = that;
 		categoryFormModel.append($('#addCategoriePopup form'), function(field, info) {
 			if (info.hidden) {
-				field.parent(".col-xs-9").parent(".form-group")
-					.css("visibility", "hidden")
-					.css("position", "absolute");
+				//field.parent(".col-xs-9").parent(".form-group")
+				//	.css("visibility", "hidden")
+				//	.css("position", "absolute");
 				return that.field(info.native);
 			} else {
 				return null;
