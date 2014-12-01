@@ -362,6 +362,15 @@ $(document).ready(function() {
 				});
 				categoryFormModel.form().find(".btn-primary").trigger("click");
 			}
+			if (TemplateEngine.isItem(item)) {
+				elementFormModel.append($('#editElementPopup form'), function(field, info) {
+					if (!item.has(info.native)) {
+						return null;
+					}
+					return item.field(info.native);
+				});
+				elementFormModel.form().find(".btn-primary").trigger("click");
+			}
 			return true;
 		};
 		update(cc);
@@ -545,7 +554,8 @@ $(document).ready(function() {
             formField: 'id'
         }, {
             modelField: 'type',
-            formField: 'type'
+            formField: 'type',
+			hidden: true
         }, {
             modelField: 'categorie_id',
             formField: 'categorieId',
@@ -692,12 +702,30 @@ $(document).ready(function() {
             })
             // Elements actions
             .onAppend(null, function() {
-                onAppendElement(this);
+				if (!TemplateEngine.isItem(this)) {
+					return false;
+				}
+				if (this.template().key() === "static") {
+					return false;
+				}
+				onAppendElement(this);
             })
 			.onEdit(null, function() {
-                onEditElement(this);
+				if (!TemplateEngine.isItem(this)) {
+					return false;
+				}
+				if (this.template().key() === "static") {
+					return false;
+				}
+				onEditElement(this);
 			})
             .onRemove(null, function() {
+				if (!TemplateEngine.isItem(this)) {
+					return false;
+				}
+				if (this.template().key() === "static") {
+					return false;
+				}
 				onRemoveElement(this);
             })
 	};

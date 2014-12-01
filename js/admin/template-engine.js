@@ -800,12 +800,39 @@ var TemplateEngine = TemplateEngine || {
 		// call super constructors
         Component.call(this, parent, model, selector);
         Draggable.call(this);
+		// set default element type
+		if (template.id()) {
+			this.field("type", template.id());
+		}
     };
 
     extend(Item, Component);
 
+	Item.prototype._renderLabelBefore = function() {
+		return $("<div></div>", {
+			html: this.field("label"),
+			style:
+			"float: left;" +
+			"border: dotted black 1px;" +
+			"border-radius: 5px;" +
+			"padding-right: 2px;" +
+			"padding-left: 2px;"
+		});
+	};
+
+	Item.prototype._renderLabelAfter = function() {
+		return $("<div></div>", {
+			html: this.field("label_after"),
+			style:
+			"border: dotted black 1px;" +
+			"border-radius: 5px;" +
+			"padding-right: 2px;" +
+			"padding-left: 2px;"
+		});
+	};
+
 	Item.prototype.update = function() {
-		// replace current selector with new
+		// render new selector and replace with previous
 		this.selector().replaceWith(
 			this.render().data("instance", this)
 		);
@@ -817,20 +844,13 @@ var TemplateEngine = TemplateEngine || {
             style: "cursor: default; box-sizing: border-box;",
             class: "template-engine-item"
         });
-		if (this.has("label")) {
-			s.append($("<div></div>", {
-				html: this.field("label"),
-				style:
-					"float: left;" +
-					"border: dotted black 1px;" +
-					"border-radius: 5px;" +
-					"padding-right: 2px;" +
-					"padding-left: 2px;"
-			}));
+		if (this.has("label") && this.field("label").length) {
+			s.append(this._renderLabelBefore());
 		}
 		s.append(
 			$("<div></div>", {
 				html: that.template().title(),
+				class: "template-engine-item-title",
 				style:
 					"float: left;" +
 					"margin-right: 2px;" +
@@ -838,14 +858,7 @@ var TemplateEngine = TemplateEngine || {
 			})
 		);
 		if (this.has("label_after") && this.field("label_after").length) {
-			s.append($("<div></div>", {
-				html: this.field("label_after"),
-				style:
-					"border: dotted black 1px;" +
-					"border-radius: 5px;" +
-					"padding-right: 2px;" +
-					"padding-left: 2px;"
-			}));
+			s.append(this._renderLabelAfter());
 		}
 		s.append(
 			$("<div></div>", {
@@ -979,15 +992,20 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	Category.prototype.update = function() {
-		this.selector().find(".template-engine-handle").text(
+		// find categories wrappers
+		var categories = this.selector().find(".template-engine-handle-wrapper");
+		// check for found categories
+		if (!categories.length) {
+			return false;
+		}
+		// update only first category
+		$(categories[0]).children(".template-engine-handle").text(
 			this.has("name") ? this.field("name") : "Категория"
 		);
-		/* this.selector().replaceWith(
-			this.render(
-				this.selector().children(".template-engine-items"),
-				this.selector().children(".template-engine-list")
-			).data("instance", this)
-		); */
+		// change floppy save to pencil glyphicon
+		$(categories[0]).children("span.glyphicon-floppy-save")
+			.removeClass("glyphicon-floppy-save")
+			.addClass("glyphicon-pencil");
 	};
 
     Category.prototype.render = function(items, categories) {
@@ -1376,11 +1394,11 @@ var TemplateEngine = TemplateEngine || {
     collection.append(new Template(collection, "dictionary",    "Двухколонный список", 7));
     collection.append(new Template(collection, "date",          "Дата",                6));
 	// register extra templates
-    collection.append(new Template(collection, "comma",     ","));
+    /*collection.append(new Template(collection, "comma",     ","));
     collection.append(new Template(collection, "dot",       "."));
     collection.append(new Template(collection, "dash",      "-"));
     collection.append(new Template(collection, "colon",     ":"));
-    collection.append(new Template(collection, "semicolon", ";"));
+    collection.append(new Template(collection, "semicolon", ";"));*/
 
 	// highlight static and dynamic categories in template view
     collection.find("category").selector() .css("background-color", "lightcoral");
@@ -1578,7 +1596,7 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	TemplateEngine.isItem = function(item) {
-		return !(item instanceof Category) && item.template().key() !== "static";
+		return item instanceof Item;
 	};
 
 	TemplateEngine.restart = function() {
