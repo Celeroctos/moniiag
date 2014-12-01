@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 	var elementFormModel = new FormModelManager(
 		"id," +
-		"type," +
+		"/type," +
 		"/categorie_id," +
 		"label," +
 		"guide_id," +
@@ -297,12 +297,18 @@ $(document).ready(function() {
             console.log(ajaxData);
             throw new Error("Assert");
         }
+		// update parent_id list
+		appendParentSelectID(collection);
         // update data
         collection.model(ajaxData.category, true);
         collection.update();
     });
 
     $("#categorie-edit-form").on('success', function(eventObj, ajaxData) {
+		// check for empty collection
+		if (!collection) {
+			return true;
+		}
         // parse response
         var ajaxData = $.parseJSON(ajaxData);
         // update category after edit
@@ -311,11 +317,19 @@ $(document).ready(function() {
     });
 
     $("#element-add-form").on('success', function (eventObj, ajaxData) {
+		// check for empty collection
+		if (!collection) {
+			return true;
+		}
         var ajaxData = $.parseJSON(ajaxData);
         console.log(ajaxData);
     });
 
     $("#element-edit-form").on('success', function (eventObj, ajaxData) {
+		// check for empty collection
+		if (!collection) {
+			return true;
+		}
         // parse response
         var ajaxData = $.parseJSON(ajaxData);
         console.log(ajaxData);
@@ -323,6 +337,7 @@ $(document).ready(function() {
 
 	designTemplatePopup.find(".btn-primary").click(function() {
 		var cc = TemplateEngine.getCategoryCollection();
+		cc.compute(true);
 		var update = function(item) {
 			if (!item.has("id")) {
 				return false;
@@ -334,7 +349,13 @@ $(document).ready(function() {
 				update(item.children(i));
 			}
 			if (TemplateEngine.isCategory(item)) {
-				onEditCategory(item);
+				if (!item.parent() || !TemplateEngine.isCategory(item.parent())) {
+					item.field("parent_id", -1);
+				}
+				categoryFormModel.append($('#editCategoriePopup form'), function(field, info) {
+					return item.field(info.native);
+				});
+				categoryFormModel.form().find(".btn-primary").trigger("click");
 			}
 			return true;
 		};
@@ -354,50 +375,66 @@ $(document).ready(function() {
 		// set request on server to update template categories
 		$.ajax({
 		    'url': globalVariables.baseUrl + "/admin/templates/utc?tid="
-		        + collection.parent().field("id") + "&cids=" + json,
+		        + cc.field("id") + "&cids=" + json,
 		    'cache': false,
 		    'dataType': 'json',
 		    'type': 'GET'
 		});
 	});
 
+	var appendParentSelectID = function(category) {
+		if (!category.has("id") || !category.has("name")) {
+			return false;
+		}
+		$('#addCategoriePopup form').find("#parentId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#editCategoriePopup form').find("#parentId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+	};
+
+	var removeParentSelectID = function(category) {
+		if (!category.has("id")) {
+			return false;
+		}
+		$('#addCategoriePopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#editCategoriePopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+	};
+
     var onAppendCategory = function(that) {
-        var parentID;
         var parent = that.parent();
-        if (TemplateEngine.isCategory(parent)) {
-            if (parent.length() > 0) {
-                parentID = parent.field("id");
-            } else {
-                return false;
-            }
-        } else {
-            parentID = -1;
-        }
-        collection = that;
-        // Заполняем форму значениями
-        var form = $('#addCategoriePopup form')
-        // Соответствия формы и модели
-        applyFieldsToForm(that, form, [{
-            modelField: 'name',
-            formField: 'name'
-        }, {
-            modelField: 'parent_id',
-            formField: 'parentId',
-            hidden: true,
-            value: parentID
-        }, {
-            modelField: 'is_dynamic',
-            formField: 'isDynamic'
-        }, {
-            modelField: 'position',
-            formField: 'position',
-            hidden: true,
-            value: that.field("position")
-        }, {
-            modelField: 'is_wrapped',
-            formField: 'isWrapped'
-        }]);
-		// show modal window
+		if (!parent.length()) {
+			return false;
+		}
+		if (parent.has("id")) {
+			if (TemplateEngine.isCategory(parent)) {
+				that.field("parent_id", parent.field("id"));
+			} else {
+				that.field("parent_id", -1);
+			}
+		}
+		collection = that;
+		categoryFormModel.append($('#addCategoriePopup form'), function(field, info) {
+			if (info.hidden) {
+				field.parent(".col-xs-9").parent(".form-group")
+					.css("visibility", "hidden")
+					.css("position", "absolute");
+				return that.field(info.native);
+			} else {
+				return null;
+			}
+		});
         $('#addCategoriePopup').modal().draggable("disable");
     };
 
@@ -431,27 +468,60 @@ $(document).ready(function() {
 		}]);
 		// if we've applied some changes then we will
 		// update category else edit it
-		if (that.has("id")) {
+		if (!that.compare()) {
 			// display modal window
 			editCategoryPopup.modal().draggable("disable")
 				.disableSelection().css("z-index", 1051);
-		} else {
-			// trigger click button on primary (don't know
-			// how to invoke submit via ajax)
-			form.find(".btn-primary").trigger("click");
 		}
     };
 
     var onRemoveCategory = function(that) {
+		if (!that.has("id")) {
+			return false;
+		}
         $.ajax({
             'url' : globalVariables.baseUrl + '/admin/categories/delete?id=' + that.field("id"),
             'cache' : false,
             'dataType' : 'json',
             'type' : 'GET'
         });
+		// update parent_id list
+		removeParentSelectID(that);
     };
 
     var onAppendElement = function(that) {
+		var parent = that.parent();
+		if (!parent.length()) {
+			return false;
+		}
+		if (!that.has("position") || !+that.field("position")) {
+			that.field("position", 1);
+		}
+		if (parent.has("id")) {
+			that.field("categorie_id", parent.field("id"));
+		} else {
+			return false;
+		}
+		collection = that;
+		elementFormModel.append($('#addElementPopup form'), function(field, info) {
+			if (info.hidden) {
+				field.parent(".col-xs-9").parent(".form-group")
+					.css("visibility", "hidden")
+					.css("position", "absolute");
+				if (info.native == "position") {
+					console.log(field);
+					console.log(info);
+				}
+				if (!that.has(info.native)) {
+					return null;
+				} else {
+					return that.field(info.native);
+				}
+			} else {
+				return null;
+			}
+		});
+		$('#addElementPopup').modal().draggable("disable");
     };
 
     var onEditElement = function(that) {

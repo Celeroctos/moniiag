@@ -340,8 +340,12 @@ var TemplateEngine = TemplateEngine || {
 			if (!this.has("id")) {
 				return false;
 			}
+			if (this instanceof Item) {
+				return this._native["position"] == this._model["position"] &&
+					this._native["categorie_id"] == this._model["categorie_id"];
+			}
 			return this._native["position"] == this._model["position"] &&
-				this._native["parent_id"] == this._model["position"];
+				this._native["parent_id"] == this._model["parent_id"];
         } else {
 			return true;
 		}
@@ -514,7 +518,7 @@ var TemplateEngine = TemplateEngine || {
         if (this.drop) {
             this.drop();
         }
-		this.field("position", this.index() + 1);
+		this.field("position", 1);
     };
 
     extend(Component, Node);
@@ -534,6 +538,48 @@ var TemplateEngine = TemplateEngine || {
 		}
     };
 
+	Component.prototype.compute = function(depth) {
+		// get parent selector
+		var parent = this.selector();
+		// default index is 1 (not null)
+		var index = 1;
+		// update all indexes
+		if (this instanceof CategoryCollection) {
+			parent.children(".template-engine-nestable").children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
+				$(child).data("instance").field("position", index++);
+			});
+		} else {
+			parent.children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
+				$(child).data("instance").field("position", index++);
+			});
+			index = 1;
+			parent.children(".template-engine-items").children(".template-engine-item").each(function(i, child) {
+				$(child).data("instance").field("position", index++);
+			});
+		}
+		// reorder children with new positions
+		this.sort(function(left, right) {
+			return +left.field("position") - +right.field("position");
+		});
+		// update item instance only after order
+		this.update();
+		// if we have set depth flag, set recompute positions
+		// for every category in tree
+		if (!depth) {
+			return false;
+		}
+		for (var i in this.children()) {
+			if (!this.children(i)) {
+				continue;
+			}
+			if (this.children(i) instanceof Category) {
+				this.children(i).compute(
+					true
+				);
+			}
+		}
+	};
+
 	Component.prototype._renderSaveButton = function() {
 		var that = this;
 		return $("<span></span>", {
@@ -543,21 +589,21 @@ var TemplateEngine = TemplateEngine || {
 		});
 	};
 
-	Component.prototype._renderEditButton = function() {
+	Component.prototype._renderEditButton = function(style) {
 		var that = this;
 		return $("<span></span>", {
 			class: that.glyphicon(),
-			style: "margin-right: 5px;"
+			style: style || "margin-right: 5px;"
 		}).click(function() {
 			TemplateEngine._triggerEdit(that);
 		});
 	};
 
-	Component.prototype._renderRemoveButton = function() {
+	Component.prototype._renderRemoveButton = function(style) {
 		var that = this;
 		return $("<span></span>", {
 			class: "glyphicon glyphicon-remove",
-			style: "margin-right: 1px; margin-left: 3px;"
+			style: style || "margin-right: 5px; margin-left: 3px;"
 		}).click(function() {
 			that.remove();
 			TemplateEngine._triggerRemove(that);
@@ -575,7 +621,7 @@ var TemplateEngine = TemplateEngine || {
 	Component.prototype.update = function() {
 		// replace current selector with new
 		this.selector().replaceWith(
-			this.render()
+			this.render().data("instance", this)
 		);
 		//// after update we have to detach old selector
 		//var toDetach = this.selector()
@@ -620,9 +666,9 @@ var TemplateEngine = TemplateEngine || {
         }
         if (Node.prototype.remove.call(this, element)) {
             if (element != undefined) {
-                Selectable.prototype.remove.call(this, element);
+				element.selector().detach();
             } else {
-                this._jqSelector.detach();
+				this.selector().detach();
             }
         }
         return true;
@@ -766,12 +812,16 @@ var TemplateEngine = TemplateEngine || {
         }).append(
 			$("<div></div>", {
 				html: that.template().title(),
-				style: "margin-right: 5px"
+				style: "float: left; width: 100%; display: inline-block;"
 			})
 		).append(
-			that._renderEditButton()
-		).append(
-			that._renderRemoveButton()
+			$("<div></div>", {
+				style: "float: none;"
+			}).append(
+				that._renderEditButton()
+			).append(
+				that._renderRemoveButton("margin-right: 0;")
+			)
 		);
 		if (that.template().key() === "static") {
 			s.addClass("template-engine-category-static");
@@ -797,7 +847,7 @@ var TemplateEngine = TemplateEngine || {
             "size": 100,
             "is_wrapped": false,
             "path": "",
-            "position": 0,
+            "position": 1,
             "config": "",
             "default_value": "{default}",
             "label_display": "{default-label-display}",
@@ -863,29 +913,11 @@ var TemplateEngine = TemplateEngine || {
         return new Category(parent, model, selector);
     };
 
-    Category.prototype.compare = function() {
-        // compare models
-        if (!Model.prototype.compare.call(this)) {
-            return false;
-        }
-        // check other elements for categories
-        for (var i in this.children()) {
-            if (!this.children()[i]) {
-                continue;
-            }
-            if (!this.children()[i].compare()) {
-                return false;
-            }
-        }
-        // we will return true only if model is fully equal to native
-        return true;
-    };
-
     Category.prototype.defaults = function() {
         return {
             "name": "{default-name}",
             "parent_id": -1,
-            "position": 0,
+            "position": 1,
             "is_dynamic": 0,
             "path": "",
             "is_wrapped": 1
@@ -916,31 +948,15 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	Category.prototype.update = function() {
-		// update all children
-		for (var i in this.children()) {
-			if (!this.children()[i]) {
-				continue;
-			}
-			this.children()[i].update();
-		}
-		this.selector().replaceWith(
+		this.selector().find(".template-engine-handle").text(
+			this.has("name") ? this.field("name") : "Категория"
+		);
+		/* this.selector().replaceWith(
 			this.render(
 				this.selector().children(".template-engine-items"),
 				this.selector().children(".template-engine-list")
-			)
-		);
-		//// after update we have to detach old selector
-		//var selector = this.selector();
-		//// and render new selector, set it to it's item
-		//// and attach to parent
-		//selector.parent().append(
-		//	this.selector(this.render(
-		//		selector.children(".template-engine-items"),
-		//		selector.children(".template-engine-list")
-		//	))
-		//);
-		//// detach old selector
-		//selector.detach();
+			).data("instance", this)
+		); */
 	};
 
     Category.prototype.render = function(items, categories) {
@@ -1007,14 +1023,14 @@ var TemplateEngine = TemplateEngine || {
         this.selector().find(".template-engine-items").sortable({
             appendTo: document.body,
             update: function(e, ui) {
-                var item = ui.item;
-                var index = 1;
-                item.parent(".template-engine-items").children(".template-engine-item").each(function(i, child) {
-                    var instance = $(child).data("instance");
-                    instance.field("position", index);
-                    ++index;
-                });
-				that.update();
+				// get instance
+				var item = $(ui.item).data("instance");
+				// recompute all children indexes
+				that.compute();
+				// after update set parent identifier
+				if (item.parent().has("id")) {
+					item.field("categorie_id", item.parent().field("id"));
+				}
             }
         }).droppable({
             accept: function(helper) {
@@ -1043,6 +1059,8 @@ var TemplateEngine = TemplateEngine || {
                     var item = new Item(
                         that, clone(me.model()), null, me
                     );
+					// set default item position as it's index
+					item.field("position", item.index());
                     // append created item to collection
                     that.append(item);
                 } else {
@@ -1067,6 +1085,10 @@ var TemplateEngine = TemplateEngine || {
                     // it from it's parent and detach from parent's
                     // selector)
                     me.remove();
+					// after update set parent identifier
+					if (me.parent().has("id")) {
+						me.field("categorie_id", me.parent().field("id"));
+					}
                 }
             }
         });
@@ -1102,10 +1124,6 @@ var TemplateEngine = TemplateEngine || {
 
 	CategoryCollection.prototype.update = function() {
 		// don't update category collection
-	};
-
-	CategoryCollection.prototype.hash = function() {
-		return Category.prototype.hash.call(this);
 	};
 
     CategoryCollection.prototype.append = function(element) {
@@ -1173,44 +1191,29 @@ var TemplateEngine = TemplateEngine || {
             finish: function(item, parent) {
 				// get item and parent instances (to reappend child)
                 var itemInstance = $(item).data("instance");
-                var parentInstance = $(parent).data("instance") || that;
+                var parentInstance = parent ? $(parent).data("instance") : that;
 				// if we have some parameter null, then skip update
-				if (!item || !parent || !itemInstance || !parentInstance) {
+				if (!item || !itemInstance || !parentInstance) {
 					return false;
+				}
+				// set default parent if null
+				if (!parent) {
+					parent = that.selector();
 				}
 				// remove from item's parent and append to another
                 Node.prototype.remove.call(itemInstance.parent(), itemInstance);
                 Node.prototype.append.call(parentInstance, itemInstance);
                 // if we've moved category and saved node then we have to change
                 // it's glyphicon and action for update
-                if (itemInstance.length() > 0 && parentInstance.length() > 0) {
-                    if (!(parentInstance instanceof CategoryCollection)) {
-                        itemInstance.field("parent_id", parentInstance.field("id"));
-                    } else {
-                        itemInstance.field("parent_id", -1);
-                    }
-                } else {
-                    itemInstance.field("parent_id", -1);
-                }
-				// update all indexes
-				var index = 1;
-				$(parent).children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
-					$(child).data("instance").field("position", index++);
-				});
-				// reorder children with new position
-				parentInstance.sort(function(left, right) {
-					return +left.field("position") - +right.field("position");
-				});
-				// update item instance only after order
-				parentInstance.update();
-				// if we havn't changed parent then we've change
-				// categories/items position, that means that we
-				// must update item's parent
-				//if (itemInstance.field("parent_id") != -1 && parentInstance === itemInstance.parent()) {
-				//	parentInstance.update();
-				//}
-				// TODO fix that
-				//TemplateEngine.getCategoryCollection().update();
+				if (parentInstance.length() > 0) {
+					if (!(parentInstance instanceof CategoryCollection)) {
+						itemInstance.field("parent_id", parentInstance.field("id"));
+					} else {
+						itemInstance.field("parent_id", -1);
+					}
+				}
+				// update all positions
+				parentInstance.compute();
             }
         });
     };
@@ -1256,6 +1259,10 @@ var TemplateEngine = TemplateEngine || {
 
     extend(Widget, Component);
 
+	Widget.prototype.render = function() {
+		return this.selector();
+	};
+
 	Widget.prototype.getTemplateCollection = function() {
 		return this._templateCollection;
 	};
@@ -1289,18 +1296,21 @@ var TemplateEngine = TemplateEngine || {
 			return this._widgetList[0];
 		},
 		restart: function() {
-			for (var i in this._widgetList) {
-				if (!this._widgetList[i].getCategoryCollection()) {
+			var i;
+			for (i in this._widgetList) {
+				var w = this._widgetList[i];
+				if (!w.getCategoryCollection()) {
 					continue;
 				}
-				var children = this._widgetList[i].getCategoryCollection()
-					.children();
-				for (var i in children) {
-					if (children[i] == undefined) {
+				var children = w.getCategoryCollection().children();
+				for (i in children) {
+					if (!children[i]) {
 						continue;
 					}
 					children[i].remove();
 				}
+				w.getCategoryCollection().selector()
+					.find(".template-engine-list").empty();
 			}
 		},
         _templateCollection: new TemplateCollection(),
@@ -1522,13 +1532,14 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	TemplateEngine._triggerAppend = function(item) {
+		if (item instanceof Item) {
+			item.parent().compute();
+		}
 		_trigger(item, actionMapAppend);
 	};
 
     TemplateEngine._triggerRemove = function(item) {
-        if (item.length() > 0) {
-            _trigger(item, actionMapRemove);
-        }
+		_trigger(item, actionMapRemove);
     };
 
 	TemplateEngine.isCategory = function(item) {
@@ -1544,8 +1555,9 @@ var TemplateEngine = TemplateEngine || {
 		// remove all categories with elements)
 		WidgetCollection.restart();
 		// reset action hooks
-		actionMapEdit = [];
 		actionMapAppend = [];
+		actionMapEdit = [];
+		actionMapRemove = [];
 	};
 
 	TemplateEngine.getCategoryCollection = function() {
