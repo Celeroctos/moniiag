@@ -148,6 +148,25 @@ class CategoriesController extends Controller {
 		));
 	}
 
+	public function actionMove($id) {
+		/* $category = MedcardCategorie::model()->findByPk($id);
+		if ($category["parent_id"] == -1) {
+			echo json_encode(array(
+				"success" => false,
+				"error" => "Данная категория уже имеет своего родителя"
+			)); die;
+		} */
+		MedcardCategorie::model()->updateByPk($id, array(
+			"parent_id" => -1
+		));
+		$category = MedcardCategorie::model()->getOne($id);
+		$this->assignChildren($category);
+		echo json_encode(array(
+			"success" => true,
+			"model" => $category
+		)); die;
+	}
+
     public function actionEdit() {
         $model = new FormCategorieAdd();
         if(isset($_POST['FormCategorieAdd'])) {

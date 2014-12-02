@@ -229,8 +229,29 @@ class TemplatesController extends Controller {
         );
     }
 
-	public function actionUtc($tid, $cids) {
+	public function actionUtc($tid, $cids, $categories) {
+
+		// update template array with categories
 		MedcardTemplate::model()->setTemplateCategories($tid, $cids);
+
+		// decode new categories parents and positions
+		$categoriesArray = json_decode($categories);
+
+		foreach ($categoriesArray as $i => $child) {
+			// if we have category field then it is element else category
+			if ($child->type == "element") {
+				MedcardElement::model()->updateByPk($child->id, array(
+					"position" => $child->position,
+					"categorie_id" => $child->category
+				));
+			} else {
+				MedcardCategorie::model()->updateByPk($child->id, array(
+					"position" => $child->position,
+					"parent_id" => $child->category
+				));
+			}
+		}
+
 		echo json_encode(array(
 			'status' => true
 		));

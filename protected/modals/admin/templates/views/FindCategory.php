@@ -31,6 +31,7 @@
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+	<button type="button" class="btn btn-warning" data-dismiss="modal">Перенести</button>
 	<button type="button" class="btn btn-primary" data-dismiss="modal">Клонировать</button>
 	<button type="button" class="btn btn-success" data-dismiss="modal">Клонировать и сохранить</button>
 </div>

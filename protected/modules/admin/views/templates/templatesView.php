@@ -30,5 +30,4 @@
 <? $this->widget("application.modals.admin.templates.EditElement"); ?>
 <? $this->widget("application.modals.admin.templates.EditDependences"); ?>
 <? $this->widget("application.modals.admin.templates.RemoveCategory"); ?>
-<? $this->widget("application.modals.admin.templates.SavingTemplate"); ?>
 <? $this->widget("application.modals.admin.templates.FindCategory"); ?>

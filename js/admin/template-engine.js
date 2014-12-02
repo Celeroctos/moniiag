@@ -1188,7 +1188,7 @@ var TemplateEngine = TemplateEngine || {
 			return me.field(info.native);
 		});
 		$.post(this.manager().form().attr("action"),
-			this.manager().form().serialize(), updatePercents
+			this.manager().form().serialize()
 		);
 		return true;
 	};
@@ -1419,7 +1419,7 @@ var TemplateEngine = TemplateEngine || {
 			return me.field(info.native);
 		});
 		$.post(this.manager().form().attr("action"),
-			this.manager().form().serialize(), updatePercents
+			this.manager().form().serialize()
 		);
 		return true;
 	};
@@ -2170,22 +2170,12 @@ var TemplateEngine = TemplateEngine || {
 	var countOfItemsToSave = 0;
 	var totalSavedItems = 0;
 
-	var updatePercents = function() {
-		// update percents value
-		$("#savingTemplatePopup .template-engine-saving-pc").text(
-			(++totalSavedItems / countOfItemsToSave * 100).toFixed(0) + "%"
-		);
-		// destroy modal
-		if (countOfItemsToSave != 0 && totalSavedItems >= countOfItemsToSave) {
-			$("#savingTemplatePopup").modal("hide");
-		}
-	};
-
 	var saveTemplate = function() {
 		var cc = TemplateEngine.getCategoryCollection();
 		cc.compute(true);
 		countOfItemsToSave = 0;
 		totalSavedItems = 0;
+		var result = [];
 		var update = function(item) {
 			if (!item.has("id")) {
 				return false;
@@ -2196,11 +2186,23 @@ var TemplateEngine = TemplateEngine || {
 				}
 				update(item.children(i));
 			}
-			try {
-				if (item.refresh()) {
-					++countOfItemsToSave;
-				}
-			} catch(ignore) {
+			if (item instanceof CategoryCollection) {
+				return true;
+			}
+			if (item instanceof Item) {
+				result.push({
+					type: "element",
+					id: item.field("id"),
+					position: item.field("position"),
+					category: item.field("categorie_id")
+				});
+			} else {
+				result.push({
+					type: "category",
+					id: item.field("id"),
+					position: item.field("position"),
+					category: item.field("parent_id")
+				});
 			}
 			return true;
 		};
@@ -2219,19 +2221,14 @@ var TemplateEngine = TemplateEngine || {
 		// set request on server to update template categories
 		$.ajax({
 			'url': globalVariables.baseUrl + "/admin/templates/utc?tid="
-			+ cc.field("id") + "&cids=" + json,
+				+ cc.field("id") + "&cids=" + json + "&categories=" + JSON.stringify(result),
 			'cache': false,
 			'dataType': 'json',
-			'type': 'GET'
-		});
-		if (countOfItemsToSave > 0) {
-			if (totalSavedItems < countOfItemsToSave) {
-				$("#savingTemplatePopup").modal({
-					backdrop: 'static',
-					keyboard: false
-				}).draggable("disable");
+			'type': 'GET',
+			'success': function(data) {
+				console.log(data);
 			}
-		}
+		});
 	};
 
 	$(document).ready(function() {
@@ -2253,6 +2250,46 @@ var TemplateEngine = TemplateEngine || {
 					.register(data["model"], true);
 			});
 		});
+
+
+		$("#findCategoryPopup form .btn-warning").click(function() {
+			var value = $("#findCategoryPopup form #parentId").val();
+			if (value < 0) {
+				return true;
+			}
+			$.ajax({
+				'url': globalVariables.baseUrl + '/admin/categories/move?id=' + value,
+				'cache': false,
+				'dataType': 'json',
+				'type': 'GET'
+			}).done(function(data) {
+				if (!data.success) {
+					console.log(data);
+					return true;
+				}
+				var findAndDetach = function(item) {
+					if (!item.has("id")) {
+						return false;
+					}
+					if (+item.field("id") == value) {
+						item.remove(); return true;
+					}
+					for (var i in item.children()) {
+						if (!item.children(i)) {
+							continue;
+						}
+						if (findAndDetach(item.children(i))) {
+							return true;
+						}
+					}
+					return false;
+				};
+				var cc = TemplateEngine.getCategoryCollection();
+				findAndDetach(cc);
+				cc.register(data["model"], false);
+			});
+		});
+
 		$("#findCategoryPopup form .btn-success").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
 			if (value < 0) {
