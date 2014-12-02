@@ -18,6 +18,7 @@ var TemplateEngine = TemplateEngine || {
     "use strict";
 
 	var CATEGORY_STRING_LIMIT = 15;
+	var ITEM_LABEL_LIMIT = 10;
 
     /*
        ___ ___  __  __ __  __  ___  _  _
@@ -104,6 +105,9 @@ var TemplateEngine = TemplateEngine || {
         if (this.contains(node)) {
             return false;
         }
+		if (node._parentNode) {
+			node.remove();
+		}
         node._parentNode = this;
         return (
             node._parentIndex = this._childrenNode
@@ -125,7 +129,7 @@ var TemplateEngine = TemplateEngine || {
             return true;
         }
         for (var i in this._childrenNode) {
-            if (this._childrenNode.hasOwnProperty(i) && node === this._childrenNode[i]) {
+            if (this._childrenNode[i] && node === this._childrenNode[i]) {
                 return true;
             }
         }
@@ -396,6 +400,13 @@ var TemplateEngine = TemplateEngine || {
         return this._model[field];
     };
 
+	Model.prototype.test = function(field) {
+		if (!this._model[field] || !this._native[field]) {
+			return false;
+		}
+		return this._model[field] == this._native[field];
+	};
+
 	Model.prototype.has = function(field) {
 		return this._model[field] != undefined;
 	};
@@ -520,7 +531,9 @@ var TemplateEngine = TemplateEngine || {
         if (this.drop) {
             this.drop();
         }
-		this.field("position", 1);
+		if (!this.has("position")) {
+			this.field("position", 1);
+		}
     };
 
     extend(Component, Node);
@@ -707,8 +720,7 @@ var TemplateEngine = TemplateEngine || {
         if (this.title().length <= 2) {
             return $("<div></div>", {
                 html: title, class: "template-engine-item",
-                style:
-                	"cursor: default;" +
+                style: "cursor: default;" +
                 	"float: left;" +
                 	"width: 10px"
             });
@@ -804,25 +816,31 @@ var TemplateEngine = TemplateEngine || {
     extend(Item, Component);
 
 	Item.prototype._renderLabelBefore = function() {
+		var label = this.field("label");
+		if (label.length > ITEM_LABEL_LIMIT) {
+			label = label.substring(0, ITEM_LABEL_LIMIT) + "...";
+		}
 		return $("<div></div>", {
-			html: this.field("label"),
-			style:
-			"float: left;" +
-			"border: dotted black 1px;" +
-			"border-radius: 5px;" +
-			"padding-right: 2px;" +
-			"padding-left: 2px;"
+			html: label,
+			style: "float: left;" +
+				"border: dotted black 1px;" +
+				"border-radius: 5px;" +
+				"padding-right: 2px;" +
+				"padding-left: 2px;"
 		});
 	};
 
 	Item.prototype._renderLabelAfter = function() {
+		var label = this.field("label_after");
+		if (label.length > ITEM_LABEL_LIMIT) {
+			label = label.substring(0, ITEM_LABEL_LIMIT) + "...";
+		}
 		return $("<div></div>", {
-			html: this.field("label_after"),
-			style:
-			"border: dotted black 1px;" +
-			"border-radius: 5px;" +
-			"padding-right: 2px;" +
-			"padding-left: 2px;"
+			html: label,
+			style: "border: dotted black 1px;" +
+				"border-radius: 5px;" +
+				"padding-right: 2px;" +
+				"padding-left: 2px;"
 		});
 	};
 
@@ -839,8 +857,7 @@ var TemplateEngine = TemplateEngine || {
 			$("<div></div>", {
 				html: that.template().title(),
 				class: "template-engine-item-title",
-				style:
-					"float: left;" +
+				style: "float: left;" +
 					"margin-right: 2px;" +
 					"margin-left: 2px"
 			})
@@ -924,14 +941,7 @@ var TemplateEngine = TemplateEngine || {
     };
 
     Category.prototype.defaults = function() {
-        return {
-            "name": "{default-name}",
-            "parent_id": -1,
-            "position": 1,
-            "is_dynamic": 0,
-            "path": "",
-            "is_wrapped": 1
-        };
+        return {};
     };
 
 	Category.prototype.offset = function() {
@@ -958,20 +968,15 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	Category.prototype.update = function() {
-		// find categories wrappers
-		var categories = this.selector().find(".template-engine-handle-wrapper");
-		// check for found categories
-		if (!categories.length) {
-			return false;
-		}
-		// update only first category
-		$(categories[0]).children(".template-engine-handle").text(
-			this.has("name") ? this.field("name") : "Категория"
-		);
-		// change floppy save to pencil glyphicon
-		$(categories[0]).children("span.glyphicon-floppy-save")
-			.removeClass("glyphicon-floppy-save")
-			.addClass("glyphicon-pencil");
+		// render new selector
+		var s = this.render(
+			this.selector().children(".template-engine-items"),
+			this.selector().children(".template-engine-list")
+		).data("instance", this);
+		// replace current selector with new
+		this.selector().replaceWith(s);
+		// replace instance's selector
+		this.selector(s);
 	};
 
     Category.prototype.render = function(items, categories) {
@@ -1079,8 +1084,6 @@ var TemplateEngine = TemplateEngine || {
                     var item = new Item(
                         that, clone(me.model()), null, me
                     );
-					// set default item position as it's index
-					item.field("position", item.index());
                     // append created item to collection
                     that.append(item);
                 } else {
@@ -1093,6 +1096,7 @@ var TemplateEngine = TemplateEngine || {
                     me = ui.draggable.data("instance");
 					// append instance to new parent (it will
 					// be removed from old automatically)
+					//me.parent(that);
 					Node.prototype.append.call(that, me);
 					// detach current selector
 					me.selector().detach();
@@ -1421,9 +1425,11 @@ var TemplateEngine = TemplateEngine || {
 		// look though elements in category's model and
 		// append it to just created category
 		for (var i in elements) {
-			c.append(new Item(c, elements[i], null,
+			var item = new Item(c, elements[i], null,
 				_getTemplateByID(elements[i]["type"])
-			))
+			);
+			item.model(elements[i], true);
+			c.append(item);
 		}
 		// append category to category collection
 		if (!(collection instanceof CategoryCollection)) {

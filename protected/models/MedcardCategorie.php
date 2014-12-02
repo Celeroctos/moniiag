@@ -73,6 +73,7 @@ class MedcardCategorie extends MisActiveRecord {
                 ->select("*")
                 ->from("mis.medcard_categories c")
                 ->where("c.parent_id = :parent_id", array(":parent_id" => $parentID))
+				->order("position")
                 ->queryAll();
         } catch (Exception $e) {
             print json_encode(array(
@@ -91,6 +92,7 @@ class MedcardCategorie extends MisActiveRecord {
                 ->select("*")
                 ->from("mis.medcard_elements c")
                 ->where("c.categorie_id = :id", array(":id" => $id))
+				->order("position")
                 ->queryAll();
         } catch (Exception $e) {
             print json_encode(array(
