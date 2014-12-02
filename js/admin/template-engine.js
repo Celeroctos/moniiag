@@ -1530,61 +1530,6 @@ var TemplateEngine = TemplateEngine || {
 		assert("TemplateEngine/getTemplateByID(): \"Unresolved template id (" + id + ")\"");
 	};
 
-	//var _registerCategory = function(collection, model) {
-     //   // get element list
-     //   var elements = model["elements"];
-     //   var children = model["children"];
-     //   // reset extra fields
-     //   model["elements"] = undefined;
-     //   model["children"] = undefined;
-	//	// avoid categories wo name (cuz weak reference)
-	//	if (!model["name"]) {
-	//		return false;
-	//	}
-	//	// create new category without parent and selector
-	//	var c = new Category(null, model, null);
-	//	// look though elements in category's model and
-	//	// append it to just created category
-	//	for (var i in elements) {
-	//		var item = new Item(c, elements[i], null,
-	//			_getTemplateByID(elements[i]["type"])
-	//		);
-	//		item.model(elements[i], true);
-	//		c.append(item);
-	//	}
-	//	// append category to category collection
-	//	if (!(collection instanceof CategoryCollection)) {
-     //       // fix for categories (need to disable draggable)
-	//		CategoryCollection.prototype.afterDrop.call(
-	//			collection, c
-	//		).append(c);
-     //       // detach selector and append to list (container fix)
-	//		c.selector().detach().appendTo(
-	//			collection.selector().children(".template-engine-list")
-	//		);
-	//	} else {
-	//		collection.afterDrop(c).append(c);
-	//	}
-	//	// append children categories to parent
-	//	if (children) {
-	//		if (!c.selector().children(".template-engine-list").length) {
-	//			c.selector().append(
-	//				$("<ol></ol>", {
-	//					class: "template-engine-list dd-list"
-	//				})
-	//			);
-	//		}
-	//		for (var i in children) {
-	//			if (!children.hasOwnProperty(i)) {
-	//				continue;
-	//			}
-	//			_registerCategory(c, children[i]);
-	//		}
-	//	}
-	//	// return self
-	//	return TemplateEngine;
-	//};
-
 	TemplateEngine.registerTemplate = function(model) {
 		// restart current collection
 		TemplateEngine.restart();

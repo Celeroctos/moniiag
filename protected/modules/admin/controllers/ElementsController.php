@@ -212,7 +212,11 @@ class ElementsController extends Controller {
                 $element->default_value = null;
             }
         }
-		
+
+		/*
+		 * Сломан элемент управления таблица
+		 */
+
 		$config = array();
         if($model->type == 4) {
             $config += $model->config;

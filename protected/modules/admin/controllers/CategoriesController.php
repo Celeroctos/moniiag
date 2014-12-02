@@ -87,8 +87,9 @@ class CategoriesController extends Controller {
 	}
 
 	public function actionOne($id) {
-		$category = MedcardCategorie::model()->getOne($id);
-		$this->assignChildren($category, new MedcardCategorie());
+		$model = new MedcardCategorie();
+		$category = $model->getOne($id);
+		$this->assignChildren($category, $model);
 		echo json_encode(array(
 			'category' => $category
 		));
