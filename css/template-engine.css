@@ -27,10 +27,10 @@
     transform: translateY(5px); font-size: 12px;
 }
 .template-engine-item .glyphicon {
-    transform: translateY(-10px); font-size: 12px;
+    transform: translateY(-12px); font-size: 12px;
 }
 .template-engine-item .glyphicon:hover {
-    transform: translateY(-10px); font-size: 12px;
+    transform: translateY(-12px); font-size: 12px;
 }
 
 .template-engine-category-collection {
@@ -67,7 +67,7 @@
     width: auto;
     display: inline-block;
     float: left;
-    min-width: 100px;
+    min-width: 120px;
 }
 
 .template-engine-template {

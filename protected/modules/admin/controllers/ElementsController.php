@@ -229,12 +229,11 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-
-			$config += CJSON::encode(array(
+			$config += array(
                 'maxValue' => $model->numberFieldMaxValue,
                 'minValue' => $model->numberFieldMinValue,
                 'step' => $model->numberStep
-            ));
+            );
 		}
 
 		if($model->showDynamic) {

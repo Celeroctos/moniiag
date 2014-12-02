@@ -76,6 +76,24 @@ class CategoriesController extends Controller {
         }
     }
 
+	private function assignChildren(&$row, $model) {
+		$id = intval($row["id"]);
+		$children = $model->getChildren($id);
+		foreach ($children as $i => &$child) {
+			$this->assignChildren($child, $model);
+		}
+		$row["children"] = $children;
+		$row["elements"] = $model->getElements($id);
+	}
+
+	public function actionOne($id) {
+		$category = MedcardCategorie::model()->getOne($id);
+		$this->assignChildren($category, new MedcardCategorie());
+		echo json_encode(array(
+			'category' => $category
+		));
+	}
+
     public function actionEdit() {
         $model = new FormCategorieAdd();
         if(isset($_POST['FormCategorieAdd'])) {

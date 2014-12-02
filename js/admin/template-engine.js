@@ -400,6 +400,16 @@ var TemplateEngine = TemplateEngine || {
         return this._model[field];
     };
 
+	Model.prototype.native = function(field, value) {
+		if (value !== undefined) {
+			this._native[field] = value;
+		}
+		if (this._model[field] === undefined) {
+			throw new Error("Model/native() : \"Field hasn't been declared in model\"");
+		}
+		return this._model[field];
+	};
+
 	Model.prototype.test = function(field) {
 		if (!this._model[field] || !this._native[field]) {
 			return false;
@@ -927,8 +937,9 @@ var TemplateEngine = TemplateEngine || {
 
      */
 
-    var Category = function(parent, model, selector) {
+    var Category = function(parent, model, selector, template) {
         Component.call(this, parent, model, selector);
+		this._template = template;
     };
 
     extend(Category, Component);
@@ -939,6 +950,10 @@ var TemplateEngine = TemplateEngine || {
         // TODO You must also clone all category elements
         return new Category(parent, model, selector);
     };
+
+	Category.prototype.template = function() {
+		return this._template;
+	};
 
     Category.prototype.defaults = function() {
         return {};
@@ -1066,9 +1081,11 @@ var TemplateEngine = TemplateEngine || {
                     return true;
                 }
                 // check template for category type
-                return me.key() !== "category" &&
+                return (
+					me.key() !== "category" &&
 					me.key() !== "clone" &&
-					me.key() !== "static";
+					me.key() !== "static"
+				);
             },
             drop: function(e, ui) {
                 // get selector
@@ -1172,35 +1189,95 @@ var TemplateEngine = TemplateEngine || {
 	};
 
     CategoryCollection.prototype.drop = function() {
-        // create collection's clojure
         var that = this;
-        // activate droppable and nestable events
+		var template = null;
+		$("#findCategoryPopup form .btn-primary").click(function() {
+			var value = $("#findCategoryPopup form #parentId").val();
+			if (value < 0) {
+				return true;
+			}
+			$.ajax({
+				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
+				'cache': false,
+				'dataType': 'json',
+				'type': 'GET'
+			}).done(function(data) {
+				that.register(data["category"], true, TemplateEngine.getTemplateCollection()
+					.find("category"));
+			});
+		});
+		$("#findCategoryPopup form .btn-success").click(function() {
+			var value = $("#findCategoryPopup form #parentId").val();
+			if (value < 0) {
+				return true;
+			}
+			$.ajax({
+				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
+				'cache': false,
+				'dataType': 'json',
+				'type': 'GET'
+			}).done(function(data) {
+				that.register(data["category"], false, template);
+			});
+		});
+		var finish = function(item, parent) {
+			// get item and parent instances (to reappend child)
+			var itemInstance = $(item).data("instance");
+			var parentInstance = parent ? $(parent).data("instance") : that;
+			// if we have some parameter null, then skip update
+			if (!item || !itemInstance || !parentInstance) {
+				return false;
+			}
+			// set default parent if null
+			if (!parent) {
+				parent = that.selector();
+			}
+			// remove from item's parent and append to another
+			Node.prototype.remove.call(itemInstance.parent(), itemInstance);
+			Node.prototype.append.call(parentInstance, itemInstance);
+			// if we've moved category and saved node then we have to change
+			// it's glyphicon and action for update
+			if (parentInstance.length() > 0) {
+				if (!(parentInstance instanceof CategoryCollection)) {
+					itemInstance.field("parent_id", parentInstance.field("id"));
+				} else {
+					itemInstance.field("parent_id", -1);
+				}
+			}
+			// reset native parent
+			itemInstance.native("parent_id", 0);
+			// update all positions
+			parentInstance.compute();
+		};
         this.selector().droppable({
             accept: function(helper) {
-                // get helper's instance
                 var me = helper.data("instance");
-                // exit if try to check non-template element
                 if (!(me instanceof Template)) {
                     return false;
                 }
-                // check template for category type
-                return me.key() === "category";
+                return (
+					me.key() === "category" ||
+					me.key() === "clone"
+				);
             },
             drop: function(e, ui) {
-                // fetch helper's instance from selector
-                var template = ui.helper.data("instance");
-                // exit if we don't drop template
-                if (!(template instanceof Template)) {
+                var templateInstance = ui.helper.data("instance");
+                if (!(templateInstance instanceof Template)) {
                     return false;
                 }
-                // create new category element (we can't create another one type)
-                var category = new Category(
-                    that, clone(template.model())
-                );
-				// apply after drop event (for external elements)
-				that.afterDrop(category);
-				// append just created category to collection
-				that.append(category);
+				template = templateInstance;
+				if (templateInstance.key() === "category") {
+					var category = new Category(
+						that, clone(templateInstance.model())
+					);
+					that.afterDrop(category);
+					that.append(category);
+				} else {
+					$("#findCategoryPopup").modal({
+						backdrop: 'static',
+						keyboard: false
+					}).draggable("disable");
+				}
             }
         }).find(".dd").nestable({
             listClass: "template-engine-list",
@@ -1211,35 +1288,74 @@ var TemplateEngine = TemplateEngine || {
 			expandBtnHTML: "",
 			collapseBtnHTML: "",
 			maxDepth: 500,
-            finish: function(item, parent) {
-				// get item and parent instances (to reappend child)
-                var itemInstance = $(item).data("instance");
-                var parentInstance = parent ? $(parent).data("instance") : that;
-				// if we have some parameter null, then skip update
-				if (!item || !itemInstance || !parentInstance) {
-					return false;
-				}
-				// set default parent if null
-				if (!parent) {
-					parent = that.selector();
-				}
-				// remove from item's parent and append to another
-                Node.prototype.remove.call(itemInstance.parent(), itemInstance);
-                Node.prototype.append.call(parentInstance, itemInstance);
-                // if we've moved category and saved node then we have to change
-                // it's glyphicon and action for update
-				if (parentInstance.length() > 0) {
-					if (!(parentInstance instanceof CategoryCollection)) {
-						itemInstance.field("parent_id", parentInstance.field("id"));
-					} else {
-						itemInstance.field("parent_id", -1);
-					}
-				}
-				// update all positions
-				parentInstance.compute();
-            }
+            finish: finish
         });
     };
+
+	CategoryCollection.prototype.register = function(model, clone, template) {
+		// compatibility
+		var collection = this;
+		// get element list
+		var elements = model["elements"];
+		var children = model["children"];
+		// if we've set clone flag, then remove identifier from model
+		if (clone === true) {
+			model["id"] = undefined;
+		}
+		// reset extra fields
+		model["elements"] = undefined;
+		model["children"] = undefined;
+		// avoid categories wo name (cuz weak reference)
+		if (!model["name"]) {
+			return false;
+		}
+		// create new category without parent and selector
+		var c = new Category(null, model, null, template);
+		// if we have clone template then trigger append action
+		if (template && template.key() === "clone") {
+			TemplateEngine._triggerAppend(c);
+		}
+		// look though elements in category's model and
+		// append it to just created category
+		for (var i in elements) {
+			if (clone === true) {
+				elements[i]["id"] = undefined;
+			}
+			var item = new Item(c, elements[i], null,
+				_getTemplateByID(elements[i]["type"])
+			);
+			item.model(elements[i], true);
+			c.append(item);
+		}
+		// append category to category collection
+		if (!(collection instanceof CategoryCollection)) {
+			// fix for categories (need to disable draggable)
+			CategoryCollection.prototype.afterDrop.call(
+				collection, c
+			).append(c);
+			// detach selector and append to list (container fix)
+			c.selector().detach().appendTo(
+				collection.selector().children(".template-engine-list")
+			);
+		} else {
+			collection.afterDrop(c).append(c);
+		}
+		// append children categories to parent
+		if (children) {
+			if (!c.selector().children(".template-engine-list").length) {
+				c.selector().append(
+					$("<ol></ol>", {
+						class: "template-engine-list dd-list"
+					})
+				);
+			}
+			for (var i in children) {
+				CategoryCollection.prototype.register.call(
+					c, children[i], clone, template
+				);
+			}
+		}
+	};
 
     /*
         _  _   _ _____ ___           ___ ___  __  __ ___ _    ___ _____ ___
@@ -1288,10 +1404,6 @@ var TemplateEngine = TemplateEngine || {
 
 	Widget.prototype.getTemplateCollection = function() {
 		return this._templateCollection;
-	};
-
-	Widget.prototype.hash = function() {
-		return 0;
 	};
 
 	Widget.prototype.getCategoryCollection = function() {
@@ -1359,7 +1471,7 @@ var TemplateEngine = TemplateEngine || {
 	// register basic templates
     collection.append(new Template(collection, "category",      "Категория",          -3));
 	collection.append(new Template(collection, "clone",         "Клонировать",        -2));
-	collection.append(new Template(collection, "static",        "Подключить",         -1));
+	//collection.append(new Template(collection, "static",        "Подключить",         -1));
     collection.append(new Template(collection, "text",          "Текстовое поле",      0));
     collection.append(new Template(collection, "text-area",     "Текстовая область",   1));
     collection.append(new Template(collection, "number",        "Числовое поле",       5));
@@ -1369,22 +1481,31 @@ var TemplateEngine = TemplateEngine || {
     collection.append(new Template(collection, "dictionary",    "Двухколонный список", 7));
     collection.append(new Template(collection, "date",          "Дата",                6));
 	// register extra templates
-    /*collection.append(new Template(collection, "comma",     ","));
-    collection.append(new Template(collection, "dot",       "."));
-    collection.append(new Template(collection, "dash",      "-"));
-    collection.append(new Template(collection, "colon",     ":"));
-    collection.append(new Template(collection, "semicolon", ";"));*/
+	//collection.append(new Template(collection, "token", ","));
+	//collection.append(new Template(collection, "token", "."));
+	//collection.append(new Template(collection, "token", "-"));
+	//collection.append(new Template(collection, "token", ":"));
+	//collection.append(new Template(collection, "token", ";"));
 
 	// highlight static and dynamic categories in template view
 
-	collection.find("category").selector()
-		.addClass("template-engine-coral");
+	try {
+		collection.find("category").selector()
+			.addClass("template-engine-coral");
+	} catch (ignore) {
+	}
 
-	collection.find("static").selector()
-		.addClass("template-engine-category-static");
+	try {
+		collection.find("clone").selector()
+			.addClass("template-engine-category-static");
+	} catch (ignore) {
+	}
 
-	collection.find("clone").selector()
-		.addClass("template-engine-category-static");
+	try {
+		collection.find("static").selector()
+			.addClass("template-engine-category-static");
+	} catch (ignore) {
+	}
 
 	/*
 	    _   ___ ___
@@ -1409,60 +1530,60 @@ var TemplateEngine = TemplateEngine || {
 		assert("TemplateEngine/getTemplateByID(): \"Unresolved template id (" + id + ")\"");
 	};
 
-	var _registerCategory = function(collection, model) {
-        // get element list
-        var elements = model["elements"];
-        var children = model["children"];
-        // reset extra fields
-        model["elements"] = undefined;
-        model["children"] = undefined;
-		// avoid categories wo name (cuz weak reference)
-		if (!model["name"]) {
-			return false;
-		}
-		// create new category without parent and selector
-		var c = new Category(null, model, null);
-		// look though elements in category's model and
-		// append it to just created category
-		for (var i in elements) {
-			var item = new Item(c, elements[i], null,
-				_getTemplateByID(elements[i]["type"])
-			);
-			item.model(elements[i], true);
-			c.append(item);
-		}
-		// append category to category collection
-		if (!(collection instanceof CategoryCollection)) {
-            // fix for categories (need to disable draggable)
-			CategoryCollection.prototype.afterDrop.call(
-				collection, c
-			).append(c);
-            // detach selector and append to list (container fix)
-			c.selector().detach().appendTo(
-				collection.selector().children(".template-engine-list")
-			);
-		} else {
-			collection.afterDrop(c).append(c);
-		}
-		// append children categories to parent
-		if (children) {
-			if (!c.selector().children(".template-engine-list").length) {
-				c.selector().append(
-					$("<ol></ol>", {
-						class: "template-engine-list dd-list"
-					})
-				);
-			}
-			for (var i in children) {
-				if (!children.hasOwnProperty(i)) {
-					continue;
-				}
-				_registerCategory(c, children[i]);
-			}
-		}
-		// return self
-		return TemplateEngine;
-	};
+	//var _registerCategory = function(collection, model) {
+     //   // get element list
+     //   var elements = model["elements"];
+     //   var children = model["children"];
+     //   // reset extra fields
+     //   model["elements"] = undefined;
+     //   model["children"] = undefined;
+	//	// avoid categories wo name (cuz weak reference)
+	//	if (!model["name"]) {
+	//		return false;
+	//	}
+	//	// create new category without parent and selector
+	//	var c = new Category(null, model, null);
+	//	// look though elements in category's model and
+	//	// append it to just created category
+	//	for (var i in elements) {
+	//		var item = new Item(c, elements[i], null,
+	//			_getTemplateByID(elements[i]["type"])
+	//		);
+	//		item.model(elements[i], true);
+	//		c.append(item);
+	//	}
+	//	// append category to category collection
+	//	if (!(collection instanceof CategoryCollection)) {
+     //       // fix for categories (need to disable draggable)
+	//		CategoryCollection.prototype.afterDrop.call(
+	//			collection, c
+	//		).append(c);
+     //       // detach selector and append to list (container fix)
+	//		c.selector().detach().appendTo(
+	//			collection.selector().children(".template-engine-list")
+	//		);
+	//	} else {
+	//		collection.afterDrop(c).append(c);
+	//	}
+	//	// append children categories to parent
+	//	if (children) {
+	//		if (!c.selector().children(".template-engine-list").length) {
+	//			c.selector().append(
+	//				$("<ol></ol>", {
+	//					class: "template-engine-list dd-list"
+	//				})
+	//			);
+	//		}
+	//		for (var i in children) {
+	//			if (!children.hasOwnProperty(i)) {
+	//				continue;
+	//			}
+	//			_registerCategory(c, children[i]);
+	//		}
+	//	}
+	//	// return self
+	//	return TemplateEngine;
+	//};
 
 	TemplateEngine.registerTemplate = function(model) {
 		// restart current collection
@@ -1490,7 +1611,7 @@ var TemplateEngine = TemplateEngine || {
 			if (isContains) {
 				continue;
 			}
-			_registerCategory(WidgetCollection.widget().getCategoryCollection(),
+			WidgetCollection.widget().getCategoryCollection().register(
 				model.categories[i]
 			);
 		}
@@ -1501,6 +1622,7 @@ var TemplateEngine = TemplateEngine || {
 	var actionMapAppend = [];
     var actionMapEdit = [];
     var actionMapRemove = [];
+	var actionMapClone = [];
 
 	var _onAction = function(key, action, map) {
 		var actions;
@@ -1540,6 +1662,10 @@ var TemplateEngine = TemplateEngine || {
         return _onAction(key, action, actionMapRemove);
     };
 
+	TemplateEngine.onClone = function(key, action) {
+		return _onAction(key, action, actionMapClone);
+	};
+
 	var _trigger = function(item, map) {
 		var template;
 		if (!(item instanceof Item)) {
@@ -1575,6 +1701,10 @@ var TemplateEngine = TemplateEngine || {
 		_trigger(item, actionMapRemove);
     };
 
+	TemplateEngine._triggerClone = function(item) {
+		_trigger(item, actionMapRemove);
+	};
+
 	TemplateEngine.isCategory = function(item) {
 		return item instanceof Category;
 	};
@@ -1591,6 +1721,10 @@ var TemplateEngine = TemplateEngine || {
 		actionMapAppend = [];
 		actionMapEdit = [];
 		actionMapRemove = [];
+	};
+
+	TemplateEngine.getTemplateCollection = function() {
+		return WidgetCollection.widget().getTemplateCollection();
 	};
 
 	TemplateEngine.getCategoryCollection = function() {

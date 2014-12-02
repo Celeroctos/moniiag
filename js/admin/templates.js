@@ -272,24 +272,6 @@ $(document).ready(function() {
 		})
     }
 
-	var applyFieldsToForm = function(item, form, fields) {
-		for(var i = 0; i < fields.length; i++) {
-			var formField = form.find('#' + fields[i].formField);
-			if (fields[i].value) {
-				formField[0].value = fields[i].value;
-			} else {
-				if (item.length() > 0) {
-					formField[0].value = item.field(fields[i].modelField);
-				}
-			}
-			if (fields[i].hidden) {
-				formField.parent(".col-xs-9").parent(".form-group")
-					.css("visibility", "hidden")
-					.css("position", "absolute");
-			}
-		}
-	};
-
     var collection = null;
 
     $("#categorie-add-form").on('success', function(eventObj, ajaxData) {
@@ -453,13 +435,19 @@ $(document).ready(function() {
 				html: category.field("name")
 			})
 		);
-		$('#addElementPopup form').find("#parentId").append(
+		$('#addElementPopup form').find("#categorieId").append(
 			$("<option></option>", {
 				value: category.field("id"),
 				html: category.field("name")
 			})
 		);
-		$('#editElementPopup form').find("#parentId").append(
+		$('#editElementPopup form').find("#categorieId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#findCategoryPopup form').find("#categorieId").append(
 			$("<option></option>", {
 				value: category.field("id"),
 				html: category.field("name")
@@ -483,6 +471,76 @@ $(document).ready(function() {
 		$('#editElementPopup form').find("#parentId").children(
 			"option[value=\"" + category.field("id") + "\"]"
 		).remove();
+		$('#findCategoryPopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+	};
+
+	var onCloneCategory = function(that) {
+		var _item = function(item) {
+			item.field("categorie_id", that.field("id"));
+			elementFormModel.append($('#addElementPopup form'), function(field, info) {
+				if (item.has(info.native)) {
+					return item.field(info.native);
+				}
+				return null;
+			});
+			$.post(elementFormModel.form().attr("action"), elementFormModel.form().serialize(), function(ajaxData) {
+				// parse response
+				var ajaxData = $.parseJSON(ajaxData);
+				// check status
+				if (ajaxData.success != true) {
+					console.log(ajaxData); throw new Error("Assert");
+				}
+				// set element's model
+				item.model(ajaxData.element, true);
+				item.update();
+			});
+		};
+		var _category = function(item) {
+			if (!item.parent() || !TemplateEngine.isCategory(item.parent())) {
+				item.field("parent_id", -1);
+			}
+			categoryFormModel.append($('#addCategoriePopup form'), function(field, info) {
+				if (item.has(info.native)) {
+					return item.field(info.native);
+				}
+				return null;
+			});
+			$.post(categoryFormModel.form().attr("action"), categoryFormModel.form().serialize(), function(ajaxData) {
+				// parse response
+				ajaxData = $.parseJSON(ajaxData);
+				// check status
+				if (ajaxData.success != true) {
+					console.log(ajaxData); throw new Error("Assert");
+				}
+				// update data
+				item.model(ajaxData.category, true);
+				item.update();
+				// update parent_id list
+				appendParentSelectID(item);
+				// save other categories and elements
+				for (var i in item.children()) {
+					if (!item.children(i)) {
+						continue;
+					}
+					_save(item.children(i));
+				}
+			});
+		};
+		var _save = function(item) {
+			if (!item.has("id")) {
+				return false;
+			}
+			if (TemplateEngine.isCategory(item)) {
+				_category(item);
+			}
+			if (TemplateEngine.isItem(item)) {
+				_item(item);
+			}
+			return true;
+		};
+		_save(that);
 	};
 
     var onAppendCategory = function(that) {
@@ -505,11 +563,16 @@ $(document).ready(function() {
 					.css("position", "absolute");
 				return that.field(info.native);
 			} else {
+				if (that.has(info.native)) {
+					return that.field(info.native);
+				}
 				return null;
 			}
 		});
-        $('#addCategoriePopup').modal().draggable("disable")
-			.css("z-index", 1051);
+		$('#addCategoriePopup').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable").css("z-index", 1051);
     };
 
     var onEditCategory = function(that) {
@@ -524,8 +587,10 @@ $(document).ready(function() {
 			return that.field(info.native);
 		});
 		// display modal window
-		editCategoryPopup.modal().draggable("disable")
-			.css("z-index", 1051);
+		editCategoryPopup.modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable").css("z-index", 1051);
     };
 
     var onRemoveCategory = function(that) {
@@ -561,16 +626,16 @@ $(document).ready(function() {
 				field.parent(".col-xs-9").parent(".form-group")
 					.css("visibility", "hidden")
 					.css("position", "absolute");
-				if (!that.has(info.native)) {
-					return null;
-				} else {
-					return that.field(info.native);
-				}
-			} else {
-				return null;
 			}
+			if (that.has(info.native)) {
+				return that.field(info.native);
+			}
+			return null;
 		});
-		$('#addElementPopup').modal().draggable("disable");
+		$('#addElementPopup').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable");
     };
 
     var onEditElement = function(that) {
@@ -706,7 +771,10 @@ $(document).ready(function() {
             $('#element-edit-form select#type option').removeClass('no-display');
         }
         $.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
-        editElementPopup.modal().draggable("disable").disableSelection();
+        editElementPopup.modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable").disableSelection();
     };
 
 	var onRemoveElement = function(that) {
@@ -727,7 +795,11 @@ $(document).ready(function() {
 		TemplateEngine.registerTemplate(template)
             // Categories actions
             .onAppend("category", function() {
-                onAppendCategory(this);
+				if (this.template() && this.template().key() == "clone") {
+					onCloneCategory(this);
+				} else {
+					onAppendCategory(this);
+				}
             })
 			.onEdit("category", function() {
 				onEditCategory(this);
