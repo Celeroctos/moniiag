@@ -195,15 +195,16 @@ $(document).ready(function() {
                 'dataType' : 'json',
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == 'true') {
+                    if(data.success == true) {
                         $("#categories").trigger("reloadGrid");
                     } else {
                         // Удаляем предыдущие ошибки
                         $('#errorAddCategoriePopup .modal-body .row p').remove();
                         $('#errorAddCategoriePopup .modal-body .row').append("<p>" + data.error + "</p>")
-
+						if (data.message) {
+							$('#errorAddCategoriePopup .modal-body .row').append("<p>" + data.message + "</p>")
+						}
                         $('#errorAddCategoriePopup').modal({
-
                         });
                     }
                 }

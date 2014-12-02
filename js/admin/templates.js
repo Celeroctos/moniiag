@@ -251,13 +251,7 @@ $(document).ready(function() {
 			// will restart engine and append current categories
 			// restart template engine to remove all
 			// categories and it's elements
-			TemplateEngine.registerTemplate(data.template)
-				// Categories actions
-				.onAppend("category", function() {
-					if (this.template() && this.template().key() == "clone") {
-						onCloneCategory(this);
-					}
-				})
+			TemplateEngine.registerTemplate(data.template);
 			// display template engine designer modal window
 			$('#designTemplatePopup').modal({
 				backdrop: 'static',

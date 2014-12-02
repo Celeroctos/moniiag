@@ -343,10 +343,11 @@ class CategoriesController extends Controller {
 
     public function actionDelete($id) {
         try {
+			// Replace with Trigger
 			/*MedcardElement::model()->deleteAll("categorie_id = :id", array(
 				":id" => $id
 			)); */
-			MedcardCategorie::model()->updateAll(array(
+			/*MedcardCategorie::model()->updateAll(array(
 				"parent_id" => $id
 			), array(
 				"parent_id" => -1
@@ -355,7 +356,7 @@ class CategoriesController extends Controller {
 				"categorie_id" => $id
 			), array(
 				"categorie_id" => -1
-			));
+			));*/
 			MedcardCategorie::model()->deleteByPk($id);
             echo CJSON::encode(array(
 				'success' => true,
@@ -365,6 +366,7 @@ class CategoriesController extends Controller {
             // Это нарушение целостности FK
             echo CJSON::encode(array(
 				'success' => false,
+				'message' => $e->getMessage(),
                 'error' => 'На данную запись есть ссылки!'
 			));
         }

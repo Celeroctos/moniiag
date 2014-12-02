@@ -444,9 +444,9 @@ var TemplateEngine = TemplateEngine || {
 		for(var key in fields) {
 			var formField = form.find('#' + fields[key].name);
 			if (setField && formField.length) {
-				var v = (setField(
+				var v = setField(
 					formField, fields[key]
-				));
+				);
 				if (v) {
 					formField.val(v);
 				}
@@ -805,7 +805,6 @@ var TemplateEngine = TemplateEngine || {
 			} else {
 				me.edit();
 			}
-			//TemplateEngine._triggerEdit(me);
 		});
 	};
 
@@ -1350,6 +1349,8 @@ var TemplateEngine = TemplateEngine || {
 			} else {
 				me.field("parent_id", -1);
 			}
+		} else {
+			return false;
 		}
 		this.manager().invoke($('#addCategoriePopup form'),
 			function(field, info) {
@@ -1436,7 +1437,8 @@ var TemplateEngine = TemplateEngine || {
 	};
 
     Category.prototype.defaults = function() {
-        return {};
+        return {
+		};
     };
 
 	Category.prototype.update = function(state) {
@@ -1444,7 +1446,7 @@ var TemplateEngine = TemplateEngine || {
 		var s = this.render(
 			this.selector().children(".template-engine-items"),
 			this.selector().children(".template-engine-list")
-		).data("instance", this);
+		);// .data("instance", this);
 		// replace current selector with new
 		this.selector().replaceWith(s);
 		// replace instance's selector
@@ -1453,11 +1455,7 @@ var TemplateEngine = TemplateEngine || {
 
     Category.prototype.render = function(items, categories) {
 		var that = this;
-		try {
-			var name = this.field("name");
-		} catch (ignore) {
-			name = "Категория";
-		}
+		var name = this.has("name") ? this.field("name") : "Категория";
 		if (name.length > CATEGORY_STRING_LIMIT) {
 			name = name.substring(0, CATEGORY_STRING_LIMIT) + "...";
 		}
