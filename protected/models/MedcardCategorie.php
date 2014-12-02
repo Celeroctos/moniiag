@@ -1,12 +1,11 @@
 <?php
 class MedcardCategorie extends MisActiveRecord {
-    public static function model($className=__CLASS__)
-    {
+
+    public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    public function tableName()
-    {
+    public function tableName() {
         return 'mis.medcard_categories';
     }
 
@@ -26,6 +25,26 @@ class MedcardCategorie extends MisActiveRecord {
         }
         return array();
     }
+
+	public function saveCategory($category) {
+		try {
+			return Yii::app()->db->createCommand()
+				->insert("mis.medcard_categories", array(
+					'name' => $category["name"],
+					'parent_id' => $category["parent_id"],
+					'position' => $category["position"],
+					'is_dynamic' => $category["is_dynamic"],
+					'path' => $category["path"],
+					'is_wrapped' => $category["is_wrapped"]
+				));
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'status' => false
+			)); die;
+		}
+		return 0;
+	}
 
 	public function getMatches($pattern) {
         try {

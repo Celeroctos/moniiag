@@ -76,22 +76,75 @@ class CategoriesController extends Controller {
         }
     }
 
-	private function assignChildren(&$row, $model) {
+	private function assignChildren(&$row, $categoryModel = null) {
+		if ($categoryModel == null) {
+			$categoryModel = new MedcardCategorie();
+		}
 		$id = intval($row["id"]);
-		$children = $model->getChildren($id);
+		$children = $categoryModel->getChildren($id);
 		foreach ($children as $i => &$child) {
-			$this->assignChildren($child, $model);
+			$this->assignChildren($child, $categoryModel);
 		}
 		$row["children"] = $children;
-		$row["elements"] = $model->getElements($id);
+		$row["elements"] = $categoryModel->getElements($id);
 	}
 
 	public function actionOne($id) {
-		$model = new MedcardCategorie();
-		$category = $model->getOne($id);
-		$this->assignChildren($category, $model);
+		$categoryModel = new MedcardCategorie();
+		$category = $categoryModel->getOne($id);
+		$this->assignChildren($category, $categoryModel);
 		echo json_encode(array(
-			'category' => $category
+			'model' => $category
+		));
+	}
+
+	private function cloneCategoriesAndElements(&$category) {
+		$row = new MedcardCategorie();
+		$row->name = $category["name"];
+		$row->parent_id = $category["parent_id"];
+		$row->position = $category["position"];
+		$row->is_dynamic = $category["is_dynamic"];
+		$row->path = $category["path"];
+		$row->is_wrapped = $category["is_wrapped"];
+		$row->save();
+		$categoryRowID = $row->id;
+		$category["id"] = $categoryRowID;
+		foreach ($category["elements"] as $i => &$element) {
+			$row = new MedcardElement();
+			$row->type = $element["type"];
+			$row->categorie_id = $categoryRowID;
+			$row->label = $element["label"];
+			$row->guide_id = $element["guide_id"];
+			$row->allow_add = $element["allow_add"];
+			$row->label_after = $element["label_after"];
+			$row->size = $element["size"];
+			$row->is_wrapped = $element["is_wrapped"];
+			$row->path = $element["path"];
+			$row->position = $element["position"];
+			$row->config = $element["config"];
+			$row->default_value = $element["default_value"];
+			$row->label_display = $element["label_display"];
+			$row->is_required = $element["is_required"];
+			$row->not_printing_values = $element["not_printing_values"];
+			$row->hide_label_before = $element["hide_label_before"];
+			$row->save();
+			$element["categorie_id"] = $categoryRowID;
+			$element["id"] = $row->id;
+		}
+		foreach ($category["children"] as $i => &$category) {
+			$category["parent_id"] = $categoryRowID;
+			$this->cloneCategoriesAndElements($category);
+		}
+	}
+
+	public function actionClone($id) {
+		$categoryModel = new MedcardCategorie();
+		$elementModel = new MedcardElement();
+		$category = $categoryModel->getOne($id);
+		$this->assignChildren($category, $categoryModel);
+		$this->cloneCategoriesAndElements($category, $categoryModel, $elementModel);
+		echo json_encode(array(
+			'model' => $category
 		));
 	}
 
@@ -204,7 +257,7 @@ class CategoriesController extends Controller {
             echo CJSON::encode(array(
                 'success' => true,
                 'text' => $msg,
-                'category' => $categorie
+                'model' => $categorie
             ));
         }
     }
@@ -290,14 +343,30 @@ class CategoriesController extends Controller {
 
     public function actionDelete($id) {
         try {
-            $categorie = MedcardCategorie::model()->findByPk($id);
-            $categorie->delete();
-            echo CJSON::encode(array('success' => 'true',
-                'text' => 'Категория успешно удалена.'));
+			/*MedcardElement::model()->deleteAll("categorie_id = :id", array(
+				":id" => $id
+			)); */
+			MedcardCategorie::model()->updateAll(array(
+				"parent_id" => $id
+			), array(
+				"parent_id" => -1
+			));
+			MedcardElement::model()->updateAll(array(
+				"categorie_id" => $id
+			), array(
+				"categorie_id" => -1
+			));
+			MedcardCategorie::model()->deleteByPk($id);
+            echo CJSON::encode(array(
+				'success' => true,
+                'text' => 'Категория успешно удалена.'
+			));
         } catch(Exception $e) {
             // Это нарушение целостности FK
-            echo CJSON::encode(array('success' => 'false',
-                'error' => 'На данную запись есть ссылки!'));
+            echo CJSON::encode(array(
+				'success' => false,
+                'error' => 'На данную запись есть ссылки!'
+			));
         }
     }
 

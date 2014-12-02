@@ -275,7 +275,7 @@ class ElementsController extends Controller {
             echo CJSON::encode(array(
 				'success' => true,
 				'text' => $msg,
-				'element' => $element
+				'model' => $element
 			));
         }
     }

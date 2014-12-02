@@ -313,6 +313,155 @@ var TemplateEngine = TemplateEngine || {
         }
     };
 
+	/*
+	  ___ ___  ___ __  __         __  __  ___  ___  ___ _            __  __   _   _  _   _   ___ ___ ___
+	 | __/ _ \| _ \  \/  |  ___  |  \/  |/ _ \|   \| __| |     ___  |  \/  | /_\ | \| | /_\ / __| __| _ \
+	 | _| (_) |   / |\/| | |___| | |\/| | (_) | |) | _|| |__  |___| | |\/| |/ _ \| .` |/ _ \ (_ | _||   /
+	 |_| \___/|_|_\_|  |_|       |_|  |_|\___/|___/|___|____|       |_|  |_/_/ \_\_|\_/_/ \_\___|___|_|_\
+
+	 */
+
+	/**
+	 * Класс, реализующий базовый функционал для работы с моделями CActiveForm
+	 * и другими, в частности отвечает за преобразование имен из обычной нотации
+	 * таблиц к нотации JavaScript и создает готовые формы для отправки запросов
+	 * @constructor - Ничего не принимает
+	 * @param [fields] {String} - Строка, в которой (через запятую) указываются
+	 *      названия всех полей столбцов таблицы
+	 */
+	var FormModelManager = function(fields) {
+		if (arguments.length > 0) {
+			this._fieldMap = this.add(fields || "");
+		} else {
+			this._fieldMap = {};
+		}
+		this._form = null;
+	};
+
+	/**
+	 * Статический метод, преобразует имя из обычной нотации названия столбца
+	 * в таблице базы данных к нотации JavaScript, например столбец "parent_id"
+	 * будет преобразован к "parentId" и т.д.
+	 * @static - Статический метод, не может имеет контекста "this"
+	 * @param name {String} - Название столбца таблицы, например "parent_id"
+	 * @returns {String} - Преобразованную стороку к JavaScript нотации
+	 */
+	FormModelManager.convertField = function(name) {
+		var words = name.split("_");
+		var result = "";
+		for (var i in words) {
+			if (i > 0) {
+				result += words[i].charAt(0).toUpperCase() + words[i].substr(1);
+			} else {
+				result = words[i];
+			}
+		}
+		return result;
+	};
+
+	/**
+	 * Удалить все элементы из менеджера моделей формы
+	 */
+	FormModelManager.prototype.clear = function() {
+		this._fieldMap = [];
+	};
+
+	/**
+	 * Добавить новый элементы или элементы, добавляются как срока
+	 * разделенные запятой. Если перед именем элемента указать
+	 * символ /, то он по умолчанию получит модификатор "hidden"
+	 * @param fields {String} - Строка, в которой (через запятую) указываются
+	 *      названия всех полей столбцов таблицы
+	 * @returns {{}} - Созданных массив со всеми элементами
+	 */
+	FormModelManager.prototype.add = function(fields) {
+		this._fieldMap = this._fieldMap || {};
+		var fieldArray = fields.split(",");
+		for (var i in fieldArray) {
+			var native = fieldArray[i].trim();
+			var hidden = false;
+			if (native[0] == '/') {
+				native = native.substr(1);
+				hidden = true;
+			}
+			this._fieldMap[native] = {
+				native: native,
+				name: FormModelManager.convertField(native),
+				hidden: hidden
+			};
+		}
+		return this._fieldMap;
+	};
+
+	/**
+	 * Удалить элементы из менеджера, удаляются таким же образом
+	 * как и добавляются (список имен столбцов указывается через
+	 * запятую)
+	 * @param fields {String} - Строка, в которой (через запятую) указываются
+	 *      названия всех полей столбцов таблицы
+	 * @returns {{}} - Созданных массив со всеми элементами
+	 */
+	FormModelManager.prototype.remove = function(fields) {
+		this._fieldMap = this._fieldMap || {};
+		var fieldArray = fields.split(",");
+		for (var i in fieldArray) {
+			var native = fieldArray[i].trim();
+			if (!this._fieldMap[native]) {
+				continue;
+			}
+			this._fieldMap.splice(native, 1);
+		}
+		return this._fieldMap;
+	};
+
+	/**
+	 * Возвращает список всех зарегестрированных полей
+	 * @param [index] - Если индекс не указан, то возвращается массив со
+	 *      всеми элементами, иначе значение элемента по индексу
+	 * @returns {Array|*} - Массив со всеми элементами или элемент по индексу
+	 */
+	FormModelManager.prototype.fields = function(index) {
+		if (arguments.length > 0) {
+			if (this._fieldMap) {
+				return this._fieldMap[index];
+			} else {
+				return null;
+			}
+		} else {
+			return this._fieldMap || [];
+		}
+	};
+
+	/**
+	 * Привязывает созданные переменные к существующей форме через селектор
+	 * @param form {jQuery} - Селектор формы для привязки
+	 * @param [setField] {Function} - Функция, которая прячет объект, принимает
+	 *      текущее поле и инофрмацию о поле
+	 */
+	FormModelManager.prototype.invoke = function(form, setField) {
+		var fields = this.fields();
+		this._form = form;
+		for(var key in fields) {
+			var formField = form.find('#' + fields[key].name);
+			if (setField && formField.length) {
+				var v = (setField(
+					formField, fields[key]
+				));
+				if (v) {
+					formField.val(v);
+				}
+			}
+		}
+	};
+
+	/**
+	 * Возвращает текущую форму
+	 * @returns {jQuery}
+	 */
+	FormModelManager.prototype.form = function() {
+		return this._form;
+	};
+
     /*
       __  __  ___  ___  ___ _
      |  \/  |/ _ \|   \| __| |
@@ -479,21 +628,6 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /*
-       ___ _    ___  _  _ _  _   _   ___ _    ___
-      / __| |  / _ \| \| | \| | /_\ | _ ) |  | __|
-     | (__| |_| (_) | .` | .` |/ _ \| _ \ |__| _|
-      \___|____\___/|_|\_|_|\_/_/ \_\___/____|___|
-
-     */
-
-    var Clonnable = function() {
-    };
-
-    Clonnable.prototype.clone = function(parent, model, selector) {
-        assert("Clonnable/clone() : \"You must implements 'clone' method\"");
-    };
-
-    /*
       ___  ___    _   ___  ___   _   ___ _    ___
      |   \| _ \  /_\ / __|/ __| /_\ | _ ) |  | __|
      | |) |   / / _ \ (_ | (_ |/ _ \| _ \ |__| _|
@@ -523,6 +657,47 @@ var TemplateEngine = TemplateEngine || {
         assert("Droppable/drop() : \"You must implement 'drop' method\"");
     };
 
+	/*
+	  ___ ___ ___  _   _ ___ ___ _____         __  __   _   _  _   _   ___ ___ ___
+	 | _ \ __/ _ \| | | | __/ __|_   _|  ___  |  \/  | /_\ | \| | /_\ / __| __| _ \
+	 |   / _| (_) | |_| | _|\__ \ | |   |___| | |\/| |/ _ \| .` |/ _ \ (_ | _||   /
+	 |_|_\___\__\_\\___/|___|___/ |_|         |_|  |_/_/ \_\_|\_/_/ \_\___|___|_|_\
+
+	 */
+
+	/**
+	 * @param url {String}
+	 * @param modal {jQuery}
+	 * @constructor
+	 */
+	var RequestManager = function(fields) {
+		this._manager = new FormModelManager(fields);
+	};
+
+	RequestManager.prototype.manager = function() {
+		return this._manager;
+	};
+
+	RequestManager.prototype.write = function() {
+		assert("RequestManager/save() : \"You must implement 'save' method\"");
+	};
+
+	RequestManager.prototype.edit = function() {
+		assert("RequestManager/edit() : \"You must implement 'edit' method\"");
+	};
+
+	RequestManager.prototype.erase = function() {
+		assert("RequestManager/erase() : \"You must implement 'erase' method\"");
+	};
+
+	RequestManager.prototype.refresh = function() {
+		assert("RequestManager/refresh() : \"You must implement 'refresh' method\"");
+	};
+
+	RequestManager.prototype.read = function() {
+		assert("RequestManager/read() : \"You must implement 'read' method\"");
+	};
+
     /*
        ___ ___  __  __ ___  ___  _  _ ___ _  _ _____
       / __/ _ \|  \/  | _ \/ _ \| \| | __| \| |_   _|
@@ -531,10 +706,11 @@ var TemplateEngine = TemplateEngine || {
 
      */
 
-    var Component = function(parent, model, selector) {
+    var Component = function(parent, model, selector, fields) {
 		Model.call(this, model);
         Node.call(this, parent);
         Selectable.call(this, selector || this.render());
+		RequestManager.call(this, fields);
         if (this.drag) {
             this.drag();
         }
@@ -549,11 +725,15 @@ var TemplateEngine = TemplateEngine || {
     extend(Component, Node);
     extend(Component, Selectable);
     extend(Component, Model);
-    extend(Component, Clonnable);
+	extend(Component, RequestManager);
 
     Component.prototype.render = function() {
         assert("Component/render() : \"You must override 'render' method\"");
     };
+
+	Component.prototype.clone = function(parent, model, selector) {
+		assert("Clonnable/clone() : \"You must implements 'clone' method\"");
+	};
 
     Component.prototype.glyphicon = function() {
 		if (!this.length() || !this.has("id")) {
@@ -615,12 +795,17 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	Component.prototype._renderEditButton = function(style) {
-		var that = this;
+		var me = this;
 		return $("<span></span>", {
-			class: that.glyphicon(),
+			class: me.glyphicon(),
 			style: style || "margin-right: 5px;"
 		}).click(function() {
-			TemplateEngine._triggerEdit(that);
+			if (!me.has("id")) {
+				me.write();
+			} else {
+				me.edit();
+			}
+			//TemplateEngine._triggerEdit(me);
 		});
 	};
 
@@ -631,17 +816,13 @@ var TemplateEngine = TemplateEngine || {
 			style: style || "margin-right: 5px; margin-left: 3px;"
 		}).click(function() {
 			that.remove();
-			TemplateEngine._triggerRemove(that);
+			that.erase();
 		});
 	};
 
 	Component.prototype.defaults = function() {
 		return {};
 	};
-
-    Component.prototype.offset = function() {
-		assert("Component/offset() : \"You must implement 'offset' method\"");
-    };
 
 	Component.prototype.update = function() {
 		// render new selector
@@ -815,8 +996,24 @@ var TemplateEngine = TemplateEngine || {
 		// we need to save template before running render
 		this._elementTemplate = template;
 		// call super constructors
-        Component.call(this, parent, model, selector);
-        Draggable.call(this);
+        Component.call(this, parent, model, selector,
+			"id," +
+			"/type," +
+			"/categorie_id," +
+			"label," +
+			"guide_id," +
+			"allow_add," +
+			"is_required," +
+			"label_after," +
+			"size," +
+			"is_wrapped," +
+			"/position," +
+			"config," +
+			"default_value," +
+			"label_display," +
+			"show_dynamic," +
+			"hide_label_before"
+		);
 		// set default element type
 		if (template.id()) {
 			this.field("type", template.id());
@@ -824,6 +1021,181 @@ var TemplateEngine = TemplateEngine || {
     };
 
     extend(Item, Component);
+
+	Item["-instance"] = null;
+
+	var _updateItem = function(event, data) {
+		var json = $.parseJSON(data);
+		if (!json.success) {
+			throw new Error(json);
+		}
+		Item["-instance"].model(json["model"], true);
+		Item["-instance"].update();
+	};
+
+	$(document).ready(function() {
+		$("#element-add-form").on("success", _updateItem);
+		$("#element-edit-form").on("success", _updateItem);
+	});
+
+	Item.prototype.write = function(form) {
+		var me = this;
+		if (!this.has("position") || !+this.field("position")) {
+			this.field("position", 1);
+		}
+		if (this.parent().has("id")) {
+			this.field("categorie_id", this.parent().field("id"));
+		} else {
+			return false;
+		}
+		this.manager().invoke($('#addElementPopup form'),
+			function(field, info) {
+				if (info.hidden) {
+					field.parent(".col-xs-9").parent(".form-group")
+						.css("visibility", "hidden")
+						.css("position", "absolute");
+				}
+				if (me.has(info.native)) {
+					return me.field(info.native);
+				}
+				return null;
+			}
+		);
+		Item["-instance"] = this;
+		$('#addElementPopup').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable");
+	};
+
+	Item.prototype.edit = function() {
+		var me = this;
+		if (!this.has("position") || !+this.field("position")) {
+			this.field("position", 1);
+		}
+		if (this.parent().has("id")) {
+			this.field("categorie_id", this.parent().field("id"));
+		} else {
+			return false;
+		}
+		console.log(this.parent());
+		var data = {
+			data: me.model()
+		};
+		$('#editElementPopup #showDynamic').prop('disabled', data.data['type'] == 4);
+		this.manager().invoke($('#editElementPopup form'),
+			function(field, info) {
+				if (info.hidden) {
+					field.parent(".col-xs-9").parent(".form-group")
+						.css("visibility", "hidden")
+						.css("position", "absolute");
+				}
+				var r = me.has(info.native) ? me.field(info.native) : null;
+				// Подгрузка значений справочника для дефолтного значения
+				if (info.name == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
+					$('select#guideId').trigger('change', [data.data[info.name]]);
+					return r;
+				}
+				var formField = me.manager().form().find('#' + info.name).val(
+					data.data[info.name]
+				);
+				// Таблица
+				if (info.name == 'config') {
+					if(typeof data.data['config'] != 'object') {
+						var config = $.parseJSON(data.data['config']);
+					} else {
+						var config = data.data['config'];
+					}
+					if (data.data['type'] == 4) {
+						printHeadersTable(config,
+							$('#editElementPopup .table-config-headers tbody'),
+							$('#editElementPopup .colsHeaders'),
+							$('#editElementPopup .rowsHeaders'),
+							$('#editElementPopup #numRows'),
+							$('#editElementPopup #numCols')
+						);
+						printDefaultValuesTable(config["numCols"], config["numRows"]);
+						if (config.values != undefined && config.values != null) {
+							writeDefValuesFromConfig(config.values);
+						}
+					}
+					if (data.data['type'] == 5) {
+						$('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
+						$('#editElementPopup #numberFieldMaxValue').val(config["maxValue"]);
+						$('#editElementPopup #numberFieldMinValue').val(config["minValue"]);
+						$('#editElementPopup #numberStep').val(config.step);
+					}
+					if (data.data['type'] == 6) {
+						$('#editElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
+						if (config != null && config != '') {
+							$('#editElementPopup #dateFieldMaxValue').val(config["maxValue"]);
+							$('#editElementPopup #dateFieldMinValue').val(config["minValue"]);
+						} else {
+							// Если конфига нет - надо просто поставить пустое значение
+							$('#editElementPopup #dateFieldMaxValue').val('');
+							$('#editElementPopup #dateFieldMinValue').val('');
+						}
+						// Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
+						$('#editElementPopup #dateFieldMaxValue').trigger('change');
+						$('#editElementPopup #dateFieldMinValue').trigger('change');
+					}
+				}
+				// Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
+				//    в изменении типа
+				if (data.data["is_dependencies"] == 1) {
+					$('#element-edit-form select#type option:not([value=2]):not([value=3])').addClass('no-display');
+				} else {
+					$('#element-edit-form select#type option').removeClass('no-display');
+				}
+				$.proxy(me.manager().form().find("select#type").trigger('change'),
+					me.manager().form().find("select#type")
+				);
+				return r;
+			}
+		);
+		Item["-instance"] = this;
+		$('#editElementPopup').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable");
+	};
+
+	Item.prototype.erase = function() {
+		if (!this.has("id")) {
+			return false;
+		}
+		$.ajax({
+			'url' : globalVariables.baseUrl + '/admin/elements/delete?id=' + this.field("id"),
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET'
+		});
+	};
+
+	Item.prototype.refresh = function() {
+		var me = this;
+		if (this.test("position") && this.test("categorie_id")) {
+			return false;
+		}
+		if (this.parent().has("id")) {
+			this.field("categorie_id", this.parent().field("id"));
+		} else {
+			return false;
+		}
+		this.manager().invoke($('#editElementPopup form'), function(field, info) {
+			if (!me.has(info.native)) {
+				return null;
+			}
+			return me.field(info.native);
+		});
+		$.post(this.manager().form().attr("action"),
+			this.manager().form().serialize(), updatePercents
+		);
+		return true;
+	};
+
+	Item.prototype.read = function(form, id) {
+	};
 
 	Item.prototype._renderLabelBefore = function() {
 		var label = this.field("label");
@@ -938,13 +1310,121 @@ var TemplateEngine = TemplateEngine || {
      */
 
     var Category = function(parent, model, selector, template) {
-        Component.call(this, parent, model, selector);
+        Component.call(this, parent, model, selector,
+			"id," +
+			"name," +
+			"/parent_id," +
+			"is_dynamic," +
+			"/position," +
+			"is_wrapped"
+		);
 		this._template = template;
     };
 
     extend(Category, Component);
     extend(Category, Draggable);
     extend(Category, Droppable);
+
+	Category["-instance"] = null;
+
+	var _updateCategory = function(event, data) {
+		var json = $.parseJSON(data);
+		if (!json.success) {
+			throw new Error(json);
+		}
+		Category["-instance"].model(json["model"], true);
+		Category["-instance"].update();
+		_appendParentSelectID(Category["-instance"]);
+	};
+
+	$(document).ready(function() {
+		$("#categorie-add-form").on("success", _updateCategory);
+		$("#categorie-edit-form").on("success", _updateCategory);
+	});
+
+	Category.prototype.write = function() {
+		var me = this;
+		if (this.parent().has("id")) {
+			if (!(this.parent() instanceof CategoryCollection)) {
+				me.field("parent_id", this.parent().field("id"));
+			} else {
+				me.field("parent_id", -1);
+			}
+		}
+		this.manager().invoke($('#addCategoriePopup form'),
+			function(field, info) {
+				if (info.hidden) {
+					field.parent(".col-xs-9").parent(".form-group")
+						.css("visibility", "hidden")
+						.css("position", "absolute");
+					return me.field(info.native);
+				} else {
+					if (me.has(info.native)) {
+						return me.field(info.native);
+					}
+					return null;
+				}
+			}
+		);
+		Category["-instance"] = this;
+		$('#addCategoriePopup').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable").css("z-index", 1051);
+	};
+
+	Category.prototype.edit = function() {
+		var me = this;
+		this.manager().invoke($('#editCategoriePopup form'), function(field, info) {
+			if (info.hidden) {
+				field.parent(".col-xs-9").parent(".form-group")
+					.css("visibility", "hidden")
+					.css("position", "absolute");
+			}
+			return me.field(info.native);
+		});
+		Category["-instance"] = this;
+		$('#editCategoriePopup').modal({
+			backdrop: 'static',
+			keyboard: false
+		}).draggable("disable").css("z-index", 1051);
+	};
+
+	Category.prototype.erase = function() {
+		if (!this.has("id")) {
+			return false;
+		}
+		$.ajax({
+			'url' : globalVariables.baseUrl + '/admin/categories/delete?id=' + this.field("id"),
+			'cache' : false,
+			'dataType' : 'json',
+			'type' : 'GET'
+		});
+		_removeParentSelectID(this);
+	};
+
+	Category.prototype.refresh = function() {
+		var me = this;
+		if (!this.parent() || this.parent() instanceof CategoryCollection) {
+			this.field("parent_id", -1);
+		}
+		if (this.test("position") && this.test("parent_id")) {
+			return false;
+		}
+		this.manager().invoke($('#editCategoriePopup form'), function(field, info) {
+			if (!me.has(info.native)) {
+				return null;
+			}
+			return me.field(info.native);
+		});
+		$.post(this.manager().form().attr("action"),
+			this.manager().form().serialize(), updatePercents
+		);
+		return true;
+	};
+
+	Category.prototype.read = function() {
+	};
 
     Category.prototype.clone = function(parent, model, selector) {
         // TODO You must also clone all category elements
@@ -959,30 +1439,7 @@ var TemplateEngine = TemplateEngine || {
         return {};
     };
 
-	Category.prototype.offset = function() {
-		try {
-			return +this.field("position");
-		} catch (e) {
-			// find previous node
-			var prevNode = this.previous();
-			// look though all previous nodes and
-			// try to find any declared, if can't
-			// then it will ba saved with 1 index
-			while (prevNode) {
-				if (!(prevNode instanceof Category)) {
-					break;
-				}
-				try {
-					return +prevNode.field("position") + 1;
-				} catch (e) {
-					prevNode = prevNode.previous();
-				}
-			}
-			return 1;
-		}
-	};
-
-	Category.prototype.update = function() {
+	Category.prototype.update = function(state) {
 		// render new selector
 		var s = this.render(
 			this.selector().children(".template-engine-items"),
@@ -1166,6 +1623,13 @@ var TemplateEngine = TemplateEngine || {
 		// don't update category collection
 	};
 
+	CategoryCollection.prototype.refresh = function() {
+		// don't refresh category collection
+	};
+
+	CategoryCollection.prototype.read = function() {
+	};
+
     CategoryCollection.prototype.append = function(element) {
         if (this === element) {
             return false;
@@ -1191,35 +1655,6 @@ var TemplateEngine = TemplateEngine || {
     CategoryCollection.prototype.drop = function() {
         var that = this;
 		var template = null;
-		$("#findCategoryPopup form .btn-primary").click(function() {
-			var value = $("#findCategoryPopup form #parentId").val();
-			if (value < 0) {
-				return true;
-			}
-			$.ajax({
-				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
-				'cache': false,
-				'dataType': 'json',
-				'type': 'GET'
-			}).done(function(data) {
-				that.register(data["category"], true, TemplateEngine.getTemplateCollection()
-					.find("category"));
-			});
-		});
-		$("#findCategoryPopup form .btn-success").click(function() {
-			var value = $("#findCategoryPopup form #parentId").val();
-			if (value < 0) {
-				return true;
-			}
-			$.ajax({
-				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
-				'cache': false,
-				'dataType': 'json',
-				'type': 'GET'
-			}).done(function(data) {
-				that.register(data["category"], false, template);
-			});
-		});
 		var finish = function(item, parent) {
 			// get item and parent instances (to reappend child)
 			var itemInstance = $(item).data("instance");
@@ -1311,10 +1746,6 @@ var TemplateEngine = TemplateEngine || {
 		}
 		// create new category without parent and selector
 		var c = new Category(null, model, null, template);
-		// if we have clone template then trigger append action
-		if (template && template.key() === "clone") {
-			TemplateEngine._triggerAppend(c);
-		}
 		// look though elements in category's model and
 		// append it to just created category
 		for (var i in elements) {
@@ -1351,10 +1782,11 @@ var TemplateEngine = TemplateEngine || {
 			}
 			for (var i in children) {
 				CategoryCollection.prototype.register.call(
-					c, children[i], clone, template
+					c, children[i], clone
 				);
 			}
 		}
+		return c;
 	};
 
     /*
@@ -1515,6 +1947,63 @@ var TemplateEngine = TemplateEngine || {
 
 	 */
 
+	var _appendParentSelectID = function(category) {
+		if (!category.has("id") || !category.has("name")) {
+			return false;
+		}
+		$('#addCategoriePopup form').find("#parentId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#editCategoriePopup form').find("#parentId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#addElementPopup form').find("#categorieId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#editElementPopup form').find("#categorieId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+		$('#findCategoryPopup form').find("#categorieId").append(
+			$("<option></option>", {
+				value: category.field("id"),
+				html: category.field("name")
+			})
+		);
+	};
+
+	var _removeParentSelectID = function(category) {
+		if (!category.has("id")) {
+			return false;
+		}
+		$('#addCategoriePopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#editCategoriePopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#addElementPopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#editElementPopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+		$('#findCategoryPopup form').find("#parentId").children(
+			"option[value=\"" + category.field("id") + "\"]"
+		).remove();
+	};
+
 	var _getTemplateByID = function(id) {
 		// get template collection's children
 		var children = collection.children();
@@ -1654,6 +2143,10 @@ var TemplateEngine = TemplateEngine || {
 		return item instanceof Category;
 	};
 
+	TemplateEngine.isCollection = function(item) {
+		return item instanceof CategoryCollection;
+	};
+
 	TemplateEngine.isItem = function(item) {
 		return item instanceof Item;
 	};
@@ -1675,5 +2168,108 @@ var TemplateEngine = TemplateEngine || {
 	TemplateEngine.getCategoryCollection = function() {
 		return WidgetCollection.widget().getCategoryCollection();
 	};
+
+	var countOfItemsToSave = 0;
+	var totalSavedItems = 0;
+
+	var updatePercents = function() {
+		// update percents value
+		$("#savingTemplatePopup .template-engine-saving-pc").text(
+			(++totalSavedItems / countOfItemsToSave * 100).toFixed(0) + "%"
+		);
+		// destroy modal
+		if (countOfItemsToSave != 0 && totalSavedItems >= countOfItemsToSave) {
+			$("#savingTemplatePopup").modal("hide");
+		}
+	};
+
+	var saveTemplate = function() {
+		var cc = TemplateEngine.getCategoryCollection();
+		cc.compute(true);
+		countOfItemsToSave = 0;
+		totalSavedItems = 0;
+		var update = function(item) {
+			if (!item.has("id")) {
+				return false;
+			}
+			for (var i in item.children()) {
+				if (!item.children(i)) {
+					continue;
+				}
+				update(item.children(i));
+			}
+			try {
+				if (item.refresh()) {
+					++countOfItemsToSave;
+				}
+			} catch(ignore) {
+			}
+			return true;
+		};
+		update(cc);
+		var json = "[";
+		for (var i in cc.children()) {
+			if (!cc.children(i) || !cc.children(i).has("id")) {
+				continue;
+			}
+			json += cc.children(i).field("id") + ",";
+		}
+		if (json.length > 1) {
+			json = json.substring(0, json.length - 1);
+		}
+		json += "]";
+		// set request on server to update template categories
+		$.ajax({
+			'url': globalVariables.baseUrl + "/admin/templates/utc?tid="
+			+ cc.field("id") + "&cids=" + json,
+			'cache': false,
+			'dataType': 'json',
+			'type': 'GET'
+		});
+		if (countOfItemsToSave > 0) {
+			if (totalSavedItems < countOfItemsToSave) {
+				$("#savingTemplatePopup").modal({
+					backdrop: 'static',
+					keyboard: false
+				}).draggable("disable");
+			}
+		}
+	};
+
+	$(document).ready(function() {
+
+		$("#designTemplatePopup").find(".btn-primary").click(saveTemplate);
+
+		$("#findCategoryPopup form .btn-primary").click(function() {
+			var value = $("#findCategoryPopup form #parentId").val();
+			if (value < 0) {
+				return true;
+			}
+			$.ajax({
+				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
+				'cache': false,
+				'dataType': 'json',
+				'type': 'GET'
+			}).done(function(data) {
+				TemplateEngine.getCategoryCollection()
+					.register(data["model"], true);
+			});
+		});
+		$("#findCategoryPopup form .btn-success").click(function() {
+			var value = $("#findCategoryPopup form #parentId").val();
+			if (value < 0) {
+				return true;
+			}
+			$.ajax({
+				'url': globalVariables.baseUrl + '/admin/categories/clone?id=' + value,
+				'cache': false,
+				'dataType': 'json',
+				'type': 'GET'
+			}).done(function(data) {
+				TemplateEngine.getCategoryCollection()
+					.register(data["model"], false);
+			});
+		});
+	});
 
 })(TemplateEngine);

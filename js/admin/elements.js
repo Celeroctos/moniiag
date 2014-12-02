@@ -595,7 +595,7 @@ $(document).ready(function () {
 					$('#errorAddElementPopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
 				}
 			}
-			$('#errorAddElementPopup').modal();
+			$('#errorAddElementPopup').modal().css("z-index", 1100);
 		}
 	});
 

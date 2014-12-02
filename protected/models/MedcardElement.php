@@ -1,5 +1,6 @@
 <?php
 class MedcardElement extends MisActiveRecord {
+
     private $typesList = array( // Типы контролов
         'Текстовое поле',
         'Текстовая область',
@@ -11,13 +12,11 @@ class MedcardElement extends MisActiveRecord {
         'Двухколоночный список'
     );
 
-    public static function model($className=__CLASS__)
-    {
+    public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    public function tableName()
-    {
+    public function tableName() {
         return 'mis.medcard_elements';
     }
 
@@ -37,6 +36,36 @@ class MedcardElement extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+
+	public function saveElement($element) {
+		try {
+			return Yii::app()->db->createCommand()
+				->insert("mis.medcard_elements", array(
+					'type' => $element["type"],
+					'categorie_id' => $element["categorie_id"],
+					'label' => $element["label"],
+					'guide_id' => $element["guide_id"],
+					'allow_add' => $element["allow_add"],
+					'label_after' => $element["label_after"],
+					'size' => $element["size"],
+					'is_wrapped' => $element["is_wrapped"],
+					'path' => $element["path"],
+					'position' => $element["position"],
+					'config' => $element["config"],
+					'default_value' => $element["default_value"],
+					'label_display' => $element["label_display"],
+					'is_required' => $element["is_required"],
+					'not_printing_values' => $element["not_printing_values"],
+					'hide_label_before' => $element["hide_label_before"]
+				));
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'status' => false
+			)); die;
+		}
+		return 0;
+	}
 
     public function getTypesList() {
         return $this->typesList;
@@ -86,7 +115,6 @@ class MedcardElement extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
-
 
     // Получить все значения справочника элемента по id элемента
     public function getGuideValuesByElementId($id) {
