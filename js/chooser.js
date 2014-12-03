@@ -152,6 +152,7 @@ $(document).ready(function() {
                                 }
                             }
                             addVariantToChoosed($(chooser).find('.variants li.active'));
+							current = null;
                         }
                         else
                         {
@@ -163,6 +164,7 @@ $(document).ready(function() {
                         }
 
                         e.preventDefault();
+						e.stopPropagation();
                         return false;
                     }
 
@@ -1479,8 +1481,7 @@ $(document).ready(function() {
             {
                 $('#policyRegionHidden input').val($.fn['regionPolicyChooser'].getChoosed()[0].id);
                 // Добавляем в поле доп параметров чюююзера "Страховая компания" id региона
-                $.fn['insuranceChooser'].addExtraParam('region_insurance',
-                    $.fn['regionPolicyChooser'].getChoosed()[0].id);
+                $.fn['insuranceChooser'].addExtraParam('region_insurance', $.fn['regionPolicyChooser'].getChoosed()[0].id);
             },
             'afterRemove' : function() {
                 $('#policyRegionHidden input').val('');

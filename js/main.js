@@ -798,10 +798,10 @@ $('select[multiple="multiple"]').each(function(index, select) {
     // Поменять элемент в фокусе. Вызывается если нельзя больше печатать в элемент, если уже заполнен
     $.fn.switchFocusToNext = function()
     {
-        // Выбираем все focus-able элементы
-        var focusables = $(':tabbable, .controlTableContentCell');
+        // Выбираем все focus-able элементы, кроме стрелочек
+        var focusables = $(':tabbable, .controlTableContentCell').filter(':not(.prev, .next)');
 		console.log(focusables);
-		console.log($(document.activeElement));
+		console.log($(document.activeElement)[0]);
 		for (var i = 0; i < focusables.length; i++) {
             // Проверяем - является ли и-тый элемент из фокусабельных элементом,
             //    на котором сейчас стоит фокус
@@ -823,6 +823,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
                     $(elementToFocus).trigger('click');
                 }
 				
+				console.log(elementToFocus);
                 $(elementToFocus).focus();
                 break;
             }

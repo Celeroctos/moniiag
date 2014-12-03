@@ -25,11 +25,8 @@ class FormElementAdd extends CFormModel
 	public $dateFieldMaxValue;
     public $numberStep;
 	public $showDynamic; 
-<<<<<<< HEAD
 	public $directLink;
-=======
     public $hideLabelBefore;
->>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
 
     public function rules()
     {
@@ -70,11 +67,8 @@ class FormElementAdd extends CFormModel
 			'dateFieldMinValue' => 'Минимальное значение',
 			'dateFieldMaxValue' => 'Максимальное значение',
 			'showDynamic' => 'Следить за динамикой параметра',
-<<<<<<< HEAD
 			'directLink' => 'Переход по преобразованному в ссылку тексту'
-=======
             'hideLabelBefore' => 'Скрывать метку рядом с элементом на печати'
->>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
         );
     }
 }

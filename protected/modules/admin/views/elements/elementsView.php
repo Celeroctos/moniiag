@@ -15,7 +15,6 @@
     <button type="button" class="btn btn-default disabled" id="editElementDependences">Редактировать зависимости элемента</button>
     <button type="button" class="btn btn-default" id="deleteElement">Удалить запись</button>
 </div>
-<<<<<<< HEAD
 <div class="modal fade" id="addElementPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -221,6 +220,21 @@
                                 <?php echo $form->error($model,'showDynamic'); ?>
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'hideLabelBefore', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'hideLabelBefore', array('Нет', 'Да'), array(
+                                    'id' => 'hideLabelBefore',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'hideLabelBefore'); ?>
+                            </div>
+                        </div>
+
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(
@@ -655,6 +669,20 @@
                                 <?php echo $form->error($model,'showDynamic'); ?>
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'hideLabelBefore', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'hideLabelBefore', array('Нет', 'Да'), array(
+                                    'id' => 'hideLabelBefore',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'hideLabelBefore'); ?>
+                            </div>
+                        </div>
+
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(
@@ -892,14 +920,57 @@
             <div class="modal-body">
                 <h4>При заполнении формы возникли следующие ошибки:</h4>
                 <div class="row">
-=======
->>>>>>> fd59772f940bf555f9e90f2912c8fcd767013f6c
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="editDependencesPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Редактирование зависимостей значений элемента</h4>
+            </div>
+            <div class="modal-body">
+                <input id="valuesNotToPrint" type="hidden">
+                <div class="row">
+                    <div class="col-xs-5" id="controlValuesPanel">
+                        <h5>Значения выбранного списка</h5>
+                        <div class="row">
+                            <select id="controlValues" multiple="multiple" class="form-control">
+                            </select>
+                            <span class="notPrintIfThisValueContainer no-display"><input type="checkbox" id="notPrintIfThisValue">Не печатать при выборе данного значения</span>
+                        </div>
+                        <!--div class="row">
 
-<? $this->widget("application.modals.admin.templates.AddElement"); ?>
-<? $this->widget("application.modals.admin.templates.AddElementError"); ?>
-<<<<<<< HEAD
-<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
-=======
-<? $this->widget("application.modals.admin.templates.EditElement"); ?>
-<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
->>>>>>> c96da615365c7e21b2f750b59e37246563983d71
+                        </div-->
+                    </div>
+                    <div class="col-xs-5 no-display" id="controlDependencesPanel">
+                        <h5>Список элементов управления</h5>
+                        <div class="row">
+                            <select id="controlDependencesList" multiple="multiple" class="form-control">
+                            </select>
+                        </div>
+                        <h5 class="no-display">Действие</h5>
+                        <div class="row no-display">
+                            <select id="controlActions" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <table id="dependences"></table>
+                    <div id="dependencesPager"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success no-display" id="saveDependencesBtn">Сохранить</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
