@@ -67,7 +67,7 @@ class FormElementAdd extends CFormModel
 			'dateFieldMinValue' => 'Минимальное значение',
 			'dateFieldMaxValue' => 'Максимальное значение',
 			'showDynamic' => 'Следить за динамикой параметра',
-			'directLink' => 'Переход по преобразованному в ссылку тексту'
+			'directLink' => 'Переход по преобразованному в ссылку тексту',
             'hideLabelBefore' => 'Скрывать метку рядом с элементом на печати'
         );
     }
