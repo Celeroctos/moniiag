@@ -118,12 +118,24 @@ if(isset($categorie['id'])) {
                                     if(!$canEditMedcard) {
                                         $options['disabled'] = 'disabled';
                                     }
+									
+									if(isset($element['config'], $element['config']['directLink']) && $element['config']['directLink'] == 1) {
+										echo "<div class=\"input-group linkfieldGroup\">";
+										$options['style'] += ';float: left;';
+									}
+                                
                                     echo $form->textField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
 									if(isset($element['config']['showDynamic'])) {
 									?>
 										</span>
 									<?php	
 									}
+									
+									if(isset($element['config'], $element['config']['directLink']) && $element['config']['directLink'] == 1) {
+										echo "<span class=\"input-group-addon glyphicon glyphicon-arrow-right greeting-glyphicon-arrow-right\" title=\"Перейти по ссылке\" style=\"padding-top: 0;\"></span>
+										</div>";
+									}
+									
                                     if($element['label_after'] != null) {
                                     ?>
                                         <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>

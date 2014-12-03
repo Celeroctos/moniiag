@@ -51,8 +51,8 @@
 					width: 130
 				},
 				{
-					name: 'service',
-					index: 'service',
+					name: 'service_tasu_code',
+					index: 'service_tasu_code',
 					width: 100
 				}
 			],
@@ -535,6 +535,8 @@
 			secondaryDiagnosisIds.push(secondaryDiagnosisChoosed[i].id);
 		}
 		
+		$("#greeting-addfake-submit").attr('disabled', true);
+		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		 $.ajax({
             'url' : '/admin/tasu/getfios',
@@ -550,7 +552,7 @@
             'dataType' : 'json',
             'type' : 'GET',
             'success' : function(data, textStatus, jqXHR) {
-				if(data.success) {
+				if(data.success) {		
 					var forAdd = {
 						cardNumber : $.trim($('#cardNumber').val()),
 						doctorId : $('#doctorId').val(),
@@ -562,6 +564,17 @@
 						secondaryDiagnosisData : secondaryDiagnosisChoosed,
 						serviceCode : $.trim($('#serviceCode').val())
 					};
+					
+					if(getMatchedPreGreetings(forAdd.cardNumber, forAdd.doctorId, forAdd.greetingDate, forAdd.primaryDiagnosis) !== false) {
+						$('#errorPopup .modal-body .row p').remove();
+						$('#errorPopup .modal-body .row').append("<p class=\"errorText\">Такой приём уже внесён в список выгружаемых!</p>");
+						
+						$('#errorPopup').css({
+							'z-index' : '1051'
+						}).modal({});
+						
+						return false;
+					}
 					
 					greetingsTempBuffer[(lastId).toString()] = forAdd;
 					$('#preGreetings').addRowData((lastId).toString(), {
@@ -595,9 +608,25 @@
                         'z-index' : '1051'
                     }).modal({});
 				}
+				
+				$("#greeting-addfake-submit").attr('disabled', false);
 			}
 		});
 	});
+	
+	function getMatchedPreGreetings(cardNumber, doctorId, greetingDate, prDiagnosisCode) {
+		console.log(arguments);
+		for(var i in greetingsTempBuffer) {
+			if(cardNumber == greetingsTempBuffer[i].cardNumber
+				&& doctorId == greetingsTempBuffer[i].doctorId
+				&& greetingDate == greetingsTempBuffer[i].greetingDate
+				&& prDiagnosisCode == greetingsTempBuffer[i].primaryDiagnosis) {
+				
+				return i;
+			}
+		}
+		return false;
+	}
 	
 	function resetAddFakeForm() {
 		$('#cardNumber').val('');
@@ -811,6 +840,8 @@
 			secondaryDiagnosisIds.push(secondaryDiagnosisChoosed[i].id);
 		}
 		
+		$(this).attr('disabled', true);
+		
 		// Теперь добавляем в таблицу. Запрашиваем данные у базы, что за пациент и что за врач
 		$.ajax({
             'url' : '/admin/tasu/getfios',
@@ -873,9 +904,16 @@
                         'z-index' : '1051'
                     }).modal({});
 				}
+				$('#saveEditPregreetingRow').attr('disabled', false);
 			}
 		});
 		
+	});
+	
+
+	$('#saveEditPregreetingRow').on('click', function(e) {
+		var currentRow = $('#preGreetings').jqGrid('getGridParam', 'selrow');
+		var rowData = $('#preGreetings').jqGrid('getRowData', rowid);
 	});
 	
 	$('#tasuimport-filter-btn').on('click', function() {
@@ -918,7 +956,7 @@
 	$('#greetingDate-cont #greetingDate').val(currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate());
 	
 	// Зацикливаем беготню по форме
-	$('#cardNumber, #primaryDiagnosis, #cardNumberEdit').on('keydown', function(e) {
+	$('#cardNumber, #primaryDiagnosis, #secondaryDiagnosis, #cardNumberEdit').on('keydown', function(e) {
 		if(e.keyCode == 13 || e.keyCode == 9) {
 			if(($(this).prop('id') == 'cardNumber' || $(this).prop('id') == 'cardNumberEdit') && $.trim($(this).val()) != '') { // Подгружать ФИО
 				getFioByCardNumber($(this).prop('id'));
@@ -949,11 +987,11 @@
 				if(data.success) {
 					$('#' + fieldId).prop('disabled', false);
 					if(fieldId == 'cardNumber') {
-						$('#fioCont').removeClass('no-display').text(data.data.patientFio);
+						$('#fioCont').removeClass('no-display').text(data.data.patientFio + ', ' + data.data.birthdayYear);
 						moveToNextInput($('#cardNumber'));
 					}
 					if(fieldId == 'cardNumberEdit') {
-						$('#fioContEdit').removeClass('no-display').text(data.data.patientFio);
+						$('#fioContEdit').removeClass('no-display').text(data.data.patientFio + ', ' + data.data.birthdayYear);
 					}
 				} else {
 					alert(data.error);
@@ -967,7 +1005,7 @@
 	function moveToNextInput(input) {
 		var id = $(input).prop('id');
 		if(id == 'cardNumber') {
-			$('#savePrimaryDiag').focus();
+			$('#primaryDiagnosis').focus();
 		}
 		if(id == 'savePrimaryDiag') {
 			if($('#primaryDiagnosis').prop('disabled') != 'undefined') {

@@ -90,7 +90,6 @@ $(document).ready(function() {
             }
 
             $('#errorAddGuidePopup').modal({
-
             });
         }
     });
@@ -101,7 +100,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/guides/getone?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/guides/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -123,9 +122,7 @@ $(document).ready(function() {
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
                         }
-                        $("#editGuidePopup").modal({
-
-                        });
+                        $("#editGuidePopup").modal();
                     }
                 }
             })
@@ -139,7 +136,7 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/guides/delete?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/guides/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',

@@ -214,6 +214,10 @@ class ElementsController extends Controller {
         }
 		
 		$config = array();
+		if($model->directLink !== null) {
+			$config['directLink'] = $model->directLink;
+		}
+		
         if($model->type == 4) {
             $config += $model->config;
         }
@@ -230,11 +234,26 @@ class ElementsController extends Controller {
                 exit();
             }
 
-			$config += CJSON::encode(array(
-                'maxValue' => $model->numberFieldMaxValue,
-                'minValue' => $model->numberFieldMinValue,
-                'step' => $model->numberStep
-            ));
+			$params = array();
+			if($model->numberFieldMaxValue != null) {
+				$params['maxValue'] = $model->numberFieldMaxValue;
+			} else {
+				$params['maxValue'] = '';
+			}
+			
+			if($model->numberFieldMinValue != null) {
+				$params['minValue'] = $model->numberFieldMinValue;
+			} else {
+				$params['minValue'] = '';
+			}
+			
+			if($model->numberStep != null) {
+				$params['step'] = $model->numberStep;
+			} else {
+				$params['step'] = '';
+			}
+			
+			$config += $params;
 		}
 
 		if($model->showDynamic) {
@@ -255,10 +274,21 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-			$config += CJSON::encode(array(
-				'maxValue' => $model->dateFieldMaxValue,
-				'minValue' => $model->dateFieldMinValue
-			));
+			
+			$params = array();
+			if($model->dateFieldMaxValue != null) {
+				$params['maxValue'] = $model->dateFieldMaxValue;
+			} else {
+				$params['maxValue'] = '';
+			}
+			
+			if($model->dateFieldMinValue != null) {
+				$params['minValue'] = $model->dateFieldMinValue;
+			} else {
+				$params['minValue'] = '';
+			}
+			
+			$config += $params;
 		}
 
 		$element->config = CJSON::encode($config); 

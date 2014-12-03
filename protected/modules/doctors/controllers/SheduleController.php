@@ -232,6 +232,7 @@ class SheduleController extends Controller {
                 'dateEnd' => $curDate
             )
         );
+
         $patients = null;
         if ( count($shedule)==0 )
         {
@@ -442,6 +443,7 @@ class SheduleController extends Controller {
                 'dateEnd' => $curDate
             )
         );
+
         $patients = null;
         if (count($shedule)==0)
         {
@@ -454,6 +456,7 @@ class SheduleController extends Controller {
             $patients = $this->getPatientList($doctor['id'], $curDate,$ruleToApply['greetingBegin'],$ruleToApply['greetingEnd'], false, $onlyWaitingLine);
             $patients = $patients['result'];
         }
+
         // Создадим сам виджет
         $patientsListWidget = $this->createWidget('application.modules.doctors.components.widgets.PatientListWidget');
         $patientsListWidget->filterModel = $this->filterModel;

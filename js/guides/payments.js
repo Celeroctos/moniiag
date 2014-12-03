@@ -20,7 +20,12 @@ $(document).ready(function() {
                 name: 'tasu_string',
                 index: 'tasu_string',
                 width: 150
-            }
+            },
+			{
+				name: 'is_default_desc',
+				index: 'is_default_desc',
+				width: 70
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],

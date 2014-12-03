@@ -1,12 +1,20 @@
 <?php
+
 class TemplatesController extends Controller {
+
     public $layout = 'application.modules.admin.views.layouts.index';
+
     private $pagesList = array( // Страницы
         'Основная медкарта',
         'Раздел рекомендаций'
     );
 
+    public function getPagesList() {
+        return $this->pagesList;
+    }
+
     public function actionView() {
+
         // Категории
         $categoriesModel = new MedcardCategorie();
         $categories = $categoriesModel->getRows(false, 'name', 'asc');
@@ -28,10 +36,6 @@ class TemplatesController extends Controller {
             'pagesList' => $this->pagesList,
             'categoriesList' => $categoriesList
         ));
-    }
-
-    public function getPagesList() {
-        return $this->pagesList;
     }
 
     public function actionGet() {
@@ -91,8 +95,8 @@ class TemplatesController extends Controller {
             }
             echo CJSON::encode(
                 array('rows' => $templates,
-                      'total' => $totalPages,
-                      'records' => count($num))
+                    'total' => $totalPages,
+                    'records' => count($num))
             );
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -122,10 +126,9 @@ class TemplatesController extends Controller {
                 $this->addEditModel($template, $model, 'Элемент успешно добавлен.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
-                                         'errors' => $model->errors));
+                    'errors' => $model->errors));
             }
         }
-
     }
 
     private function addEditModel($template, $model, $msg) {
@@ -166,9 +169,15 @@ class TemplatesController extends Controller {
 
         if($template->save()) {
             echo CJSON::encode(array('success' => true,
-                                     'text' => $msg));
+                'text' => $msg));
         }
     }
+
+	public function actionAddCategory($id) {
+		print json_encode(array(
+			'test' => MedcardTemplate::model()->getTemplateCategories($id)
+		));
+	}
 
     public function actionDelete($id) {
         $errorTextMessage = 'На данную запись есть ссылки!';
@@ -181,7 +190,7 @@ class TemplatesController extends Controller {
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
-                                     'error' => $errorTextMessage ));
+                'error' => $errorTextMessage ));
         }
     }
 
@@ -189,12 +198,13 @@ class TemplatesController extends Controller {
         $model = new MedcardTemplate();
         $template = $model->getOne($id);
         echo CJSON::encode(array('success' => true,
-                                 'data' => $template)
+                'data' => $template)
         );
     }
 
     // Просмотр шаблона
     public function actionShow() {
+
         $categorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
             'currentPatient' => null,
             'templateType' => 0,
@@ -210,12 +220,55 @@ class TemplatesController extends Controller {
 
         $templateView = $categorieWidget->run();
         ob_end_clean();
+        
         echo CJSON::encode(array(
                 'success' => true,
                 'data' => $templateView
             )
         );
     }
-}
 
-?>
+    public function actionGetCategories($id) {
+
+        // cast category identifier to int (just in case)
+        $id = intval($id);
+
+        $templateModel = new MedcardTemplate();
+        $categoryModel = new MedcardCategorie();
+
+        // fetch template by it's identifier
+        $template = $templateModel->getOne($id);
+
+        // decode template's categories array
+        $categories = json_decode($template['categorie_ids']);
+
+        // we wil store here all fetched categories
+        $templateCategories = array();
+
+        foreach ($categories as $i => $id) {
+
+            // fetch category from db
+            $category = $categoryModel->getOne(intval($id));
+
+            // fetch category children
+            $category["children"] = $categoryModel->getChildren($category["id"]);
+
+            // fetch all category elements
+            $categoryElements = $categoryModel->getElements($id);
+
+            // store category elements in category object
+            $category["elements"] = $categoryElements;
+
+            // push category to array
+            $templateCategories[] = $category;
+        }
+
+        // save all found categories as template field
+        $template["categories"] = $templateCategories;
+
+        echo CJSON::encode(array('success' => true,
+                'template' => $template
+            )
+        );
+    }
+}

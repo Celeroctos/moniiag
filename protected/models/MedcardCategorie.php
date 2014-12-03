@@ -24,23 +24,36 @@ class MedcardCategorie extends MisActiveRecord {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+        return array();
     }
 
+	public function getMatches($pattern) {
+        try {
+            $connection = Yii::app()->db;
+            $categorie = $connection->createCommand()
+                ->select('mc.*')
+                ->from('mis.medcard_categories mc')
+                ->where('mc.name LIKE \'%:pattern%\'', array(':pattern' => $pattern))
+                ->queryRow();
+
+            return $categorie;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+	}
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
-        $connection = Yii::app()->db;
-        $categories = $connection->createCommand()
+
+        $categories = Yii::app()->db->createCommand()
             ->select('mc.*, mc2.name as parent')
             ->from('mis.medcard_categories mc')
 			->leftJoin('mis.medcard_categories mc2', 'mc.parent_id = mc2.id');
 
         if($filters !== false) {
-            $this->getSearchConditions($categories, $filters, array(
-
-            ), array(
+            $this->getSearchConditions($categories, $filters, array(), array(
                 'mc' => array('id', 'name'),
-            ), array(
-            ));
+            ), array());
         }
 
         if($start !== false && $limit !== false) {
@@ -53,6 +66,40 @@ class MedcardCategorie extends MisActiveRecord {
 
         return $categories->queryAll();
     }
-}
 
-?>
+    public function getChildren($parentID) {
+        try {
+            return Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("mis.medcard_categories c")
+                ->where("c.parent_id = :parent_id", array(":parent_id" => $parentID))
+                ->queryAll();
+        } catch (Exception $e) {
+            print json_encode(array(
+                "status" => false,
+                "message" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine()
+            )); die;
+        }
+        return null;
+    }
+
+    public function getElements($id) {
+        try {
+            return Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("mis.medcard_elements c")
+                ->where("c.categorie_id = :id", array(":id" => $id))
+                ->queryAll();
+        } catch (Exception $e) {
+            print json_encode(array(
+                "status" => false,
+                "message" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine()
+            )); die;
+        }
+        return null;
+    }
+}

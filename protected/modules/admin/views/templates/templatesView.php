@@ -1,267 +1,30 @@
-<h4>Краткая справка</h4>
-<p>Раздел предназначен для редактирования содержания медицинской карты для рабочего места врача. Карта у врача разбита на категории (раскрывающиеся списки), внутри них имеются управляющие элементы, которые могут представлять собой, в том числе, выбор значения из справочника.
-    При формировании шаблона карты требуется определить группы, поля карты, справочники и привязать последние к определённым полям. Справочники при необходимости можно дополнять значениями.
-</p>
-<?php $this->widget('application.components.widgets.DoctorCardTabMenu') ?>
+<?php $this->widget('application.modules.admin.components.widgets.DoctorCardTabMenu') ?>
+
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/jquery-ui-1.11.2.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/nestable.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/template-engine.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/templates.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/elements.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/categories.js"></script>
 <table id="templates"></table>
 <div id="templatesPager"></div>
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addTemplate">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editTemplate">Редактировать выбранную запись</button>
+    <button type="button" class="btn btn-default" id="designTemplate">Дизайнер</button>
     <button type="button" class="btn btn-default" id="deleteTemplate">Удалить запись</button>
     <button type="button" class="btn btn-success" id="showTemplate">Просмотр шаблона</button>
 </div>
-<div class="modal fade" id="addTemplatePopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Добавить шаблон</h4>
-            </div>
-            <?php
-            $form = $this->beginWidget('CActiveForm', array(
-                'focus' => array($model,'name'),
-                'id' => 'template-add-form',
-                'enableAjaxValidation' => true,
-                'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/add'),
-                'htmlOptions' => array(
-                    'class' => 'form-horizontal col-xs-12',
-                    'role' => 'form'
-                )
-            ));
-            ?>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'name', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'name', array(
-                                    'id' => 'name',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Название'
-                                )); ?>
-                                <?php echo $form->error($model,'name'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'categorieIds', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'categorieIds', $categoriesList, array(
-                                    'id' => 'categorieIds',
-                                    'class' => 'form-control',
-                                    'multiple' => 'multiple'
-                                )); ?>
-                                <?php echo $form->error($model,'categorieIds'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'pageId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'pageId', $pagesList, array(
-                                    'id' => 'pageId',
-                                    'class' => 'form-control'
-                                )); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'primaryDiagnosisFilled', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'primaryDiagnosisFilled', array('Нет', 'Да'), array(
-                                    'id' => 'primaryDiagnosisFilled',
-                                    'class' => 'form-control'
-                                )); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'index', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->numberField($model,'index', array(
-                                    'id' => 'index',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Порядковый номер для отображения'
-                                )); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <?php echo CHtml::ajaxSubmitButton(
-                    'Добавить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/add'),
-                    array(
-                        'success' => 'function(data, textStatus, jqXHR) {
-                                $("#template-add-form").trigger("success", [data, textStatus, jqXHR])
-                            }'
-                    ),
-                    array(
-                        'class' => 'btn btn-primary'
-                    )
-                ); ?>
-            </div>
-            <?php $this->endWidget(); ?>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="editTemplatePopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Редактировать шаблон</h4>
-            </div>
-            <?php
-            $form = $this->beginWidget('CActiveForm', array(
-                'focus' => array($model,'name'),
-                'id' => 'template-edit-form',
-                'enableAjaxValidation' => true,
-                'enableClientValidation' => true,
-                'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/edit'),
-                'htmlOptions' => array(
-                    'class' => 'form-horizontal col-xs-12',
-                    'role' => 'form'
-                )
-            ));
-            ?>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            <div class="form-group">
-                                <?php echo $form->hiddenField($model,'id', array(
-                                    'id' => 'id',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->labelEx($model,'name', array(
-                                    'class' => 'col-xs-3 control-label'
-                                )); ?>
-                                <div class="col-xs-9">
-                                    <?php echo $form->textField($model,'name', array(
-                                        'id' => 'name',
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Название'
-                                    )); ?>
-                                    <?php echo $form->error($model,'name'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model,'categorieIds', array(
-                                    'class' => 'col-xs-3 control-label'
-                                )); ?>
-                                <div class="col-xs-9">
-                                    <?php echo $form->dropDownList($model, 'categorieIds', $categoriesList, array(
-                                        'id' => 'categorieIds',
-                                        'class' => 'form-control',
-                                        'multiple' => 'multiple'
-                                    )); ?>
-                                    <?php echo $form->error($model,'categorieIds'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model,'pageId', array(
-                                    'class' => 'col-xs-3 control-label'
-                                )); ?>
-                                <div class="col-xs-9">
-                                    <?php echo $form->dropDownList($model, 'pageId', $pagesList, array(
-                                        'id' => 'pageId',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                    <?php echo $form->error($model,'pageId'); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model,'primaryDiagnosisFilled', array(
-                                    'class' => 'col-xs-3 control-label'
-                                )); ?>
-                                <div class="col-xs-9">
-                                    <?php echo $form->dropDownList($model, 'primaryDiagnosisFilled', array('Нет', 'Да'), array(
-                                        'id' => 'primaryDiagnosisFilled',
-                                        'class' => 'form-control'
-                                    )); ?>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <?php echo $form->labelEx($model,'index', array(
-                                    'class' => 'col-xs-3 control-label'
-                                )); ?>
-                                <div class="col-xs-9">
-                                    <?php echo $form->numberField($model,'index', array(
-                                        'id' => 'index',
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Порядковый номер для отображения'
-                                    )); ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                <?php echo CHtml::ajaxSubmitButton(
-                    'Сохранить',
-                    CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/templates/edit'),
-                    array(
-                        'success' => 'function(data, textStatus, jqXHR) {
-                                $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])
-                            }'
-                    ),
-                    array(
-                        'class' => 'btn btn-primary'
-                    )
-                ); ?>
-            </div>
-            <?php $this->endWidget(); ?>
-        </div>
-    </div>
-</div>
-<div class="modal fade error-popup" id="errorAddTemplatePopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Ошибка!</h4>
-            </div>
-            <div class="modal-body">
-                <h4>При заполнении формы возникли следующие ошибки:</h4>
-                <div class="row">
 
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade error-popup" id="showTemplatePopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Предпросмотр шаблона</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
+<? $this->widget('application.modals.admin.templates.AddTemplate') ?>
+<? $this->widget('application.modals.admin.templates.AddTemplateError') ?>
+<? $this->widget('application.modals.admin.templates.EditTemplate') ?>
+<? $this->widget('application.modals.admin.templates.ShowTemplate') ?>
+<? $this->widget('application.modals.admin.templates.DesignTemplate') ?>
+<? $this->widget("application.modals.admin.templates.AddCategory"); ?>
+<? $this->widget("application.modals.admin.templates.AddCategoryError"); ?>
+<? $this->widget("application.modals.admin.templates.EditCategory"); ?>
+<? $this->widget("application.modals.admin.templates.AddElement"); ?>
+<? $this->widget("application.modals.admin.templates.AddElementError"); ?>
+<? $this->widget("application.modals.admin.templates.EditElement"); ?>
+<? $this->widget("application.modals.admin.templates.EditDependences"); ?>

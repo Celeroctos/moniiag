@@ -915,13 +915,10 @@ class SheduleController extends Controller {
                         }
                     }
 
-
                 }
 
             }
 
-           // var_dump($greetingsIdToDelete);
-           // exit();
 
             // отписываем приёмы, которые мы набрали
             if (  count($greetingsIdToDelete) > 0 )

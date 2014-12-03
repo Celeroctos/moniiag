@@ -800,28 +800,19 @@ $('select[multiple="multiple"]').each(function(index, select) {
     {
         // Выбираем все focus-able элементы
         var focusables = $(':tabbable, .controlTableContentCell');
-        for (i=0;i<focusables.length;i++)
-        {
+		for (var i = 0; i < focusables.length; i++) {
             // Проверяем - является ли и-тый элемент из фокусабельных элементом,
             //    на котором сейчас стоит фокус
-            if ($(focusables[i])[0] == $(document.activeElement)[0])
-            {
+            if ($(focusables[i])[0] == $(document.activeElement)[0]) {
 
                 elementToFocus = null;
-                // Тут может быть две ситуации - либо элемент последний в массиве
-                //   либо нет
-                if (i==focusables.length-1)
-                {
+                // Тут может быть две ситуации - либо элемент последний в массиве либо нет
+                if (i == focusables.length - 1){
                     // Фокусируемся на первый элемент
-                    //$(focusables[0]).focus();
                     elementToFocus = $(focusables[0]);
-
-                }
-                else
-                {
+                } else {
                     // Фокусируемся на следующий по номеру элемент
-                    //$(focusables[i+1]).focus();
-                    elementToFocus = $(focusables[0]);
+                    elementToFocus = $(focusables[i + 1]);
                 }
 
                 // Если элемент имеет класс controlTableContentCell, то на него нужно запустить событие клик
@@ -829,7 +820,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
                 {
                     $(elementToFocus).trigger('click');
                 }
-
+				
                 $(elementToFocus).focus();
                 break;
             }

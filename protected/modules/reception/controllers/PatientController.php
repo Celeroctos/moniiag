@@ -999,7 +999,7 @@ class PatientController extends Controller {
 			$id = $oms->id;
 		}
 		$medcardSearched = $cardnumberGenerator->isIssetMedcard($id, Yii::app()->user->getState('medcardGenRuleId', -1));
-        if($medcardSearched) {
+		if($medcardSearched) {
             echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
                     'id' => array(
@@ -1535,14 +1535,13 @@ class PatientController extends Controller {
     private function addEditModelMedcard($medcard, $model, $oms = false) {
         // Добавление карты: нет id
 		if($medcard->card_number == null) { // Совсем новая карта
-			Yii::app()->user->setState('savedCardNumber', -1);
 			$cardnumberGenerator = new CardnumberGenerator(false, true);
             $medcard->card_number = $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
             // Записываем текущую дату и ID пользователя, который создал медкарту
             $medcard->date_created =  date('Y-m-d H:i:s');
             $record = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
             $medcard->user_created = $record['employee_id'];
-			
+
 			// Создаём новую запись в логе
 			$newHistory = new MedcardHistory();
 			$newHistory->enterprise_id = Yii::app()->user->enterpriseId;
@@ -1568,7 +1567,7 @@ class PatientController extends Controller {
 				exit();
 			}
         }
-
+		
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
 		$medcard->address_str = $model->address;

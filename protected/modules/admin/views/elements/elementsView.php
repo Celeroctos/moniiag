@@ -2,7 +2,9 @@
 <p>Раздел предназначен для редактирования содержания медицинской карты для рабочего места врача. Карта у врача разбита на категории (раскрывающиеся списки), внутри них имеются управляющие элементы, которые могут представлять собой, в том числе, выбор значения из справочника.
     При формировании шаблона карты требуется определить группы, поля карты, справочники и привязать последние к определённым полям. Справочники при необходимости можно дополнять значениями.
 </p>
+
 <?php $this->widget('application.components.widgets.DoctorCardTabMenu') ?>
+
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/elements.js"></script>
 <table id="elements"></table>
@@ -13,6 +15,7 @@
     <button type="button" class="btn btn-default disabled" id="editElementDependences">Редактировать зависимости элемента</button>
     <button type="button" class="btn btn-default" id="deleteElement">Удалить запись</button>
 </div>
+<<<<<<< HEAD
 <div class="modal fade" id="addElementPopup">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -46,6 +49,17 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'type'); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'directLink', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'directLink', array('Нет', 'Да'), array(
+                                    'id' => 'directLink',
+                                    'class' => 'form-control'
+                                )); ?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -472,6 +486,17 @@
                                 <?php echo $form->error($model,'type'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'directLink', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'directLink', array('Нет', 'Да'), array(
+                                    'id' => 'directLink',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'categorieId', array(
                                 'class' => 'col-xs-3 control-label'
@@ -867,53 +892,8 @@
             <div class="modal-body">
                 <h4>При заполнении формы возникли следующие ошибки:</h4>
                 <div class="row">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade error-popup" id="editDependencesPopup">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Редактирование зависимостей значений элемента</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-xs-5" id="controlValuesPanel">
-                        <h5>Значения выбранного списка</h5>
-                        <div class="row">
-                            <select id="controlValues" multiple="multiple" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-xs-5 no-display" id="controlDependencesPanel">
-                        <h5>Список элементов управления</h5>
-                        <div class="row">
-                            <select id="controlDependencesList" multiple="multiple" class="form-control">
-                            </select>
-                        </div>
-                        <h5 class="no-display">Действие</h5>
-                        <div class="row no-display">
-                            <select id="controlActions" class="form-control">
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <table id="dependences"></table>
-                    <div id="dependencesPager"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success no-display" id="saveDependencesBtn">Сохранить</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-            </div>
-        </div>
-    </div>
-</div>
+<? $this->widget("application.modals.admin.templates.AddElement"); ?>
+<? $this->widget("application.modals.admin.templates.AddElementError"); ?>
+<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
+<? $this->widget("application.modals.admin.templates.EditElement"); ?>
+<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
