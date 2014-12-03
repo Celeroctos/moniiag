@@ -7,7 +7,9 @@
  */
 
 /**
- * @type {TemplateEngine} - Base template engine API object
+ * @type {TemplateEngine} - Глобальный объект, предоставляющий API для работы с
+ *      TemplateEngine. Сюда можно добавлять любые методы, какие необходимы и
+ *      определять их в конце файла.
  */
 var TemplateEngine = TemplateEngine || {
 		/* API should be Here */
@@ -29,8 +31,11 @@ var TemplateEngine = TemplateEngine || {
      */
 
     /**
-     * @param [condition] {...Boolean} - Assertion expression
-     * @param [message] {String} - Error message to throw
+     * Базовый ассетер, просто выкидывает иссключение по одному или нескольким
+     * условий. Если отправлено только сообщение, то исключение будет выброшено
+     * автоматически
+     * @param [condition] {...Boolean} - Список выражений для проверки
+     * @param [message] {String} - Сообщение с ошибкой
      */
     var assert = function(message, condition) {
         if (arguments.length <= 0) {
@@ -55,18 +60,18 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     *
-     * @param destination
-     * @param source
+     * Функция для расширения прототипов двух классов
+     * @param destination - Расширяемый класс
+     * @param source - Наследуемый класс
      */
     var extend = function(destination, source) {
         return $.extend(destination.prototype, source.prototype);
     };
 
     /**
-     *
-     * @param source
-     * @returns {*}
+     * Клонировать объект JavaScript (обычные JSON объекты)
+     * @param source - Сам объект для клонирования
+     * @returns {*} - Клон переданного объекта
      */
     var clone = function(source) {
         return $.extend(true, {}, source);
@@ -81,9 +86,11 @@ var TemplateEngine = TemplateEngine || {
      */
 
     /**
-     * @param parent {Node} - Node's parent
-     * @constructor - Basic node class, which implements
-     *      node's logic
+     * Класс узла отвечает за хранение информации о родителях узла, его детях
+     * и реализует всю логику работы дерева. Параметр индекс родителя указывает
+     * на индекс элемента в родителе (используется для быстрой адресации узлов)
+     * @param [parent] {Node|null|undefined} - Родитель создаваемого узла, может быть null
+     * @constructor - Конструктор с одним параметром (родитель)
      */
     var Node = function(parent) {
         this._parentNode = parent || null;
@@ -92,11 +99,11 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param node {Node} - New node, mustn't be the same
-     *      as some parent's, cuz it will raise infinite loop
-     * @returns {Boolean} - Has node been appended to
-     *      his parent, it will return true also if node
-     *		has been reappended to another node
+     * Привязывает узел к другому узлу и устанавливает зависимости
+     * между ребенком и родителем
+     * @param node {Node} - Узел, который нужно привязать
+     * @returns {Boolean} - Возвращает true, если узел был успешно добавлен, иначе
+     *      false, что говорит о том, смешение индекса потомка не было установлено
      */
     Node.prototype.append = function(node) {
         if (this === node || !node) {
@@ -116,10 +123,12 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param node {Node} - Check node for existence in
-     *      current node
-     * @returns {Boolean} - True if node is in it's
-     *      parent
+     * Проверить существование узла в другом элементе, если
+     * индексы потомков и значения ссылок совпадают, то проверка
+     * произойдет быстро, иначе придется перебрать весь массив
+     * @param node {Node} - Узел, который проверяем
+     * @returns {Boolean} - Возвращает true, если потомок существует
+     *      в текущем родителе
      */
     Node.prototype.contains = function(node) {
         if (!node) {
@@ -137,18 +146,16 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param [node] {Node} - Node to remove from parent,
-     *      it will check node's index and if it has
-     *      same instance that in array, then we can
-     *      apply fast remove from array, else we
-     *      need to look though all elements and
-     *      find it's node by instance and remove. If node
-     *      is undefined, then we have to remove itself
-     *      from parent, but if we havn't parent then
-     *      we will truncate this node, cuz we can't
-     *      store it's children anymore somewhere
-     * @returns {Boolean} - If we have found node
-     *      in it's parent and successfully removed from it
+     * Удаляет узел из текущего узла. Удаление узла происходит без смешения
+     * индекса остальных узлов, сделано для повышения производительности работы
+     * с деревьями, потому что адресация к узлам дерева будет происходить со
+     * сложностью O(1), а не O(N)
+     * @param [node] {Node|undefined} - Узел для удаления, если параметр
+     *      не указан, то будет удалет текущий изел из его родителя, если
+     *      такой имеется, конечно, иначе затрется весь узел со всеми его
+     *      потомками, потому что существование такого узла не имеет
+     *      смысла, т.к все зависимости между узлами будет потеряно
+     * @returns {Boolean} -
      */
     Node.prototype.remove = function(node) {
         var i = 0;
@@ -193,9 +200,8 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @about Truncate current node and all it's
-     *      children, also it will remove all dependencies
-     *      and remove itself from parent
+     * Зачистка узла осуществляет удаление текущего узла со
+     * всеми его потомками
      */
     Node.prototype.truncate = function() {
         for (var i in this._childrenNode) {
@@ -208,11 +214,13 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param [index] {Number} - Parent's index, only for
-     *      append method
-     * @returns {Number} - Index in parent's
-     *      array with all children, need for
-     *      fast slice without search
+     * Устанавливает или получает индекс в родительском узле
+     * @param [index] {Number} - Необзательный параметр, но если установлен,
+     *      то индекс узла будет смешен (в этом случае необходимо сделать
+     *      пересчет всех элементов, иначе адресация элементов будет происходить
+     *      со сложность О(N), а не О(1))
+     * @returns {Number} - Возвращает текущий индекс узла в родительском, если
+     *      родитель не имеется, то будет возвращено -1
      */
     Node.prototype.index = function(index) {
         if (index === undefined) {
@@ -227,10 +235,11 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param [parent] {Node} - New node's parent which
-     *      should be instead of current
-     * @returns {Node} - Get parent of current
-     *      node, or null if node is root
+     * Устанавливает или получает текущего родителя узла
+     * @param [parent] {Node} - Если родительский узел указан, то будет
+     *      установлен иначе отработает как обычный геттер
+     * @returns {Node|null} - Возвращает текущий или только что установленный
+     *      родительский узел
      */
     Node.prototype.parent = function(parent) {
         if (parent !== undefined) {
@@ -244,8 +253,10 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * @param [index] {Number}
-     * @returns {Array} - Get all node's children
+     * Возвращает массив со всеми потомками узла или, если индекс установлен, то
+     * ребенка узла по его индекса
+     * @param [index] {Number} - Индекс потомка
+     * @returns {Array|Node} - Массив с узлами или узел
      */
     Node.prototype.children = function(index) {
 		if (index != undefined) {
@@ -255,8 +266,8 @@ var TemplateEngine = TemplateEngine || {
     };
 
 	/**
-	 * Sort node elements and update it's indexes
-	 * @param callback - Sort callback
+	 * Отсортировать элементы по их индексам и пересчитать смешения
+	 * @param callback - Обратный вызов для сортировки
 	 */
 	Node.prototype.sort = function(callback) {
 		this._childrenNode.sort(callback);
@@ -271,8 +282,9 @@ var TemplateEngine = TemplateEngine || {
 	};
 
     /**
-     * Compute count of elements in node
-     * @returns {Number} - Total count of elements
+     * Подсчитать общее количество потомков в узле (не учитывает элементы
+     * undefined). Использовать вместо <code>node.children().length</code>
+     * @returns {Number} - Количество потомков
      */
     Node.prototype.count = function() {
         var totalDefined = 0;
@@ -286,8 +298,10 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     * Get previous node (might work fast)
-     * @returns {Node|null} - Previous node's node
+     * Возвращет предыдущий узел от текущего узла. Функция должна отрабатывать
+     * достаточно быстро за счет индексации элементов, но при нарушении придется
+     * перебирать весь массив
+     * @returns {Node|null} - Предыдущий узел или null
      */
     Node.prototype.previous = function() {
         if (!this._parentNode) {
@@ -363,7 +377,7 @@ var TemplateEngine = TemplateEngine || {
 	 * Удалить все элементы из менеджера моделей формы
 	 */
 	FormModelManager.prototype.clear = function() {
-		this._fieldMap = [];
+		this._fieldMap = {};
 	};
 
 	/**
@@ -418,7 +432,7 @@ var TemplateEngine = TemplateEngine || {
 	 * Возвращает список всех зарегестрированных полей
 	 * @param [index] - Если индекс не указан, то возвращается массив со
 	 *      всеми элементами, иначе значение элемента по индексу
-	 * @returns {Array|*} - Массив со всеми элементами или элемент по индексу
+	 * @returns {{}|*} - Массив со всеми элементами или элемент по индексу
 	 */
 	FormModelManager.prototype.fields = function(index) {
 		if (arguments.length > 0) {
@@ -470,15 +484,29 @@ var TemplateEngine = TemplateEngine || {
 
      */
 
+    /**
+     *
+     * @param model
+     * @constructor
+     */
     var Model = function(model) {
         this._model = clone(model || this.defaults());
         this._native = clone(model || this.defaults());
     };
 
+    /**
+     *
+     */
     Model.prototype.defaults = function() {
         throw new Error("Model/defaults() : \"You must override 'defaults' method\"");
     };
 
+    /**
+     *
+     * @param model
+     * @param native
+     * @returns {*}
+     */
     Model.prototype.model = function(model, native) {
         if (model !== undefined) {
             if (native) {
@@ -489,6 +517,11 @@ var TemplateEngine = TemplateEngine || {
         return this._model;
     };
 
+    /**
+     * Сравнивает, в зависимости от типа класса, поля позиции и родительского
+     * элемента текущей модели и нативной
+     * @returns {boolean} - Возвращает true
+     */
     Model.prototype.compare = function() {
         // if native model is undefined
         if (this._native && this._model) {
@@ -506,6 +539,10 @@ var TemplateEngine = TemplateEngine || {
 		}
     };
 
+    /**
+     * Возвращает длину текущей модели
+     * @returns {Number} - Длина модели
+     */
 	Model.prototype.length = function() {
         if (this._model["id"] === undefined) {
             return 0;
@@ -513,6 +550,13 @@ var TemplateEngine = TemplateEngine || {
 		return Object.keys(this.model()).length;
 	};
 
+    /**
+     * Обновляет данные по url. Отправляет запрос, получает данные,
+     * проверяет флаг <code>success</code>, обновляет нативную модель
+     * комопнента и обновляет
+     * @param url
+     * @param sync
+     */
 	Model.prototype.fetch = function(url, sync) {
         // create this closure
         var that = this;
@@ -524,7 +568,7 @@ var TemplateEngine = TemplateEngine || {
                 console.log(data); return false;
             }
             // update component's model
-            that.model(data.data);
+            that.model(data.data, true);
             // update element
             that.update();
         };
@@ -539,6 +583,13 @@ var TemplateEngine = TemplateEngine || {
 		});
 	};
 
+    /**
+     * Возвращает или устанавливает поле для текущей модели
+     * @param field {String} - Название поля
+     * @param [value] {*} - Значение поля
+     * @returns {*} - Возвращает текущее или только установленное
+     *      значение поля
+     */
     Model.prototype.field = function(field, value) {
         if (value !== undefined) {
             this._model[field] = value;
@@ -549,6 +600,12 @@ var TemplateEngine = TemplateEngine || {
         return this._model[field];
     };
 
+    /**
+     * Возвращает или устанавливает поле для нативной модели
+     * @param field {String} - Название поля
+     * @param [value] {*} - Значение поля
+     * @returns {*} - Установленное или текущее значение поля
+     */
 	Model.prototype.native = function(field, value) {
 		if (value !== undefined) {
 			this._native[field] = value;
@@ -559,6 +616,12 @@ var TemplateEngine = TemplateEngine || {
 		return this._model[field];
 	};
 
+    /**
+     * Проверяет соответствие полей в исходной моделе и установленной
+     * @param field {String} - Название поля для проверки
+     * @returns {boolean} - Возвращет true, если поля совпадают в исходной и
+     *      установленной модели
+     */
 	Model.prototype.test = function(field) {
 		if (!this._model[field] || !this._native[field]) {
 			return false;
@@ -566,6 +629,13 @@ var TemplateEngine = TemplateEngine || {
 		return this._model[field] == this._native[field];
 	};
 
+    /**
+     * Проверяет текущую модель элемента на наличие поля, потому
+     * что функция <code>Model.field</code> выкидывает исключение,
+     * если поле с таким элементом не существует
+     * @param field {String} - Поле для проверки
+     * @returns {boolean}
+     */
 	Model.prototype.has = function(field) {
 		return this._model[field] != undefined;
 	};
@@ -922,10 +992,6 @@ var TemplateEngine = TemplateEngine || {
         }
     };
 
-	Template.prototype.hash = function() {
-		return 0;
-	};
-
     Template.prototype.drag = function() {
         this.selector().draggable({
             helper: function(e) {
@@ -1264,29 +1330,6 @@ var TemplateEngine = TemplateEngine || {
     Item.prototype.clone = function(parent, model, selector) {
         return new Item(parent, model, selector || null, this.template());
     };
-
-	Item.prototype.offset = function() {
-		try {
-			return +this.field("position");
-		} catch (e) {
-			// find previous node
-			var prev = this.previous();
-			// look though all previous nodes and
-			// try to find any declared, if can't
-			// then it will ba saved with 1 index
-			while (prev) {
-				if (!(prev instanceof Item)) {
-					break;
-				}
-				try {
-					return +prev.field("position") + 1;
-				} catch (e) {
-					prev = prev.previous();
-				}
-			}
-			return 1;
-		}
-	};
 
     /**
      * @param [value] {Item|String|undefined} - Item or
@@ -1786,26 +1829,6 @@ var TemplateEngine = TemplateEngine || {
 		}
 		return c;
 	};
-
-    /*
-        _  _   _ _____ ___           ___ ___  __  __ ___ _    ___ _____ ___
-       /_\| | | |_   _/ _ \   ___   / __/ _ \|  \/  | _ \ |  | __|_   _| __|
-      / _ \ |_| | | || (_) | |___| | (_| (_) | |\/| |  _/ |__| _|  | | | _|
-     /_/ \_\___/  |_| \___/         \___\___/|_|  |_|_| |____|___| |_| |___|
-
-     */
-
-    var AutoComplete = function(widget, selector) {
-        Component.call(this, widget, null, selector);
-    };
-
-    extend(AutoComplete, Component);
-
-    AutoComplete.prototype.render = function() {
-        return $("<div></div>", {
-            class: "template-engine-search"
-        });
-    };
 
     /*
      __      _____ ___   ___ ___ _____
