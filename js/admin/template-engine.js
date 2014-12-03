@@ -485,8 +485,10 @@ var TemplateEngine = TemplateEngine || {
      */
 
     /**
-     *
-     * @param model
+     * Конструктор модели, принимает текущий объект с данными об компоненте, где
+     * модель объекта - это структура, хранящая соотвествие элемента и его таблицы
+     * в БД со всеми его полями
+     * @param model {{}} - Модель для элемента
      * @constructor
      */
     var Model = function(model) {
@@ -495,17 +497,19 @@ var TemplateEngine = TemplateEngine || {
     };
 
     /**
-     *
+     * Абстрактный метод, который устанавливает модель по умолчанию (сейчас нигде не используется,
+     * но может использоваться для значений по умолчанию)
      */
     Model.prototype.defaults = function() {
         throw new Error("Model/defaults() : \"You must override 'defaults' method\"");
     };
 
     /**
-     *
-     * @param model
-     * @param native
-     * @returns {*}
+     * Устанавливаем новую модель или получаем старую
+     * @param [model] {{}} - Новая модель
+     * @param [native] {Boolean} - Если влаг установлен, то модель
+     *      также будет склонирована в нативную модель
+     * @returns {*} - Только что установленную модель или новую
      */
     Model.prototype.model = function(model, native) {
         if (model !== undefined) {
