@@ -859,15 +859,6 @@ var TemplateEngine = TemplateEngine || {
 		}
 	};
 
-	Component.prototype._renderSaveButton = function() {
-		var that = this;
-		return $("<span></span>", {
-			class: "glyphicon glyphicon-pencil"
-		}).click(function() {
-			TemplateEngine._triggerEdit(that);
-		});
-	};
-
 	Component.prototype._renderEditButton = function(style) {
 		var me = this;
 		return $("<span></span>", {
@@ -1295,6 +1286,75 @@ var TemplateEngine = TemplateEngine || {
 		});
 	};
 
+    var _fetchDependencies = function(me) {
+        var success = function(data, textStatus, jqXHR) {
+            if (data.success != true) {
+                return true;
+            }
+            var data = data.data;
+            $('#controlValues option').remove();
+            for (var i = 0; i < data.comboValues.length; i++) {
+                var option = $('<option>').prop({
+                    'value': data.comboValues[i].id
+                }).text('[ID ' + data.comboValues[i].id + '] ' + data.comboValues[i].value);
+                $('#controlValues').append(option);
+            }
+            // Ставим список всех контролов. Он обновляется всякий раз.
+            $('#controlDependencesList option').remove();
+            for (var i = 0; i < data.controls.length; i++) {
+                var option = $('<option>').prop({
+                    'value': data.controls[i].id
+                }).text(data.controls[i].label);
+                $('#controlDependencesList').append(option);
+            }
+            $('#controlValues').trigger('change');
+            // Ставим список действий
+            if ($('#controlActions option').length == 0) {
+                $('#controlActions option').remove();
+                for (var i = 0; i < data.actions.length; i++) {
+                    var option = $('<option>').prop({
+                        'value': i
+                    }).text(data.actions[i]);
+                    if (i == 0) {
+                        $(option).prop('selected', true);
+                    }
+                    $('#controlActions').append(option);
+                }
+            }
+            // По событию shown - вызов функции, которая спрячет запрещённые для данного элемента направления
+            $('#editDependencesPopup').on('shown.bs.modal', function(e) {
+                testDirection();
+            });
+            $('#valuesNotToPrint').val(data.notPrintedValues);
+            $('#editDependencesPopup').modal({
+                backdrop: 'static',
+                keyboard: false
+            }).draggable("disable");
+        };
+        $.ajax({
+            'url': globalVariables.baseUrl + '/admin/elements/getdependences?id=' + me.field("id"),
+            'cache': false,
+            'dataType': 'json',
+            'type': 'GET',
+            'success': success
+        })
+    };
+
+    Item.prototype._renderDependenciesButton = function(style) {
+        var that = this;
+        if (!this.has("id") || this.template().key() != "auto-complete" && this.template().key() != "drop-down" && this.template().key() != "dictionary") {
+            return undefined;
+        }
+        return $("<span></span>", {
+            class: "glyphicon glyphicon-cog",
+            style: style || "margin-right: 5px; margin-left: 3px;"
+        }).click(function() {
+            if (that.has("id")) {
+                _fetchDependencies(that);
+            }
+        });
+    };
+
     Item.prototype.render = function() {
 		var that = this;
         var s = $("<div></div>", {
@@ -1320,6 +1380,8 @@ var TemplateEngine = TemplateEngine || {
 			$("<div></div>", {
 				style: "float: none; margin-left: 5px;"
 			}).append(
+                that._renderDependenciesButton()
+            ).append(
 				that._renderEditButton()
 			).append(
 				that._renderRemoveButton("margin-right: 0;")
@@ -1926,17 +1988,17 @@ var TemplateEngine = TemplateEngine || {
     var collection = WidgetCollection._templateCollection;
 
 	// register basic templates
-    collection.append(new Template(collection, "category",      "Категория",          -3));
-	collection.append(new Template(collection, "clone",         "Клонировать",        -2));
-	//collection.append(new Template(collection, "static",        "Подключить",         -1));
-    collection.append(new Template(collection, "text",          "Текстовое поле",      0));
-    collection.append(new Template(collection, "text-area",     "Текстовая область",   1));
-    collection.append(new Template(collection, "number",        "Числовое поле",       5));
-    collection.append(new Template(collection, "drop-down",     "Выпадающий список",   2));
-    collection.append(new Template(collection, "auto-complete", "Автодополнение",      3));
-    collection.append(new Template(collection, "table",         "Таблица",             4));
-    collection.append(new Template(collection, "dictionary",    "Двухколонный список", 7));
-    collection.append(new Template(collection, "date",          "Дата",                6));
+    collection.append(new Template(collection, "category",      "Категория",           -3));
+	collection.append(new Template(collection, "clone",         "Клонировать",         -2));
+	//collection.append(new Template(collection, "static",        "Подключить",          -1));
+    collection.append(new Template(collection, "text",          "Текстовое поле",       0));
+    collection.append(new Template(collection, "text-area",     "Текстовая область",    1));
+    collection.append(new Template(collection, "number",        "Числовое поле",        5));
+    collection.append(new Template(collection, "drop-down",     "Выпадающий список",    2));
+    collection.append(new Template(collection, "auto-complete", "Множественный список", 3));
+    collection.append(new Template(collection, "table",         "Таблица",              4));
+    collection.append(new Template(collection, "dictionary",    "Двухколонный список",  7));
+    collection.append(new Template(collection, "date",          "Дата",                 6));
 	// register extra templates
 	//collection.append(new Template(collection, "token", ","));
 	//collection.append(new Template(collection, "token", "."));
