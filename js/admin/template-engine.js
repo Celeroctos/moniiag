@@ -1138,7 +1138,6 @@ var TemplateEngine = TemplateEngine || {
 		} else {
 			return false;
 		}
-		console.log(this.parent());
 		var data = {
 			data: me.model()
 		};
@@ -1342,7 +1341,14 @@ var TemplateEngine = TemplateEngine || {
 
     Item.prototype._renderDependenciesButton = function(style) {
         var that = this;
-        if (!this.has("id") || this.template().key() != "auto-complete" && this.template().key() != "drop-down" && this.template().key() != "dictionary") {
+        if (!this.has("id") ||
+                this.template().key() != "auto-complete" &&
+                this.template().key() != "drop-down" &&
+                this.template().key() != "dictionary"
+        ) {
+            return undefined;
+        }
+        if (!this.has("guide_id") || !this.field("guide_id")) {
             return undefined;
         }
         return $("<span></span>", {
@@ -2315,7 +2321,7 @@ var TemplateEngine = TemplateEngine || {
 			'dataType': 'json',
 			'type': 'GET',
 			'success': function(data) {
-				console.log(data);
+				//console.log(data);
 			}
 		});
 	};
