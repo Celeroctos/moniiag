@@ -1,1 +1,74 @@
-﻿
+﻿@mainBg: rgb(245, 247, 235);
+
+#sheduleNavbar {
+	min-height: 100px;
+	background: @mainBg;
+	padding: 10px 0;
+}
+body {
+	overflow-y: hidden;
+	overflow-x: hidden;
+	width: 98%;
+}
+#publicSheduleTable {
+	margin-left: 1.5%;
+	td {
+		text-align: center;
+		vertical-align: middle;
+	}
+	td:not(:first-child) {
+		width: 151px;
+	}
+	thead {
+		background: @mainBg;
+		font-weight: bold;
+		tr {
+			td:first-child {
+				font-size: 20px;
+			}
+			td:not(:first-child) {
+				font-size: 17px;
+			}
+		}
+	}
+	tbody {
+		tr {
+			background: rgb(164, 250, 164);
+			font-size: 18px;
+			td:first-child { 
+				text-align: left;
+				padding-left: 30px;
+			}
+		}
+		tr:nth-child(odd) {
+			background: rgb(149, 248, 149);
+		}
+		td {
+			border: 2px solid #ffffff;
+		}
+	}
+}
+#datetimeInfoCont {
+	
+}
+#sheduleRow {
+	margin-top: 130px;
+	padding: 0 10px 0 20px;
+}
+.marquee {
+	height: 40px;
+	font-size: 18px;
+	font-weight: bold;
+	padding: 10px;
+	margin-left: 1.5%;
+	background: @mainBg;
+	overflow: hidden;
+}
+.profession {
+	font-size: 14px;
+	display: block;
+}
+.sheduleTr {
+	min-height: 70px;
+	height: 70px;
+}

@@ -15,12 +15,12 @@
     <meta http-equiv="Expires" content="0">
 </head>
 <body>
-<div class="container-fluid" id="content">
-    <div class="row main-container">
-        <div class="col-xs-11">
-            <?php echo $content; ?>
-        </div>
-    </div>
-</div>
+	<div class="container-fluid" id="content">
+		<div class="row main-container">
+			<div class="col-xs-12">
+				<?php echo $content; ?>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
