@@ -1126,6 +1126,7 @@ var TemplateEngine = TemplateEngine || {
 			backdrop: 'static',
 			keyboard: false
 		}).draggable("disable");
+        $('#element-add-form select#type').trigger('change');
 	};
 
 	Item.prototype.edit = function() {
