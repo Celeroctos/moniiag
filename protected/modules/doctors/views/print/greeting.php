@@ -7,7 +7,6 @@
     <h3>
         <nobr><?php echo $greeting['date']; ?>, <?php echo $greeting['patient_initials']; ?>, <?php echo $greeting['card_number']; ?></nobr>
     <br/>
-        <nobr><?php echo $greeting['doctor_spec']; ?> <?php echo $greeting['doctor_regalia']; ?> <?php echo $greeting['doctor_initials']; ?></nobr>
     </h3>
 </div>
 <?php
@@ -132,3 +131,9 @@
             }
         }
 ?>
+<div class="footer">
+    <h3><br>
+        <nobr><?php echo $greeting['doctor_spec']; ?> <?php echo $greeting['doctor_initials']; ?></nobr>
+        <br/>
+    </h3>
+</div>
