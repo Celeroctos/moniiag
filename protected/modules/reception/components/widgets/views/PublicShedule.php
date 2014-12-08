@@ -8,6 +8,7 @@
 	</div>
 	<div id="timeCont">
 	</div>
+	<span class="glyphicon glyphicon-cog"></span>
 </div>
 <div class="row col-xs-12" id="sheduleRow">
 	<div class="marquee col-xs-12">
