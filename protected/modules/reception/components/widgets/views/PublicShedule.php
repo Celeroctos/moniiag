@@ -1,10 +1,11 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/publicshedule.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <div class="navbar-fixed-top" id="sheduleNavbar">
-    <a href="http://moniiag.ru" title="МОНИИАГ">
+    <a href="http://moniiag.ru" title="МОНИИАГ" id="logo">
 		<img src="http://moniiag.ru/assets/templates/med/images/logo-4-1.png" alt="" height="100" />
 	</a>
 	<div id="dateCont">
+		Сегодня понедельник 8 декабря 2014 г.
 	</div>
 	<div id="timeCont">
 	</div>

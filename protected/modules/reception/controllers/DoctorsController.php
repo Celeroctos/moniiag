@@ -5,7 +5,7 @@ class DoctorsController extends Controller {
     private $greetingDate = null;
 
     // Экшн поиска врача
-    public function actionSearch() {
+    public function actionSearch($ajaxReq = false) {
         //var_dump($_POST);
         //exit();
         // Посмотрим на то, какой календарь мы показываем сейчас
@@ -63,10 +63,6 @@ class DoctorsController extends Controller {
         }
         $start = $page * $rows - $rows;
 
-        //var_dump($filters);
-        //exit();
-        //$filters['rules'] = array();
-
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
 
         // Посмотрим на то, какой календарь мы показываем сейчас
@@ -115,8 +111,8 @@ class DoctorsController extends Controller {
             }
             // Если это органайзер, то нам нужно вынимать также часть календаря для каждого врача
             if($calendarTypeSetting == 1) {
-                $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
-                $doctor['shedule'] = $daysList;
+               $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
+			   $doctor['shedule'] = $daysList;
             }
         }
 
@@ -147,7 +143,8 @@ class DoctorsController extends Controller {
         $callCenterGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'maxGreetingsInCallcenter'));
         $waitingLineTimeWriting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'waitingLineTimeWriting'));
         $waitingLineDateWriting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'waitingLineDateWriting'));
-        if($primaryGreetingsLimit != null) {
+       
+	   if($primaryGreetingsLimit != null) {
             $answer['primaryGreetingsLimit'] = $primaryGreetingsLimit->value;
         } else {
             $answer['primaryGreetingsLimit'] = null;
@@ -175,8 +172,13 @@ class DoctorsController extends Controller {
         } else {
             $answer['waitingLineDateWriting'] = null;
         }
-        echo CJSON::encode($answer);
-    }
+		
+		if($ajaxReq) {
+			return $answer;
+		} else {
+			echo CJSON::encode($answer);
+		}
+	}
     
 	    // Экшн поиска врача без расписания (по-хорошему надо перенести это в другой контроллер)
     public function actionSearchCommon() {
@@ -372,6 +374,29 @@ class DoctorsController extends Controller {
             return false; // Расписание не установлено
         }
     }
+	
+	public function actionGetPublicShedule() {
+		$shedule = $this->actionSearch(true);
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('module_id', array(2, 3));
+		$criteria->addInCondition('name', array('text', 'mUpdateTimeout', 'updateTimeout', 'sortBy', 'perPage'));
+		
+		$settings = Setting::model()->findAll($criteria);
+		$setRes = array();
+		foreach($settings as $key => $setting) {
+			$setRes[$setting['name']] = $setting['value'];
+		}
+
+		echo CJSON::encode(
+			array(
+				'success' => true,
+				'data' => array(
+					'shedule' => $shedule,
+					'settings' => $setRes
+				)
+			)
+		);
+	}
 }
 
 ?>

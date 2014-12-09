@@ -1103,14 +1103,6 @@ class SheduleController extends Controller {
                 $resultArr[$i]['limits']['callCenter'] = $ruleToApply['limits'][1];
                 $resultArr[$i]['limits']['reception'] = $ruleToApply['limits'][2];
                 $resultArr[$i]['limits']['internet'] = $ruleToApply['limits'][3];
-
-                // Если есть лимиты, то надо их вернуть клиенту
-                //var_dump($ruleToApply);
-                //exit();
-
-               // var_dump($resultArr[$i]);
-              //  exit();
-
             }
             else
             {
@@ -1118,10 +1110,6 @@ class SheduleController extends Controller {
                 $resultArr[$i]['worked'] = false;
                 $resultArr[$i]['restDay'] = true;
             }
-
-            //var_dump($ruleToApply);
-            //exit();
-        // ==============>
 
             if ($resultArr[$i]['worked']==true)
             {
@@ -1157,17 +1145,9 @@ class SheduleController extends Controller {
                 }
 
             }
-        // <=============
         }
-///exit();
+
         return $resultArr;
-      //  var_dump($resultArr);
-       // exit();
-
-        //var_dump($dateBegin);
-        //var_dump($dateEnd);
-        //exit();
-
     }
 
 
@@ -1630,11 +1610,11 @@ class SheduleController extends Controller {
         //var_dump($patients);
         //exit();
         // Теперь строим список пациентов и свободных ячеек исходя из выборки. Выбираем начало и конец времени по расписанию у данного врача
-        $user = User::model()->findByPk(Yii::app()->user->id);
+      /*  $user = User::model()->findByPk(Yii::app()->user->id);
         if($user == null) {
             echo CJSON::encode(array('success' => 'false',
-                'data' => 'Ошибка! Неавторизованный пользователь.'));
-        }
+									 'data' => 'Ошибка! Неавторизованный пользователь.'));
+        } */ // Внешние источники могут это менять
 		
 
 		//$sheduleElements = SheduleSetted::getMode($doctorId,$weekday,$formatDate);

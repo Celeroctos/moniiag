@@ -2,7 +2,6 @@
 class UsersController extends Controller {
     public function actionLogin() {
         if(isset($_POST['FormLogin'])) {
-
             $formModel = new FormLogin();
             $formModel->attributes = $_POST['FormLogin'];
             if($formModel->validate()) {
@@ -44,6 +43,15 @@ class UsersController extends Controller {
         echo CJSON::encode(array('success' => 'true',
                                  'msg' => ''));
     }
+	
+	
+	public function actionIsLogged() {
+		echo CJSON::encode(
+			array(
+				'success' => !Yii::app()->user->getIsGuest(),
+            )
+		);
+	}
 }
 
 ?>

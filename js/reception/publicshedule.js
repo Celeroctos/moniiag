@@ -1,4 +1,33 @@
 $(document).ready(function() {
+	function AuthManager() {
+		return {
+			serverUrl : '/users/islogged',
+			callbackIsLogged : null,
+			setOptions : function(options) {
+				for(var i in options) {
+					if(this.hasOwnProperty(i)) {
+						this[i] = options[i];
+					}
+				}
+				return this;
+			},
+			isLogged : function() {
+				if(this.callbackIsLogged == null || typeof this.callbackIsLogged != 'function') {
+					console.log('Not found callback function in auth manager');
+					return false;
+				}
+				$.ajax({
+					'url' : this.serverUrl,
+					'cache' : false,
+					'dataType' : 'json',
+					'type' : 'GET',
+					'async' : 'true',
+					'success' : $.proxy(this.callbackIsLogged, this)
+				});
+			}
+		}
+	}
+
 	var completeModel = (function() {
 		return {
 			counter : 0,
@@ -192,23 +221,39 @@ $(document).ready(function() {
 				});
 			},
 			
-			parseResponse : function(data) {
+			parseResponse : function(inData) {
 				var preparedData = [];
-				if(data.success) {
-					this.loadedData = data.data;
+				if(inData.success) {
+					this.loadedData = inData.data.shedule.data;
+					
+					var settings = inData.data.settings;
+
+					// Настройки для расписания
+					this.setOptions({
+						'perPage' : settings.perPage,
+						'updateTimeout' : settings.updateTimeout,
+						'sortBy' : settings.sortBy
+					});
+
+					// Настройки для бегущей строки
+					marquee.setOptions({
+						'updateTimeout' : settings.mUpdateTimeout,
+						'text' : settings.text
+					});
+					
+					
+					if(this.ajaxLoadGif && this.ajaxLoadGifLink != null) {
+						$(this.ajaxLoadGifLink).remove();
+					}
+					
+					$(this.container).prepend(
+						$('<table>').addClass('table').append(
+							this.theadLink = this.getHeader(), 
+							this.prepareData(this.getFirstPage())
+						).prop('id', this.idOfComponent != null ? this.idOfComponent : 'sheduleTable')
+					);
+					this.setUpdateTimer();
 				} 
-				
-				if(this.ajaxLoadGif && this.ajaxLoadGifLink != null) {
-					$(this.ajaxLoadGifLink).remove();
-				}
-				
-				$(this.container).prepend(
-					$('<table>').addClass('table').append(
-						this.theadLink = this.getHeader(), 
-						this.prepareData(this.getFirstPage())
-					).prop('id', this.idOfComponent != null ? this.idOfComponent : 'sheduleTable')
-				);
-				this.setUpdateTimer();
 			},
 			
 			getFirstPage : function() {
@@ -315,7 +360,7 @@ $(document).ready(function() {
 	sheduleTable.setOptions({
 		container : $('#sheduleRow'),
 		idOfComponent : 'publicSheduleTable',
-		url : '/reception/doctors/search',
+		url : '/reception/doctors/getpublicshedule',
 		saveSettingsUrl : '/settings/system/settingsjsonedit',
 		ajaxLoadGif : true,
 		fade : false,
@@ -475,6 +520,7 @@ $(document).ready(function() {
 					.on('mouseover', $.proxy(this.showSettingsIcon, this))
 					.on('mouseout', $.proxy(this.hideSettingsIcon, this))
 					.on('click', $.proxy(this.openWindow, this));
+				return this;
 			},
 			showSettingsIcon : function(e) {
 				$(this.iconContainer).animate({
@@ -636,21 +682,36 @@ $(document).ready(function() {
 					alert('Неверно задан таймайт: введено не числовое значение!');
 					return false;
 				}
-			
-				sheduleTable.setOptions({
-					'updateTimeout' : parseInt(this.settingsFormElements.updateTimeout.val() * 1000),
-					'perPage' : parseInt(this.settingsFormElements.perPage.val()),
-					'sortBy' : this.settingsFormElements.sortBy.val()
-				});
-				sheduleTable.saveOptions();
 				
-				marquee.setOptions({
-					'updateTimeout' : this.settingsFormElements.mUpdateTimeout.val(),
-					'text' : this.settingsFormElements.text.val()
-				});
-				marquee.saveOptions();
-				
-				this.settingsPopover.popover('destroy');
+				var authManager = new AuthManager();
+				authManager.setOptions({
+					'callbackIsLogged' : $.proxy(function(data, textStatus, jqXHR) {
+						if(data.success) {	
+							sheduleTable.setOptions({
+								'updateTimeout' : parseInt(this.settingsFormElements.updateTimeout.val() * 1000),
+								'perPage' : parseInt(this.settingsFormElements.perPage.val()),
+								'sortBy' : this.settingsFormElements.sortBy.val()
+							});
+							sheduleTable.saveOptions();
+							
+							marquee.setOptions({
+								'updateTimeout' : this.settingsFormElements.mUpdateTimeout.val(),
+								'text' : this.settingsFormElements.text.val()
+							});
+							marquee.saveOptions();
+							
+							this.settingsPopover.popover('destroy');
+						} else {
+												
+							var authWindow = new AuthWindow().setOptions({
+								parentContainer : $(this.settingsPopover).find('.popover'),
+								authManager : authManager
+							}).init();
+
+							authWindow.open();
+						}
+					}, this)
+				}).isLogged();
 			}
 		}
 	}
@@ -658,4 +719,169 @@ $(document).ready(function() {
 	var settingWindow = new SettingsWindow().setOptions({
 		iconContainer : '#sheduleNavbar .glyphicon-cog'
 	}).init();
+	
+	function AuthWindow() {
+		return {
+			authPopover : null,
+			authManager : null, // Auth Manager for login control
+			parentContainer : null,
+			loginElement : null, // Textfield for login
+			passwordElement : null, // Textfield for password
+			serverUrl : '/users/login',
+			form : null, // Form for login, DOM element
+			setOptions : function(options) {
+				for(var i in options) {
+					if(this.hasOwnProperty(i)) {
+						this[i] = options[i];
+					}
+				}
+				return this;
+			},
+			
+			createWindow : function() {
+				if(this.authPopover != null) {
+					this.authPopover.popover('show');
+					return true; 
+				}
+
+			    this.authPopover = $(this.parentContainer).popover({
+					animation: true,
+					html: true,
+					placement: 'left',
+					title: 'Авторизация',
+					delay: {
+						show: 100,
+						hide: 100
+					},
+					container: $(this.parentContainer),
+					content: $.proxy(function() {
+						return this.createAuthForm();
+					}, this)
+				}).on('hidden.bs.popover', $.proxy(function(e) {
+					this.authPopover = null;
+				}, this));
+						
+				this.authPopover.popover('show');
+				
+				var span = $('<span class="glyphicon glyphicon-remove" title="Закрыть окно"></span>').css({
+					marginLeft: '570px',
+					position: 'absolute',
+					cursor: 'pointer'
+				});
+
+				$(span).on('click', $.proxy(function(e) {
+					this.authPopover.popover('destroy');
+				}, this));
+				
+				console.log($(this.parentContainer).find('.popover'));
+				$(this.parentContainer).find('.popover').css({
+					'top' : '3px',
+					'left' : '-600px',
+					'minWidth' : '600px',
+				}).append(span);
+				
+				$(this.parentContainer).find('.popover .popover-content').css({
+					'fontSize' : '15px',
+					'minWidth' : '600px',
+				});
+
+				$(this.parentContainer).find('.popover .popover-title').css({
+					'fontSize' : '16px',
+					'fontWeight' : 'bold'
+				});
+				
+				$(this.parentContainer).on('click', '.popover', function(e) {
+					return false;
+				});
+				
+				return this;
+			},
+			
+			createAuthForm : function() {
+				this.form = $('<form>').addClass('navbar-form col-xs-12').prop({
+					'role' : 'form'
+				});
+				this.form.on('keydown', $.proxy(function(e) {
+					if(e.keyCode == 13) {
+						this.submitButton.trigger('click');
+					}
+				}, this));
+
+				$(this.form).append(
+					$('<div>').addClass('form-group').append(
+						this.loginElement = $('<input>').addClass('form-control col-xs-2').prop({
+							'type' : 'textfield',
+							'name' : 'login',
+							'id' : 'login',
+							'placeholder' : 'Логин'
+						})
+					), 
+					$('<div>').addClass('form-group').append(
+						this.passwordElement = $('<input>').addClass('form-control col-xs-2').prop({
+							'type' : 'password',
+							'name' : 'password',
+							'id' : 'password',
+							'placeholder' : 'Пароль'
+						})
+					),
+					$('<div>').addClass('form-group').append(
+						this.submitButton = $('<input>').addClass('btn btn-success').prop({
+							'value' : 'Войти',
+							'type' : 'button',
+							'id' : 'loginSubmit'
+						}).on('click', $.proxy(this.tryLogin, this))
+					)
+				);
+				
+				return this.form;
+			},
+			
+			tryLogin : function() {
+				if(this.serverUrl == null) {
+					console.log('Not found server url for login..');
+					return false;
+				}
+				
+				if($.trim(this.loginElement.val()) == '') {
+					alert('Вы не ввели логин!');
+					return false;
+				}
+				
+				if($.trim(this.passwordElement.val()) == '') {
+					alert('Вы не ввели пароль!');
+					return false;
+				}
+				
+				$.ajax({
+					'url' : this.serverUrl,
+					'cache' : false,
+					'dataType' : 'json',
+					'type' : 'POST',
+					'async' : 'true',
+					'data' : {
+						'FormLogin' : {
+							'login' : this.loginElement.val(),
+							'password' : this.passwordElement.val()
+						}
+					},
+					'success' : $.proxy(function(data, textStatus, jqXHR) {
+						if(data.success == 'true') { // Sick!
+							settingWindow.saveSettings(); // Second try to save settings..
+						} else {
+							alert('Пользователя с такой парой логин-пароль не существует!');
+						}
+					}, this)
+				});
+			
+			},
+			
+			open : function() {
+				this.createWindow();
+			},
+			
+			init : function() {
+				return this;
+			}
+		}
+	}
 });

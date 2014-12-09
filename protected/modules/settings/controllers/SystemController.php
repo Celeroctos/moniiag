@@ -45,16 +45,20 @@ class SystemController extends Controller {
 				);
 			exit();
 		}
-		
+
         foreach($_GET['values'] as $settingName => $value) {
             $setting = Setting::model()->find('module_id = :module_id AND name = :name', array(':name' => $settingName, ':module_id' => $_GET['module']));
-			if($setting != null) {
-				$setting->value = $value;
-				if(!$setting->save()) {
-					echo CJSON::encode(array('success' => false,
-											 'errors' => 'Не могу сохранить ключ '.$settingName));
-					exit();
-				}
+			if($setting == null) {
+				$setting = new Setting();
+				$setting->name = $settingName;
+				$setting->module_id = $_GET['module']; 
+			} 
+			
+			$setting->value = $value;
+			if(!$setting->save()) {
+				echo CJSON::encode(array('success' => false,
+										 'errors' => 'Не могу сохранить ключ '.$settingName));
+				exit();
 			}
         }
 		
