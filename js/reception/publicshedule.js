@@ -230,14 +230,14 @@ $(document).ready(function() {
 
 					// Настройки для расписания
 					this.setOptions({
-						'perPage' : settings.perPage,
-						'updateTimeout' : settings.updateTimeout,
+						'perPage' : parseInt(settings.perPage),
+						'updateTimeout' : parseInt(settings.updateTimeout),
 						'sortBy' : settings.sortBy
 					});
 
 					// Настройки для бегущей строки
 					marquee.setOptions({
-						'updateTimeout' : settings.mUpdateTimeout,
+						'updateTimeout' : parseInt(settings.mUpdateTimeout),
 						'text' : settings.text
 					});
 					
@@ -262,11 +262,11 @@ $(document).ready(function() {
 			},
 			
 			getPage : function(page) {
-				return this.loadedData.slice(this.currentPage * this.perPage, this.currentPage * this.perPage + this.perPage + 1); 
+				return this.loadedData.slice(this.currentPage * this.perPage, this.currentPage * this.perPage + this.perPage); 
 			},
 			
 			getNextPage : function() {
-				if((this.perPage * this.currentPage + this.perPage) > this.loadedData.length) {
+				if((this.perPage * this.currentPage + this.perPage) >= this.loadedData.length) {
 					this.currentPage = 0;
 				} else {
 					this.currentPage++;
@@ -881,7 +881,46 @@ $(document).ready(function() {
 			
 			init : function() {
 				return this;
-			}
+			},
 		}
 	}
+	
+	function RealtimeClock() {
+		return {
+			timeContainer : null,
+			dateContainer : null,
+			dateObj : new Date(), // Obj for getTime()
+			state : 0, // For ":" 
+			days : ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'],
+			months : ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
+			go : function() {
+				if(this.timeContainer == null || $(this.timeContainer).length == 0) {
+					console.log('Not found clock container....');
+				}
+				if(this.dateContainer == null || $(this.dateContainer).length == 0) {
+					console.log('Not found date container....');
+				}
+				setTimeout($.proxy(this.setCurrentDate, this), 950); 
+			},
+			setCurrentDate : function() {
+				$(this.timeContainer).html(this.dateObj.getHours() + (this.state ? ':' : ' ') + this.dateObj.getMinutes());
+				this.state = this.state ? 0 : 1;
+				$(this.dateContainer).html('Сегодня ' + this.days[this.dateObj.getDay()] + ', ' + this.dateObj.getDate() + ' ' + this.months[this.dateObj.getMonth()] + ' ' + this.dateObj.getFullYear() + ' г.');
+				setTimeout($.proxy(this.setCurrentDate, this), 950); 
+			},
+			setOptions : function(options) {
+				for(var i in options) {
+					if(this.hasOwnProperty(i)) {
+						this[i] = options[i];
+					}
+				}
+				return this;
+			}
+		};
+	};
+	
+	var clock = new RealtimeClock().setOptions({
+		'timeContainer' : '#timeCont',
+		'dateContainer' : '#dateCont'
+	}).go();
 });
