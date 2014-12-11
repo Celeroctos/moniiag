@@ -305,15 +305,15 @@ class ElementsController extends Controller {
                 return $categorie->position;
             }
         } else {
-            echo CJSON::encode(array('success' => false,
+			// Не будем выкидывать эту ошибку, чтобы сохранять элементы в шаблонизаторе
+            /* echo CJSON::encode(array('success' => false,
                     'errors' => array(
                         'position' => array(
                             'Одна или несколько позиций в иерархии отсутствует!'
                         )
                     )
                 )
-            );
-            exit();
+            ); exit(); */
         }
         return $path;
     }

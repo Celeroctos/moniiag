@@ -614,10 +614,10 @@ var TemplateEngine = TemplateEngine || {
 		if (value !== undefined) {
 			this._native[field] = value;
 		}
-		if (this._model[field] === undefined) {
+		if (this._native[field] === undefined) {
 			throw new Error("Model/native() : \"Field hasn't been declared in model\"");
 		}
-		return this._model[field];
+		return this._native[field];
 	};
 
     /**
@@ -1087,7 +1087,8 @@ var TemplateEngine = TemplateEngine || {
 	var _updateItem = function(event, data) {
 		var json = $.parseJSON(data);
 		if (!json.success) {
-			throw new Error(json);
+			console.log(json);
+			throw new Error(json.message);
 		}
 		Item["-instance"].model(json["model"], true);
 		Item["-instance"].update();
@@ -1106,7 +1107,8 @@ var TemplateEngine = TemplateEngine || {
 		if (this.parent().has("id")) {
 			this.field("categorie_id", this.parent().field("id"));
 		} else {
-			return false;
+            this.field("categorie_id", -1);
+			//return false;
 		}
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
@@ -1122,11 +1124,19 @@ var TemplateEngine = TemplateEngine || {
 			}
 		);
 		Item["-instance"] = this;
+        $('#element-add-form select#type').trigger('change');
 		$('#addElementPopup').modal({
 			backdrop: 'static',
 			keyboard: false
 		}).draggable("disable");
-        $('#element-add-form select#type').trigger('change');
+        // stupid fix for text element
+        if (this.template().id() == 0) {
+            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').addClass('no-display');
+            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').addClass('no-display');
+        } else if (this.template().id() == 6) {
+            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').removeClass('no-display');
+            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').removeClass('no-display');
+        }
 	};
 
 	Item.prototype.edit = function() {
@@ -1214,10 +1224,19 @@ var TemplateEngine = TemplateEngine || {
 			}
 		);
 		Item["-instance"] = this;
+        $('#element-add-form select#type').trigger('change');
 		$('#editElementPopup').modal({
 			backdrop: 'static',
 			keyboard: false
 		}).draggable("disable");
+        // stupid fix for text element
+        if (this.template().id() == 0) {
+            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').addClass('no-display');
+            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').addClass('no-display');
+        } else if (this.template().id() == 6) {
+            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').removeClass('no-display');
+            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').removeClass('no-display');
+        }
 	};
 
 	Item.prototype.erase = function() {
@@ -1371,6 +1390,9 @@ var TemplateEngine = TemplateEngine || {
 		if (this.has("label") && this.field("label").length) {
 			s.append(this._renderLabelBefore());
 		}
+		if (!this.has("id")) {
+			s.addClass("template-engine-unsaved");
+		}
 		s.append(
 			$("<div></div>", {
 				html: that.template().title(),
@@ -1449,12 +1471,17 @@ var TemplateEngine = TemplateEngine || {
 		}
 		Category["-instance"].model(json["model"], true);
 		Category["-instance"].update();
-		_appendParentSelectID(Category["-instance"]);
 	};
 
 	$(document).ready(function() {
-		$("#categorie-add-form").on("success", _updateCategory);
-		$("#categorie-edit-form").on("success", _updateCategory);
+		$("#categorie-add-form").on("success", function(event, data) {
+			_updateCategory(event, data);
+			ParentCategoryUpdater.afterAppend(Category["-instance"]);
+		});
+		$("#categorie-edit-form").on("success", function(event, data) {
+			_updateCategory(event, data);
+			ParentCategoryUpdater.afterRename(Category["-instance"]);
+		});
 	});
 
 	Category.prototype.write = function() {
@@ -1466,7 +1493,8 @@ var TemplateEngine = TemplateEngine || {
 				me.field("parent_id", -1);
 			}
 		} else {
-			return false;
+            me.field("parent_id", -1);
+			//return false;
 		}
 		this.manager().invoke($('#addCategoriePopup form'),
 			function(field, info) {
@@ -1517,7 +1545,7 @@ var TemplateEngine = TemplateEngine || {
 			'dataType' : 'json',
 			'type' : 'GET'
 		});
-		_removeParentSelectID(this);
+		ParentCategoryUpdater.afterRemove(this);
 	};
 
 	Category.prototype.refresh = function() {
@@ -1630,7 +1658,6 @@ var TemplateEngine = TemplateEngine || {
         var that = this;
         // apply sortable
         this.selector().find(".template-engine-items").sortable({
-            appendTo: document.body,
             update: function(e, ui) {
 				// get instance
 				var item = $(ui.item).data("instance");
@@ -2041,61 +2068,39 @@ var TemplateEngine = TemplateEngine || {
 
 	 */
 
-	var _appendParentSelectID = function(category) {
-		if (!category.has("id") || !category.has("name")) {
-			return false;
+	var ParentCategoryUpdater = {
+		afterRename: function(category) {
+			if (!category.has("id")) {
+				return false;
+			}
+			$(document.body).find("#parentId, #categorieId").children().each(function(i, e) {
+				if ($(e).val() == category.field("id")) {
+					console.log(category.field("name"));
+					$(e).html(category.field("name"));
+				}
+			});
+		},
+		afterAppend: function(category) {
+			if (!category.has("id")) {
+				return false;
+			}
+			$(document.body).find("#parentId, #categorieId").each(function(i, e) {
+				$(e).append(
+					$("<option></option>", {
+						value: category.field("id"),
+						html: category.field("name")
+					})
+				);
+			});
+		},
+		afterRemove: function(category) {
+			if (!category.has("id")) {
+				return false;
+			}
+			$(document.body).find("#parentId, #categorieId").each(function(i, e) {
+				$(e).children("option[value=\"" + category.field("id") + "\"]").remove();
+			});
 		}
-		$('#addCategoriePopup form').find("#parentId").append(
-			$("<option></option>", {
-				value: category.field("id"),
-				html: category.field("name")
-			})
-		);
-		$('#editCategoriePopup form').find("#parentId").append(
-			$("<option></option>", {
-				value: category.field("id"),
-				html: category.field("name")
-			})
-		);
-		$('#addElementPopup form').find("#categorieId").append(
-			$("<option></option>", {
-				value: category.field("id"),
-				html: category.field("name")
-			})
-		);
-		$('#editElementPopup form').find("#categorieId").append(
-			$("<option></option>", {
-				value: category.field("id"),
-				html: category.field("name")
-			})
-		);
-		$('#findCategoryPopup form').find("#categorieId").append(
-			$("<option></option>", {
-				value: category.field("id"),
-				html: category.field("name")
-			})
-		);
-	};
-
-	var _removeParentSelectID = function(category) {
-		if (!category.has("id")) {
-			return false;
-		}
-		$('#addCategoriePopup form').find("#parentId").children(
-			"option[value=\"" + category.field("id") + "\"]"
-		).remove();
-		$('#editCategoriePopup form').find("#parentId").children(
-			"option[value=\"" + category.field("id") + "\"]"
-		).remove();
-		$('#addElementPopup form').find("#parentId").children(
-			"option[value=\"" + category.field("id") + "\"]"
-		).remove();
-		$('#editElementPopup form').find("#parentId").children(
-			"option[value=\"" + category.field("id") + "\"]"
-		).remove();
-		$('#findCategoryPopup form').find("#parentId").children(
-			"option[value=\"" + category.field("id") + "\"]"
-		).remove();
 	};
 
 	var _getTemplateByID = function(id) {
@@ -2147,92 +2152,6 @@ var TemplateEngine = TemplateEngine || {
 		return TemplateEngine;
 	};
 
-	var actionMapAppend = [];
-    var actionMapEdit = [];
-    var actionMapRemove = [];
-	var actionMapClone = [];
-
-	var _onAction = function(key, action, map) {
-		var actions;
-		if (key != null) {
-			actions = map[collection.find(key).key()];
-			if (!actions) {
-				map[collection.find(key).key()] = [
-					action
-				];
-			} else {
-				actions.push(action);
-			}
-		} else {
-			for (var i in collection.children()) {
-				actions = map[collection.children()[i].key()];
-				if (!actions) {
-					map[collection.children()[i].key()] = [
-						action
-					];
-				} else {
-					actions.push(action);
-				}
-			}
-		}
-		return TemplateEngine;
-	};
-
-	TemplateEngine.onEdit = function(key, action) {
-		return _onAction(key, action, actionMapEdit);
-	};
-
-	TemplateEngine.onAppend = function(key, action) {
-		return _onAction(key, action, actionMapAppend);
-	};
-
-    TemplateEngine.onRemove = function(key, action) {
-        return _onAction(key, action, actionMapRemove);
-    };
-
-	TemplateEngine.onClone = function(key, action) {
-		return _onAction(key, action, actionMapClone);
-	};
-
-	var _trigger = function(item, map) {
-		var template;
-		if (!(item instanceof Item)) {
-			template = collection.find("category");
-		} else {
-			template = item.template();
-		}
-		var actions = map[template.key()];
-		if (!actions) {
-			return false;
-		}
-		for (var i in actions) {
-			actions[i].call(item);
-		}
-	};
-
-	TemplateEngine._triggerEdit = function(item) {
-		if (!item.length()) {
-			this._triggerAppend(item);
-		} else {
-			_trigger(item, actionMapEdit);
-		}
-	};
-
-	TemplateEngine._triggerAppend = function(item) {
-		if (item instanceof Item) {
-			item.parent().compute();
-		}
-		_trigger(item, actionMapAppend);
-	};
-
-    TemplateEngine._triggerRemove = function(item) {
-		_trigger(item, actionMapRemove);
-    };
-
-	TemplateEngine._triggerClone = function(item) {
-		_trigger(item, actionMapRemove);
-	};
-
 	TemplateEngine.isCategory = function(item) {
 		return item instanceof Category;
 	};
@@ -2249,10 +2168,6 @@ var TemplateEngine = TemplateEngine || {
 		// reset widget collection (it will
 		// remove all categories with elements)
 		WidgetCollection.restart();
-		// reset action hooks
-		actionMapAppend = [];
-		actionMapEdit = [];
-		actionMapRemove = [];
 	};
 
 	TemplateEngine.getTemplateCollection = function() {
@@ -2315,15 +2230,12 @@ var TemplateEngine = TemplateEngine || {
 		}
 		json += "]";
 		// set request on server to update template categories
-		$.ajax({
-			'url': globalVariables.baseUrl + "/admin/templates/utc?tid="
-				+ cc.field("id") + "&cids=" + json + "&categories=" + JSON.stringify(result),
-			'cache': false,
-			'dataType': 'json',
-			'type': 'GET',
-			'success': function(data) {
-				//console.log(data);
-			}
+		$.post(globalVariables.baseUrl + "/admin/templates/utc", {
+			tid: cc.field("id"),
+			categories: JSON.stringify(result),
+			cids: json
+		}, function(data) {
+			$("#designTemplatePopup").modal("hide");
 		});
 	};
 
@@ -2347,6 +2259,18 @@ var TemplateEngine = TemplateEngine || {
 			});
 		});
 
+		var tc = TemplateEngine.getTemplateCollection();
+
+		$("#designTemplatePopup").on("shown.bs.modal", function() {
+			tc.selector().detach().appendTo(
+				$(document.body)
+			).css("visibility", "visible");
+		});
+		$("#designTemplatePopup").on("hide.bs.modal", function() {
+			tc.selector().detach().appendTo(
+				tc.selector()
+			).css("visibility", "hidden")
+		});
 
 		$("#findCategoryPopup form .btn-warning").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
@@ -2397,8 +2321,17 @@ var TemplateEngine = TemplateEngine || {
 				'dataType': 'json',
 				'type': 'GET'
 			}).done(function(data) {
-				TemplateEngine.getCategoryCollection()
+				var c = TemplateEngine.getCategoryCollection()
 					.register(data["model"], false);
+				var appendToList = function(c) {
+					ParentCategoryUpdater.afterAppend(c);
+					for (var i in c.children()) {
+						if (c.children(i) && c.children(i) instanceof Category) {
+							appendToList(c.children(i));
+						}
+					}
+				};
+				appendToList(c);
 			});
 		});
 	});

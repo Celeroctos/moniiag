@@ -28,7 +28,7 @@ class EditElement extends ModalWindow {
         // Categories
 
         $categories = $categoriesModel->getRows(false, 'name', 'asc');
-        $categoriesList = array();
+		$categoriesList = array('-1' => 'Нет');
 
         foreach($categories as $index => $categorie) {
             $categoriesList[$categorie['id']] = $categorie['name'];

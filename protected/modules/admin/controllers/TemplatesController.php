@@ -229,7 +229,11 @@ class TemplatesController extends Controller {
         );
     }
 
-	public function actionUtc($tid, $cids, $categories) {
+	public function actionUtc() {
+
+		$tid = $_POST["tid"];
+		$categories = $_POST["categories"];
+		$cids = $_POST["cids"];
 
 		// update template array with categories
 		MedcardTemplate::model()->setTemplateCategories($tid, $cids);

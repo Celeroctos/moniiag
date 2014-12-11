@@ -362,7 +362,7 @@ class CategoriesController extends Controller {
 
     public function actionDelete($id) {
         try {
-			// Replace with Trigger
+			// Replaced with Trigger
 			/*MedcardElement::model()->deleteAll("categorie_id = :id", array(
 				":id" => $id
 			)); */

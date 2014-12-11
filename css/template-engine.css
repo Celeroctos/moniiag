@@ -36,14 +36,16 @@
 .template-engine-category-collection {
     display: block;
     background: #a6a6a6;
+    /*height: 600px;*/
+    height: auto;
     min-height: 500px;
     width: calc(100% - 195px);
     margin-left: 15px;
     margin-right: 10px;
     float: left;
-    height: auto;
     border-radius: 5px;
     border: solid dimgray 1px;
+    /*overflow: scroll;*/
 }
 
 .template-engine-items {
@@ -62,7 +64,7 @@
 
 .template-engine-items .template-engine-item {
     box-sizing: border-box;
-    height: 52px;
+    height: 51px;
     margin: 0;
     width: auto;
     display: inline-block;
@@ -71,14 +73,15 @@
 }
 
 .template-engine-template {
-    /*position: fixed;*/
+    position: fixed;
     margin-left: 5px;
     float: left;
-    background: #ffffff;
+    background: none;
     color: #fff;
-    right: 25px;
-    /*margin-top: auto;*/
-    /*margin-bottom: auto;*/
+    right: 105px;
+    top: 105px;
+    z-index: 2000;
+    visibility: hidden;
 }
 
 .template-engine-nestable {
@@ -196,8 +199,8 @@
 }
 
 .dd-dragel {
+    width: auto;
     position: absolute;
     pointer-events: none;
     z-index: 9999;
-    height: 50px;
 }
