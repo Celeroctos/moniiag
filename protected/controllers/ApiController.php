@@ -6,7 +6,7 @@
  * Time: 16:20
  */
 
-class ApiController extends Controller {
+class ApiController2 extends Controller {
 
     /**
      * Register new API 20 bytes SSL key

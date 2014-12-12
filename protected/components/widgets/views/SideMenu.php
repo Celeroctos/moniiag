@@ -257,6 +257,12 @@
                     <?php echo CHtml::link('Логи', array('/admin/logs/view')) ?>
                 </li>
             <?php } ?>
+			<? // TODO add access for API ?>
+			<?php if(Yii::app()->user->checkAccess('menuAdminLogs')) { ?>
+				<li <?php echo $controller == 'external' && $module == 'admin' ? 'class="active"' : ''; ?>>
+					<?php echo CHtml::link('Внешний доступ', array('/admin/external/view')) ?>
+				</li>
+			<?php } ?>
         </ul>
     </li>
 <?php } ?>
