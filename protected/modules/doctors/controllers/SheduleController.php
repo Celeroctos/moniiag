@@ -1087,6 +1087,7 @@ class SheduleController extends Controller {
                 // Правило найдено
                 $resultArr[$i]['worked'] = true;
                 $resultArr[$i]['restDay'] = false;
+				$resultArr[$i]['cabinet'] = $ruleToApply['cabinet'];
 
                 if (isset ($ruleToApply['greetingBegin']))
                 {

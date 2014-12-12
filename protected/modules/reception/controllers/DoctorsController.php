@@ -255,7 +255,7 @@ class DoctorsController extends Controller {
                     $filters['rules'][] = array(
                         'field' => 'greeting_type',
                         'op' => 'in',
-                        'data' => array(1, 0)
+                        'data' => array(2, 0)
                     );
                 }
             }
@@ -379,7 +379,7 @@ class DoctorsController extends Controller {
 		$shedule = $this->actionSearch(true);
 		$criteria = new CDbCriteria();
 		$criteria->addInCondition('module_id', array(2, 3));
-		$criteria->addInCondition('name', array('text', 'mUpdateTimeout', 'updateTimeout', 'sortBy', 'perPage'));
+		$criteria->addInCondition('name', array('text', 'mUpdateTimeout', 'updateTimeout', 'sortBy', 'perPage', 'withoutIds', 'numCycles'));
 		
 		$settings = Setting::model()->findAll($criteria);
 		$setRes = array();

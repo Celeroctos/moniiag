@@ -65,6 +65,9 @@ body {
 	padding: 10px 20px;
 	font-size: 22px;
 }
+#withoutIds {
+	min-height: 200px;
+}
 #publicSheduleTable {
 	margin-left: 1.5%;
 	td {
@@ -88,7 +91,7 @@ body {
 	}
 	tbody {
 		tr {
-			background: rgb(164, 250, 164);
+			background: rgb(194, 250, 194);
 			font-size: 18px;
 			td:first-child { 
 				text-align: left;
@@ -96,7 +99,7 @@ body {
 			}
 		}
 		tr:nth-child(odd) {
-			background: rgb(149, 248, 149);
+			background: rgb(139, 218, 139);
 		}
 		td {
 			border: 2px solid #ffffff;
@@ -111,13 +114,14 @@ body {
 	padding: 0 10px 0 20px;
 }
 .marquee {
-	height: 40px;
+	height: 45px;
 	font-size: 18px;
 	font-weight: bold;
 	padding: 10px;
 	margin-left: 1.5%;
 	background: @mainBg;
 	overflow: hidden;
+	white-space: nowrap;
 }
 .profession {
 	font-size: 14px;
@@ -126,4 +130,69 @@ body {
 .sheduleTr {
 	min-height: 70px;
 	height: 70px;
+}
+
+.chooser {
+  .input-group-addon {
+    position: relative;
+    top: 0;
+    cursor: pointer;
+  }
+  .variants {
+    width: 100%;
+    height: auto;
+    border: 2px solid #E6E6E6;
+    position: absolute;
+    padding: 0;
+    background: #ffffff;
+    z-index: 99;
+    li {
+      list-style: none;
+      font-size: 12px;
+      padding: 0 5px;
+    }
+    li:not(.navigation):hover {
+        background: #81F781;
+        cursor: pointer;
+    }
+    li.active {
+      background: #81F781;
+    }
+    a.prev {
+
+    }
+    a.next {
+      float: right;
+    }
+  }
+  .choosed {
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid #E6E6E6;
+    border-radius: 3px;
+    margin: 5px 0 0 0;
+    padding: 5px;
+    padding-left: 0;
+    span.item {
+      background: #F5F6CE;
+      padding: 2px 8px 2px 3px;
+      border-radius: 2px;
+      display: inline-block;
+      margin-bottom: 3px;
+      margin-left: 3px;
+      z-index: 98;
+      span {
+        color: #FF0000;
+        position: relative;
+        top: 2px;
+        left: 5px;
+      }
+      span:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+.no-display {
+  display: none;
 }

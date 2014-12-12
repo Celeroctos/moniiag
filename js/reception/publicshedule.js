@@ -103,6 +103,12 @@ $(document).ready(function() {
 			theadLink : null, // This is the link for thead in shedule
 			sortBy : 'last_name', // Sort by field..
 			saveSettingsUrl : null, 
+			withoutIds : [], // Filter for doctors
+			filteredData : [], // Doctors with filter
+			numCycles : null, // Num cycles for old data, without new loading
+			currentCycle : 0, // Current cycle
+			tableLink : null, // This is link for table...
+			updateTimer : null, // Timer, SetTimeout
 			setOptions : function(options) {
 				for(var i in options) {
 					if(this.hasOwnProperty(i)) {
@@ -131,7 +137,9 @@ $(document).ready(function() {
 						'values' : {
 							'perPage' : this.getOption('perPage'),
 							'updateTimeout' : this.getOption('updateTimeout'),
-							'sortBy' : this.getOption('sortBy')
+							'sortBy' : this.getOption('sortBy'),
+							'numCycles' : this.getOption('numCycles'),
+							'withoutIds' : $.toJSON(this.getOption('withoutIds'))
 						}
 					},
 					'type' : 'GET',
@@ -148,20 +156,20 @@ $(document).ready(function() {
 				});
 			},
 			getCurrentDays : function() {
-				var days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+				var days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
 				var months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 				var dayData = [];
 				var currentMonth = (new Date()).getMonth();
 				var prev = null;
-				if(this.loadedData.length > 0) {
-					for(var i in this.loadedData[0].shedule) {
-						if(prev && prev > parseInt(this.loadedData[0].shedule[i].day)) {
+				if(this.filteredData.length > 0) {
+					for(var i in this.filteredData[0].shedule) {
+						if(prev && prev > parseInt(this.filteredData[0].shedule[i].day)) {
 							// Get next month...
 							currentMonth = (currentMonth + 1) % 11;
 						}
-						prev = parseInt(this.loadedData[0].shedule[i].day);
+						prev = parseInt(this.filteredData[0].shedule[i].day);
 						dayData.push({
-							'dayname' : days[this.loadedData[0].shedule[i].weekday],
+							'dayname' : days[this.filteredData[0].shedule[i].weekday],
 							'day' : prev,
 							'monthname' : months[currentMonth]
 						});
@@ -183,7 +191,7 @@ $(document).ready(function() {
 			/* This method requests all doctors with their shedule per filters */
 			createRequest : function(async) {
 				// Create ajaxgif loader 
-				if(this.ajaxLoadGif) {
+				if(this.ajaxLoadGif && !this.theadLink) { // This is first cycle...
 					$(this.container).prepend(
 						this.ajaxLoadGifLink = $(this.getAjaxGif()).css({
 							'marginLeft' : '50%',
@@ -213,7 +221,7 @@ $(document).ready(function() {
 						'sidx' : this.sortBy,
 						'rows' : 15,
 						'page' : 1,
-						'sord' : 'desc'
+						'sord' : 'asc'
 					},
 					'type' : 'GET',
 					'async' : async,
@@ -224,7 +232,7 @@ $(document).ready(function() {
 			parseResponse : function(inData) {
 				var preparedData = [];
 				if(inData.success) {
-					this.loadedData = inData.data.shedule.data;
+					this.currentCycle = 0;					
 					
 					var settings = inData.data.settings;
 
@@ -232,7 +240,9 @@ $(document).ready(function() {
 					this.setOptions({
 						'perPage' : parseInt(settings.perPage),
 						'updateTimeout' : parseInt(settings.updateTimeout),
-						'sortBy' : settings.sortBy
+						'sortBy' : settings.sortBy,
+						'withoutIds' : $.parseJSON(settings.withoutIds),
+						'numCycles' : parseInt(settings.numCycles)
 					});
 
 					// Настройки для бегущей строки
@@ -242,16 +252,34 @@ $(document).ready(function() {
 					});
 					
 					
+					this.loadedData = inData.data.shedule.data;
+					// Filter elements...
+
+					// fucking JS with their typeof 
+					if(this.withoutIds && typeof this.withoutIds == 'object' && this.withoutIds.length > 0) {
+						this.filteredData = this.loadedData.filter(function(element) {
+							return this.withoutIds.indexOf(element.id.toString()) == -1;
+						}, this);
+					} else {
+						this.filteredData = this.loadedData;
+					}
+					
 					if(this.ajaxLoadGif && this.ajaxLoadGifLink != null) {
 						$(this.ajaxLoadGifLink).remove();
 					}
 					
-					$(this.container).prepend(
-						$('<table>').addClass('table').append(
-							this.theadLink = this.getHeader(), 
+					if(!this.tableLink) {
+						$(this.container).prepend(
+							this.tableLink = $('<table>').addClass('table').append(
+								this.theadLink = this.getHeader(), 
+								this.prepareData(this.getFirstPage())
+							).prop('id', this.idOfComponent != null ? this.idOfComponent : 'sheduleTable')
+						);
+					} else {
+						$(this.container).find('table').append(
 							this.prepareData(this.getFirstPage())
-						).prop('id', this.idOfComponent != null ? this.idOfComponent : 'sheduleTable')
-					);
+						);
+					}
 					this.setUpdateTimer();
 				} 
 			},
@@ -262,15 +290,26 @@ $(document).ready(function() {
 			},
 			
 			getPage : function(page) {
-				return this.loadedData.slice(this.currentPage * this.perPage, this.currentPage * this.perPage + this.perPage); 
+				return this.filteredData.slice(this.currentPage * this.perPage, this.currentPage * this.perPage + this.perPage); 
 			},
 			
-			getNextPage : function() {
-				if((this.perPage * this.currentPage + this.perPage) >= this.loadedData.length) {
+			getNextPage : function() {			
+				if((this.perPage * this.currentPage + this.perPage) >= this.filteredData.length) {
 					this.currentPage = 0;
+					if(this.currentCycle >= this.numCycles - 1) {
+						if(this.updateTimer != null) {
+							clearTimeout(this.updateTimer);
+						}
+						this.reload(true);
+						return []; // Fuck.
+					} else {
+						this.currentCycle++;
+					}
 				} else {
 					this.currentPage++;
+
 				}
+				this.setUpdateTimer();
 				return this.getPage(this.currentPage);
 			},
 
@@ -280,18 +319,17 @@ $(document).ready(function() {
 				for(var i = 0; i < doctors.length; i++) {
 					var newTr = $('<tr>').addClass('sheduleTr');
 					var fioTd, cabTd;
-					var fio = doctors[i].last_name + ' ' + doctors[i].first_name + (doctors[i].middle_name == null ? '' : ' ' + doctors[i].middle_name);
+					var fio = doctors[i].last_name + '<br />' + doctors[i].first_name + (doctors[i].middle_name == null ? '' : ' ' + doctors[i].middle_name);
 					
 					$(newTr).append(
-						fioTd = $('<td>').addClass('col-xs-3').append(fio),
-						postTd = $('<td>').addClass('col-xs-1').append($('<span>').addClass('profession').text(doctors[i].post.toUpperCase())),
-						cabTd = $('<td>').addClass('col-xs-1').text(doctors[i].cabinet)
+						postTd = $('<td>').addClass('col-xs-1').append($('<span>').addClass('profession').text(doctors[i].post.toUpperCase()), (doctors[i].cabinet ? ', кабинет ' + doctors[i].cabinet : '')),
+						fioTd = $('<td>').addClass('col-xs-4').append(fio)
 					);
 
 					for(var j = 0; j < doctors[i].shedule.length; j++) {
 						if(typeof doctors[i].shedule[j].beginTime != 'undefined' && typeof doctors[i].shedule[j].endTime != 'undefined') {
 							$(newTr).append(
-								$('<td>').text(doctors[i].shedule[j].beginTime + ' - ' + doctors[i].shedule[j].endTime)
+								$('<td>').html(doctors[i].shedule[j].beginTime + ' - ' + doctors[i].shedule[j].endTime + '<br />каб. ' + doctors[i].shedule[j].cabinet)
 							);
 						} else {
 							$(newTr).append(
@@ -311,9 +349,8 @@ $(document).ready(function() {
 				var headTr;
 				$(thead).append(
 					headTr = $('<tr>').append(
-						$('<td>').addClass('col-xs-3').text('Врач'),
 						$('<td>').addClass('col-xs-1').text('Специальность'),
-						$('<td>').addClass('col-xs-1').text('Каб.')
+						$('<td>').addClass('col-xs-2').text('Врач')
 					)
 				)
 				for(var i = 0; i < days.length; i++) {
@@ -328,7 +365,10 @@ $(document).ready(function() {
 				this.reload();
 			},
 			setUpdateTimer : function() {
-				setTimeout($.proxy(function() {
+				if(this.updateTimer != null) {
+					clearTimeout(this.updateTimer);
+				}
+				this.updateTimer = setTimeout($.proxy(function() {
 					if(this.fade) {
 						$(this.container).find('tbody tr').fadeOut(700, function() {
 							$(this.container).find('tbody tr').remove();
@@ -340,15 +380,19 @@ $(document).ready(function() {
 				}, this), this.updateTimeout);
 			},
 			
-			reload : function() {
-				this.createRequest();
+			reload : function(notAsyncReq) {
+				if(typeof notAsyncReq != 'undefined' && notAsyncReq) {
+					this.createRequest(false);
+				} else {
+					this.createRequest();
+				}
 			},
 			
 			goToNextPage : function() {
+				$(this.container).find('table tbody').remove();
 				$(this.container).find('table').append(
 					this.prepareData(this.getNextPage())
 				);
-				this.setUpdateTimer();
 			},
 		}
 
@@ -656,6 +700,36 @@ $(document).ready(function() {
 						)
 					),
 					$('<div>').addClass('form-group').append(
+						$('<label>').addClass('col-xs-5').text('Количество циклов без забора данных с сервера'),
+						$('<div>').addClass('col-xs-2').append(
+							this.settingsFormElements.numCycles = $('<input>').addClass('form-control').prop({
+								'type' : 'textfield',
+								'value' : sheduleTable.getOption('numCycles')
+							})
+						)
+					),
+					$('<div>').addClass('form-group').append(
+						$('<label>').addClass('col-xs-5').text('Не показывать врачей'),
+						$('<div>').addClass('col-xs-7').append(
+							this.settingsFormElements.withoutIds = $('<select>').addClass('form-control').append(
+								function() {
+									var options = [];
+									for(var i in sheduleTable.loadedData) {
+										options.push(
+											$('<option>').prop({
+												'value' : sheduleTable.loadedData[i].id
+											}).text(sheduleTable.loadedData[i].last_name + ' ' + sheduleTable.loadedData[i].first_name + ($.trim(sheduleTable.loadedData[i].middle_name) != '' ? ' ' + $.trim(sheduleTable.loadedData[i].middle_name) : ' '))
+										);
+									}
+									return options;
+								}
+							).prop({
+								'multiple' : 'multiple',
+								'id' : 'withoutIds'
+							}).val(sheduleTable.getOption('withoutIds'))
+						)
+					),
+					$('<div>').addClass('form-group').append(
 						$('<div>').addClass('col-xs-2').append(
 							this.submitButton = $('<input>').addClass('btn btn-success').prop({
 								'value' : 'Сохранить',
@@ -690,8 +764,20 @@ $(document).ready(function() {
 							sheduleTable.setOptions({
 								'updateTimeout' : parseInt(this.settingsFormElements.updateTimeout.val() * 1000),
 								'perPage' : parseInt(this.settingsFormElements.perPage.val()),
-								'sortBy' : this.settingsFormElements.sortBy.val()
+								'sortBy' : this.settingsFormElements.sortBy.val(),
+								'withoutIds' : this.settingsFormElements.withoutIds.val() === null ? [] : this.settingsFormElements.withoutIds.val(),
+								'numCycles' : parseInt(this.settingsFormElements.numCycles.val())
 							});
+							
+							// Recalc all with new filter
+							if(sheduleTable.withoutIds.length > 0) {
+								sheduleTable.filteredData = sheduleTable.loadedData.filter(function(element) {
+									return sheduleTable.withoutIds.indexOf(element.id.toString()) == -1;
+								}, this);
+							} else {
+								sheduleTable.filteredData = sheduleTable.loadedData;
+							}
+							
 							sheduleTable.saveOptions();
 							
 							marquee.setOptions({
@@ -773,7 +859,6 @@ $(document).ready(function() {
 					this.authPopover.popover('destroy');
 				}, this));
 				
-				console.log($(this.parentContainer).find('.popover'));
 				$(this.parentContainer).find('.popover').css({
 					'top' : '3px',
 					'left' : '-600px',
@@ -891,7 +976,7 @@ $(document).ready(function() {
 			dateContainer : null,
 			dateObj : new Date(), // Obj for getTime()
 			state : 0, // For ":" 
-			days : ['понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота', 'воскресенье'],
+			days : ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
 			months : ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'],
 			go : function() {
 				if(this.timeContainer == null || $(this.timeContainer).length == 0) {
@@ -903,7 +988,7 @@ $(document).ready(function() {
 				setTimeout($.proxy(this.setCurrentDate, this), 950); 
 			},
 			setCurrentDate : function() {
-				$(this.timeContainer).html(this.dateObj.getHours() + (this.state ? ':' : ' ') + this.dateObj.getMinutes());
+				$(this.timeContainer).html(this.dateObj.getHours() + (this.state ? ':' : ' ') + (parseInt(this.dateObj.getMinutes()) > 9 ? this.dateObj.getMinutes() : '0' + this.dateObj.getMinutes()));
 				this.state = this.state ? 0 : 1;
 				$(this.dateContainer).html('Сегодня ' + this.days[this.dateObj.getDay()] + ', ' + this.dateObj.getDate() + ' ' + this.months[this.dateObj.getMonth()] + ' ' + this.dateObj.getFullYear() + ' г.');
 				setTimeout($.proxy(this.setCurrentDate, this), 950); 
