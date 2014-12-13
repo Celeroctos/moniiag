@@ -6,119 +6,86 @@
  * Time: 16:20
  */
 
-class ApiController2 extends Controller {
+class ApiController extends Controller {
 
-    /**
-     * Register new API 20 bytes SSL key
-     */
-    public function actionRegister() {
-        if (!isset($_GET['user_id'])) {
-            print json_encode(array(
-                "message" => "GET.user_id",
-                "success" => false
-            ));
-            return;
-        }
-        $userID = $_GET['user_id'];
-        $userRow = User::model()->getOne($userID);
-        $isSuper = false;
-        foreach (Yii::app()->user->getState('roleId') as $i => $role) {
-            // TODO What the Fuck!!!
-            if ($role['name'] == "Супервайзер") {
-                $isSuper = true;
-                break;
-            }
-        }
-        if ($userRow && $isSuper) {
-            $apiRow = Api::model()->findByUser($userRow['id']);
-            if (count($apiRow) == 0) {
-                print json_encode(array(
-                    "key" => Api::model()->register($userRow['id']),
-                    "success" => true
-                ));
-            } else {
-                print json_encode(array(
-                    "key" => $apiRow[0]["key"],
-                    "success" => true
-                ));
-            }
-        } else {
-            print json_encode(array(
-                "message" => "Недостаточно прав",
-                "success" => false
-            ));
-        }
-    }
+    public function actionGet() {
 
-    /**
-     * Validate API and open session
-     */
-    public function actionValidate() {
-        // Check parameters
-        if (!isset($_GET['key']) || !isset($_GET['login']) || !isset($_GET['password'])) {
-            print json_encode(array(
-                "message" => "GET.key, GET.login, GET.password",
-                "success" => false
-            ));
-            return;
+        // Test basic GET fields
+        if (!isset($_GET["key"])) {
+            $this->postError("GET.key");
         }
-        // Get parameters
-        $key = $_GET['key'];
-        $password = $_GET['password'];
-        $login = $_GET['login'];
-        // Fetch API by user's login
-        $apiRow = Api::model()->findByUserLogin($login);
-        // Check row and compare it's keys
-        if (!$apiRow || $apiRow[0]['key'] !== $key) {
-            print print_r(array(
-                "message" => "Invalid login or password or key",
-                "success" => false
-            ));
-        }
-        // Identify user
-        $userIdent = new UserIdentity($login, $password);
-        // First step with skipped second step
-        if($userIdent->authenticateStep1(true)) {
-            Yii::app()->user->login($userIdent);
-            echo CJSON::encode(array(
-                'session' => Yii::app()->getSession()->getSessionId(),
-                'success' => 'true'
-            ));
-            exit();
-        } else {
-            $resultCode = 'loginError';
-            if ($userIdent->wrongLogin()) {
-                $resultCode = 'notFoundLogin';
-            }
-            if ($userIdent->wrongPassword()) {
-                $resultCode = 'wrongPassword';
-            }
-            echo CJSON::encode(array(
-                'success' => $resultCode,
-                'errors' => $userIdent->errorMessage
-            ));
-        }
-    }
 
-    /**
-     * Get row for current API key
-     * @param $key string - 20 bytes SLL API key
-     */
-    public function actionGet($key) {
-        print json_encode(array(
-            "key" => ApiModel::model()->get($key),
-            "success" => true
-        ));
-    }
+        // Initialize variables
+        $key = $_GET["key"];
 
-    /**
-     * Delete API key from database
-     * @param $key string - 20 bytes SLL API key
-     */
-    public function actionDelete($key) {
-        ApiModel::model()->delete($key);
-        print json_encode(array(
-            "success" => true
-        ));
+        // Unset api key's and path
+        unset($_GET["key"]);
+
+        // Find API info in db
+        $apiInfo = Api::model()->findByPk($key);
+
+        if ($apiInfo == null) {
+            $this->postError("Invalid API key or access denied");
+        }
+        $path = $apiInfo->path;
+
+        // Explode path to get action
+        $exploded = explode('/', $path);
+
+        // Check path elements count
+        if (count($exploded) <= 1) {
+            $this->postError("Empty controller's path");
+        }
+
+        // Get action from exploded string
+        $action = $exploded[count($exploded) - 1];
+
+        // Get path to controller
+        $controller = substr($path, 0, strpos($path, $action) - 1);
+
+        // TODO Create new user with necessary privileges for API
+        $userIdentifier = new UserIdentity("SYSTEM", "123456");
+
+        // Authenticate user for API actions (skip second step)
+        if(!$userIdentifier->authenticateStep1(true)) {
+            $this->postError("Unresolved user's login or invalid password");
+        }
+
+        // Add get parameters to url
+        foreach ($_GET as $i => $variable) {
+            if ($path[strlen($path) - 1] != "?") {
+                $path .= "?";
+            }
+            $path .= $i."=".$variable."&";
+        }
+
+        // Remove last '&' if exists
+        if ($path[strlen($path) - 1] == "&") {
+            $path = substr($path, 0, strlen($path) - 1);
+        }
+
+        // Set absolute path to controller with action to leave 'api' directory
+        $classPath = $controller."Controller";
+        $className = $exploded[count($exploded) - 2]."Controller";
+
+        // Convert first letter to upper case (It won't work without it)
+        $className[0] = strtoupper($className[0]);
+
+        // Replace '/' with '.'
+        $classPath = str_replace("/", ".", $classPath);
+
+        // Extend action with 'action' prefix
+        $methodName = "action".$action;
+
+        // Import controller
+        Yii::import($classPath);
+
+        // Invoke controller's action
+        call_user_func_array(array(
+            new $className($className), $methodName
+        ), $_GET);
+
+        // Destroy session
+        Yii::app()->session->destroy();
     }
 } 
