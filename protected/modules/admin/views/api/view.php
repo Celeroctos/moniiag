@@ -1,5 +1,3 @@
-<?php $this->widget('application.modules.admin.components.widgets.ApiTabMenu') ?>
-
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/api.js"></script>
 <table id="apiGrid"></table>
 <div id="apiGridPager"></div>

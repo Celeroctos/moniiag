@@ -12,10 +12,6 @@ class ApiController extends Controller {
         $this->render('view', array());
     }
 
-	public function actionRule() {
-		$this->render('rule', array());
-	}
-
     public function actionGet() {
         try {
             $rows = $_GET['rows'];
@@ -62,8 +58,7 @@ class ApiController extends Controller {
         $row = Api::model()->findByKey($key);
         if ($row != null) {
             print json_encode(array(
-                "key" => $row["key"],
-                "description" => $row["description"],
+                "api" => $row,
                 "success" => true
             ));
         } else {
@@ -85,7 +80,7 @@ class ApiController extends Controller {
         $model->attributes = $_POST['FormApiAdd'];
         if($model->validate()) {
             print json_encode(array(
-                "key" => Api::model()->add($model->description),
+                "key" => Api::model()->add($model->description, $model->path),
                 "success" => true
             ));
         } else {
@@ -106,7 +101,10 @@ class ApiController extends Controller {
         }
         $model->attributes = $_POST['FormApiEdit'];
         if($model->validate()) {
-            Api::model()->update($model->key, $model->description);
+            Api::model()->updateByPk($model->key, array(
+                "description" => $model->description,
+                "path" => $model->path
+            ));
             print json_encode(array(
                 "success" => true
             ));

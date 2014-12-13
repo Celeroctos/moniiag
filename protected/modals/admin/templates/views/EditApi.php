@@ -30,6 +30,19 @@
                         <?php echo $form->error($model,'name'); ?>
                     </div>
                 </div>
+                <div class="form-group">
+                    <?php echo $form->labelEx($model, 'path', array(
+                        'class' => 'col-xs-3 control-label'
+                    )); ?>
+                    <div class="col-xs-9">
+                        <?php echo $form->textField($model, 'path', array(
+                            'id' => 'path',
+                            'class' => 'form-control',
+                            'placeholder' => 'Путь к действию'
+                        )); ?>
+                        <?php echo $form->error($model, 'path'); ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

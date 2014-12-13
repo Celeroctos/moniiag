@@ -47,16 +47,18 @@ class Api extends MisActiveRecord {
 
     /**
      * Register new key in API table
-     * @param $description - API key's description
+     * @param string $description - API key's description
+     * @param string $path - Path to controller's action
      * @return array - Registered row
      */
-    public function add($description) {
+    public function add($description, $path) {
         try {
-            $key = bin2hex(openssl_random_pseudo_bytes(20));
+            $key = bin2hex(openssl_random_pseudo_bytes(10));
             Yii::app()->db->createCommand()
                 ->insert("mis.api", array(
                     "key" => $key,
-                    "description" => $description
+                    "description" => $description,
+                    "path" => $path
                 ));
             return $key;
         } catch (Exception $e) {
@@ -70,15 +72,17 @@ class Api extends MisActiveRecord {
 
     /**
      * Register new key in API table
-     * @param $key
-     * @param $description
+     * @param string $key - SSL API key
+     * @param string $description - Key's description
+     * @param string $path - Path to action
      * @return int - Count of updates
      */
-    public function update($key, $description) {
+    public function update($key, $description, $path) {
         try {
             return Yii::app()->db->createCommand()
                 ->update("mis.api", array(
-                    "description" => $description
+                    "description" => $description,
+                    "path" => $path
                 ), "key = :key", array(
                     ":key" => $key
                 ));
@@ -93,7 +97,7 @@ class Api extends MisActiveRecord {
 
     /**
      * Delete API key from table
-     * @param $key string - 20 bytes random SSL key
+     * @param $key string - SSL API key
      */
     public function delete($key) {
         try {
@@ -125,7 +129,7 @@ class Api extends MisActiveRecord {
                 ->from('mis.api a');
             if($filters !== false) {
                 $this->getSearchConditions($items, $filters, array(), array(
-                    'a' => array('key', 'description'),
+                    'a' => array('key', 'description', 'path'),
                 ), array());
             }
             if($start !== false && $limit !== false) {
@@ -135,54 +139,6 @@ class Api extends MisActiveRecord {
                 $items->order($sidx);
             }
             return $items->queryAll();
-        } catch (Exception $e) {
-            print json_encode(array(
-                'message' => $e->getMessage(),
-                'success' => false
-            )); die;
-        }
-    }
-
-    /**
-     * Check API key's access to read information via controller
-     * @param $key string - API SSL key
-     * @param $controller - Path to controller
-     */
-    public function checkReadAccess($key, $controller) {
-        try {
-            return Yii::app()->db->createCommand()
-                ->select('readable')
-                ->from('mis.api_rule')
-                ->where('controller = :controller')
-                ->andWhere('api_key = :key')
-                ->queryRow(array(
-                    ':controller' => $controller,
-                    ':key' => $key
-                ));
-        } catch (Exception $e) {
-            print json_encode(array(
-                'message' => $e->getMessage(),
-                'success' => false
-            )); die;
-        }
-    }
-
-    /**
-     * Check API key's access to write information via controller
-     * @param $key string - API SSL key
-     * @param $controller - Path to controller
-     */
-    public function checkWriteAccess($key, $controller) {
-        try {
-            return Yii::app()->db->createCommand()
-                ->select('writable')
-                ->from('mis.api_rule')
-                ->where('controller = :controller')
-                ->andWhere('api_key = :key')
-                ->queryRow(array(
-                    ':controller' => $controller,
-                    ':key' => $key
-                ));
         } catch (Exception $e) {
             print json_encode(array(
                 'message' => $e->getMessage(),
