@@ -36,8 +36,8 @@
 .template-engine-category-collection {
     display: block;
     background: #a6a6a6;
-    /*height: 600px;*/
-    height: auto;
+    height: 600px;
+    /*height: auto;*/
     min-height: 500px;
     width: calc(100% - 195px);
     margin-left: 15px;
@@ -45,7 +45,7 @@
     float: left;
     border-radius: 5px;
     border: solid dimgray 1px;
-    /*overflow: scroll;*/
+    overflow: scroll;
 }
 
 .template-engine-items {
@@ -69,19 +69,18 @@
     width: auto;
     display: inline-block;
     float: left;
-    min-width: 120px;
+    min-width: 70px;
 }
 
 .template-engine-template {
-    position: fixed;
-    margin-left: 5px;
+    /*position: fixed;*/
     float: left;
+    margin-left: 5px;
     background: none;
     color: #fff;
-    right: 105px;
-    top: 105px;
-    z-index: 2000;
-    visibility: hidden;
+    /*top: 105px;*/
+    /*z-index: 2000;*/
+    /*visibility: hidden;*/
 }
 
 .template-engine-nestable {

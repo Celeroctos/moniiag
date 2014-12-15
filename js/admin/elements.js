@@ -610,133 +610,151 @@ function editElement() {
             'dataType': 'json',
             'type': 'GET',
             'success': function (data, textStatus, jqXHR) {
-				if (data.success != true) {
-					return false;
-				}
-				// Заполняем форму значениями
-				var form = $('#editElementPopup form')
-				// Соответствия формы и модели
-				var fields = [{
-						modelField: 'id',
-						formField: 'id'
-					}, {
-						modelField: 'type',
-						formField: 'type'
-					}, {
-						modelField: 'categorie_id',
-						formField: 'categorieId'
-					}, {
-						modelField: 'label',
-						formField: 'label'
-					}, {
-						modelField: 'guide_id',
-						formField: 'guideId'
-					}, {
-						modelField: 'allow_add',
-						formField: 'allowAdd'
-					}, {
-						modelField: 'is_required',
-						formField: 'isRequired'
-					}, {
-						modelField: 'label_after',
-						formField: 'labelAfter'
-					}, {
-						modelField: 'size',
-						formField: 'size'
-					}, {
-						modelField: 'is_wrapped',
-						formField: 'isWrapped'
-					}, {
-						modelField: 'position',
-						formField: 'position'
-					}, {
-						modelField: 'config',
-						formField: 'config'
-					}, {
-						modelField: 'default_value',
-						formField: 'defaultValue'
-					}, {
-						modelField: 'default_value',
-						formField: 'defaultValueText'
-					}, {
-						modelField: 'label_display',
-						formField: 'labelDisplay'
-					}, {
-						modelField: 'show_dynamic',
-						formField: 'showDynamic'
-					}, {
-						modelField: 'hide_label_before',
-						formField: 'hideLabelBefore'
-					}
-				];
-				if(data.data['type'] == 4) {
-					// Блокировать поле отслеживания динамики
-				   $('#editElementPopup #showDynamic').prop('disabled', true);
-				} else {
-				   $('#editElementPopup #showDynamic').prop('disabled', false);
-				}
-				for (var i = 0; i < fields.length; i++) {
-					// Подгрузка значений справочника для дефолтного значения
-					if (fields[i].formField == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
-						// Это значение ставится асинхронно
-						$('select#guideId').trigger('change', [data.data[fields[i].modelField]]);
-						continue;
-					}
-					form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
-					// Таблица
-					if (fields[i].formField == 'config') {
-						if(typeof data.data['config'] != 'object') {
-							var config = $.parseJSON(data.data['config']);
-						} else {
-							var config = data.data['config'];
-						}
-						if (data.data['type'] == 4) {
-							printHeadersTable(
-								config,
-								$('#editElementPopup .table-config-headers tbody'),
-								$('#editElementPopup .colsHeaders'),
-								$('#editElementPopup .rowsHeaders'),
-								$('#editElementPopup #numRows'),
-								$('#editElementPopup #numCols')
-							);
-							printDefaultValuesTable(config.numCols, config.numRows);
-							if (config.values != undefined && config.values != null) {
-								writeDefValuesFromConfig(config.values);
+                if (data.success == true) {
+						// Заполняем форму значениями
+						var form = $('#editElementPopup form')
+						// Соответствия формы и модели
+						var fields = [
+							{
+								modelField: 'id',
+								formField: 'id'
+							},
+							{
+								modelField: 'type',
+								formField: 'type'
+							},
+							{
+								modelField: 'categorie_id',
+								formField: 'categorieId'
+							},
+							{
+								modelField: 'label',
+								formField: 'label'
+							},
+							{
+								modelField: 'guide_id',
+								formField: 'guideId'
+							},
+							{
+								modelField: 'allow_add',
+								formField: 'allowAdd'
+							},
+							{
+								modelField: 'is_required',
+								formField: 'isRequired'
+							},
+							{
+								modelField: 'label_after',
+								formField: 'labelAfter'
+							},
+							{
+								modelField: 'size',
+								formField: 'size'
+							},
+							{
+								modelField: 'is_wrapped',
+								formField: 'isWrapped'
+							},
+							{
+								modelField: 'position',
+								formField: 'position'
+							},
+							{
+								modelField: 'config',
+								formField: 'config'
+							},
+							{
+								modelField: 'default_value',
+								formField: 'defaultValue'
+							},
+							{
+								modelField: 'default_value',
+								formField: 'defaultValueText'
+							},
+							{
+								modelField: 'label_display',
+								formField: 'labelDisplay'
+							},
+							{
+								modelField: 'show_dynamic',
+								formField: 'showDynamic'
+							},
+							{
+								modelField: 'hide_label_before',
+								formField: 'hideLabelBefore'
 							}
+						];
+						
+					if(data.data['type'] == 4) {
+						// Блокировать поле отслеживания динамики
+					   $('#editElementPopup #showDynamic').prop('disabled', true);
+					} else {
+					   $('#editElementPopup #showDynamic').prop('disabled', false);
+					}
+					for (var i = 0; i < fields.length; i++) {
+						// Подгрузка значений справочника для дефолтного значения
+						if (fields[i].formField == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
+							// Это значение ставится асинхронно
+							$('select#guideId').trigger('change', [data.data[fields[i].modelField]]);
+							continue;
 						}
-						if (data.data['type'] == 5) {
-							$('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
-							$('#editElementPopup #numberFieldMaxValue').val(config.maxValue);
-							$('#editElementPopup #numberFieldMinValue').val(config.minValue);
-							$('#editElementPopup #numberStep').val(config.step);
-						}
-						if (data.data['type'] == 6) {
-							$('#editElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
-							if (config != null && config != '') {
-								$('#editElementPopup #dateFieldMaxValue').val(config.maxValue);
-								$('#editElementPopup #dateFieldMinValue').val(config.minValue);
+						form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
+						// Таблица
+						if (fields[i].formField == 'config') {
+							if(typeof data.data['config'] != 'object') {
+								var config = $.parseJSON(data.data['config']);
 							} else {
-								// Если конфига нет - надо просто поставить пустое значение
-								$('#editElementPopup #dateFieldMaxValue').val('');
-								$('#editElementPopup #dateFieldMinValue').val('');
+								var config = data.data['config'];
 							}
-							// Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
-							$('#editElementPopup #dateFieldMaxValue').trigger('change');
-							$('#editElementPopup #dateFieldMinValue').trigger('change');
+							if (data.data['type'] == 4) {
+								printHeadersTable(
+									config,
+									$('#editElementPopup .table-config-headers tbody'),
+									$('#editElementPopup .colsHeaders'),
+									$('#editElementPopup .rowsHeaders'),
+									$('#editElementPopup #numRows'),
+									$('#editElementPopup #numCols')
+								);
+								printDefaultValuesTable(config.numCols, config.numRows);
+								if (config.values != undefined && config.values != null) {
+									writeDefValuesFromConfig(config.values);
+								}
+							}
+							if (data.data['type'] == 5) {
+								$('#editElementPopup').find('#numberFieldMaxValue, #numberFieldMinValue, #numberStep').parents('.form-group').removeClass('no-display');
+								$('#editElementPopup #numberFieldMaxValue').val(config.maxValue);
+								$('#editElementPopup #numberFieldMinValue').val(config.minValue);
+								$('#editElementPopup #numberStep').val(config.step);
+							}
+							if (data.data['type'] == 6) {
+								$('#editElementPopup').find('#dateFieldMaxValue, #dateFieldMinValue').parents('.form-group').removeClass('no-display');
+								if (config != null && config != '') {
+									$('#editElementPopup #dateFieldMaxValue').val(config.maxValue);
+									$('#editElementPopup #dateFieldMinValue').val(config.minValue);
+								} else {
+									// Если конфига нет - надо просто поставить пустое значение
+									$('#editElementPopup #dateFieldMaxValue').val('');
+									$('#editElementPopup #dateFieldMinValue').val('');
+								}
+
+								// Затриггерим контрол, чтобы данные подкачались в видимые поля контрола
+								$('#editElementPopup #dateFieldMaxValue').trigger('change');
+								$('#editElementPopup #dateFieldMinValue').trigger('change');
+							}
 						}
 					}
+					// Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
+					//    в изменении типа
+					if (data.data.is_dependencies == 1) {
+						$('#element-edit-form select#type option:not([value=2]):not([value=3])').addClass('no-display');
+					} else {
+						$('#element-edit-form select#type option').removeClass('no-display');
+					}
+					$.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
+					$("#editElementPopup").modal();
 				}
-				// Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
-				//    в изменении типа
-				if (data.data.is_dependencies == 1) {
-					$('#element-edit-form select#type option:not([value=2]):not([value=3])').addClass('no-display');
-				} else {
-					$('#element-edit-form select#type option').removeClass('no-display');
-				}
-				$.proxy(form.find("select#type").trigger('change'), form.find("select#type")); // $.proxy - вызов контекста
-				$("#editElementPopup").modal();
 			}
-		})
+		});
 	}
 }
 
@@ -770,6 +788,7 @@ $("#deleteElement").click(function () {
 $("select#type").on('change', function (e) {
     var form = $(this).parents('form');
 	// Таблица. Для неё нельзя отслеживать динамику (пока)
+	console.log($(this).val());
 	if($(this).val() == 4) {
 		form.find("#showDynamic").prop('disabled', true);
 	} else {
@@ -887,6 +906,7 @@ $('#editElementDependences').on('click', function () {
                     $('#editDependencesPopup').on('shown.bs.modal', function (e) {
                         testDirection();
                     });
+
                     $('#valuesNotToPrint').val( data.notPrintedValues );
                     $('#editDependencesPopup').modal({});
                 }

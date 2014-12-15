@@ -1124,19 +1124,12 @@ var TemplateEngine = TemplateEngine || {
 			}
 		);
 		Item["-instance"] = this;
+        $('#element-add-form select#type').val(this.template().id());
         $('#element-add-form select#type').trigger('change');
 		$('#addElementPopup').modal({
-			backdrop: 'static',
+            backdrop: 'static',
 			keyboard: false
 		}).draggable("disable");
-        // stupid fix for text element
-        if (this.template().id() == 0) {
-            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').addClass('no-display');
-            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').addClass('no-display');
-        } else if (this.template().id() == 6) {
-            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').removeClass('no-display');
-            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').removeClass('no-display');
-        }
 	};
 
 	Item.prototype.edit = function() {
@@ -1224,19 +1217,12 @@ var TemplateEngine = TemplateEngine || {
 			}
 		);
 		Item["-instance"] = this;
+        $('#element-add-form select#type').val(this.template().id());
         $('#element-add-form select#type').trigger('change');
 		$('#editElementPopup').modal({
 			backdrop: 'static',
 			keyboard: false
 		}).draggable("disable");
-        // stupid fix for text element
-        if (this.template().id() == 0) {
-            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').addClass('no-display');
-            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').addClass('no-display');
-        } else if (this.template().id() == 6) {
-            this.manager().form().find("#dateFieldMaxValue").parents('div.form-group').removeClass('no-display');
-            this.manager().form().find("#dateFieldMinValue").parents('div.form-group').removeClass('no-display');
-        }
 	};
 
 	Item.prototype.erase = function() {
@@ -1769,6 +1755,7 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	CategoryCollection.prototype.read = function() {
+        // can't read category collection
 	};
 
     CategoryCollection.prototype.append = function(element) {
@@ -1803,10 +1790,6 @@ var TemplateEngine = TemplateEngine || {
 			// if we have some parameter null, then skip update
 			if (!item || !itemInstance || !parentInstance) {
 				return false;
-			}
-			// set default parent if null
-			if (!parent) {
-				parent = that.selector();
 			}
 			// remove from item's parent and append to another
 			Node.prototype.remove.call(itemInstance.parent(), itemInstance);
@@ -1854,6 +1837,10 @@ var TemplateEngine = TemplateEngine || {
 						keyboard: false
 					}).draggable("disable");
 				}
+                // Move scroll to bottom of container
+                that.selector().scrollTop(
+                    that.selector()[0].scrollHeight
+                );
             }
         }).find(".dd").nestable({
             listClass: "template-engine-list",
@@ -2186,9 +2173,11 @@ var TemplateEngine = TemplateEngine || {
 		cc.compute(true);
 		countOfItemsToSave = 0;
 		totalSavedItems = 0;
+        var hasNotSaved = false;
 		var result = [];
 		var update = function(item) {
 			if (!item.has("id")) {
+                hasNotSaved = true;
 				return false;
 			}
 			for (var i in item.children()) {
@@ -2229,6 +2218,9 @@ var TemplateEngine = TemplateEngine || {
 			json = json.substring(0, json.length - 1);
 		}
 		json += "]";
+        if (hasNotSaved && !confirm('Часть элементов имеют незаполненные данные, при сохранении данные элементы будут удалены из шаблона. Продолжить? ')) {
+            return false;
+        }
 		// set request on server to update template categories
 		$.post(globalVariables.baseUrl + "/admin/templates/utc", {
 			tid: cc.field("id"),
@@ -2259,9 +2251,9 @@ var TemplateEngine = TemplateEngine || {
 			});
 		});
 
-		var tc = TemplateEngine.getTemplateCollection();
+		//var tc = TemplateEngine.getTemplateCollection();
 
-		$("#designTemplatePopup").on("shown.bs.modal", function() {
+		/*$("#designTemplatePopup").on("shown.bs.modal", function() {
 			tc.selector().detach().appendTo(
 				$(document.body)
 			).css("visibility", "visible");
@@ -2270,7 +2262,7 @@ var TemplateEngine = TemplateEngine || {
 			tc.selector().detach().appendTo(
 				tc.selector()
 			).css("visibility", "hidden")
-		});
+		});*/
 
 		$("#findCategoryPopup form .btn-warning").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
