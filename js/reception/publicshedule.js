@@ -109,6 +109,7 @@ $(document).ready(function() {
 			currentCycle : 0, // Current cycle
 			tableLink : null, // This is link for table...
 			updateTimer : null, // Timer, SetTimeout
+			cabinets : [], // Cabinets array with descriptions..
 			setOptions : function(options) {
 				for(var i in options) {
 					if(this.hasOwnProperty(i)) {
@@ -253,6 +254,7 @@ $(document).ready(function() {
 					
 					
 					this.loadedData = inData.data.shedule.data;
+					this.cabinets = inData.data.cabinets;
 					// Filter elements...
 
 					// fucking JS with their typeof 
@@ -325,18 +327,60 @@ $(document).ready(function() {
 						postTd = $('<td>').addClass('col-xs-1').append($('<span>').addClass('profession').text(doctors[i].post.toUpperCase()), (doctors[i].cabinet ? ', кабинет ' + doctors[i].cabinet : '')),
 						fioTd = $('<td>').addClass('col-xs-4').append(fio)
 					);
-
+					
+					var currentRestType = null; // Current rest-day type: sick, holiday...
+					var currentNestedTd = null;
+					var numNestedCols = 1;
 					for(var j = 0; j < doctors[i].shedule.length; j++) {
 						if(typeof doctors[i].shedule[j].beginTime != 'undefined' && typeof doctors[i].shedule[j].endTime != 'undefined') {
 							$(newTr).append(
-								$('<td>').html(doctors[i].shedule[j].beginTime + ' - ' + doctors[i].shedule[j].endTime + '<br />каб. ' + doctors[i].shedule[j].cabinet)
+								$('<td>').html(doctors[i].shedule[j].beginTime + ' - ' + doctors[i].shedule[j].endTime + '<br />каб. ' + (($.trim(doctors[i].shedule[j].cabinet) != '' && typeof this.cabinets[$.trim(doctors[i].shedule[j].cabinet)] != 'undefined') ? this.cabinets[$.trim(doctors[i].shedule[j].cabinet)].number : 'неизвестен'))
 							);
 						} else {
-							$(newTr).append(
-								$('<td>').css({
-									'background' : '#f2f5f6'
-								})
-							);
+							// This is work with rest days and other...
+							if(doctors[i].shedule[j].hasOwnProperty('restDayType') || (currentRestType != null && doctors[i].shedule[j].restDay)) {
+								if(currentRestType != null) {
+									if(currentRestType != doctors[i].shedule[j].restDayType || j ==  doctors[i].shedule.length - 1 /* last cell... */) {
+										$(currentNestedTd).prop({
+											'colspan' : numNestedCols
+										});
+										$(newTr).append(currentNestedTd);
+										numNestedCols = 1;
+										currentNestedTd = null;
+										currentRestType = null;
+									} else {
+										numNestedCols++;
+									}
+								} else {
+									currentNestedTd = $('<td>');
+									currentRestType = doctors[i].shedule[j].restDayType;
+									$(currentNestedTd).append(function() {
+										switch(currentRestType) {
+											case 1 : return 'Выходной'; break;
+											case 2 : return 'Отпуск'; break;
+											case 3 : return 'Болезнь'; break;
+											case 4 : return 'Командировка'; break;
+											default : return '';
+										}
+									});
+									$(currentNestedTd).css({
+										'background' : function() {
+											return [
+												'#ff0000',
+												'#00ff00',
+												'#0000ff',
+												'#ff00ff'
+											][currentRestType + 1];
+										}
+									});
+								}
+							} else {
+								$(newTr).append(
+									$('<td>').css({
+										'background' : '#f2f5f6'
+									})
+								);
+							}
 						}
 					}
 					$(tbody).append(newTr);

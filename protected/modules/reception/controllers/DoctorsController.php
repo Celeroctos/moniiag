@@ -115,12 +115,26 @@ class DoctorsController extends Controller {
 			   $doctor['shedule'] = $daysList;
             }
         }
+		$cabinets = $calendarController[0]->getCabinetsIdsList();
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('id', $cabinets);
+		$cabinetsInDb = Cabinet::model()->findAll($criteria);
+		$numCabinets = count($cabinetsInDb);
+		$cabinetsResult = array();
+
+		for($i = 0; $i < $numCabinets; $i++) {
+			$cabinetsResult[(string)$cabinetsInDb[$i]['id']] = array(
+				'description' => $cabinetsInDb[$i]['description'],
+				'number' => $cabinetsInDb[$i]['cab_number']
+			);
+		}
 
         $answer = array(
             'success' => true,
             'data' => $doctors,
             'total' => $totalPages,
-            'records' => count($num)
+            'records' => count($num),
+			'cabinets' => $cabinetsResult
         );
 		
         if($calendarTypeSetting == 1) {
@@ -392,7 +406,8 @@ class DoctorsController extends Controller {
 				'success' => true,
 				'data' => array(
 					'shedule' => $shedule,
-					'settings' => $setRes
+					'settings' => $setRes,
+					'cabinets' => $shedule['cabinets']
 				)
 			)
 		);

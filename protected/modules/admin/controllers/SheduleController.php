@@ -1692,6 +1692,7 @@ class SheduleController extends Controller {
         // Удаляем
         SheduleRestDay::deleteDates($dateToDelete);
         // А теперь пишем обратно
+
         SheduleRestDay::writeAllRestDays($dataToWrite);
         echo CJSON::encode(array(
             'success' => true,

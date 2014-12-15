@@ -96,7 +96,6 @@ class SheduleRestDay extends MisActiveRecord {
                 "
             );
 
-
     }
 
     public function getRows($date, $doctorId) {

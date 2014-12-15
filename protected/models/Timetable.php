@@ -145,12 +145,6 @@ class Timetable extends MisActiveRecord {
                         $dayWeekCoidance = true;
                     }
                 }
-               /* else
-                {
-                    // Смотрим следующее правило
-                    continue;
-                }*/
-
             }
 
             // 3. Смотрим - попадает ли дата в чётные/нечётные
@@ -203,134 +197,12 @@ class Timetable extends MisActiveRecord {
             }
             else
             {
-               /* var_dump($dayWeekCoidance);
-                var_dump($issetDays);
-                var_dump($oddanceCoidance);
-                var_dump($issetOddance);
-                var_dump($dayDate);
-                var_dump($ruleToApply);*/
                 return $ruleToApply;
             }
-
-            // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
-            //$ruleToApply = $oneRule;
-            //break;
         }
 
 
         return null;
-        // <=====
-
-        // Перебираем правила
-        /*foreach ($timeTableObject['rules'] as $oneRule)
-        {
-            // 1. Попадает ли дата в одну из дат, заданных в правиле
-            //    если попадает, то применяется она
-            //   Иначе - если дата попадает в один из фактов - то дальше мы ничего не проверяем, оставляем дату как выходной
-            // Перебираем даты
-            if (isset($oneRule['daysDates']))
-            {
-                foreach($oneRule['daysDates'] as $oneDate)
-                {
-                    $oneDateFromTimetable = strtotime($oneDate);
-                    if ($oneDateFromTimetable == $currentDateToCompare)
-                    {
-                        // Дата попадает в день, указанный в расписании
-                        $ruleToApply = $oneRule;
-
-                    }
-                }
-            }
-            // Если правило не выбрано и поднят флаг, что дата подпадает под факт - надо выйти из цикла - день считается
-            //   выходным
-            if ($ruleToApply!=null)
-            {
-                break;
-            }
-            else
-            {
-                // Если под фактом - то тоже выходной
-                if ($underFact)
-                {
-                    break;
-                }
-            }
-            // 2. Смотрим - попадает ли дата в дни недели, выбранные в правиле
-            //   Если хотя бы один день недели выбран - смотрим, подпадает ли текущая дата под выбранные дни недели
-            if (isset($oneRule['days']) && (count($oneRule['days'])>0))
-            {
-
-                if (isset ($oneRule['days'][$weekDayOfDayDate ])  )
-                {
-                    // Проверяем - подходит ли день под правило. Если нет - то вызываем continue
-                    //    если да - то даём проверить его на чётность (нечётность). Если и чётность/нечетность он не проходит
-                    //     -то вызываем continue уже в конце
-                    if ( count($oneRule['days'][$weekDayOfDayDate ])>0 )
-                    {
-                        // Ищем в массиве значение, равное номеру недели
-                        // если не нашли - сразу выходим
-                        $wasDayFound = false;
-                        for ($i=0;$i<count($oneRule['days'][$weekDayOfDayDate ]);$i++)
-                        {
-                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate)
-                            {
-                                $wasDayFound = true;
-                            }
-                        }
-                        if (!$wasDayFound)
-                            continue;
-                    }
-                    // Иначе мы уже де факто проверили - данный день указан, как рабочий в правиле
-                }
-                else
-                {
-                    // Смотрим следующее правило
-                    continue;
-                }
-
-            }
-
-            // 3. Смотрим - попадает ли дата в чётные/нечётные
-            //     Если указана чётность, то надо проверить - подпадает ли день под чётный/нечетный
-            if (isset($oneRule['oddance']))
-            {
-                if ($oneRule['oddance']==1)
-                {
-                    // Если день нечётный - то выходим
-                    if ($dayFromDate % 2 == 1)
-                    {
-                        continue;
-                    }
-
-
-                }
-                if ($oneRule['oddance']==0)
-                {
-                    // Если день чётный - то выходим
-                    if ($dayFromDate % 2 == 0)
-                    {
-                        continue;
-                    }
-                }
-
-                // Проверим - если указано поле "кроме" и день попадает в значение этого поля
-                //   - то смотрим следующее правило
-                if (isset($oneRule['except']))
-                {
-                    if ( in_array($weekDayOfDayDate,$oneRule['except']) )
-                    {
-                        // Досвидос - нельзя применять данное правило
-                        continue;
-                    }
-                }
-
-            }
-
-            // В том случае, если день не подпадает под правило - до этой строки интерпретатор не должен был дойти
-            $ruleToApply = $oneRule;
-            break;
-        }*/
-        //return $ruleToApply;
     }
 
     public function afterSave() {
