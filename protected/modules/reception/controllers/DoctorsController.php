@@ -407,7 +407,8 @@ class DoctorsController extends Controller {
 				'data' => array(
 					'shedule' => $shedule,
 					'settings' => $setRes,
-					'cabinets' => $shedule['cabinets']
+					'cabinets' => $shedule['cabinets'],
+					'datesLimits' => SheduleRestDay::model()->getUpperLimits($this->greetingDate == null ? date('Y-m-d') : $this->greetingDate)
 				)
 			)
 		);

@@ -930,6 +930,9 @@ class SheduleController extends Controller {
             // Теперь для i-того дня вычисляем все характеристики
             // Берём day из текущей даты
             $resultArr[$i]['day'] = date('d', $currentDate);
+			// Added 16.12.2014
+			$resultArr[$i]['month'] = date('m', $currentDate);
+			$resultArr[$i]['year'] = date('Y', $currentDate);
 
             // Получаем день недели
             $resultArr[$i]['weekday'] = date('w', $currentDate);
@@ -1043,7 +1046,6 @@ class SheduleController extends Controller {
 
         return $resultArr;
     }
-
 
     // Функция возвращает правило, в котором указано время начала и конца приёма
     private function getTimeTableRule($doctorIds,$dateBegin,$dateEnd)

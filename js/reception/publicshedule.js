@@ -110,6 +110,7 @@ $(document).ready(function() {
 			tableLink : null, // This is link for table...
 			updateTimer : null, // Timer, SetTimeout
 			cabinets : [], // Cabinets array with descriptions..
+			datesLimits : [], // Limits in events, in dates
 			setOptions : function(options) {
 				for(var i in options) {
 					if(this.hasOwnProperty(i)) {
@@ -255,8 +256,21 @@ $(document).ready(function() {
 					
 					this.loadedData = inData.data.shedule.data;
 					this.cabinets = inData.data.cabinets;
-					// Filter elements...
+					var dateLimits = inData.data.datesLimits;
+					for(var limit in dateLimits) {
+						if(typeof this.datesLimits['d' + dateLimits[limit].doctor_id] == 'undefined') {
+							this.datesLimits['d' + dateLimits[limit].doctor_id] = {};
+						}
+						
+						if(typeof this.datesLimits['d' + dateLimits[limit].doctor_id]['e' + dateLimits[limit].type] == 'undefined') {
+							this.datesLimits['d' + dateLimits[limit].doctor_id]['e' + dateLimits[limit].type] = [];
+						}
 
+						this.datesLimits['d' + dateLimits[limit].doctor_id]['e' + dateLimits[limit].type].push(dateLimits[limit].date.split(' ')[0]);
+					}
+					console.log(this.datesLimits);
+					
+					// Filter elements...
 					// fucking JS with their typeof 
 					if(this.withoutIds && typeof this.withoutIds == 'object' && this.withoutIds.length > 0) {
 						this.filteredData = this.loadedData.filter(function(element) {
@@ -331,6 +345,7 @@ $(document).ready(function() {
 					var currentRestType = null; // Current rest-day type: sick, holiday...
 					var currentNestedTd = null;
 					var numNestedCols = 1;
+					var part = '';
 					for(var j = 0; j < doctors[i].shedule.length; j++) {
 						if(typeof doctors[i].shedule[j].beginTime != 'undefined' && typeof doctors[i].shedule[j].endTime != 'undefined') {
 							$(newTr).append(
@@ -340,21 +355,46 @@ $(document).ready(function() {
 							// This is work with rest days and other...
 							if(doctors[i].shedule[j].hasOwnProperty('restDayType') || (currentRestType != null && doctors[i].shedule[j].restDay)) {
 								if(currentRestType != null) {
-									if(currentRestType != doctors[i].shedule[j].restDayType || j ==  doctors[i].shedule.length - 1 /* last cell... */) {
+									if((doctors[i].shedule[j].hasOwnProperty('restDayType') && currentRestType == doctors[i].shedule[j].restDayType) 
+										|| (j + 1 < doctors[i].shedule.length && doctors[i].shedule[j + 1].hasOwnProperty('restDay') && doctors[i].shedule[j + 1].restDay)) {
+										numNestedCols++;
+									}
+									
+									if(typeof doctors[i].shedule[j + 1] != 'undefined' && ((doctors[i].shedule[j + 1].hasOwnProperty('restDayType') && currentRestType != doctors[i].shedule[j + 1].restDayType) || doctors[i].shedule[j + 1].restDay) || j == doctors[i].shedule.length - 1) {							
+										if(typeof this.datesLimits['d' + doctors[i].id]['e' + currentRestType] != 'undefined') {
+											for(var k in this.datesLimits['d' + doctors[i].id]['e' + currentRestType]) {
+												if(this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k] == doctors[i].shedule[j].year + '-' + doctors[i].shedule[j].month + '-' + doctors[i].shedule[j].day) {
+													part = ' до ' + this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k].split('-').reverse().join('.');
+													break;
+												}
+											}
+										}
+									}
+									
+									if(i == 2) {
+										console.log(doctors[i].shedule[j].year + '-' + doctors[i].shedule[j].month + '-' + doctors[i].shedule[j].day);
+										console.log(part);
+									}
+									
+									if((j < doctors[i].shedule.length - 1 && doctors[i].shedule[j + 1].hasOwnProperty('restDayType') && currentRestType != doctors[i].shedule[j + 1].restDayType) ||  j == doctors[i].shedule.length - 1) {
 										$(currentNestedTd).prop({
 											'colspan' : numNestedCols
 										});
 										$(newTr).append(currentNestedTd);
+		
+										$(currentNestedTd).text($(currentNestedTd).text() + part);
+										
 										numNestedCols = 1;
 										currentNestedTd = null;
 										currentRestType = null;
-									} else {
-										numNestedCols++;
+										part = '';
 									}
 								} else {
-									currentNestedTd = $('<td>');
+									currentNestedTd = $('<td>').prop({
+										'id' : 'c' + i + '_' + j
+									});
 									currentRestType = doctors[i].shedule[j].restDayType;
-									$(currentNestedTd).append(function() {
+									$(currentNestedTd).append($.proxy(function() {
 										switch(currentRestType) {
 											case 1 : return 'Выходной'; break;
 											case 2 : return 'Отпуск'; break;
@@ -362,22 +402,42 @@ $(document).ready(function() {
 											case 4 : return 'Командировка'; break;
 											default : return '';
 										}
-									});
+									}, this));
 									$(currentNestedTd).css({
 										'background' : function() {
 											return [
-												'#ff0000',
-												'#00ff00',
-												'#0000ff',
-												'#ff00ff'
-											][currentRestType + 1];
+												'#F6E3CE',
+												'#F2F5A9',
+												'#F6CEF5',
+												'#F5A9A9'
+											][currentRestType - 1];
 										}
 									});
+									if(j + 1 == doctors[i].shedule.length) {
+										$(currentNestedTd).prop({
+											'colspan' : numNestedCols
+										});
+										$(newTr).append(currentNestedTd);
+									}
+									
+									if(typeof doctors[i].shedule[j + 1] != 'undefined' && ((doctors[i].shedule[j + 1].hasOwnProperty('restDayType') && currentRestType != doctors[i].shedule[j + 1].restDayType) || doctors[i].shedule[j + 1].restDay) || j == doctors[i].shedule.length - 1) {							
+										if(typeof this.datesLimits['d' + doctors[i].id]['e' + currentRestType] != 'undefined') {
+											for(var k in this.datesLimits['d' + doctors[i].id]['e' + currentRestType]) {
+												if(this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k] == doctors[i].shedule[j].year + '-' + doctors[i].shedule[j].month + '-' + doctors[i].shedule[j].day) {
+													part = ' до ' + this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k].split('-').reverse().join('.');
+													break;
+												}
+											}
+										}
+									}
+									part = this.getRestPart(i, j, currentRestType, doctors);
 								}
 							} else {
 								$(newTr).append(
 									$('<td>').css({
 										'background' : '#f2f5f6'
+									}).prop({
+										'id' : 'c' + i + '_' + j
 									})
 								);
 							}
@@ -387,6 +447,20 @@ $(document).ready(function() {
 				}
 				return tbody;
 			},
+			
+			getRestPart : function(i, j, currentRestType, doctors) {
+				if(typeof doctors[i].shedule[j + 1] != 'undefined' && ((doctors[i].shedule[j + 1].hasOwnProperty('restDayType') && currentRestType != doctors[i].shedule[j + 1].restDayType) || doctors[i].shedule[j + 1].restDay) || j == doctors[i].shedule.length - 1) {							
+					if(typeof this.datesLimits['d' + doctors[i].id]['e' + currentRestType] != 'undefined') {
+						for(var k in this.datesLimits['d' + doctors[i].id]['e' + currentRestType]) {
+							if(this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k] == doctors[i].shedule[j].year + '-' + doctors[i].shedule[j].month + '-' + doctors[i].shedule[j].day) {
+								return ' до ' + this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k].split('-').reverse().join('.');
+							}
+						}
+					}
+				}
+				return '';
+			},
+			
 			getHeader : function() {
 				var thead = $('<thead>');
 				var days = this.getCurrentDays();
