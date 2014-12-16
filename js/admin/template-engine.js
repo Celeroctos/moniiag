@@ -1657,7 +1657,9 @@ var TemplateEngine = TemplateEngine || {
 					item.field("categorie_id", item.parent().field("id"));
 				}
                 // set has been changed flag to true
-                hasBeenChanged = true;
+                if (item.has("id")) {
+                    hasBeenChanged = true;
+                }
             }
         }).droppable({
             accept: function(helper) {
@@ -1720,7 +1722,9 @@ var TemplateEngine = TemplateEngine || {
 					}
                 }
                 // set has been changed flag to true
-                hasBeenChanged = true;
+                if (me.has("id")) {
+                    hasBeenChanged = true;
+                }
             }
         });
     };
@@ -1811,7 +1815,9 @@ var TemplateEngine = TemplateEngine || {
 				}
 			}
             // set has been changed flag to true
-            hasBeenChanged = true;
+            if (itemInstance.has("id")) {
+                hasBeenChanged = true;
+            }
 			// reset native parent
 			itemInstance.native("parent_id", 0);
 			// update all positions
@@ -1850,6 +1856,7 @@ var TemplateEngine = TemplateEngine || {
                 that.selector().scrollTop(
                     that.selector()[0].scrollHeight
                 );
+                console.log(1);
             }
         }).find(".dd").nestable({
             listClass: "template-engine-list",
@@ -2164,6 +2171,8 @@ var TemplateEngine = TemplateEngine || {
 		// reset widget collection (it will
 		// remove all categories with elements)
 		WidgetCollection.restart();
+        // reset has been changed flag
+        hasBeenChanged = false;
 	};
 
 	TemplateEngine.getTemplateCollection = function() {
@@ -2240,18 +2249,18 @@ var TemplateEngine = TemplateEngine || {
 
 	$(document).ready(function() {
 
-		$("#designTemplatePopup").find(".btn-primary").click(saveTemplate);
-
-        $("#designTemplatePopup").on("hide.bs.modal", function() {
-            if (hasBeenChanged) {
-                if (confirm('Часть элементов имеют заполненные данные, при закрытии данные элементы будут удалены из шаблона. Сохранить?')) {
-                    saveTemplate(true);
-                }
-            }
-            hasBeenChanged = false;
+		$("#designTemplatePopup").find(".btn-primary").click(function() {
+            saveTemplate();
         });
 
-		$("#findCategoryPopup form .btn-primary").click(function() {
+        $("#designTemplatePopup").on("hide.bs.modal", function(e) {
+            if (hasBeenChanged && !confirm('В шаблон были внесены изменения. Закрыть?')) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+		/*$("#findCategoryPopup form .btn-primary").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
 			if (value < 0) {
 				return true;
@@ -2265,7 +2274,7 @@ var TemplateEngine = TemplateEngine || {
 				TemplateEngine.getCategoryCollection()
 					.register(data["model"], true);
 			});
-		});
+		});*/
 
 		//var tc = TemplateEngine.getTemplateCollection();
 
