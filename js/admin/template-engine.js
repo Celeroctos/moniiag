@@ -1092,6 +1092,7 @@ var TemplateEngine = TemplateEngine || {
 		}
 		Item["-instance"].model(json["model"], true);
 		Item["-instance"].update();
+        hasBeenChanged = true;
 	};
 
 	$(document).ready(function() {
@@ -1463,10 +1464,12 @@ var TemplateEngine = TemplateEngine || {
 		$("#categorie-add-form").on("success", function(event, data) {
 			_updateCategory(event, data);
 			ParentCategoryUpdater.afterAppend(Category["-instance"]);
+            hasBeenChanged = true;
 		});
 		$("#categorie-edit-form").on("success", function(event, data) {
 			_updateCategory(event, data);
 			ParentCategoryUpdater.afterRename(Category["-instance"]);
+            hasBeenChanged = true;
 		});
 	});
 
@@ -1653,6 +1656,8 @@ var TemplateEngine = TemplateEngine || {
 				if (item.parent().has("id")) {
 					item.field("categorie_id", item.parent().field("id"));
 				}
+                // set has been changed flag to true
+                hasBeenChanged = true;
             }
         }).droppable({
             accept: function(helper) {
@@ -1714,6 +1719,8 @@ var TemplateEngine = TemplateEngine || {
 						me.field("categorie_id", that.field("id"));
 					}
                 }
+                // set has been changed flag to true
+                hasBeenChanged = true;
             }
         });
     };
@@ -1803,6 +1810,8 @@ var TemplateEngine = TemplateEngine || {
 					itemInstance.field("parent_id", -1);
 				}
 			}
+            // set has been changed flag to true
+            hasBeenChanged = true;
 			// reset native parent
 			itemInstance.native("parent_id", 0);
 			// update all positions
@@ -2165,14 +2174,12 @@ var TemplateEngine = TemplateEngine || {
 		return WidgetCollection.widget().getCategoryCollection();
 	};
 
-	var countOfItemsToSave = 0;
-	var totalSavedItems = 0;
+    var hasBeenChanged = false;
 
-	var saveTemplate = function() {
+	var saveTemplate = function(strict) {
+        hasBeenChanged = false;
 		var cc = TemplateEngine.getCategoryCollection();
 		cc.compute(true);
-		countOfItemsToSave = 0;
-		totalSavedItems = 0;
         var hasNotSaved = false;
 		var result = [];
 		var update = function(item) {
@@ -2218,7 +2225,7 @@ var TemplateEngine = TemplateEngine || {
 			json = json.substring(0, json.length - 1);
 		}
 		json += "]";
-        if (hasNotSaved && !confirm('Часть элементов имеют незаполненные данные, при сохранении данные элементы будут удалены из шаблона. Продолжить? ')) {
+        if (!strict && hasNotSaved && !confirm('Часть элементов имеют незаполненные данные, при сохранении данные элементы будут потреряны. Продолжить? ')) {
             return false;
         }
 		// set request on server to update template categories
@@ -2234,6 +2241,15 @@ var TemplateEngine = TemplateEngine || {
 	$(document).ready(function() {
 
 		$("#designTemplatePopup").find(".btn-primary").click(saveTemplate);
+
+        $("#designTemplatePopup").on("hide.bs.modal", function() {
+            if (hasBeenChanged) {
+                if (confirm('Часть элементов имеют заполненные данные, при закрытии данные элементы будут удалены из шаблона. Сохранить?')) {
+                    saveTemplate(true);
+                }
+            }
+            hasBeenChanged = false;
+        });
 
 		$("#findCategoryPopup form .btn-primary").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
