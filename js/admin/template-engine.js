@@ -2254,7 +2254,7 @@ var TemplateEngine = TemplateEngine || {
         });
 
         $("#designTemplatePopup").on("hide.bs.modal", function(e) {
-            if (hasBeenChanged && !confirm('В шаблон были внесены изменения. Закрыть?')) {
+            if (hasBeenChanged && !confirm('В шаблон были внесены изменения, которые не были сохранены. При закрытии они будут утеряны. Закрыть?')) {
                 e.preventDefault();
                 return false;
             }
