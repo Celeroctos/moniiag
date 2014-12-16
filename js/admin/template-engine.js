@@ -2324,6 +2324,7 @@ var TemplateEngine = TemplateEngine || {
 				var cc = TemplateEngine.getCategoryCollection();
 				findAndDetach(cc);
 				cc.register(data["model"], false);
+                hasBeenChanged = true;
 			});
 		});
 
@@ -2348,6 +2349,7 @@ var TemplateEngine = TemplateEngine || {
 						}
 					}
 				};
+                hasBeenChanged = true;
 				appendToList(c);
 			});
 		});
