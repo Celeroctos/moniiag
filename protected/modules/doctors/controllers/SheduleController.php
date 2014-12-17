@@ -958,6 +958,7 @@ class SheduleController extends Controller {
 			// Дальше не копаем, если есть день выходных
 			if($restDayInDb != null) {
 				$resultArr[$i]['restDayType'] = $restDayInDb->type;
+				$resultArr[$i]['restDayForDoctor'] = true;
 				continue;
 			}
 			
