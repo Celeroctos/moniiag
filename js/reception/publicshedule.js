@@ -253,7 +253,6 @@ $(document).ready(function() {
 						'text' : settings.text
 					});
 					
-					
 					this.loadedData = inData.data.shedule.data;
 					this.cabinets = inData.data.cabinets;
 					var dateLimits = inData.data.datesLimits;
@@ -268,7 +267,7 @@ $(document).ready(function() {
 
 						this.datesLimits['d' + dateLimits[limit].doctor_id]['e' + dateLimits[limit].type].push(dateLimits[limit].date.split(' ')[0]);
 					}
-					
+
 					// Filter elements...
 					// fucking JS with their typeof 
 					if(this.withoutIds && typeof this.withoutIds == 'object' && this.withoutIds.length > 0) {
@@ -370,11 +369,13 @@ $(document).ready(function() {
 										'id' : 'c' + i + '_' + j
 									});
 									$(currentNestedTd).append($.proxy(function() {
-										switch(currentRestType) {
-											case 1 : return 'Выходной'; break;
-											case 2 : return 'Отпуск'; break;
-											case 3 : return 'Болезнь'; break;
-											case 4 : return 'Командировка'; break;
+										switch(parseInt(currentRestType)) {
+											case 1 : return 'Отпуск'; break;
+											case 2 : return 'Больничный'; break;
+											case 3 : return 'Командировка'; break;
+											case 4 : return 'Отгул'; break;
+											case 5 : return 'Дежурство'; break;
+											case 6 : return 'Неприёмный день'; break;
 											default : return '';
 										}
 									}, this));
@@ -384,7 +385,9 @@ $(document).ready(function() {
 												'#F6E3CE',
 												'#F2F5A9',
 												'#F6CEF5',
-												'#F5A9A9'
+												'#F5A9A9',
+												'#E0F8EC',
+												'#F5A9D0'
 											][currentRestType - 1];
 										}
 									});
@@ -476,17 +479,14 @@ $(document).ready(function() {
 				return tbody;
 			},
 			
-			getRestLimit : function(i, j, currentRestType, doctors) {
-				if(typeof doctors[i].shedule[j + 1] != 'undefined' && ((doctors[i].shedule[j + 1].hasOwnProperty('restDayType') && currentRestType != doctors[i].shedule[j + 1].restDayType) || doctors[i].shedule[j + 1].restDay) || j == doctors[i].shedule.length - 1) {							
-					if(typeof this.datesLimits['d' + doctors[i].id] != 'undefined' && typeof this.datesLimits['d' + doctors[i].id]['e' + currentRestType] != 'undefined') {
-						for(var k in this.datesLimits['d' + doctors[i].id]['e' + currentRestType]) {
-							if(this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k] == doctors[i].shedule[j].year + '-' + doctors[i].shedule[j].month + '-' + doctors[i].shedule[j].day) {
-								return this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k].split('-').reverse().join('.');
-							}
+			getRestLimit : function(i, j, currentRestType, doctors) {					
+				if(typeof this.datesLimits['d' + doctors[i].id] != 'undefined' && typeof this.datesLimits['d' + doctors[i].id]['e' + currentRestType] != 'undefined') {
+					for(var k in this.datesLimits['d' + doctors[i].id]['e' + currentRestType]) {
+						if(this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k] == doctors[i].shedule[j].year + '-' + doctors[i].shedule[j].month + '-' + doctors[i].shedule[j].day) {
+							return this.datesLimits['d' + doctors[i].id]['e' + currentRestType][k].split('-').reverse().join('.');
 						}
 					}
 				}
-				
 				return '';
 			},
 			

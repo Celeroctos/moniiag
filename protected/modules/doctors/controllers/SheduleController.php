@@ -948,7 +948,7 @@ class SheduleController extends Controller {
 			
 			// Сначала чекаем выходные частные дни. Если выходной день есть, то дальше можно не обрабатывать
 			// Ищем выходной день
-			$restDayInDb = SheduleRestDay::model()->find('doctor_id = :doctor_id AND date = :date',
+			/*$restDayInDb = SheduleRestDay::model()->find('doctor_id = :doctor_id AND date = :date',
 				array(
 					':doctor_id' => $doctorId,
 					':date' =>   date('Y-m-d', $currentDate)
@@ -960,7 +960,7 @@ class SheduleController extends Controller {
 				$resultArr[$i]['restDayType'] = $restDayInDb->type;
 				$resultArr[$i]['restDayForDoctor'] = true;
 				continue;
-			}
+			}*/
 			
             // Найдём из выбранных графиков такой, под который подпадает данный день
             //$currentDateDate = strtotime( $currentDate );
@@ -970,40 +970,58 @@ class SheduleController extends Controller {
                 $dateEndTimetable = strtotime($oneShedule['date_end']);
 
                 // Сравниваем - если день лежит внутри промежутка расписания - то ура! мы нашли расписание, которое действует для данного дня
-                if (($currentDate>=$dateBeginTimetable)&&($currentDate<=$dateEndTimetable )) {
+                if (($currentDate >= $dateBeginTimetable) && ($currentDate <= $dateEndTimetable )) {
                     $sheduleForDay = $oneShedule;
-                    break;
+                    // Если это расписание, ориентированное не на отпуск, то поищем то, которое является отпуском и не будем выходить из цикла раньше времени
+					$jsonData = CJSON::decode($oneShedule['json_data']);
+					if(count($jsonData['facts']) > 0) {
+						break;
+					}
                 }
             }
-
+			
             // Если расписания на день нет - то и нечего дальше делать, переходим к следующему дню
             if ($sheduleForDay==null) {
                 continue;
             }
-
-            $ruleToApply = $this->checkByTimetable($sheduleForDay, date('Y-m-d',$currentDate));
+			
+            $ruleToApply = null;
+			$ruleToApply = $this->checkByTimetable($sheduleForDay, date('Y-m-d',$currentDate));
             if ($ruleToApply!=null) {
-                // Правило найдено
-                $resultArr[$i]['worked'] = true;
-                $resultArr[$i]['restDay'] = false;
-				if(trim($ruleToApply['cabinet']) != '' && array_search($ruleToApply['cabinet'], $this->cabinetsIds) === false) {
-					$this->cabinetsIds[] = $ruleToApply['cabinet'];
+				if(!isset($ruleToApply['isFact'])) {
+					// Правило найдено
+					$resultArr[$i]['worked'] = true;
+					$resultArr[$i]['restDay'] = false;
+					if(trim($ruleToApply['cabinet']) != '' && array_search($ruleToApply['cabinet'], $this->cabinetsIds) === false) {
+						$this->cabinetsIds[] = $ruleToApply['cabinet'];
+					}
+					$resultArr[$i]['cabinet'] = $ruleToApply['cabinet'];
+
+					if (isset ($ruleToApply['greetingBegin'])) {
+						$resultArr[$i]['beginTime'] = $ruleToApply['greetingBegin'];
+					}
+
+					if (isset ($ruleToApply['greetingEnd'])) {
+						$resultArr[$i]['endTime'] = $ruleToApply['greetingEnd'];
+					}
+
+					// Вставляем лимиты
+					//$resultArr[$i]['limits'] = array();
+					$resultArr[$i]['limits']['callCenter'] = $ruleToApply['limits'][1];
+					$resultArr[$i]['limits']['reception'] = $ruleToApply['limits'][2];
+					$resultArr[$i]['limits']['internet'] = $ruleToApply['limits'][3];
+				} else { // Это факт. Через него подвязываем тип и прочее
+					$resultArr[$i]['worked'] = false;
+					$resultArr[$i]['restDay'] = true;
+					$resultArr[$i]['restDayType'] = $ruleToApply['type'];
+					if(isset($ruleToApply['end']) && $ruleToApply['end'] == date('Y-m-d',$currentDate)) {
+						$this->restDays[] = array(
+							'doctor_id' => $doctorId,
+							'type' => $ruleToApply['type'],
+							'date' => date('Y-m-d',$currentDate)
+						);
+					}
 				}
-				$resultArr[$i]['cabinet'] = $ruleToApply['cabinet'];
-
-                if (isset ($ruleToApply['greetingBegin'])) {
-                    $resultArr[$i]['beginTime'] = $ruleToApply['greetingBegin'];
-                }
-
-                if (isset ($ruleToApply['greetingEnd'])) {
-                    $resultArr[$i]['endTime'] = $ruleToApply['greetingEnd'];
-                }
-
-                // Вставляем лимиты
-                //$resultArr[$i]['limits'] = array();
-                $resultArr[$i]['limits']['callCenter'] = $ruleToApply['limits'][1];
-                $resultArr[$i]['limits']['reception'] = $ruleToApply['limits'][2];
-                $resultArr[$i]['limits']['internet'] = $ruleToApply['limits'][3];
             } else {
                 // не найдено
                 $resultArr[$i]['worked'] = false;
@@ -1053,6 +1071,10 @@ class SheduleController extends Controller {
     {
 
     }
+	
+	public function getDatesLimits() {
+		return $this->restDays;
+	}
 
     // Логика выдачи календаря:
     /* Выдаются даты + характеристика дат. Например, количество пациентов на день. */

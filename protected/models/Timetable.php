@@ -48,63 +48,48 @@ class Timetable extends MisActiveRecord {
 
         // =====>
         // 1. Перебираем правила и смотрим совпадение с датой
-        foreach ($timeTableObject['rules'] as $oneRule)
-        {
-            if (isset($oneRule['daysDates']))
-            {
-                foreach($oneRule['daysDates'] as $oneDate)
-                {
+        foreach ($timeTableObject['rules'] as $oneRule) {
+            if (isset($oneRule['daysDates'])) {
+                foreach($oneRule['daysDates'] as $oneDate) {
                     $oneDateFromTimetable = strtotime($oneDate);
-                    if ($oneDateFromTimetable == $currentDateToCompare)
-                    {
+                    if ($oneDateFromTimetable == $currentDateToCompare) {
                         // Дата попадает в день, указанный в расписании
                         $ruleToApply = $oneRule;
-
                     }
                 }
             }
         }
         // Если правило не нуль - то не проверяем дальше
-        if ($ruleToApply!=null)
-        {
+        if ($ruleToApply!=null){
             return $ruleToApply;
         }
-
-
-
+		
         // Перебираем обстоятельства
-        foreach($timeTableObject['facts'] as $oneFact)
-        {
+        $underFact = array();
+		foreach($timeTableObject['facts'] as $oneFact) {
             $dateBeginFact = strtotime($oneFact['begin']);
             // Если промежуток - проверяем, попадает ли день в этот промежуток. Иначе проверяем на равенство даты
-            if ($oneFact['isRange']==1)
-            {
+            if($oneFact['isRange']==1) {
                 $dateEndFact = strtotime($oneFact['end']);
-                if (($currentDateToCompare >=$dateBeginFact)&&($currentDateToCompare <=$dateEndFact ))
-                {
-                    $underFact = true;
+                if (($currentDateToCompare >=$dateBeginFact)&&($currentDateToCompare <=$dateEndFact )) {
+                    $underFact = $oneFact;
                     break;
                 }
-
-            }
-            else
-            {
-                if ($currentDateToCompare ==$dateBeginFact)
-                {
-                    $underFact = true;
+            } else{
+                if($currentDateToCompare ==$dateBeginFact) {
+                    $underFact = $oneFact;
                     break;
                 }
             }
         }
 
         // Если обстоятельство нашли
-        if ($underFact)
-        {
-            return null;
+        if($underFact) {
+			return array('isFact' => 1) + $underFact;
+           // return null;
         }
 
-        foreach ($timeTableObject['rules'] as $oneRule)
-        {
+        foreach ($timeTableObject['rules'] as $oneRule) {
             // Переменные "есть дни" и "есть чётность", "совпадение по чётности", "совпадение по дням"
             // Механизм следующий: перебираем правила, смотрим - если не указана ни чётность ни дни - то не применяется правило
             //     в противном случае - флаг совпадения по критерию должен быть равен флагу наличия данного критерия
@@ -113,23 +98,18 @@ class Timetable extends MisActiveRecord {
             $issetDays = false;
             $issetOddance = false;
             $ruleToApply = $oneRule;
-            if (isset($oneRule['days']) && (count($oneRule['days'])>0))
-            {
+            if (isset($oneRule['days']) && (count($oneRule['days']) > 0)) {
                 $issetDays = true;
-                if (isset ($oneRule['days'][$weekDayOfDayDate ])  )
-                {
+                if (isset($oneRule['days'][$weekDayOfDayDate ])){
                     // Проверяем - подходит ли день под правило. Если нет - то вызываем continue
                     //    если да - то даём проверить его на чётность (нечётность). Если и чётность/нечетность он не проходит
                     //     -то вызываем continue уже в конце
-                    if ( count($oneRule['days'][$weekDayOfDayDate ])>0 )
-                    {
+                    if (count($oneRule['days'][$weekDayOfDayDate ]) > 0) {
                         // Ищем в массиве значение, равное номеру недели
                         // если не нашли - сразу выходим
                        // $wasDayFound = false;
-                        for ($i=0;$i<count($oneRule['days'][$weekDayOfDayDate ]);$i++)
-                        {
-                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate)
-                            {
+                        for($i = 0; $i < count($oneRule['days'][$weekDayOfDayDate ]); $i++) {
+                            if ($oneRule['days'][$weekDayOfDayDate ][$i]==$weekNumberOfDayDate) {
                                // $wasDayFound = true;
                                 $dayWeekCoidance = true;
                             }
@@ -138,9 +118,7 @@ class Timetable extends MisActiveRecord {
                         {
                             $ruleToApply = null;
                         }*/
-                    }
-                    else
-                    {
+                    } else {
                        // $wasDayFound = true;
                         $dayWeekCoidance = true;
                     }

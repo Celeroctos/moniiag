@@ -115,6 +115,7 @@ class DoctorsController extends Controller {
 			   $doctor['shedule'] = $daysList;
             }
         }
+		
 		$cabinets = $calendarController[0]->getCabinetsIdsList();
 		$criteria = new CDbCriteria();
 		$criteria->addInCondition('id', $cabinets);
@@ -134,7 +135,8 @@ class DoctorsController extends Controller {
             'data' => $doctors,
             'total' => $totalPages,
             'records' => count($num),
-			'cabinets' => $cabinetsResult
+			'cabinets' => $cabinetsResult,
+			'datesLimits' => $calendarController[0]->getDatesLimits()
         );
 		
         if($calendarTypeSetting == 1) {
@@ -408,7 +410,8 @@ class DoctorsController extends Controller {
 					'shedule' => $shedule,
 					'settings' => $setRes,
 					'cabinets' => $shedule['cabinets'],
-					'datesLimits' => SheduleRestDay::model()->getUpperLimits($this->greetingDate == null ? date('Y-m-d') : $this->greetingDate)
+					//'datesLimits' => SheduleRestDay::model()->getUpperLimits($this->greetingDate == null ? date('Y-m-d') : $this->greetingDate)
+					'datesLimits' => $shedule['datesLimits']
 				)
 			)
 		);
