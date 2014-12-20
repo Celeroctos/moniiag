@@ -1092,7 +1092,7 @@ var TemplateEngine = TemplateEngine || {
 		}
 		Item["-instance"].model(json["model"], true);
 		Item["-instance"].update();
-        hasBeenChanged = true;
+        hasChanges = true;
 	};
 
 	$(document).ready(function() {
@@ -1464,12 +1464,12 @@ var TemplateEngine = TemplateEngine || {
 		$("#categorie-add-form").on("success", function(event, data) {
 			_updateCategory(event, data);
 			ParentCategoryUpdater.afterAppend(Category["-instance"]);
-            hasBeenChanged = true;
+            hasChanges = true;
 		});
 		$("#categorie-edit-form").on("success", function(event, data) {
 			_updateCategory(event, data);
 			ParentCategoryUpdater.afterRename(Category["-instance"]);
-            hasBeenChanged = true;
+            hasChanges = true;
 		});
 	});
 
@@ -1658,7 +1658,7 @@ var TemplateEngine = TemplateEngine || {
 				}
                 // set has been changed flag to true
                 if (item.has("id")) {
-                    hasBeenChanged = true;
+                    hasChanges = true;
                 }
             }
         }).droppable({
@@ -1723,7 +1723,7 @@ var TemplateEngine = TemplateEngine || {
                 }
                 // set has been changed flag to true
                 if (me.has("id")) {
-                    hasBeenChanged = true;
+                    hasChanges = true;
                 }
             }
         });
@@ -1816,7 +1816,7 @@ var TemplateEngine = TemplateEngine || {
 			}
             // set has been changed flag to true
             if (itemInstance.has("id")) {
-                hasBeenChanged = true;
+                hasChanges = true;
             }
 			// reset native parent
 			itemInstance.native("parent_id", 0);
@@ -1856,7 +1856,6 @@ var TemplateEngine = TemplateEngine || {
                 that.selector().scrollTop(
                     that.selector()[0].scrollHeight
                 );
-                console.log(1);
             }
         }).find(".dd").nestable({
             listClass: "template-engine-list",
@@ -2078,7 +2077,6 @@ var TemplateEngine = TemplateEngine || {
 			}
 			$(document.body).find("#parentId, #categorieId").children().each(function(i, e) {
 				if ($(e).val() == category.field("id")) {
-					console.log(category.field("name"));
 					$(e).html(category.field("name"));
 				}
 			});
@@ -2172,7 +2170,7 @@ var TemplateEngine = TemplateEngine || {
 		// remove all categories with elements)
 		WidgetCollection.restart();
         // reset has been changed flag
-        hasBeenChanged = false;
+        hasChanges = false;
 	};
 
 	TemplateEngine.getTemplateCollection = function() {
@@ -2183,10 +2181,10 @@ var TemplateEngine = TemplateEngine || {
 		return WidgetCollection.widget().getCategoryCollection();
 	};
 
-    var hasBeenChanged = false;
+    var hasChanges = false;
 
 	var saveTemplate = function(strict) {
-        hasBeenChanged = false;
+        hasChanges = false;
 		var cc = TemplateEngine.getCategoryCollection();
 		cc.compute(true);
         var hasNotSaved = false;
@@ -2254,7 +2252,7 @@ var TemplateEngine = TemplateEngine || {
         });
 
         $("#designTemplatePopup").on("hide.bs.modal", function(e) {
-            if (hasBeenChanged && !confirm('В шаблон были внесены изменения, которые не были сохранены. При закрытии они будут утеряны. Закрыть?')) {
+            if (hasChanges && !confirm('В шаблон были внесены изменения, которые не были сохранены. При закрытии они будут утеряны. Закрыть?')) {
                 e.preventDefault();
                 return false;
             }
@@ -2324,7 +2322,7 @@ var TemplateEngine = TemplateEngine || {
 				var cc = TemplateEngine.getCategoryCollection();
 				findAndDetach(cc);
 				cc.register(data["model"], false);
-                hasBeenChanged = true;
+                hasChanges = true;
 			});
 		});
 
@@ -2349,7 +2347,7 @@ var TemplateEngine = TemplateEngine || {
 						}
 					}
 				};
-                hasBeenChanged = true;
+                hasChanges = true;
 				appendToList(c);
 			});
 		});

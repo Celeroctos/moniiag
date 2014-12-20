@@ -404,6 +404,22 @@ class CategoriesController extends Controller {
                                  'data' => $categorie)
         );
     }
+	
+	public function actionGetMatches($pattern) {
+		$model = new MedcardCategorie();
+        $categories = $model->getRows($id);
+		foreach ($categories as $i => $categorie) {
+			if($categorie['parent_id'] == null) {
+				$categorie['parent_id'] = -1;
+			}
+			if($categorie['is_dynamic'] == null) {
+				$categorie['is_dynamic'] = 0;
+			}
+		}
+        echo CJSON::encode(array('success' => true,
+                                 'data' => $categories)
+        );
+	}
 
     public function actionClearGreetingsData() {
         MedcardElementPatientDependence::model()->deleteAll();

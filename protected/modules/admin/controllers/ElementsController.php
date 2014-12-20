@@ -97,6 +97,9 @@ class ElementsController extends Controller {
             $model->attributes = $_POST['FormElementAdd'];
             // Проверим - изменился ли тип у элемента,
 
+            //var_dump($model);
+            //exit();
+
             if ($_POST['FormElementAdd']['id']!='')
             {
 
@@ -189,6 +192,7 @@ class ElementsController extends Controller {
         $element->position = $model->position;
         $element->label_display = $model->labelDisplay;
         $element->is_required = $model->isRequired;
+        $element->hide_label_before = $model->hideLabelBefore;
         
         if($model->guideId != -1) { // Если справочник выбран
             $element->guide_id = $model->guideId;
@@ -218,6 +222,10 @@ class ElementsController extends Controller {
 		 */
 
 		$config = array();
+		if($model->directLink !== null) {
+			$config['directLink'] = $model->directLink;
+		}
+		
         if($model->type == 4) {
             $config += $model->config;
         }
@@ -233,11 +241,26 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-			$config += array(
-                'maxValue' => $model->numberFieldMaxValue,
-                'minValue' => $model->numberFieldMinValue,
-                'step' => $model->numberStep
-            );
+			$params = array();
+			if($model->numberFieldMaxValue != null) {
+				$params['maxValue'] = $model->numberFieldMaxValue;
+			} else {
+				$params['maxValue'] = '';
+			}
+			
+			if($model->numberFieldMinValue != null) {
+				$params['minValue'] = $model->numberFieldMinValue;
+			} else {
+				$params['minValue'] = '';
+			}
+			
+			if($model->numberStep != null) {
+				$params['step'] = $model->numberStep;
+			} else {
+				$params['step'] = '';
+			}
+			
+			$config += $params;
 		}
 
 		if($model->showDynamic) {
@@ -258,10 +281,20 @@ class ElementsController extends Controller {
                 );
                 exit();
             }
-			$config += array(
-				'maxValue' => $model->dateFieldMaxValue,
-				'minValue' => $model->dateFieldMinValue
-			);
+			$params = array();
+			if($model->dateFieldMaxValue != null) {
+				$params['maxValue'] = $model->dateFieldMaxValue;
+			} else {
+				$params['maxValue'] = '';
+			}
+			
+			if($model->dateFieldMinValue != null) {
+				$params['minValue'] = $model->dateFieldMinValue;
+			} else {
+				$params['minValue'] = '';
+			}
+			
+			$config += $params;
 		}
 
 		$element->config = CJSON::encode($config); 
@@ -270,6 +303,9 @@ class ElementsController extends Controller {
         $partOfPath = $this->getElementPath($element->categorie_id);
         $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
         $element->path = $partOfPath.'.'.$element->position;
+
+        //var_dump($element);
+        //exit();
 
         if($element->save()) {
             echo CJSON::encode(array(
@@ -408,6 +444,7 @@ class ElementsController extends Controller {
                  'dependences' => $dependencesArr,
                  'comboValues' => $comboValues,
                  'controls' => $controls,
+                 'notPrintedValues' => $elementModel['not_printing_values'],
                  'actions' => array(
                      'Нет',
                      'Скрыть',
@@ -452,6 +489,56 @@ class ElementsController extends Controller {
             $dependencesArr[] = $dependence;
         }
         return $dependencesArr;
+    }
+
+    public function actionSaveNonPrintableValues()
+    {
+        //var_dump($_GET);
+        //exit();
+        $elementId = $_GET['element'];
+        $valueId = $_GET['valueId'];
+        $actionToDo = $_GET['action'];
+
+        // Прочитать невыводимые элементы из базы
+        $elementToChange = MedcardElement::model()->findByPk($elementId);
+        // Берём у него поле
+        $arrayNonPrintables = CJSON::decode( $elementToChange['not_printing_values'] );
+
+        if ($arrayNonPrintables==null)
+            $arrayNonPrintables = array();
+        // Теперь ищем в массиве
+        $needleKey = array_search($valueId, $arrayNonPrintables);
+        //var_dump($needleKey);
+        //exit();
+        if ($needleKey===false)
+        {
+            if ($actionToDo==true || $actionToDo=='true')
+            {
+                // Вставить элемент
+                array_push($arrayNonPrintables, $valueId  );
+            }// Иначе ничего не делаем
+        }
+        else
+        {
+            if ($actionToDo==false || $actionToDo=='false')
+            {
+                // Удалить элемент
+                array_splice($arrayNonPrintables, $needleKey,1);
+            }// Иначе ничего не делаем
+        }
+        $newArrayString = CJSON::encode($arrayNonPrintables);
+        $elementToChange['not_printing_values'] = $newArrayString;
+        $elementToChange->save();
+
+        // Возвращаем назад строку
+        echo CJSON::encode(array(
+                'success' => true,
+                'data' => array(
+                    'notPrintValues' => $newArrayString
+                )
+            )
+        );
+
     }
 
     // Сохранить все зависимости. Есть зависимость == "Нет", это означает, что строку из базы зависимостей надо удалить

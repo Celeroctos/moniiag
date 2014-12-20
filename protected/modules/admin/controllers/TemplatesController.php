@@ -242,16 +242,22 @@ class TemplatesController extends Controller {
 		$categoriesArray = json_decode($categories);
 
 		foreach ($categoriesArray as $i => $child) {
-			// if we have category field then it is element else category
+            if ($child->category != -1) {
+                $path = MedcardCategorie::model()->findByPk((int)$child->category)->path.".".$child->position;
+            } else {
+                $path = $child->position;
+            }
 			if ($child->type == "element") {
 				MedcardElement::model()->updateByPk($child->id, array(
 					"position" => $child->position,
-					"categorie_id" => $child->category
+					"categorie_id" => $child->category,
+                    "path" => $path
 				));
 			} else {
 				MedcardCategorie::model()->updateByPk($child->id, array(
 					"position" => $child->position,
-					"parent_id" => $child->category
+					"parent_id" => $child->category,
+                    "path" => $path
 				));
 			}
 		}
