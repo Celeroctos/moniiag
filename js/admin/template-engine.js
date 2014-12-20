@@ -1722,7 +1722,7 @@ var TemplateEngine = TemplateEngine || {
 					}
                 }
                 // set has been changed flag to true
-                if (me.has("id")) {
+                if (me.has("id") || true) {
                     hasChanges = true;
                 }
             }
@@ -1856,6 +1856,7 @@ var TemplateEngine = TemplateEngine || {
                 that.selector().scrollTop(
                     that.selector()[0].scrollHeight
                 );
+                hasChanges = true;
             }
         }).find(".dd").nestable({
             listClass: "template-engine-list",
