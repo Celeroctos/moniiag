@@ -1554,8 +1554,9 @@ class TasuController extends Controller {
 				$number = $policyParts[1];
 			}
 			
-			// Свидетельство о рождении...
-			if($medcard->doctype == 2) {
+			if($medcard->doctype == 1) {
+				$medcard->doctype = '14';
+			} elseif($medcard->doctype == 2) { // Свидетельство о рождении...
 				$medcard->doctype = '03';
 			} elseif($medcard->doctype == 3) { // Вид на жительство...
 				$medcard->doctype = '11';
