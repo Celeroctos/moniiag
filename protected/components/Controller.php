@@ -22,6 +22,16 @@ class Controller extends CController {
 			'action' => 'syncinsurances'
 		)
 	);
+	
+	protected $publicRoutes = array(
+		'users/login',
+		'reception/patient/getpublicshedule',
+		'reception/doctors/getpublicshedule',
+		'index/index',
+		'users/islogged',
+		'users/logincheck'
+	);
+	
     /* Неправильное использование, но пока непонятно, как переопределить конструктор */
     // Фильтр для выполнения запроса по поводу прав доступа
     public function filterGetAccessHierarchy($filterChain) {
@@ -33,8 +43,9 @@ class Controller extends CController {
             $filterChain->run();
             return;
         }
-        if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
-            // Если гость, то не давать заходить куда-то
+		
+        if(Yii::app()->user->isGuest && array_search(strtolower($this->route), $this->publicRoutes) === false)  {
+			// Если гость, то не давать заходить куда-то
             $this->redirect('/');
         } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
             $this->redirect(Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl);

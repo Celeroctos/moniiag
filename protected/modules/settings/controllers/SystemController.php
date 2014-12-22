@@ -34,9 +34,44 @@ class SystemController extends Controller {
         echo CJSON::encode(array('success' => 'false',
                                  'errors' => $this->formModel->errors));
     }
+	
+	public function actionSettingsJsonEdit() {
+		if(!isset($_GET['module'], $_GET['values'])) {
+			echo CJSON::encode(
+				array(
+					'success' => false,
+					'error' => 'Нехватка данных!'
+					)
+				);
+			exit();
+		}
+
+        foreach($_GET['values'] as $settingName => $value) {
+            $setting = Setting::model()->find('module_id = :module_id AND name = :name', array(':name' => $settingName, ':module_id' => $_GET['module']));
+			if($setting == null) {
+				$setting = new Setting();
+				$setting->name = $settingName;
+				$setting->module_id = $_GET['module']; 
+			} 
+			
+			$setting->value = $value;
+			if(!$setting->save()) {
+				echo CJSON::encode(array('success' => false,
+										 'errors' => 'Не могу сохранить ключ '.$settingName));
+				exit();
+			}
+        }
+		
+		echo CJSON::encode(
+			array(
+				'success' => true,
+				'data' => array()
+			)
+		);
+	}
 
     private function fillSystemModel() {
-        $settings = $this->getSettings();
+        $settings = $this->getSettings(-1);
         foreach($settings as $setting) {
             if($setting['name'] != null) {
                 $this->formModel->{$setting['name']} = $setting['value'];
@@ -46,14 +81,14 @@ class SystemController extends Controller {
         }
     }
 
-    private function getSettings() {
+    private function getSettings($moduleId) {
         $filters = array(
             'groupOp' => 'AND',
             'rules' => array(
                 array(
                     'field' => 'module_id',
                     'op' => 'eq',
-                    'data' => -1 // Модуль расписания
+                    'data' => $moduleId // Модуль расписания
                 )
             )
         );

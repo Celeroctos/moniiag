@@ -626,6 +626,24 @@ class PatientController extends Controller {
             ));
         }
     }
+	
+	// Дополнительная валидация на паспорт
+	public function validatePassport($model) {
+		// Валидатор для поля типа "Паспорт"
+		Yii::import('ext.validators.PassportValidator');
+		$passValidator = CValidator::createValidator('PassportValidator', new PassportValidator(), 'serie, docnumber'); 
+		$passValidator->validate($model, array('serie', 'docnumber'));
+		if($model->hasErrors()) {
+			echo CJSON::encode(
+				array(
+					'success' => 'false',
+					'errors' => $model->errors
+				)
+			);
+		
+			exit();
+		}
+	}
 
     // Добавление пациента
     public function actionAdd() {
@@ -633,11 +651,16 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientAdd'])) {
             $model->attributes = $_POST['FormPatientAdd'];
             $model->insurance = $_POST['FormPatientAdd']['insurance'];
-            $model->region = $_POST['FormPatientAdd']['region'];
+            $model->region = $_POST['FormPatientAdd']['region'];			
             // Если телефон равен +7, значит его не ввели
             if ($model->contact=="+7")
                 $model->contact = "";
-            if($model->validate()) {
+			
+			if($model->doctype == 1) { // Паспорт
+				$this->validatePassport($model);
+			}
+
+			if($model->validate()) {
                 $medcard = new Medcard();
                 $oms = $this->checkUniqueOms($model);
                 // Если пациент с таким полисом найден, просто создаётся карта и подсоединяется полис
@@ -959,6 +982,11 @@ class PatientController extends Controller {
             // Проверим - если поле "contact" равно "+7", то занулим его
             if ($model->contact == "+7")
                 $model->contact = "";
+			
+			if($model->doctype == 1) { // Паспорт
+				$this->validatePassport($model);
+			}			
+				
             if($model->validate()) {
                 $oms = Oms::model()->findByPk($model->policy);
                 // Проверим, нет ли карты с таким годом и с таким пациентом
@@ -1439,8 +1467,11 @@ class PatientController extends Controller {
     public function actionEditCard() {
         $model = new FormPatientWithCardAdd();
         if(isset($_POST['FormPatientWithCardAdd'])) {
-            $model->attributes = $_POST['FormPatientWithCardAdd'];
-            if($model->validate()) {
+            $model->attributes = $_POST['FormPatientWithCardAdd'];	
+			if($model->doctype == 1) { // Паспорт
+				$this->validatePassport($model);
+			}
+			if($model->validate()) {
                 $medcard = Medcard::model()->findByPk($_POST['FormPatientWithCardAdd']['cardNumber']);
                 $this->addEditModelMedcard($medcard, $model);
 
@@ -2550,6 +2581,13 @@ class PatientController extends Controller {
 			Yii::app()->user->setState('savedCardNumber', $_POST['cardnumber']); // Для генератора
 			echo CJSON::encode(array('success' => true));
 		}
+	}
+	
+	public function actionGetPublicShedule() {
+		$this->layout = 'application.modules.reception.views.layouts.publicshedule';
+		$this->render('publicShedule', array(
+		
+		));
 	}
 }
 

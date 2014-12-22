@@ -5,7 +5,7 @@ class DoctorsController extends Controller {
     private $greetingDate = null;
 
     // Экшн поиска врача
-    public function actionSearch() {
+    public function actionSearch($ajaxReq = false) {
         //var_dump($_POST);
         //exit();
         // Посмотрим на то, какой календарь мы показываем сейчас
@@ -63,10 +63,6 @@ class DoctorsController extends Controller {
         }
         $start = $page * $rows - $rows;
 
-        //var_dump($filters);
-        //exit();
-        //$filters['rules'] = array();
-
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
 
         // Посмотрим на то, какой календарь мы показываем сейчас
@@ -115,16 +111,32 @@ class DoctorsController extends Controller {
             }
             // Если это органайзер, то нам нужно вынимать также часть календаря для каждого врача
             if($calendarTypeSetting == 1) {
-                $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
-                $doctor['shedule'] = $daysList;
+               $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
+			   $doctor['shedule'] = $daysList;
             }
         }
+		
+		$cabinets = $calendarController[0]->getCabinetsIdsList();
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('id', $cabinets);
+		$cabinetsInDb = Cabinet::model()->findAll($criteria);
+		$numCabinets = count($cabinetsInDb);
+		$cabinetsResult = array();
+
+		for($i = 0; $i < $numCabinets; $i++) {
+			$cabinetsResult[(string)$cabinetsInDb[$i]['id']] = array(
+				'description' => $cabinetsInDb[$i]['description'],
+				'number' => $cabinetsInDb[$i]['cab_number']
+			);
+		}
 
         $answer = array(
             'success' => true,
             'data' => $doctors,
             'total' => $totalPages,
-            'records' => count($num)
+            'records' => count($num),
+			'cabinets' => $cabinetsResult,
+			'datesLimits' => $calendarController[0]->getDatesLimits()
         );
 		
         if($calendarTypeSetting == 1) {
@@ -147,7 +159,8 @@ class DoctorsController extends Controller {
         $callCenterGreetingsLimit = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'maxGreetingsInCallcenter'));
         $waitingLineTimeWriting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'waitingLineTimeWriting'));
         $waitingLineDateWriting = Setting::model()->find('module_id = 1 AND name = :name', array(':name' => 'waitingLineDateWriting'));
-        if($primaryGreetingsLimit != null) {
+       
+	   if($primaryGreetingsLimit != null) {
             $answer['primaryGreetingsLimit'] = $primaryGreetingsLimit->value;
         } else {
             $answer['primaryGreetingsLimit'] = null;
@@ -175,8 +188,13 @@ class DoctorsController extends Controller {
         } else {
             $answer['waitingLineDateWriting'] = null;
         }
-        echo CJSON::encode($answer);
-    }
+		
+		if($ajaxReq) {
+			return $answer;
+		} else {
+			echo CJSON::encode($answer);
+		}
+	}
     
 	    // Экшн поиска врача без расписания (по-хорошему надо перенести это в другой контроллер)
     public function actionSearchCommon() {
@@ -253,7 +271,7 @@ class DoctorsController extends Controller {
                     $filters['rules'][] = array(
                         'field' => 'greeting_type',
                         'op' => 'in',
-                        'data' => array(1, 0)
+                        'data' => array(2, 0)
                     );
                 }
             }
@@ -372,6 +390,32 @@ class DoctorsController extends Controller {
             return false; // Расписание не установлено
         }
     }
+	
+	public function actionGetPublicShedule() {
+		$shedule = $this->actionSearch(true);
+		$criteria = new CDbCriteria();
+		$criteria->addInCondition('module_id', array(2, 3));
+		$criteria->addInCondition('name', array('text', 'mUpdateTimeout', 'updateTimeout', 'sortBy', 'perPage', 'withoutIds', 'numCycles'));
+		
+		$settings = Setting::model()->findAll($criteria);
+		$setRes = array();
+		foreach($settings as $key => $setting) {
+			$setRes[$setting['name']] = $setting['value'];
+		}
+
+		echo CJSON::encode(
+			array(
+				'success' => true,
+				'data' => array(
+					'shedule' => $shedule,
+					'settings' => $setRes,
+					'cabinets' => $shedule['cabinets'],
+					//'datesLimits' => SheduleRestDay::model()->getUpperLimits($this->greetingDate == null ? date('Y-m-d') : $this->greetingDate)
+					'datesLimits' => $shedule['datesLimits']
+				)
+			)
+		);
+	}
 }
 
 ?>
