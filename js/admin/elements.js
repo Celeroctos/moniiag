@@ -739,7 +739,6 @@ function editElement() {
 			}
 		})
 	}
->>>>>>> c96da615365c7e21b2f750b59e37246563983d71
 }
 
 $("#editElement").click(editElement);
