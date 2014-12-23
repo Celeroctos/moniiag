@@ -1246,6 +1246,18 @@ class TasuController extends Controller {
 			$docserie = $medcard->serie;
 		}
 		
+		$sql = "SELECT * 
+				FROM PDPStdStorage.dbo.t_dul_44571
+				WHERE 
+					dulseries_30145 = '".$docserie."'
+					AND dulnumber_50657 = '".$medcard->docnumber."'
+					AND patientuid_53984 = ".$patientUid." 
+					AND version_end = '".$this->version_end."'";
+					
+		if($conn->createCommand($sql)->queryAll() > 0) {
+			return;
+		}
+		
 		$sql = "UPDATE PDPStdStorage.dbo.t_dul_44571
 			SET 
 				[dulseries_30145] = '".$docserie."',
