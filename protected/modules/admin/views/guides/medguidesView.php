@@ -1,4 +1,4 @@
-<?php $this->widget('application.modules.admin.components.widgets.DoctorCardTabMenu') ?>
+<?php $this->widget('application.modules.admin.components.widgets.MedguidesTabMenu') ?>
 
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/medguides.js"></script>
 <?php if($currentGuideId != -1) : ?>
