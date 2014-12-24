@@ -892,8 +892,8 @@
             <div class="modal-body">
                 <h4>При заполнении формы возникли следующие ошибки:</h4>
                 <div class="row">
-<?php$this->widget("application.modals.admin.templates.AddElement"); ?>
-<?php$this->widget("application.modals.admin.templates.AddElementError"); ?>
-<?php$this->widget("application.modals.admin.templates.EditDependences"); ?>
-<?php$this->widget("application.modals.admin.templates.EditElement"); ?>
-<?php$this->widget("application.modals.admin.templates.EditDependences"); ?>
+<?php this->widget("application.modals.admin.templates.AddElement"); ?>
+<?php this->widget("application.modals.admin.templates.AddElementError"); ?>
+<?php this->widget("application.modals.admin.templates.EditDependences"); ?>
+<?php this->widget("application.modals.admin.templates.EditElement"); ?>
+<?php this->widget("application.modals.admin.templates.EditDependences"); ?>
