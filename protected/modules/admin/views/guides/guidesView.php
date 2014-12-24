@@ -9,6 +9,6 @@
     <button type="button" class="btn btn-default" id="deleteGuide">Удалить запись</button>
 </div>
 
-<? $this->widget("application.modals.admin.templates.AddGuide"); ?>
-<? $this->widget("application.modals.admin.templates.AddGuideError"); ?>
-<? $this->widget("application.modals.admin.templates.EditGuide"); ?>
+<?php$this->widget("application.modals.admin.templates.AddGuide"); ?>
+<?php$this->widget("application.modals.admin.templates.AddGuideError"); ?>
+<?php$this->widget("application.modals.admin.templates.EditGuide"); ?>

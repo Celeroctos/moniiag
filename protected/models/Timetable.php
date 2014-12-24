@@ -30,7 +30,7 @@ class Timetable extends MisActiveRecord {
                     date("Y", strtotime($dayToCount))))-2)/7)) + 1;
     }
 
-    public function getRuleFromTimetable($timeTable, $dayDate)
+    public function getRuleFromTimetable($timeTable, $dayDate, $returnFacts)
     {
         $currentDateToCompare = strtotime($dayDate);
 
@@ -85,8 +85,11 @@ class Timetable extends MisActiveRecord {
 
         // Если обстоятельство нашли
         if($underFact) {
-			return array('isFact' => 1) + $underFact;
-           // return null;
+			if($returnFacts) {
+				return array('isFact' => 1) + $underFact;
+			} else {
+				return null;
+			}
         }
 
         foreach ($timeTableObject['rules'] as $oneRule) {

@@ -111,8 +111,9 @@ class DoctorsController extends Controller {
             }
             // Если это органайзер, то нам нужно вынимать также часть календаря для каждого врача
             if($calendarTypeSetting == 1) {
-               $daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
-			   $doctor['shedule'] = $daysList;
+			   	$calendarController[0]->returnFacts = true;
+				$daysList = $calendarController[0]->getCalendar($doctor['id'], $beginYear, $beginMonth, $beginDay, $breakByErrors = false, $onlyWaitingLine);
+				$doctor['shedule'] = $daysList;
             }
         }
 		

@@ -16,15 +16,15 @@
     <button type="button" class="btn btn-success" id="showTemplate">Просмотр шаблона</button>
 </div>
 
-<? $this->widget('application.modals.admin.templates.AddTemplate') ?>
-<? $this->widget('application.modals.admin.templates.AddTemplateError') ?>
-<? $this->widget('application.modals.admin.templates.EditTemplate') ?>
-<? $this->widget('application.modals.admin.templates.ShowTemplate') ?>
-<? $this->widget('application.modals.admin.templates.DesignTemplate') ?>
-<? $this->widget("application.modals.admin.templates.AddCategory"); ?>
-<? $this->widget("application.modals.admin.templates.AddCategoryError"); ?>
-<? $this->widget("application.modals.admin.templates.EditCategory"); ?>
-<? $this->widget("application.modals.admin.templates.AddElement"); ?>
-<? $this->widget("application.modals.admin.templates.AddElementError"); ?>
-<? $this->widget("application.modals.admin.templates.EditElement"); ?>
-<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
+<?php$this->widget('application.modals.admin.templates.AddTemplate') ?>
+<?php$this->widget('application.modals.admin.templates.AddTemplateError') ?>
+<?php$this->widget('application.modals.admin.templates.EditTemplate') ?>
+<?php$this->widget('application.modals.admin.templates.ShowTemplate') ?>
+<?php$this->widget('application.modals.admin.templates.DesignTemplate') ?>
+<?php$this->widget("application.modals.admin.templates.AddCategory"); ?>
+<?php$this->widget("application.modals.admin.templates.AddCategoryError"); ?>
+<?php$this->widget("application.modals.admin.templates.EditCategory"); ?>
+<?php$this->widget("application.modals.admin.templates.AddElement"); ?>
+<?php$this->widget("application.modals.admin.templates.AddElementError"); ?>
+<?php$this->widget("application.modals.admin.templates.EditElement"); ?>
+<?php$this->widget("application.modals.admin.templates.EditDependences"); ?>

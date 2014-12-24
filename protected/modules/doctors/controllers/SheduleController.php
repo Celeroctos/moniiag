@@ -13,6 +13,7 @@ class SheduleController extends Controller {
 	/* */
 	public $cabinetsIds = array(); // Сборщик id кабинетов во время формирования расписания
 	public $restDays = array(); // Выходные дни для расписания врача вместе с причиной
+	public $returnFacts = false; // Возращать факты или нет
 
     public function actionView() {
 		$medcardRecordId = 0;
@@ -1271,7 +1272,7 @@ class SheduleController extends Controller {
     private function checkByTimetable($timeTable, $dayDate)
     {
         $timeTableObject = new Timetable();
-        return $timeTableObject->getRuleFromTimetable($timeTable, $dayDate);
+        return $timeTableObject->getRuleFromTimetable($timeTable, $dayDate,  $this->returnFacts);
     }
 
     public function actionGetPatientsListByDate() {
