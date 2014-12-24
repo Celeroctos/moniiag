@@ -22,10 +22,10 @@ else
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>$siteName,
-    'defaultController' => 'index',
-    'layout' => 'index',
-    'language' => 'ru',
-    'sourceLanguage'=>'en_us',
+	'defaultController' => 'index',
+	'layout' => 'index',
+	'language' => 'ru',
+	'sourceLanguage'=>'en_us',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -96,7 +96,7 @@ return array(
                 'application.modules.statistic.controllers.*'
             ),
         ),
-		'hospital' => array(
+	'hospital' => array(
             'class' => 'application.modules.hospital.HospitalModule',
             'import'=>array(
                 'application.modules.hospital.models.*',
@@ -123,33 +123,23 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),*/
 		),
-
-		'db'=>array(
-		 // 'connectionString' => 'pgsql:host=moniiag.toonftp.ru;port=5432;dbname=postgres;',
-           'connectionString' => 'pgsql:host=toonftp.ru;port=5432;dbname=postgres;',
-           //'connectionString' => 'pgsql:host=localhost;port=5433;dbname=postgres;',
-           //'username' => 'moniiag',
-           //'password' => '12345',
-          'username' => 'postgres',
-          'password' => '12345'
-        ),
+		'db'=>include( dirname(__FILE__).'/db/db.php' ),
 		// uncomment the following to use a MySQL database
-
 		'db2' => array(
-            'class'=>'system.db.CDbConnection',
-			'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPStdStorage',
-			'username' => 'sa',
-			'password' => 'system54@nof',
-			'charset' => 'utf8'
-		),
+			'class'=>'system.db.CDbConnection',
+				'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPStdStorage',
+				'username' => 'sa',
+				'password' => 'system54@nof',
+				'charset' => 'utf8'
+			),
 		
 		'db3' => array(
-            'class'=>'system.db.CDbConnection',
-			'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPRegStorage',
-			'username' => 'sa',
-			'password' => 'system54@nof',
-			'charset' => 'utf8'
-		),
+			'class'=>'system.db.CDbConnection',
+				    'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPRegStorage',
+				    'username' => 'sa',
+				    'password' => 'system54@nof',
+				    'charset' => 'utf8'
+			    ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'index/error',
@@ -163,51 +153,51 @@ return array(
 				),
 			),
 		),*/
-        'ePdf' => array(
-            'class'         => 'ext.yii-pdf-0_3_2.EYiiPdf',
-            'params'        => array(
-                'mpdf'     => array(
-                    'librarySourcePath' => 'application.vendor.mpdf.*',
-                    'constants'         => array(
-                        '_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
-                    ),
-                    'class'=>'mpdf'/*, // the literal class filename to be loaded from the vendors folder
-                    'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
-                        'mode'              => '', //  This parameter specifies the mode of the new document.
-                        'format'            => 'A4', // format A4, A5, ...
-                       // 'default_font_size' => 0, // Sets the default document font size in points (pt)
-                        'default_font'      => '', // Sets the default font-family for the new document.
-                        'mgl'               => 15, // margin_left. Sets the page margins for the new document.
-                        'mgr'               => 15, // margin_right
-                        'mgt'               => 16, // margin_top
-                        'mgb'               => 16, // margin_bottom
-                        'mgh'               => 9, // margin_header
-                        'mgf'               => 9, // margin_footer
-                     //   'orientation'       => 'P', // landscape or portrait orientation
+		'ePdf' => array(
+			'class'         => 'ext.yii-pdf-0_3_2.EYiiPdf',
+			'params'        => array(
+			    'mpdf'     => array(
+				'librarySourcePath' => 'application.vendor.mpdf.*',
+				'constants'         => array(
+				    '_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
+				),
+				'class'=>'mpdf'/*, // the literal class filename to be loaded from the vendors folder
+				'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
+				    'mode'              => '', //  This parameter specifies the mode of the new document.
+				    'format'            => 'A4', // format A4, A5, ...
+				   // 'default_font_size' => 0, // Sets the default document font size in points (pt)
+				    'default_font'      => '', // Sets the default font-family for the new document.
+				    'mgl'               => 15, // margin_left. Sets the page margins for the new document.
+				    'mgr'               => 15, // margin_right
+				    'mgt'               => 16, // margin_top
+				    'mgb'               => 16, // margin_bottom
+				    'mgh'               => 9, // margin_header
+				    'mgf'               => 9, // margin_footer
+				 //   'orientation'       => 'P', // landscape or portrait orientation
 
-                    )*/
+				)*/
 
-/*
-                    'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
-                     'autoPageBreak' => true
-                    )
-*/
+	    /*
+				'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
+				 'autoPageBreak' => true
+				)
+	    */
 
-                ),
-                'HTML2PDF' => array(
-                    'librarySourcePath' => 'application.vendor.html2pdf_v4_03.*',
-                    'classFile'         => 'html2pdf.class.php', // For adding to Yii::$classMap
-                    /*'defaultParams'     => array( // More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
-                        'orientation' => 'P', // landscape or portrait orientation
-                        'format'      => 'A4', // format A4, A5, ...
-                        'language'    => 'en', // language: fr, en, it ...
-                        'unicode'     => true, // TRUE means clustering the input text IS unicode (default = true)
-                        'encoding'    => 'UTF-8', // charset encoding; Default is UTF-8
-                        'marges'      => array(5, 5, 5, 8), // margins by default, in order (left, top, right, bottom)
-                    )*/
-                )
-            ),
-        ),
+			    ),
+			    'HTML2PDF' => array(
+				'librarySourcePath' => 'application.vendor.html2pdf_v4_03.*',
+				'classFile'         => 'html2pdf.class.php', // For adding to Yii::$classMap
+				/*'defaultParams'     => array( // More info: http://wiki.spipu.net/doku.php?id=html2pdf:en:v4:accueil
+				    'orientation' => 'P', // landscape or portrait orientation
+				    'format'      => 'A4', // format A4, A5, ...
+				    'language'    => 'en', // language: fr, en, it ...
+				    'unicode'     => true, // TRUE means clustering the input text IS unicode (default = true)
+				    'encoding'    => 'UTF-8', // charset encoding; Default is UTF-8
+				    'marges'      => array(5, 5, 5, 8), // margins by default, in order (left, top, right, bottom)
+				)*/
+			    )
+			),
+		),
 	),
 
 	// application-level parameters that can be accessed
