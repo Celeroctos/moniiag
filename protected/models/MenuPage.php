@@ -29,7 +29,7 @@ class MenuPage extends MisActiveRecord {
             $connection = Yii::app()->db;
             $pages = $connection->createCommand()
                 ->select('t.*')
-                ->from(MenuPage::tableName().' t')
+                ->from(MenuPage::model()->tableName().' t')
                 ->order('t.name asc');
 
             return $pages->queryAll();

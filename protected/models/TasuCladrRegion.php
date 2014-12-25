@@ -18,7 +18,7 @@ class TasuCladrRegion extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $regions = $connection->createCommand()
             ->select('tcr.*')
-            ->from(TasuCladrRegion::tableName().' tcr');
+            ->from(TasuCladrRegion::model()->tableName().' tcr');
 
         if($filters !== false) {
             $this->getSearchConditions($regions, $filters, array(

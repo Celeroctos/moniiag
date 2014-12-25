@@ -19,7 +19,7 @@ class TasuInsurance extends MisActiveRecord {
 			$connection = TasuInsurance::getDbConnection();
 			$max = $connection->createCommand()
 				->select('MAX(s.uid) as num')
-				->from(TasuInsurance::tableName().' s')
+				->from(TasuInsurance::model()->tableName().' s')
 				->where('s.version_end = :version_end', array(':version_end' => '9223372036854775807'));
 			$row = $max->queryRow();
 			return $row['num'];
@@ -32,7 +32,7 @@ class TasuInsurance extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $insurances = $connection->createCommand()
             ->select('s.*')
-            ->from(TasuInsurance::tableName().' s')
+            ->from(TasuInsurance::model()->tableName().' s')
             ->where('s.version_end = :version_end', array(':version_end' => '9223372036854775807'));
 
         if($filters !== false) {
@@ -56,7 +56,7 @@ class TasuInsurance extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $numInsurances = $connection->createCommand()
             ->select('COUNT(*) as num')
-            ->from(TasuInsurance::tableName().' s')
+            ->from(TasuInsurance::model()->tableName().' s')
 			->where('s.version_end = :version_end', array(':version_end' => '9223372036854775807'))
             ->queryRow();
 			

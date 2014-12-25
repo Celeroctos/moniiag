@@ -14,7 +14,7 @@ class MediatePatient extends MisActiveRecord  {
         $connection = Yii::app()->db;
         $mediate = $connection->createCommand()
             ->select('mp.*')
-            ->from(MediatePatient::tableName().' mp');
+            ->from(MediatePatient::model()->tableName().' mp');
 
         if($filters !== false) {
             $this->getSearchConditions($mediate, $filters, array(

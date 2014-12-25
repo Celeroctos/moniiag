@@ -235,6 +235,9 @@
 								 <?php echo $form->dropDownList($modelAddFake, 'paymentType', $tasuPaymentList, array(
 									'id' => 'paymentType',
 									'class' => 'form-control',
+									'options' => array(
+										$defaultPaymentType => array('selected' => true)
+									)
 								)); ?>
 							</div>
 						</div>

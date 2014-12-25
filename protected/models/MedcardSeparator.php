@@ -18,7 +18,7 @@ class MedcardSeparator extends MisActiveRecord {
         $connection = Yii::app()->db;
         $separators = $connection->createCommand()
             ->select('ms.*')
-            ->from(MedcardSeparator::tableName().' ms');
+            ->from(MedcardSeparator::model()->tableName().' ms');
 
         if($filters !== false) {
             $this->getSearchConditions($separators, $filters, array(
@@ -42,7 +42,7 @@ class MedcardSeparator extends MisActiveRecord {
 		$connection = Yii::app()->db;
         $separators = $connection->createCommand()
             ->select('ms.*')
-            ->from(MedcardSeparator::tableName().' ms')
+            ->from(MedcardSeparator::model()->tableName().' ms')
 			->where('NOT EXISTS(SELECT * 
 								FROM '.MedcardRule::model()->tableName().' mr 
 								WHERE mr.postfix_separator_id = ms.id OR mr.prefix_separator_id = ms.id)');

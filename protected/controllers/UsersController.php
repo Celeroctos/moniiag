@@ -1,5 +1,6 @@
 <?php
 class UsersController extends Controller {
+
     public function actionLogin() {
     	try {
 	        if(isset($_POST['FormLogin'])) {
@@ -22,19 +23,14 @@ class UsersController extends Controller {
 							exit();
 						}
 	                } else {
-
 	                    $resultCode = 'loginError';
 	                    // анализируем код ошибки из экземпл€ра класса userIdentity
-	                    if ($userIdent->wrongLogin())
-	                    {
+	                    if ($userIdent->wrongLogin()) {
 	                        $resultCode = 'notFoundLogin';
 	                    }
-
-	                    if ($userIdent->wrongPassword())
-	                    {
+	                    if ($userIdent->wrongPassword()) {
 	                        $resultCode = 'wrongPassword';
 	                    }
-
 	                    echo CJSON::encode(array('success' => $resultCode,
 	                                             'errors' => $userIdent->errorMessage));
 	                }
@@ -50,6 +46,47 @@ class UsersController extends Controller {
 	            echo CJSON::encode(array('success' => 'false',
                              'text' => $e->getMessage()));
     	}
+    }
+	
+	public function actionApi() {
+    	try {
+	        if(isset($_GET['login']) && isset($_GET['password'])) {
+				$userIdent = new UserIdentity($_GET['login'], $_GET['password']);
+				if($userIdent->authenticateStep1(true)) {
+					Yii::app()->user->login($userIdent);
+					echo CJSON::encode(array(
+						'success' => 'true',
+						'session' => Yii::app()->getSession()->getSessionId(),
+						'data' => Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl
+					));
+					exit();
+				} else {
+					$resultCode = 'loginError';
+					// анализируем код ошибки из экземпл€ра класса userIdentity
+					if ($userIdent->wrongLogin()) {
+						$resultCode = 'notFoundLogin';
+					}
+					if ($userIdent->wrongPassword()) {
+						$resultCode = 'wrongPassword';
+					}
+					echo CJSON::encode(array(
+						'success' => $resultCode,
+						'errors' => $userIdent->errorMessage
+					));
+				}
+			} else {
+				echo CJSON::encode(array(
+					'success' => 'false',
+					'text' => 'POST.login, POST.password'
+				));
+			}
+    	} catch (Exception $e) {
+			echo CJSON::encode(array(
+				'success' => 'false',
+				'text' => $e->getMessage()
+			));
+    	}
+    	die;
     }
 
     public function actionLogout() {

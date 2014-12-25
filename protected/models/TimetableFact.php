@@ -17,7 +17,7 @@ class TimetableFact extends MisActiveRecord  {
             $connection = Yii::app()->db;
             $facts = $connection->createCommand()
                 ->select('*')
-                ->from(TimetableFact::tableName().' tf');
+                ->from(TimetableFact::model()->tableName().' tf');
             $result = $facts ->queryAll();
             return $result;
         }

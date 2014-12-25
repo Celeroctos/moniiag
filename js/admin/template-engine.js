@@ -841,7 +841,13 @@ var TemplateEngine = TemplateEngine || {
 		// update all indexes
 		if (this instanceof CategoryCollection) {
 			parent.children(".template-engine-nestable").children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
-				$(child).data("instance").field("position", index++);
+                // get category instance
+                var category = $(child).data("instance");
+                // if category hasn't reference then recompute it
+                if (!category.reference()) {
+                    category.field("position", index);
+                }
+                index++
 			});
 		} else {
 			parent.children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
@@ -849,8 +855,9 @@ var TemplateEngine = TemplateEngine || {
                 var category = $(child).data("instance");
                 // if category hasn't reference then recompute it
                 if (!category.reference()) {
-                    category.field("position", index++);
+                    category.field("position", index);
                 }
+                index++
 			});
 			index = 1;
 			parent.children(".template-engine-items").children(".template-engine-item").each(function(i, child) {
@@ -902,6 +909,12 @@ var TemplateEngine = TemplateEngine || {
 		}).click(function() {
 			that.remove();
 			that.erase();
+            if (that.template() && that.template().key() == "category") {
+                if (that.category()) {
+                    that.category().reference(null);
+                }
+                that.category(null);
+            }
 		});
 	};
 
@@ -1963,18 +1976,18 @@ var TemplateEngine = TemplateEngine || {
     };
 
     CategoryCollection.prototype.afterRegister = function() {
-        console.log(this._toPatch);
         for (var i in this._toPatch) {
+            var patch = this._toPatch[i];
+            var c = getCc().findByPath(patch.path);
+            c.reference(patch.item);
+            patch.item.update();
         }
+        this._toPatch = [];
     };
 
 	CategoryCollection.prototype.register = function(model, clone, template) {
 		// compatibility
 		var collection = this;
-        // reset category collection
-        if (!TemplateEngine.getCategoryCollection().children().length) {
-            this._toPatch = [];
-        }
 		// get element list
 		var elements = model["elements"];
 		var children = model["children"];
@@ -1989,6 +2002,9 @@ var TemplateEngine = TemplateEngine || {
 		if (!model["name"]) {
 			return false;
 		}
+        if (!this._toPatch) {
+            this._toPatch = [];
+        }
 		// create new category without parent and selector
 		var c = new Category(null, model, null, template);
 		// look though elements in category's model and
@@ -2004,7 +2020,7 @@ var TemplateEngine = TemplateEngine || {
 			c.append(item);
             // if index not equal to position, then we have hole and
             // insert reference to category in that position
-            if (i + 1 != item.field("position")) {
+            if (+i + 1 != item.field("position")) {
                 var path = item.field("path").split('.');
                 if (path.length > 1) {
                     var prevPath = "";
@@ -2015,6 +2031,7 @@ var TemplateEngine = TemplateEngine || {
                             prevPath += path[j] + ".";
                         }
                     }
+                    console.log(item);
                     // create item for category's reference
                     item = new Item(c, null, null, TemplateEngine.getTemplateCollection().find("category"));
                     // append category to reference (or null) and append to parent
@@ -2275,24 +2292,13 @@ var TemplateEngine = TemplateEngine || {
 			if (isContains) {
 				continue;
 			}
-			WidgetCollection.widget().getCategoryCollection().register(
+			getCc().register(
 				model.categories[i]
 			);
 		}
+        getCc().afterRegister();
 		// return self
 		return TemplateEngine;
-	};
-
-	TemplateEngine.isCategory = function(item) {
-		return item instanceof Category;
-	};
-
-	TemplateEngine.isCollection = function(item) {
-		return item instanceof CategoryCollection;
-	};
-
-	TemplateEngine.isItem = function(item) {
-		return item instanceof Item;
 	};
 
 	TemplateEngine.restart = function() {
@@ -2302,6 +2308,14 @@ var TemplateEngine = TemplateEngine || {
         // reset has been changed flag
         hasChanges = false;
 	};
+
+    var getTc = function() {
+        return WidgetCollection.widget().getTemplateCollection();
+    };
+
+    var getCc = function() {
+        return WidgetCollection.widget().getCategoryCollection();
+    };
 
 	TemplateEngine.getTemplateCollection = function() {
 		return WidgetCollection.widget().getTemplateCollection();
@@ -2324,29 +2338,28 @@ var TemplateEngine = TemplateEngine || {
                 hasNotSaved = true;
 				return false;
 			}
+            if (!(item instanceof CategoryCollection)) {
+                if (item instanceof Item) {
+                    result.push({
+                        type: "element",
+                        id: item.field("id"),
+                        position: item.field("position"),
+                        category: item.field("categorie_id")
+                    });
+                } else {
+                    result.push({
+                        type: "category",
+                        id: item.field("id"),
+                        position: item.field("position"),
+                        category: item.field("parent_id")
+                    });
+                }
+            }
 			for (var i in item.children()) {
 				if (!item.children(i)) {
 					continue;
 				}
 				update(item.children(i));
-			}
-			if (item instanceof CategoryCollection) {
-				return true;
-			}
-			if (item instanceof Item) {
-				result.push({
-					type: "element",
-					id: item.field("id"),
-					position: item.field("position"),
-					category: item.field("categorie_id")
-				});
-			} else {
-				result.push({
-					type: "category",
-					id: item.field("id"),
-					position: item.field("position"),
-					category: item.field("parent_id")
-				});
 			}
 			return true;
 		};

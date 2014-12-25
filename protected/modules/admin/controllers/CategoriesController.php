@@ -203,21 +203,6 @@ class CategoriesController extends Controller {
 
     private function addEditModel($categorie, $model, $msg) {
 
-		/*
-		 * Простите, но что это за хрень такая? Почему происходит проверка соответствия позиций
-		 * и родителей всех элементов как категорий, так и элементов? Т.е элементы, которые
-		 * лежат в родителях не принадлежат их собственному их контексту или просто нет жестких
-		 * связей? Мало того, что она падает с ошибкой, так еще и работает неправильно. Если
-		 * так трудно настроить связи с несколькими шаблонами и категориями и нет желания
-		 * создавать новую таблицу, то почему просто нельзя была сделать статические категории,
-		 * которые являются псевдоклоном существующих (решение далеко не самое лучше, но, хотя-бы,
-		 * решило бы огромное количество проблем, связанных с дальнешей разработкой)? Я могу сказать
-		 * сразу, что вот весь этот админский модуль упадет не меньше 50 раз со всякими различными
-		 * самыми тупыми и идотскими ошибками. Как можно было разрабатывать систему так, что в нее
-		 * даже ничего нового добавить нельзя, нет ни нормальной архитектуры, ни какого-либо API для
-		 * взаимодейтсвия с существующими компонентами, нарушены все понятий системы, какие только есть!
-		 */
-
 		/* $issetPositionInCats = MedcardCategorie::model()->find('position = :position AND parent_id = :parent_id', array(
 			':position' => $model->position,
 			':parent_id' => $model->parentId
@@ -301,9 +286,6 @@ class CategoriesController extends Controller {
         foreach($elements as $element) {
             $partOfPath = $this->getElementPath($element->categorie_id);
             $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
-
-            $categorieModel = MedcardCategorie::model()->findByPk($element->categorie_id);
-
             $elementModel = MedcardElement::model()->findByPk($element->id);
             $elementModel->path = $partOfPath.'.'.$element->position;
             if(!$elementModel->save()) {
@@ -404,22 +386,6 @@ class CategoriesController extends Controller {
                                  'data' => $categorie)
         );
     }
-	
-	public function actionGetMatches($pattern) {
-		$model = new MedcardCategorie();
-        $categories = $model->getRows($id);
-		foreach ($categories as $i => $categorie) {
-			if($categorie['parent_id'] == null) {
-				$categorie['parent_id'] = -1;
-			}
-			if($categorie['is_dynamic'] == null) {
-				$categorie['is_dynamic'] = 0;
-			}
-		}
-        echo CJSON::encode(array('success' => true,
-                                 'data' => $categories)
-        );
-	}
 
     public function actionClearGreetingsData() {
         MedcardElementPatientDependence::model()->deleteAll();

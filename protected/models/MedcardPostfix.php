@@ -18,7 +18,7 @@ class MedcardPostfix extends MisActiveRecord {
         $connection = Yii::app()->db;
         $postfixes = $connection->createCommand()
             ->select('mp.*')
-            ->from(MedcardPostfix::tableName().' mp');
+            ->from(MedcardPostfix::model()->tableName().' mp');
 
         if($filters !== false) {
             $this->getSearchConditions($postfixes, $filters, array(

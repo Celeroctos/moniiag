@@ -12,7 +12,7 @@
 <div class="btn-group default-margin-top">
     <button type="button" class="btn btn-default" id="addTemplate">Добавить запись</button>
     <button type="button" class="btn btn-default" id="editTemplate">Редактировать выбранную запись</button>
-    <button type="button" class="btn btn-default" id="designTemplate">Дизайнер</button>
+	<button type="button" class="btn btn-default" id="designTemplate">Дизайнер</button>
     <button type="button" class="btn btn-default" id="deleteTemplate">Удалить запись</button>
     <button type="button" class="btn btn-success" id="showTemplate">Просмотр шаблона</button>
 </div>

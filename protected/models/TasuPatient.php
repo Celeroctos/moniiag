@@ -18,7 +18,7 @@ class TasuPatient extends MisActiveRecord {
         /*$connection = $this->getDbConnection();
         $patients = $connection->createCommand()
             ->select('p.*')
-            ->from(TasuPatient::tableName().' p')
+            ->from(TasuPatient::model()->tableName().' p')
             ->where('p.version_end = :version_end', array(':version_end' => '9223372036854775807'));
 
         if($filters !== false) {
@@ -42,14 +42,14 @@ class TasuPatient extends MisActiveRecord {
 		SET ROWCOUNT ".$start.";
 
 		SELECT @uid = p.uid
-		  FROM PDPStdStorage.".TasuPatient::tableName()." p
+		  FROM PDPStdStorage.".TasuPatient::model()->tableName()." p
 		  WHERE p.version_end = '9223372036854775807'
 		  ORDER BY p.uid ASC;
 
 		SET ROWCOUNT ".$limit.";
 
 		SELECT p.*
-		  FROM PDPStdStorage.".TasuPatient::tableName()." p
+		  FROM PDPStdStorage.".TasuPatient::model()->tableName()." p
 		  WHERE p.uid >= @uid
 		  AND p.version_end = '9223372036854775807'
 		  ORDER BY p.uid ASC;
@@ -63,7 +63,7 @@ class TasuPatient extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $numPatients = $connection->createCommand()
             ->select('COUNT(*) as num')
-            ->from(TasuPatient::tableName().' tp')
+            ->from(TasuPatient::model()->tableName().' tp')
 			->where('tp.version_end = :version_end', array(':version_end' => '9223372036854775807'))
             ->queryRow();
         return $numPatients['num'];
