@@ -27,7 +27,7 @@ class Timetable extends MisActiveRecord {
                 date("w", strtotime(
                     date("m", strtotime($dayToCount))
                     . "/01/" .
-                    date("Y", strtotime($dayToCount))))-2)/7)) + 1;
+                    date("Y", strtotime($dayToCount))))-2)/7)) /*+ 1*/;
     }
 
     public function getRuleFromTimetable($timeTable, $dayDate, $returnFacts)
