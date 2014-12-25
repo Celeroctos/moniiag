@@ -599,7 +599,7 @@ var TemplateEngine = TemplateEngine || {
             this._model[field] = value;
         }
         if (this._model[field] === undefined) {
-            throw new Error("Model/field() : \"Field hasn't been declared in model\"");
+            throw new Error("Model/field() : \"Field (" + field + ") hasn't been declared in model\"");
         }
         return this._model[field];
     };
@@ -615,7 +615,7 @@ var TemplateEngine = TemplateEngine || {
 			this._native[field] = value;
 		}
 		if (this._native[field] === undefined) {
-			throw new Error("Model/native() : \"Field hasn't been declared in model\"");
+			throw new Error("Model/native() : \"Field (" + field + ") hasn't been declared in model\"");
 		}
 		return this._native[field];
 	};
@@ -806,8 +806,24 @@ var TemplateEngine = TemplateEngine || {
     };
 
 	Component.prototype.clone = function(parent, model, selector) {
-		assert("Clonnable/clone() : \"You must implements 'clone' method\"");
+		assert("Component/clone() : \"You must implements 'clone' method\"");
 	};
+
+    Component.prototype.findByPath = function(path) {
+        if (this.has("path") && this.field("path") == path) {
+            return this;
+        }
+        for (var i in this.children()) {
+            if (!this.children(i)) {
+                continue;
+            }
+            var found = this.children(i).findByPath(path);
+            if (found) {
+                return found;
+            }
+        }
+        return null;
+    };
 
     Component.prototype.glyphicon = function() {
 		if (!this.length() || !this.has("id")) {
@@ -829,11 +845,16 @@ var TemplateEngine = TemplateEngine || {
 			});
 		} else {
 			parent.children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
-				$(child).data("instance").field("position", index++);
+                // get category instance
+                var category = $(child).data("instance");
+                // if category hasn't reference then recompute it
+                if (!category.reference()) {
+                    category.field("position", index++);
+                }
 			});
 			index = 1;
 			parent.children(".template-engine-items").children(".template-engine-item").each(function(i, child) {
-				$(child).data("instance").field("position", index++);
+                $(child).data("instance").field("position", index++);
 			});
 		}
 		// reorder children with new positions
@@ -962,7 +983,7 @@ var TemplateEngine = TemplateEngine || {
 		return this._id;
 	};
 
-    Template.prototype.title = function() {
+    Template.prototype.title = function(title) {
         return this._title;
     };
 
@@ -970,18 +991,20 @@ var TemplateEngine = TemplateEngine || {
         return this._key;
     };
 
-    Template.prototype.render = function() {
-        var title = this.title() ? "<div>" + this.title() + "</div>" : "";
-        if (this.title().length <= 2) {
+    Template.prototype.render = function(title) {
+        title = title || this.title();
+        if (title.length <= 2) {
             return $("<div></div>", {
-                html: title, class: "template-engine-item",
+                html: "<div>" + title + "</div>",
+                class: "template-engine-item",
                 style: "cursor: default;" +
-                	"float: left;" +
-                	"width: 10px"
+                "float: left;" +
+                "width: 10px"
             });
         } else {
             return $("<div></div>", {
-                html: title, class: "template-engine-item",
+                html: "<div>" + title + "</div>",
+                class: "template-engine-item",
                 style: "cursor: default;"
             });
         }
@@ -1052,9 +1075,10 @@ var TemplateEngine = TemplateEngine || {
      * @constructor - Basic TemplateNode's element, which extends
      *      Node and implements all manipulations with elements
      */
-    var Item = function(parent, model, selector, template) {
+    var Item = function(parent, model, selector, template, category) {
 		// we need to save template before running render
 		this._elementTemplate = template;
+        this._category = category;
 		// call super constructors
         Component.call(this, parent, model, selector,
 			"id," +
@@ -1099,6 +1123,29 @@ var TemplateEngine = TemplateEngine || {
 		$("#element-add-form").on("success", _updateItem);
 		$("#element-edit-form").on("success", _updateItem);
 	});
+
+    Item.prototype.category = function(category) {
+        if (arguments.length > 0) {
+            this._category = category;
+        }
+        if (typeof this._category == "string") {
+            this._category = TemplateEngine.getCategoryCollection()
+                .findByPath(this._category);
+        }
+        return this._category;
+    };
+
+    Item.prototype.field = function(key, field) {
+        if (this.category()) {
+            if (key != "categorie_id") {
+                return this.category().field(key, field);
+            } else {
+                return this.category().field("parent_id", field);
+            }
+        } else {
+            return Model.prototype.field.call(this, key, field);
+        }
+    };
 
 	Item.prototype.write = function(form) {
 		var me = this;
@@ -1264,18 +1311,18 @@ var TemplateEngine = TemplateEngine || {
 	};
 
 	Item.prototype._renderLabelBefore = function() {
-		var label = this.field("label");
-		if (label.length > ITEM_LABEL_LIMIT) {
-			label = label.substring(0, ITEM_LABEL_LIMIT) + "...";
-		}
-		return $("<div></div>", {
-			html: label,
-			style: "float: left;" +
-				"border: dotted black 1px;" +
-				"border-radius: 5px;" +
-				"padding-right: 2px;" +
-				"padding-left: 2px;"
-		});
+        var label = this.field("label");
+        if (label.length > ITEM_LABEL_LIMIT) {
+            label = label.substring(0, ITEM_LABEL_LIMIT) + "...";
+        }
+        return $("<div></div>", {
+            html: this.category() ? link : label,
+            style: "float: left;" +
+                "border: dotted black 1px;" +
+                "border-radius: 5px;" +
+                "padding-right: 2px;" +
+                "padding-left: 2px;"
+        });
 	};
 
 	Item.prototype._renderLabelAfter = function() {
@@ -1377,12 +1424,11 @@ var TemplateEngine = TemplateEngine || {
 		if (this.has("label") && this.field("label").length) {
 			s.append(this._renderLabelBefore());
 		}
-		if (!this.has("id")) {
-			s.addClass("template-engine-unsaved");
-		}
+        var title = this.category() && this.category().has("name") ?
+            this.category().field("name") : this.template().title();
 		s.append(
 			$("<div></div>", {
-				html: that.template().title(),
+				html: title,
 				class: "template-engine-item-title",
 				style: "float: left;" +
 					"margin-right: 2px;" +
@@ -1398,14 +1444,15 @@ var TemplateEngine = TemplateEngine || {
 			}).append(
                 that._renderDependenciesButton()
             ).append(
-				that._renderEditButton()
+                this.template().key() != "category" ?
+                    that._renderEditButton() : undefined
 			).append(
 				that._renderRemoveButton("margin-right: 0;")
 			)
 		);
-		if (that.template().key() === "static") {
-			s.addClass("template-engine-category-static");
-		}
+        if (this.template().key() == "category") {
+            s.css("background-color", "lightgray");
+        }
 		return s;
     };
 
@@ -1443,6 +1490,7 @@ var TemplateEngine = TemplateEngine || {
 			"is_wrapped"
 		);
 		this._template = template;
+        this._reference = null;
     };
 
     extend(Category, Component);
@@ -1472,6 +1520,13 @@ var TemplateEngine = TemplateEngine || {
             hasChanges = true;
 		});
 	});
+
+    Category.prototype.reference = function(reference) {
+        if (arguments.length > 0) {
+            this._reference = reference;
+        }
+        return this._reference;
+    };
 
 	Category.prototype.write = function() {
 		var me = this;
@@ -1586,6 +1641,28 @@ var TemplateEngine = TemplateEngine || {
 		this.selector(s);
 	};
 
+    Category.prototype._renderDragButton = function(style) {
+        var me = this;
+        var b = $("<span></span>", {
+            class: "glyphicon glyphicon-link",
+            style: style || "margin-right: 5px;"
+        });
+        b.draggable({
+            helper: function() {
+                // Get category (template)'s selector from template collection
+                var template = TemplateEngine.getTemplateCollection().find("category");
+                // Clone it and return as new element
+                return template.render(me.has("name") ? me.field("name") : "Категория")
+                    .data("instance", template)
+                    .data("category", me)
+                    .css("opacity", "0.75")
+                    .css("z-index", 2000)
+                    .css("background-color", "lightcoral");
+            }
+        });
+        return b;
+    };
+
     Category.prototype.render = function(items, categories) {
 		var that = this;
 		var name = this.has("name") ? this.field("name") : "Категория";
@@ -1607,7 +1684,9 @@ var TemplateEngine = TemplateEngine || {
 						style: "float: left;",
 						html: name
 					})
-				).append(
+                ).append(
+                    that._renderDragButton()
+                ).append(
 					that._renderEditButton()
 				).append(
 					that._renderRemoveButton()
@@ -1648,14 +1727,14 @@ var TemplateEngine = TemplateEngine || {
         // apply sortable
         this.selector().find(".template-engine-items").sortable({
             update: function(e, ui) {
-				// get instance
-				var item = $(ui.item).data("instance");
-				// recompute all children indexes
-				that.compute();
-				// after update set parent identifier
-				if (item.parent().has("id")) {
+                // get instance
+                var item = $(ui.item).data("instance");
+                // recompute all children indexes
+                that.compute();
+                // after update set parent identifier
+                if (item.parent().has("id")) {
 					item.field("categorie_id", item.parent().field("id"));
-				}
+                }
                 // set has been changed flag to true
                 if (item.has("id")) {
                     hasChanges = true;
@@ -1683,6 +1762,7 @@ var TemplateEngine = TemplateEngine || {
                 var selector = ui.helper;
                 // get received instance
                 var me = selector.data("instance");
+                var category = selector.data("category");
                 // if we met template, then we gonna
                 // create another template's instance
                 // else we simply has moved item
@@ -1690,8 +1770,19 @@ var TemplateEngine = TemplateEngine || {
                 if (me instanceof Template) {
                     // create new item element (we can't create another one type)
                     var item = new Item(
-                        that, clone(me.model()), null, me
+                        that, clone(me.model()), null, me, category
                     );
+                    // if template has category type
+                    if (me.key() == "category") {
+                        // remove old reference
+                        if (category.reference()) {
+                            category.reference().remove();
+                        }
+                        // attach category reference to item and
+                        // item reference to category
+                        item.category(category);
+                        category.reference(item);
+                    }
                     // append created item to collection
                     that.append(item);
                 } else {
@@ -1871,9 +1962,19 @@ var TemplateEngine = TemplateEngine || {
         });
     };
 
+    CategoryCollection.prototype.afterRegister = function() {
+        console.log(this._toPatch);
+        for (var i in this._toPatch) {
+        }
+    };
+
 	CategoryCollection.prototype.register = function(model, clone, template) {
 		// compatibility
 		var collection = this;
+        // reset category collection
+        if (!TemplateEngine.getCategoryCollection().children().length) {
+            this._toPatch = [];
+        }
 		// get element list
 		var elements = model["elements"];
 		var children = model["children"];
@@ -1901,6 +2002,31 @@ var TemplateEngine = TemplateEngine || {
 			);
 			item.model(elements[i], true);
 			c.append(item);
+            // if index not equal to position, then we have hole and
+            // insert reference to category in that position
+            if (i + 1 != item.field("position")) {
+                var path = item.field("path").split('.');
+                if (path.length > 1) {
+                    var prevPath = "";
+                    for (var j in path) {
+                        if (j == path.length - 1) {
+                            prevPath += (+path[j] - 1);
+                        } else {
+                            prevPath += path[j] + ".";
+                        }
+                    }
+                    // create item for category's reference
+                    item = new Item(c, null, null, TemplateEngine.getTemplateCollection().find("category"));
+                    // append category to reference (or null) and append to parent
+                    item.category(prevPath);
+                    c.append(item);
+                    // add category to patch
+                    this._toPatch.push({
+                        path: prevPath,
+                        item: item
+                    });
+                }
+            }
 		}
 		// append category to category collection
 		if (!(collection instanceof CategoryCollection)) {
@@ -2019,6 +2145,9 @@ var TemplateEngine = TemplateEngine || {
     $(document).ready(function() {
         $(".template-engine-widget").each(function(i, w) {
             WidgetCollection.register($(w));
+        });
+        $(document).contextmenu(function() {
+            return false;
         });
     });
 
@@ -2191,7 +2320,7 @@ var TemplateEngine = TemplateEngine || {
         var hasNotSaved = false;
 		var result = [];
 		var update = function(item) {
-			if (!item.has("id")) {
+			if (!item.has("id") && !item.category()) {
                 hasNotSaved = true;
 				return false;
 			}
