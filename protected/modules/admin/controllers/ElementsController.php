@@ -222,7 +222,7 @@ class ElementsController extends Controller {
 		 */
 
 		$config = array();
-		if($model->directLink !== null) {
+		if(isset($model->directLink)) {
 			$config['directLink'] = $model->directLink;
 		}
 		
@@ -230,31 +230,26 @@ class ElementsController extends Controller {
             $config += $model->config;
         }
 		if($model->type == 5) {
-			if($model->numberFieldMaxValue != null && $model->numberFieldMinValue != null && $model->numberFieldMaxValue < $model->numberFieldMinValue) {
-                echo CJSON::encode(array('success' => false,
-                        'errors' => array(
-                            'maxminvalue' => array(
-                                'Максимальное значение поля меньше, чем минимальное!'
-                            )
-                        )
-                    )
-                );
+			if(isset($model->numberFieldMaxValue) && isset($model->numberFieldMinValue) && $model->numberFieldMaxValue < $model->numberFieldMinValue) {
+                echo CJSON::encode(array('success' => false, 'errors' => array(
+                    'maxminvalue' => array('Максимальное значение поля меньше, чем минимальное!')
+                )));
                 exit();
             }
 			$params = array();
-			if($model->numberFieldMaxValue != null) {
+			if (isset($model->numberFieldMaxValue)) {
 				$params['maxValue'] = $model->numberFieldMaxValue;
 			} else {
 				$params['maxValue'] = '';
 			}
 			
-			if($model->numberFieldMinValue != null) {
+			if (isset($model->numberFieldMinValue)) {
 				$params['minValue'] = $model->numberFieldMinValue;
 			} else {
 				$params['minValue'] = '';
 			}
 			
-			if($model->numberStep != null) {
+			if (isset($model->numberStep)) {
 				$params['step'] = $model->numberStep;
 			} else {
 				$params['step'] = '';
@@ -269,26 +264,20 @@ class ElementsController extends Controller {
 		
 		if ($model->type == 6) {
             // Проверим - больше ли максимальное значение минимального
-            if (strtotime($model->dateFieldMaxValue)<strtotime($model->dateFieldMinValue))
-            {
-                echo CJSON::encode(array('success' => false,
-                        'errors' => array(
-                            'maxminvalue' => array(
-                                'Максимальное значение поля меньше, чем минимальное!'
-                            )
-                        )
-                    )
-                );
+            if (strtotime($model->dateFieldMaxValue) < strtotime($model->dateFieldMinValue)) {
+                echo CJSON::encode(array('success' => false, 'errors' => array('maxminvalue' => array(
+                    'Максимальное значение поля меньше, чем минимальное!'
+                ))));
                 exit();
             }
 			$params = array();
-			if($model->dateFieldMaxValue != null) {
+			if(isset($model->dateFieldMaxValue)) {
 				$params['maxValue'] = $model->dateFieldMaxValue;
 			} else {
 				$params['maxValue'] = '';
 			}
 			
-			if($model->dateFieldMinValue != null) {
+			if(isset($model->dateFieldMinValue)) {
 				$params['minValue'] = $model->dateFieldMinValue;
 			} else {
 				$params['minValue'] = '';
