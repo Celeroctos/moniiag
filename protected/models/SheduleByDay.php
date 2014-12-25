@@ -427,7 +427,7 @@ class SheduleByDay extends MisActiveRecord {
             }
 
            //var_dump($greetings->text);
-            //exit();
+           // exit();
             $result = $greetings->queryAll();
             return $result;
           //  var_dump($result );

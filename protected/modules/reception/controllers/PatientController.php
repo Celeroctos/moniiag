@@ -174,7 +174,9 @@ class PatientController extends Controller {
 
 
         }
+
         $sheduleElements = CancelledGreeting::model()->getRows($filters, false, false,false,false, $mediateOnly);
+
         $num = count($sheduleElements);
         // Разбираем расписание на живую очередь и обычное раписание
         $sheduleElementsWaitingLine = array();
