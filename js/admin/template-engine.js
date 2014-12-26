@@ -2536,6 +2536,9 @@ var TemplateEngine = TemplateEngine || {
 			if (value < 0) {
 				return true;
 			}
+            if (!confirm("Категори будет перемещена и потеряет своего исходного родитаеля. Вы уверены?")) {
+                return true;
+            }
             $("#findCategoryPopup .saving-template").css("visibility", "visible");
 			$.ajax({
 				'url': globalVariables.baseUrl + '/admin/categories/move?id=' + value,
