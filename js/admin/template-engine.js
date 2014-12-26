@@ -2419,6 +2419,7 @@ var TemplateEngine = TemplateEngine || {
 		}
 		json += "]";
         if (!strict && hasNotSaved && !confirm('Часть элементов имеют незаполненные данные, при сохранении данные элементы будут потреряны. Продолжить? ')) {
+            hasChanges = true;
             return false;
         }
 		// set request on server to update template categories
