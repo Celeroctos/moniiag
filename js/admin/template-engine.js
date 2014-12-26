@@ -899,7 +899,7 @@ var TemplateEngine = TemplateEngine || {
 			class: "glyphicon glyphicon-remove",
 			style: style || "margin-right: 5px; margin-left: 3px;"
 		}).click(function() {
-            if (that.category()) {
+            if (that instanceof Item && that.category()) {
                 that.category().reference(null);
                 that.category(null);
             }
