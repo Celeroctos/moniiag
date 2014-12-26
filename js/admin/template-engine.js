@@ -2018,11 +2018,12 @@ var TemplateEngine = TemplateEngine || {
 
     CategoryCollection.prototype.afterRegister = function() {
         for (var key in CategoryPatcher.map()) {
+            var item = CategoryPatcher.get(key);
             var c = TemplateEngine.getCategoryCollection().findByPath(key);
             if (!c || !(c instanceof Category)) {
+                item.remove();
                 continue;
             }
-            var item = CategoryPatcher.get(key);
             c.reference(item);
             item.category(c);
             item.update();
@@ -2368,6 +2369,7 @@ var TemplateEngine = TemplateEngine || {
     var hasChanges = false;
 
 	var saveTemplate = function(strict) {
+        $("#designTemplatePopup").find(".btn-primary").button("loading");
         hasChanges = false;
 		var cc = TemplateEngine.getCategoryCollection();
 		cc.compute(true);
@@ -2429,6 +2431,7 @@ var TemplateEngine = TemplateEngine || {
 			cids: json
 		}, function(data) {
 			$("#designTemplatePopup").modal("hide");
+            $("#designTemplatePopup").find(".btn-primary").button("reset");
 		});
 	};
 
