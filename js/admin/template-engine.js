@@ -902,6 +902,8 @@ var TemplateEngine = TemplateEngine || {
             if (that instanceof Item && that.category()) {
                 that.category().reference(null);
                 that.category(null);
+            } else if (that instanceof Category && that.reference()) {
+                that.reference().remove();
             }
 			that.remove();
 			that.erase();
