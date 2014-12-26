@@ -203,3 +203,7 @@
     pointer-events: none;
     z-index: 9999;
 }
+
+.saving-template {
+    visibility: hidden;
+}

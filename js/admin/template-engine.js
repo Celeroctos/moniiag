@@ -2369,7 +2369,6 @@ var TemplateEngine = TemplateEngine || {
     var hasChanges = false;
 
 	var saveTemplate = function(strict) {
-        $("#designTemplatePopup").find(".btn-primary").button("loading");
         hasChanges = false;
 		var cc = TemplateEngine.getCategoryCollection();
 		cc.compute(true);
@@ -2424,6 +2423,7 @@ var TemplateEngine = TemplateEngine || {
             hasChanges = true;
             return false;
         }
+        $(".saving-template").css("visibility", "visible");
 		// set request on server to update template categories
 		$.post(globalVariables.baseUrl + "/admin/templates/utc", {
 			tid: cc.field("id"),
@@ -2431,7 +2431,7 @@ var TemplateEngine = TemplateEngine || {
 			cids: json
 		}, function(data) {
 			$("#designTemplatePopup").modal("hide");
-            $("#designTemplatePopup").find(".btn-primary").button("reset");
+            $(".saving-template").css("visibility", "hidden");
 		});
 	};
 
@@ -2447,35 +2447,6 @@ var TemplateEngine = TemplateEngine || {
                 return false;
             }
         });
-
-		/*$("#findCategoryPopup form .btn-primary").click(function() {
-			var value = $("#findCategoryPopup form #parentId").val();
-			if (value < 0) {
-				return true;
-			}
-			$.ajax({
-				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
-				'cache': false,
-				'dataType': 'json',
-				'type': 'GET'
-			}).done(function(data) {
-				TemplateEngine.getCategoryCollection()
-					.register(data["model"], true);
-			});
-		});*/
-
-		//var tc = TemplateEngine.getTemplateCollection();
-
-		/*$("#designTemplatePopup").on("shown.bs.modal", function() {
-			tc.selector().detach().appendTo(
-				$(document.body)
-			).css("visibility", "visible");
-		});
-		$("#designTemplatePopup").on("hide.bs.modal", function() {
-			tc.selector().detach().appendTo(
-				tc.selector()
-			).css("visibility", "hidden")
-		});*/
 
 		$("#findCategoryPopup form .btn-warning").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
