@@ -899,6 +899,10 @@ var TemplateEngine = TemplateEngine || {
 			class: "glyphicon glyphicon-remove",
 			style: style || "margin-right: 5px; margin-left: 3px;"
 		}).click(function() {
+            if (that.category()) {
+                that.category().reference(null);
+                that.category(null);
+            }
 			that.remove();
 			that.erase();
 		});
@@ -1646,7 +1650,22 @@ var TemplateEngine = TemplateEngine || {
             class: "glyphicon glyphicon-link",
             style: style || "margin-right: 5px;"
         });
-        b.draggable({
+        b.click(function() {
+            if (me instanceof CategoryCollection) {
+                return true;
+            }
+            if (me.reference()) {
+                return true;
+            }
+            var item = new Item(me.parent(), null, null,
+                TemplateEngine.getTemplateCollection().find("category")
+            );
+            item.category(me);
+            me.reference(item);
+            me.parent().append(item);
+            item.update();
+        });
+        /* b.draggable({
             helper: function() {
                 // Get category (template)'s selector from template collection
                 var template = TemplateEngine.getTemplateCollection().find("category");
@@ -1658,7 +1677,7 @@ var TemplateEngine = TemplateEngine || {
                     .css("z-index", 2000)
                     .css("background-color", "lightcoral");
             }
-        });
+        }); */
         return b;
     };
 
@@ -1684,9 +1703,9 @@ var TemplateEngine = TemplateEngine || {
 						html: name
 					})
                 ).append(
-                    //that._renderDragButton()
+                    that._renderDragButton()
                 ).append(
-					that._renderEditButton()
+                    that._renderEditButton()
 				).append(
 					that._renderRemoveButton()
 				)
@@ -1776,6 +1795,9 @@ var TemplateEngine = TemplateEngine || {
                     );
                     // if template has category type
                     if (me.key() == "category") {
+                        if (category.parent() != that) {
+                            return false;
+                        }
                         // remove old reference
                         if (category.reference()) {
                             category.reference().remove();
@@ -1935,6 +1957,7 @@ var TemplateEngine = TemplateEngine || {
 			}
             // if template has category type then remove old reference's selector
             // and append to parent's selector
+            console.log(itemInstance.reference());
             if (itemInstance.reference()) {
                 itemInstance.reference().remove();
                 if (!(parentInstance instanceof CategoryCollection)) {
@@ -2036,6 +2059,10 @@ var TemplateEngine = TemplateEngine || {
 			item.model(elements[i], true);
             while (+i + 1 + offset != +item.field("position")) {
                 var path = item.field("path").split('.');
+                if (!+i) {
+                    ++offset;
+                    continue;
+                }
                 if (path.length > 1) {
                     var prevPath = "";
                     for (var j in path) {
