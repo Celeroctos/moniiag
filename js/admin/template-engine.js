@@ -773,6 +773,78 @@ var TemplateEngine = TemplateEngine || {
 	};
 
     /*
+      ___ ___ _  _ ___  ___ ___         ___ _   ___ _____ ___  _____   __
+     | _ \ __| \| |   \| __| _ \  ___  | __/_\ / __|_   _/ _ \| _ \ \ / /
+     |   / _|| .` | |) | _||   / |___| | _/ _ \ (__  | || (_) |   /\ V /
+     |_|_\___|_|\_|___/|___|_|_\       |_/_/ \_\___| |_| \___/|_|_\ |_|
+
+     */
+
+    var RenderFactory = {
+        renderSaveButton: function(style) {
+            var me = this;
+            return $("<span></span>", {
+                class: me.glyphicon(),
+                style: style || "margin-right: 5px;"
+            }).click(function() {
+                if (!me.has("id")) {
+                    me.write();
+                } else {
+                    me.edit();
+                }
+            });
+        },
+        renderDeleteButton: function(style) {
+            var that = this;
+            return $("<span></span>", {
+                class: "glyphicon glyphicon-remove",
+                style: style || "margin-right: 5px; margin-left: 3px;"
+            }).click(function() {
+                if (that instanceof Item && that.category()) {
+                    that.category().reference(null);
+                    that.category(null);
+                    hasChanges = true;
+                } else if (that instanceof Category && that.reference()) {
+                    that.reference().remove();
+                    hasChanges = true;
+                }
+                that.remove();
+                that.erase();
+            });
+        },
+        renderLinkButton: function(style) {
+            var me = this;
+            var b = $("<span></span>", {
+                class: "glyphicon glyphicon-link",
+                style: style || "margin-right: 5px;"
+            });
+            b.click(function() {
+                if (me.parent() instanceof CategoryCollection) {
+                    return true;
+                }
+                if (me.reference()) {
+                    return true;
+                }
+                var item = new Item(me.parent(), null, null,
+                    TemplateEngine.getTemplateCollection().find("category")
+                );
+                item.category(me);
+                me.reference(item);
+                me.parent().append(item);
+                item.update();
+                hasChanges = true;
+            });
+            return b;
+        },
+        renderLoadingImage: function(style) {
+            return $("<img>", {
+                src: globalVariables.baseUrl + "/images/ajax-loader.gif",
+                style: style || "width: 25px"
+            });
+        }
+    };
+
+    /*
        ___ ___  __  __ ___  ___  _  _ ___ _  _ _____
       / __/ _ \|  \/  | _ \/ _ \| \| | __| \| |_   _|
      | (_| (_) | |\/| |  _/ (_) | .` | _|| .` | | |
@@ -878,6 +950,18 @@ var TemplateEngine = TemplateEngine || {
 			}
 		}
 	};
+
+    Component.prototype.loading = function() {
+        this.selector().empty().append(
+            $("<div></div>", {
+                style: "text-align: center"
+            }).append(
+                RenderFactory.renderLoadingImage(
+                    "width: 35px"
+                )
+            )
+        );
+    };
 
 	Component.prototype._renderEditButton = function(style) {
 		var me = this;
@@ -1163,7 +1247,6 @@ var TemplateEngine = TemplateEngine || {
 			this.field("categorie_id", this.parent().field("id"));
 		} else {
             this.field("categorie_id", -1);
-			//return false;
 		}
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
@@ -2453,6 +2536,7 @@ var TemplateEngine = TemplateEngine || {
 			if (value < 0) {
 				return true;
 			}
+            $("#findCategoryPopup .saving-template").css("visibility", "visible");
 			$.ajax({
 				'url': globalVariables.baseUrl + '/admin/categories/move?id=' + value,
 				'cache': false,
@@ -2484,6 +2568,8 @@ var TemplateEngine = TemplateEngine || {
 				findAndDetach(cc);
 				cc.register(data["model"], false);
                 hasChanges = true;
+                $("#findCategoryPopup .saving-template").css("visibility", "hidden");
+                $("#findCategoryPopup").modal("hide");
 			});
 		});
 
@@ -2492,6 +2578,7 @@ var TemplateEngine = TemplateEngine || {
 			if (value < 0) {
 				return true;
 			}
+            $("#findCategoryPopup .saving-template").css("visibility", "visible");
 			$.ajax({
 				'url': globalVariables.baseUrl + '/admin/categories/clone?id=' + value,
 				'cache': false,
@@ -2510,6 +2597,8 @@ var TemplateEngine = TemplateEngine || {
 				};
                 hasChanges = true;
 				appendToList(c);
+                $("#findCategoryPopup .saving-template").css("visibility", "hidden");
+                $("#findCategoryPopup").modal("hide");
 			});
 		});
 	});
