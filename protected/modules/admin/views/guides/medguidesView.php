@@ -13,8 +13,8 @@
         <button type="button" class="btn btn-default" id="deleteMedGuide">Удалить запись</button>
     </div>
 
-    <?php this->widget("application.modals.admin.templates.AddMedGuide"); ?>
-    <?php this->widget("application.modals.admin.templates.AddMedGuideError"); ?>
-    <?php this->widget("application.modals.admin.templates.EditMedGuide"); ?>
+    <?php $this->widget("application.modals.admin.templates.AddMedGuide"); ?>
+    <?php $this->widget("application.modals.admin.templates.AddMedGuideError"); ?>
+    <?php $this->widget("application.modals.admin.templates.EditMedGuide"); ?>
 
 <?php endif; ?>

@@ -1,4 +1,4 @@
-<?php form = $this->beginWidget('CActiveForm', array(
+<?php $form = $this->beginWidget('CActiveForm', array(
     'focus' => array($model,'name'),
     'id' => 'template-add-form',
     'enableAjaxValidation' => true,
@@ -92,4 +92,4 @@
     ); ?>
 </div>
 
-<?php this->endWidget(); ?>
+<?php $this->endWidget(); ?>

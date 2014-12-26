@@ -9,6 +9,6 @@
     <button type="button" class="btn btn-default" id="deleteCategorie">Удалить запись</button>
 </div>
 
-<?php this->widget("application.modals.admin.templates.AddCategory"); ?>
-<?php this->widget("application.modals.admin.templates.AddCategoryError"); ?>
-<?php this->widget("application.modals.admin.templates.EditCategory"); ?>
+<?php $this->widget("application.modals.admin.templates.AddCategory"); ?>
+<?php $this->widget("application.modals.admin.templates.AddCategoryError"); ?>
+<?php $this->widget("application.modals.admin.templates.EditCategory"); ?>
