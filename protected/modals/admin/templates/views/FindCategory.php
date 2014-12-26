@@ -30,7 +30,7 @@
 	</div>
 </div>
 <div class="modal-footer">
-	<img src="/moniiag/images/ajax-loader.gif" width="30" class="saving-template" style="margin-right: 20px">
+	<img src="<?=Yii::app()->baseUrl?>/images/ajax-loader.gif" width="30" class="saving-template" style="margin-right: 20px">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
 	<button type="button" class="btn btn-warning">Перенести</button>
 	<button type="button" class="btn btn-success">Клонировать</button>
