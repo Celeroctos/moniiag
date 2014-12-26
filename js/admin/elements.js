@@ -788,7 +788,6 @@ $("#deleteElement").click(function () {
 $("select#type").on('change', function (e) {
     var form = $(this).parents('form');
 	// Таблица. Для неё нельзя отслеживать динамику (пока)
-	console.log($(this).val());
 	if($(this).val() == 4) {
 		form.find("#showDynamic").prop('disabled', true);
 	} else {

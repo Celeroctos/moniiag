@@ -258,7 +258,7 @@ class ElementsController extends Controller {
 			$config += $params;
 		}
 
-		if($model->showDynamic) {
+		if(isset($model->showDynamic)) {
 			$config['showDynamic'] = 1;
 		}
 		
@@ -291,7 +291,12 @@ class ElementsController extends Controller {
         // Теперь посчитаем путь до элемента. Посмотрим на категорию, выберем иерархию категорий и прибавим введённую позицию
         $partOfPath = $this->getElementPath($element->categorie_id);
         $partOfPath = implode('.', array_reverse(explode('.', $partOfPath)));
-        $element->path = $partOfPath.'.'.$element->position;
+        
+        if (strlen($partOfPath) > 0) {
+            $element->path = $partOfPath.'.'.$element->position;
+        } else {
+            $element->path = $element->position;
+        }
 
         //var_dump($element);
         //exit();

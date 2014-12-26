@@ -1200,12 +1200,29 @@ var TemplateEngine = TemplateEngine || {
 	Item["-instance"] = null;
 
 	var _updateItem = function(event, data) {
+        console.log(data);
 		var json = $.parseJSON(data);
 		if (!json.success) {
-			console.log(json);
-			throw new Error(json.message);
+            // Удаляем предыдущие ошибки
+            $('#errorAddElementPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for (var i in json.errors) {
+                for (var j = 0; j < json.errors[i].length; j++) {
+                    $('#errorAddElementPopup .modal-body .row').append("<p>" + json.errors[i][j] + "</p>")
+                }
+            }
+            $('#errorAddElementPopup').modal();
+            return true;
 		}
-		Item["-instance"].model(json["model"], true);
+        var model = json["model"];
+        if (!model) {
+            return true;
+        }
+        var config = $.parseJSON(model["config"]);
+        for (var i in config) {
+            model[i] = config[i];
+        }
+		Item["-instance"].model(model, true);
 		Item["-instance"].update();
         hasChanges = true;
 	};
@@ -1291,15 +1308,14 @@ var TemplateEngine = TemplateEngine || {
 						.css("visibility", "hidden")
 						.css("position", "absolute");
 				}
-				var r = me.has(info.native) ? me.field(info.native) : null;
+                if (info.native == 'showDynamic') {
+                    console.log(info);
+                }
 				// Подгрузка значений справочника для дефолтного значения
 				if (info.name == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
 					$('select#guideId').trigger('change', [data.data[info.name]]);
-					return r;
+					return data.data[info.native];
 				}
-				var formField = me.manager().form().find('#' + info.name).val(
-					data.data[info.name]
-				);
 				// Таблица
 				if (info.name == 'config') {
 					if(typeof data.data['config'] != 'object') {
@@ -1340,6 +1356,9 @@ var TemplateEngine = TemplateEngine || {
 						$('#editElementPopup #dateFieldMaxValue').trigger('change');
 						$('#editElementPopup #dateFieldMinValue').trigger('change');
 					}
+                    $('#editElementPopup #showDynamic').val(
+                        config["showDynamic"]
+                    );
 				}
 				// Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
 				//    в изменении типа
@@ -1351,7 +1370,7 @@ var TemplateEngine = TemplateEngine || {
 				$.proxy(me.manager().form().find("select#type").trigger('change'),
 					me.manager().form().find("select#type")
 				);
-				return r;
+				return data.data[info.native];
 			}
 		);
 		Item["-instance"] = this;
@@ -2506,6 +2525,7 @@ var TemplateEngine = TemplateEngine || {
             hasChanges = true;
             return false;
         }
+        console.log(result);
         $(".saving-template").css("visibility", "visible");
 		// set request on server to update template categories
 		$.post(globalVariables.baseUrl + "/admin/templates/utc", {
