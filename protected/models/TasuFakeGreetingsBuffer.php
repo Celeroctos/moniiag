@@ -14,7 +14,7 @@ class TasuFakeGreetingsBuffer extends MisActiveRecord {
         $connection = Yii::app()->db;
         $tfg = $connection->createCommand()
             ->select('COUNT(tfg.*) as num_greetings')
-            ->from(self::tableName().' tfg')
+            ->from(self::model()->tableName().' tfg')
 			->where('tfg.doctor_id = :doctor_id', array(':doctor_id' => $doctorId));
 		if($dateBegin !== false) {
 			$tfg->andWhere('tfg.greeting_date >= :patient_day_from', array(':patient_day_from' => $dateBegin));

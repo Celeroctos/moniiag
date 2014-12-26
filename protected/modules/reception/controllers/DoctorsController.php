@@ -55,7 +55,6 @@ class DoctorsController extends Controller {
 
         // Вычислим общее количество записей
 	    $num = $model->getRows($filters, false, false, false, false, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
-
         if($calendarTypeSetting == 0) {
             $totalPages = ceil(count($num) / $rows);
         } else {
@@ -66,7 +65,6 @@ class DoctorsController extends Controller {
         //var_dump($filters);
         //exit();
         //$filters['rules'] = array();
-
         $doctors = $model->getRows($filters, $sidx, $sord, $start, $rows, $this->choosedDiagnosis, $this->greetingDate, $calendarTypeSetting, $isCallCenter);
 
         // Посмотрим на то, какой календарь мы показываем сейчас
@@ -102,7 +100,8 @@ class DoctorsController extends Controller {
             if($doctor['middle_name'] == null) {
                 $doctor['middle_name'] = '';
             }
-            $nearFree = $this->getNearFreeDay($doctor['id']);
+            //$nearFree = $this->getNearFreeDay($doctor['id']);
+			$nearFree = false; // Dirty hack, TODO normal
             $doctor['nearFree'] = $nearFree !== false ? $nearFree : '';
             $doctor['cabinet'] = '';
             if($nearFree) {
@@ -125,6 +124,7 @@ class DoctorsController extends Controller {
             'total' => $totalPages,
             'records' => count($num)
         );
+		
         if($calendarTypeSetting == 1) {
             $answer['year'] = $beginYear;
             $answer['month'] = $beginMonth;

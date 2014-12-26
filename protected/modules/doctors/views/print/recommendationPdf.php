@@ -7,18 +7,12 @@
 <div class="header">
     <span style="font-weight: bold;font-size: 16px;"><?php echo $greeting['patient_fio']; ?>, <?php echo $greeting['full_years'];
         // Вычисляем как просклонять слово "года" для возраста данного пациента
-        if ($greeting['full_years'] % 10 == 1)
-        {
+        if ($greeting['full_years'] % 10 == 1) {
             echo " год";
-        }
-        else
-        {
-            if ( ($greeting['full_years'] % 10>=2) && ($greeting['full_years'] % 10<=4))
-            {
+        } else {
+            if ($greeting['full_years'] % 10 >= 2 && $greeting['full_years'] % 10 <= 4) {
                 echo " года";
-            }
-            else
-            {
+            } else {
                 echo " лет";
             }
 
@@ -131,5 +125,12 @@ foreach ($templates as $oneTemplate)
 }
 ?>
 <!-- Выведем ФИО врача -->
-<br/><br/><strong><span style="font-size:14px;">Врач: <?php  echo $greeting['doctor_spec'].' '.$greeting['doctor_fio'];  ?></span></strong>
+<br/><br/><strong><span style="font-size:14px;">Врач
+        <?php
+        // Если строка с регалиями
+        if ($greeting['doctor_regalia'] != '') {
+            echo ($greeting['doctor_regalia'].' ');
+        }
+        echo trim(mb_strtolower($greeting['doctor_spec']).' '.$greeting['doctor_fio']);
+        ?></span></strong>
 <!--?php exit();

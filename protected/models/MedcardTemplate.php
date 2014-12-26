@@ -170,7 +170,7 @@ class MedcardTemplate extends MisActiveRecord {
 
         $templates = $connection->createCommand()
             ->selectDistinct('me.index')
-            ->from(MedcardTemplate::tableName().' me')
+            ->from(MedcardTemplate::model()->tableName().' me')
             ->order('me.index', 'asc');
 
         return $templates->queryAll();

@@ -17,10 +17,12 @@ class MedcardHistory extends MisActiveRecord {
 	public function getMaxThroughNumberPerYear($year, $ruleId) {
 		$connection = Yii::app()->db;
         $medcard = $connection->createCommand()
-            ->select('m.to')
+            ->select('m.to, CAST(SUBSTRING(m.to, 0, LENGTH(m.to) - 2) as INTEGER) as "partNumber"') // dirty fix
             ->from('mis.medcards_history m')
-			->where('rule_id = :rule_id AND SUBSTRING(CAST(m.reg_date as TEXT), 0, 5) = :year', array(':rule_id' => $ruleId, ':year' => $year))
-			->order('m.id desc');
+			->where('rule_id = :rule_id 
+					AND SUBSTRING(CAST(m.reg_date as TEXT), 0, 5) = :year
+					', array(':rule_id' => $ruleId, ':year' => $year))
+			->order('partNumber desc');
 
 		return $medcard->queryRow();
 	}

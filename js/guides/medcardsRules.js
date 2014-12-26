@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#rules").jqGrid({
         url: globalVariables.baseUrl + '/guides/medcards/getrules',
         datatype: "json",
-        colNames:['Код', 'Название', 'Префикс', 'Постфикс', 'Разделитель префикса', 'Разделитель постфикса', 'Правило', 'Унаследован от', 'Предыдущий префикс', 'Предыдущий постфикс', '', '', '', '','','','',''],
+        colNames:['Код', 'Название', 'Тип', 'Префикс', 'Постфикс', 'Р. префикса', 'Р. постфикса', 'Правило', 'Унаследован от', 'Предыдущий префикс', 'Предыдущий постфикс', '', '', '', '','','','','', ''],
         colModel:[
             {
                 name:'id',
@@ -14,6 +14,11 @@ $(document).ready(function() {
                 index: 'name',
                 width: 150
             },
+			{
+				name: 'type_desc',
+				index: 'type_desc',
+				width: 100
+			},
 			{
                 name: 'prefix',
                 index: 'prefix',
@@ -27,12 +32,12 @@ $(document).ready(function() {
 			{
                 name: 'prefix_separator',
                 index: 'prefix_separator',
-                width: 170
+                width: 110
             },
 			{
                 name: 'postfix_separator',
                 index: 'postfix_separator',
-                width: 170
+                width: 110
             },
 			{
                 name: 'rule',
@@ -94,6 +99,11 @@ $(document).ready(function() {
                 index: 'postfix_separator_id',
                 hidden: true
             },
+			{
+				name: 'type',
+				index: 'type',
+				hidden: true
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -152,6 +162,10 @@ $(document).ready(function() {
 							{
                                 modelField: 'name',
                                 formField: 'name'
+                            },
+							{
+                                modelField: 'type',
+                                formField: 'cardType'
                             },
                             {
                                 modelField: 'parent_id',

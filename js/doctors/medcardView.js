@@ -318,7 +318,7 @@ $(document).ready(function() {
 						var div = $('<div>');
 						if($('#panelOfhistoryMedcard').length > 0) {
 							var a = $('<a>').prop({
-								'href' : '#' + data[i].medcard_id+'_'+data[i].id_record
+								'href' : '#' + data[i].medcard_id+'_' + data[i].greeting_id + '_' + data[i].template_id
 							});
 						} else { // Режим кабинета главдоктора
 							var a = $('<a>').prop({

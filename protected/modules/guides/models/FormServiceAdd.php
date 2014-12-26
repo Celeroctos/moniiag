@@ -4,13 +4,14 @@ class FormServiceAdd extends CFormModel
 {
     public $name;
     public $code;
+	public $isDefault;
     public $id;
 
     public function rules()
     {
         return array(
             array(
-                'name, code', 'required'
+                'name, code, isDefault', 'required'
             )
         );
     }
@@ -20,6 +21,7 @@ class FormServiceAdd extends CFormModel
         return array(
             'name' => 'Описание услуги',
             'code' => 'Код в ТАСУ',
+			'isDefault' => 'Значение по умолчанию?'
         );
     }
 }

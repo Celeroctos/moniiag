@@ -48,6 +48,17 @@ class CheckedAction extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }
+	
+	// Удаление проставленных частных экшенов у сотрудника
+    public function deleteByEmployee($id) {
+        try {
+            $connection = Yii::app()->db;
+            $checked = $connection->createCommand()
+            ->delete('mis.role_action', 'employee_id = :employee_id', array(':employee_id' => $id));
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
     public function getOne($id) {
         try {
@@ -57,6 +68,21 @@ class CheckedAction extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }
+	
+	public function findAllWithKeysByEmployee($doctorId) {
+		try {
+            $connection = Yii::app()->db;
+            $checked = $connection->createCommand()
+                ->select('ra.*, aa.accessKey')
+                ->from('mis.role_action ra')
+                ->join('mis.access_actions aa', 'ra.action_id = aa.id')
+                ->where('ra.employee_id = :employee_id', array(':employee_id' => $doctorId));
+            return $checked->queryAll();
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+	
+	}
 
 
 }

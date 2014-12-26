@@ -9,6 +9,7 @@ class FormMedcardRuleAdd extends FormMisDefault
 	public $typeId;
 	public $participleModePrefix;
 	public $participleModePostfix;
+	public $cardType; // Тип карты 
 	public $name;
     public $id;
 
@@ -19,7 +20,7 @@ class FormMedcardRuleAdd extends FormMisDefault
 				'typeId, name', 'required'
 			),
 			array(
-				'parentId, postfixId, prefixId, typeId, participleModePrefix, participleModePostfix, postfixSeparatorId, prefixSeparatorId', 'numerical'
+				'parentId, postfixId, prefixId, typeId, participleModePrefix, participleModePostfix, postfixSeparatorId, prefixSeparatorId, cardType', 'numerical'
 			)
         );
     }
@@ -36,7 +37,8 @@ class FormMedcardRuleAdd extends FormMisDefault
 			'prefixSeparatorId' => 'Разделитель префикса',
 			'postfixSeparatorId' => 'Разделитель постфикса',
 			'participleModePrefix' => 'Предыдущий префикс',
-			'participleModePostfix' => 'Предыдущий постфикс'
+			'participleModePostfix' => 'Предыдущий постфикс',
+			'cardType' => 'Тип карты'
         );
     }
 }

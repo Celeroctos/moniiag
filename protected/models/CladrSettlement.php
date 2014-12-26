@@ -16,8 +16,8 @@ class CladrSettlement extends MisActiveRecord {
             $connection = Yii::app()->db;
             $settlements = $connection->createCommand()
                 ->select('cs.*, cr.id as region_id, cr.name as region')
-                ->from(CladrSettlement::tableName().' cs')
-                ->leftJoin(CladrRegion::tableName(). ' cr', 'cs.code_region = cr.code_cladr');
+                ->from(CladrSettlement::model()->tableName().' cs')
+                ->leftJoin(CladrRegion::model()->tableName(). ' cr', 'cs.code_region = cr.code_cladr');
 
             if($filters !== false) {
                 $this->getSearchConditions($settlements, $filters, array(
@@ -73,10 +73,10 @@ class CladrSettlement extends MisActiveRecord {
             $connection = Yii::app()->db;
             $settlement = $connection->createCommand()
                 ->select('cs.*, cr.name as region, cr.id as region_id, cd.id as district_id, cd.name as district, cr.name as region')
-                ->from(CladrSettlement::tableName().' cs')
-                ->leftJoin(CladrRegion::tableName().' cr', 'cr.code_cladr = cs.code_region')
-                ->leftJoin(CladrDistrict::tableName().' cd', 'cd.code_cladr = cs.code_district')
-                ->where('cs.id = :id AND cd.id IN(SELECT cd2.id FROM '.CladrDistrict::tableName().' cd2 WHERE cd2.code_cladr = cd.code_cladr AND cd2.code_region = cr.code_cladr)', array(':id' => $id))
+                ->from(CladrSettlement::model()->tableName().' cs')
+                ->leftJoin(CladrRegion::model()->tableName().' cr', 'cr.code_cladr = cs.code_region')
+                ->leftJoin(CladrDistrict::model()->tableName().' cd', 'cd.code_cladr = cs.code_district')
+                ->where('cs.id = :id AND cd.id IN(SELECT cd2.id FROM '.CladrDistrict::model()->tableName().' cd2 WHERE cd2.code_cladr = cd.code_cladr AND cd2.code_region = cr.code_cladr)', array(':id' => $id))
                 ->queryRow();
 
             return $settlement;
@@ -91,7 +91,7 @@ class CladrSettlement extends MisActiveRecord {
             $connection = Yii::app()->db;
             $num = $connection->createCommand()
                 ->select('COUNT(cs.*) as num')
-                ->from(CladrSettlement::tableName().' cs');
+                ->from(CladrSettlement::model()->tableName().' cs');
 
 
             if($filters !== false) {

@@ -32,9 +32,9 @@ class DoctorsTimetable extends MisActiveRecord {
 
 
                 ')
-                ->from(DoctorsTimetable::tableName(). ' dtt')
-                ->join(Doctor::tableName(). ' d', 'd.id =dtt.id_doctor')
-                ->leftJoin(Ward::tableName(). ' w', 'w.id = d.ward_code')
+                ->from(DoctorsTimetable::model()->tableName(). ' dtt')
+                ->join(Doctor::model()->tableName(). ' d', 'd.id =dtt.id_doctor')
+                ->leftJoin(Ward::model()->tableName(). ' w', 'w.id = d.ward_code')
                 ->andWhere('dtt.id_timetable=:timetable', array (':timetable'=>$idShedule )  )
                 ->order('d.ward_code desc');
 

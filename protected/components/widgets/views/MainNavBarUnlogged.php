@@ -111,6 +111,56 @@
         </div>
     </div>
 </div>
+<div class="modal fade error-popup" id="loginEmployeeChoose">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Выберите сотрудника, под которым сейчас хотите начать работу</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <?php
+					$form = $this->beginWidget('CActiveForm', array(
+						'id' => 'choose-employee-form',
+						'enableAjaxValidation' => true,
+						'enableClientValidation' => true,
+						'htmlOptions' => array(
+							'class' => 'form-horizontal col-xs-12',
+							'role' => 'form'
+						)
+					));
+					?>
+					<div class="form-group">
+						<?php echo $form->label($modelChooseEmployee,'id', array(
+							'class' => 'col-xs-3 control-label text-left'
+						)); ?>
+						<div class="col-xs-9">
+							<?php echo $form->dropDownList($modelChooseEmployee, 'id', array(), array(
+								'id' => 'employeeId',
+								'class' => 'form-control'
+							)); ?>
+						</div>
+					</div>
+					<div class="form-group">
+						<?php echo CHtml::ajaxSubmitButton(
+							'Выбрать',
+							CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/users/loginStep2'),
+							array(
+								'success' => 'function(data, textStatus, jqXHR) {
+									$("#choose-employee-form").trigger("success", [data, textStatus, jqXHR])
+								}'
+							),
+							array(
+								'class' => 'btn btn-success'
+							)
+						); ?>
+					</div>
+					<?php $this->endWidget(); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="pop-keyboard-help">
     <div class="pop-inner">
         <h5><strong>Управление с клавиатуры для текущего положения:</strong></h5>

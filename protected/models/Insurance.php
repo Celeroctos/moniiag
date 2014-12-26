@@ -29,7 +29,7 @@ class Insurance extends MisActiveRecord  {
             // Если задан id региона, то надо соединить таблицу с таблицей связи реогионов и страховых компаний
             if ($regionId)
             {
-                $insurances->leftJoin( InsuranceRegion::tableName().' ir', 'ir.insurance_id = ins.id' );
+                $insurances->leftJoin( InsuranceRegion::model()->tableName().' ir', 'ir.insurance_id = ins.id' );
                 $insurances->andWhere('ir.region_id= :region', array(':region' => $regionId));
             }
 

@@ -29,9 +29,9 @@
 </div>
 <!-- чюзер с регионом для полиса -->
 <div class="form-group chooser" id="regionPolicyChooser">
-    <label for="doctor" class="col-xs-3 control-label">Регион: </label>
+    <label for="region" class="col-xs-3 control-label">Регион: </label>
     <div class="col-xs-9">
-        <input type="text" class="form-control" id="doctor"
+        <input type="text" class="form-control" id="region"
                placeholder="Начинайте вводить...">
         <ul class="variants no-display">
         </ul>
@@ -41,10 +41,10 @@
 </div>
 <!-- Здесь будет большой, красивы чюзер с выбором страховой компании -->
 <div class="form-group chooser" id="insuranceChooser">
-    <label for="doctor" class="col-xs-3 control-label">Страховая компания: </label>
+    <label for="insurance" class="col-xs-3 control-label">Страховая компания: </label>
 
     <div class="col-xs-9">
-        <input type="text" class="form-control" id="doctor"
+        <input type="text" class="form-control" id="insurance"
                placeholder="Начинайте вводить...">
         <ul class="variants no-display">
         </ul>

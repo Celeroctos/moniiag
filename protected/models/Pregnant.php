@@ -17,7 +17,7 @@ class Pregnant extends MisActiveRecord {
             ->from('mis.pregnants p')
             ->leftJoin('mis.medcards m', 'p.card_id = m.card_number')
             ->leftJoin('mis.doctors d', 'd.id = p.doctor_id')
-            ->leftJoin('mis.users u', 'd.id = u.employee_id')
+            ->leftJoin('mis.users u', 'd.user_id = u.id')
             ->leftJoin('mis.oms o', 'o.id = m.policy_id');
 
         if($filters !== false) {

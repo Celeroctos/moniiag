@@ -15,7 +15,16 @@ $(document).ready(function(e) {
             if($(element).hasClass('no-display')) {
                 $(element).slideDown(500, function(e) {
                     $(element).removeClass('no-display');
-                    $(element).trigger('process');
+					var beginFrom = $(element).parent().find('.beginFrom');
+					if($(beginFrom).length > 0) {
+						if(typeof parseInt($(beginFrom).val()) == 'number') {
+							totalMaked = parseInt($(beginFrom).val());
+						}
+
+						$(beginFrom).attr('disabled', true);
+					}
+
+					$(element).trigger('process');
                 });
             }
         });
@@ -51,6 +60,10 @@ $(document).ready(function(e) {
                         } else {
                             current = data.lastId;
                             totalMaked += data.processed;
+							if($(element).parent().find('.beginFrom').length > 0) {
+								$(element).parent().find('.beginFrom').val(totalMaked);
+							}
+							
                             $(element).find('.numStrings').text(totalMaked);
                             if(totalRows == null) {
                                 totalRows = parseInt(data.totalRows);
@@ -102,6 +115,11 @@ $(document).ready(function(e) {
         $(element).on('end', function(e) {
             $(element).find('.continueImport, .pauseImport').addClass('no-display');
             $(element).find('.successImport').removeClass('no-display');
+			var beginFrom = $(element).parent().find('.beginFrom');
+			if($(beginFrom).length > 0) {
+				$(beginFrom).attr('disabled', false);
+				$(beginFrom).find('.beginFrom').val(0);
+			}
         });
 
         $(element).find('.pauseImport').on('click', function(e) {
@@ -109,6 +127,11 @@ $(document).ready(function(e) {
                 return false;
             }
 
+			if($(element).parent().find('.beginFrom').length > 0) {
+				$(element).parent().find('.beginFrom').attr('disabled', false);
+			}
+			
+			
             $(element).find('.continueImport').removeAttr('disabled');
             $(this).attr('disabled', true);
             isPaused = true;
@@ -118,6 +141,14 @@ $(document).ready(function(e) {
             if($(this).attr('disabled')) {
                 return false;
             }
+			var beginFrom = $(element).parent().find('.beginFrom');
+			if($(beginFrom).length > 0) {
+				if(typeof parseInt($(beginFrom).val()) == 'number') {
+					totalMaked = parseInt($(beginFrom).val());
+				}
+
+				$(beginFrom).attr('disabled', true);
+			}
             $(element).find('.pauseImport').attr('disabled', false);
             $(this).attr('disabled', true);
             isPaused = false;

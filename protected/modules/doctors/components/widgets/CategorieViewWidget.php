@@ -215,13 +215,7 @@ class CategorieViewWidget extends CWidget {
                 $categorieTemplateFill[] = $categorieResult;
             }
             usort($categorieTemplateFill, function($element1, $element2) {
-                if($element1['position'] > $element2['position']) {
-                    return 1;
-                } elseif($element1['position'] < $element2['position']) {
-                    return -1;
-                } else {
-                    return 0;
-                }
+                return $element2['position'] - $element1['position'];
             });
             $categoriesResult[] = array(
                 'templateName' => $template['name'],
@@ -414,6 +408,8 @@ class CategorieViewWidget extends CWidget {
 							$medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
                             $medcardCategorieElement->guide_id = $element['guide_id'];
 							$medcardCategorieElement->allow_add = $element['allow_add'];
+                            $medcardCategorieElement->not_printing_values = $element['not_printing_values'];
+                            $medcardCategorieElement->hide_label_before = $element['hide_label_before'];
                             $medcardCategorieElement->config = $element['config'];
                             if($element['default_value'] != null) {
                                 $medcardCategorieElement->value = $element['default_value'];
@@ -434,7 +430,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['guide_id'] = $eCopy->guide_id;
                         $elementResult['path'] = $eCopy->path;
 						$elementResult['allow_add'] = $eCopy->allow_add;
-						$pathParts = explode('.', $element['path']);
+                        $elementResult['not_printing_values'] = $eCopy->not_printing_values;
+                        $elementResult['hide_label_before'] = $eCopy->hide_label_before;
+                        $pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
 						$elementResult['is_required'] = $element['is_required'];
                         $elementResult['size'] = $element['size'];
@@ -448,7 +446,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['guide_id'] =  $element['guide_id'];
                         $elementResult['path'] = $element['path'];
 						$elementResult['allow_add'] = $element['allow_add'];
-						$pathParts = explode('.', $element['path']);
+                        $elementResult['not_printing_values'] = $element['not_printing_values'];
+                        $elementResult['hide_label_before'] = $element['hide_label_before'];
+                        $pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
@@ -1078,6 +1078,7 @@ class CategorieViewWidget extends CWidget {
             $nodeContent['element_id'] = -1;
             $nodeContent['empty'] = true;
 
+
         }
 		else
 		{
@@ -1090,8 +1091,10 @@ class CategorieViewWidget extends CWidget {
                             'path' => $historyElement['path'],
 							'config' => $historyElement['config'],
 							'type' => $historyElement['type'],
-				'is_wrapped' => $historyElement['is_wrapped'],
-				//'info' => $historyElement['info'],
+                            'not_printing_values' => $historyElement['not_printing_values'],
+                            'hide_label_before' => $historyElement['hide_label_before'],
+				            'is_wrapped' => $historyElement['is_wrapped'],
+				            //'info' => $historyElement['info'],
                             'config' => CJSON::decode($historyElement['config'])	
                         );
 				if($historyElement['guide_id'] != null)

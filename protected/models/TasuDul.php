@@ -19,7 +19,7 @@ class TasuDul extends MisActiveRecord {
 			$connection = TasuDul::getDbConnection();
 			$max = $connection->createCommand()
 				->select('MAX(tt.uid) as num')
-				->from(TasuDul::tableName().' tt');
+				->from(TasuDul::model()->tableName().' tt');
 			$row = $max->queryRow();
 			return $row['num'];
         } catch(Exception $e) {

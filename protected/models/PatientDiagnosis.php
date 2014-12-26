@@ -34,8 +34,8 @@ class PatientDiagnosis extends MisActiveRecord {
             $connection = Yii::app()->db;
             $diagnosis = $connection->createCommand()
                 ->select('dpp.*, m.*')
-                ->from(PatientDiagnosis::tableName().' dpp')
-                ->join(Mkb10::tableName().' m', 'dpp.mkb10_id = m.id')
+                ->from(PatientDiagnosis::model()->tableName().' dpp')
+                ->join(Mkb10::model()->tableName().' m', 'dpp.mkb10_id = m.id')
                 ->where('dpp.greeting_id = :greeting_id AND dpp.type = :type', array(':greeting_id' => $greetingId, ':type' => $type));
 
             //var_dump($diagnosis);

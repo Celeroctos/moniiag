@@ -248,6 +248,8 @@ class PatientController extends Controller {
             $historyCategorieElementNext->guide_id = $element['guide_id'];
 			$historyCategorieElementNext->allow_add = $element['allow_add'];
             $historyCategorieElementNext->real_categorie_id = $element['real_categorie_id'];
+            $historyCategorieElementNext->not_printing_values = $element['not_printing_values'];
+            $historyCategorieElementNext->hide_label_before = $element['hide_label_before'];
             $historyCategorieElementNext->config = $element['config'];
 
 

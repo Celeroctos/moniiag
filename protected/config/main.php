@@ -126,7 +126,8 @@ return array(
 
 		'db'=>array(
 		 // 'connectionString' => 'pgsql:host=moniiag.toonftp.ru;port=5432;dbname=postgres;',
-           'connectionString' => 'pgsql:host=localhost;port=5432;dbname=postgres;',
+           'connectionString' => 'pgsql:host=toonftp.ru;port=5432;dbname=postgres;',
+           //'connectionString' => 'pgsql:host=localhost;port=5433;dbname=postgres;',
            //'username' => 'moniiag',
            //'password' => '12345',
           'username' => 'postgres',
@@ -136,7 +137,8 @@ return array(
 
 		'db2' => array(
             'class'=>'system.db.CDbConnection',
-			'connectionString' => 'sqlsrv:Server=212.42.63.62\HISSQLEE,1433;Database=PDPStdStorage',
+			//'connectionString' => 'sqlsrv:Server=7.79.78.102\HISSQLEE;Database=PDPStdStorage', // 212.42.63.62:1433
+			'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPStdStorage',
 			'username' => 'sa',
 			'password' => 'system54@nof',
 			'charset' => 'utf8'
@@ -144,7 +146,8 @@ return array(
 		
 		'db3' => array(
             'class'=>'system.db.CDbConnection',
-			'connectionString' => 'sqlsrv:Server=212.42.63.62\HISSQLEE,1433;Database=PDPRegStorage',
+			//'connectionString' => 'sqlsrv:Server=7.79.78.102\HISSQLEE;Database=PDPRegStorage', // 212.42.63.62:1433
+			'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPRegStorage',
 			'username' => 'sa',
 			'password' => 'system54@nof',
 			'charset' => 'utf8'

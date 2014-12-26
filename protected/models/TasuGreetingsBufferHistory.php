@@ -15,7 +15,7 @@ class TasuGreetingsBufferHistory extends MisActiveRecord {
             $connection = Yii::app()->db;
             $bufferHistory = $connection->createCommand()
                 ->select('tgbh.*')
-                ->from(TasuGreetingsBufferHistory::tableName().' tgbh');
+                ->from(TasuGreetingsBufferHistory::model()->tableName().' tgbh');
 
             if($filters !== false) {
                 $this->getSearchConditions($bufferHistory, $filters, array(
