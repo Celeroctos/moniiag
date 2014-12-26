@@ -17,7 +17,7 @@ class SheduleController extends Controller {
         $sord = $_GET['sord'];
         $notBeginned = $_GET['notBeginned'];
         $notBeginnedFlag = false;
-        if ($notBeginned==1)
+        if ($notBeginned == 1)
         {
             $notBeginnedFlag = true;
         }

@@ -341,7 +341,7 @@
         </div>
     </div>
 </div>
-<? } ?>
+<?php  ?>
 <div class="modal fade error-popup" id="notFoundPopup">
     <div class="modal-dialog">
         <div class="modal-content">
