@@ -1,27 +1,14 @@
 ﻿<?php
-
+ //
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 
-$siteName = '';
-// Вот за такое надо расстреливать на месте. Но автор сего шедевра не знает как сделать что-то более правильное
-//          относительно быстро (( а времени нет((
-// Если в строке есть "moniiag" - значит мы на тестовом
-if (  strpos( $_SERVER['HTTP_HOST'], 'moniiag')!==false && strpos( $_SERVER['HTTP_HOST'], 'moniiag')>=0 )
-{
-    $siteName = 'МИС Notum Тестовый сервер';
-}
-else
-{
-    $siteName = 'МИС Notum';
-}
-
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>$siteName,
+	'name'=> 'МИС Notum (тест, заказчик)',
     'defaultController' => 'index',
     'layout' => 'index',
     'language' => 'ru',
@@ -116,7 +103,6 @@ return array(
 
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-			'showScriptName' => false,
 			/*'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
@@ -125,19 +111,14 @@ return array(
 		),
 
 		'db'=>array(
-		 // 'connectionString' => 'pgsql:host=moniiag.toonftp.ru;port=5432;dbname=postgres;',
-           'connectionString' => 'pgsql:host=toonftp.ru;port=5432;dbname=postgres;',
-           //'connectionString' => 'pgsql:host=localhost;port=5433;dbname=postgres;',
-           //'username' => 'moniiag',
-           //'password' => '12345',
-          'username' => 'postgres',
-          'password' => '12345'
+			'connectionString' => 'pgsql:host=toonftp.ru;port=5432;dbname=postgres;',
+			'username' => 'postgres',
+			'password' => '12345'
         ),
 		// uncomment the following to use a MySQL database
 
 		'db2' => array(
             'class'=>'system.db.CDbConnection',
-			//'connectionString' => 'sqlsrv:Server=7.79.78.102\HISSQLEE;Database=PDPStdStorage', // 212.42.63.62:1433
 			'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPStdStorage',
 			'username' => 'sa',
 			'password' => 'system54@nof',
@@ -146,7 +127,6 @@ return array(
 		
 		'db3' => array(
             'class'=>'system.db.CDbConnection',
-			//'connectionString' => 'sqlsrv:Server=7.79.78.102\HISSQLEE;Database=PDPRegStorage', // 212.42.63.62:1433
 			'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPRegStorage',
 			'username' => 'sa',
 			'password' => 'system54@nof',
@@ -174,7 +154,7 @@ return array(
                         '_MPDF_TEMP_PATH' => Yii::getPathOfAlias('application.runtime'),
                     ),
                     'class'=>'mpdf'/*, // the literal class filename to be loaded from the vendors folder
-                    'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
+                    'defaultParams'     => array( // More info: http://mpdf1.com/manual/index.php?tid=184
                         'mode'              => '', //  This parameter specifies the mode of the new document.
                         'format'            => 'A4', // format A4, A5, ...
                        // 'default_font_size' => 0, // Sets the default document font size in points (pt)
@@ -190,7 +170,7 @@ return array(
                     )*/
 
 /*
-                    'defaultParams'     => array( // More info: http://mpdf1.com/manual?tid=184
+                    'defaultParams'     => array( // More info: http://mpdf1.com/manual/index.php?tid=184
                      'autoPageBreak' => true
                     )
 */
