@@ -1651,7 +1651,7 @@ var TemplateEngine = TemplateEngine || {
             style: style || "margin-right: 5px;"
         });
         b.click(function() {
-            if (me instanceof CategoryCollection) {
+            if (me.parent() instanceof CategoryCollection) {
                 return true;
             }
             if (me.reference()) {
