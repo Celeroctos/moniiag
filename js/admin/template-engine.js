@@ -902,8 +902,10 @@ var TemplateEngine = TemplateEngine || {
             if (that instanceof Item && that.category()) {
                 that.category().reference(null);
                 that.category(null);
+                hasChanges = true;
             } else if (that instanceof Category && that.reference()) {
                 that.reference().remove();
+                hasChanges = true;
             }
 			that.remove();
 			that.erase();
@@ -1666,20 +1668,8 @@ var TemplateEngine = TemplateEngine || {
             me.reference(item);
             me.parent().append(item);
             item.update();
+            hasChanges = true;
         });
-        /* b.draggable({
-            helper: function() {
-                // Get category (template)'s selector from template collection
-                var template = TemplateEngine.getTemplateCollection().find("category");
-                // Clone it and return as new element
-                return template.render(me.has("name") ? me.field("name") : "Категория")
-                    .data("instance", template)
-                    .data("category", me)
-                    .css("opacity", "0.75")
-                    .css("z-index", 2000)
-                    .css("background-color", "lightcoral");
-            }
-        }); */
         return b;
     };
 
@@ -1720,6 +1710,9 @@ var TemplateEngine = TemplateEngine || {
 		if (categories) {
 			s.append(categories);
 		}
+        if (this.reference()) {
+            this.reference().update();
+        }
 		return s;
     };
 
@@ -2381,7 +2374,7 @@ var TemplateEngine = TemplateEngine || {
         var hasNotSaved = false;
 		var result = [];
 		var update = function(item) {
-			if (!item.has("id") && !item.category()) {
+			if (!item.has("id")) {
                 if (!(item.template() && item.template().key() == "category")) {
                     hasNotSaved = true;
                 }
