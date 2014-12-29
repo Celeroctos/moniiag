@@ -167,7 +167,7 @@ $(document).ready(function() {
 					for(var i in this.filteredData[0].shedule) {
 						if(prev && prev > parseInt(this.filteredData[0].shedule[i].day)) {
 							// Get next month...
-							currentMonth = (currentMonth + 1) % 11;
+							currentMonth = (currentMonth + 1) % 12;
 						}
 						prev = parseInt(this.filteredData[0].shedule[i].day);
 						dayData.push({

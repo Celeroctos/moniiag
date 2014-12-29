@@ -73,13 +73,16 @@
 <h4>Обслуживание</h4>
 <div class="row">
     <div class="form-group">
-        <?php echo CHtml::button(
-            'Очистить таблицы для приёмов пациентов',
-            array(
-                'class' => 'btn btn-success',
-                'id' => 'clearGreetingDataSubmit'
-            )
-        ); ?>
+        <?php 
+		if(Yii::app()->user->checkAccess('systemCleanGreetings')) { 
+			echo CHtml::button(
+				'Очистить таблицы для приёмов пациентов',
+				array(
+					'class' => 'btn btn-success',
+					'id' => 'clearGreetingDataSubmit'
+				)
+			); 
+		}?>
     </div>
 </div>
 <div class="modal fade error-popup" id="successSystemSettingsEditPopup">
