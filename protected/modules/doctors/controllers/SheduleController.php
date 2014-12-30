@@ -948,19 +948,18 @@ class SheduleController extends Controller {
 			
 			// Сначала чекаем выходные частные дни. Если выходной день есть, то дальше можно не обрабатывать
 			// Ищем выходной день
-			/*$restDayInDb = SheduleRestDay::model()->find('doctor_id = :doctor_id AND date = :date',
+			$restDayInDb = SheduleRestDay::model()->find('doctor_id = :doctor_id AND date = :date AND type = :type',
 				array(
 					':doctor_id' => $doctorId,
-					':date' =>   date('Y-m-d', $currentDate)
+					':date' => date('Y-m-d', $currentDate), 
+					':type' => 1 // Чекаем только выходные
 				)
 			);
 			
 			// Дальше не копаем, если есть день выходных
 			if($restDayInDb != null) {
-				$resultArr[$i]['restDayType'] = $restDayInDb->type;
-				$resultArr[$i]['restDayForDoctor'] = true;
 				continue;
-			}*/
+			}
 			
             // Найдём из выбранных графиков такой, под который подпадает данный день
             //$currentDateDate = strtotime( $currentDate );
