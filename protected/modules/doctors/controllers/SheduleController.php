@@ -1057,6 +1057,21 @@ class SheduleController extends Controller {
             $resultArr[$i]['secondaryGreetings'] = 0;
             $resultArr[$i]['restDay'] = true;
 
+			// Сначала чекаем выходные частные дни. Если выходной день есть, то дальше можно не обрабатывать
+			// Ищем выходной день
+			$restDayInDb = SheduleRestDay::model()->find('doctor_id = :doctor_id AND date = :date AND type = :type',
+				array(
+					':doctor_id' => $doctorId,
+					':date' => date('Y-m-d', $currentDate), 
+					':type' => 1 // Чекаем только выходные
+				)
+			);
+			
+			// Дальше не копаем, если есть день выходных
+			if($restDayInDb != null) {
+				continue;
+			}
+
             // Найдём из выбранных графиков такой, под который подпадает данный день
             //$currentDateDate = strtotime( $currentDate );
             $sheduleForDay = null;
