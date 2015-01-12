@@ -176,26 +176,53 @@ $(document).ready(function() {
 		if(currentRow == null) {
 			return true;
 		}
-		var success = function(data) {
-			if(data.success == 'true') {
-				$("#templates").trigger("reloadGrid");
-			} else {
-				// Удаляем предыдущие ошибки
-				$('#errorAddTemplatePopup .modal-body .row p').remove();
-				$('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
-				// Отображаем модальное окно
-				$('#errorAddTemplatePopup').modal();
-			}
-		};
-		// Надо вынуть данные для редактирования
+
+		var successStep1 = function(data) {
+			if(data.success) {
+				if(data.issetChecked) {
+					$('#noticeIssetMedworkerPopup .listOfMedworkers').html('');
+					for(var i in data.medworkers) {
+						$('#noticeIssetMedworkerPopup .listOfMedworkers').append("<strong>" + data.medworkers[i].name + "</strong>");
+					}
+					$('#noticeIssetMedworkerPopup').modal();
+				} else {
+					deleteTemplate(currentRow);
+				}
+			} 
+		}
+		
 		$.ajax({
-			'url': globalVariables.baseUrl + '/admin/templates/delete?id=' + currentRow,
+			'url': globalVariables.baseUrl + '/admin/templates/issetMedworkerPerTempl?id=' + currentRow,
 			'cache': false,
 			'dataType': 'json',
 			'type': 'GET',
-			'success': success
+			'success': successStep1
 		});
     });
+	
+	$('#submitDelete').on('click', function(e) {
+		deleteTemplate($('#templates').jqGrid('getGridParam', 'selrow'));
+	});
+	
+	function deleteTemplate(id) {
+		$.ajax({
+			'url': globalVariables.baseUrl + '/admin/templates/delete?id=' + id,
+			'cache': false,
+			'dataType': 'json',
+			'type': 'GET',
+			'success': function(data) {
+				if(data.success == 'true') {
+					$("#templates").trigger("reloadGrid");
+				} else {
+					// Удаляем предыдущие ошибки
+					$('#errorAddTemplatePopup .modal-body .row p').remove();
+					$('#errorAddTemplatePopup .modal-body .row').append("<p>" + data.error + "</p>")
+					// Отображаем модальное окно
+					$('#errorAddTemplatePopup').modal();
+				}
+			}
+		});
+	}
 
     $('#showTemplate').on('click', function(e) {
         showTemplate();

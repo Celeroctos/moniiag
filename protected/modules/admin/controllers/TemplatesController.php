@@ -179,6 +179,15 @@ class TemplatesController extends Controller {
             ));
         }
     }
+	
+	public function actionIssetMedworkerPerTempl($id) {
+		$checked = EnabledTemplate::model()->getByTemplateId($id);
+		echo CJSON::encode(array(
+			'success' => true,
+			'issetChecked' => count($checked) > 0,
+			'medworkers' => $checked
+		));
+	}
 
     public function actionDelete($id) {
         $errorTextMessage = 'На данную запись есть ссылки!';
