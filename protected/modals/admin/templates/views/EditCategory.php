@@ -1,4 +1,4 @@
-<?php$form = $this->beginWidget('CActiveForm', array(
+<?php $form = $this->beginWidget('CActiveForm', array(
     'focus' => array($model,'name'),
     'id' => 'categorie-edit-form',
     'enableAjaxValidation' => true,
@@ -95,4 +95,4 @@
     ); ?>
 </div>
 
-<?php$this->endWidget(); ?>
+<?php $this->endWidget(); ?>

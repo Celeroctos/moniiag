@@ -20,7 +20,7 @@ if(isset($categorie['id'])) {
                 <span class="glyphicon glyphicon-plus"></span>
                 <span class="no-display pr-key"><?php echo $categorie['pr_key']; ?></span>
             </button>
-            <?php} ?>
+            <?php  ?>
         </div>
          <?php if(count($categorie['elements']) == 0 && ((isset($categorie['children']) && count($categorie['children']) == 0) || !isset($categorie['children']))) { ?>
             <div class="accordion-body collapse" id="collapse<?php echo '_'.$templatePrefix.'_'.$prefix.'_'.$categorie['undotted_path'].'_'.$categorie['id']; ?>">
@@ -613,4 +613,4 @@ if(isset($categorie['id'])) {
         </div>
     </div>
 </div>
-<?php} ?>
+<?php  ?>

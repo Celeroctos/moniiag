@@ -1,34 +1,34 @@
 <!-- Look though all categories -->
-<?phpforeach($category as $key => $child) : ?>
+<?php oreach($category as $key => $child) : ?>
 
 	<!-- Skip if child havn't element -->
-	<?phpif (!isset ($child['element'])) {
+	<?php f (!isset ($child['element'])) {
 		continue;
 	} else {
 		$elementNumber++;
 	} ?>
 
 	<!-- If child is category, then print it recursively -->
-	<?phpif ($child['element']['element_id'] == -1) { ?>
+	<?php f ($child['element']['element_id'] == -1) { ?>
 		<div style="margin-left:20px;">
 		<strong style="text-decoration: underline">
-			<?phpecho $child['element']['name']; ?>
+			<?php cho $child['element']['name']; ?>
 		</strong>
 		<p class ="print-elements">
-			<?phpCWidget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
+			<?php Widget::createWidget('application.modules.doctors.components.widgets.printCategory', array(
 				'categoryToPrint' => $child
 			))->run(); ?>
 		</p>
 		</div>
-	<?php} else { ?>
+	<?php  else { ?>
 
 		<!-- Skip print, if elements hasn't value -->
-		<?phpif (($element = $child['element']) == null || !($element['value'] != ' ' && $element['value'] != null)) {
+		<?php f (($element = $child['element']) == null || !($element['value'] != ' ' && $element['value'] != null)) {
 			continue;
 		} ?>
 
 		<!-- If element's type is 4 (table), then print table -->
-		<?phpif ($element['type'] == '4') {
+		<?php f ($element['type'] == '4') {
 
 			// Get table's configure
 			$configOfTable =  $element['config'];
@@ -102,11 +102,11 @@
 					if (!$isRowTitleRendered && ($isRowTitleRendered = true)) : ?>
 						<tr>
 						<td style="border: 1px solid #000000;">
-							<?phpecho $configOfTable['rows'][$i]; ?>
+							<?php cho $configOfTable['rows'][$i]; ?>
 						</td>
 					<?php endif; ?>
-					<td style="border: 1px solid #000000;" class="content-<?phpecho $i . '_' . $j; ?>">
-						<?phpecho $value;?>
+					<td style="border: 1px solid #000000;" class="content-<?php cho $i . '_' . $j; ?>">
+						<?php cho $value;?>
 					</td>
 					</tr>
 				<?php endfor;
@@ -133,6 +133,6 @@
 			print $element['label_after']; ?>
 		<?php
 		} ?>
-	<?php} ?>
+	<?php  ?>
 
-<?phpendforeach; ?>
+<?php ndforeach; ?>
