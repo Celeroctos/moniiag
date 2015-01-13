@@ -132,7 +132,24 @@ class TemplatesController extends Controller {
     }
 
     private function addEditModel($template, $model, $msg) {
+		// Проверяем имя шаблона
+		$issetName = MedcardTemplate::model()->find('LOWER(name) = :name', array(
+            ':name' => trim(mb_strtolower($model->name))
+        ));
 
+		if($issetName != null && $issetName->id != $template->id) {
+            $answer = array(
+                'success' => false,
+                'errors' => array(
+                    'name' => array(
+                        'Шаблон с таким именем (ID = '.$issetName->id.') уже существует! Задайте другое имя шаблона.'
+                    )
+                )
+            );
+			echo CJSON::encode($answer);
+            exit();
+		}
+		
         $template->name = $model->name;
         $template->page_id = $model->pageId;
 

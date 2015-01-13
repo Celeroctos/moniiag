@@ -18,8 +18,8 @@
 </div>
 
 <? $this->widget('application.modals.admin.templates.AddTemplate') ?>
-<? $this->widget('application.modals.admin.templates.AddTemplateError') ?>
 <? $this->widget('application.modals.admin.templates.EditTemplate') ?>
+<? $this->widget('application.modals.admin.templates.AddTemplateError') ?>
 <? $this->widget('application.modals.admin.templates.ShowTemplate') ?>
 <? $this->widget('application.modals.admin.templates.DesignTemplate') ?>
 <? $this->widget("application.modals.admin.templates.AddCategory"); ?>
