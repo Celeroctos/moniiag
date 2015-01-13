@@ -773,6 +773,78 @@ var TemplateEngine = TemplateEngine || {
 	};
 
     /*
+      ___ ___ _  _ ___  ___ ___         ___ _   ___ _____ ___  _____   __
+     | _ \ __| \| |   \| __| _ \  ___  | __/_\ / __|_   _/ _ \| _ \ \ / /
+     |   / _|| .` | |) | _||   / |___| | _/ _ \ (__  | || (_) |   /\ V /
+     |_|_\___|_|\_|___/|___|_|_\       |_/_/ \_\___| |_| \___/|_|_\ |_|
+
+     */
+
+    var RenderFactory = {
+        renderSaveButton: function(style) {
+            var me = this;
+            return $("<span></span>", {
+                class: me.glyphicon(),
+                style: style || "margin-right: 5px;"
+            }).click(function() {
+                if (!me.has("id")) {
+                    me.write();
+                } else {
+                    me.edit();
+                }
+            });
+        },
+        renderDeleteButton: function(style) {
+            var that = this;
+            return $("<span></span>", {
+                class: "glyphicon glyphicon-remove",
+                style: style || "margin-right: 5px; margin-left: 3px;"
+            }).click(function() {
+                if (that instanceof Item && that.category()) {
+                    that.category().reference(null);
+                    that.category(null);
+                    hasChanges = true;
+                } else if (that instanceof Category && that.reference()) {
+                    that.reference().remove();
+                    hasChanges = true;
+                }
+                that.remove();
+                that.erase();
+            });
+        },
+        renderLinkButton: function(style) {
+            var me = this;
+            var b = $("<span></span>", {
+                class: "glyphicon glyphicon-link",
+                style: style || "margin-right: 5px;"
+            });
+            b.click(function() {
+                if (me.parent() instanceof CategoryCollection) {
+                    return true;
+                }
+                if (me.reference()) {
+                    return true;
+                }
+                var item = new Item(me.parent(), null, null,
+                    TemplateEngine.getTemplateCollection().find("category")
+                );
+                item.category(me);
+                me.reference(item);
+                me.parent().append(item);
+                item.update();
+                hasChanges = true;
+            });
+            return b;
+        },
+        renderLoadingImage: function(style) {
+            return $("<img>", {
+                src: globalVariables.baseUrl + "/images/ajax-loader.gif",
+                style: style || "width: 25px"
+            });
+        }
+    };
+
+    /*
        ___ ___  __  __ ___  ___  _  _ ___ _  _ _____
       / __/ _ \|  \/  | _ \/ _ \| \| | __| \| |_   _|
      | (_| (_) | |\/| |  _/ (_) | .` | _|| .` | | |
@@ -841,13 +913,7 @@ var TemplateEngine = TemplateEngine || {
 		// update all indexes
 		if (this instanceof CategoryCollection) {
 			parent.children(".template-engine-nestable").children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
-                // get category instance
-                var category = $(child).data("instance");
-                // if category hasn't reference then recompute it
-                if (!category.reference()) {
-                    category.field("position", index);
-                }
-                index++
+				$(child).data("instance").field("position", index++);
 			});
 		} else {
 			parent.children(".template-engine-list").children(".template-engine-category").each(function(i, child) {
@@ -855,11 +921,9 @@ var TemplateEngine = TemplateEngine || {
                 var category = $(child).data("instance");
                 // if category hasn't reference then recompute it
                 if (!category.reference()) {
-                    category.field("position", index);
+                    category.field("position", index++);
                 }
-                index++
 			});
-			index = 1;
 			parent.children(".template-engine-items").children(".template-engine-item").each(function(i, child) {
                 $(child).data("instance").field("position", index++);
 			});
@@ -887,6 +951,18 @@ var TemplateEngine = TemplateEngine || {
 		}
 	};
 
+    Component.prototype.loading = function() {
+        this.selector().empty().append(
+            $("<div></div>", {
+                style: "text-align: center"
+            }).append(
+                RenderFactory.renderLoadingImage(
+                    "width: 35px"
+                )
+            )
+        );
+    };
+
 	Component.prototype._renderEditButton = function(style) {
 		var me = this;
 		return $("<span></span>", {
@@ -907,14 +983,16 @@ var TemplateEngine = TemplateEngine || {
 			class: "glyphicon glyphicon-remove",
 			style: style || "margin-right: 5px; margin-left: 3px;"
 		}).click(function() {
+            if (that instanceof Item && that.category()) {
+                that.category().reference(null);
+                that.category(null);
+                hasChanges = true;
+            } else if (that instanceof Category && that.reference()) {
+                that.reference().remove();
+                hasChanges = true;
+            }
 			that.remove();
 			that.erase();
-            if (that.template() && that.template().key() == "category") {
-                if (that.category()) {
-                    that.category().reference(null);
-                }
-                that.category(null);
-            }
 		});
 	};
 
@@ -1122,12 +1200,29 @@ var TemplateEngine = TemplateEngine || {
 	Item["-instance"] = null;
 
 	var _updateItem = function(event, data) {
+        console.log(data);
 		var json = $.parseJSON(data);
 		if (!json.success) {
-			console.log(json);
-			throw new Error(json.message);
+            // Удаляем предыдущие ошибки
+            $('#errorAddElementPopup .modal-body .row p').remove();
+            // Вставляем новые
+            for (var i in json.errors) {
+                for (var j = 0; j < json.errors[i].length; j++) {
+                    $('#errorAddElementPopup .modal-body .row').append("<p>" + json.errors[i][j] + "</p>")
+                }
+            }
+            $('#errorAddElementPopup').modal();
+            return true;
 		}
-		Item["-instance"].model(json["model"], true);
+        var model = json["model"];
+        if (!model) {
+            return true;
+        }
+        var config = $.parseJSON(model["config"]);
+        for (var i in config) {
+            model[i] = config[i];
+        }
+		Item["-instance"].model(model, true);
 		Item["-instance"].update();
         hasChanges = true;
 	};
@@ -1169,7 +1264,6 @@ var TemplateEngine = TemplateEngine || {
 			this.field("categorie_id", this.parent().field("id"));
 		} else {
             this.field("categorie_id", -1);
-			//return false;
 		}
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
@@ -1214,15 +1308,14 @@ var TemplateEngine = TemplateEngine || {
 						.css("visibility", "hidden")
 						.css("position", "absolute");
 				}
-				var r = me.has(info.native) ? me.field(info.native) : null;
+                if (info.native == 'showDynamic') {
+                    console.log(info);
+                }
 				// Подгрузка значений справочника для дефолтного значения
 				if (info.name == 'defaultValue' && (data.data['type'] == 2 || data.data['type'] == 3)) {
 					$('select#guideId').trigger('change', [data.data[info.name]]);
-					return r;
+					return data.data[info.native];
 				}
-				var formField = me.manager().form().find('#' + info.name).val(
-					data.data[info.name]
-				);
 				// Таблица
 				if (info.name == 'config') {
 					if(typeof data.data['config'] != 'object') {
@@ -1263,6 +1356,9 @@ var TemplateEngine = TemplateEngine || {
 						$('#editElementPopup #dateFieldMaxValue').trigger('change');
 						$('#editElementPopup #dateFieldMinValue').trigger('change');
 					}
+                    $('#editElementPopup #showDynamic').val(
+                        config["showDynamic"]
+                    );
 				}
 				// Теперь нужно проверить - если взведён флаг "есть зависимость" - нужно выключить некоторые опции в
 				//    в изменении типа
@@ -1274,7 +1370,7 @@ var TemplateEngine = TemplateEngine || {
 				$.proxy(me.manager().form().find("select#type").trigger('change'),
 					me.manager().form().find("select#type")
 				);
-				return r;
+				return data.data[info.native];
 			}
 		);
 		Item["-instance"] = this;
@@ -1329,7 +1425,7 @@ var TemplateEngine = TemplateEngine || {
             label = label.substring(0, ITEM_LABEL_LIMIT) + "...";
         }
         return $("<div></div>", {
-            html: this.category() ? link : label,
+            html: label,
             style: "float: left;" +
                 "border: dotted black 1px;" +
                 "border-radius: 5px;" +
@@ -1660,18 +1756,21 @@ var TemplateEngine = TemplateEngine || {
             class: "glyphicon glyphicon-link",
             style: style || "margin-right: 5px;"
         });
-        b.draggable({
-            helper: function() {
-                // Get category (template)'s selector from template collection
-                var template = TemplateEngine.getTemplateCollection().find("category");
-                // Clone it and return as new element
-                return template.render(me.has("name") ? me.field("name") : "Категория")
-                    .data("instance", template)
-                    .data("category", me)
-                    .css("opacity", "0.75")
-                    .css("z-index", 2000)
-                    .css("background-color", "lightcoral");
+        b.click(function() {
+            if (me.parent() instanceof CategoryCollection) {
+                return true;
             }
+            if (me.reference()) {
+                return true;
+            }
+            var item = new Item(me.parent(), null, null,
+                TemplateEngine.getTemplateCollection().find("category")
+            );
+            item.category(me);
+            me.reference(item);
+            me.parent().append(item);
+            item.update();
+            hasChanges = true;
         });
         return b;
     };
@@ -1700,7 +1799,7 @@ var TemplateEngine = TemplateEngine || {
                 ).append(
                     that._renderDragButton()
                 ).append(
-					that._renderEditButton()
+                    that._renderEditButton()
 				).append(
 					that._renderRemoveButton()
 				)
@@ -1713,6 +1812,9 @@ var TemplateEngine = TemplateEngine || {
 		if (categories) {
 			s.append(categories);
 		}
+        if (this.reference()) {
+            this.reference().update();
+        }
 		return s;
     };
 
@@ -1761,6 +1863,9 @@ var TemplateEngine = TemplateEngine || {
                 // move element from another category so we have to
                 // accept it and add extra condition in drop event
                 if (!(me instanceof Template)) {
+                    if (me instanceof Item && me.category()) {
+                        return me.category().parent() == that;
+                    }
                     return true;
                 }
                 // check template for category type
@@ -1787,6 +1892,9 @@ var TemplateEngine = TemplateEngine || {
                     );
                     // if template has category type
                     if (me.key() == "category") {
+                        if (category.parent() != that) {
+                            return false;
+                        }
                         // remove old reference
                         if (category.reference()) {
                             category.reference().remove();
@@ -1825,12 +1933,38 @@ var TemplateEngine = TemplateEngine || {
 						me.field("categorie_id", that.field("id"));
 					}
                 }
-                // set has been changed flag to true
-                if (me.has("id") || true) {
-                    hasChanges = true;
-                }
-            }
+                hasChanges = true;
+            },
+            revert: "invalid"
         });
+    };
+
+    /*
+       ___   _ _____ ___ ___  ___  _____   __        ___  _ _____ ___ _  _ ___ ___
+      / __| /_\_   _| __/ __|/ _ \| _ \ \ / /  ___  | _ \/_\_   _/ __| || | __| _ \
+     | (__ / _ \| | | _| (_ | (_) |   /\ V /  |___| |  _/ _ \| || (__| __ | _||   /
+      \___/_/ \_\_| |___\___|\___/|_|_\ |_|         |_|/_/ \_\_| \___|_||_|___|_|_\
+
+     */
+
+    var CategoryPatcher = {
+        construct: function() {
+            this._patch = {};
+        },
+        put: function(key, value) {
+            if (this._patch[key]) {
+                return false;
+            }
+            this._patch[key] = value;
+            return true;
+        },
+        map: function() {
+            return this._patch;
+        },
+        get: function(key) {
+            return this._patch[key];
+        },
+        _patch: {}
     };
 
     /*
@@ -1918,6 +2052,15 @@ var TemplateEngine = TemplateEngine || {
 					itemInstance.field("parent_id", -1);
 				}
 			}
+            // if template has category type then remove old reference's selector
+            // and append to parent's selector
+            console.log(itemInstance.reference());
+            if (itemInstance.reference()) {
+                itemInstance.reference().remove();
+                if (!(parentInstance instanceof CategoryCollection)) {
+                    parentInstance.append(itemInstance.reference());
+                }
+            }
             // set has been changed flag to true
             if (itemInstance.has("id")) {
                 hasChanges = true;
@@ -1976,39 +2119,34 @@ var TemplateEngine = TemplateEngine || {
     };
 
     CategoryCollection.prototype.afterRegister = function() {
-        for (var i in this._toPatch) {
-            var patch = this._toPatch[i];
-            var c = getCc().findByPath(patch.path);
-            c.reference(patch.item);
-            patch.item.update();
+        for (var key in CategoryPatcher.map()) {
+            var item = CategoryPatcher.get(key);
+            var c = TemplateEngine.getCategoryCollection().findByPath(key);
+            if (!c || !(c instanceof Category)) {
+                item.remove();
+                continue;
+            }
+            c.reference(item);
+            item.category(c);
+            item.update();
         }
-        this._toPatch = [];
+        CategoryPatcher.construct();
     };
 
 	CategoryCollection.prototype.register = function(model, clone, template) {
-		// compatibility
 		var collection = this;
-		// get element list
 		var elements = model["elements"];
 		var children = model["children"];
-		// if we've set clone flag, then remove identifier from model
 		if (clone === true) {
 			model["id"] = undefined;
 		}
-		// reset extra fields
 		model["elements"] = undefined;
 		model["children"] = undefined;
-		// avoid categories wo name (cuz weak reference)
 		if (!model["name"]) {
 			return false;
 		}
-        if (!this._toPatch) {
-            this._toPatch = [];
-        }
-		// create new category without parent and selector
 		var c = new Category(null, model, null, template);
-		// look though elements in category's model and
-		// append it to just created category
+        var offset = 0;
 		for (var i in elements) {
 			if (clone === true) {
 				elements[i]["id"] = undefined;
@@ -2017,48 +2155,43 @@ var TemplateEngine = TemplateEngine || {
 				_getTemplateByID(elements[i]["type"])
 			);
 			item.model(elements[i], true);
-			c.append(item);
-            // if index not equal to position, then we have hole and
-            // insert reference to category in that position
-            if (+i + 1 != item.field("position")) {
+            while (+i + 1 + offset != +item.field("position")) {
                 var path = item.field("path").split('.');
+                if (!+i) {
+                    ++offset;
+                    continue;
+                }
                 if (path.length > 1) {
                     var prevPath = "";
                     for (var j in path) {
                         if (j == path.length - 1) {
-                            prevPath += (+path[j] - 1);
+                            prevPath += (+path[j] - (+item.field("position") - (+i + offset + 1)));
                         } else {
                             prevPath += path[j] + ".";
                         }
                     }
-                    console.log(item);
-                    // create item for category's reference
-                    item = new Item(c, null, null, TemplateEngine.getTemplateCollection().find("category"));
-                    // append category to reference (or null) and append to parent
-                    item.category(prevPath);
-                    c.append(item);
-                    // add category to patch
-                    this._toPatch.push({
-                        path: prevPath,
-                        item: item
-                    });
+                    if (!CategoryPatcher.get(prevPath)) {
+                        var ref = new Item(c, null, null,
+                            TemplateEngine.getTemplateCollection().find("category")
+                        );
+                        CategoryPatcher.put(prevPath, ref);
+                        c.append(ref);
+                    }
+                    ++offset;
                 }
             }
+            c.append(item);
 		}
-		// append category to category collection
 		if (!(collection instanceof CategoryCollection)) {
-			// fix for categories (need to disable draggable)
 			CategoryCollection.prototype.afterDrop.call(
 				collection, c
 			).append(c);
-			// detach selector and append to list (container fix)
 			c.selector().detach().appendTo(
 				collection.selector().children(".template-engine-list")
 			);
 		} else {
 			collection.afterDrop(c).append(c);
 		}
-		// append children categories to parent
 		if (children) {
 			if (!c.selector().children(".template-engine-list").length) {
 				c.selector().append(
@@ -2067,7 +2200,12 @@ var TemplateEngine = TemplateEngine || {
 					})
 				);
 			}
-			for (var i in children) {
+			for (i in children) {
+                if (+i + 1 != +children[i]["position"] && !CategoryPatcher.get(children[i]["path"])) {
+                    ref = new Item(c, null, null, TemplateEngine.getTemplateCollection().find("category"));
+                    c.append(ref);
+                    CategoryPatcher.put(children[i]["path"], ref);
+                }
 				CategoryCollection.prototype.register.call(
 					c, children[i], clone
 				);
@@ -2273,6 +2411,7 @@ var TemplateEngine = TemplateEngine || {
 		var collection = WidgetCollection.widget().getCategoryCollection();
 		collection.model(model, true);
 		// initialize collection with template model collection
+        CategoryPatcher.construct();
 		for (var i in model.categories) {
 			var isContains = false;
 			for (var j in collection.children()) {
@@ -2292,13 +2431,25 @@ var TemplateEngine = TemplateEngine || {
 			if (isContains) {
 				continue;
 			}
-			getCc().register(
+			WidgetCollection.widget().getCategoryCollection().register(
 				model.categories[i]
 			);
 		}
-        getCc().afterRegister();
+        WidgetCollection.widget().getCategoryCollection().afterRegister();
 		// return self
 		return TemplateEngine;
+	};
+
+	TemplateEngine.isCategory = function(item) {
+		return item instanceof Category;
+	};
+
+	TemplateEngine.isCollection = function(item) {
+		return item instanceof CategoryCollection;
+	};
+
+	TemplateEngine.isItem = function(item) {
+		return item instanceof Item;
 	};
 
 	TemplateEngine.restart = function() {
@@ -2308,14 +2459,6 @@ var TemplateEngine = TemplateEngine || {
         // reset has been changed flag
         hasChanges = false;
 	};
-
-    var getTc = function() {
-        return WidgetCollection.widget().getTemplateCollection();
-    };
-
-    var getCc = function() {
-        return WidgetCollection.widget().getCategoryCollection();
-    };
 
 	TemplateEngine.getTemplateCollection = function() {
 		return WidgetCollection.widget().getTemplateCollection();
@@ -2334,32 +2477,35 @@ var TemplateEngine = TemplateEngine || {
         var hasNotSaved = false;
 		var result = [];
 		var update = function(item) {
-			if (!item.has("id") && !item.category()) {
-                hasNotSaved = true;
+			if (!item.has("id")) {
+                if (!(item.template() && item.template().key() == "category")) {
+                    hasNotSaved = true;
+                }
 				return false;
 			}
-            if (!(item instanceof CategoryCollection)) {
-                if (item instanceof Item) {
-                    result.push({
-                        type: "element",
-                        id: item.field("id"),
-                        position: item.field("position"),
-                        category: item.field("categorie_id")
-                    });
-                } else {
-                    result.push({
-                        type: "category",
-                        id: item.field("id"),
-                        position: item.field("position"),
-                        category: item.field("parent_id")
-                    });
-                }
-            }
 			for (var i in item.children()) {
 				if (!item.children(i)) {
 					continue;
 				}
 				update(item.children(i));
+			}
+			if (item instanceof CategoryCollection) {
+				return true;
+			}
+			if (item instanceof Item && !item.category()) {
+				result.push({
+					type: "element",
+					id: item.field("id"),
+					position: item.field("position"),
+					category: item.field("categorie_id")
+				});
+			} else {
+				result.push({
+					type: "category",
+					id: item.field("id"),
+					position: item.field("position"),
+					category: item.field("parent_id")
+				});
 			}
 			return true;
 		};
@@ -2376,8 +2522,11 @@ var TemplateEngine = TemplateEngine || {
 		}
 		json += "]";
         if (!strict && hasNotSaved && !confirm('Часть элементов имеют незаполненные данные, при сохранении данные элементы будут потреряны. Продолжить? ')) {
+            hasChanges = true;
             return false;
         }
+        console.log(result);
+        $(".saving-template").css("visibility", "visible");
 		// set request on server to update template categories
 		$.post(globalVariables.baseUrl + "/admin/templates/utc", {
 			tid: cc.field("id"),
@@ -2385,6 +2534,7 @@ var TemplateEngine = TemplateEngine || {
 			cids: json
 		}, function(data) {
 			$("#designTemplatePopup").modal("hide");
+            $(".saving-template").css("visibility", "hidden");
 		});
 	};
 
@@ -2401,40 +2551,15 @@ var TemplateEngine = TemplateEngine || {
             }
         });
 
-		/*$("#findCategoryPopup form .btn-primary").click(function() {
-			var value = $("#findCategoryPopup form #parentId").val();
-			if (value < 0) {
-				return true;
-			}
-			$.ajax({
-				'url': globalVariables.baseUrl + '/admin/categories/one?id=' + value,
-				'cache': false,
-				'dataType': 'json',
-				'type': 'GET'
-			}).done(function(data) {
-				TemplateEngine.getCategoryCollection()
-					.register(data["model"], true);
-			});
-		});*/
-
-		//var tc = TemplateEngine.getTemplateCollection();
-
-		/*$("#designTemplatePopup").on("shown.bs.modal", function() {
-			tc.selector().detach().appendTo(
-				$(document.body)
-			).css("visibility", "visible");
-		});
-		$("#designTemplatePopup").on("hide.bs.modal", function() {
-			tc.selector().detach().appendTo(
-				tc.selector()
-			).css("visibility", "hidden")
-		});*/
-
 		$("#findCategoryPopup form .btn-warning").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();
 			if (value < 0) {
 				return true;
 			}
+            if (!confirm("Категори будет перемещена и потеряет своего исходного родитаеля. Вы уверены?")) {
+                return true;
+            }
+            $("#findCategoryPopup .saving-template").css("visibility", "visible");
 			$.ajax({
 				'url': globalVariables.baseUrl + '/admin/categories/move?id=' + value,
 				'cache': false,
@@ -2466,6 +2591,8 @@ var TemplateEngine = TemplateEngine || {
 				findAndDetach(cc);
 				cc.register(data["model"], false);
                 hasChanges = true;
+                $("#findCategoryPopup .saving-template").css("visibility", "hidden");
+                $("#findCategoryPopup").modal("hide");
 			});
 		});
 
@@ -2474,6 +2601,7 @@ var TemplateEngine = TemplateEngine || {
 			if (value < 0) {
 				return true;
 			}
+            $("#findCategoryPopup .saving-template").css("visibility", "visible");
 			$.ajax({
 				'url': globalVariables.baseUrl + '/admin/categories/clone?id=' + value,
 				'cache': false,
@@ -2492,6 +2620,8 @@ var TemplateEngine = TemplateEngine || {
 				};
                 hasChanges = true;
 				appendToList(c);
+                $("#findCategoryPopup .saving-template").css("visibility", "hidden");
+                $("#findCategoryPopup").modal("hide");
 			});
 		});
 	});

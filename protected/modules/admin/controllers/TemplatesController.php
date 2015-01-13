@@ -247,6 +247,9 @@ class TemplatesController extends Controller {
             } else {
                 $path = $child->position;
             }
+            if ($path[0] == '.') {
+                $path = substr($path, 1);
+            }
 			if ($child->type == "element") {
 				MedcardElement::model()->updateByPk($child->id, array(
 					"position" => $child->position,
