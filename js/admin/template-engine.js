@@ -1200,7 +1200,6 @@ var TemplateEngine = TemplateEngine || {
 	Item["-instance"] = null;
 
 	var _updateItem = function(event, data) {
-        console.log(data);
 		var json = $.parseJSON(data);
 		if (!json.success) {
             // Удаляем предыдущие ошибки
@@ -2525,7 +2524,6 @@ var TemplateEngine = TemplateEngine || {
             hasChanges = true;
             return false;
         }
-        console.log(result);
         $(".saving-template").css("visibility", "visible");
 		// set request on server to update template categories
 		$.post(globalVariables.baseUrl + "/admin/templates/utc", {

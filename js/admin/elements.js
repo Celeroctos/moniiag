@@ -184,16 +184,16 @@ function readConfigFromInterface(sender) {
 
 	var container = $(sender).parents('.modal-body');
 
-	var hiddenConfig = $(container).find('#config');
-	var configTable = $(container).find('.table-config-headers');
-	var rowsHeaders = $(configTable).find('tbody tr').find('td:eq(0) input');
-	var colsHeaders = $(configTable).find('tbody tr').find('td:eq(1) input');
+	var hiddenConfig = container.find('#config');
+	var configTable = container.find('.table-config-headers');
+	var rowsHeaders = configTable.find('tbody tr').find('td:eq(0) input');
+	var colsHeaders = configTable.find('tbody tr').find('td:eq(1) input');
 	var tempConfig = {
 		cols: [],
 		rows: [],
 		values: {},
-		numCols: $(container).find('#numCols').val(),
-		numRows: $(container).find('#numRows').val()
+		numCols: container.find('#numCols').val(),
+		numRows: container.find('#numRows').val()
 	};
 
 	for (var i = 0; i < rowsHeaders.length; i++) {
@@ -207,7 +207,6 @@ function readConfigFromInterface(sender) {
 		}
 	}
 
-
 	// Берём таблицу из соответствующего контейнера
 	var defaultInputs = $(container).find('div.defaultValuesTable table.controltable tbody input');
 	var defaultValues = [];
@@ -220,7 +219,7 @@ function readConfigFromInterface(sender) {
 		}
 	}
 
-	$(hiddenConfig).val($.toJSON(tempConfig));
+	hiddenConfig.val(JSON.stringify(tempConfig));
 }
 
 // Функция пробегает по строкам грида с зависимостями и проверяет,
@@ -967,42 +966,57 @@ $('#editElementDependences').on('click', function () {
 
     });
 
-	$('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').on('change', function (e) {
-		// Проверим - являются ли значения цифрами
-		if ((is_int($($(e.currentTarget).parents('.modal-body')[0]).find('#numCols').val()))  &&
-			(is_int($($(e.currentTarget).parents('.modal-body')[0]).find('#numRows').val()))
-		) {
-			printDefaultValuesTable($(e.currentTarget).parents('.modal-body').find('#numCols').val(), $(e.currentTarget).parents('.modal-body').find('#numRows').val());
-			configStr = $($(e.currentTarget).parents('.modal-body').find('#config')[0]).val();
-			if (configStr == "") {
-				// Прочитаем конфигурацию
-				readConfigFromInterface(this);
-				// Читаем снова строку конфигурации
-				configStr = $($(e.currentTarget).parents('.modal-body').find('#config')[0]).val();
-			}
-			config = $.parseJSON(configStr);
-			if (config.values != undefined && config.values != null) {
-				writeDefValuesFromConfig(config.values);
-			}
-			// Нужно поменять значения в конфиге
-			config.numCols = $(e.currentTarget).parents('.modal-body').find('#numCols').val();
-			config.numRows = $(e.currentTarget).parents('.modal-body').find('#numRows').val();
-			$($(e.currentTarget).parents('.modal-body').find('#config')[0]).val($.toJSON(config));
-			// Теперь нужно проверить - если включены заголовки строк (и столбцов) Если включены - надо удалить (или добавить)
-			//   в таблицу заголовков столько строк, чтобы они соотносились с количеством строк и столбцов в самой таблице
-			currentForm = $(e.currentTarget).parents('form');
-			// Вывести заново из конфигов заголовки строк и столбцов
-			printHeadersTable(config,
-				$(e.currentTarget).parents('.modal-body').find('.table-config-headers tbody'),
-				$(e.currentTarget).parents('.modal-body').find('.colsHeaders'),
-				$(e.currentTarget).parents('.modal-body').find('.rowsHeaders'),
-				$(e.currentTarget).parents('.modal-body').find('#numRows'),
-				$(e.currentTarget).parents('.modal-body').find('#numCols')
-			);
-		} else {
-			printDefaultValuesTable(0, 0);
-		}
+    var calculateTableConfig = function(table) {
+        // Проверим - являются ли значения цифрами
+        if ((is_int($($(table).parents('.modal-body')[0]).find('#numCols').val()))  &&
+            (is_int($($(table).parents('.modal-body')[0]).find('#numRows').val()))
+        ) {
+            printDefaultValuesTable($(table).parents('.modal-body').find('#numCols').val(), $(table).parents('.modal-body').find('#numRows').val());
+            var configStr = $($(table).parents('.modal-body').find('#config')[0]).val();
+            if (configStr == "") {
+                // Прочитаем конфигурацию
+                readConfigFromInterface(table);
+                // Читаем снова строку конфигурации
+                configStr = $($(table).parents('.modal-body').find('#config')[0]).val();
+            }
+            var config = $.parseJSON(configStr);
+            if (config.values != undefined && config.values != null) {
+                writeDefValuesFromConfig(config.values);
+            }
+            // Нужно поменять значения в конфиге
+            config.numCols = $(table).parents('.modal-body').find('#numCols').val();
+            config.numRows = $(table).parents('.modal-body').find('#numRows').val();
+            $($(table).parents('.modal-body').find('#config')[0]).val(JSON.stringify(config));
+            // Теперь нужно проверить - если включены заголовки строк (и столбцов) Если включены - надо удалить (или добавить)
+            //   в таблицу заголовков столько строк, чтобы они соотносились с количеством строк и столбцов в самой таблице
+            // Вывести заново из конфигов заголовки строк и столбцов
+            printHeadersTable(config,
+                $(table).parents('.modal-body').find('.table-config-headers tbody'),
+                $(table).parents('.modal-body').find('.colsHeaders'),
+                $(table).parents('.modal-body').find('.rowsHeaders'),
+                $(table).parents('.modal-body').find('#numRows'),
+                $(table).parents('.modal-body').find('#numCols')
+            );
+        } else {
+            printDefaultValuesTable(0, 0);
+        }
+    };
+
+    $("#editElementPopup, #addElementPopup").on("show.bs.modal", function() {
+        calculateTableConfig($(this).find("#numCols"));
+    });
+
+    $('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').keyup('change', function() {
+        calculateTableConfig(this);
+    });
+	$('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').on('change', function() {
+        calculateTableConfig(this);
 	});
+
+    $("#addElementPopup .btn-primary").click(function() {
+        readConfigFromInterface($("#element-add-form #config"));
+        readConfigFromInterface($("#element-edit-form #config"));
+    });
 
 	$('#controlDependencesList').on('change', function (e) {
 		if ($(this).val().length > 0) {

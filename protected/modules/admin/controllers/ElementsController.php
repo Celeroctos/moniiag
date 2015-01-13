@@ -217,15 +217,16 @@ class ElementsController extends Controller {
             }
         }
 
-		/*
-		 * Сломан элемент управления таблица
-		 */
-
 		$config = array();
+
 		if(isset($model->directLink)) {
 			$config['directLink'] = $model->directLink;
 		}
-		
+
+        if (is_string($model->config)) {
+            $model->config = json_decode($model->config, true);
+        }
+
         if($model->type == 4) {
             $config += $model->config;
         }
