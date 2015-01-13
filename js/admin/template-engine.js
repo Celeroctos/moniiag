@@ -977,6 +977,17 @@ var TemplateEngine = TemplateEngine || {
 		});
 	};
 
+    Component.prototype.countActiveNodes = function() {
+        var count = this.has("id") ? this.field("id") : 0;
+        for (var i in this.children()) {
+            if (!this.children(i)) {
+                continue;
+            }
+            count += this.children(i).count();
+        }
+        return count;
+    };
+
 	Component.prototype._renderRemoveButton = function(style) {
 		var that = this;
 		return $("<span></span>", {
@@ -987,8 +998,13 @@ var TemplateEngine = TemplateEngine || {
                 that.category().reference(null);
                 that.category(null);
                 hasChanges = true;
-            } else if (that instanceof Category && that.reference()) {
-                that.reference().remove();
+            } else if (that instanceof Category) {
+                if (that.count() > 0 && !confirm("Категория имеет подкатегории, шаблон будет расформирован. Продолжить?")) {
+                    return true;
+                }
+                if (that.reference()) {
+                    that.reference().remove();
+                }
                 hasChanges = true;
             }
 			that.remove();
