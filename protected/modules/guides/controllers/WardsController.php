@@ -51,6 +51,14 @@ class WardsController extends Controller {
             }
         }
     }
+	
+	public function actionIssetDoctorPerWard($id) {
+		$issetDoctors = Doctor::model()->findAll('ward_code = :ward_id', array(':ward_id' => $id));
+		echo CJSON::encode(array(
+			'success' => true,
+			'doctors' => $issetDoctors
+		));
+	}
 
     public function actionDelete($id) {
         try {
