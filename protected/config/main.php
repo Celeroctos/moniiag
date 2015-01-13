@@ -123,7 +123,7 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),*/
 		),
-		'db'=>include( dirname(__FILE__).'/db/db.php' ),
+		'db'=> include( dirname(__FILE__).'/db/db.php'),
 		// uncomment the following to use a MySQL database
 		'db2' => array(
 			'class'=>'system.db.CDbConnection',
