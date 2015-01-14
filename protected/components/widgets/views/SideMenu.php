@@ -107,16 +107,15 @@
         </ul>
     </li>
 <?php } ?>
-<!--
-<li <?php echo $module == 'hospital' ? 'class="active"' : ''; ?>>
-	<?php echo CHtml::link('<img src="/images/icons/doctors_cabinet.png" width="32" height="32" alt="" />Стационар', array('#')) ?>
-	<ul class="nav">
-		<li <?php echo $controller == 'monitoring' && $module == 'hospital' ? 'class="active"' : ''; ?>>
-			<?php echo CHtml::link('<img src="/images/icons/greeting_patient.png" width="32" height="32" alt="" />Мониторинг', array('/hospital/monitoring/view')) ?>
-		</li>
-	</ul>
+	<li <?php echo $module == 'doctors' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('<img src="/images/icons/doctors_cabinet.png" width="32" height="32" alt="" />Стационар', array('#')) ?>
+        <ul class="nav">
+			<li>
+				<?php echo CHtml::link('<img src="/images/icons/greeting_patient.png" width="32" height="32" alt="" />Госпитализация', array('/hospital/hospitalization/view')) ?>
+			</li>
+        </ul>
+    </li>
 </li>
--->
 <?php if(Yii::app()->user->checkAccess('menuStat')) { ?>
     <li <?php echo $module == 'statistic' || ($controller == 'tasu' && $module == 'admin') ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('<img src="/images/icons/stat.png" width="32" height="32" alt="" />Статистика', array('#')) ?>

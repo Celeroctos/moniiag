@@ -6,6 +6,7 @@
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.less" rel="stylesheet/less" media="screen">
+	<link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hospital/main.less" rel="stylesheet/less" media="screen">
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/jquery.jqplot.min.css">
     <script type="text/javascript">
         var globalVariables = {
@@ -20,16 +21,10 @@
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/bootstrap-datetimepicker.ru.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery.selection.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/js/i18n/grid.locale-ru.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/js/jquery.jqGrid.src.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-browser.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery.keyfilter-1.7.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/main.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/datecontrol.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/timecontrol.js"></script>
-            <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboard.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/pagination.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/keyboardcnf.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/engine/base/main.js"></script>
+	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/engine/modules/hospital/main.js"></script>
     <style>
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;

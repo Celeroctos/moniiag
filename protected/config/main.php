@@ -96,10 +96,11 @@ return array(
                 'application.modules.statistic.controllers.*'
             ),
         ),
-	'hospital' => array(
+		'hospital' => array(
             'class' => 'application.modules.hospital.HospitalModule',
             'import'=>array(
-                'application.modules.hospital.models.*',
+                'application.modules.hospital.models.ar.*',
+				'application.modules.hospital.models.forms.*',
                 'application.modules.hospital.components.*',
                 'application.modules.hospital.controllers.*'
             ),
