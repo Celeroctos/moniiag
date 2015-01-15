@@ -680,7 +680,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
     // По нажатию на кнопку "удалить" - спрашиваем подтверждение на удаление
     $('button[id^=delete]').filter(
-		':not(#deleteMedworker, #deleteTemplate)'
+		':not(#deleteMedworker, #deleteTemplate, #deleteWard)'
 	).on('click',function(e)
     {
         response = confirm ('Вы действительно хотите выполнить удаление?');
