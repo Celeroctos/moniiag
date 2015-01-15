@@ -15,6 +15,7 @@ class PatientController extends Controller {
             'modelOms' => new FormOmsEdit()
         ));
     }
+	
 
     // Привязать карту к другому полису
     public function actionRebindOmsMedcard()
@@ -75,6 +76,16 @@ class PatientController extends Controller {
 
     }
 	
+	public function actionGenerateCardNumber() {
+		if(!isset($_GET['ruleid'])) {
+			echo CJSON::encode(array('success' => false));
+			exit();
+		}
+		$generator = new CardnumberGenerator();
+		//$generator->setPrevNumber('14/12345-Р');
+		$cardNumber = $generator->generateNumber($_GET['ruleid']);
+	}
+	
 	// Удалить ОМС
 	public function actionDeleteOms() {
 		if(!isset($_GET['omsid'])) {
@@ -84,6 +95,7 @@ class PatientController extends Controller {
 		Oms::model()->deleteByPk($_GET['omsid']);
 		echo CJSON::encode(array('success' => true));
 	}
+
 
     // Получить страницу просмотра истории движения медкарты
     public function actionViewHistoryMotion()
@@ -402,27 +414,38 @@ class PatientController extends Controller {
 
     public function actionGetIsOmsWithNumber()
     {
-       // var_dump($_GET['omsIdToCheck']);
-       // exit();
-
         $newOms = null;
         $oldOms = null;
         $result = array();
-        if (isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck']))
-        {
-            //var_dump($_GET['omsIdToCheck']);
-            //exit();
-            if ( isset ($_GET['omsSeriesToCheck']) && $_GET['omsSeriesToCheck']!='' )
-            {
-                $newOms= $this->checkUnickueOmsInternal($_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'],
-                    $_GET['omsIdToCheck'],true);
+        if(isset($_GET['omsNumberToCheck'])&& isset($_GET['omsIdToCheck'])) {
+            if (isset ($_GET['omsSeriesToCheck']) && $_GET['omsSeriesToCheck'] != '') {
+                $newOms = $this->checkUnickueOmsInternal(
+					$_GET['omsSeriesToCheck'].' '.$_GET['omsNumberToCheck'], 
+					$_GET['omsIdToCheck'], 
+					true, 
+					array(
+						'firstName' => $_GET['firstName'],
+						'lastName' => $_GET['lastName'],
+						'middleName' => $_GET['middleName'],
+						'birthday' => $_GET['birthday']
+					)
+				);
+            } else {
+                $newOms = $this->checkUnickueOmsInternal(
+					$_GET['omsNumberToCheck'], 
+					$_GET['omsIdToCheck'],
+					true,
+					array(
+						'firstName' => $_GET['firstName'],
+						'lastName' => $_GET['lastName'],
+						'middleName' => $_GET['middleName'],
+						'birthday' => $_GET['birthday']
+					)
+				);
             }
-            else
-            {
-                $newOms= $this->checkUnickueOmsInternal($_GET['omsNumberToCheck'],$_GET['omsIdToCheck'],true);
-            }
+
             // Если омс!=нуль, то значит, что полис с таким номером существует в базе
-            if ($newOms!=null)
+            if ($newOms != null)
             {
                 // Вытащим ОМС по ИД и сравним: если ФИО и дата рождения не совпадает - выводим флаг, который скажет,
                 //     нужно вывести сообщение, чтобы оператор проверил все данные
@@ -434,20 +457,19 @@ class PatientController extends Controller {
 
                 // Сравним данные по $oms и $oldOms
                 if (
-                    (mb_strtolower($newOms['first_name'], 'UTF-8') != mb_strtolower($oldOms['first_name'], 'UTF-8'))||
-                    (mb_strtolower($newOms['last_name'], 'UTF-8') != mb_strtolower($oldOms['last_name'], 'UTF-8'))||
-                    (mb_strtolower($newOms['middle_name'], 'UTF-8') != mb_strtolower($oldOms['middle_name'], 'UTF-8'))||
-                    (mb_strtolower($newOms['birthday'], 'UTF-8') != mb_strtolower($oldOms['birthday'], 'UTF-8'))
-
+                    (mb_strtolower($_GET['firstName'], 'UTF-8') != mb_strtolower($newOms['first_name'], 'UTF-8')) ||
+                    (mb_strtolower($_GET['lastName'], 'UTF-8') != mb_strtolower($newOms['last_name'], 'UTF-8')) ||
+                    (mb_strtolower($_GET['middleName'], 'UTF-8') != mb_strtolower($newOms['middle_name'], 'UTF-8')) ||
+                    (mb_strtolower($_GET['birthday'], 'UTF-8') != mb_strtolower($newOms['birthday'], 'UTF-8'))
                 )
                 {
-                    // Совпадения нет
+					// Совпадения нет
                     $result['nonCoincides'] = true;
                 }
 
                 // вытащим номер карты, у которой максимален номер по данному полису
                 $medcardObject = new Medcard();
-                $lastMedcardNewOms = $medcardObject->getLastByPatient(  $newOms['id']  );
+                $lastMedcardNewOms = $medcardObject->getLastByPatient( $newOms['id'] );
 
                 // Вытащим номер карты по старому полису (т.е. медкарты,
                 //    которая в настоящий момент привязана к полису, номер которого меняется)
@@ -463,7 +485,9 @@ class PatientController extends Controller {
                 {
                     $result['newMedcard'] = $lastMedcardNewOms ['card_number'] ;
                 }
-            }
+            } else {
+			
+			}
         }
 
         echo CJSON::encode(
@@ -485,8 +509,11 @@ class PatientController extends Controller {
     }
 
     // Просмотр страницы добавления карты к пациенту
+    // Просмотр страницы добавления карты к пациенту
     public function actionViewAdd() {
+        Yii::app()->user->setState('savedCardNumber', -1); // Сбросить предыдущий номер по F5
         $privilegesList = $this->getPrivileges();
+        $cardnumberGenerator = new CardnumberGenerator(true, true);
 
         if(isset($_GET['patientid']) && !isset($_GET['mediateid'])) {
 
@@ -494,17 +521,17 @@ class PatientController extends Controller {
             $patient = $model->findByPk($_GET['patientid']);
             // Скрыть частично поля, которые не нужны при первичной регистрации
             if($patient != null) {
-				// Если нет региона и страховой компании, то подгрузить их
-				$tasuStatus = true;
-				try {
-					$tasuController = Yii::app()->createController('admin/tasu');
-					$result = $tasuController[0]->getTasuPatientByPolicy($patient);
-					/*if($result === -1) {
-						$tasuStatus = false;
-					}*/
-				} catch(Exception $e) {
-					$tasuStatus = false;
-				}
+                // Если нет региона и страховой компании, то подгрузить их
+                $tasuStatus = true;
+                try {
+                    $tasuController = Yii::app()->createController('admin/tasu');
+                    $result = $tasuController[0]->getTasuPatientByPolicy($patient);
+                    /*if($result === -1) {
+                        $tasuStatus = false;
+                    }*/
+                } catch(Exception $e) {
+                    $tasuStatus = false;
+                }
 
                 // Нужно найти последнюю медкарту, чтобы по ней заполнить данными
                 $medcardModel = new Medcard();
@@ -514,6 +541,7 @@ class PatientController extends Controller {
                 if($medcard != null) {
                     $medcard = Medcard::model()->findByPk($medcard['card_number']);
                     $this->fillFormMedcardModel($formModel, $medcard);
+                    $cardnumberGenerator->setPrevNumber($medcard->card_number);
                     // Ищем привилегии
                     $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
                 } else {
@@ -537,7 +565,11 @@ class PatientController extends Controller {
                     'foundPriv' => count($privileges) > 0,
                     'id' => -1,
                     'actionAdd' => 'addcard',
-					'tasuStatus' => $tasuStatus
+                    'tasuStatus' => $tasuStatus,
+                    'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                    'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                    'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                    'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
             } else {
                 $model = new FormPatientAdd();
@@ -548,7 +580,11 @@ class PatientController extends Controller {
                     'foundPriv' => false,
                     'policy_number' => -1,
                     'policy_id' => -1,
-                    'actionAdd' => 'add'
+                    'actionAdd' => 'add',
+                    'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                    'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                    'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                    'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
             }
         } else {
@@ -579,17 +615,26 @@ class PatientController extends Controller {
                     'foundPriv' => false,
                     'fio' => $oms->last_name.' '.$oms->first_name.' '.$oms->middle_name,
                     'policy_number' => $oms->oms_number,
-                    'actionAdd' => 'addcard'
+                    'actionAdd' => 'addcard',
+                    'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                    'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                    'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                    'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
                 ));
                 exit();
             }
+
             $model = new FormPatientAdd();
             $this->render('addPatientWithoutCard', array(
                 'model' => $model,
                 'regPoint' => date('Y'),
                 'privilegesList' => $privilegesList,
                 'foundPriv' => false,
-                'actioadd' => 'add'
+                'actionAdd' => 'add',
+                'newCardNumber' => $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId),
+                'medcardNumberPrefix' => $cardnumberGenerator->getPrefix(),
+                'medcardNumberPostfix' => $cardnumberGenerator->getPostfix(),
+                'medcardNumber' => $cardnumberGenerator->getOnlyNumber()
             ));
         }
     }
@@ -606,15 +651,9 @@ class PatientController extends Controller {
                 $model->contact = "";
             if($model->validate()) {
                 $medcard = new Medcard();
-               // var_dump('!');
                 $oms = $this->checkUniqueOms($model);
-               // var_dump('?');
-               // var_dump($oms);
-               // exit();
                 // Если пациент с таким полисом найден, просто создаётся карта и подсоединяется полис
                 if($oms == null) {
-                    //var_dump('!');
-                    //exit();
                     $oms = new Oms();
                     $this->addEditModelOms($oms, $model);
                 } else {
@@ -622,7 +661,7 @@ class PatientController extends Controller {
                     $this->checkIssetMedcardInYear($oms, $medcard);
                 }
                 $this->checkUniqueMedcard($model);
-                $this->addEditModelMedcard($medcard, $model, $oms);;
+                $this->addEditModelMedcard($medcard, $model, $oms);
                 if($model->privilege != -1) {
                     $patientPrivelege = new PatientPrivilegie();
                     $this->addEditModelPrivilege($patientPrivelege, $model, $oms->id);
@@ -655,6 +694,7 @@ class PatientController extends Controller {
     // Проверка на уникальность данных в медкарте
     private function checkUniqueMedcard($model) {
         // На момент создания пациента не должно быть идентичного с номером СНИЛС и паспортом (серии + номер)
+        $medcardSearched = null;
         if(trim($model->snils) != '') {
             $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie)', array(
                 ':snils' => $model->snils,
@@ -662,11 +702,18 @@ class PatientController extends Controller {
                 ':serie' => $model->serie)
             );
         } else {
-            $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
-                ':docnumber' => $model->docnumber,
-                ':serie' => $model->serie)
-            );
+            if (!(($model->docnumber=='')&&($model->serie=='')))
+            {
+                $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
+                    ':docnumber' => $model->docnumber,
+                    ':serie' => $model->serie)
+                );
+            }
         }
+
+       //var_dump($medcardSearched );
+      // exit();
+
         if($medcardSearched != null) {
             echo CJSON::encode(array('success' => 'false',
                 'errors' => array(
@@ -679,236 +726,56 @@ class PatientController extends Controller {
     }
 
     private function checkUniqueOms($model, $withoutCurrent = false) {
-
         $IdOfOms = null;
-        if (isset($model->id))
-        {
+        if(isset($model->id)) {
             $IdOfOms = $model->id;
-        }
+			$fioData = array(
+				'firstName' => $model->firstName,
+				'lastName' => $model->lastName,
+				'middleName' => $model->middleName ? $model->middleName : '',
+				'birthday' => $model->birthday
+			);
+			$withoutCurrent = true;
+        } else {
+			$fioData = array();
+		}
         // Если в моделе есть поле $omsSeries - надо проверить номер вместе с ним
         //  причём в двух вариантах - с прбелом и без
         $seriesSubstringWithSpace = '';
         $seriesSubstringWOSpace = '';
-        if (isset($model->omsSeries))
-        {
-            //$seriesSubstringWOSpace = $model->omsSeries;
+        if (isset($model->omsSeries)) {
             $seriesSubstringWithSpace = $model->omsSeries. ' ';
         }
-
-        /*
-        $comarisonResult = $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
-        if ($comarisonResult===true)
-            return $comarisonResult;
-
-
-        return $this->checkUnickueOmsInternal($seriesSubstringWOSpace.$model->policy,$IdOfOms,$withoutCurrent);
-        */
-        return $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy,$IdOfOms,$withoutCurrent);
+		
+        return $this->checkUnickueOmsInternal($seriesSubstringWithSpace.$model->policy, $IdOfOms, $withoutCurrent, $fioData);
     }
 
 
-    private function checkUnickueOmsInternal($omsNumber,$omsId,$withoutCurrent)
+    private function checkUnickueOmsInternal($omsNumber, $omsId, $withoutCurrent, $fioData = array())
     {
         // Если номер ОМС - пустая строка - то возвращаем сразу нуль
         if (  str_replace(array (' ','-'),'',$omsNumber)   == '')
         {
             return null;
         }
-
-        // Старый код. Возможно потом понадобится
-        /*
-        // Проверим, не существует ли уже такого ОМС
-        // Три вида ОМС: с пробелом впереди, с пробелом посередине
-        if(mb_strlen($omsNumber) != 16 && !$withoutCurrent) {
-            $omsSearched = Oms::model()->find('oms_number = :oms_number', array(':oms_number' => $omsNumber));
-        } else {
-            $omsNumber1 = $omsNumber;
-            $omsNumber2 = ' '.$omsNumber;
-            $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
-            if(!$withoutCurrent) {
-                $omsSearched = Oms::model()->find(
-                    'oms_number = :oms_number1 OR
-                    oms_number = :oms_number2 OR
-                    oms_number = :oms_number3',
-                    array(
-                        ':oms_number1' => $omsNumber1,
-                        ':oms_number2' => $omsNumber2,
-                        ':oms_number3' => $omsNumber3
-                    )
-                );
-            } else {
-                if($omsId != null) {
-                    $omsSearched = Oms::model()->find(
-                        '(oms_number = :oms_number1 OR
-                        oms_number = :oms_number2 OR
-                        oms_number = :oms_number3)
-                        AND id != :policy_id',
-                        array(
-                            ':oms_number1' => $omsNumber1,
-                            ':oms_number2' => $omsNumber2,
-                            ':oms_number3' => $omsNumber3,
-                            ':policy_id' => $omsId
-                        )
-                    );
-                } else {
-                    $omsSearched = Oms::model()->find(
-                        'oms_number = :oms_number1 OR
-                        oms_number = :oms_number2 OR
-                        oms_number = :oms_number3',
-                        array(
-                            ':oms_number1' => $omsNumber1,
-                            ':oms_number2' => $omsNumber2,
-                            ':oms_number3' => $omsNumber3
-                        )
-                    );
-                }
-            }
-        }
-        */
-        /*
-        $omsNumber1 = $omsNumber;
-        $omsNumber2 = ' '.$omsNumber;
-        $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
-        // Для поиска по нормализованному номеру
-        $omsNumberNormalized =  str_replace(array('-',' '), '', $omsNumber);
-        //var_dump($withoutCurrent);
-        //exit();
-        if(!$withoutCurrent) {
-            $omsSearched = Oms::model()->find(
-                'oms_number = :oms_number1 OR
-                oms_number = :oms_number2 OR
-                oms_number = :oms_number3 OR
-                oms_series_number = :oms_norm_number
-                ',
-                array(
-                    ':oms_number1' => $omsNumber1,
-                    ':oms_number2' => $omsNumber2,
-                    ':oms_number3' => $omsNumber3,
-                    ':oms_norm_number' => $omsNumberNormalized
-                )
-            );
-        } else {
-            //var_dump($omsId);
-            //exit();
-
-            if($omsId != null) {
-
-                $omsSearched = Oms::model()->find(
-                    '(oms_number = :oms_number1 OR
-                    oms_number = :oms_number2 OR
-                    oms_number = :oms_number3 OR
-                    oms_series_number = :oms_norm_number)
-                    AND id != :policy_id',
-                    array(
-                        ':oms_number1' => $omsNumber1,
-                        ':oms_number2' => $omsNumber2,
-                        ':oms_number3' => $omsNumber3,
-                        ':oms_norm_number' => $omsNumberNormalized,
-                        ':policy_id' => $omsId
-                    )
-                );
-                //var_dump($omsSearched);
-                //exit();
-
-            } else {
-                $omsSearched = Oms::model()->find(
-                    'oms_number = :oms_number1 OR
-                    oms_number = :oms_number2 OR
-                    oms_number = :oms_number3 OR
-                    oms_series_number = :oms_norm_number',
-                    array(
-                        ':oms_number1' => $omsNumber1,
-                        ':oms_number2' => $omsNumber2,
-                        ':oms_number3' => $omsNumber3,
-                        ':oms_norm_number' => $omsNumberNormalized
-                    )
-                );
-            }
-        }
-
-
-         // var_dump($omsSearched);
-        //  exit();
-
-
-        if($omsSearched != null) {
-            return $omsSearched;
-        }
-        return null;
-
-        */
-
+		
+		// Для поиска по нормализованному номеру
+        $omsNumberNormalized =  str_replace(array('-', ' '), '', $omsNumber);
         $omsSearched = null;
-        $omsNumber1 = $omsNumber;
-        $omsNumber2 = ' '.$omsNumber;
-        $omsNumber3 = mb_substr($omsNumber, 0, 6).' '.mb_substr($omsNumber, 6);
-        // Для поиска по нормализованному номеру
-        $omsNumberNormalized =  str_replace(array('-',' '), '', $omsNumber);
-        //var_dump($withoutCurrent);
-        //exit();
+        $omsNumber1 = $omsNumberNormalized;
+        $omsNumber2 = ' '.$omsNumberNormalized;
+        $omsNumber3 = mb_substr($omsNumberNormalized, 0, 6).' '.mb_substr($omsNumberNormalized, 6);
         if(!$withoutCurrent) {
-            /*$omsSearched = Oms::model()->find(
-                'oms_number = :oms_number1 OR
-                oms_number = :oms_number2 OR
-                oms_number = :oms_number3 OR
-                oms_series_number = :oms_norm_number
-                ',
-                array(
-                    ':oms_number1' => $omsNumber1,
-                    ':oms_number2' => $omsNumber2,
-                    ':oms_number3' => $omsNumber3,
-                    ':oms_norm_number' => $omsNumberNormalized
-                )
-            );*/
-            $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized);
+            $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized, false, $fioData);
 
         } else {
-            //var_dump($omsId);
-            //exit();
-
             if($omsId != null) {
-
-               /* $omsSearched = Oms::model()->find(
-                    '(oms_number = :oms_number1 OR
-                    oms_number = :oms_number2 OR
-                    oms_number = :oms_number3 OR
-                    oms_series_number = :oms_norm_number)
-                    AND id != :policy_id',
-                    array(
-                        ':oms_number1' => $omsNumber1,
-                        ':oms_number2' => $omsNumber2,
-                        ':oms_number3' => $omsNumber3,
-                        ':oms_norm_number' => $omsNumberNormalized,
-                        ':policy_id' => $omsId
-                    )
-                );
-                //var_dump($omsSearched);
-                //exit();
-                */
-
-                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized,$omsId);
+                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized, $omsId, $fioData);
             } else {
-              /*  $omsSearched = Oms::model()->find(
-                    'oms_number = :oms_number1 OR
-                    oms_number = :oms_number2 OR
-                    oms_number = :oms_number3 OR
-                    oms_series_number = :oms_norm_number',
-                    array(
-                        ':oms_number1' => $omsNumber1,
-                        ':oms_number2' => $omsNumber2,
-                        ':oms_number3' => $omsNumber3,
-                        ':oms_norm_number' => $omsNumberNormalized
-                    )
-                );*/
-                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized);
+                $omsSearched = Oms::findOmsByNumbers($omsNumber1,$omsNumber2,$omsNumber3,$omsNumberNormalized, false, $fioData);
             }
         }
-
-
-        // var_dump($omsSearched);
-        //  exit();
-
-
+		
         if($omsSearched != null) {
             return $omsSearched;
         }
@@ -957,7 +824,23 @@ class PatientController extends Controller {
     }
 
     private function checkIssetMedcardInYear($oms, $medcard) {
-        $year = date('Y');
+		$cardnumberGenerator = new CardnumberGenerator();
+		if(is_array($oms)) {
+			$id = $oms['id'];
+		} else {
+			$id = $oms->id;
+		}
+		$medcardSearched = $cardnumberGenerator->isIssetMedcard($id, Yii::app()->user->getState('medcardGenRuleId', -1));
+        if($medcardSearched) {
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array(
+                    'id' => array(
+                        'Карта для данного пациента в этом году уже создана!'
+                    )
+                )));
+            exit();
+        }
+		/*$year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
 	
 		if(is_array($oms)) {
@@ -974,7 +857,7 @@ class PatientController extends Controller {
                     )
                 )));
             exit();
-        }
+        }*/
     }
 
     // Добавление полиса
@@ -1157,6 +1040,7 @@ class PatientController extends Controller {
         $formModel->contact = $medcard->contact;
         $formModel->cardNumber = $medcard->card_number;
         $formModel->profession = $medcard->profession;
+		$formModel->cardNumber = $medcard->card_number;
     }
 
     public function getAddressStr($address, $showEmpty = false) {
@@ -1441,33 +1325,12 @@ class PatientController extends Controller {
                     $foundOmsMsg = null;
                     $this->addEditModelOms($oms, $model);
                 } else {
-                    // В этом случае полис существует. Надо обновить на новые данные и удалить старый полис (для того, чтобы не было дубликатов
-                   // Oms::model()->deleteByPk($_POST['FormOmsEdit']['id']);
-                    $birthday = implode('.', array_reverse(explode('-', $model->birthday)));
-                    $foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', дата рождения '.$birthday.'</strong>)';
-                    // Ищем медкарты с таким ОМС и просто переставляем ID, только_если у того, кого удаляют, нет медкарт. В противном случае, ничего не делаем
-                    // Если у старого пациента нет карт (редактировали ОМС без карты), а у нового (совпавшего) есть - подцепляем карты
-                   /* $medcardsByDelete = Medcard::model()->findAll('policy_id = :policy_id', array(':policy_id' => $_POST['FormOmsEdit']['id']));
-                    if(count($medcardsByDelete) == 0) {
-                        $medcardsForReplace = Medcard::model()->findAll('policy_id = :policy_id', array(':policy_id' => $oms->id));
-                        foreach($medcardsForReplace as $medcardForReplace) {
-                            $medcardModel = Medcard::model()->findByPk($medcardForReplace['card_number']);
-                            if($medcardModel != null) {
-                                $medcardModel->policy_id = $oms->id;
-                                if(!$medcardModel->save()) {
-                                    echo CJSON::encode(array(
-                                        'success' => 'false',
-                                        'errors' => array(
-                                            'medcard' => array(
-                                                'Не могу прикрепить медкарту к найденному пациенту!'
-                                            )
-                                        )
-                                    ));
-                                    exit();
-                                }
-                            }
-                        }
-                    } */
+					$birthday = implode('.', array_reverse(explode('-', $model->birthday)));
+					if(is_array($oms)) {
+						$foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms['last_name'].' '.$oms['first_name'].' '.$oms['middle_name'].', дата рождения '.$birthday.'</strong>)';
+					} else {
+						$foundOmsMsg = 'Найден другой полис с таким номером (<strong class="bold">'.$oms->last_name.' '.$oms->first_name.' '.$oms->middle_name.', дата рождения '.$birthday.'</strong>)';
+					}
                 }
                 echo CJSON::encode(array('success' => 'true',
                                          'foundOmsMsg' => $foundOmsMsg,
@@ -1482,14 +1345,41 @@ class PatientController extends Controller {
     // Добавление медкарты
     private function addEditModelMedcard($medcard, $model, $oms = false) {
         // Добавление карты: нет id
-        if($medcard->card_number == null) {
-            $medcard->card_number = $this->getCardNumber();
+		if($medcard->card_number == null) { // Совсем новая карта
+		//	Yii::app()->user->setState('savedCardNumber', -1);
+			$cardnumberGenerator = new CardnumberGenerator(false, true);
+            $medcard->card_number = $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
             // Записываем текущую дату и ID пользователя, который создал медкарту
             $medcard->date_created =  date('Y-m-d H:i:s');
             $record = User::model()->findByAttributes(array('id' => Yii::app()->user->id));
             $medcard->user_created = $record['employee_id'];
-
+			
+			// Создаём новую запись в логе
+			$newHistory = new MedcardHistory();
+			$newHistory->enterprise_id = Yii::app()->user->enterpriseId;
+			if(is_array($oms)) {
+				$newHistory->policy_id = $oms['id'];
+			} else {
+				$newHistory->policy_id = $oms->id;
+			}
+			$newHistory->rule_id = Yii::app()->user->medcardGenRuleId;
+			$newHistory->reg_date = date('Y-m-d h:i:s');
+			// Регистрация совсем новой карты сопровождается записью в истории с одинаковым from-to
+			if($model->cardNumber == null) {
+				$newHistory->from = $medcard->card_number;
+				$newHistory->to = $medcard->card_number;
+			} else {
+				$newHistory->from = $model->cardNumber;
+				$newHistory->to = $medcard->card_number;
+			}
+					
+			if(!$newHistory->save()) {
+				echo CJSON::encode(array('success' => true,
+										 'error' => 'Не могу сохранить точку в истории медкарт!'));
+				exit();
+			}
         }
+
         $medcard->snils = $model->snils;
         $medcard->address = $model->addressHidden;
 		$medcard->address_str = $model->address;
@@ -1528,7 +1418,7 @@ class PatientController extends Controller {
     // Генерация номера карты
     private function getCardNumber() {
         // Формат номера DDDDD/YY, где DDDDD – уникальный номер в разрезе года, YY  - 2 цифры года.
-        $year = date('Y');
+        /*$year = date('Y');
         $code = substr($year, mb_strlen($year) - 2);
 
         $medcard = new Medcard();
@@ -1542,7 +1432,8 @@ class PatientController extends Controller {
             $idPerYear = ++$parts[0];
         }
 
-        return $idPerYear.'/'.$code;
+        return $idPerYear.'/'.$code;*/
+		return $cardnumberGenerator->generateNumber(Yii::app()->user->medcardGenRuleId);
     }
 
     // Ищет всех записанных
@@ -1612,7 +1503,7 @@ class PatientController extends Controller {
     // Поиск пациента и его запсь
     public function actionSearch() {
        // var_dump($_GET);
-       // exit();
+        //exit();
 
         // Проверим наличие фильтров
         $filters = $this->checkFilters();
@@ -1681,7 +1572,10 @@ class PatientController extends Controller {
             $totalPages = ceil($num['num'] / $rows);
             $start = $page * $rows - $rows;
             $items = $model->getRows($filters, $sidx, $sord, $start, $rows, $WithOnly, $WithoutOnly, $onlyInGreetings, $cancelledGreetings, $onlyClosedGreetings, $greetingDate);
-			$now = time();
+			//var_dump($num);
+            //exit();
+
+            $now = time();
             // Обрабатываем результат
             foreach($items as $index => &$item) {
                 if($item['reg_date'] != null) {
@@ -2429,6 +2323,46 @@ class PatientController extends Controller {
         echo CJSON::encode(array('success' => true,
                                  'data' => 'Статус карт успешно изменён.'));
     }
+	
+	
+	public function actionCheckIssetCardNumber() {
+		if(!Yii::app()->request->getIsAjaxRequest() || !isset($_POST['cardnumber'])) {
+			echo CJSON::encode(array(
+				'success' => false,
+				'error' => 'Нехватка данных!'
+			));
+			exit();
+		}
+		$issetMedcard = MedcardHistory::model()->find(
+			't.to = :to 
+			AND t.enterprise_id = :enterprise_id
+			AND t.rule_id = :rule_id',
+			array(
+				':to' => $_POST['cardnumber'],
+				':enterprise_id' => Yii::app()->user->enterpriseId,
+				':rule_id' => Yii::app()->user->medcardGenRuleId
+			)
+		);
+		if($issetMedcard != null) {
+			$medcard = Medcard::model()->findByPk($_POST['cardnumber']);
+			if($medcard != null) {
+				$oms = Oms::model()->findByPk($medcard->policy_id);
+				$fio = $oms->last_name.' '.$oms->first_name;
+				if($oms->middle_name != null) {
+					$fio .= ' '.$oms->middle_name;
+				}
+				$fio .= ', полис №'.$oms->oms_series.' '.$oms->oms_number.'!';
+			}
+						
+			echo CJSON::encode(array(
+				'success' => false,
+				'error' => 'Такой номер медкарты уже занят пациентом '.$fio
+			));
+		} else {
+			Yii::app()->user->setState('savedCardNumber', $_POST['cardnumber']); // Для генератора
+			echo CJSON::encode(array('success' => true));
+		}
+	}
 }
 
 

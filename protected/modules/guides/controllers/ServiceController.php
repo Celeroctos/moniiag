@@ -40,8 +40,15 @@ class ServiceController extends Controller {
     }
 
     private function addEditModel($service, $model, $msg) {
-        $service->tasu_code = $model->code;
+        MedService::model()->updateAll(array(
+			'is_default' => 0
+			), 
+			'is_default = 1', 
+			array()
+		);
+		$service->tasu_code = $model->code;
         $service->name = $model->name;
+		$service->is_default = $model->isDefault;
 
         if($service->save()) {
             echo CJSON::encode(array(
@@ -86,6 +93,15 @@ class ServiceController extends Controller {
             $start = $page * $rows - $rows;
 
             $services = $model->getRows($filters, $sidx, $sord, $start, $rows);
+			foreach($services as &$service) {
+				if($service['is_default'] == null) {
+					$service['is_default_desc'] = 'Нет';
+					$service['is_default'] = 0;
+				} else {
+					$service['is_default_desc'] = 'Да';
+				}
+				$service['is_default'] = '';
+			}
 
             echo CJSON::encode(
                 array('rows' => $services,
@@ -100,6 +116,9 @@ class ServiceController extends Controller {
     public function actionGetone($id) {
         $model = new MedService();
         $service = $model->getOne($id);
+		if($service['is_default'] == null) { // На всякий случай, для клиентского интерфейса
+			$service['is_default'] = 0;
+		}
         echo CJSON::encode(array('success' => true,
                                  'data' => $service)
         );

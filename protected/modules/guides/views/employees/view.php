@@ -180,6 +180,18 @@
                                 <?php echo $form->error($model,'titulId'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'categorie', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'categorie', $categoriesList, array(
+                                    'id' => 'categorie',
+                                    'class' => 'form-control',
+                                    'options' => array('0' => array('selected' => true))
+                                )); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
 						<?php echo $form->labelEx($model,'dateBegin', array(
 											'class' => 'col-xs-3 control-label'
@@ -275,7 +287,7 @@
                                 'class' => 'col-xs-3 control-label'
                             )); ?>
                             <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Вторичный'), array(
+                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Повторный'), array(
                                     'id' => 'greetingType',
                                     'class' => 'form-control'
                                 )); ?>
@@ -339,211 +351,262 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <div class="form-group">
-                            <?php echo $form->hiddenField($model,'id', array(
-                                'id' => 'id',
-                                'class' => 'form-control'
-                            )); ?>
-                            <?php echo $form->labelEx($model,'lastName', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'lastName', array(
-                                    'id' => 'lastName',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Фамилия'
-                                )); ?>
-                                <?php echo $form->error($model,'lastName'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'firstName', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'firstName', array(
-                                    'id' => 'firstName',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Имя'
-                                )); ?>
-                                <?php echo $form->error($model,'firstName'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'middleName', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'middleName', array(
-                                    'id' => 'middleName',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Отчество'
-                                )); ?>
-                                <?php echo $form->error($model,'middleName'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'postId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'postId', $postsList, array(
-                                    'id' => 'postId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'postId'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'tabelNumber', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->textField($model,'tabelNumber', array(
-                                    'id' => 'tabelNumber',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Табельный номер'
-                                )); ?>
-                                <?php echo $form->error($model,'tabelNumber'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'degreeId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'degreeId', $degreesList, array(
-                                    'id' => 'degreeId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'degreeId'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'titulId', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'titulId', $titulsList, array(
-                                    'id' => 'titulId',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'titulId'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                        <?php echo $form->labelEx($model,'dateBegin', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-9 input-group date" id="dateBeginEdit-cont">
-                        <?php echo $form->hiddenField($model,'dateBegin', array(
-                                    'id' => 'dateBegin',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Формат гггг-мм-дд'
-                                )); ?>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                        <div class="subcontrol">
-                            <div class="date-ctrl-up-buttons">
-                                <div class="btn-group">
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
-                                </div>
-                            </div>
-                            <div class="form-inline subfields">
-                                <input type="text" name="day" placeholder="ДД" class="form-control day">
-                                <input type="text" name="month" placeholder="ММ" class="form-control month">
-                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
-                            </div>
-                            <div class="date-ctrl-down-buttons">
-                                <div class="btn-group">
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        </div>
-                    <div class="form-group">
-                        <label for="notDateEndEdit" class="col-xs-11 control-label">
-                            Не ограничивать сотрудника по времени
-                        </label>
-                        <input type="checkbox" id="notDateEndEdit" name="notDateEnd">
-                    </div>
-                    <div class="form-group">
-                    <?php echo $form->labelEx($model,'dateEnd', array(
-                        'class' => 'col-xs-3 control-label'
-                    )); ?>
-                    <div class="col-xs-9 input-group date" id="dateEndEdit-cont">
-                        <?php echo $form->hiddenField($model,'dateEnd', array(
-                                    'id' => 'dateEnd',
-                                    'class' => 'form-control',
-                                    'placeholder' => 'Формат гггг-мм-дд'
-                                )); ?>
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                        <div class="subcontrol">
-                            <div class="date-ctrl-up-buttons">
-                                <div class="btn-group">
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
-                                </div>
-                            </div>
-                            <div class="form-inline subfields">
-                                <input type="text" name="day" placeholder="ДД" class="form-control day">
-                                <input type="text" name="month" placeholder="ММ" class="form-control month">
-                                <input type="text" name="year" placeholder="ГГГГ" class="form-control year">
-                            </div>
-                            <div class="date-ctrl-down-buttons">
-                                <div class="btn-group">
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
-                                    <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                        <div class="form-group">
-                            <?php echo $form->labelEx($model,'wardCode', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'wardCode', $wardsListForAdd, array(
-                                    'id' => 'wardCode',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'wardCode'); ?>
-                            </div>
-                        </div>
-						<div class="form-group">
-                            <?php echo $form->labelEx($model,'greetingType', array(
-                                'class' => 'col-xs-3 control-label'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Вторичный'), array(
-                                    'id' => 'greetingType',
-                                    'class' => 'form-control'
-                                )); ?>
-                                <?php echo $form->error($model,'greetingType'); ?>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <?php echo $form->label($model,'displayInCallcenter', array(
-                                'class' => 'col-xs-3 control-label text-left'
-                            )); ?>
-                            <div class="col-xs-9">
-                                <?php echo $form->dropDownList($model, 'displayInCallcenter', array('Нет', 'Да'), array(
-                                    'id' => 'displayInCallcenter',
-                                    'class' => 'form-control',
-                                )); ?>
-                            </div>
-                        </div>
+						<strong id="linkedUser">К данному сотруднику привязан пользователь <span class="username"></span>, логин <span class="login"></span></strong>
+						<ul class="nav nav-tabs employeeSettingsNav">
+							<li class="active">
+								<a href="#" id="mainEmployeeSettings">Основные настройки</a>
+							</li>
+							<li>
+								<a href="#" id="accessEmployeeSettings">Права доступа</a>
+							</li>
+						</ul>
+						<div id="mainEmployeeSettingsCont">
+							<div class="form-group">
+								<?php echo $form->hiddenField($model,'id', array(
+									'id' => 'id',
+									'class' => 'form-control'
+								)); ?>
+								<?php echo $form->labelEx($model,'lastName', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->textField($model,'lastName', array(
+										'id' => 'lastName',
+										'class' => 'form-control',
+										'placeholder' => 'Фамилия'
+									)); ?>
+									<?php echo $form->error($model,'lastName'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'firstName', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->textField($model,'firstName', array(
+										'id' => 'firstName',
+										'class' => 'form-control',
+										'placeholder' => 'Имя'
+									)); ?>
+									<?php echo $form->error($model,'firstName'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'middleName', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->textField($model,'middleName', array(
+										'id' => 'middleName',
+										'class' => 'form-control',
+										'placeholder' => 'Отчество'
+									)); ?>
+									<?php echo $form->error($model,'middleName'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'postId', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'postId', $postsList, array(
+										'id' => 'postId',
+										'class' => 'form-control'
+									)); ?>
+									<?php echo $form->error($model,'postId'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'tabelNumber', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->textField($model,'tabelNumber', array(
+										'id' => 'tabelNumber',
+										'class' => 'form-control',
+										'placeholder' => 'Табельный номер'
+									)); ?>
+									<?php echo $form->error($model,'tabelNumber'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'degreeId', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'degreeId', $degreesList, array(
+										'id' => 'degreeId',
+										'class' => 'form-control'
+									)); ?>
+									<?php echo $form->error($model,'degreeId'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'titulId', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'titulId', $titulsList, array(
+										'id' => 'titulId',
+										'class' => 'form-control'
+									)); ?>
+									<?php echo $form->error($model,'titulId'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'categorie', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'categorie', $categoriesList, array(
+										'id' => 'categorie',
+										'class' => 'form-control',
+										'options' => array('0' => array('selected' => true))
+									)); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'dateBegin', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+								<div class="col-xs-9 input-group date" id="dateBeginEdit-cont">
+									<?php echo $form->hiddenField($model,'dateBegin', array(
+												'id' => 'dateBegin',
+												'class' => 'form-control',
+												'placeholder' => 'Формат гггг-мм-дд'
+											)); ?>
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+									<div class="subcontrol">
+										<div class="date-ctrl-up-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+											</div>
+										</div>
+										<div class="form-inline subfields">
+											<input type="text" name="day" placeholder="ДД" class="form-control day">
+											<input type="text" name="month" placeholder="ММ" class="form-control month">
+											<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+										</div>
+										<div class="date-ctrl-down-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="notDateEndEdit" class="col-xs-11 control-label">
+									Не ограничивать сотрудника по времени
+								</label>
+								<input type="checkbox" id="notDateEndEdit" name="notDateEnd">
+							</div>
+							<div class="form-group">
+							<?php echo $form->labelEx($model,'dateEnd', array(
+								'class' => 'col-xs-3 control-label'
+							)); ?>
+								<div class="col-xs-9 input-group date" id="dateEndEdit-cont">
+								<?php echo $form->hiddenField($model,'dateEnd', array(
+											'id' => 'dateEnd',
+											'class' => 'form-control',
+											'placeholder' => 'Формат гггг-мм-дд'
+										)); ?>
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+									<div class="subcontrol">
+										<div class="date-ctrl-up-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon month-button up-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon year-button up-year-button" ></button>
+											</div>
+										</div>
+										<div class="form-inline subfields">
+											<input type="text" name="day" placeholder="ДД" class="form-control day">
+											<input type="text" name="month" placeholder="ММ" class="form-control month">
+											<input type="text" name="year" placeholder="ГГГГ" class="form-control year">
+										</div>
+										<div class="date-ctrl-down-buttons">
+											<div class="btn-group">
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon down-day-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon month-button down-month-button"></button>
+												<button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-down glyphicon year-button down-year-button" ></button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'wardCode', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'wardCode', $wardsListForAdd, array(
+										'id' => 'wardCode',
+										'class' => 'form-control'
+									)); ?>
+									<?php echo $form->error($model,'wardCode'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->labelEx($model,'greetingType', array(
+									'class' => 'col-xs-3 control-label'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'greetingType', array('Любой', 'Первичный', 'Повторный'), array(
+										'id' => 'greetingType',
+										'class' => 'form-control'
+									)); ?>
+									<?php echo $form->error($model,'greetingType'); ?>
+								</div>
+							</div>
+							<div class="form-group">
+								<?php echo $form->label($model,'displayInCallcenter', array(
+									'class' => 'col-xs-3 control-label text-left'
+								)); ?>
+								<div class="col-xs-9">
+									<?php echo $form->dropDownList($model, 'displayInCallcenter', array('Нет', 'Да'), array(
+										'id' => 'displayInCallcenter',
+										'class' => 'form-control',
+									)); ?>
+								</div>
+							</div>
+						</div>
+						<div id="accessEmployeeSettingsCont" class="no-display">
+							<h4>Права доступа:</h4>
+							<ul class="nav nav-tabs actionsGroupsTablist" role="tablist">
+							<?php 
+								$counter = 0;
+								foreach($actions as $key => $actionGroup) : ?>
+								<li>
+									<a href="#t<?php echo $counter; ?>" role="tab" data-toggle="tab"><?php echo $key; ?></a>
+								</li>
+							<?php
+									$counter++;
+								endforeach;
+							?>
+							</ul>
+							<?php 
+							$counter = 0;
+							foreach($actions as $key => $actionGroup) : ?>
+							<div class="form-group tab-pane employeeSettingsTab" id="t<?php echo $counter; ?>">
+								<?php foreach($actionGroup as $key2 => $action) : ?>
+									<label class="checkbox-inline">
+										<input type="checkbox" id="action<?php echo $key2; ?>" value="<?php echo $key2; ?>" name="action<?php echo $key2; ?>"> <?php echo $action; ?>
+									</label>
+								<?php endforeach; ?>
+							</div>
+							<?php 
+								$counter++;
+							endforeach; ?>
+						</div>
                     </div>
                 </div>
             </div>
@@ -554,8 +617,11 @@
                     CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/guides/employees/edit'),
                     array(
                         'success' => 'function(data, textStatus, jqXHR) {
-                                $("#employee-edit-form").trigger("success", [data, textStatus, jqXHR])
-                            }'
+							$("#employee-edit-form").trigger("success", [data, textStatus, jqXHR])
+						}',
+						'beforeSend' => 'function(jqXHR, settings) {
+                            $("#employee-edit-form").trigger("beforesend", [settings, jqXHR])
+                        }'
                     ),
                     array(
                         'class' => 'btn btn-primary'

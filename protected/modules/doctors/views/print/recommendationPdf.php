@@ -7,18 +7,12 @@
 <div class="header">
     <span style="font-weight: bold;font-size: 16px;"><?php echo $greeting['patient_fio']; ?>, <?php echo $greeting['full_years'];
         // Вычисляем как просклонять слово "года" для возраста данного пациента
-        if ($greeting['full_years'] % 10 == 1)
-        {
+        if ($greeting['full_years'] % 10 == 1) {
             echo " год";
-        }
-        else
-        {
-            if ( ($greeting['full_years'] % 10>=2) && ($greeting['full_years'] % 10<=4))
-            {
+        } else {
+            if ($greeting['full_years'] % 10 >= 2 && $greeting['full_years'] % 10 <= 4) {
                 echo " года";
-            }
-            else
-            {
+            } else {
                 echo " лет";
             }
 
@@ -34,20 +28,43 @@ $templatesIndex = $keysOfTemplates[0];
 //var_dump($diagnosises['noteGreeting']);
 //exit();
 
-if ((count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
+if ((count($diagnosises['primary'])>0)|| (count($diagnosises['clinicalSecondary'])>0)||   (strlen($diagnosises['noteGreeting'])>0)  )
 {
 
     ?><div><span style="font-size:16px;"><strong>Диагноз </strong></span><?php
-    if (strlen($diagnosises['noteGreeting'])>0)
+    // Если строка с примечанием пустая и не выбран никакой клинический диагноз в чюююзере
+    $noteGreetingLength = strlen($diagnosises['noteGreeting']);
+    $countClinical = count($diagnosises['clinicalSecondary']);
+    if (($noteGreetingLength<=0)&&(($countClinical <=0) || ($countClinical ==false)))
     {
-        ?><strong><?php echo $diagnosises['noteGreeting']; ?></strong><?php
-    }
-    if (count($diagnosises['clinicalSecondary'])>0)
-    {
-        $wasPrintedDiag = false;
-        foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+        // Выводим МКБ
+        // Если нет клинического - печатаем МКБ
+        if (count($diagnosises['primary'])>0)
         {
-            ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+            foreach ($diagnosises['primary'] as $oneDiagnosis)
+            {
+                ?><strong> <?php   echo $oneDiagnosis['description'];?></strong><?php
+            }
+            ?></div><?php
+        }
+    }
+    else
+    {
+        // Выводим клинические диагнозы
+        if (strlen($diagnosises['noteGreeting'])>0)
+        {
+
+            ?><strong><br><?php echo $diagnosises['noteGreeting']; ?></strong><?php
+        }
+        if (count($diagnosises['clinicalSecondary'])>0)
+        {
+            //var_dump("!");
+            //exit();
+            $wasPrintedDiag = false;
+            foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+            {
+                ?><strong><br> - <?php echo $oneDiagnosis['description']; ?></strong><?php
+            }
         }
     }
     ?></div><?php
@@ -108,5 +125,12 @@ foreach ($templates as $oneTemplate)
 }
 ?>
 <!-- Выведем ФИО врача -->
-<br/><br/><strong><span style="font-size:14px;">Врач: <?php  echo $greeting['doctor_spec'].' '.$greeting['doctor_fio'];  ?></span></strong>
+<br/><br/><strong><span style="font-size:14px;">Врач
+        <?php
+        // Если строка с регалиями
+        if ($greeting['doctor_regalia'] != '') {
+            echo ($greeting['doctor_regalia'].' ');
+        }
+        echo trim(mb_strtolower($greeting['doctor_spec']).' '.$greeting['doctor_fio']);
+        ?></span></strong>
 <!--?php exit();

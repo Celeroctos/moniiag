@@ -14,7 +14,7 @@
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">
-        <div class="col-xs-5 null-padding-right">
+        <div class="col-xs-5 null-padding-right infoCont">
             <!-- Выводим информацию о карте -->
             <?php
             //var_dump($historyPoints);
@@ -50,14 +50,16 @@
                                         <form id="templates-choose-form" class="form-horizontal col-xs-12" method="post"
                                               role="form"
                                               action="<?php CHtml::normalizeUrl(Yii::app()->request->baseUrl . '/doctors/shedule/view?cardid=' . $medcard['card_number'] . '&date=' . $currentDate . '&rowid=' . $currentSheduleId); ?>">
-                                            <?php foreach ($templatesList as $key => $template) { ?>
-                                                <div class="form-group">
-                                                    <input type="checkbox" value="<?php echo $template['id']; ?>"
-                                                           name="templatesList[<?php echo $key; ?>]">
-                                                    <label
-                                                        class="control-label"><?php echo $template['name']; ?></label>
-                                                </div>
-                                            <?php } ?>
+                                            <div class="overlayCont">
+												<?php foreach ($templatesList as $key => $template) { ?>
+													<div class="form-group">
+														<input type="checkbox" value="<?php echo $template['id']; ?>"
+															   name="templatesList[<?php echo $key; ?>]">
+														<label
+															class="control-label"><?php echo $template['name']; ?></label>
+													</div>
+												<?php } ?>
+											</div>
                                             <div class="form-group">
                                                 <?php echo CHtml::submitButton(
                                                     'Начать приём',
@@ -165,48 +167,77 @@
                 </div>
             </div>
             <div class="row">
-                <ul class="nav nav-tabs patientListNav">
-                    <li <?php echo isset($openedTab) && $openedTab == 0 ? 'class="active"' : ''; ?>><a href="#" id="writedByTime">По записи</a></li>
-                    <li <?php echo isset($openedTab) && $openedTab == 1 ? 'class="active"' : ''; ?>><a href="#" id="writedByOrder">Живая очередь</a></li>
-                </ul>
-                <div id="writedByTimeCont" <?php echo isset($openedTab) && $openedTab == 1 ? 'class="no-display"' : ''; ?>>
-                    <h5 class="patient-list-h5">
-                        <strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
-                    </h5>
-                    <div class="col-xs-12 borderedBox">
-                        <?php
-                        // Вызываем виджет списка пациентов
-                        $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                            'patients' => ((isset($openedTab) && $openedTab == 0) || !isset($openedTab)) ? $patients : array(),
-                            'currentSheduleId' => $currentSheduleId,
-                            'currentPatient' => $currentPatient,
-                            'filterModel' => $filterModel,
-                            'isWaitingLine' => 0,
-                            'tableId' => 'doctorPatientList',
-                            'patientsDay' => $year.'-'.$month.'-'.$day
-                        ));
-                        ?>
-                    </div>
-                </div>
-                <div id="writedByOrderCont" <?php echo isset($openedTab) && $openedTab == 0 ? 'class="no-display"' : ''; ?>>
-                    <h5 class="patient-list-h5">
-                        <strong>Живая очередь на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshWaitingList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a>
-                    </h5>
-                    <div class="col-xs-12 borderedBox">
-                        <?php
-                        // Вызываем виджет списка пациентов
-                        $this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
-                            'patients' => ((isset($openedTab) && $openedTab == 1)) ? $patients : array(),
-                            'currentSheduleId' => $currentSheduleId,
-                            'currentPatient' => $currentPatient,
-                            'filterModel' => $filterModel,
-                            'isWaitingLine' => 1,
-                            'tableId' => 'doctorWaitingList',
-                            'patientsDay' => $year.'-'.$month.'-'.$day
-                        ));
-                        ?>
-                    </div>
-                </div>
+				<?php if (Yii::app()->user->checkAccess('canChangeDoctor')) {
+					$changeDoctorForm = $this->beginWidget('CActiveForm', array(
+						'id' => 'change-doctor-form',
+						'enableAjaxValidation' => true,
+						'enableClientValidation' => true,
+						'htmlOptions' => array(
+							'class' => 'form-horizontal col-xs-12',
+							'role' => 'form'
+						)
+					));
+				?>
+				 <div class="form-group">
+					<?php echo $changeDoctorForm ->labelEx($modelDoctorFilter,'doctorId', array(
+						'class' => 'col-xs-3 control-label'
+					)); ?>
+					<div class="col-xs-9">
+						<?php echo $changeDoctorForm ->dropDownList($modelDoctorFilter,'doctorId', $doctorsList, array(
+							'id' => 'doctorId',
+							'class' => 'form-control',
+							'options' => array($currentGreetingsDoctor => array('selected' => true))
+						)); ?>
+					</div>
+				</div>	
+				<?php 
+						$this->endWidget();
+					} 
+				?>
+				<div class="overlayCont">
+					<ul class="nav nav-tabs patientListNav">
+						<li <?php echo isset($openedTab) && $openedTab == 0 ? 'class="active"' : ''; ?>><a href="#" id="writedByTime">По записи</a></li>
+						<li <?php echo isset($openedTab) && $openedTab == 1 ? 'class="active"' : ''; ?>><a href="#" id="writedByOrder">Живая очередь</a></li>
+					</ul>
+					<div id="writedByTimeCont" <?php echo isset($openedTab) && $openedTab == 1 ? 'class="no-display"' : ''; ?>>
+						<h5 class="patient-list-h5">
+							<strong>Список пациентов на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshPatientList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a><a href="#" id="expandPatientList" title="Показать список пациентов со свободными датами в расписании"><span class="glyphicon glyphicon-resize-full"></span></a><a href="#" class="no-display" id="collapsePatientList" title="Скрыть свободное время в расписании"><span class="glyphicon glyphicon-resize-small"></span></a>
+						</h5>
+						<div class="col-xs-12 borderedBox">
+							<?php
+							// Вызываем виджет списка пациентов
+							$this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+								'patients' => ((isset($openedTab) && $openedTab == 0) || !isset($openedTab)) ? $patients : array(),
+								'currentSheduleId' => $currentSheduleId,
+								'currentPatient' => $currentPatient,
+								'filterModel' => $filterModel,
+								'isWaitingLine' => 0,
+								'tableId' => 'doctorPatientList',
+								'patientsDay' => $year.'-'.$month.'-'.$day
+							));
+							?>
+						</div>
+					</div>
+					<div id="writedByOrderCont" <?php echo isset($openedTab) && $openedTab == 0 ? 'class="no-display"' : ''; ?>>
+						<h5 class="patient-list-h5">
+							<strong>Живая очередь на <span class="text-danger"><?php echo $currentDate; ?></span></strong><a href="#" id="refreshWaitingList" title="Обновить список пациентов"><span class="glyphicon glyphicon-refresh"></span></a>
+						</h5>
+						<div class="col-xs-12 borderedBox">
+							<?php
+							// Вызываем виджет списка пациентов
+							$this->widget('application.modules.doctors.components.widgets.PatientListWidget', array(
+								'patients' => ((isset($openedTab) && $openedTab == 1)) ? $patients : array(),
+								'currentSheduleId' => $currentSheduleId,
+								'currentPatient' => $currentPatient,
+								'filterModel' => $filterModel,
+								'isWaitingLine' => 1,
+								'tableId' => 'doctorWaitingList',
+								'patientsDay' => $year.'-'.$month.'-'.$day
+							));
+							?>
+						</div>
+					</div>
+				</div>
             </div>
         </div>
     </div>
@@ -214,7 +245,11 @@
     if ($currentPatient !== false) {
         if ($templatesChoose == 0) {
             $counter = 0;
-    ?><p><a name="topMainTemplates"></a></p>
+    ?>
+		<div class="greetingContentCont">
+			<p>
+				<a name="topMainTemplates"></a>
+			</p>
             <div class="row col-xs-12">
                 <ul class="nav nav-tabs templatesListNav">
                     <?php foreach($templatesList as $key => $template) { ?>
@@ -334,18 +369,67 @@
                                 )
                             ));
                             ?>
+
+                            <div class="form-group">
+                                <label for="doctor" class="col-xs-3 control-label">Клинический диагноз</label>
+                                <div class="col-xs-9">
+                                    <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group chooser no-display" id="primaryClinicalDiagnosisChooser">
+                                <label for="doctor" class="col-xs-3 control-label">Клинический основной
+                                    диагноз:</label>
+                                <div class="col-xs-9">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="clinicalPrimaryDiagnosis"
+                                               placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                        <span class="input-group-addon glyphicon glyphicon-plus"></span>
+                                    </div>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php /*if (false)*/
+                                        foreach ($primaryClinicalDiagnosis as $dia) { ?>
+                                            <span class="item"
+                                                  id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
+                                                <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
+                                <label for="doctor" class="col-xs-3 control-label"><!--Клинические
+                                    диагноз / диагнозы:--></label>
+                                <div class="col-xs-9">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="clinicalSecondaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                        <span class="input-group-addon glyphicon glyphicon-plus"></span>
+                                    </div>
+                                    <ul class="variants no-display">
+                                    </ul>
+                                    <div class="choosed">
+                                        <?php /* if (false) */
+                                        foreach ($secondaryClinicalDiagnosis as $dia) {
+                                            ?>
+                                            <span class="item"
+                                                  id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
+                                                <span class="glyphicon glyphicon-remove"></span></span>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="onlyLikeDiagnosis"
-                                   class="col-xs-3 control-label" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
+                                       class="col-xs-3 control-label" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
                                     Выбирать только из списка "любимых" диагнозов
                                 </label>
                                 <div class="col-xs-9">
                                     <input type="checkbox" id="onlyLikeDiagnosis">
                                 </div>
                             </div>
+
                             <div class="form-group chooser" id="primaryDiagnosisChooser">
                             <label for="doctor" class="col-xs-3 control-label">Основной диагноз по МКБ-10:</label>
-
                                 <div class="col-xs-9">
                                     <input type="text" class="form-control" id="doctor"
                                        placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
@@ -360,9 +444,11 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
                             <div class="form-group chooser" id="complicationsDiagnosisChooser">
                                 <label for="doctor" class="col-xs-3 control-label">Осложнения основного диагноза по МКБ-10:</label>
-
                                 <div class="col-xs-9">
                                     <input type="text" class="form-control" id="doctor"
                                            placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
@@ -377,32 +463,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group chooser no-display" id="primaryClinicalDiagnosisChooser">
-                            <label for="doctor" class="col-xs-3 control-label">Клинический основной
-                                    диагноз:</label>
-
-                                <div class="col-xs-9">
-                                    <div class="input-group">
-                                    <input type="text" class="form-control" id="clinicalPrimaryDiagnosis"
-                                           placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                    <span class="input-group-addon glyphicon glyphicon-plus"></span>
-                                    </div>
-                                    <ul class="variants no-display">
-                                    </ul>
-                                    <div class="choosed">
-                                        <?php /*if (false)*/
-                                        foreach ($primaryClinicalDiagnosis as $dia) { ?>
-                                            <span class="item"
-                                              id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
-                                            <span class="glyphicon glyphicon-remove"></span></span>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="form-group chooser" id="secondaryDiagnosisChooser">
                             <label for="doctor" class="col-xs-3 control-label">Сопутствующие диагнозы по МКБ-10:</label>
-
                                 <div class="col-xs-9">
                                     <input type="text" class="form-control" id="doctor"
                                        placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
@@ -415,38 +477,6 @@
                                             <span class="glyphicon glyphicon-remove"></span></span>
                                         <?php } ?>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group chooser" id="secondaryClinicalDiagnosisChooser">
-                            <label for="doctor" class="col-xs-3 control-label">Клинические
-                                    диагноз / диагнозы:</label>
-
-                                <div class="col-xs-9">
-                                    <div class="input-group">
-                                    <input type="text" class="form-control" id="clinicalSecondaryDiagnosis" placeholder="Начинайте вводить..." <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>>
-                                    <span class="input-group-addon glyphicon glyphicon-plus"></span>
-                                    </div>
-                                    <ul class="variants no-display">
-                                    </ul>
-                                    <div class="choosed">
-                                        <?php /* if (false) */
-                                        foreach ($secondaryClinicalDiagnosis as $dia) {
-                                            ?>
-                                            <span class="item"
-                                              id="r<?php echo $dia['diagnosis_id']; ?>"><?php echo $dia['description']; ?>
-                                            <span class="glyphicon glyphicon-remove"></span></span>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="doctor" class="col-xs-3 control-label">Клинические
-                                    диагноз / диагнозы:</label>
-
-                                <div class="col-xs-9">
-                                <textarea placeholder="" class="form-control" id="diagnosisNote" <?php echo !$canEditMedcard ? 'disabled="disabled"' : '' ?>><?php echo $note; ?></textarea>
                                 </div>
                             </div>
                             <?php if ($canEditMedcard) { ?>
@@ -533,9 +563,8 @@
                         $counter++;
                     } ?>
                 </ul>
-
             </div>
-
+		</div>
         <?php } ?>
     <?php } ?>
 <?php } ?>
@@ -818,6 +847,25 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal">Да</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade error-popup" id="closeGreetingPopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Подтверждение</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <p></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success closeGreetingPopupButton" data-dismiss="modal">Закончить</button>
+                <button type="button" class="btn btn-close" data-dismiss="modal">Нет</button>
             </div>
         </div>
     </div>

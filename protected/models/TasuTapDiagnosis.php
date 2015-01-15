@@ -19,7 +19,7 @@ class TasuTapDiagnosis extends MisActiveRecord {
 			$connection = TasuTap::getDbConnection();
 			$max = $connection->createCommand()
 				->select('MAX(ttd.uid) as num')
-				->from(TasuTapDiagnosis::tableName().' ttd');
+				->from(TasuTapDiagnosis::model()->tableName().' ttd');
 			$row = $max->queryRow();
 			return $row['num'];
         } catch(Exception $e) {

@@ -18,12 +18,11 @@ class MedcardTemplate extends MisActiveRecord {
                 ->from('mis.medcard_templates mt')
                 ->where('mt.id = :id', array(':id' => $id))
                 ->queryRow();
-
             return $template;
-
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+        return array();
     }
 
     public function getTemplatesByEmployee($id, $pageId = 0)
@@ -40,6 +39,89 @@ class MedcardTemplate extends MisActiveRecord {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+    }
+
+	public function getTemplateCategories($id) {
+		try {
+			$row = Yii::app()->db->createCommand()
+				->select('json_array_elements(cast(categorie_ids AS json))')
+				->from('mis.medcard_templates')
+				->where('id = :id', array(':id' => $id))
+				->queryRow();
+			return $row["json_array_elements"];
+		} catch(Exception $e) {
+			echo json_encode(array(
+				"status" => false,
+				"message" => $e->getMessage()
+			)); die;
+		}
+		return null;
+	}
+
+	public function addCategoryToTemplate($id, $categoryID) {
+		try {
+			$connection = Yii::app()->db;
+			$template = $connection->createCommand()
+				->select('categorie_ids')
+				->from('mis.medcard_templates')
+				->where('id = :id', array(':id' => $id))
+				->queryRow();
+            $categories = json_decode($template["categorie_ids"]);
+            array_push($categories, $categoryID);
+            $this->updateByPk($id, array(
+                'categorie_ids' => json_encode($categories)
+            ));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				"status" => false,
+				"message" => $e->getMessage()
+			)); die;
+		}
+		return array();
+	}
+
+	public function setTemplateCategories($id, $cids) {
+		try {
+			$this->updateByPk($id, array(
+				'categorie_ids' => $cids
+			));
+		} catch(Exception $e) {
+			echo json_encode(array(
+				"status" => false,
+				"message" => $e->getMessage()
+			)); die;
+		}
+		return array();
+	}
+
+    public function removeCategoryFromTemplate($id, $categoryID) {
+        try {
+            $connection = Yii::app()->db;
+            $template = $connection->createCommand()
+                ->select('categorie_ids')
+                ->from('mis.medcard_templates')
+                ->where('id = :id', array(':id' => $id))
+                ->queryRow();
+            $categories = json_decode($template["categorie_ids"]);
+            foreach ($categories as $i => &$cid) {
+                if (intval($categoryID) === intval($cid)) {
+                    array_splice($categories, $i, 1);
+                    break;
+                }
+            }
+            $this->updateByPk($id, array(
+                'categorie_ids' => json_encode($categories)
+            ));
+        } catch(Exception $e) {
+            echo json_encode(array(
+                "status" => false,
+                "message" => $e->getMessage()
+            )); die;
+        }
+        return array(
+            'id' => $id,
+            'categories' => $categories
+        );
     }
     
     public function getTemplatesByPageId($id) {
@@ -83,14 +165,14 @@ class MedcardTemplate extends MisActiveRecord {
     }
 
     public function getTemplateIndexes() {
+
         $connection = Yii::app()->db;
+
         $templates = $connection->createCommand()
             ->selectDistinct('me.index')
-            ->from(MedcardTemplate::tableName().' me')
+            ->from(MedcardTemplate::model()->tableName().' me')
             ->order('me.index', 'asc');
 
         return $templates->queryAll();
     }
 }
-
-?>

@@ -1,5 +1,7 @@
 <?php
+
 class IndexController extends Controller {
+
     public $layout = 'application.modules.admin.views.layouts.index';
     public $defaultAction = 'index';
 
@@ -7,5 +9,3 @@ class IndexController extends Controller {
         $this->render('index', array());
     }
 }
-
-?>

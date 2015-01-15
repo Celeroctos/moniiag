@@ -1,0 +1,1 @@
+ <?php $this->widget('application.modules.reception.components.widgets.PublicShedule'); ?>

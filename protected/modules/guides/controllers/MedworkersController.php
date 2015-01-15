@@ -96,8 +96,15 @@ class MedworkersController extends Controller {
             echo CJSON::encode(array('success' => true,
                                      'text' => $msg));
         }
-
     }
+	
+	public function actionIssetDoctorPerMedworker($id) {
+		$issetDoctors = Doctor::model()->findAll('post_id = :post_id', array(':post_id' => $id));
+		echo CJSON::encode(array(
+			'success' => true,
+			'doctors' => $issetDoctors
+		));
+	}
 
     public function actionAdd() {
         $model = new FormMedworkerAdd();

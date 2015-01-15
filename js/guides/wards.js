@@ -2,7 +2,7 @@ $(document).ready(function() {
     $("#wards").jqGrid({
         url: globalVariables.baseUrl + '/guides/wards/get',
         datatype: "json",
-        colNames:['Код', 'Наименование', 'Тип учреждения'],
+        colNames:['Код', 'Наименование', 'Тип учреждения', 'Правило создания номеров карт', ''],
         colModel:[
             {
                 name:'id',
@@ -18,7 +18,17 @@ $(document).ready(function() {
                 name: 'enterprise_name',
                 index:'enterprise_name',
                 width: 150
-            }
+            },
+			{
+				name: 'rule',
+				index: 'rule',
+				width: 250
+			},
+			{
+				name: 'rule_id',
+				index: 'rule_d',
+				hidden: true
+			}
         ],
         rowNum: 10,
         rowList:[10,20,30],
@@ -127,7 +137,11 @@ $(document).ready(function() {
                             {
                                 modelField: 'enterprise_id',
                                 formField: 'enterprise'
-                            }
+                            },
+							{
+								modelField: 'rule_id',
+								formField: 'ruleId'
+							}
                         ];
                         for(var i = 0; i < fields.length; i++) {
                             form.find('#' + fields[i].formField).val(data.data[fields[i].modelField]);
@@ -147,26 +161,47 @@ $(document).ready(function() {
     $("#deleteWard").click(function() {
         var currentRow = $('#wards').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
-            // Надо вынуть данные для редактирования
-            $.ajax({
-                'url' : '/guides/wards/delete?id=' + currentRow,
-                'cache' : false,
-                'dataType' : 'json',
-                'type' : 'GET',
-                'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == 'true') {
-                        $("#wards").trigger("reloadGrid");
-                    } else {
-                        // Удаляем предыдущие ошибки
-                        $('#errorAddWardPopup .modal-body .row p').remove();
-                        $('#errorAddWardPopup .modal-body .row').append("<p>" + data.error + "</p>")
+			$.ajax({
+				'url' : '/guides/wards/issetDoctorPerWard?id=' + currentRow,
+				'cache' : false,
+				'dataType' : 'json',
+				'type' : 'GET',
+				'success' : function(data, textStatus, jqXHR) {
+					if(data.success) {
+						if(data.doctors.length > 0) {
+							$('#noticeIssetDoctorPopup .listOfDoctors').html('');
+							for(var i in data.doctors) {
+								$('#noticeIssetDoctorPopup .listOfDoctors').append(
+									$('<strong>').append(
+										data.doctors[i].last_name + ' ' + data.doctors[i].first_name + ' ' + (data.doctors[i].middle_name ? data.doctors[i].middle_name : '') + ((data.doctors.length - 1 == i) ? '' : ', ')
+									)
+								);
+							}
+							$('#noticeIssetDoctorPopup').modal();
+						} else {
+							$.ajax({
+								'url' : '/guides/wards/delete?id=' + currentRow,
+								'cache' : false,
+								'dataType' : 'json',
+								'type' : 'GET',
+								'success' : function(data, textStatus, jqXHR) {
+									if(data.success == 'true') {
+										$("#wards").trigger("reloadGrid");
+									} else {
+										// Удаляем предыдущие ошибки
+										$('#errorAddWardPopup .modal-body .row p').remove();
+										$('#errorAddWardPopup .modal-body .row').append("<p>" + data.error + "</p>")
 
-                        $('#errorAddWardPopup').modal({
+										$('#errorAddWardPopup').modal({
 
-                        });
-                    }
-                }
-            })
+										});
+									}
+								}
+							});
+						}
+					}
+				}
+			});
         }
     });
 });

@@ -1,12 +1,11 @@
 <?php
 class MedcardCategorie extends MisActiveRecord {
-    public static function model($className=__CLASS__)
-    {
+
+    public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    public function tableName()
-    {
+    public function tableName() {
         return 'mis.medcard_categories';
     }
 
@@ -24,23 +23,56 @@ class MedcardCategorie extends MisActiveRecord {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+        return array();
     }
 
+	public function saveCategory($category) {
+		try {
+			return Yii::app()->db->createCommand()
+				->insert("mis.medcard_categories", array(
+					'name' => $category["name"],
+					'parent_id' => $category["parent_id"],
+					'position' => $category["position"],
+					'is_dynamic' => $category["is_dynamic"],
+					'path' => $category["path"],
+					'is_wrapped' => $category["is_wrapped"]
+				));
+		} catch (Exception $e) {
+			echo json_encode(array(
+				'message' => $e->getMessage(),
+				'status' => false
+			)); die;
+		}
+		return 0;
+	}
+
+	public function getMatches($pattern) {
+        try {
+            $connection = Yii::app()->db;
+            $categorie = $connection->createCommand()
+                ->select('mc.*')
+                ->from('mis.medcard_categories mc')
+                ->where('mc.name LIKE \'%:pattern%\'', array(':pattern' => $pattern))
+                ->queryRow();
+
+            return $categorie;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+	}
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
-        $connection = Yii::app()->db;
-        $categories = $connection->createCommand()
+
+        $categories = Yii::app()->db->createCommand()
             ->select('mc.*, mc2.name as parent')
             ->from('mis.medcard_categories mc')
 			->leftJoin('mis.medcard_categories mc2', 'mc.parent_id = mc2.id');
 
         if($filters !== false) {
-            $this->getSearchConditions($categories, $filters, array(
-
-            ), array(
+            $this->getSearchConditions($categories, $filters, array(), array(
                 'mc' => array('id', 'name'),
-            ), array(
-            ));
+            ), array());
         }
 
         if($start !== false && $limit !== false) {
@@ -53,6 +85,42 @@ class MedcardCategorie extends MisActiveRecord {
 
         return $categories->queryAll();
     }
-}
 
-?>
+    public function getChildren($parentID) {
+        try {
+            return Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("mis.medcard_categories c")
+                ->where("c.parent_id = :parent_id", array(":parent_id" => $parentID))
+				->order("position")
+                ->queryAll();
+        } catch (Exception $e) {
+            print json_encode(array(
+                "status" => false,
+                "message" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine()
+            )); die;
+        }
+        return null;
+    }
+
+    public function getElements($id) {
+        try {
+            return Yii::app()->db->createCommand()
+                ->select("*")
+                ->from("mis.medcard_elements c")
+                ->where("c.categorie_id = :id", array(":id" => $id))
+				->order("position")
+                ->queryAll();
+        } catch (Exception $e) {
+            print json_encode(array(
+                "status" => false,
+                "message" => $e->getMessage(),
+                "file" => $e->getFile(),
+                "line" => $e->getLine()
+            )); die;
+        }
+        return null;
+    }
+}

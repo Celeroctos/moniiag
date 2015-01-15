@@ -13,7 +13,7 @@ $desc=array (
 );
 $up=0;
 $ut=0;
-$ttffile='Z:/home/mis.my/www/protected/vendor/mpdf/ttfonts/DejaVuSansCondensed-Bold.ttf';
+$ttffile='F:/Hosts/Celeroctos/moniiag/www/protected/vendor/mpdf/ttfonts/DejaVuSansCondensed-Bold.ttf';
 $TTCfontID='0';
 $originalsize=545702;
 $sip=false;

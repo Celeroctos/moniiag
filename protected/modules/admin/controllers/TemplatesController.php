@@ -1,12 +1,20 @@
 <?php
+
 class TemplatesController extends Controller {
+
     public $layout = 'application.modules.admin.views.layouts.index';
+
     private $pagesList = array( // Страницы
         'Основная медкарта',
         'Раздел рекомендаций'
     );
 
+    public function getPagesList() {
+        return $this->pagesList;
+    }
+
     public function actionView() {
+
         // Категории
         $categoriesModel = new MedcardCategorie();
         $categories = $categoriesModel->getRows(false, 'name', 'asc');
@@ -28,10 +36,6 @@ class TemplatesController extends Controller {
             'pagesList' => $this->pagesList,
             'categoriesList' => $categoriesList
         ));
-    }
-
-    public function getPagesList() {
-        return $this->pagesList;
     }
 
     public function actionGet() {
@@ -91,8 +95,8 @@ class TemplatesController extends Controller {
             }
             echo CJSON::encode(
                 array('rows' => $templates,
-                      'total' => $totalPages,
-                      'records' => count($num))
+                    'total' => $totalPages,
+                    'records' => count($num))
             );
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -122,19 +126,38 @@ class TemplatesController extends Controller {
                 $this->addEditModel($template, $model, 'Элемент успешно добавлен.');
             } else {
                 echo CJSON::encode(array('success' => 'false',
-                                         'errors' => $model->errors));
+                    'errors' => $model->errors));
             }
         }
-
     }
 
     private function addEditModel($template, $model, $msg) {
+		// Проверяем имя шаблона
+		$issetName = MedcardTemplate::model()->find('LOWER(name) = :name', array(
+            ':name' => trim(mb_strtolower($model->name))
+        ));
+
+		if($issetName != null && $issetName->id != $template->id) {
+            $answer = array(
+                'success' => false,
+                'errors' => array(
+                    'name' => array(
+						'Шаблон с таким названием уже существует, нельзя создать два шаблона с одинаковым названием (ID шаблона с повторяющимся названием - '.$issetName->id.').'
+                    )
+                )
+            );
+			echo CJSON::encode($answer);
+            exit();
+		}
+		
         $template->name = $model->name;
         $template->page_id = $model->pageId;
+
         // Проверяем индекс
         $issetIndex = MedcardTemplate::model()->find('index = :index', array(
             'index' => $model->index
         ));
+
         if($issetIndex != null && $issetIndex->id != $template->id) {
             $indexes = MedcardTemplate::model()->getTemplateIndexes();
             $answer = array(
@@ -158,6 +181,7 @@ class TemplatesController extends Controller {
 
         $template->index = $model->index;
         $template->primary_diagnosis = $model->primaryDiagnosisFilled;
+
         if($model->categorieIds != null) {
             $template->categorie_ids = CJSON::encode($model->categorieIds);
         } else {
@@ -165,10 +189,22 @@ class TemplatesController extends Controller {
         }
 
         if($template->save()) {
-            echo CJSON::encode(array('success' => true,
-                                     'text' => $msg));
+            echo CJSON::encode(array(
+                'success' => true,
+                'text' => $msg,
+                'model' => $model
+            ));
         }
     }
+	
+	public function actionIssetMedworkerPerTempl($id) {
+		$checked = EnabledTemplate::model()->getByTemplateId($id);
+		echo CJSON::encode(array(
+			'success' => true,
+			'issetChecked' => count($checked) > 0,
+			'medworkers' => $checked
+		));
+	}
 
     public function actionDelete($id) {
         $errorTextMessage = 'На данную запись есть ссылки!';
@@ -181,7 +217,7 @@ class TemplatesController extends Controller {
         } catch(Exception $e) {
             // Это нарушение целостности FK
             echo CJSON::encode(array('success' => 'false',
-                                     'error' => $errorTextMessage ));
+                'error' => $errorTextMessage ));
         }
     }
 
@@ -189,12 +225,13 @@ class TemplatesController extends Controller {
         $model = new MedcardTemplate();
         $template = $model->getOne($id);
         echo CJSON::encode(array('success' => true,
-                                 'data' => $template)
+                'data' => $template)
         );
     }
 
     // Просмотр шаблона
     public function actionShow() {
+
         $categorieWidget = CWidget::createWidget('application.modules.doctors.components.widgets.CategorieViewWidget', array(
             'currentPatient' => null,
             'templateType' => 0,
@@ -210,12 +247,105 @@ class TemplatesController extends Controller {
 
         $templateView = $categorieWidget->run();
         ob_end_clean();
+        
         echo CJSON::encode(array(
                 'success' => true,
                 'data' => $templateView
             )
         );
     }
-}
 
-?>
+	public function actionUtc() {
+
+		$tid = $_POST["tid"];
+		$categories = $_POST["categories"];
+		$cids = $_POST["cids"];
+
+		// update template array with categories
+		MedcardTemplate::model()->setTemplateCategories($tid, $cids);
+
+		// decode new categories parents and positions
+		$categoriesArray = json_decode($categories);
+
+		foreach ($categoriesArray as $i => $child) {
+            if ($child->category != -1) {
+                $path = MedcardCategorie::model()->findByPk((int)$child->category)->path.".".$child->position;
+            } else {
+                $path = $child->position;
+            }
+			if ($child->type == "element") {
+				MedcardElement::model()->updateByPk($child->id, array(
+					"position" => $child->position,
+					"categorie_id" => $child->category,
+                    "path" => $path
+				));
+			} else {
+				MedcardCategorie::model()->updateByPk($child->id, array(
+					"position" => $child->position,
+					"parent_id" => $child->category,
+                    "path" => $path
+				));
+			}
+		}
+
+		echo json_encode(array(
+			'status' => true
+		));
+	}
+
+	private function assignChildren(&$row, $model) {
+
+		$id = intval($row["id"]);
+
+		// fetch category children
+		$children = $model->getChildren($id);
+
+		// assign children to every child
+		foreach ($children as $i => &$child) {
+			$this->assignChildren($child, $model);
+		}
+
+		// assign children array
+		$row["children"] = $children;
+
+		// fetch all category elements and assign to category
+		$row["elements"] = $model->getElements($id);
+	}
+
+    public function actionGetCategories($id) {
+
+        // cast category identifier to int (just in case)
+        $id = intval($id);
+
+        $templateModel = new MedcardTemplate();
+        $categoryModel = new MedcardCategorie();
+
+        // fetch template by it's identifier
+        $template = $templateModel->getOne($id);
+
+        // decode template's categories array
+        $categories = json_decode($template['categorie_ids']);
+
+        // we wil store here all fetched categories
+        $templateCategories = array();
+
+        foreach ($categories as $i => $id) {
+
+            // fetch category from db
+            $category = $categoryModel->getOne(intval($id));
+
+			$this->assignChildren($category, $categoryModel);
+
+            // push category to array
+            $templateCategories[] = $category;
+        }
+
+        // save all found categories as template field
+        $template["categories"] = $templateCategories;
+
+        echo CJSON::encode(array('success' => true,
+                'template' => $template
+            )
+        );
+    }
+}

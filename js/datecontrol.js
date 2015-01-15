@@ -16,6 +16,7 @@
         '#dateEndEdit-cont',
         '#greetingDate-cont',
 		'#greetingDate-cont2',
+		'#greetingDate-cont3',
         '#addShedulePopup #shift-date-begin-cont',
 	    '#addShedulePopup #shift-date-end-cont',
         '#editSheduleEmployeePopup #shift-date-begin-cont',
@@ -599,11 +600,11 @@ var dateControlConfigs =
                         if(length == 3 && !(year >= 190 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2]))) {
                             $(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
-                            });
+                            }); 
                             return false;
                         }
-                        if(length == 4 && !(year >= 1900 && year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2] + yearParts[3]))) {
-                            $(this).animate({
+                        if(length == 4 && !(year >= 1900 /*&& year <= parseInt(2 + '' + yearParts[1] + '' + yearParts[2] + yearParts[3] )*/)) {
+							$(this).animate({
                                 backgroundColor: "rgb(255, 196, 196)"
                             });
                             return false;

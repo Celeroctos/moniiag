@@ -36,6 +36,21 @@ class EnabledTemplate extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }  
+	
+	public function getByTemplateId($id) {
+        try {
+            $connection = Yii::app()->db;
+            $checked = $connection->createCommand()
+                ->select('mt.*, mw.*')
+                ->from('mis.medpersonal_templates mt')
+				->join(Medworker::model()->tableName().' mw', 'mt.id_medpersonal = mw.id')
+                ->where('mt.id_template = :id', array(':id' => $id));
+            return $checked->queryAll();
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }  
   
         // Удаление связи шаблоны->должность
     public function deleteByMedpersonal($id) {

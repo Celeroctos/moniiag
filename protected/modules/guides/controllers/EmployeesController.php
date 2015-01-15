@@ -2,6 +2,17 @@
 class EmployeesController extends Controller {
     public $layout = 'application.modules.guides.views.layouts.index';
     public $defaultAction = 'view';
+	private $employeeCategories = array(
+		'Нет',
+		'Врач второй категории',
+		'Врач первой категории',
+		'Врач высшей категории'
+	);
+
+    public function getDoctorCategories()
+    {
+        return $this->employeeCategories;
+    }
 
     public function actionView() {
         try {
@@ -73,6 +84,17 @@ class EmployeesController extends Controller {
             foreach($degreesListDb as $value) {
                 $degreesList[(string)$value['id']] = $value['name'];
             }
+			
+			// Список галочек прав
+			$actionModel = new RoleAction();
+			$actionsList = $actionModel->getRows(false);
+			$actions =  array();
+			foreach($actionsList as $key => $action) {
+				if(!isset($actions[$action['groupname']])) {
+					$actions[$action['groupname']] = array();
+				}
+				$actions[$action['groupname']][$action['id']] = $action['name'];
+			}
 
             $this->render('view', array(
                 'model' => $formAddEdit,
@@ -83,7 +105,9 @@ class EmployeesController extends Controller {
                 'wardsListForAdd' => $wardsListForAdd,
                 'degreesList' => $degreesList,
                 'enterprisesList' => $enterprisesList,
-                'canEdit' => Yii::app()->user->checkAccess('editGuides')
+				'categoriesList' => $this->employeeCategories,
+                'canEdit' => Yii::app()->user->checkAccess('editGuides'),
+				'actions' => $actions
             ));
         } catch(Exception $e) {
             echo $e->getMessage();
@@ -93,6 +117,7 @@ class EmployeesController extends Controller {
     public function actionEdit() {
         $model = new FormEmployeeAdd();
         if(isset($_POST['FormEmployeeAdd'])) {
+			
             $model->attributes = $_POST['FormEmployeeAdd'];
             if($model->validate()) {
                 if(!isset($_POST['notDateEnd']) && trim($_POST['FormEmployeeAdd']['dateEnd']) == '') {
@@ -130,6 +155,63 @@ class EmployeesController extends Controller {
     }
 
     private function addEditModel($employee, $model, $msg) {
+		if($employee) {
+			// Проставляем права
+			$actionModel = new RoleAction();
+			$actions = $actionModel->getRows(false);
+			// Выберем все, которые лежат на данную роль. Если ни одного нет, значит результат будет пуст.
+			$checkedModel = new CheckedAction();
+			// Обновление экшенов через удаление
+			$checkedModel->deleteByEmployee($employee->id);
+			// Найдём роль
+			$employeeToUser = Doctor::model()->findByPk($employee->id);
+			if($employeeToUser != null && $employeeToUser->user_id != null) { // К сотруднику может быть не прикреплён юзер..
+				$rolesToUser = RoleToUser::model()->findAllRolesByUser($employeeToUser->user_id);
+				$rolesIds = array();
+				$num = count($rolesToUser);
+				for($i = 0; $i < $num; $i++) {
+					$rolesIds[] = $rolesToUser[$i]['id'];
+				}
+				foreach($actions as $key => $action) {
+					$criteria = new CDbCriteria;
+					$criteria->compare('role_id', $rolesIds);
+					$criteria->compare('action_id', $action['id']);
+				
+					$issetAccess = CheckedAction::model()->find($criteria);
+					// Если экшн есть - проставляем
+					if(isset($_POST['action'.$action['id']])) {
+						// Проверяем, какой это экшн: если он есть у сотрудника, то записывать такой экшн не надо.
+						if(!$issetAccess) {
+							$checked = new CheckedAction();
+							$checked->action_id = $action['id'];
+							$checked->role_id = -1;
+							$checked->employee_id = $employee->id;
+							$checked->mode = 0; // Добавить к роли	
+
+							if(!$checked->save()) {
+								echo CJSON::encode(array('success' => false,
+														 'text' => 'Невозможно сохранить изменённые права сотрудника.'));
+								exit();
+							}
+						}
+					} else { // Если не существует - проверим, есть ли экшн для роли. Если есть, то нужно автоматически записать правило "исключить для сотрудника, но применить для роли в целом"
+						if($issetAccess) {
+							$checked = new CheckedAction();
+							$checked->action_id = $action['id'];
+							$checked->employee_id = $employee->id;
+							$checked->role_id = -1;
+							$checked->mode = 1; // Исключить для сотрудника;
+							if(!$checked->save()) {
+								echo CJSON::encode(array('success' => false,
+														 'text' => 'Невозможно сохранить изменённые права сотрудника.'));
+								exit();
+							}
+						}
+					}
+				}
+			}
+		}
+	
         $employee->first_name = $model->firstName;
         $employee->middle_name = $model->middleName;
         $employee->last_name = $model->lastName;
@@ -139,6 +221,7 @@ class EmployeesController extends Controller {
         $employee->titul_id = $model->titulId;
         $employee->date_begin = $model->dateBegin;
 		$employee->greeting_type = $model->greetingType;
+		$employee->categorie = $model->categorie;
         $employee->display_in_callcenter = $model->displayInCallcenter;
 
         if(!isset($_POST['notDateEnd'])) {
@@ -149,7 +232,19 @@ class EmployeesController extends Controller {
         $employee->ward_code = $model->wardCode;
 
         if($employee->save()) {
-
+			// TODO normal
+			// Dirty Fix: расписание врачей
+			$shedule = new SheduleSetted();
+			$shedule->employee_id = $employee->id;
+			if(!$shedule->save()) {
+				echo CJSON::encode(
+					array('success' => false,
+						  'error' => 'Не могу создать точку расписания для сотрудника!'
+					)
+				);
+			}
+			// End of dirty fix
+			
             // Если текущий юзер привязан к изменяемому сотруднику... Может измениться ФИО
             if(Yii::app()->user->doctorId == $employee->id) {
                 Yii::app()->user->setState('fio', $employee->last_name.' '.$employee->first_name.' '.$employee->middle_name);
@@ -158,14 +253,15 @@ class EmployeesController extends Controller {
                 $updateFio = 0;
             }
 
-            echo CJSON::encode(array('success' => true,
-                                     'data' => array(
-                                         'text' => $msg,
-                                         'updateFio' => $updateFio,
-                                         'fio' => Yii::app()->user->fio
-                                     )
-                                )
-                            );
+            echo CJSON::encode(
+				array('success' => true,
+					  'data' => array(
+						 'text' => $msg,
+						 'updateFio' => $updateFio,
+						 'fio' => Yii::app()->user->fio
+					 )
+				)
+			);
         }
     }
 
@@ -239,6 +335,11 @@ class EmployeesController extends Controller {
                 } else {
                     $employee['display_in_callcenter_desc'] = 'Нет';
                 }
+				
+				if($employee['categorie'] === null) {
+					$employee['categorie'] = 0;
+				} 
+				$employee['categorie_desc'] = $this->employeeCategories[$employee['categorie']];
             }
 
             echo CJSON::encode(
@@ -255,14 +356,59 @@ class EmployeesController extends Controller {
     public function actionGetone($id) {
         $model = new Employee();
         $employee = $model->getOne($id);
-        echo CJSON::encode(array('success' => true,
+		if($employee['categorie'] == null) {
+			$employee['categorie'] = 0;
+		}
+		// Проверяем привязку сотрудника хоть к какому-нибудь пользователю
+		$doctorModel = Doctor::model()->findByPk($id);
+		if($doctorModel->user_id != null) {
+			$issetUser = User::model()->findByPk($doctorModel->user_id);
+		} else {
+			$issetUser = null;
+		}
+		$employee['user_to_employee'] = $issetUser;
+        if($issetUser) {
+			// Теперь выбираем все галочки тупо для сотрудника
+			$actionsDetached = array(); // Удалённые экшены из роли посредством задания их для сотрудника
+			$actionsAttached = array(); // Добавленные экшены на сотрудника
+			$actionsToEmployee = CheckedAction::model()->findAll('employee_id = :employee_id', array(
+				':employee_id' => $employee['id']
+			));
+			$num = count($actionsToEmployee);
+			for($i = 0; $i < $num; $i++) {
+				if($actionsToEmployee[$i]->mode == 0) { // Включить в права
+					$actionsAttached[] = $actionsToEmployee[$i]->action_id;
+				} elseif($actionsToEmployee[$i]->mode == 1) { // Исключить из прав. Сам экшн кладётся в спец. массив для того ,чтобы можно было отобразить в интерфейсе
+					$actionsDetached[] = $actionsToEmployee[$i]->action_id;
+				}
+			}
+			
+			$user = User::model()->getOne($issetUser['id']);
+			$actionModel = new CheckedAction();
+			$actionsArr = array();
+			foreach($user['role_id'] as $roleId) {
+				$actions = $actionModel->getByRole($roleId);
+				foreach($actions as $key => $action) {
+					$issetAlready = array_search($action['action_id'], $actionsAttached) !== false || array_search($action['action_id'], $actionsDetached) !== false;
+
+					if(!$issetAlready) { // В противном случае, это либо приаттаченные, либо детаченные экшены для сотрудника
+						$actionsArr[] = $action['action_id'];
+					}
+				}
+			}
+			
+			$employee['actions'] = $actionsArr;
+			$employee['actions_detached'] = $actionsDetached;
+			$employee['actions_attached'] = $actionsAttached;
+		}
+		echo CJSON::encode(array('success' => true,
                                  'data' => $employee)
         );
     }
 
     public function actionGetByWard($id) {
         $model = new Employee();
-        $employees = $model->getByWard($id);
+        $employees = $model->getByWard($id, -1);
 
         echo CJSON::encode(array('success' => true,
                                  'data' => $employees)

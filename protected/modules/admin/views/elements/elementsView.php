@@ -1,8 +1,5 @@
-<h4>Краткая справка</h4>
-<p>Раздел предназначен для редактирования содержания медицинской карты для рабочего места врача. Карта у врача разбита на категории (раскрывающиеся списки), внутри них имеются управляющие элементы, которые могут представлять собой, в том числе, выбор значения из справочника.
-    При формировании шаблона карты требуется определить группы, поля карты, справочники и привязать последние к определённым полям. Справочники при необходимости можно дополнять значениями.
-</p>
-<?php $this->widget('application.components.widgets.DoctorCardTabMenu') ?>
+<?php $this->widget('application.modules.admin.components.widgets.DoctorCardTabMenu') ?>
+
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/elements.js"></script>
 <table id="elements"></table>
@@ -46,6 +43,17 @@
                                     'class' => 'form-control'
                                 )); ?>
                                 <?php echo $form->error($model,'type'); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'directLink', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'directLink', array('Нет', 'Да'), array(
+                                    'id' => 'directLink',
+                                    'class' => 'form-control'
+                                )); ?>
                             </div>
                         </div>
                         <div class="form-group">
@@ -195,6 +203,33 @@
                                 <?php echo $form->error($model,'allowAdd'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'showDynamic', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'showDynamic', array('Нет', 'Да'), array(
+                                    'id' => 'showDynamic',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'showDynamic'); ?>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'hideLabelBefore', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'hideLabelBefore', array('Нет', 'Да'), array(
+                                    'id' => 'hideLabelBefore',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'hideLabelBefore'); ?>
+                            </div>
+                        </div>
+
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(
@@ -460,6 +495,17 @@
                                 <?php echo $form->error($model,'type'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'directLink', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'directLink', array('Нет', 'Да'), array(
+                                    'id' => 'directLink',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'categorieId', array(
                                 'class' => 'col-xs-3 control-label'
@@ -593,7 +639,6 @@
                                 <?php echo $form->error($model,'isRequired'); ?>
                             </div>
                         </div>
-                        
                         <div class="form-group">
                             <?php echo $form->labelEx($model,'allowAdd', array(
                                 'class' => 'col-xs-3 control-label'
@@ -607,6 +652,32 @@
                                 <?php echo $form->error($model,'allowAdd'); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'showDynamic', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'showDynamic', array('Нет', 'Да'), array(
+                                    'id' => 'showDynamic',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'showDynamic'); ?>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <?php echo $form->labelEx($model,'hideLabelBefore', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'hideLabelBefore', array('Нет', 'Да'), array(
+                                    'id' => 'hideLabelBefore',
+                                    'class' => 'form-control'
+                                )); ?>
+                                <?php echo $form->error($model,'hideLabelBefore'); ?>
+                            </div>
+                        </div>
+
                         <div class="table-config-container no-display">
                             <div class="form-group">
                                 <?php echo $form->labelEx($model,'numCols', array(
@@ -844,7 +915,6 @@
             <div class="modal-body">
                 <h4>При заполнении формы возникли следующие ошибки:</h4>
                 <div class="row">
-
                 </div>
             </div>
             <div class="modal-footer">
@@ -861,13 +931,18 @@
                 <h4 class="modal-title">Редактирование зависимостей значений элемента</h4>
             </div>
             <div class="modal-body">
+                <input id="valuesNotToPrint" type="hidden">
                 <div class="row">
                     <div class="col-xs-5" id="controlValuesPanel">
                         <h5>Значения выбранного списка</h5>
                         <div class="row">
                             <select id="controlValues" multiple="multiple" class="form-control">
                             </select>
+                            <span class="notPrintIfThisValueContainer no-display"><input type="checkbox" id="notPrintIfThisValue">Не печатать при выборе данного значения</span>
                         </div>
+                        <!--div class="row">
+
+                        </div-->
                     </div>
                     <div class="col-xs-5 no-display" id="controlDependencesPanel">
                         <h5>Список элементов управления</h5>
@@ -894,3 +969,4 @@
         </div>
     </div>
 </div>
+

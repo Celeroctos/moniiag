@@ -1,0 +1,5 @@
+Команда для создания символической ссылки на конфигурацию БД разработчика:
+Linux: ln -s db.develop.*.php db.php
+Windows: mklink db.php db.develop.*.php
+
+где * - фамилия разработчика (например: db.develop.tayibov.php)

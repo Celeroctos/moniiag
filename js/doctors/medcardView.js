@@ -68,7 +68,7 @@ $(document).ready(function() {
                 },
                 {
                     'field' : 'card_number',
-                    'op' : 'eq',
+                    'op' : 'cn',
                     'data' : $('#cardNumber').val()
                 },
                 {
@@ -318,7 +318,7 @@ $(document).ready(function() {
 						var div = $('<div>');
 						if($('#panelOfhistoryMedcard').length > 0) {
 							var a = $('<a>').prop({
-								'href' : '#' + data[i].medcard_id+'_'+data[i].id_record
+								'href' : '#' + data[i].medcard_id+'_' + data[i].greeting_id + '_' + data[i].template_id
 							});
 						} else { // Режим кабинета главдоктора
 							var a = $('<a>').prop({
@@ -349,16 +349,17 @@ $(document).ready(function() {
 			var historyPointCoordinate = $(this).attr('href').substr(1);
 			var coordinateStrings = historyPointCoordinate.split('_');
 
-			var medcardId = coordinateStrings[0];
-			var pointId = coordinateStrings[1];
+            var medcard = coordinateStrings[0];
+            var greeting = coordinateStrings[1];
+            var template = coordinateStrings[2];
 
 
 			$.ajax({
 				'url' : '/doctors/patient/gethistorymedcard',
 				'data' : {
-					'medcardid' : medcardId,
-					'historyPointId': pointId,
-					'date' : $(this).text()
+                    medcardId: medcard,
+                    greetingId: greeting,
+                    templateId: template
 				},
 				'cache' : false,
 				'dataType' : 'json',

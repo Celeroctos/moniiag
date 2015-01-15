@@ -267,10 +267,23 @@ class MedcardElementForPatient extends MisActiveRecord {
 		return $this->getHistoryPointsByCardId($medcard['card_number']);
     }
 
-	public function getValuesByDate($date, $medcardId, $historyId) {
+	public function getValuesByDate($medcardId, $greetingId,$templateId) {
 		try {
 			$connection = Yii::app()->db;		
-						
+
+            // Найдём для приёма и номера шаблона максимальный record_id, чтобы потом вытащить все элементы
+
+            $recordIdQuery = $connection->createCommand()
+                ->select('MAX(record_id)')
+                ->from('mis.medcard_records mr')
+                ->where('(mr.medcard_id = :medcard_id AND mr.greeting_id = :greeting AND template_id = :template)',
+                    array(
+                        ':medcard_id' => $medcardId,
+                        ':greeting' => $greetingId,
+                        ':template' => $templateId)
+                );
+            $historyId = $recordIdQuery->queryScalar();
+
 			$values = $connection->createCommand()
 				->select('mep.*, me.type')
 				->from('mis.medcard_elements_patient mep')
@@ -329,6 +342,57 @@ class MedcardElementForPatient extends MisActiveRecord {
 			echo $e->getMessage();
 		}
 	}
+
+    public function findElementsForGreeting($greetingId, $medcardId,$categoryId, $path )
+    {
+        try
+        {
+            $connection = Yii::app()->db;
+            $elements = $connection->createCommand()
+                ->select('mep.*')
+                ->from('mis.medcard_elements_patient mep')
+                ->where('greeting_id = :greeting_id
+                            AND medcard_id = :medcard_id
+                            AND categorie_id = :categorie_id
+                            AND path LIKE :path
+                            AND element_id != -1',
+                            array(
+                                ':greeting_id' => $greetingId,
+                                ':medcard_id' => $medcardId,
+                                ':categorie_id' => $categoryId,
+                                ':path' => $path.'.%'
+                            )
+                        )
+                ->order('element_id, record_id desc');
+            $elements = $elements->queryAll();
+
+
+            if (count($elements)>0)
+            {
+                $currentElementId = $elements[0]['element_id'];
+                $newElementsList = array();
+                $newElementsList[] = $elements[0];
+                foreach ($elements as $oneElement)
+                {
+                    // Если element_id не равен текущему Id-нику
+                    if ($oneElement['element_id']!=$currentElementId)
+                    {
+                        $currentElementId  = $oneElement['element_id'];
+                        $newElementsList[] = $oneElement;
+                    }
+
+
+                }
+                $elements = $newElementsList;
+            }
+            return $elements;
+         }
+         catch(Exception $e)
+         {
+            var_dump($e);
+            exit();
+         }
+    }
 
     public function findGreetingTemplate($greetingId, $templateId)
     {

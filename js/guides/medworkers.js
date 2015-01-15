@@ -199,26 +199,47 @@ $(document).ready(function() {
     $("#deleteMedworker").click(function() {
         var currentRow = $('#medworkers').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
-            // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/guides/medworkers/delete?id=' + currentRow,
+                'url' : '/guides/medworkers/issetDoctorPerMedworker?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == 'true') {
-                        $("#medworkers").trigger("reloadGrid");
-                    } else {
-                        // Удаляем предыдущие ошибки
-                        $('#errorAddMedworkerPopup .modal-body .row p').remove();
-                        $('#errorAddMedworkerPopup .modal-body .row').append("<p>" + data.error + "</p>")
+					if(data.success) {
+						if(data.doctors.length > 0) {
+							$('#noticeIssetDoctorPopup .listOfDoctors').html('');
+							for(var i in data.doctors) {
+								$('#noticeIssetDoctorPopup .listOfDoctors').append(
+									$('<strong>').append(
+										data.doctors[i].last_name + ' ' + data.doctors[i].first_name + ' ' + (data.doctors[i].middle_name ? data.doctors[i].middle_name : '') + ((data.doctors.length - 1 == i) ? '' : ', ')
+									)
+								);
+							}
+							$('#noticeIssetDoctorPopup').modal();
+						} else {
+							$.ajax({
+								'url' : '/guides/medworkers/delete?id=' + currentRow,
+								'cache' : false,
+								'dataType' : 'json',
+								'type' : 'GET',
+								'success' : function(data, textStatus, jqXHR) {
+									if(data.success == 'true') {
+										$("#medworkers").trigger("reloadGrid");
+									} else {
+										// Удаляем предыдущие ошибки
+										$('#errorAddMedworkerPopup .modal-body .row p').remove();
+										$('#errorAddMedworkerPopup .modal-body .row').append("<p>" + data.error + "</p>")
 
-                        $('#errorAddMedworkerPopup').modal({
+										$('#errorAddMedworkerPopup').modal({
 
-                        });
-                    }
-                }
-            })
+										});
+									}
+								}
+							});
+						}
+					}
+				}
+			});
         }
     });
 });

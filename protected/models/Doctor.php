@@ -35,6 +35,32 @@ class Doctor extends MisActiveRecord  {
         }
     }
 
+
+    public function getAllForSelect($forPregnant = false) {
+        try {
+            $connection = Yii::app()->db;
+            $doctors = $connection->createCommand()
+                ->select('d.*')
+                ->from('mis.doctors d');
+
+            if($forPregnant !== false) {
+                $doctors->join('mis.medpersonal m', 'd.post_id = m.id')
+                    ->where('m.is_for_pregnants = 1');
+            }
+            $doctors->order('d.last_name asc');
+            $doctors = $doctors->queryAll();
+
+            foreach($doctors as $key => &$doctor) {
+                $doctor['fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+            }
+
+            return $doctors;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
     public function getRows($filters, $sidx = false, $sord = false, $start = false,
                     $limit = false, $choosedDiagnosis = array(), $greetingDate = false, $calendarType = 0, $isCallCenter = false) {
 
@@ -72,9 +98,9 @@ class Doctor extends MisActiveRecord  {
           if($greetingDate !== false && $greetingDate !== null) {
               // Теперь мы знаем, каких врачей выбирать, с каким днём
               if($calendarType == 0) {
-                 $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
-              } else { // Это выбирает врачей в промежутке
-                 $doctorsPerDay = SheduleSetted::model()->getAllPerDates($greetingDate);
+                $doctorsPerDay = SheduleSetted::model()->getAllPerDate($greetingDate);
+			  } else { // Это выбирает врачей в промежутке
+                $doctorsPerDay = SheduleSetted::model()->getAllPerDates($greetingDate);
               }
               $doctorIds = array();
               $num = count($doctorsPerDay);
@@ -84,11 +110,13 @@ class Doctor extends MisActiveRecord  {
               $doctor->andWhere(array('in', 'd.id', $doctorIds));
           }
 
-          if ($sidx && $sord && $limit) {
-              $doctor->order($sidx.' '.$sord);
-              $doctor->limit($limit, $start);
+          if ($sidx && $sord) {
+			$doctor->order($sidx.' '.$sord);
           }
 
+		  if($limit && $start) {
+			$doctor->limit($limit, $start);
+		  }
 
         $doctors = $doctor->queryAll();
         return $doctors;
@@ -101,7 +129,7 @@ class Doctor extends MisActiveRecord  {
             ->from('mis.doctors d')
             ->leftJoin('mis.wards w', 'd.ward_code = w.id')
             ->leftJoin('mis.medpersonal m', 'd.post_id = m.id')
-			->leftJoin(SheduleByDay::tableName().' dsbd', 'dsbd.doctor_id = d.id')
+			->leftJoin(SheduleByDay::model()->tableName().' dsbd', 'dsbd.doctor_id = d.id')
 			->leftJoin('mis.medcards mc', 'dsbd.medcard_id = mc.card_number');
 		
 		if($filters !== false) {
@@ -201,7 +229,7 @@ class Doctor extends MisActiveRecord  {
             ->from('mis.doctors d')
             ->leftJoin('mis.wards w', 'd.ward_code = w.id')
             ->leftJoin('mis.medpersonal m', 'd.post_id = m.id')
-			->leftJoin(SheduleByDay::tableName().' dsbd', 'dsbd.doctor_id = d.id')
+			->leftJoin(SheduleByDay::model()->tableName().' dsbd', 'dsbd.doctor_id = d.id')
 			->leftJoin('mis.medcards mc', 'dsbd.medcard_id = mc.card_number');
 		
 		if($filters !== false) {

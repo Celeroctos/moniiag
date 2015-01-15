@@ -15,7 +15,7 @@ class DistribDiagnosis extends MisActiveRecord  {
         $mkb10 = $connection->createCommand()
             ->select('md.*, m.*')
             ->from($this->tableName().' md')
-            ->join(Mkb10::tableName().' m', 'm.id = md.mkb10_id')
+            ->join(Mkb10::model()->tableName().' m', 'm.id = md.mkb10_id')
             ->where('md.employee_id = :employee_id', array(':employee_id' => $employeeId));
 
         if($filters !== false) {

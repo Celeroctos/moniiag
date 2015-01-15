@@ -18,7 +18,7 @@ class TasuMedcard extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $medcards = $connection->createCommand()
             ->select('p.*')
-            ->from(TasuMedcard::tableName().' tm')
+            ->from(TasuMedcard::model()->tableName().' tm')
             ->where('tm.version_end = :version_end', array(':version_end' => '9223372036854775807'));
 
         if($filters !== false) {
@@ -42,7 +42,7 @@ class TasuMedcard extends MisActiveRecord {
         $connection = $this->getDbConnection();
         $numMedcards = $connection->createCommand()
             ->select('COUNT(*) as num')
-            ->from(TasuMedcard::tableName().' tm')
+            ->from(TasuMedcard::model()->tableName().' tm')
             ->queryRow();
         return $numMedcards['num'];
     }

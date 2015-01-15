@@ -1,4 +1,6 @@
-﻿/* ------------------- Keyboard Layout ------------- */
+﻿@import "elements.less";
+
+/* ------------------- Keyboard Layout ------------- */
 .keyboardLayout { position: absolute; margin: 1px 0 0 -25px; *margin-top: 2px; width: 24px; height: 20px; color: #999; text-align: center; }
 /* ----------------- Color Picker -------------- */
 
@@ -167,10 +169,17 @@ body.modal-open {
 .yellow-color {
   color: #FFFF00;
 }
+.checkbox-inline {
+	padding: 3px 5px;
+	margin-right: 5px;
+	input[type="checkbox"] {
+		margin-top: 2px;
+	}
+}
 body {
   font-size: @default-font-size;
   max-width: 98%;
-  padding-bottom: 70px;
+  padding-bottom: 50px;
  // background: url('/images/background.png') repeat-x;
 }
 .bold {
@@ -322,6 +331,10 @@ form span.required {
     }
 }
 
+#choose-employee-form input[type='submit'] {
+	margin-left: 157px;
+}
+
 #patient-search-form, #doctors-search-form, #log-search-form   {
     #doctor-search-reset
     {
@@ -385,6 +398,17 @@ form span.required {
   margin-left: 0;
   text-align: center;
 }
+
+#wardSelect
+{
+  height: 200px !important;
+}
+
+#doctorsSelect
+{
+  height: 200px !important;
+}
+
 select[multiple="multiple"] {
   height: auto !important;
 }
@@ -809,11 +833,11 @@ body #editPopup {
       padding: 0 5px;
     }
     li:not(.navigation):hover {
-        background: #ecf5fc;
+        background: #81F781;
         cursor: pointer;
     }
     li.active {
-      background: #E0F8F1;
+      background: #81F781;
     }
     a.prev {
 
@@ -1828,11 +1852,11 @@ a.accordion-toggle:hover {
 }
 #addFakePopup {
 	.modal-dialog {
-		width: 1100px;
+		width: 1140px;
 	}
 	.borderedBox {
 		width: 220px;
-		margin-left: 157px;
+		margin-left: 167px;
 		padding: 0 10px;
 		.datetimepicker {
 			padding: 0;
@@ -1846,14 +1870,44 @@ a.accordion-toggle:hover {
 			display: none;
 		}
 	}
+	#fioCont {
+		background: #ffffcc;
+		margin-bottom: 5px;
+		min-height: 30px;
+		margin-left: 113px;
+		border-radius: 3px;
+		padding: 5px;
+		font-weight: bold;
+	}
+	#savePrimaryDiag {
+		position: relative;
+		top: 2px;
+		margin-right: 3px;
+	}
+}
+
+#editPregreetingsRowPopup {
+	#fioContEdit {
+		background: #ffffcc;
+		margin-bottom: 5px;
+		min-height: 30px;
+		margin-left: 123px;
+		border-radius: 3px;
+		padding: 5px;
+		font-weight: bold;
+	}
+}
+
+.overflow-x {
+	overflow-x: scroll;
 }
 #showHistoryGreetingPopup {
 	.modal-dialog {
-		width: 960px;
+		width: 1060px;
 	}
 }
 #greeting-addfake-submit  {
-	margin-left: 108px;
+	margin-left: 112px;
 }
 #tasuimport-filter-btn {
 	margin-left: 27%;
@@ -1924,4 +1978,712 @@ a.accordion-toggle:hover {
   height: 3px;
   background-color: rgb(175, 175, 175);
   margin-bottom:10px;
+}
+
+
+.not-active {
+	opacity: 0.5;
+}
+/* Форма смена доктора в списке пациентов на приём */
+#change-doctor-form {
+	padding: 0;
+	div {
+		padding: 0 3px 0 0;
+	}
+	select {
+		margin-top: 10px;
+	}
+	label {
+		margin-top: 8px;
+	}
+}
+/* Компонент оверлея */
+.overlay {
+	width: 100%;
+	height: 100%;
+	background: url('/images/ajax-loader2.gif') no-repeat #A4A4A4;
+	background-position: center center;
+	position: absolute;
+	top: 0; 
+	left: 0;
+	-moz-opacity:0.6;
+    -khtml-opacity: 0.6;
+    opacity: 0.5;
+	z-index: 999;
+	border-radius: 5px;
+}
+.overlayCont {
+	position: relative;
+}
+
+form[id=template-edit-form] .btnAddValue
+{
+  vertical-align: top;
+  margin-top: 5px;
+}
+.not-active {
+	opacity: 0.5;
+}
+
+/* Контейнер просмотра динамики элемента */
+.showDynamicWrap {
+	position: relative;
+	.showDynamicIcon {
+		position: absolute;
+		left: 12px;
+		top: -7px;
+		width: 10px;
+		height: 10px;
+		cursor: pointer;
+		color: #DF0101;
+	}
+	.changesList {
+		color: #000000;
+	}
+}
+
+/* Редактирование расписания */
+.doctorsWardsBlock
+{
+  text-align: center;
+}
+
+.timeTablesROTable
+{
+  border:1px;
+}
+.timeTablesROTable
+{
+  font-weight:bold;
+  width: 100%;
+  tr{
+    width: 100%;
+    td{
+      word-wrap: break-word;
+      border-style: solid;
+      border-width: 1px;
+      border-color: #000000;
+    }
+    /*.roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD*/
+    .roomTD
+    {
+      width: 5%;
+      text-align: center;
+    }
+    .daysTD
+    {
+      width: 40%;
+      text-align: center;
+    }
+    .hoursOfWorkTD
+    {
+      width: 10%;
+      text-align: center;
+    }
+    .hoursOfGreetingTD
+    {
+      width: 10%;
+      text-align: center;
+    }
+    .limitTD
+    {
+      width: 15%;
+      text-align: center;
+    }
+    .factsTD
+    {
+      vertical-align: top;
+    }
+  }
+  thead{
+    text-align: center;
+  }
+}
+
+
+.oneFactROBlock
+{
+  table
+  {
+    width: 100%;
+    margin-bottom: 10px;
+    td{
+      word-wrap: break-word;
+      vertical-align: top;
+      border-style: none;
+    }
+    .oneFactTypeRO
+    {
+      width:60%;
+    }
+  }
+}
+
+.timeTablesEditTable
+{
+  .withBorderTDTimetableEditor
+  {
+    .roomTD, .daysTD, .hoursOfWorkTD, .hoursOfGreetingTD, .shiftTD, .limitTD, .factsTD
+    {
+      border-style: solid;
+      border-width: 2px;
+      border-color: green;
+      .time-timetable
+      {
+        .input-group-addon
+        {
+          display:none;
+        }
+      }
+
+    }
+
+    .roomTD, .limitTD, .deleteTD
+    {
+      text-align: center;
+    }
+
+    .deleteTD
+    {
+      vertical-align: middle;
+    }
+  }
+  thead tr td
+  {
+    text-align: center;
+  }
+
+  .removeTimeTableRule
+  {
+    font-size: 24px;
+  }
+
+  /*td{
+
+  }*/
+
+  .addRuleButtons
+  {
+    button
+    {
+      font-size: 12px;
+      height: 45px;
+    }
+
+
+  }
+
+  .cabinetSelectEdit{width:50px; }
+
+  .daysOfWeekEdit
+  {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .daysOfWeekEdit td{
+    padding-left: 5px;
+    padding-right: 5px;
+    border-left-style:solid ;
+    border-left-width:1px;
+  }
+  .daysEditingBottomBLock
+  {
+    margin-top: 10px;
+    vertical-align: top;
+    display:table;
+    .calendarBlock{
+      padding-right: 20px;
+      /*display:table-cell;*/
+      vertical-align: top;
+    }
+    .exceptionBlock{
+      vertical-align: top;
+      /*display:table-cell;*/
+    }
+
+    /*.oddCheckbox
+    {
+      display:inline-block;
+    }*/
+
+  }
+  .limitTD, .factsTD
+  {
+    vertical-align: top;
+  }
+  .limitBlock
+  {
+    text-align: center;
+    .limitQuantity{
+      width: 30px;
+    }
+  }
+  .limitTD
+  {
+    .time-control
+    {
+      text-align: center;
+      align: center;
+      left: 18px;
+      /*position: static;*/
+      .subfields
+      {
+        min-width: 70px;
+      }
+    }
+  }
+  .factsTD{
+    width:1%; /*Ширина ячейки по содержимому*/
+    text-align: center;
+    .rangeCheckbox
+    {
+      text-align: left;
+    }
+  }
+  .time-timetable
+  {
+    height: 25px;
+  }
+}
+
+
+.daysEditingBottomBLock
+{
+  .calendarBlock
+  {
+   /* width:40%;*/
+    margin-right: 20px;
+    display:inline-block;
+    div.date-timetable {
+      span {
+        display: block;
+       /* position: relative;*/
+        top: 2px;
+        left: 110px;
+        z-index: 99;
+        padding: 12px 24px;
+        border-left: solid 1px rgb(204, 204, 204);
+        border-bottom-right-radius: 0px;
+        border-top-right-radius: 0px;
+        span.glyphicon-calendar {
+          left: -10px;
+          top: -5px;
+          padding: 0;
+          font-size: 22px;
+        }
+      }
+      width:50px;
+      display: inline-block;
+      margin-right: 15px;
+    }
+    .calendarBlockLabel
+    {
+      display:inline-block;
+      margin-top:-15px
+    }
+  }
+  .exceptionBlock
+  {
+      display:inline-block;
+      .exceptionSelectContainer
+      {
+        /*vertical-align: middle;*/
+        display: table;
+        /*vertical-align	: middle;*/
+        /*padding-top: auto;
+        padding-bottom: auto;*/
+        .exceptionSelect
+        {
+          display: table-cell;
+          vertical-align	: middle;
+        }
+
+      }
+
+
+  }
+
+}
+
+.addingNewSheduleContainer
+{
+  text-align: center;
+  /*margin-left: auto;
+  margin-right: auto;*/
+
+}
+
+.sheduleEditorFooter
+{
+  display:inline-block;
+  margin-top: 15px;
+  /*margin-left: 7%;*/
+  .date-control
+  {
+    padding-left: 0px;
+    .input-group-addon
+    {
+      left: 100px;
+      top: -13px;
+
+      width: 20px;
+      height: 30px;
+      span.glyphicon-calendar
+      {
+        font-size: 17px;
+        left: -9px;
+      }
+    }
+  }
+}
+.timeTableBegin, .timeTableEnd
+{
+  display:inline-block;
+  width:170px;
+}
+
+.timetableEditorHandlingButtons
+{
+  display:inline-block;
+}
+.lifetimeOfTimetable
+{
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 15px;
+}
+.saveSheduleButton, .cancelSheduleButton
+{
+  margin-top: 24px;
+}
+.daysEditingDatesBlock
+{
+  /*display:inline-block;*/
+  .daysOneDateContainer
+  {
+    background-color: rgb(245, 246, 206);
+    display:inline-block;
+    margin-right: 10px;
+    .daysOneDateValueRemove
+    {
+      color: rgb(255, 0, 0);
+    }
+  }
+}
+
+.factsDatesBlock
+{
+  text-align: left;
+  .factsItemContainer
+  {
+    background-color: rgb(245, 246, 206);
+    margin-bottom: 10px;
+    text-align: left;
+    .factTextCaptionReason
+    {
+      text-decoration: underline;
+    }
+    .factTextCaption
+    {
+      display:inline-block;
+    }
+    /*.factRemoveButtonContainer
+    {
+      display:inline-block;*/
+      .factRemoveButton
+      {
+        color: rgb(255, 0, 0);
+      }
+    /*}*/
+  }
+}
+
+/*.factsRangeDateCalendarContainer
+{
+  width: 100%;
+}*/
+
+.factsOneDateCalendarContainer  div.date-timetable, .factsRangeDateCalendarContainer  div.date-timetable
+{
+    span {
+      display: block;
+      /* position: relative;*/
+      top: 2px;
+      left: 110px;
+      z-index: 99;
+      padding: 12px 24px;
+      border-left: solid 1px rgb(204, 204, 204);
+      border-bottom-right-radius: 0px;
+      border-top-right-radius: 0px;
+      span.glyphicon-calendar {
+        left: -10px;
+        top: -5px;
+        padding: 0;
+        font-size: 22px;
+      }
+    }
+    width:50px;
+    display: inline-block;
+    margin-right: 15px;
+  }
+.timeTablesEditDoctorsWards, .timeTablesRODoctorsWards
+{
+  width: 100%;
+  font-weight: bold;
+  font-size: 14px;
+  color: #000055;
+  .oneRowDoctorsWardEditing, .oneRowDoctorsWardRO
+  {
+   /* padding-top: 100px;*/
+    border-top-style:solid ;
+    border-top-width:1px;
+    .doctorsColEditing, .doctorsColRO
+    {
+      width: 55%;
+    }
+    .wardsColEditing, .wardsColRO
+    {
+      width: 45%;
+      vertical-align: top;
+      padding-right: 100px;
+    }
+  }
+}
+
+.limitROBlock{
+  .limitObjectName
+  {
+    text-decoration: underline;
+  }
+}
+
+.timetableReadOnly
+{
+ margin-top: 35px;
+}
+
+.edititngSheduleArea
+{
+  margin-top: 25px;
+}
+.timeTableRODateTimesAction
+{
+  text-decoration: underline;
+  font-size: 14px;
+  color: #000055;
+}
+.timeTableEditDateTimesAction
+{
+  text-decoration: underline;
+  font-size: 14px;
+  color: #000055;
+}
+
+.timeTablesEditDoctorsWards
+{
+  font-size: 14px;
+  color: #000055;
+}
+
+/* Блок генератора номера медкарты */
+.newMedcardNumberBlock {
+	strong {
+		color: #298A08;
+		.bigger, .prefix, .postfix {
+			color: #FE2E9A;
+			cursor: pointer;
+		}
+		.number {
+			width: 100px;
+		}
+		.postfix, input, .prefix {
+			margin-left: 3px;
+		}
+	}
+}
+.inline {
+	display: inline;
+}
+/* Компонент оверлея */
+.overlay {
+	width: 100%;
+	height: 100%;
+	background: url('/images/ajax-loader2.gif') no-repeat #A4A4A4;
+	background-position: center center;
+	position: absolute;
+	top: 0; 
+	left: 0;
+	-moz-opacity:0.6;
+    -khtml-opacity: 0.6;
+    opacity: 0.5;
+	z-index: 999;
+	border-radius: 5px;
+}
+.overlayCont {
+	position: relative;
+}
+
+/* Панель нижней навигации */
+#navbarTools {
+	height: 50px;
+	/* Панель выбора текущей роли */
+	#currentEmployeeRole  {
+		margin-left: 10px;
+		width: 200px;
+	}
+	#submitEmployeeRole {
+		.gradient(#31B404, #BFFF00);
+		height: 30px;
+	}
+	.arrow-panel, #footerTabPanel li {
+		height: 25px;
+		border-top-right-radius: 8px;
+		border-top-left-radius: 8px;
+		color: #ffffff;
+		cursor: pointer;
+	}
+	.arrow-panel {
+		width: 50px;
+		margin: 25px 0 0 50px;
+		background: #BCE6FF;
+		span {
+			font-size: 20px;
+			padding: 0 0 0 15px;
+			margin-top: -2px;
+		}
+	}
+	
+	.mainCont {
+		height: 50px;
+		margin-top: 0px;
+		#footerTabPanel {
+			position: absolute;
+			margin: 0 0 0 100px;
+			z-index: 9;
+			li {
+				float: left;
+				margin-right: -10px;
+				list-style: none;
+				padding: 5px 15px 0 15px;
+				font-weight: bold;
+				position: relative;
+			}
+			.panel1 {
+				background: #BCE6FF;
+				z-index: 99;
+			}
+			.panel2 {
+				background: #DBC7B8;
+				z-index: 98;
+			}
+		}
+	}
+	.footerPanel {
+		height: 50px;
+		position: absolute;
+		width: 100%;
+	}
+	#panel1 {
+		.gradient(#81BEF7, #4F85B2, #BCE6FF);
+		z-index: 15;
+		select, button {
+			position: relative;
+			top: 10px;
+			display: inline-block;
+		}
+	}
+	#panel2 {
+		.gradient(#D69F77, #D8B499, #DBC7B8);
+		z-index: 14;
+		ul {
+			list-style: none;
+			overflow: hidden;
+			li {
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+			}
+		}
+	}
+	strong {
+		margin-left: 10px;
+		position: relative;
+		top: 10px;
+		color: #ffffff;
+	}
+} 
+
+/* */
+.employeeSettingsNav {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+#linkedUser {
+	span {
+		color: #FE9A2E;
+	}
+}
+#accessEmployeeSettingsCont {
+	div {
+		display: none;
+	}
+	div.active {
+		display: block;
+	}
+	.accessDiff {
+		background: #EFFF6C;
+		border-radius: 3px;
+	}
+}
+.actionsGroupsTablist {
+	margin-bottom: 5px;
+}
+
+.calcBBPopover {
+	top: -150px !important;
+	height: 180px;
+	min-width: 500px;
+	.arrow {
+		top: 160px !important;
+	}
+	.popover-title {
+		font-weight: bold;
+	}
+	.popover-content {
+		width: 500px;
+		min-width: 500px;
+		label {
+			top: 5px;
+		}
+	}
+}
+
+.greeting-glyphicon-arrow-right {
+	position: relative;
+	width: 30px;
+	padding: 6px 0 0 0;
+	left: -10px;
+	height: 30px;
+	cursor: pointer;
+	top: 2px;
+}
+.linkfieldGroup {
+	display: inline-block;
+}
+/* -------------------- */
+
+.beginFromCont {
+	overflow: hidden;
+	margin-top: 15px;
+	label {
+		margin-top: 10px;
+		width: 150px;
+	}
+	input {
+		max-width: 100px;
+	}
+}
+.syncAccordion {
+	max-width: 98%;
 }

@@ -201,6 +201,7 @@
         isRightOmsNumber = $.fn.checkOmsNumber();
         if (!isRightOmsNumber)
         {
+            cancelSaving = true;
             return false;
         }
 
@@ -212,7 +213,11 @@
             'data' : {
                 'omsNumberToCheck' : $('#patient-oms-edit-form #policy').val(),
                 'omsSeriesToCheck' :  $('#patient-oms-edit-form #omsSeries').val(),
-                'omsIdToCheck' : $('#patient-oms-edit-form #id').val()
+                'omsIdToCheck' : $('#patient-oms-edit-form #id').val(),
+				'firstName' : $('#patient-oms-edit-form #firstName').val().toUpperCase(),
+				'lastName' : $('#patient-oms-edit-form #lastName').val().toUpperCase(),
+				'middleName' : $('#patient-oms-edit-form #middleName').val().toUpperCase(),
+				'birthday' : $('#patient-oms-edit-form #birthday').val()
             },
             'cache' : false,
             'dataType' : 'json',
@@ -222,7 +227,7 @@
             'success' : function(data, textStatus, jqXHR) {
                 data = data.answer;
 
-                if (data.newOms==undefined) return;
+                if (data.newOms == undefined) return;
                 //if (data.newOms.id >= 0)
                 //{
 
@@ -230,7 +235,7 @@
                     //globalVariables.medcardOmsToEdit
                     globalVariables.newOmsId = data.newOms.id;
 
-                    if (data.nonCoincides!=undefined)
+                    if (data.nonCoincides != undefined)
                     {
                         $('.concidesOmsDataMessage').addClass('no-display');
                         $('.nonConcidesOmsDataMessage').removeClass('no-display');
@@ -567,10 +572,13 @@
         table.parents('div.no-display').removeClass('no-display');
     }
 	
+	var popoverCont = null;
 	$(document).on('click', '.writePatientLink', function(e) {
 		$('.writePatientLink').popover('destroy');
 		var cardId = $(this).attr('href').substr(1);
 		var url = 'http://' + location.host + '/reception/patient/writepatientsteptwo/?cardid=' + cardId;
+
+		popoverCont = this;
 		$(this).popover({
             animation: true,
             html: true,
@@ -583,15 +591,17 @@
             container: $(this).parents('td'),
             content: function() {
 				var a1 = $('<a>').prop({
-					href: url,
-					target: '_blank'
+					href: url
+				}).on('click', function(e) {
+					e.stopPropagation();
 				}).css({
 					fontWeight: 'bold'
 				}).text('На определённое время');
 				
 				var a2 = $('<a>').prop({
-					href: url + '&waitingline=1',
-					target: '_blank'
+					href: url + '&waitingline=1'
+				}).on('click', function(e) {
+					e.stopPropagation();
 				}).css({
 					fontWeight: 'bold'
 				}).text('В живую очередь');
@@ -600,7 +610,14 @@
 			}
 		});
 	   $(this).popover('show');
+	   e.stopPropagation();
 	   return false;
+	});
+	
+	$(document).on('click', function(e) {
+		if(popoverCont != null) {
+			$(popoverCont).parent().find('.popover').remove();
+		}
 	});
 
     // Отобразить ошибки формы добавления пациента
@@ -951,13 +968,22 @@
                     $('#regionPolicyChooser .variants').addClass('no-display');
                     $('#regionPolicyChooser .variants').css('display', '');
 
+                    $('#insuranceChooser .choosed').empty();
+                    $('#insuranceChooser input').removeAttr('disabled', '');
+                    $('#insuranceHidden input').val('');
+                    $.fn['insuranceChooser'].clearAll();
                     if (insId!='' && insId!=null)
                     {
-                        $('#insuranceChooser .choosed').html(
+                       /* $('#insuranceChooser .choosed').html(
                             "<span class=\"item\"" +
                             "id=\"r"+ insId +"\">" + insName +
                                 "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                        );*/
+
+                        $.fn['insuranceChooser'].addChoosed(
+                            $('<li>').prop('id', 'r' + insId).text(insName), { id:insId,  name: insName  }
                         );
+
 
                         // Заблочим чюзер
                         $('#insuranceChooser input').attr('disabled', '');
@@ -967,18 +993,27 @@
                     }
                     else
                     {
-                        $('#insuranceChooser .choosed').empty();
-                        $('#insuranceChooser input').removeAttr('disabled', '');
-                        $('#insuranceHidden input').val('');
+
                     }
 
+                    $.fn['regionPolicyChooser'].clearAll();
+
+                    $('#regionPolicyChooser input').removeAttr('disabled', '');
+
+
+                    $('#policyRegionHidden input').val('');
+                    $.fn['regionPolicyChooser'].clearAll();
                     // Запишем в чюзер регион
                     if (regId!='' && regId!=null)
                     {
-                        $('#regionPolicyChooser .choosed').html(
+                        /*$('#regionPolicyChooser .choosed').html(
                             "<span class=\"item\"" +
                                 "id=\"r"+ regId +"\">" + regName +
                                 "<span class=\"glyphicon glyphicon-remove\"></span></span>"
+                        );*/
+
+                        $.fn['regionPolicyChooser'].addChoosed(
+                            $('<li>').prop('id', 'r' + regId).text(regName), { id:regId,  name: regName  }
                         );
 
                         // Заблочим чюзер
@@ -990,12 +1025,7 @@
                     else
                     {
                         //$('#regionPolicyChooser .choosed').empty();
-                        $.fn['regionPolicyChooser'].clearAll();
 
-                        $('#regionPolicyChooser input').removeAttr('disabled', '');
-
-
-                        $('#policyRegionHidden input').val('');
                     }
 
                     $(document).trigger('omsnumberpopulate');
@@ -1089,7 +1119,9 @@
     });
     // --- End 17.06.2014 ---
 
-    $('#editAddressPopup .editSubmit').on('click', function(e) {
+
+    function saveAddress()
+    {
         if($.fn['regionChooser'].getChoosed().length > 0) {
             var region = $.fn['regionChooser'].getChoosed()[0].name + ', ';
             var regionId = $.fn['regionChooser'].getChoosed()[0].id;
@@ -1097,6 +1129,8 @@
             var region = '';
             var regionId = null;
         }
+
+        // Проверяем - если не указана улица, надо об этом вывести пользователю и спросить что желать дальше
 
         if($.fn['districtChooser'].getChoosed().length > 0) {
             var district = $.fn['districtChooser'].getChoosed()[0].name + ', ';
@@ -1126,22 +1160,22 @@
         if($.trim(house) == '') {
             house = '';
         } else {
-			house += ', '
-		}
+            house += ', '
+        }
 
         var building = $('#building').val();
         if($.trim(building) == '') {
             building = '';
         } else {
-			building += ', ';
-		}
+            building += ', ';
+        }
 
         var flat = $('#flat').val();
         if($.trim(flat) == '') {
             flat = '';
         } else {
-			flat += ', ';
-		}
+            flat += ', ';
+        }
 
         var postindex = $('#postindex').val();
         if($.trim(postindex) == '') {
@@ -1170,6 +1204,42 @@
         }
 
         $('#editAddressPopup').modal('hide');
+    }
+
+    $('#editAddressPopup .editSubmit').on('click', function(e) {
+        // Проверка данных
+        // 1. Проверим - если не указан нас пункт и не указано, что регион = 77 или 78, то выводим пользователю какой он плохой
+        if($.fn['settlementChooser'].getChoosed().length <= 0)
+        {
+            //regId = null;
+            var regionId = null;
+            if($.fn['regionChooser'].getChoosed().length > 0) {
+                regionId = $.fn['regionChooser'].getChoosed()[0].code_cladr;
+            }
+
+            if (! ((regionId=='77')||(regionId=='78')||(regionId==77)||(regionId==78)))
+            {
+                $('#needCityPopup').modal({});
+                return;
+            }
+        }
+
+        // Проверим наличие улицы
+        if($.fn['streetChooser'].getChoosed().length <= 0)
+        {
+            // Вызываем специальный поп-ап, по нажатию кнопочки в котором будет сразу вызвано сохранение адреса
+            $('#noStreetPopup').modal({});
+        }
+        else
+        {
+            // Вызываем сохранение адреса
+            saveAddress();
+        }
+
+    });
+
+    $('.saveAddressWithoutStreet').on( 'click',function(e){
+        saveAddress();
     });
 
     $('#editAddressPopup').on('hidden.bs.modal', function(e) {

@@ -96,7 +96,6 @@ class SheduleRestDay extends MisActiveRecord {
                 "
             );
 
-
     }
 
     public function getRows($date, $doctorId) {
@@ -112,6 +111,26 @@ class SheduleRestDay extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+	
+	// Get upper limits for all events
+	public function getUpperLimits($beginDate) {
+	    $connection = Yii::app()->db;
+		$query = $connection->createCommand()
+			->select('srd.doctor_id, srd.type, srd.date')
+			->from('mis.shedule_rest_days srd')
+			->where("NOT EXISTS(
+						SELECT srd2.id
+						FROM mis.shedule_rest_days srd2
+						WHERE srd2.type = srd.type 
+							AND srd2.doctor_id = srd.doctor_id
+							AND srd2.type = srd.type
+							AND srd2.date = srd.date + INTERVAL '1 day'
+					)")
+			->andWhere("srd.date >= :beginDate AND srd.date <= :beginDate + INTERVAL '7 day'", array(':beginDate' => $beginDate))
+			->group('srd.doctor_id, srd.type, srd.date')
+			->order('doctor_id, srd.date', 'asc');
+		return $query->queryAll();
+	}
 }
 
 ?>

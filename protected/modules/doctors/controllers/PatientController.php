@@ -1,47 +1,42 @@
 <?php
 class PatientController extends Controller {
     public function actionGetHistoryMedcard() {
+       /* echo '<pre>';
+        var_dump($_GET);
+        echo '<pre>';
+        var_dump($_POST);
+        exit();
+*/
+
+
         if(!Yii::app()->request->isAjaxRequest) {
             exit('Error!');
         }
-        //echo CJSON::encode(array('success' => 'true','data' => '')); exit();
         if(!isset($_GET['date'], $_GET['medcardid'])) {
             echo CJSON::encode(array('success' => true,
                                      'data' => 'Не хватает данных для запроса!'));
         }
-        //echo CJSON::encode(array('success' => 'true','data' => '')); exit();
+
         $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
-        //ob_end_clean();
-        //echo CJSON::encode(array('success' => 'true','data' => '')); exit();
-        //exit();
-        //var_dump($categorieWidget );
-        //exit();
-        
+
         $categorieWidget->createFormModel();
-		$historyArr = $categorieWidget->getFieldsHistoryByDate($_GET['date'], $_GET['medcardid'],$_GET['historyPointId']); // Получаем поля для всех полей относительно хистори
+		$historyArr = $categorieWidget->getFieldsHistoryByDate(
+            $_GET['medcardId'],
+            $_GET['greetingId'],
+            $_GET['templateId']
 
-      /*  foreach ($historyArr as &$historyEl)
-        {
-            $historyDateTimeArr = explode(' ', $historyEl['date_change']);
-            $historyDateArr= explode('-', $historyDateTimeArr [0]);
-            $historyEl['date_change'] =	$historyDateArr[2].'.'
-                .$historyDateArr[1].'.'
-                .$historyDateArr[0].' '.$historyDateArr[1] ;
-        }*/
+        );
+       // echo '<pre>';
+        //var_dump($historyArr);
+//        exit();
 
 
-     /*   $commentDateTimeArr = explode(' ', $oneComment['create_date']);
-        $commentDateArr= explode('-', $commentDateTimeArr [0]);
-        $oneComment['commentDate'] =	$commentDateArr[2].'.'
-            .$commentDateArr[1].'.'
-            .$commentDateArr[0].' '.$commentDateTimeArr[1] ;
-*/
+         // Получаем поля для всех полей относительно хистори
 		ob_end_clean();
         echo CJSON::encode(array('success' => 'true',
                                  'data' => $historyArr));
         exit();
     }
-
 
     public function actionSaveDiagnosis() {
         if(!isset($_GET['greeting_id'])) {
@@ -253,6 +248,8 @@ class PatientController extends Controller {
             $historyCategorieElementNext->guide_id = $element['guide_id'];
 			$historyCategorieElementNext->allow_add = $element['allow_add'];
             $historyCategorieElementNext->real_categorie_id = $element['real_categorie_id'];
+            $historyCategorieElementNext->not_printing_values = $element['not_printing_values'];
+            $historyCategorieElementNext->hide_label_before = $element['hide_label_before'];
             $historyCategorieElementNext->config = $element['config'];
 
 

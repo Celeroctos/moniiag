@@ -8,6 +8,7 @@ $(document).ready(function() {
             var prevVal = null;
             var currentElements = []; // Список строк с элементами. Требуется для того, чтобы связать определённый span  с конкретной строкой
             var choosedElements = []; // Список выбранных элементов для текущего контрола (строки)
+			var lastUserInput = '';
             var numRecords = null;
             $.fn[$(chooser).attr('id')] = {
                 getChoosed: function() {
@@ -30,6 +31,9 @@ $(document).ready(function() {
                         delete choosersConfig[$(chooser).prop('id')].extraparams[key];
                     }
                 },
+				getLastUserInput: function() {
+					return lastUserInput;
+				},
                 clearAll: function() {
 					current = null;
                     choosedElements = [];
@@ -148,17 +152,19 @@ $(document).ready(function() {
                                 }
                             }
                             addVariantToChoosed($(chooser).find('.variants li.active'));
+							current = null;
                         }
                         else
                         {
                             // Переводим фокус на следующий элемент
                             if (!wasChangedFocus)
                             {
-                                $.fn.switchFocusToNext();
+								$.fn.switchFocusToNext();
                             }
                         }
 
                         e.preventDefault();
+						e.stopPropagation();
                         return false;
                     }
 
@@ -462,6 +468,7 @@ $(document).ready(function() {
                         }
                         // А если найден - повторно добавлять не надо
                         if(!isFound) {
+							lastUserInput = $(chooser).find('input').val();
                             if(withOutInsert != 1) {
                                 var span = $('<span>').addClass('item');
                                 // Возможность копирования в соседние chooser-ы
@@ -749,6 +756,29 @@ $(document).ready(function() {
                 ]
             }
         },
+		'primaryDiagnosisChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+			//'alwaysLanguage' : 'en',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
+                'onlylikes' : typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'primaryClinicalDiagnosisChooser': {
             'primary': 'id',
             'bindedWindowSelector' : '#addClinicalDiagnosisPopup',
@@ -780,6 +810,27 @@ $(document).ready(function() {
             },
             'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+		'secondaryDiagnosisChooser2' : {
+            'primary' : 'id',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+			//'alwaysLanguage' : 'en',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
                 'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
             'filters' : {
@@ -800,7 +851,6 @@ $(document).ready(function() {
             },
             'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
-                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
             'filters' : {
                 'groupOp' : 'AND',
@@ -1674,6 +1724,31 @@ $(document).ready(function() {
             },
             'rowAddHandler' : function(ul, row) {
                 $(ul).append($('<li>').text('ID ' + row.id + ', логин ' + row.login));
+            },
+            'afterInsert' : function() {
+
+            },
+            'afterRemove' : function() {
+
+            }
+        },
+        'wardChooser' : {
+            'primary' : 'id',
+            'url' : '/guides/wards/get?page=1&rows=10&sidx=id&sord=desc&limit=10&filters=',
+            'extraparams' : {
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'name',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            },
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.name));
             },
             'afterInsert' : function() {
 

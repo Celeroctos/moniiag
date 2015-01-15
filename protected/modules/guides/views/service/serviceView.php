@@ -62,6 +62,17 @@
                                 )); ?>
                             </div>
                         </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'isDefault', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isDefault', array(0 => 'Нет', 1 => 'Да'), array(
+                                    'id' => 'isDefault',
+                                    'class' => 'form-control'
+                                )); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -132,6 +143,17 @@
                                     'id' => 'code',
                                     'class' => 'form-control',
                                     'placeholder' => 'Код'
+                                )); ?>
+                            </div>
+                        </div>
+						<div class="form-group">
+                            <?php echo $form->labelEx($model,'isDefault', array(
+                                'class' => 'col-xs-3 control-label'
+                            )); ?>
+                            <div class="col-xs-9">
+                                <?php echo $form->dropDownList($model, 'isDefault', array(0 => 'Нет', 1 => 'Да'), array(
+                                    'id' => 'isDefault',
+                                    'class' => 'form-control'
                                 )); ?>
                             </div>
                         </div>

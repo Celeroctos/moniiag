@@ -2,8 +2,83 @@
 class PrintController extends Controller {
     public $layout = 'print';
     public $responseData = array();
-/*
-    // Печать главной страницы карты
+    /*
+        // Печать главной страницы карты
+        public function actionPrintMainPage() {
+            // Выбираем всю информацию о медкарте
+            if(isset($_GET['medcardid'])) {
+
+            }
+            $medcard = Medcard::model()->findByPk($_GET['medcardid']);
+            if($medcard == null) {
+                exit('Ошибка! Не выбрана медкарта.');
+            }
+            if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
+                $groups = array('','I', 'II', 'III', 'IV');
+                $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
+            } else {
+                $medcard['invalid_group'] = 'Нет группы';
+            }
+            // Выбираем ОМС по медкарте
+            $oms = Oms::model()->findByPk($medcard->policy_id);
+            if($oms == null) {
+                exit('Ошибка! Полиса не существует!');
+            }
+            // Выбираем предприятие по коду заведения в медкарте
+            $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
+            if($enterprise == null) {
+                exit('Ошибка: учреждения не существует!');
+            }
+            // Выбираем льготы по ОМС
+            $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $oms->id));
+            if(count($privileges) == 0) {
+                $privileges = array();
+            }
+            // Приводим дату к виду
+            $oms['givedate'] = $this->formatDate($oms['givedate']);
+            $oms['birthday'] = $this->formatDate($oms['birthday']);
+            if($oms['enddate'] != null) {
+                $oms['enddate'] = $this->formatDate($oms['enddate']);
+            }
+            // Записываем insurance_name в oms
+            if ($oms['insurance']!='' && $oms['insurance']!=null)
+            {
+                $insurance = Insurance::model()->findByPk($oms->insurance);
+                $oms['insurance'] = $insurance->name;
+            }
+
+            foreach($privileges as &$priv) {
+                $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
+                $privModel = Privilege::model()->findByPk($priv->privilege_id);
+                $priv['docname'] = '(Код '.$privModel->code.') '.$priv['docname'];
+            }
+
+            // Превращаем адрес медкарты
+            $patientController = Yii::app()->createController('reception/patient');
+            $addressData = $patientController[0]->getAddressStr($medcard['address'],true);
+            $medcard['address'] = $addressData['addressStr'];
+
+            $addressRegData = $patientController[0]->getAddressStr($medcard['address_reg'],true);
+            $medcard['address_reg'] = $addressData['addressStr'];
+
+
+            $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0, '', 8, 8, 8, 8, 0, 0);
+            $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
+            $mPDF->WriteHTML($stylesheet, 1);
+            $mPDF->WriteHTML(
+
+                $this->render('index', array('medcard' => $medcard,
+                    'oms' => $oms,
+                    'enterprise' => $enterprise,
+                    'privileges' => $privileges),true)
+
+            );
+
+            $this->render('greetingpdf', array(
+                'pdfContent' => $mPDF->Output()
+            ));
+        }
+    */
     public function actionPrintMainPage() {
         // Выбираем всю информацию о медкарте
         if(isset($_GET['medcardid'])) {
@@ -24,86 +99,11 @@ class PrintController extends Controller {
         if($oms == null) {
             exit('Ошибка! Полиса не существует!');
         }
-        // Выбираем предприятие по коду заведения в медкарте
-        $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
-        if($enterprise == null) {
-            exit('Ошибка: учреждения не существует!');
+        // Подгрузка из ТАСУ
+        if($oms->region == null || $oms->insurance == null) {
+            $tasuController = Yii::app()->createController('admin/tasu');
+            $tasuController[0]->getTasuPatientByPolicy($oms);
         }
-        // Выбираем льготы по ОМС
-        $privileges = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $oms->id));
-        if(count($privileges) == 0) {
-            $privileges = array();
-        }
-        // Приводим дату к виду
-        $oms['givedate'] = $this->formatDate($oms['givedate']);
-        $oms['birthday'] = $this->formatDate($oms['birthday']);
-        if($oms['enddate'] != null) {
-            $oms['enddate'] = $this->formatDate($oms['enddate']);
-        }
-        // Записываем insurance_name в oms
-        if ($oms['insurance']!='' && $oms['insurance']!=null)
-        {
-            $insurance = Insurance::model()->findByPk($oms->insurance);
-            $oms['insurance'] = $insurance->name;
-        }
-
-        foreach($privileges as &$priv) {
-            $priv['docgivedate'] = $this->formatDate($priv['docgivedate']);
-            $privModel = Privilege::model()->findByPk($priv->privilege_id);
-            $priv['docname'] = '(Код '.$privModel->code.') '.$priv['docname'];
-        }
-
-        // Превращаем адрес медкарты
-        $patientController = Yii::app()->createController('reception/patient');
-		$addressData = $patientController[0]->getAddressStr($medcard['address'],true);
-        $medcard['address'] = $addressData['addressStr'];
-
-		$addressRegData = $patientController[0]->getAddressStr($medcard['address_reg'],true);
-        $medcard['address_reg'] = $addressData['addressStr'];
-
-
-        $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0, '', 8, 8, 8, 8, 0, 0);
-        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
-        $mPDF->WriteHTML($stylesheet, 1);
-        $mPDF->WriteHTML(
-
-            $this->render('index', array('medcard' => $medcard,
-                'oms' => $oms,
-                'enterprise' => $enterprise,
-                'privileges' => $privileges),true)
-
-        );
-
-        $this->render('greetingpdf', array(
-            'pdfContent' => $mPDF->Output()
-        ));
-    }
-*/
-    public function actionPrintMainPage() {
-        // Выбираем всю информацию о медкарте
-        if(isset($_GET['medcardid'])) {
-
-        }
-        $medcard = Medcard::model()->findByPk($_GET['medcardid']);
-        if($medcard == null) {
-            exit('Ошибка! Не выбрана медкарта.');
-        }
-        if($medcard['invalid_group'] != 0 && $medcard['invalid_group'] != null) {
-            $groups = array('','I', 'II', 'III', 'IV');
-            $medcard['invalid_group'] = $groups[$medcard['invalid_group']].' группа';
-        } else {
-            $medcard['invalid_group'] = 'Нет группы';
-        }
-        // Выбираем ОМС по медкарте
-        $oms = Oms::model()->findByPk($medcard->policy_id);
-        if($oms == null) {
-            exit('Ошибка! Полиса не существует!');
-        }
-		// Подгрузка из ТАСУ
-		if($oms->region == null || $oms->insurance == null) {
-			$tasuController = Yii::app()->createController('admin/tasu');
-			$tasuController[0]->getTasuPatientByPolicy($oms);
-		}
 
         // Если у полиса есть поле "серия" - конкатэнируем его с номером через пробел и выводим.
         //         Иначе выводим только номер без конкатенации
@@ -133,8 +133,8 @@ class PrintController extends Controller {
         {
             $insurance = Insurance::model()->findByPk($oms->insurance);
             $regions = InsuranceRegion::findRegions($oms['insurance']);
-           // var_dump($regions );
-           // exit();
+            // var_dump($regions );
+            // exit();
             if ($regions != null && count($regions)>0)
             {
                 $regionId = $regions[0]['id'];
@@ -197,9 +197,9 @@ class PrintController extends Controller {
 
 
         $this->render('index', array('medcard' => $medcard,
-            'oms' => $oms,
-            'enterprise' => $enterprise,
-            'privileges' => $privileges)
+                'oms' => $oms,
+                'enterprise' => $enterprise,
+                'privileges' => $privileges)
 
         );
 
@@ -369,11 +369,11 @@ class PrintController extends Controller {
             );
 		}
     }*/
-
-
+	
     // Печать результа приёма
     public function actionPrintGreeting($greetingIn = false, $printRecom=false, $returnResult = false, $templateId=false) {
-        if($greetingIn === false && !isset($_GET['greetingid'])) {
+	
+		if($greetingIn === false && !isset($_GET['greetingid'])) {
             exit('Ошибка: не выбран приём.');
         } else {
             $greetingId = $greetingIn !== false ? $greetingIn : $_GET['greetingid'];
@@ -391,32 +391,108 @@ class PrintController extends Controller {
         //exit();
         // Вытащим специальность врача
         $speciality = Medworker::model()->findByPk($doctor['post_id']);
-        if (isset($speciality['name']))
-        {
+        if (isset($speciality['name'])) {
             $greetingInfo['doctor_spec'] = $speciality['name'];
-        }
-        else
-        {
+        } else {
             $greetingInfo['doctor_spec'] = '';
         }
 
+
+        // Вытащим звания, степени, категории врача
+        $regaliaArray = array();
+        $regaliaString = "";
+
+        if ($doctor['degree_id']!='' && $doctor['degree_id']>0)
+        {
+            //$regaliaArray =
+            $degreeObject = Degree::model()->findByPk($doctor['degree_id']);
+            if ($degreeObject!=null)
+            {
+                array_push($regaliaArray,$degreeObject['name']);
+            }
+        }
+
+        if ($doctor['titul_id']!='' && $doctor['titul_id']>0)
+        {
+            //$regaliaArray =
+            $titulObject = Titul::model()->findByPk($doctor['titul_id']);
+            if ($titulObject!=null)
+            {
+                array_push($regaliaArray,$titulObject['name']);
+            }
+        }
+
+        // Вытаскиваем категорию
+        $empoyerController = Yii::app()->createController('guides/employees');
+        if($doctor['categorie'] !== null && $doctor['categorie']!=0) {
+            $listOfCategories = $empoyerController[0]->getDoctorCategories();
+            array_push($regaliaArray,    $listOfCategories[$doctor['categorie']]   );
+        }
+
+        //var_dump($regaliaArray);
+        //exit();
+
+        $greetingInfo['doctor_regalia'] = '';
+        if (count($regaliaArray)>0)
+        {
+            // Склеим регалии
+            $regaliaString = implode(', ',$regaliaArray);
+            // всё к маленьким буквам
+            $regaliaString = mb_strtolower($regaliaString, 'utf-8');
+            $greetingInfo['doctor_regalia'] = $regaliaString;
+        }
+
+       // var_dump($greetingInfo['doctor_regalia']);
+       // exit();
+
         $greetingInfo['doctor_fio'] = $doctor['last_name'].' '.$doctor['first_name'].' '.$doctor['middle_name'];
+
+        $greetingInfo['doctor_initials'] = $doctor['last_name'];
+
+        $dFName = mb_substr($doctor['first_name'],0,1, 'utf-8');
+        $dMName = mb_substr($doctor['middle_name'],0,1, 'utf-8');
+
+        if ($dFName !==false && $dFName!=='')
+        {
+            $greetingInfo['doctor_initials'] .= (' '.$dFName .'.');
+        }
+
+        if ($dMName !==false && $dMName!=='')
+        {
+            $greetingInfo['doctor_initials'] .= (' '.$dMName.'.');
+        }
+
         // Найдём медкарту, а по ней и пациента
         $medcard = Medcard::model()->findByPk($greeting['medcard_id']);
         $patient = Oms::model()->findByPk($medcard['policy_id']);
         $parts = explode('-', $patient['birthday']);
 
+        $dateFormatter = new DateFormatterMis($patient['birthday']);
+        $greetingInfo['full_age'] = $dateFormatter->getFullAge();
+
         $greetingInfo['full_years'] = date('Y') - $parts[0];
         //var_dump($greetingInfo['full_years'] );
-       // exit();
+        // exit();
         $enterprise = Enterprise::model()->findByPk($medcard->enterprise_id);
         $greetingInfo['patient_fio'] = $patient['last_name'].' '.$patient['first_name'].' '.$patient['middle_name'];
+
+        $greetingInfo['patient_initials'] = $patient['last_name'];
+        $pFName = mb_substr($patient['first_name'],0,1, 'utf-8');
+        $pMName = mb_substr($patient['middle_name'],0,1, 'utf-8');
+
+        if ($pFName !==false && $pFName!=='')
+        {
+            $greetingInfo['patient_initials'] .= (' '.$pFName .'.');
+        }
+
+        if ($pMName !==false&& $pMName!=='')
+        {
+            $greetingInfo['patient_initials'] .= (' '.$pMName.'.');
+        }
+
         $greetingInfo['card_number'] = $greeting['medcard_id'];
         $dateParts = explode('-', $greeting['patient_day']);
         $greetingInfo['date'] = $dateParts[2].'.'.$dateParts[1].'.'.$dateParts[0];
-
-        //var_dump($printRecom);
-        //exit();
 
         if (!$printRecom)
         {
@@ -430,6 +506,7 @@ class PrintController extends Controller {
             $changedElements = MedcardElementForPatient::model()->findGreetingTemplate($greetingId,$templateId);
         }
 
+       // echo '<pre>';
         //var_dump($changedElements );
         //exit();
         // =====>
@@ -438,6 +515,87 @@ class PrintController extends Controller {
         //        var_dump($oneEl['value'] .' '.$oneEl['element_id']);
         //      }
 //exit();
+
+        $indexToDelete = array();
+        // Вот в этой точке надо "почистить" массив от невыводимых элементов
+        for($i=0;$i<count($changedElements );$i++)
+        {
+            if ($changedElements[$i]['not_printing_values']!=NULL &&  $changedElements[$i]['not_printing_values']!='')
+            {
+                //var_dump('sdvsdfv3zdc');
+                //exit();
+                // Раскодируем массив значений
+                $arrayValues = CJSON::decode(  $changedElements[$i]['not_printing_values'] );
+
+                //var_dump($arrayValues);
+                //exit();
+
+                if ($arrayValues!=null)
+                {
+
+                    // Вот тут надо выполнить саму проверку
+                    $elementValue = CJSON::decode($changedElements[$i]['value']);
+                    if ($elementValue==null)
+                    {
+                        // Значит берём значение напрямую из элемента без декодирования
+                        $elementValue = $changedElements[$i]['value'];
+                    }
+
+                    // Теперь имеем следующую ситуацию
+                    // Есть значение элемента. Оно является либо массивом, либо одиночным значением
+                    //   Т.О. его надо либо перебрать как массив, либо взять и найти поиском в массиве значений
+                    if (is_array($elementValue))
+                    {
+                        // Перебираем elementValue
+                        $wasFoundNotPrint = false;
+
+                        foreach ($elementValue as $oneElementValue)
+                        {
+                            if(in_array($oneElementValue,$arrayValues))
+                            {
+                                $wasFoundNotPrint=true;
+                                break;
+                            }
+                        }
+
+                        if ($wasFoundNotPrint==true)
+                        {
+                            array_push($indexToDelete,$i);
+                        }
+                    }
+                    else
+                    {
+
+                        //var_dump($element);
+                        //var_dump($elementValue);
+                        //var_dump($arrayValues);
+                        //exit();
+
+                        if (in_array($elementValue,$arrayValues))
+                        {
+                            //var_dump('sdfsdder3rdfc');
+                            //exit();
+                            array_push($indexToDelete,$i);
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
+        //var_dump($indexToDelete);
+        //exit();
+
+        // Идём в обратную сторону по массиву ненужных элементов и удаляем их массива изменённых элементов
+        for ($i=count($indexToDelete)-1;$i>=0;$i--)
+        {
+            array_splice($changedElements, $indexToDelete[$i],1);
+        }
+        //echo "<pre>";
+        //var_dump($changedElements);
+        //exit();
+
+
         if(count($changedElements) == 0) {
             // Единичная печать
             if($greetingIn === false) {
@@ -453,9 +611,6 @@ class PrintController extends Controller {
         // Создадим виджет
         $categorieWidget = $this->createWidget('application.modules.doctors.components.widgets.CategorieViewWidget');
 
-        //var_dump($changedElements);
-        //exit();
-
         // Запихнём виджету те элементы, которые мы вытащили по приёму
         $categorieWidget->setHistoryElements($changedElements);
 
@@ -469,8 +624,6 @@ class PrintController extends Controller {
 
         // Вытащим диагнозы
         //=======>
-        //var_dump($sortedElements );
-        //exit();
 
         $pd = PatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $sd = PatientDiagnosis::model()->findDiagnosis($greetingId, 1);
@@ -478,9 +631,6 @@ class PrintController extends Controller {
         $cpd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 0);
         $csd = ClinicalPatientDiagnosis::model()->findDiagnosis($greetingId, 1);
         $noteDiagnosis = $greeting['note'];
-
-        //var_dump($cd);
-        //exit();
 
         // Соберём их в об'ект
         $diagnosises = array(
@@ -491,12 +641,6 @@ class PrintController extends Controller {
             'complicating' => $cd,
             'noteGreeting' => $noteDiagnosis
         );
-
-        //var_dump($diagnosises );
-        //exit();
-
-        //var_dump($sortedElements);
-        //exit();
         if($greetingIn === false) {
             if(!$returnResult) {
                 $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L');
@@ -505,18 +649,11 @@ class PrintController extends Controller {
                 {
                     $mPDF = Yii::app()->ePdf->mpdf('', 'A5-L', 0,'',8,8,8,8,8,8);
                 }
-
-                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.css');
-                $mPDF->WriteHTML($stylesheet, 1);
-
-                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/print.less');
-                $mPDF->WriteHTML($stylesheet, 1);
-
-
                 $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
                 $mPDF->WriteHTML($stylesheet, 1);
-                $htmlForPdf = '';
 
+               $htmlForPdf = '';
+			   
                 // Если печатаем рекомендации - печатаем их по-другому, в другой совершенно форме:
                 if ($printRecom)
                 {
@@ -537,6 +674,7 @@ class PrintController extends Controller {
                             'diagnosises' => $diagnosises
                         ), true);
                 }
+
 
                 $mPDF->WriteHTML(
                     $htmlForPdf
@@ -613,7 +751,7 @@ class PrintController extends Controller {
 
         $resultArr = $this->makePrintListData($doctors, $patients);
         echo CJSON::encode(array('success' => 'true',
-                                 'data' => $resultArr));
+            'data' => $resultArr));
     }
 
     private function makePrintListData($doctors, $patients) {
@@ -632,9 +770,9 @@ class PrintController extends Controller {
 
                 array_push($filterObject['rules'],
                     array(
-                     'field' => 'patients_ids',
-                     'op' => 'in',
-                     'data' => array($patients[$i])
+                        'field' => 'patients_ids',
+                        'op' => 'in',
+                        'data' => array($patients[$i])
                     )
                 );
 
@@ -647,7 +785,7 @@ class PrintController extends Controller {
                 );
 
                 if(isset($_GET['date']) && trim($_GET['date']) != '') {
-                   // $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
+                    // $greetings = SheduleByDay::model()->getGreetingsPerQrit($patients[$i], $doctors[$j], $_GET['date']);
                     array_push($filterObject['rules'],
                         array(
                             'field' => 'patient_day',
@@ -678,8 +816,8 @@ class PrintController extends Controller {
             }
         }
 
-       // var_dump($resultArr);
-       // exit();
+        // var_dump($resultArr);
+        // exit();
         return $resultArr;
     }
 

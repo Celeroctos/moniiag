@@ -69,6 +69,7 @@ class CategorieViewWidget extends CWidget {
         echo('--------');
         exit();
         //*/
+        //echo '<pre>';
         //var_dump($categories);
         //exit();
         $answer = $this->render('application.modules.doctors.components.widgets.views.CategorieViewWidget', array(
@@ -214,13 +215,7 @@ class CategorieViewWidget extends CWidget {
                 $categorieTemplateFill[] = $categorieResult;
             }
             usort($categorieTemplateFill, function($element1, $element2) {
-                if($element1['position'] > $element2['position']) {
-                    return 1;
-                } elseif($element1['position'] < $element2['position']) {
-                    return -1;
-                } else {
-                    return 0;
-                }
+                return $element2['position'] - $element1['position'];
             });
             $categoriesResult[] = array(
                 'templateName' => $template['name'],
@@ -363,29 +358,12 @@ class CategorieViewWidget extends CWidget {
                     {
                         $this->maxRecordIdByTemplateGreeting = 1;
                     }
-
-                    $elements = MedcardElementForPatient::model()->findAll(
-                        '/*history_id = history_id
-                        AND*/ greeting_id = :greeting_id
-                        AND medcard_id = :medcard_id
-                        AND categorie_id = :categorie_id
-                        AND record_id = :record_id
-                        AND path LIKE :path
-                        AND element_id != -1',
-                        array(
-                            ':greeting_id' => $this->greetingId,
-                            ':medcard_id' => $this->medcard['card_number'],
-                            //':history_id' => 1,
-                            ':record_id' => $this->maxRecordIdByTemplateGreeting,
-                            ':categorie_id' => $categorieResult['id'],
-                            //':path' => $path.'%'
-                            ':path' => $path.'.%'
-                        )
-                    );
-                    //var_dump($recordId-1);
-                    //exit();
-                    //var_dump($this->maxRecordIdByTemplateGreeting);
-                    //exit();
+                    $mepObject = new MedcardElementForPatient();
+                    $elements = $mepObject->findElementsForGreeting(
+                        $this->greetingId,
+                        $this->medcard['card_number'],
+                        $categorieResult['id'],
+                        $path);
                 }
 
                 $numWrapped = 0; // Это число элементов, которые следуют за каким-то конкретным элементом
@@ -430,6 +408,8 @@ class CategorieViewWidget extends CWidget {
 							$medcardCategorieElement->type = $element['type']; // У категории нет типа контрола
                             $medcardCategorieElement->guide_id = $element['guide_id'];
 							$medcardCategorieElement->allow_add = $element['allow_add'];
+                            $medcardCategorieElement->not_printing_values = $element['not_printing_values'];
+                            $medcardCategorieElement->hide_label_before = $element['hide_label_before'];
                             $medcardCategorieElement->config = $element['config'];
                             if($element['default_value'] != null) {
                                 $medcardCategorieElement->value = $element['default_value'];
@@ -450,9 +430,11 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['guide_id'] = $eCopy->guide_id;
                         $elementResult['path'] = $eCopy->path;
 						$elementResult['allow_add'] = $eCopy->allow_add;
-						$pathParts = explode('.', $element['path']);
+                        $elementResult['not_printing_values'] = $eCopy->not_printing_values;
+                        $elementResult['hide_label_before'] = $eCopy->hide_label_before;
+                        $pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
-			$elementResult['is_required'] = $element['is_required'];
+						$elementResult['is_required'] = $element['is_required'];
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
                         $elementResult['config'] = CJSON::decode($element['config']);
@@ -464,7 +446,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['guide_id'] =  $element['guide_id'];
                         $elementResult['path'] = $element['path'];
 						$elementResult['allow_add'] = $element['allow_add'];
-						$pathParts = explode('.', $element['path']);
+                        $elementResult['not_printing_values'] = $element['not_printing_values'];
+                        $elementResult['hide_label_before'] = $element['hide_label_before'];
+                        $pathParts = explode('.', $element['path']);
 						$elementResult['position'] = array_pop($pathParts);
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
@@ -771,21 +755,24 @@ class CategorieViewWidget extends CWidget {
         ));
     }
 
-	public function getFieldsHistoryByDate($date, $medcardId,$recordId) {
+	public function getFieldsHistoryByDate($medcardId,$greetingId,$templateId) {
         $this->formModel = new FormTemplateDefault();
-		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($date, $medcardId,$recordId);
+		$this->historyElements = MedcardElementForPatient::model()->getValuesByDate($medcardId,$greetingId,$templateId);
         // Теперь это говно нужно рекурсивно разобрать и построить по шаблону
-		//var_dump($this->historyElements);
-		///exit();
+		//var_dump('sdfgsdfzxd');
+       // echo '<pre>';
+       // var_dump($this->historyElements);
+		//exit();
 		
 		$this->makeTree('getTreeNode');
         $this->sortTree();
-        //var_dump($this->historyTree);
+       //var_dump($this->historyTree);
         //exit();
         // Теперь поделим категории
         $this->divideTreebyCats();
-        //var_dump($this->dividedCats);
-        //exit();
+       /* var_dump('3cvgfbhdhgarc');
+         echo '<pre>' ;var_dump($this->dividedCats);
+        exit();*/
 		$greeting  = null;
         // Рассортируем
 		// Вытащим приёмы
@@ -1091,6 +1078,7 @@ class CategorieViewWidget extends CWidget {
             $nodeContent['element_id'] = -1;
             $nodeContent['empty'] = true;
 
+
         }
 		else
 		{
@@ -1103,8 +1091,10 @@ class CategorieViewWidget extends CWidget {
                             'path' => $historyElement['path'],
 							'config' => $historyElement['config'],
 							'type' => $historyElement['type'],
-				'is_wrapped' => $historyElement['is_wrapped'],
-				//'info' => $historyElement['info'],
+                            'not_printing_values' => $historyElement['not_printing_values'],
+                            'hide_label_before' => $historyElement['hide_label_before'],
+				            'is_wrapped' => $historyElement['is_wrapped'],
+				            //'info' => $historyElement['info'],
                             'config' => CJSON::decode($historyElement['config'])	
                         );
 				if($historyElement['guide_id'] != null)

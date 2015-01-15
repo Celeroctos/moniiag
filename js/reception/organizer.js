@@ -147,7 +147,10 @@
                                     });
                                     $('.organizer').trigger('reload');
                                 } else {
+                                    $('#cannotUnwritePopup p').text(data.data);
+                                    $('#cannotUnwritePopup').modal({
 
+                                    });
                                 }
                                 return;
                             }
@@ -411,6 +414,7 @@
                                                     },*/
                                                     content: function() {
                                                         var ulInPopover = $('<ul>').addClass('patientList');
+                                                        console.log('dsfcxvfdfdsf');
                                                         for(var j = 0; j < data.data.length; j++) {
                                                             // Живая очередь обрабатывается иначе, чем обычная запись
                                                             if(globalVariables.hasOwnProperty('isWaitingLine') && globalVariables.isWaitingLine == 1) {
@@ -422,7 +426,7 @@
 
                                                             } else {
                                                                 // Проверка настроек и текущего времени: нельзя записать на прошлое время
-                                                                if(!isPassedTime(data.data[j].timeBegin, date, true)) {
+                                                                if(!isPassedTime(data.data[j].timeBegin, date, true,data.limits)) {
                                                                     continue;
                                                                 }
 
@@ -524,13 +528,64 @@
                                                             $(li).appendTo(ulInPopover);
                                                         }
 
-                                                        // Ограничение на кол-во приёмов колл-центра
+                                                        /*
+                                                        // Ограничение на кол-во приёмов колл-центра и регистратуры
                                                         if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1 && $(ulInPopover).find('li.withPatient').length >= callCenterGreetingsLimit) {
 // Логика неверна: здесь нужно считать количество записанных постфактум
-                                                            $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Center');
+                                                            if (data.limits[0]['quantity']!=undefined)
+                                                            {
+                                                                if (  $(ulInPopover).find('li.withPatient').length >= data.limits[0]['quantity'] )
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Center');
+                                                                }
+                                                            }
                                                         } else {
-
+                                                            // если поеределён limits[1][quantity]
+                                                            if (data.limits[1]['quantity']!=undefined)
+                                                            {
+                                                                if (  $(ulInPopover).find('li.withPatient').length >= data.limits[1]['quantity'] )
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Регистратуру');
+                                                                }
+                                                            }
                                                         }
+                                                        */
+
+                                                        if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1)
+                                                        {
+                                                            // Call-центр
+                                                            // Есть ли
+                                                            customQuantityLimit = false;
+                                                            if (data.limits[1]['quantity']!=undefined)
+                                                            {
+                                                                if (  $(ulInPopover).find('li.withPatient').length >= data.limits[1]['quantity'] )
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Центр');
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                if($(ulInPopover).find('li.withPatient').length >= callCenterGreetingsLimit)
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Call-Центр');
+                                                                }
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            // Регистратура
+                                                            customQuantityLimit = false;
+                                                            if (data.limits[2]['quantity']!=undefined)
+                                                            {
+                                                                if (  $(ulInPopover).find('li.withPatient').length >= data.limits[2]['quantity'] )
+                                                                {
+                                                                    $(ulInPopover).find('li:not(.withPatient)').addClass('not-aviable').off('click').css({'cursor' : 'default'}).prop('title', 'Превышение квоты записи через Регистратуру');
+                                                                }
+                                                            }
+                                                        }
+
+
+
 
                                                         return ulInPopover;
                                                     },
@@ -588,7 +643,7 @@
                         */
                         blockThisDay = false;
                         // Прошло ли время приёма у врача
-                        if (!isPassedTime(data[i].shedule[j].endTime, dates[counter]))
+                        if (!isPassedTime(data[i].shedule[j].endTime, dates[counter],false,data[i].shedule[j].limits))
                         {
                             // Если живая очередь
                             if (isWaitingLineMode())
@@ -699,7 +754,7 @@
         $('.organizer').trigger('resetClickedTime');
     });
 
-    function isPassedTime(time, date, isFull) {
+    function isPassedTime(time, date, isFull,limits) {
         var now = new Date();
         var splitTime = time.split(':');
         if(now.getFullYear() == date.getFullYear() && now.getMonth() == date.getMonth() && now.getDate() == date.getDate()) {
@@ -708,28 +763,129 @@
             }
         }
 
+
+
         if(isFull) { // Полная проверка
+
+
+            //======>
+
+           definedCustomLimits = false;
+            // Если определены limits - то прогоняем по ним
+            if (limits!=undefined)
+            {
+
+                if(globalVariables.hasOwnProperty('isCallCenter') && globalVariables.isCallCenter == 1)
+                {
+                    // Проверяем call-центр
+                    startTime = null;
+                    endTime = null;
+                    currentTime = null;
+
+
+                    if (limits['1']['begin']!=undefined)
+                    {
+                  //      definedCustomLimits = true;
+                        startTimeSplittedCC = (limits['1']['begin']).split(':');
+                        startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(startTimeSplittedCC[0]), parseInt(startTimeSplittedCC[1]));
+                    }
+
+                    if (limits['1']['end']!=undefined)
+                    {
+                        definedCustomLimits = true;
+                        endTimeSplittedCC = (limits['1']['end']).split(':');
+                        endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(endTimeSplittedCC[0]), parseInt(endTimeSplittedCC[1]));
+                    }
+                    currentTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
+
+                    if (startTime!=null)
+                    {
+                        if (currentTime.getTime()<  startTime.getTime())
+                        {
+                            return false;
+                        }
+                    }
+                    if (endTime !=null)
+                    {
+                        if (currentTime.getTime() >=  endTime.getTime())
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else
+                {
+                    // Проверяем регистратуру
+                    startTime = null;
+                    endTime = null;
+                    currentTime = null;
+
+
+                    if (limits['2']['begin']!=undefined)
+                    {
+                    //    definedCustomLimits = true;
+                        startTimeSplittedReg = (limits['2']['begin']).split(':');
+                        startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(startTimeSplittedReg[0]), parseInt(startTimeSplittedReg[1]));
+                    }
+
+                    if (limits['2']['end']!=undefined)
+                    {
+                        definedCustomLimits = true;
+                        endTimeSplittedReg = (limits['2']['end']).split(':');
+                        endTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(endTimeSplittedReg[0]), parseInt(endTimeSplittedReg[1]));
+                    }
+                    currentTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
+
+                    if (startTime!=null)
+                    {
+                        if (currentTime.getTime()<  startTime.getTime())
+                        {
+                            return false;
+                        }
+                    }
+                    if (endTime !=null)
+                    {
+                        if (currentTime.getTime() >=  endTime.getTime())
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
+
+            if (definedCustomLimits)
+            {
+                return true;
+            }
+
+
+            //<=======
+
+
             // Теперь смотрим на выбранные фильтры..
             if($('#greetingType').val() == 0) { // Первичный приём
                 // От беременности
                 // Дальше играет роль только время. Поэтому оттолкнёмся от текущей даты даже
-                var now1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(primaryGreetingsTimeLimit[0]), parseInt(primaryGreetingsTimeLimit[1]));
-                var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[0]));
+                var now1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(primaryGreetingsTimeLimit[0]), parseInt(primaryGreetingsTimeLimit[1]));
+                var now2 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
                 if(now1.getTime() < now2.getTime()) {
                     return false;
                 }
             }
             if($('#greetingType').val() == 2) { // Вторичный приём
                 if($('#canPregnant').val() == 1) { // Беременная
-                    var now1 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(pregnantGreetingsTimeLimit[0]), parseInt(pregnantGreetingsTimeLimit[1]));
-                    var now2 = new Date(now.getFullYear(), now.getMonth(), now.getDate(), parseInt(splitTime[0]), parseInt(splitTime[0]));
+                    var now1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(pregnantGreetingsTimeLimit[0]), parseInt(pregnantGreetingsTimeLimit[1]));
+                    var now2 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
                     if(now1.getTime() < now2.getTime()) {
                         return false;
                     }
                 }
             }
-        }
 
+
+
+        }
         return true;
     }
 });

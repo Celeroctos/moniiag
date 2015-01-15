@@ -147,6 +147,7 @@ class SheduleByDay extends MisActiveRecord {
  					AND dsbd.patient_day >= :beginDate
  					AND dsbd.patient_day <= :endDate
  					AND ((dsbd.patient_day > current_date) OR ((dsbd.patient_day=current_date) AND (dsbd.patient_time >= current_time)))
+ 					AND (     not(dsbd.is_beginned=1) OR (dsbd.is_beginned is NULL)   )
  					', array(
  						':beginDate' => $dateBegin,
  						':endDate' => $dateEnd
@@ -192,7 +193,8 @@ class SheduleByDay extends MisActiveRecord {
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
-            ->leftJoin('mis.users u', 'u.employee_id = dsbd.doctor_id');
+			->leftJoin('mis.doctors d', 'd.id = dsbd.doctor_id')
+            ->leftJoin('mis.users u', 'u.id = d.user_id');
         if($withMediate) {
             $patients->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
         }
@@ -268,13 +270,12 @@ class SheduleByDay extends MisActiveRecord {
         }
     }
 
-    public function getDaysWithPatients($userId) {
+    public function getDaysWithPatients($doctorId) {
         $connection = Yii::app()->db;
         $dates = $connection->createCommand()
             ->selectDistinct('dsbd.patient_day')
             ->from('mis.doctor_shedule_by_day dsbd')
-            ->leftJoin('mis.users u', 'dsbd.doctor_id = u.employee_id')
-            ->where('u.id = :id', array(':id' => $userId));
+            ->where('dsbd.doctor_id = :doctor_id', array(':doctor_id' => $doctorId));
         return $dates->queryAll();
     }
 
@@ -333,7 +334,7 @@ class SheduleByDay extends MisActiveRecord {
     }
 
     // Получить список приёмов по критериям
-    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false) {
+    public function getGreetingsPerQrit($filters, $start = false, $limit = false, $mediateOnly = false, $notBeginned=false) {
         try {
             $connection = Yii::app()->db;
             $greetings = $connection->createCommand()
@@ -413,6 +414,12 @@ class SheduleByDay extends MisActiveRecord {
                 $greetings->andWhere('dsbd.mediate_id IS NOT NULL');
             }
 
+            if ($notBeginned)
+            {
+                // Дописываем в where ещё одно условие на is_beginned
+                $greetings->andWhere('((not (is_beginned = 1)) OR ((is_beginned) is NULL))');
+            }
+
             $greetings->order('dsbd.patient_time');
             $greetings->group('dsbd.id, o.first_name, o.last_name, o.middle_name, d.first_name, d.last_name, d.middle_name, m.motion, o.id, mp.name, m.card_number, mdp.phone, mdp.last_name, mdp.middle_name, mdp.first_name');
 
@@ -421,7 +428,7 @@ class SheduleByDay extends MisActiveRecord {
             }
 
            //var_dump($greetings->text);
-            //exit();
+           // exit();
             $result = $greetings->queryAll();
             return $result;
           //  var_dump($result );

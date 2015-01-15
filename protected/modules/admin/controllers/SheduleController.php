@@ -3,57 +3,386 @@ class SheduleController extends Controller {
     public $layout = 'application.modules.admin.views.layouts.index';
 
     public function actionView() {
+
+        //$DFM = new DateFormatterMis('1990-02-12');
+        //var_dump($DFM->getFullAge());
+        //exit();
+
         $ward = new Ward();
         $wardsResult = $ward->getRows(false, 'name', 'asc');
-        $wardsList = array('-1' => 'Нет');
+        $wardsList = array('-1' => 'Все отделения',
+                            '-2'=> 'Без отделения');
         foreach($wardsResult as $key => $value) {
             $wardsList[$value['id']] = $value['name'];
         }
 
-        // Список должностей
-        $post = new Post();
-        $postsResult = $post->getRows(false, 'name', 'asc');
-        $postsList = array('-1' => 'Нет');
-        foreach($postsResult as $key => $value) {
-            $postsList[$value['id']] = $value['name'];
+        // Вытащим врачей вместе с отделениями и со всем
+        $doctorObject = new Doctor();
+        $doctorsList = $doctorObject->getAllForSelect();
+/*echo '<pre>';
+        var_dump($doctorsList );
+        exit();
+*/
+
+        // Делаем массив [доктор] => отделение
+        $wardsForDoctor = array();
+        foreach($doctorsList as $oneDoctor) {
+            $wardsForDoctor[$oneDoctor['id']] = $oneDoctor['ward_code'];
         }
 
-        // Модель формы для модицикации расписания
-        $formModel = new FormSheduleAdd();
+        array_unshift($doctorsList, array('id' => -1,'fio' => 'Все графики'));
 
-        // Список кабинетов
-        $cabinet = new Cabinet();
-        $cabinetResult = $cabinet->getRows(false, 'cab_number', 'asc');
-        $cabinetList = array();
-        foreach($cabinetResult as $key => $value) {
-            $cabinetList[$value['id']] = $value['cab_number'].' - '.$value['description'].', '.$value['ward'].' отделение, '.$value['enterprise'];
+        // Добавим врача "Все врачи"
+
+        // Достанем кабинеты
+        $cabinets = Cabinet::model()->getRows(false);
+
+        // Создаём масситв кабинетов по их id-шникам
+        $cabinetsByIds = array();
+
+        foreach ($cabinets as $oneCabinet)
+        {
+            $cabinetsByIds[$oneCabinet['id']] = $oneCabinet['cab_number'];
         }
 
-        $daysExp = $this->getExpDays(true);
+      //  var_dump($cabinets );
+      //var_dump("!!");
+      //  exit();
 
-		/*Получим список выходных дней по поликилинике*/
-		$restDaysDb = SheduleRest::model()->findAll();
-		$restDays = array();
-		
-		foreach ($restDaysDb as $oneDay)
-		{
-			$restDays[] = $oneDay['day'];
-		}
-		
-		$formModel->weekEnds = CJSON::encode($restDays);
-		
-		// var_dump($restDays );
-		// exit();
+        $timetableFactObj = new TimetableFact();
+        $factsSheduleForSelect = $timetableFactObj->getForSelect();
+        $factsForJSON = array();
+        foreach ($factsSheduleForSelect as $oneFact)
+        {
+            $factsForJSON [$oneFact['id']] = $oneFact['is_range'];
+        }
 
         $this->render('index', array(
             'wardsList' => $wardsList,
-            'postsList' => $postsList,
-            'model' => $formModel,
-            'daysExp' => $daysExp,
-            'cabinetList' => $cabinetList
+            'doctorList' => $doctorsList,
+            'doctorsForWards' => $wardsForDoctor,
+            'cabinetsList' => $cabinets,
+            'cabinetsListIds' => $cabinetsByIds,
+            'factsForSelect' => $factsSheduleForSelect,
+            'factsForJSON' => $factsForJSON
         ));
     }
 
+
+
+    public function actionSave()
+    {
+        //var_dump($_GET);
+        //var_dump($_POST);
+        //exit();
+
+        // Смотрим - если в базе есть расписание с заданным id - надо его найти. Иначе создать новое
+        $timeTableModel = null;
+        if ($_GET['timeTableId']!="")
+        {
+            //$timeTableObject = Timetable::model();
+            $timeTableModel = Timetable::model()->findByPk($_GET['timeTableId']);
+        }
+        else
+        {
+            $timeTableModel = new Timetable();
+          //  $timeTableModel->id=NULL;
+        }
+
+        // Проверяем дату начала и дату конца
+        if ( (
+            ($_GET['begin']=="") || (!isset($_GET['begin'])) || ($_GET['begin']==NULL)
+            )
+            ||
+            (
+                ($_GET['end']=="") || (!isset($_GET['end'])) || ($_GET['end']==NULL)
+            )  ){
+            echo CJSON::encode(array('success' => 'false',
+                'errors' => array('Не заполнена дата начала или дата конца действия расписания' )));
+            exit();
+        }
+
+        if ($_GET['timeTableId']!="")
+        {
+            // Удаляем все старые записи в таблице связей
+            DoctorsTimetable::model()->deleteAll('id_timetable = :it', array(':it'=>$_GET['timeTableId']));
+
+        }
+        // Пишем новые значения в модель
+        $timeTableModel->date_begin = $_GET['begin'];
+        $timeTableModel->date_end = $_GET['end'];
+        $timeTableModel->timetable_rules = $_GET['timeTableBody'];
+
+        // Сохраняем расписание
+        $timeTableModel->save();
+
+
+        // Проверияем срок действия расписания
+        $timetableId = null;
+        if ($timeTableModel->EntryID!=null)
+        {
+            $timetableId = $timeTableModel->EntryID;
+        }
+        else
+        {
+            $timetableId = $_GET['timeTableId'];
+        }
+
+        $timeTableModel->id = $timetableId;
+        $doctorsIds = CJSON::decode( $_GET['doctors'] );
+
+
+        // Перебираем докторов и пишем им запись в таблицу связей доктор<->расписание
+        foreach ($doctorsIds as $oneDoctorIds)
+        {
+            // $oneDoctorIds - берём IDшник и записываем строку
+            $doctorsTimeTableLink = new DoctorsTimetable();
+            $doctorsTimeTableLink->id_doctor = $oneDoctorIds;
+            /*if ($timeTableModel->EntryID!=null)
+            {
+                $doctorsTimeTableLink->id_timetable = $timeTableModel->EntryID;
+            }
+            else
+            {
+                $doctorsTimeTableLink->id_timetable = $_GET['timeTableId'];
+            }
+            */
+            $doctorsTimeTableLink->id_timetable = $timetableId;
+            $doctorsTimeTableLink->save();
+        }
+
+        /*
+        echo CJSON::encode(array('success' => true,
+            'msg' => 'Выходные дни успешно сохранены.'));
+        */
+
+        $this->checkTimetableTerms($timeTableModel, $doctorsIds[0]);
+
+        // Отписываем вывалившиеся из расписания приёмы
+        $cancelledGreetingsNumber = $this->unwritePatientsOnTimetableChanged($doctorsIds[0]);
+
+        echo CJSON::encode(array('success' => true,
+            'msg' => 'Расписание успешно сохранено.',
+            'cancelledGreeting' => $cancelledGreetingsNumber
+        ));
+    }
+
+    public function actionGetShedule()
+    {
+        //var_dump($_GET);
+        //var_dump($_POST);
+        //exit();
+
+        /*if (in_array('-1',$_GET['wards']))
+        {
+            echo("Нашёл Все отделения");
+        }
+
+        if (in_array('-2',$_GET['wards']))
+        {
+            echo("Нашёл Без отделения");
+        }*/
+        //var_dump($_GET);
+        //exit();
+
+        // Прокачиваем параметры списка
+        if (!isset($_GET['rows']))
+        {
+            $rows = false;
+        }
+        else
+        {
+            $rows = $_GET['rows'];
+        }
+
+        if (!isset ($_GET['page']))
+        {
+            $page = false;
+        }
+        else
+        {
+            $page = $_GET['page'];
+        }
+
+        if (!isset($_GET['sidx']))
+        {
+            $sidx = false;
+        }
+        else
+        {
+            $sidx = $_GET['sidx'];
+        }
+
+        if (!isset($_GET['sord']))
+        {
+            $sord = false;
+        }
+        else
+        {
+            $sord = $_GET['sord'];
+        }
+
+        // Тут возможно три случая:
+        // 1. Все отделения или не указано вообще отделения, не указаны врачи
+        //      в этом случае нет никаких ограничений - выбираем всех докторов, все расписания
+
+        // 2. Указаны некоторые отделения, не указаны врачи (или все)
+        //    в этом случае работает фильтр только по отделениям
+
+        // 3. Указаны ID докторов. В этом случае плевать нам с высокой колокольни на отделения
+
+        $doctors = null;
+        $wards = null;
+        $withoutWard = false;
+
+        if ((isset($_GET['doctors'])) && (count($_GET['doctors'])>0))
+        {
+                if ($_GET['doctors'][0]!=-1)// если указаны "все врачи" - не фильтруем по врачам
+                {
+                    $doctors = $_GET['doctors'];
+                }
+        }
+        else
+        {
+            // Если найдено "без отделений" - возводим флаг
+            if (in_array('-2',$_GET['wards']))
+            {
+                $withoutWard = true;
+            }
+            else
+            {
+                // смотрим - если ли нет пункта "все отделения"
+                if (!in_array('-1',$_GET['wards']))
+                {
+                    // Выбираем если массив отделений не пуст - присваиваем его в $wards
+                    if (isset($_GET['wards']))
+                    {
+                        $wards = $_GET['wards'];
+                    }
+                }
+            }
+        }
+
+       /* var_dump('Доктора=');
+        var_dump($doctors);
+
+        var_dump('Отделения=');
+        var_dump($wards);
+
+        var_dump($withoutWard);
+
+        exit();
+*/
+
+
+
+        // Теперь, имеем данные для обращения к базе данных
+        // Сконструируем специальный массив, хранящий данные для запроса
+        $filterParameters = array(
+            'doctorsIds' => $doctors,
+            'wardsIds' => $wards,
+            'woWardFlag' => $withoutWard
+
+        );
+
+        // =======> Test
+        /*$filterParameters = array(
+            'doctorsIds' => array('30','35'),
+            'wardsIds' => null,
+            'woWardFlag' => false
+
+        );*/
+
+        /*$filterParameters = array(
+            'doctorsIds' => null,
+            'wardsIds' => array('8'),
+            'woWardFlag' => false
+
+        );
+        */
+
+        /*$filterParameters = array(
+            'doctorsIds' => null,
+            'wardsIds' => null,
+            'woWardFlag' => true
+
+        );*/
+
+        //<==========
+
+        // Считаем предварительные данные для спискоты
+        $timeTableObject = new Timetable();
+        $num = $timeTableObject ->getNumRows($filterParameters);
+
+        if(count($num) > 0) {
+            $totalPages = ceil($num / $rows);
+            $start = $page * $rows - $rows;
+            $items = $timeTableObject->getRows($filterParameters , $sidx, $sord, $start, $rows);
+        } else {
+            $items = array();
+            $totalPages = 0;
+        }
+
+        /*$doctors = null;
+        // Смотрим - если не выбрано докторов - выбираем всех врачей по отделениям.
+        if (isset($_GET['doctors']))
+        {
+            $doctors = $_GET['doctors'];
+        }
+        else
+        {
+            // Большая печалька(( потому что надо выбрать по отделениям всех докторов из этих отделений
+            // Но если выбрано "все отделения", то это очень хорошо :) в этом случае не нужно ограничение на доктора
+            //  А вот если
+        }
+        */
+        echo CJSON::encode(
+            array(
+                'success'=> true,
+                //'shedules'=> array( )
+                 //'shedules'=> array( 1,2,3,4)
+
+
+
+                'rows' => $items,
+              //  'rows' => array( ),
+
+                'total' => $totalPages,
+                'records' => count($num)
+            )
+        );
+    }
+
+    function actionDeleteTimeTable()
+    {
+        $idTimeTable = $_GET['timetableId'];
+        $doctorIds = DoctorsTimetable::model()->findAll(
+            'id_timetable = :timetable', array(':timetable'=>$idTimeTable)
+        );
+
+        // Удаляем расписание
+        Timetable::model()->deleteByPk($idTimeTable);
+        // Удаляем связь между докторами т расписаниями, у которых проставлено это расписание
+
+
+        DoctorsTimetable::model()->deleteAll('id_timetable = :timetable', array(':timetable'=>$_GET['timetableId']));
+
+        if (isset($doctorIds[0]['id_doctor']))
+        {
+            // Удаление выпавших приёмов
+            $unwritedGreetings = $this->unwritePatientsOnTimetableChanged($doctorIds[0]['id_doctor']);
+        }
+        else
+        {
+            $unwritedGreetings = 0;
+        }
+        echo CJSON::encode(array('success' => true,
+            'msg' => 'Расписание успешно удалено!.',
+            'cancelledGreeting' => $unwritedGreetings
+        ));
+    }
+
+    //======================>
 /*
 	public function actionGetWrittenPatientsEdit()
  	{
@@ -120,13 +449,18 @@ class SheduleController extends Controller {
 
     private function writeCancelledGreeting($greeting)
     {
+        //var_dump($greeting);
+        //exit();
         $newCancelledGreeting = new CancelledGreeting();
 
         $newCancelledGreeting->doctor_id = $greeting['doctor_id'];
         $newCancelledGreeting->medcard_id = $greeting['medcard_id'];
         if ($greeting['medcard_id']!='' && $greeting['medcard_id']!=null)
         {
-            $newCancelledGreeting->policy_id = $greeting['oms_id'];
+            // Вытащим медкарту и возьмём её oms_id
+            $mCard = Medcard::model()->find('card_number = :card',array (':card' => $greeting['medcard_id'])  );
+
+            $newCancelledGreeting->policy_id = $mCard['policy_id'];
         }
 
         $newCancelledGreeting->patient_day = $greeting['patient_day'];
@@ -138,168 +472,6 @@ class SheduleController extends Controller {
         $newCancelledGreeting->comment = $greeting['comment'];
         $newCancelledGreeting->save();
     }
-
-
-   /* // Получить пациентов, записанных на данного врача (голые строки)
-    // Новая часть
-    private function getPatientsWritten()
-    {
-        try {
-
-            // Прочитаем параметры
-            if (!isset($_GET['rows']))
-            {
-                $rows = false;
-            }
-            else
-            {
-                $rows = $_GET['rows'];
-            }
-
-            if (!isset ($_GET['page']))
-            {
-                $page = false;
-            }
-            else
-            {
-                $page = $_GET['page'];
-            }
-
-            if (!isset($_GET['sidx']))
-            {
-                $sidx = false;
-            }
-            else
-            {
-                $sidx = $_GET['sidx'];
-            }
-
-            if (!isset($_GET['sord']))
-            {
-                $sord = false;
-            }
-            else
-            {
-                $sord = $_GET['sord'];
-            }
-
-
-            if(isset($_GET['filters']) && trim($_GET['filters']) != '')
-            {
-                $filters = CJSON::decode($_GET['filters']);
-            }
-            else
-            {
-                $filters = false;
-            }
-
-            $dayBegin = $_GET['begin'];
-            $dayEnd = $_GET['end'];
-            //$doctorId= $_GET['doctor_id'];
-            $doctors = array();
-
-            // Инициализируем массив докторов
-
-
-            if (isset($_GET['doctorsIds']))
-            {
-
-                //var_dump($_GET['doctorsIds']);
-                //exit();
-
-                if (is_array($_GET['doctorsIds']))
-                {
-                    $doctorsArr = $_GET['doctorsIds'];
-                }
-                else
-                {
-                    $doctorsArr = CJSON::decode($_GET['doctorsIds']);
-                }
-
-
-
-
-                if (is_array($doctorsArr))
-                {
-                    $doctors = $doctorsArr;
-                }
-                else
-                {
-                    $doctors[] = $doctorsArr;
-                }
-            }
-            else
-            {
-                $doctors[] = $_GET['doctor_id'];
-            }
-
-            $model = new SheduleByDay();
-            $num = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors);
-            //var_dump($num);
-            //exit();
-
-
-            $totalPages = 0;
-            $start = 0;
-            if ($rows)
-            {
-                $totalPages = ceil(count($num) / $rows);
-                $start = $page * $rows - $rows;
-            }
-
-
-            $greetings = $model->getRangePatientsRows($filters, $dayBegin, $dayEnd,$doctors, $sidx, $sord, $start, $rows);
-
-            //var_dump($greetings);
-            //exit();
-            // Приведём дату в приличный вид
-            foreach($greetings as &$element) {
-
-
-                $greetingDateArr= explode('-', $element['patient_day']);
-                $element['patient_date'] =	$greetingDateArr[2].'.'
-                    .$greetingDateArr[1].'.'
-                    .$greetingDateArr[0].' '.$element['patient_time'];
-
-
-                $element['doctor_fio'] = $element['last_name'];
-
-                if ($element['first_name']!='')
-                {
-                    $element['doctor_fio'] .= (' '.mb_substr($element['first_name'],0,1,'utf-8').'.');
-                }
-
-                if ($element['middle_name']!='')
-                {
-                    $element['doctor_fio'] .= (' '.mb_substr($element['middle_name'],0,1,'utf-8'). '.');
-                }
-
-
-                //$element['unwrite'] = '\<Test'.(string)$element['id'];
-
-
-
-                $element['unwrite'] = '<a class="unwrite-link" href="#'.(string)$element['id'].'">'.
-                    '<span class="glyphicon glyphicon-remove" title="Снять пациента с записи"></span>'.
-                    '</a>';
-
-                //var_dump($element['unwrite']);
-                //exit();
-                //var_dump($element);
-            }
-
-          //  var_dump($greetings);
-          //  exit();
-            return
-                array(	'rows' => $greetings,
-                    'total' => $totalPages,
-                    'records' => count($num))
-            ;
-
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
-    }*/
 
     private function getPatientsInfoToGreetings(&$arrayOfGreetings)
     {
@@ -611,6 +783,160 @@ class SheduleController extends Controller {
     }
 */
 
+    // Функция возвращает число пациентов, которые были отписаны при изменении расписания
+    private function unwritePatientsOnTimetableChanged($doctorId, $dateBegin=false,$dateEnd=false, $timeBegin = false,$timeEnd = false)
+    {
+        $result = 0;
+
+        if (false)
+        {
+            // 1. Выбираем все приёмы у врача, которые старше сегодняшнего дня и текущего времени
+            // 2. Проверяем их на то, вывалились ли они из расписания. Если приём вывалился - его надо запомнить в список
+            // 3. Отписываем вывалившиеся приёмы и считаем их
+            $findCondition = '( doctor_id = :doctor )';
+            $findArray = array(':doctor'=>$doctorId);
+
+            if ($dateBegin===false)
+            {
+                $findCondition .= 'AND (time_begin is NULL) AND ( patient_day > \''. date('Y-n-j') .'\')';
+            }
+
+            if ($timeBegin===false)
+            {
+                $findCondition .= 'AND ( (patient_time > \'' .date('h:i:s'). '\') OR (patient_time is NULL))';
+            }
+
+
+            //var_dump($findCondition);
+            //var_dump($findArray);
+            //exit();
+
+            $sheduleByDayObject = new SheduleByDay();
+            $greetingToCheck = $sheduleByDayObject::model()->findAll(
+                $findCondition,
+                $findArray
+            );
+
+            $maxGreetingDate = strtotime(date('Y-n-j'));
+            $greetingDays = array();
+            // Найдём максимальное число, на которое отменяется хотя бы один приём
+            foreach ($greetingToCheck as $oneGreeting)
+            {
+
+
+                $greetingPatientDay = strtotime($oneGreeting['patient_day']);
+                if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )
+                {
+                    array_push( $greetingDays ,  $oneGreeting['patient_day']);
+                }
+                if ($greetingPatientDay > $maxGreetingDate)
+                {
+                    $maxGreetingDate = $greetingPatientDay;
+                }
+
+            }
+
+            $timeTable = new Timetable();
+            // Находим расписания для дат
+            $shedules = $timeTable->getRows(
+                array(
+                    'doctorsIds' => array($doctorId),
+                    'dateBegin' => date('Y-n-j'),
+                    'dateEnd' => date('Y-n-j',$maxGreetingDate)
+                )
+            );
+
+            // Перебираем даты, на которой есть приёмы
+            //   Для даты определяем, какому расписанию подчиняется эта дата
+            //      а затем перебираем приёмы, записанные эту дату и проверяем каждый из приёмов.
+            $greetingsIdToDelete = array();
+            foreach ($greetingDays as $oneGreetingDate)
+            {
+                // Находим расписание для даты
+                $sheduleForDay = null;
+                foreach ($shedules as $oneShedule)
+                {
+                    if ( (   strtotime($oneShedule['date_begin'])<=strtotime($oneGreetingDate)   ) &&
+                        (strtotime($oneShedule['date_end'])>=strtotime($oneGreetingDate)  ) )
+                    {
+                        $sheduleForDay  = $oneShedule ;
+                        break;
+                    }
+                }
+
+                if ($sheduleForDay == null)
+                {
+                    // Если для даты не нашли расписания - то приём на эту дату вывалились
+                    foreach ($greetingToCheck as $oneGreeting)
+                    {
+                        if ( strtotime($oneGreeting['patient_day']) == strtotime($oneGreetingDate)  )
+                        {
+                            $greetingsIdToDelete[] = $oneGreeting['id'];
+                        }
+                    }
+
+                }
+                else
+                {
+                    // Тут надо проверить - попадают ли приёмы в расписание по времени (работает ли врач в то время, на которое записан пациент)
+                    // Получим правило из расписания
+                    $timeTableObject = new Timetable();
+                    $ruleToCheck = $timeTableObject->getRuleFromTimetable($sheduleForDay, $oneGreetingDate);
+                    // Если правила нет - то добавляем все правила на этот день в удаление
+                    if ($ruleToCheck == null)
+                    {
+                        foreach ($greetingToCheck as $oneGreeting)
+                        {
+                            if ( strtotime($oneGreeting['patient_day']) == strtotime($oneGreetingDate)  )
+                            {
+                                $greetingsIdToDelete[] = $oneGreeting['id'];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Вот тут сравниваем времена работы врача
+                        foreach ($greetingToCheck as $oneGreeting)
+                        {
+                            if ( strtotime($oneGreeting['patient_day']) != strtotime($oneGreetingDate)  )
+                            {
+                                continue;
+                            }
+                            // Даты отсеяли - теперь проверяем на временной промежуток
+                            if (!(
+                            (  strtotime($oneGreeting['patient_time']) >=   strtotime($ruleToCheck['greetingBegin']) )
+                            &&
+                            (   strtotime($oneGreeting['patient_time']) <   strtotime($ruleToCheck['greetingEnd'])   )
+                            ))
+                            {
+                                $greetingsIdToDelete[] = $oneGreeting['id'];
+                            }
+                         //   $greetingsIdToDelete[] = $oneGreeting['id'];
+                        }
+                    }
+                }
+            }
+
+
+            // отписываем приёмы, которые мы набрали
+            if (  count($greetingsIdToDelete) > 0 )
+            {
+                $result = count($greetingsIdToDelete);
+
+                // Сначала находим приёмы
+                $idsStr = implode(',',$greetingsIdToDelete);
+                $greetingsToDel = SheduleByDay::model()->findAll('id in ('. $idsStr .')');
+                foreach ($greetingsToDel as $oneGreetingToDel)
+                {
+                    $this->writeCancelledGreeting($oneGreetingToDel);
+                    SheduleByDay::model()->deleteByPk($oneGreetingToDel['id']);
+                }
+            }
+        }
+        return $result;
+    }
+
+    /* Метод скорее всего не нужен будет*/
     private function unwriteWritedPatientsEdit($dayBegin,$dayEnd,$doctorId,$times,$sheduleId)
     {
         try {
@@ -623,14 +949,18 @@ class SheduleController extends Controller {
 
             // Выбираем приёмы, которые попадали раньше в промежуток
             $oldGreetings =  SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end
-                AND (patient_day>=current_date OR ((patient_time>=current_time)AND(patient_day=current_date)))',
+                AND (patient_day>=current_date OR ((patient_time>=current_time)AND(patient_day=current_date)))
+                AND (    not(is_beginned=1) OR (is_beginned is NULL)   )
+                ',
                 array(':doctor_id' => $doctorId,':date_begin' => $oldShedule['date_begin'],
                     ':date_end' => $oldShedule['date_end']
                 )
             );
             // Выбираем приёмы, которые попадают в промежуток теперь
             $newGreetings = SheduleByDay::model()->findAll('doctor_id = :doctor_id AND patient_day >= :date_begin AND patient_day <= :date_end
-                AND (patient_day>=current_date OR ((patient_time>=current_time)AND(patient_day=current_date)))',
+                AND (patient_day>=current_date OR ((patient_time>=current_time)AND(patient_day=current_date)))
+                AND (     not(is_beginned=1) OR (is_beginned is NULL)   )
+                ',
                 array(':doctor_id' => $doctorId,':date_begin' => $dayBegin,
                     ':date_end' => $dayEnd
                 )
@@ -944,103 +1274,7 @@ class SheduleController extends Controller {
 			exit();
 		}
 		
-		// Вот тут делаем следующее: 
-		//  1. Перебираем расписания
-		//  2. Определяем - нужно ли изменить их дату начала и дату конца
-		//  (попадает дата начала и дата конца на даты нового расписания)
-		$existingShedules = SheduleSettedBe::model()->findAll('employee_id = :doctor_id', array(':doctor_id' => $model->doctorId));
-		
-		// Переберём смены
-		foreach ($existingShedules as $oneShedule)
-		{
-			// Если смена не та, которую мы только что сохранили
-			if ($oneShedule['id']!=$sheduleSettedBeModel['id'])
-			{
-				if ((strtotime($oneShedule['date_begin'])>=strtotime($sheduleSettedBeModel->date_begin))
-					&&(strtotime($oneShedule['date_end'])<=strtotime($sheduleSettedBeModel->date_end)))
-				{
-					// Новое расписание полностью перекрывает старое. Старое поидее надо удалить
-					$dateId =  $oneShedule['id'];
-					$oneShedule->delete();
-					// УБиваем старое расписание для данной смены
-					SheduleSetted::model()->deleteAll('date_id = :date_id', array(
-						':date_id' => $dateId
-						));
-					continue;	
-				}
-				
-				if ((strtotime($oneShedule['date_begin'])<strtotime($sheduleSettedBeModel->date_begin))
-					&&(strtotime($oneShedule['date_end'])>strtotime($sheduleSettedBeModel->date_begin))
-					&&(strtotime($oneShedule['date_end'])<strtotime($sheduleSettedBeModel->date_end)))
-				{
-					
-					// Новое расписание залезает на хвост старого. У старого надо изменить дату конца на дату, предшествующую
-					//   началу нового
-					$oneShedule['date_end'] = date("Y-m-d",strtotime($sheduleSettedBeModel->date_begin)-86400);
-					$result = $oneShedule->save();
-					continue;	
-				}
-				
-				if ((strtotime($oneShedule['date_end'])>strtotime($sheduleSettedBeModel->date_end))
-					&&(strtotime($oneShedule['date_begin'])>strtotime($sheduleSettedBeModel->date_begin))
-					&&(strtotime($oneShedule['date_begin'])<strtotime($sheduleSettedBeModel->date_end)))
-				{
-					// Новое расписание залезает на голову старого. У старого надо изменить дату начала на дату после 
-					//   конца нового
-					$oneShedule['date_begin'] = date("Y-m-d",strtotime($sheduleSettedBeModel->date_end)+86400);
-					$result = $oneShedule->save();
-					continue;
-				}
-				
-				if ((strtotime($oneShedule['date_begin'])<strtotime($sheduleSettedBeModel->date_begin))
-					&&(strtotime($oneShedule['date_end'])>strtotime($sheduleSettedBeModel->date_end)))
-				{
-					// Новое раписание находится посередине старого. Старое расписание надо разбить на две части
-					// Алгоритм такой.
-					// 1. Сохраняем дату конца старого расписания
-					// 2. Дату конца старого расписания меняем как дата начала нового - 1 день
-					// 3. Вставляем новое расписание, которое ничем не будет отличаться 
-					//   от старого кроме того, что у него дата начала будет равняться дате конца нового расписания + 1 день
-					
-					// 1
-					$oldEndDate = $oneShedule['date_end'];
-					
-					// 2
-					$oneShedule['date_end'] = date("Y-m-d",strtotime($sheduleSettedBeModel->date_begin)-86400);
-					$result = $oneShedule->save();
-					
-					// 3
-					$addingShedule = new SheduleSettedBe();
-					$addingShedule->date_begin = date("Y-m-d",strtotime($sheduleSettedBeModel->date_end)+86400);
-					$addingShedule->date_end = 	$oldEndDate;
-					$addingShedule->employee_id = $model->doctorId;
-					
-					$addingShedule->save();
-					
-					// Теперь копируем дни недели
-					$days = SheduleSetted::model()->findAll('date_id = :date_id', array(
-						':date_id' => $oneShedule['id']
-						));
-					foreach($days as $oneDay)
-					{
-						$cloneDay = new SheduleSetted();
-						$cloneDay ->cabinet_id = $oneDay['cabinet_id'];
-						$cloneDay ->employee_id = $oneDay['employee_id'];
-						$cloneDay ->weekday = $oneDay['weekday'];
-						$cloneDay ->time_begin = $oneDay['time_begin'];
-						$cloneDay ->time_end = $oneDay['time_end'];
-						$cloneDay ->type = 0; // Обычное расписание
-						$cloneDay ->date_id = $addingShedule['id'];
-						$cloneDay ->save();
-						
-					}
-					
-					
-					continue;	
-				}
-				
-			}
-		}
+
 		
 		
 		// УБиваем старое расписание для данной смены
@@ -1129,6 +1363,125 @@ class SheduleController extends Controller {
 					
 			}
 	}
+
+    private function getSheduleObjectById($sheduleId)
+    {
+        $timeTableObject = new Timetable();
+        return $timeTableObject::model()->findByPk($sheduleId);
+
+    }
+
+    private function checkTimetableTerms($timeTable, $doctorId)
+    {
+        $timeTableObject = new Timetable();
+        // Выбираем графики по врачу
+        $existingShedules = $timeTableObject->getRows(
+            array(
+                'doctorsIds' => array($doctorId)
+            )
+        );
+
+        // Переберём расписания и подрежем у них сроки
+        // Переберём смены
+        foreach ($existingShedules as $oneShedule)
+        {
+            // Если смена не та, которую мы только что сохранили
+            if ($oneShedule['id']!=$timeTable['id'])
+            {
+                if ((strtotime($oneShedule['date_begin'])>=strtotime($timeTable->date_begin))
+                    &&(strtotime($oneShedule['date_end'])<=strtotime($timeTable->date_end)))
+                {
+                    // Новое расписание полностью перекрывает старое. Старое поидее надо удалить
+                    $dateId =  $oneShedule['id'];
+                    $sheduleToDelete = $this->getSheduleObjectById($dateId);
+
+                    $sheduleToDelete ->delete();
+                    // УБиваем строки из старой таблицы связей
+                    DoctorsTimetable::model()->deleteAll('id_timetable = :timetable', array(
+                        ':timetable' => $dateId
+                    ));
+                    continue;
+                }
+
+                if ((strtotime($oneShedule['date_begin'])<strtotime($timeTable->date_begin))
+                    &&(strtotime($oneShedule['date_end'])>strtotime($timeTable->date_begin))
+                    &&(strtotime($oneShedule['date_end'])<strtotime($timeTable->date_end)))
+                {
+
+                    // Новое расписание залезает на хвост старого. У старого надо изменить дату конца на дату, предшествующую
+                    //   началу нового
+                    $dateId = $oneShedule['id'];
+                    $timeTableToChange = $this->getSheduleObjectById($dateId);
+
+                    $timeTableToChange['date_end'] = date("Y-m-d",strtotime($timeTable->date_begin)-86400);
+                    $timeTableToChange->save();
+                    continue;
+                }
+
+                if ((strtotime($oneShedule['date_end'])>strtotime($timeTable->date_end))
+                    &&(strtotime($oneShedule['date_begin'])>strtotime($timeTable->date_begin))
+                    &&(strtotime($oneShedule['date_begin'])<strtotime($timeTable->date_end)))
+                {
+                    // Новое расписание залезает на голову старого. У старого надо изменить дату начала на дату после
+                    //   конца нового
+                    $dateId = $oneShedule['id'];
+                    $timeTableToChange = $this->getSheduleObjectById($dateId);
+                    $timeTableToChange['date_begin'] = date("Y-m-d",strtotime($timeTable->date_end)+86400);
+                    $timeTableToChange->save();
+                    continue;
+                }
+
+                if ((strtotime($oneShedule['date_begin'])<strtotime($timeTable->date_begin))
+                    &&(strtotime($oneShedule['date_end'])>strtotime($timeTable->date_end)))
+                {
+                    // Новое раписание находится посередине старого. Старое расписание надо разбить на две части
+                    // Алгоритм такой.
+                    // 1. Сохраняем дату конца старого расписания
+                    // 2. Дату конца старого расписания меняем как дата начала нового - 1 день
+                    // 3. Вставляем новое расписание, которое ничем не будет отличаться
+                    //   от старого кроме того, что у него дата начала будет равняться дате конца нового расписания + 1 день
+
+
+                    // 1
+                    $oldEndDate = $oneShedule['date_end'];
+                    //var_dump($oneShedule);
+                    //exit();
+                    $oldContent = $oneShedule['json_data'];
+
+                    $dateId = $oneShedule['id'];
+                    $timeTableToChange = $this->getSheduleObjectById($dateId);
+
+                    // 2
+                    $timeTableToChange['date_end'] = date("Y-m-d",strtotime($timeTable->date_begin)-86400);
+                    $timeTableToChange->save();
+
+                    // 3
+                    $addingShedule = new Timetable();
+                    $addingShedule->date_begin = date("Y-m-d",strtotime($timeTable->date_end)+86400);
+                    $addingShedule->date_end = 	$oldEndDate;
+                    $addingShedule->timetable_rules = $oldContent;
+
+                    $addingShedule->save();
+
+                    $addingSheduleId = $addingShedule->EntryID;
+
+                    // Нужно скопировать строки таблицы связи
+                    $links = DoctorsTimetable::model()->findAll('id_timetable = :timetable', array( ':timetable' => $oneShedule['id']));
+
+                    foreach ($links as $oneLink)
+                    {
+                        $newLink = new DoctorsTimetable();
+                        $newLink->id_doctor = $oneLink['id_doctor'];
+                        $newLink->id_timetable = $addingSheduleId;
+                        $newLink->save();
+                    }
+                    continue;
+                }
+
+            }
+        }
+
+    }
 
     public function addEditModelSheduleExp($model) {
         if($model->id != null) {

@@ -90,7 +90,8 @@
                             <div class="col-xs-9">
                                 <?php echo $form->dropDownList($model, 'employeeId', $employeesList, array(
                                     'id' => 'employeeId',
-                                    'class' => 'form-control'
+                                    'class' => 'form-control',
+									'multiple' => 'multiple'
                                 )); ?>
                                 <?php echo $form->error($model,'employeeId'); ?>
                             </div>
@@ -190,7 +191,8 @@
                             <div class="col-xs-9">
                                 <?php echo $form->dropDownList($model, 'employeeId', $employeesList, array(
                                     'id' => 'employeeId',
-                                    'class' => 'form-control'
+                                    'class' => 'form-control',
+									'multiple' => 'multiple'
                                 )); ?>
                                 <?php echo $form->error($model,'employeeId'); ?>
                             </div>

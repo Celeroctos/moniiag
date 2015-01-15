@@ -84,7 +84,6 @@ $(document).ready(function() {
 
     $("#addCategorie").click(function() {
         $('#addCategoriePopup').modal({
-
         });
     });
 
@@ -118,7 +117,6 @@ $(document).ready(function() {
             // Перезагружаем таблицу
             $("#categories").trigger("reloadGrid");
             $("#categorie-edit-form")[0].reset();
-
         } else {
             // Удаляем предыдущие ошибки
             $('#errorAddCategoriePopup .modal-body .row p').remove();
@@ -128,20 +126,17 @@ $(document).ready(function() {
                     $('#errorAddCategoriePopup .modal-body .row').append("<p>" + ajaxData.errors[i][j] + "</p>")
                 }
             }
-
             $('#errorAddCategoriePopup').modal({
-
-            });
+            }).css("z-index", 1052).disableSelection();
         }
     });
-
 
     function editCategorie() {
         var currentRow = $('#categories').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/categories/getone?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/categories/getone?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
@@ -195,20 +190,21 @@ $(document).ready(function() {
         if(currentRow != null) {
             // Надо вынуть данные для редактирования
             $.ajax({
-                'url' : '/admin/categories/delete?id=' + currentRow,
+                'url' : globalVariables.baseUrl + '/admin/categories/delete?id=' + currentRow,
                 'cache' : false,
                 'dataType' : 'json',
                 'type' : 'GET',
                 'success' : function(data, textStatus, jqXHR) {
-                    if(data.success == 'true') {
+                    if(data.success == true) {
                         $("#categories").trigger("reloadGrid");
                     } else {
                         // Удаляем предыдущие ошибки
                         $('#errorAddCategoriePopup .modal-body .row p').remove();
                         $('#errorAddCategoriePopup .modal-body .row').append("<p>" + data.error + "</p>")
-
+						if (data.message) {
+							$('#errorAddCategoriePopup .modal-body .row').append("<p>" + data.message + "</p>")
+						}
                         $('#errorAddCategoriePopup').modal({
-
                         });
                     }
                 }
