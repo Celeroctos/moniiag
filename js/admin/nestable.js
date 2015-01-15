@@ -283,6 +283,10 @@
                     this.dragDepth = depth;
                 }
             }
+
+            if (this.options["begin"]) {
+                this.options["begin"](dragItem);
+            }
         },
 
         dragStop: function(e) {
