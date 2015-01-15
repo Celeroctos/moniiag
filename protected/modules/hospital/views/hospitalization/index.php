@@ -25,6 +25,8 @@
 			$this->widget('zii.widgets.grid.CGridView', array(
 				'dataProvider' => $dataProvider,
 				'enablePagination' => true,
+				'summaryCssClass' => 'summaryPanel',
+				'id' => 'hospitalizationSummary', 
 				'columns' => array(
 					array(
 						'name' => 'id',
