@@ -142,7 +142,7 @@ class TemplatesController extends Controller {
                 'success' => false,
                 'errors' => array(
                     'name' => array(
-                        'Шаблон с таким именем (ID = '.$issetName->id.') уже существует! Задайте другое имя шаблона.'
+						'Шаблон с таким названием уже существует, нельзя создать два шаблона с одинаковым названием (ID шаблона с повторяющимся названием - '.$issetName->id.').'
                     )
                 )
             );
