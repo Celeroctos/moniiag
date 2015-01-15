@@ -1,6 +1,6 @@
 <?php
 
-class Department extends LActiveRecord {
+class Department extends LModel {
 
     public function tableName() {
         return "lis.department";

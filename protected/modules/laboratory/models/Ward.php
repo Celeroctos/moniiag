@@ -1,6 +1,6 @@
 <?php
 
-class Ward extends LActiveRecord {
+class Ward extends LModel {
 
     public function tableName() {
         return "lis.ward";

@@ -1,6 +1,6 @@
 <?php
 
-class Analysis extends LActiveRecord {
+class Analysis extends LModel {
 
     public function tableName() {
         return "lis.analysis";

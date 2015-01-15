@@ -1,6 +1,6 @@
 <?php
 
-class Machine extends LActiveRecord {
+class Machine extends LModel {
 
     public function tableName() {
         return "lis.machine";
