@@ -32,7 +32,7 @@ var TemplateEngine = TemplateEngine || {
 
     /**
      * Базовый ассетер, просто выкидывает иссключение по одному или нескольким
-     * условиям. Если отправлено только сообщение, то исключение будет выброшено
+     * условий. Если отправлено только сообщение, то исключение будет выброшено
      * автоматически
      * @param [condition] {...Boolean} - Список выражений для проверки
      * @param [message] {String} - Сообщение с ошибкой
@@ -70,8 +70,8 @@ var TemplateEngine = TemplateEngine || {
 
     /**
      * Клонировать объект JavaScript (обычные JSON объекты)
-     * @param source {{}} - Сам объект для клонирования
-     * @returns {{}} - Клон переданного объекта
+     * @param source - Сам объект для клонирования
+     * @returns {*} - Клон переданного объекта
      */
     var clone = function(source) {
         return $.extend(true, {}, source);
@@ -1542,7 +1542,7 @@ var TemplateEngine = TemplateEngine || {
     Item.prototype.render = function() {
 		var that = this;
         var s = $("<div></div>", {
-            style: "cursor: default; box-sizing: border-box;",
+            style: "cursor: default; box-sizing: border-box; float: left;",
             class: "template-engine-item"
         });
 		if (this.has("label") && this.field("label").length) {
@@ -1564,16 +1564,16 @@ var TemplateEngine = TemplateEngine || {
 		}
 		s.append(
 			$("<div></div>", {
-				style: "float: none; margin-left: 5px;"
-			}).append(
-                that._renderDependenciesButton()
-            ).append(
-                this.template().key() != "category" ?
-                    that._renderEditButton() : undefined
-			).append(
-				that._renderRemoveButton("margin-right: 0;")
-			)
-		);
+				style: "float: left; margin-left: 5px;"
+			})
+		).append(
+            that._renderDependenciesButton()
+        ).append(
+            this.template().key() != "category" ?
+                that._renderEditButton() : undefined
+        ).append(
+            that._renderRemoveButton("margin-right: 0;")
+        );
         if (this.template().key() == "category") {
             s.css("background-color", "lightgray");
         }
@@ -1799,31 +1799,31 @@ var TemplateEngine = TemplateEngine || {
         var s = $("<li></li>", {
             class: "template-engine-category dd-item"
         }).append(
-			$("<div></div>", {
-				style: "float: left;"
-			}).append(
-				$("<div></div>", {
-					class: "template-engine-handle-wrapper",
-					style: "float: left;"
-				}).append(
-					$("<div></div>", {
-						class: "template-engine-handle dd-handle",
-						style: "float: left;",
-						html: name
-					})
+            $("<div></div>", {
+                style: "float: left;"
+            }).append(
+                $("<div></div>", {
+                    class: "template-engine-handle-wrapper",
+                    style: "float: left;"
+                }).append(
+                    $("<div></div>", {
+                        class: "template-engine-handle dd-handle",
+                        style: "float: left;",
+                        html: name
+                    })
                 ).append(
                     that._renderDragButton()
                 ).append(
                     that._renderEditButton()
-				).append(
-					that._renderRemoveButton()
-				)
-			)
+                ).append(
+                    that._renderRemoveButton()
+                )
+            )
         ).append(
-			items || $("<div></div>", {
+            items || $("<div></div>", {
                 class: "template-engine-items"
             })
-		);
+        );
 		if (categories) {
 			s.append(categories);
 		}
@@ -2048,6 +2048,8 @@ var TemplateEngine = TemplateEngine || {
         var that = this;
 		var template = null;
 		var finish = function(item, parent) {
+            // Display all items
+            $(".template-engine-items").css("visibility", "visible");
 			// get item and parent instances (to reappend child)
 			var itemInstance = $(item).data("instance");
 			var parentInstance = parent ? $(parent).data("instance") : that;
@@ -2069,7 +2071,6 @@ var TemplateEngine = TemplateEngine || {
 			}
             // if template has category type then remove old reference's selector
             // and append to parent's selector
-            console.log(itemInstance.reference());
             if (itemInstance.reference()) {
                 itemInstance.reference().remove();
                 if (!(parentInstance instanceof CategoryCollection)) {
@@ -2129,7 +2130,10 @@ var TemplateEngine = TemplateEngine || {
 			expandBtnHTML: "",
 			collapseBtnHTML: "",
 			maxDepth: 500,
-            finish: finish
+            finish: finish,
+            begin: function() {
+                $(".template-engine-items").css("visibility", "hidden");
+            }
         });
     };
 

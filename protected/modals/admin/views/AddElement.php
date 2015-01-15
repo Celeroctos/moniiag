@@ -1,9 +1,9 @@
 <? $form = $this->beginWidget('CActiveForm', array(
     'focus' => array($model,'name'),
-    'id' => 'element-edit-form',
+    'id' => 'element-add-form',
     'enableAjaxValidation' => true,
     'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/edit'),
+    'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/add'),
     'htmlOptions' => array(
         'class' => 'form-horizontal col-xs-12',
         'role' => 'form'
@@ -14,10 +14,6 @@
 <div class="row">
 <div class="col-xs-12">
 <div class="form-group">
-    <?php echo $form->hiddenField($model,'id', array(
-        'id' => 'id',
-        'class' => 'form-control'
-    )); ?>
     <?php echo $form->labelEx($model,'type', array(
         'class' => 'col-xs-3 control-label'
     )); ?>
@@ -121,7 +117,8 @@
         <?php echo $form->dropDownList($model, 'guideId', $guidesList, array(
             'id' => 'guideId',
             'class' => 'form-control',
-            'disabled' => true
+            'disabled' => true,
+            'options' => array('selected' => -1)
         )); ?>
         <?php echo $form->error($model,'guideId'); ?>
     </div>
@@ -157,7 +154,7 @@
     <div class="col-xs-9">
         <?php echo $form->dropDownList($model, 'isRequired', array('Нет', 'Да'), array(
             'id' => 'isRequired',
-            'class' => 'form-control',
+            'class' => 'form-control'
         )); ?>
         <?php echo $form->error($model,'isRequired'); ?>
     </div>
@@ -232,13 +229,13 @@
         <tr>
             <td>
                 <div class="form-group">
-                    <label for="" class="col-xs-9 control-label">Нужны заголовки строк</label>
+                    <label for="" class="col-xs-9 control-label headersLabel">Нужны заголовки строк</label>
                     <input type="checkbox" class="rowsHeaders" />
                 </div>
             </td>
             <td>
                 <div class="form-group">
-                    <label class="col-xs-9 control-label">Нужны заголовки столбцов</label>
+                    <label class="col-xs-9 control-label headersLabel">Нужны заголовки столбцов</label>
                     <input type="checkbox" class="colsHeaders" />
                 </div>
             </td>
@@ -249,9 +246,10 @@
     </table>
 </div>
 <!-- Таблица для отображения значений по умолчанию -->
-<div class="form-group  no-display defaultValuesTable">
-    <label class="col-xs-3">Значения по умолчанию</label>                                						<div class="col-xs-9">
-        <table class="controltable">
+<div class="form-group no-display defaultValuesTable">
+    <label class="col-xs-3">Значения по умолчанию</label>
+    <div class="col-xs-9" style="overflow-x: auto">
+        <table class="controltable" style="width: auto">
             <thead>
             </thead>
             <tbody>
@@ -339,6 +337,7 @@
     <?php  echo $form->labelEx($model,'dateFieldMinValue', array(
         'class' => 'col-xs-3 control-label'
     ));  ?>
+
     <div class="col-xs-6 input-group date" id="date-min-field-cont">
         <?php  echo $form->hiddenField($model,'dateFieldMinValue', array(
             'id' => 'dateFieldMinValue',
@@ -346,9 +345,11 @@
             'placeholder' => 'Формат гггг-мм-дд'
         )); ?>
         <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"></span>
-        </span>
+										<span class="glyphicon glyphicon-calendar"></span>
+								</span>
         <div class="subcontrol">
+
+
             <div class="date-ctrl-up-buttons">
                 <div class="btn-group">
                     <button type="button" tabindex="-1" class="btn btn-default btn-xs glyphicon-arrow-up glyphicon up-day-button"></button>
@@ -390,11 +391,11 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
     <?php echo CHtml::ajaxSubmitButton(
-        'Сохранить',
-        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/edit'),
+        'Добавить',
+        CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/admin/elements/add'),
         array(
             'success' => 'function(data, textStatus, jqXHR) {
-                                $("#element-edit-form").trigger("success", [data, textStatus, jqXHR])
+                                $("#element-add-form").trigger("success", [data, textStatus, jqXHR])
                             }'
         ),
         array(

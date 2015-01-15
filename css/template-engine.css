@@ -21,23 +21,18 @@
     items in categories but with 2(0) pixels offset
 */
 .template-engine-category .glyphicon {
-    transform: translateY(5px); font-size: 12px;
-}
-.template-engine-category .glyphicon:hover {
-    transform: translateY(5px); font-size: 12px;
+    transform: translateY(5px);
+    font-size: 12px;
 }
 .template-engine-item .glyphicon {
-    transform: translateY(-12px); font-size: 12px;
-}
-.template-engine-item .glyphicon:hover {
-    transform: translateY(-12px); font-size: 12px;
+    transform: translateY(-12px);
+    font-size: 12px;
 }
 
 .template-engine-category-collection {
     display: block;
     background: #a6a6a6;
     height: 600px;
-    /*height: auto;*/
     min-height: 500px;
     width: calc(100% - 195px);
     margin-left: 15px;
@@ -206,4 +201,14 @@
 
 .saving-template {
     visibility: hidden;
+}
+
+/* NESTABLE */
+
+.dd {
+    position: relative;
+    display: block;
+    margin: 0;
+    list-style: none;
+    width: 100%;
 }
