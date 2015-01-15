@@ -17,17 +17,18 @@
     <button type="button" class="btn btn-success" id="showTemplate">Просмотр шаблона</button>
 </div>
 
-<? $this->widget('application.modals.admin.templates.AddTemplate') ?>
-<? $this->widget('application.modals.admin.templates.AddTemplateError') ?>
-<? $this->widget('application.modals.admin.templates.EditTemplate') ?>
-<? $this->widget('application.modals.admin.templates.ShowTemplate') ?>
-<? $this->widget('application.modals.admin.templates.DesignTemplate') ?>
-<? $this->widget("application.modals.admin.templates.AddCategory"); ?>
-<? $this->widget("application.modals.admin.templates.AddCategoryError"); ?>
-<? $this->widget("application.modals.admin.templates.EditCategory"); ?>
-<? $this->widget("application.modals.admin.templates.AddElement"); ?>
-<? $this->widget("application.modals.admin.templates.AddElementError"); ?>
-<? $this->widget("application.modals.admin.templates.EditElement"); ?>
-<? $this->widget("application.modals.admin.templates.EditDependences"); ?>
-<? $this->widget("application.modals.admin.templates.RemoveCategory"); ?>
-<? $this->widget("application.modals.admin.templates.FindCategory"); ?>
+<? $this->widget('application.modals.admin.AddTemplate') ?>
+<? $this->widget('application.modals.admin.EditTemplate') ?>
+<? $this->widget('application.modals.admin.AddTemplateError') ?>
+<? $this->widget('application.modals.admin.ShowTemplate') ?>
+<? $this->widget('application.modals.admin.DesignTemplate') ?>
+<? $this->widget("application.modals.admin.AddCategory"); ?>
+<? $this->widget("application.modals.admin.AddCategoryError"); ?>
+<? $this->widget("application.modals.admin.EditCategory"); ?>
+<? $this->widget("application.modals.admin.AddElement"); ?>
+<? $this->widget("application.modals.admin.AddElementError"); ?>
+<? $this->widget("application.modals.admin.EditElement"); ?>
+<? $this->widget("application.modals.admin.EditDependences"); ?>
+<? $this->widget("application.modals.admin.RemoveCategory"); ?>
+<? $this->widget("application.modals.admin.FindCategory"); ?>
+<? $this->widget("application.modals.admin.IssetMedworkerNotice"); ?>
