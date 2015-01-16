@@ -2330,7 +2330,6 @@ var TemplateEngine = TemplateEngine || {
 	// register basic templates
     collection.append(new Template(collection, "category",      "Категория",           -3));
 	collection.append(new Template(collection, "clone",         "Клонировать",         -2));
-	//collection.append(new Template(collection, "static",        "Подключить",          -1));
     collection.append(new Template(collection, "text",          "Текстовое поле",       0));
     collection.append(new Template(collection, "text-area",     "Текстовая область",    1));
     collection.append(new Template(collection, "number",        "Числовое поле",        5));
