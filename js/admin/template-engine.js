@@ -1342,6 +1342,7 @@ var TemplateEngine = TemplateEngine || {
                 if (info.native == "default_value") {
                     $("input[id^='defaultValue']").val(me.field(info.native));
                 }
+
 				// Таблица
 				if (info.name == 'config') {
 					if(typeof data.data['config'] != 'object') {

@@ -211,7 +211,8 @@ class CardnumberGenerator extends CComponent {
 			$postfixModel = MedcardPostfix::model()->findByPk($rule->postfix_id);
 			$preNumber = mb_substr($medcard['to'], mb_strpos($medcard['to'], $prefixModel->value) + mb_strlen($prefixModel->value));
 			$numberWithSlash = mb_substr($preNumber, 0, mb_strpos($preNumber, $postfixModel->value));
-			$number = explode('/', $numberWithSlash)[0];
+			$number = explode('/', $numberWithSlash);
+            $number = $number[0];
 		}
 
 		// Генерируем номер: обрабатываем коллизии на всякий случай, если номера идут не по порядку

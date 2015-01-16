@@ -193,7 +193,8 @@ class SheduleByDay extends MisActiveRecord {
             ->from('mis.doctor_shedule_by_day dsbd')
             ->leftJoin('mis.medcards m', 'dsbd.medcard_id = m.card_number')
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
-            ->leftJoin('mis.users u', 'u.employee_id = dsbd.doctor_id');
+			->leftJoin('mis.doctors d', 'd.id = dsbd.doctor_id')
+            ->leftJoin('mis.users u', 'u.id = d.user_id');
         if($withMediate) {
             $patients->leftJoin('mis.mediate_patients mdp', 'mdp.id = dsbd.mediate_id');
         }

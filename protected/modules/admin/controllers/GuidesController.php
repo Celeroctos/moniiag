@@ -101,7 +101,7 @@ class GuidesController extends Controller {
     // Экшн просмотра всех справочников
     public function actionAllView() {
         $this->layout = 'application.modules.admin.views.layouts.medguides';
-        $medguidesTabWidget = CWidget::createWidget('application.modules.admin.components.widgets.MedguidesTabMenu');
+        $medguidesTabWidget = $this->createWidget('application.modules.admin.components.widgets.MedguidesTabMenu');
         $currentGuide = $medguidesTabWidget->getCurrentGuide($medguidesTabWidget->getGuidesList());
         $this->render('medguidesView', array(
             'model' => new FormValueAdd(),

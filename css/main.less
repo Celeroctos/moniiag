@@ -1,4 +1,6 @@
-﻿/* ------------------- Keyboard Layout ------------- */
+﻿@import "elements.less";
+
+/* ------------------- Keyboard Layout ------------- */
 .keyboardLayout { position: absolute; margin: 1px 0 0 -25px; *margin-top: 2px; width: 24px; height: 20px; color: #999; text-align: center; }
 /* ----------------- Color Picker -------------- */
 
@@ -167,10 +169,17 @@ body.modal-open {
 .yellow-color {
   color: #FFFF00;
 }
+.checkbox-inline {
+	padding: 3px 5px;
+	margin-right: 5px;
+	input[type="checkbox"] {
+		margin-top: 2px;
+	}
+}
 body {
   font-size: @default-font-size;
   max-width: 98%;
-  padding-bottom: 70px;
+  padding-bottom: 50px;
  // background: url('/images/background.png') repeat-x;
 }
 .bold {
@@ -320,6 +329,10 @@ form span.required {
     input[type='submit'],  input[type='button'] {
         margin-left: 18%;
     }
+}
+
+#choose-employee-form input[type='submit'] {
+	margin-left: 157px;
 }
 
 #patient-search-form, #doctors-search-form, #log-search-form   {
@@ -1839,11 +1852,11 @@ a.accordion-toggle:hover {
 }
 #addFakePopup {
 	.modal-dialog {
-		width: 1200px;
+		width: 1140px;
 	}
 	.borderedBox {
 		width: 220px;
-		margin-left: 157px;
+		margin-left: 167px;
 		padding: 0 10px;
 		.datetimepicker {
 			padding: 0;
@@ -1857,6 +1870,36 @@ a.accordion-toggle:hover {
 			display: none;
 		}
 	}
+	#fioCont {
+		background: #ffffcc;
+		margin-bottom: 5px;
+		min-height: 30px;
+		margin-left: 113px;
+		border-radius: 3px;
+		padding: 5px;
+		font-weight: bold;
+	}
+	#savePrimaryDiag {
+		position: relative;
+		top: 2px;
+		margin-right: 3px;
+	}
+}
+
+#editPregreetingsRowPopup {
+	#fioContEdit {
+		background: #ffffcc;
+		margin-bottom: 5px;
+		min-height: 30px;
+		margin-left: 123px;
+		border-radius: 3px;
+		padding: 5px;
+		font-weight: bold;
+	}
+}
+
+.overflow-x {
+	overflow-x: scroll;
 }
 #showHistoryGreetingPopup {
 	.modal-dialog {
@@ -1864,7 +1907,7 @@ a.accordion-toggle:hover {
 	}
 }
 #greeting-addfake-submit  {
-	margin-left: 108px;
+	margin-left: 112px;
 }
 #tasuimport-filter-btn {
 	margin-left: 27%;
@@ -1941,7 +1984,6 @@ a.accordion-toggle:hover {
 .not-active {
 	opacity: 0.5;
 }
-
 /* Форма смена доктора в списке пациентов на приём */
 #change-doctor-form {
 	padding: 0;
@@ -2459,5 +2501,189 @@ form[id=template-edit-form] .btnAddValue
 			margin-left: 3px;
 		}
 	}
+}
+.inline {
+	display: inline;
+}
+/* Компонент оверлея */
+.overlay {
+	width: 100%;
+	height: 100%;
+	background: url('/images/ajax-loader2.gif') no-repeat #A4A4A4;
+	background-position: center center;
+	position: absolute;
+	top: 0; 
+	left: 0;
+	-moz-opacity:0.6;
+    -khtml-opacity: 0.6;
+    opacity: 0.5;
+	z-index: 999;
+	border-radius: 5px;
+}
+.overlayCont {
+	position: relative;
+}
 
+/* Панель нижней навигации */
+#navbarTools {
+	height: 50px;
+	/* Панель выбора текущей роли */
+	#currentEmployeeRole  {
+		margin-left: 10px;
+		width: 200px;
+	}
+	#submitEmployeeRole {
+		.gradient(#31B404, #BFFF00);
+		height: 30px;
+	}
+	.arrow-panel, #footerTabPanel li {
+		height: 25px;
+		border-top-right-radius: 8px;
+		border-top-left-radius: 8px;
+		color: #ffffff;
+		cursor: pointer;
+	}
+	.arrow-panel {
+		width: 50px;
+		margin: 25px 0 0 50px;
+		background: #BCE6FF;
+		span {
+			font-size: 20px;
+			padding: 0 0 0 15px;
+			margin-top: -2px;
+		}
+	}
+	
+	.mainCont {
+		height: 50px;
+		margin-top: 0px;
+		#footerTabPanel {
+			position: absolute;
+			margin: 0 0 0 100px;
+			z-index: 9;
+			li {
+				float: left;
+				margin-right: -10px;
+				list-style: none;
+				padding: 5px 15px 0 15px;
+				font-weight: bold;
+				position: relative;
+			}
+			.panel1 {
+				background: #BCE6FF;
+				z-index: 99;
+			}
+			.panel2 {
+				background: #DBC7B8;
+				z-index: 98;
+			}
+		}
+	}
+	.footerPanel {
+		height: 50px;
+		position: absolute;
+		width: 100%;
+	}
+	#panel1 {
+		.gradient(#81BEF7, #4F85B2, #BCE6FF);
+		z-index: 15;
+		select, button {
+			position: relative;
+			top: 10px;
+			display: inline-block;
+		}
+	}
+	#panel2 {
+		.gradient(#D69F77, #D8B499, #DBC7B8);
+		z-index: 14;
+		ul {
+			list-style: none;
+			overflow: hidden;
+			li {
+				float: left;
+				margin-right: 10px;
+				margin-top: 10px;
+			}
+		}
+	}
+	strong {
+		margin-left: 10px;
+		position: relative;
+		top: 10px;
+		color: #ffffff;
+	}
+} 
+
+/* */
+.employeeSettingsNav {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+#linkedUser {
+	span {
+		color: #FE9A2E;
+	}
+}
+#accessEmployeeSettingsCont {
+	div {
+		display: none;
+	}
+	div.active {
+		display: block;
+	}
+	.accessDiff {
+		background: #EFFF6C;
+		border-radius: 3px;
+	}
+}
+.actionsGroupsTablist {
+	margin-bottom: 5px;
+}
+
+.calcBBPopover {
+	top: -150px !important;
+	height: 180px;
+	min-width: 500px;
+	.arrow {
+		top: 160px !important;
+	}
+	.popover-title {
+		font-weight: bold;
+	}
+	.popover-content {
+		width: 500px;
+		min-width: 500px;
+		label {
+			top: 5px;
+		}
+	}
+}
+
+.greeting-glyphicon-arrow-right {
+	position: relative;
+	width: 30px;
+	padding: 6px 0 0 0;
+	left: -10px;
+	height: 30px;
+	cursor: pointer;
+	top: 2px;
+}
+.linkfieldGroup {
+	display: inline-block;
+}
+/* -------------------- */
+
+.beginFromCont {
+	overflow: hidden;
+	margin-top: 15px;
+	label {
+		margin-top: 10px;
+		width: 150px;
+	}
+	input {
+		max-width: 100px;
+	}
+}
+.syncAccordion {
+	max-width: 98%;
 }

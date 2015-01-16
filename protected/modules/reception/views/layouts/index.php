@@ -57,5 +57,6 @@
 <div class ="buttonUpContainer">
 		<nobr><span class="buttonUp"><span class ="glyphicon glyphicon-chevron-up buttonUpSign"></span><span class="buttonUpText">Наверх</span></span><nobr>
 </div>
+<?php $this->widget('application.components.widgets.FooterPanel'); ?>
 </body>
 </html>

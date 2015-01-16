@@ -132,7 +132,24 @@ class TemplatesController extends Controller {
     }
 
     private function addEditModel($template, $model, $msg) {
+		// Проверяем имя шаблона
+		$issetName = MedcardTemplate::model()->find('LOWER(name) = :name', array(
+            ':name' => trim(mb_strtolower($model->name))
+        ));
 
+		if($issetName != null && $issetName->id != $template->id) {
+            $answer = array(
+                'success' => false,
+                'errors' => array(
+                    'name' => array(
+						'Шаблон с таким названием уже существует, нельзя создать два шаблона с одинаковым названием (ID шаблона с повторяющимся названием - '.$issetName->id.').'
+                    )
+                )
+            );
+			echo CJSON::encode($answer);
+            exit();
+		}
+		
         $template->name = $model->name;
         $template->page_id = $model->pageId;
 
@@ -179,6 +196,15 @@ class TemplatesController extends Controller {
             ));
         }
     }
+	
+	public function actionIssetMedworkerPerTempl($id) {
+		$checked = EnabledTemplate::model()->getByTemplateId($id);
+		echo CJSON::encode(array(
+			'success' => true,
+			'issetChecked' => count($checked) > 0,
+			'medworkers' => $checked
+		));
+	}
 
     public function actionDelete($id) {
         $errorTextMessage = 'На данную запись есть ссылки!';

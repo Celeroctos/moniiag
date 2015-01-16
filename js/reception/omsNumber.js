@@ -195,6 +195,30 @@ $(document).ready(function() {
 
                 break;
         }
+
+        // Надо проверить - если тип полиса выбран не нуль, то надо контролировать на непустоту регион и страховую компанию
+
+        if (result)
+        {
+            if (omsTypeValue!='6')
+            {
+                if ($.fn['regionPolicyChooser'].getChoosed() <= 0)
+                {
+                    alert('Поле "Регион" должно быть заполнено для этого типа полюсов');
+                    result = false;
+                }
+
+                if (result)
+                {
+                    if ($.fn['insuranceChooser'].getChoosed() <= 0)
+                    {
+                        alert('Поле "Страховая компания" должно быть заполнено для этого типа полюсов');
+                        result = false;
+                    }
+                }
+            }
+        }
+
         return result;
     }
 

@@ -5,9 +5,8 @@
 
 <div class="header">
     <h3>
-        <nobr><?php echo $greeting['date']; ?>, <?php echo $greeting['patient_initials']; ?>, <?php echo $greeting['card_number']; ?></nobr>
+        <nobr><?php echo $greeting['date']; ?>, <?php echo $greeting['patient_initials']; ?>, <?php echo $greeting['full_years']; ?> лет, <?php echo $greeting['card_number']; ?></nobr> 
     <br/>
-        <nobr><?php echo $greeting['doctor_spec']; ?> <?php echo $greeting['doctor_initials']; ?></nobr>
     </h3>
 </div>
 <?php
@@ -49,9 +48,34 @@
             }
         }
         // Выводим диагнозы
+        if ((count($diagnosises['clinicalSecondary'])>0) || (strlen($diagnosises['noteGreeting'])>0) )
+        {
+            ?><div><strong><h3>Клинический диагноз: </h3></strong><?php
+        }
+
+        if (strlen($diagnosises['noteGreeting'])>0)
+        {
+            echo $diagnosises['noteGreeting'];
+        }
+        if (count($diagnosises['clinicalSecondary'])>0)
+        {
+            foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
+            {
+                ?><br> - <?php
+                echo $oneDiagnosis['description'];
+            }
+        }
+
+
+            if ((count($diagnosises['clinicalSecondary'])>0) || (strlen($diagnosises['noteGreeting'])>0) )
+            {
+                ?><div><?php
+            }
+
+
         if (count($diagnosises['primary'])>0)
         {
-            ?><div><strong><h3>Основной диагноз (МКБ-10): </h3></strong><?php
+            ?><div><strong><h3>Основной диагноз по МКБ-10: </h3></strong><?php
             foreach ($diagnosises['primary'] as $oneDiagnosis)
             {
                 echo $oneDiagnosis['description'];
@@ -70,7 +94,7 @@
         }
         if (count($diagnosises['secondary'])>0)
         {
-            ?><div><strong><h3>Сопутствующие диагнозы (МКБ-10): </h3></strong><?php
+            ?><div><strong><h3>Сопутствующие диагнозы по МКБ-10: </h3></strong><?php
             foreach ($diagnosises['secondary'] as $oneDiagnosis)
             {
                 ?><br> - <?php
@@ -79,23 +103,6 @@
             ?></div><?php
         }
 
-        if (count($diagnosises['clinicalSecondary'])>0)
-        {
-            ?><div><strong><h3>Клинические диагноз/диагнозы: </h3></strong><?php
-            foreach ($diagnosises['clinicalSecondary'] as $oneDiagnosis)
-            {
-                ?><br> - <?php
-                echo $oneDiagnosis['description'];
-            }
-            ?></div><?php
-        }
-
-        if (strlen($diagnosises['noteGreeting'])>0)
-        {
-            ?><div><strong><h3>Клинические диагноз/диагнозы: </h3></strong><?php
-                echo $diagnosises['noteGreeting'];
-            ?></div><?php
-        }
 
         foreach ($templates as $oneTemplate)
         {
@@ -132,3 +139,9 @@
             }
         }
 ?>
+<div class="footer">
+    <h3><br>
+        <nobr><?php echo $greeting['doctor_spec']; ?> <?php echo $greeting['doctor_initials']; ?></nobr>
+        <br/>
+    </h3>
+</div>

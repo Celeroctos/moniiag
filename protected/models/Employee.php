@@ -26,6 +26,23 @@ class Employee extends MisActiveRecord  {
             echo $e->getMessage();
         }
     }
+	
+	 public function getByUserId($id) {
+        try {
+            $connection = Yii::app()->db;
+            $employee = $connection->createCommand()
+                ->select('d.*, LOWER(w.name) as ward, ep.shortname as enterprise')
+                ->from('mis.doctors d')
+                ->leftJoin('mis.wards w', 'd.ward_code = w.id')
+                ->leftJoin('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
+                ->where('d.user_id = :user_id', array(':user_id' => $id))
+                ->queryAll();
+
+            return $employee;
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 
     // Получить всех тех, кого можно использовать для привязки к пользователю
     public function getAllWithoutUsers() {
@@ -36,7 +53,7 @@ class Employee extends MisActiveRecord  {
                  ->from('mis.doctors d')
                  ->join('mis.wards w', 'd.ward_code = w.id')
                  ->join('mis.enterprise_params ep', 'w.enterprise_id = ep.id')
-                 ->where('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)')
+                 ->where('d.user_id IS NULL')
                  ->order('last_name asc');
 
             return $employees->queryAll();
@@ -77,7 +94,7 @@ class Employee extends MisActiveRecord  {
 			}
 		}
         if($onlyFree) {
-            $employees->andWhere('NOT EXISTS(SELECT * FROM mis.users u WHERE u.employee_id = d.id)');
+            $employees->andWhere('d.user_id IS NULL');
         }
 
         if($filters !== false) {

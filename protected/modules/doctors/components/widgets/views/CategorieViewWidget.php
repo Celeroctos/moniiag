@@ -66,6 +66,9 @@ if(!$this->previewMode /*&& $this->templateType == 0*/) {
 			'success' => 'function(data, textStatus, jqXHR) {
                 $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])
             }',
+            'complete' => 'function(data, textStatus, jqXHR) {
+                $("#template-edit-form").trigger("complete", [data.responseText, textStatus, jqXHR])
+            }',
             'beforeSend' => 'function(){
                 /*console.log(jQuery(this).parents("form").serialize());*/
                 console.log(this);

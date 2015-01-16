@@ -152,17 +152,19 @@ $(document).ready(function() {
                                 }
                             }
                             addVariantToChoosed($(chooser).find('.variants li.active'));
+							current = null;
                         }
                         else
                         {
                             // Переводим фокус на следующий элемент
                             if (!wasChangedFocus)
                             {
-                                $.fn.switchFocusToNext();
+								$.fn.switchFocusToNext();
                             }
                         }
 
                         e.preventDefault();
+						e.stopPropagation();
                         return false;
                     }
 
@@ -754,6 +756,29 @@ $(document).ready(function() {
                 ]
             }
         },
+		'primaryDiagnosisChooser2' : {
+            'primary' : 'id',
+            'maxChoosed' : 1,
+			//'alwaysLanguage' : 'en',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
+                'onlylikes' : typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
         'primaryClinicalDiagnosisChooser': {
             'primary': 'id',
             'bindedWindowSelector' : '#addClinicalDiagnosisPopup',
@@ -785,6 +810,27 @@ $(document).ready(function() {
             },
             'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
+            },
+            'filters' : {
+                'groupOp' : 'AND',
+                'rules': [
+                    {
+                        'field' : 'description',
+                        'op' : 'cn',
+                        'data' : ''
+                    }
+                ]
+            }
+        },
+		'secondaryDiagnosisChooser2' : {
+            'primary' : 'id',
+			'hideEmpty' : true, // Если выбранных значений нет, скрывать блок выбора
+			//'alwaysLanguage' : 'en',
+            'rowAddHandler' : function(ul, row) {
+                $(ul).append($('<li>').text(row.description));
+            },
+            'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
+            'extraparams' : {
                 'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
             'filters' : {
@@ -805,7 +851,6 @@ $(document).ready(function() {
             },
             'url' : '/guides/mkb10/get?page=1&rows=10&sidx=id&sord=desc&listview=1&nodeid=0&limit=10&is_chooser=1&filters=',
             'extraparams' : {
-                'onlylikes' :  typeof getOnlyLikes != 'undefined' ? getOnlyLikes : 0
             },
             'filters' : {
                 'groupOp' : 'AND',

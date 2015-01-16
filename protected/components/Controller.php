@@ -33,25 +33,64 @@ class Controller extends CController {
             $filterChain->run();
             return;
         }
-        if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
-            // Если гость, то не давать заходить куда-то
-            $this->redirect('/');
-        } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
-            $this->redirect(Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl);
-        }
 		
+        // Skip all that shit if we're using api action
+		if (mb_strtolower($this->route) == 'users/api') {
+			$filterChain->run();
+			return;
+		}
+		
+        if((Yii::app()->user->isGuest &&
+				mb_strtolower($this->route) != 'index/index' &&
+				mb_strtolower($this->route) != 'users/login' &&
+				mb_strtolower($this->route) != 'users/loginstep2') || Yii::app()->user->getState('authStep', -1) != -1
+		) {
+			if(Yii::app()->user->getState('authStep', -1) != -1 && !Yii::app()->request->getIsAjaxRequest()) {
+				Yii::app()->user->logout();
+				Yii::app()->user->setState('authStep', -1);
+			}
+            // Если гость, то не давать заходить куда-то. Только если это не второй шаг логина
+			if(mb_strtolower($this->route) != 'users/loginstep2') {
+				$this->redirect('/');
+			}
+        } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
+			$this->redirect(Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl);
+        } 
+
         $roleModel = new Role();
         $currentRoles = $roleModel->getCurrentUserRoles();
+		
+		// Выясняем права пользователя относительно текущего сотрудника. Что добавить, что не учитывать
+		$actionsDetached = array(); // Удалённые экшены из роли посредством задания их для сотрудника
+		$actionsAttached = array(); // Добавленные экшены на сотрудника
+		$actionsToEmployee = isset(Yii::app()->user->doctorId) ? CheckedAction::model()->findAllWithKeysByEmployee(Yii::app()->user->doctorId) : array();
+
+		$num = count($actionsToEmployee);
+		for($i = 0; $i < $num; $i++) {
+			if($actionsToEmployee[$i]['mode'] == 0) { // Включить в права
+				$actionsAttached[(string)$actionsToEmployee[$i]['action_id']] = $actionsToEmployee[$i]['accessKey'];
+			} elseif($actionsToEmployee[$i]['mode'] == 1) { // Исключить из прав. Сам экшн кладётся в спец. массив для того ,чтобы можно было отобразить в интерфейсе
+				$actionsDetached[(string)$actionsToEmployee[$i]['action_id']] = $actionsToEmployee[$i]['accessKey'];
+			}
+		}
 
         // Создаём иерархию для текущей роли пользователя
         $auth = Yii::app()->authManager;
         $role = $auth->createRole('r'.$currentRoles['id'], '');
         $result = $auth->assign('r'.$currentRoles['id'], Yii::app()->user->getId()); // Текущему юзеру назначаем эту роль
-        foreach($currentRoles['actions'] as $id => $action) {
-            $auth->createOperation($action);
-            $role->addChild($action);
+		foreach($currentRoles['actions'] as $id => $action) {
+			if(array_key_exists($id, $actionsDetached) === false && array_key_exists($id, $actionsAttached) === false) {
+				$auth->createOperation($action);
+				$role->addChild($action);
+			}
         }
-		
+
+		// Создаём иерархию дополнительно для сотрудника
+		foreach($actionsAttached as $key => $action) {
+			$auth->createOperation($action);
+			$role->addChild($action);
+		}
+
 		// Теперь пишем лог
 		$logModel = new Log();
 		$logModel->user_id = Yii::app()->user->id;

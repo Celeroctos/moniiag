@@ -224,7 +224,7 @@ $(document).ready(function () {
         {
             // Если у обоих контролов из редактора  есть значение - выводим его, иначе
             //     прячем блок "с по"
-            if ( ($('#edititngSheduleArea .sheduleBeginDateTime').val()!='') &&
+			if ( ($('#edititngSheduleArea .sheduleBeginDateTime').val()!='') &&
                 ($('#edititngSheduleArea .sheduleEndDateTime').val()!='') )
             {
 

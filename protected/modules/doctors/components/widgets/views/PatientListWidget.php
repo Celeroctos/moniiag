@@ -126,6 +126,7 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
         <td>
             <?php
             if (($patient['id'] == $currentSheduleId)&&Yii::app()->user->checkAccess('canCloseGreetings') && !($patient['is_accepted'] == 1 || $patient['is_beginned'] != 1)) {
+
                 echo CHtml::link('<span class="glyphicon glyphicon-flag"></span>', '#' . $patient['id'],
                     array('title' => 'Закончить приём',
                         'class' => 'accept-greeting-link'));

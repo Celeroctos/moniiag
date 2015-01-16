@@ -218,7 +218,6 @@ function readConfigFromInterface(sender) {
 			tempConfig.values[rawId] = $($(defaultInputs[i])[0]).val();
 		}
 	}
-
 	hiddenConfig.val(JSON.stringify(tempConfig));
 }
 

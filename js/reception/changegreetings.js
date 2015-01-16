@@ -72,7 +72,7 @@ $(document).ready(function() {
             'success' : function(data, textStatus, jqXHR) {
                 $('#greetings-search-submit').trigger('end');
                 if(data.success) {
-                    if(data.rows.length > 0) {
+					if(data.rows.length > 0) {
                         displayAllGreetings(data.rows);
                         printPagination('greetingsSearchResult',data.total);
                     } else {
@@ -95,9 +95,11 @@ $(document).ready(function() {
         mediateStatus = [];
         for(var i = 0; i < data.length; i++) {
             data[i].patient_day = data[i].patient_day.split('-').reverse().join('.');
-            var timeSplit = data[i].patient_time.split(':');
-            timeSplit.pop();
-            data[i].patient_time = timeSplit.join(':');
+            if(data[i].patient_time) {
+				var timeSplit = data[i].patient_time.split(':');
+				timeSplit.pop();
+				data[i].patient_time = timeSplit.join(':');
+			} //
             mediateStatus['i' + data[i].id] = {
                 id : data[i].id,
                 isMediate : data[i].card_number == null ? 1 : 0,
@@ -120,15 +122,19 @@ $(document).ready(function() {
                     '<a href="#" class="" title="Изменить дату приёма">' + data[i].patient_day + '</a>' +
                 '</td>' +
                 '<td>' +
-                    '<a href="#" class="" title="Изменить время приёма">' + data[i].patient_time + '</a>' +
+                    '<a href="#" class="" title="Изменить время приёма">' + (data[i].patient_time ? data[i].patient_time : 'Живая очередь') + '</a>' +
                 '</td>' +
                 '<td>' +
                     '<a href="#">' +
                     data[i].d_last_name + ' ' + data[i].d_first_name + ' ' + data[i].d_middle_name + ', ' + data[i].post + '</a>' +
                 '</td>' +
                 '<td>' + data[i].phone + '</td>';
-
-            var timeSplitted = data[i].patient_time.split(':');
+			
+			if(data[i].patient_time) {
+				var timeSplitted = data[i].patient_time.split(':');
+			} else {
+				var timeSplitted = '';
+			}
             var daySplitted = data[i].patient_day.split('.');
             var iterateDate = new Date(parseInt(daySplitted[2]), parseInt(daySplitted[1]) - 1, parseInt(daySplitted[0]), parseInt(timeSplitted[0]), parseInt(timeSplitted[1]));
 
