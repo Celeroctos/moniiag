@@ -215,7 +215,7 @@ class CategorieViewWidget extends CWidget {
                 $categorieTemplateFill[] = $categorieResult;
             }
             usort($categorieTemplateFill, function($element1, $element2) {
-                return $element2['position'] - $element1['position'];
+                return $element1['position'] - $element2['position'];
             });
             $categoriesResult[] = array(
                 'templateName' => $template['name'],
