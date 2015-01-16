@@ -210,11 +210,16 @@ class ElementsController extends Controller {
         } else {
           //  $element->allow_add = 0;
             // Если текст или текстовая область - берём другое поле модели
-            if ($model->type == 0 || $model->type == 1) {
+            if (isset($model->defaultValueText)) {
                 $element->default_value = $model->defaultValueText;
             } else {
                 $element->default_value = null;
             }
+            /* if ($model->type == 0 || $model->type == 1) {
+                $element->default_value = $model->defaultValueText;
+            } else {
+                $element->default_value = null;
+            } */
         }
 
 		$config = array();
@@ -267,7 +272,7 @@ class ElementsController extends Controller {
             // Проверим - больше ли максимальное значение минимального
             if (strtotime($model->dateFieldMaxValue) < strtotime($model->dateFieldMinValue)) {
                 echo CJSON::encode(array('success' => false, 'errors' => array('maxminvalue' => array(
-                    'Максимальное значение поля меньше, чем минимальное!'
+                    'Максимальное значение поля дата, меньше чем минимальное значение поля дата!'
                 ))));
                 exit();
             }

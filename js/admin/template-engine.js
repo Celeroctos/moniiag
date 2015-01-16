@@ -1280,6 +1280,10 @@ var TemplateEngine = TemplateEngine || {
 		} else {
             this.field("categorie_id", -1);
 		}
+        //$("#date-min-field-cont").datepicker({
+        //    orientation: "auto"
+        //});
+        $("input[id^='defaultValue']").val("");
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
 				if (info.hidden) {
@@ -1288,6 +1292,9 @@ var TemplateEngine = TemplateEngine || {
 						.css("position", "absolute");
 				}
 				if (me.has(info.native)) {
+                    if (info.native == "default_value") {
+                        $("input[id^='defaultValue']").val(me.field(info.native));
+                    }
 					return me.field(info.native);
 				}
 				return null;
@@ -1310,12 +1317,13 @@ var TemplateEngine = TemplateEngine || {
 		if (this.parent().has("id")) {
 			this.field("categorie_id", this.parent().field("id"));
 		} else {
-			return false;
+            this.field("categorie_id", -1);
 		}
 		var data = {
 			data: me.model()
 		};
 		$('#editElementPopup #showDynamic').prop('disabled', data.data['type'] == 4);
+        $("input[id^='defaultValue']").val("");
 		this.manager().invoke($('#editElementPopup form'),
 			function(field, info) {
 				if (info.hidden) {
@@ -1331,6 +1339,9 @@ var TemplateEngine = TemplateEngine || {
 					$('select#guideId').trigger('change', [data.data[info.name]]);
 					return data.data[info.native];
 				}
+                if (info.native == "default_value") {
+                    $("input[id^='defaultValue']").val(me.field(info.native));
+                }
 				// Таблица
 				if (info.name == 'config') {
 					if(typeof data.data['config'] != 'object') {
@@ -2620,6 +2631,12 @@ var TemplateEngine = TemplateEngine || {
                 $("#findCategoryPopup").modal("hide");
             });
 		});
+
+        $("#numberStep").change(function() {
+            if (!+$(this).val()) {
+                $(this).val(1);
+            }
+        });
 
 		$("#findCategoryPopup form .btn-success").click(function() {
 			var value = $("#findCategoryPopup form #parentId").val();

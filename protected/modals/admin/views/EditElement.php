@@ -250,8 +250,9 @@
 </div>
 <!-- Таблица для отображения значений по умолчанию -->
 <div class="form-group  no-display defaultValuesTable">
-    <label class="col-xs-3">Значения по умолчанию</label>
-        <div class="col-xs-9" style="overflow-x: auto">
+    <label>Значения по умолчанию</label>
+        <br>
+        <div style="overflow-x: auto">
         <table class="controltable" style="width: auto">
             <thead>
             </thead>
