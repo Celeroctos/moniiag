@@ -103,6 +103,14 @@ return array(
                 'application.modules.hospital.components.*',
                 'application.modules.hospital.controllers.*'
             ),
+        ),
+        'laboratory' => array(
+            'class' => 'application.modules.laboratory.LaboratoryModule',
+            'import' => array(
+                'application.modules.laboratory.components.*',
+                'application.modules.laboratory.controllers.*',
+                'application.modules.laboratory.models.*'
+            ),
         )
 	),
 

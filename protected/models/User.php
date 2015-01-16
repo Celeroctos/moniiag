@@ -21,13 +21,13 @@ class User extends MisActiveRecord  {
      * @param $password - User's password (original)
      * @return mixed - Row with user's fields
      * @throws CDbException
-     * @throws LNoSuchUserException
+     * @throws Exception
      */
     public function fetchByLoginAndPassword($login, $password) {
         $user = $this->getDbConnection()->createCommand()
             ->select("*")
             ->from("mis.users u")
-            ->where("u.login = :login and u.password = :password")
+            ->where("lower(u.login) = lower(:login) and u.password = :password")
             ->limit("1")
             ->queryRow([
                 ":login" => $login,
@@ -36,7 +36,7 @@ class User extends MisActiveRecord  {
         if ($user != null) {
             return $user;
         }
-        throw new LNoSuchUserException("Can't resolve user's login or password (${login})");
+        throw new Exception("Can't resolve user's login or password ({$login})");
     }
 
     public function getAll() {

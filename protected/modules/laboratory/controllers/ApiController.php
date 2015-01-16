@@ -1,6 +1,6 @@
 <?php
 
-class Api extends LController {
+class ApiController extends LController {
 
     /**
      * That action will validate user's login and password and return
@@ -45,14 +45,17 @@ class Api extends LController {
                 "status" => true
             ]);
 
-        } catch (LNoSuchUserException $e) {
-            $this->error($e->getMessage());
         } catch (Exception $e) {
             $this->exception($e);
         }
     }
 
     public function actionLogout() {
+        try {
+            $this->get("session");
+        } catch (Exception $e) {
+            $this->exception($e);
+        }
     }
 
     public function actionDo() {

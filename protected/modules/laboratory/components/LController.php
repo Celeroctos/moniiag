@@ -18,11 +18,11 @@ class LController extends CController {
      * with error message
      * @param $name string - Name of parameter to get
      * @return mixed - Some received stuff
-     * @throws Exception - If parameter hasn't been declared in _GET array
+     * @throws LError - If parameter hasn't been declared in _GET array
      */
     public function get($name) {
         if (!isset($_GET[$name])) {
-            throw new Exception("GET.${name}");
+            throw new LError("GET.${name}");
         }
         return $_GET[$name];
     }
@@ -32,11 +32,11 @@ class LController extends CController {
      * with error message
      * @param $name string - Name of parameter to get
      * @return mixed - Some received stuff
-     * @throws Exception - If parameter hasn't been declared in _POST array
+     * @throws LError - If parameter hasn't been declared in _POST array
      */
     public function post($name) {
         if (!isset($_POST[$name])) {
-            throw new Exception("POST.${name}");
+            throw new LError("POST.${name}");
         }
         return $_POST[$name];
     }
@@ -60,7 +60,9 @@ class LController extends CController {
         if (!isset($parameters["status"])) {
             $parameters["status"] = true;
         }
-        die(json_encode($parameters));
+        print "<pre>";
+        print_r($parameters);
+//        die(json_encode($parameters));
     }
 
     /**

@@ -9,12 +9,12 @@ class LError extends Exception {
 /**
  * Class LNoSuchUserException - Exception will be thrown if user doesn't exist
  */
-class LNoSuchUserException extends Exception {
+class LNoSuchUserException extends LError {
 }
 
 /**
  * Class LAccessDeniedException - Exception will be thrown if access denied
  * to provide some action
  */
-class LAccessDeniedException extends Exception {
+class LAccessDeniedException extends LError {
 }

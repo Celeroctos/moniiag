@@ -33,9 +33,10 @@ class Controller extends CController {
             $filterChain->run();
             return;
         }
-        if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login') {
+
+        if(Yii::app()->user->isGuest && $this->route != 'index/index' && $this->route != 'users/login' && $this->route != 'laboratory/api/login') {
             // Если гость, то не давать заходить куда-то
-            $this->redirect('/');
+            $this->redirect(Yii::app()->baseUrl);
         } elseif(!Yii::app()->user->isGuest && $this->route == 'index/index') {
             $this->redirect(Yii::app()->request->baseUrl.''.Yii::app()->user->startpageUrl);
         }
