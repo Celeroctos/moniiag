@@ -2528,7 +2528,7 @@ var TemplateEngine = TemplateEngine || {
 					type: "element",
 					id: item.field("id"),
 					position: item.field("position"),
-					category: item.field("categorie_id")
+					category: item.parent().field("id")
 				});
 			} else {
 				result.push({
