@@ -3,12 +3,15 @@
 class ApiController extends LController {
 
     /**
-     * That action will validate user's login and password and return
-     * session's identifier on true
-     * @in:
+     * That action validate user's login and password and return
+     * session's identifier on true. It also regenerate session's
+     * identifier and browser will receive new session in cookie
+     * and session will be opened (if validation will be ok)
+     *
+     * @in (GET):
      *  + login - User's login
      *  + password - User's password
-     * @out:
+     * @out (JSON):
      *  + message - Response message
      *  + session - Session's identifier
      *  + status - Response status (true/false)

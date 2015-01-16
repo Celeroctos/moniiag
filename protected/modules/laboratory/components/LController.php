@@ -60,9 +60,7 @@ class LController extends CController {
         if (!isset($parameters["status"])) {
             $parameters["status"] = true;
         }
-        print "<pre>";
-        print_r($parameters);
-//        die(json_encode($parameters));
+        die(json_encode($parameters));
     }
 
     /**

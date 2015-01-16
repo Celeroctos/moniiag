@@ -27,12 +27,12 @@ class User extends MisActiveRecord  {
         $user = $this->getDbConnection()->createCommand()
             ->select("*")
             ->from("mis.users u")
-            ->where("lower(u.login) = lower(:login) and u.password = :password")
-            ->limit("1")
-            ->queryRow([
+            ->where("lower(u.login) = lower(:login) and u.password = :password", [
                 ":login" => $login,
                 ":password" => md5(md5($password))
-            ]);
+            ])
+            ->limit("1")
+            ->queryRow();
         if ($user != null) {
             return $user;
         }
