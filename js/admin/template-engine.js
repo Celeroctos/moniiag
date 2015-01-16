@@ -2174,7 +2174,7 @@ var TemplateEngine = TemplateEngine || {
 				_getTemplateByID(elements[i]["type"])
 			);
 			item.model(elements[i], true);
-            while (+i + 1 + offset != +item.field("position")) {
+            while (+i + 1 + offset < +item.field("position")) {
                 var path = item.field("path").split('.');
                 if (!+i) {
                     ++offset;
@@ -2330,6 +2330,7 @@ var TemplateEngine = TemplateEngine || {
 	// register basic templates
     collection.append(new Template(collection, "category",      "Категория",           -3));
 	collection.append(new Template(collection, "clone",         "Клонировать",         -2));
+	//collection.append(new Template(collection, "static",        "Подключить",          -1));
     collection.append(new Template(collection, "text",          "Текстовое поле",       0));
     collection.append(new Template(collection, "text-area",     "Текстовая область",    1));
     collection.append(new Template(collection, "number",        "Числовое поле",        5));
@@ -2488,7 +2489,7 @@ var TemplateEngine = TemplateEngine || {
 
     var hasChanges = false;
 
-	var saveTemplate = function(strict) {
+	var saveTemplate = function(strict, after) {
         hasChanges = false;
 		var cc = TemplateEngine.getCategoryCollection();
 		cc.compute(true);
@@ -2550,7 +2551,11 @@ var TemplateEngine = TemplateEngine || {
 			categories: JSON.stringify(result),
 			cids: json
 		}, function(data) {
-			$("#designTemplatePopup").modal("hide");
+            if (!after) {
+                $("#designTemplatePopup").modal("hide");
+            } else {
+                after();
+            }
             $(".saving-template").css("visibility", "hidden");
 		});
 	};
@@ -2577,40 +2582,43 @@ var TemplateEngine = TemplateEngine || {
                 return true;
             }
             $("#findCategoryPopup .saving-template").css("visibility", "visible");
-			$.ajax({
-				'url': globalVariables.baseUrl + '/admin/categories/move?id=' + value,
-				'cache': false,
-				'dataType': 'json',
-				'type': 'GET'
-			}).done(function(data) {
-				if (!data.success) {
-					console.log(data);
-					return true;
-				}
-				var findAndDetach = function(item) {
-					if (!item.has("id")) {
-						return false;
-					}
-					if (+item.field("id") == value) {
-						item.remove(); return true;
-					}
-					for (var i in item.children()) {
-						if (!item.children(i)) {
-							continue;
-						}
-						if (findAndDetach(item.children(i))) {
-							return true;
-						}
-					}
-					return false;
-				};
-				var cc = TemplateEngine.getCategoryCollection();
-				findAndDetach(cc);
-				cc.register(data["model"], false);
+            $.ajax({
+                'url': globalVariables.baseUrl + '/admin/categories/move?id=' + value,
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET'
+            }).done(function (data) {
+                if (!data.success) {
+                    console.log(data);
+                    return true;
+                }
+                var findAndDetach = function (item) {
+                    if (!item.has("id")) {
+                        return false;
+                    }
+                    if (+item.field("id") == value) {
+                        item.remove();
+                        return true;
+                    }
+                    for (var i in item.children()) {
+                        if (!item.children(i)) {
+                            continue;
+                        }
+                        if (findAndDetach(item.children(i))) {
+                            return true;
+                        }
+                    }
+                    return false;
+                };
+                var cc = TemplateEngine.getCategoryCollection();
+                findAndDetach(cc);
+                CategoryPatcher.construct();
+                cc.register(data["model"], false);
+                WidgetCollection.widget().getCategoryCollection().afterRegister();
                 hasChanges = true;
                 $("#findCategoryPopup .saving-template").css("visibility", "hidden");
                 $("#findCategoryPopup").modal("hide");
-			});
+            });
 		});
 
 		$("#findCategoryPopup form .btn-success").click(function() {
@@ -2619,27 +2627,29 @@ var TemplateEngine = TemplateEngine || {
 				return true;
 			}
             $("#findCategoryPopup .saving-template").css("visibility", "visible");
-			$.ajax({
-				'url': globalVariables.baseUrl + '/admin/categories/clone?id=' + value,
-				'cache': false,
-				'dataType': 'json',
-				'type': 'GET'
-			}).done(function(data) {
-				var c = TemplateEngine.getCategoryCollection()
-					.register(data["model"], false);
-				var appendToList = function(c) {
-					ParentCategoryUpdater.afterAppend(c);
-					for (var i in c.children()) {
-						if (c.children(i) && c.children(i) instanceof Category) {
-							appendToList(c.children(i));
-						}
-					}
-				};
+            $.ajax({
+                'url': globalVariables.baseUrl + '/admin/categories/clone?id=' + value,
+                'cache': false,
+                'dataType': 'json',
+                'type': 'GET'
+            }).done(function(data) {
+                CategoryPatcher.construct();
+                var c = TemplateEngine.getCategoryCollection()
+                    .register(data["model"], false);
+                var appendToList = function(c) {
+                    ParentCategoryUpdater.afterAppend(c);
+                    for (var i in c.children()) {
+                        if (c.children(i) && c.children(i) instanceof Category) {
+                            appendToList(c.children(i));
+                        }
+                    }
+                };
                 hasChanges = true;
-				appendToList(c);
+                appendToList(c);
+                WidgetCollection.widget().getCategoryCollection().afterRegister();
                 $("#findCategoryPopup .saving-template").css("visibility", "hidden");
                 $("#findCategoryPopup").modal("hide");
-			});
+            });
 		});
 	});
 
