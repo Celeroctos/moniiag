@@ -258,7 +258,7 @@ class ElementsController extends Controller {
 			if (isset($model->numberStep)) {
 				$params['step'] = $model->numberStep;
 			} else {
-				$params['step'] = '';
+				$params['step'] = 1;
 			}
 			
 			$config += $params;
