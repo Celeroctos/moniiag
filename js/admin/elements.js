@@ -1002,7 +1002,9 @@ $('#editElementDependences').on('click', function () {
     };
 
     $("#editElementPopup, #addElementPopup").on("show.bs.modal", function() {
-        calculateTableConfig($(this).find("#numCols"));
+		if ($(this).find("#type").val() == 4) {
+			calculateTableConfig($(this).find("#numCols"));
+		}
     });
 
     $('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').keyup('change', function() {
