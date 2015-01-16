@@ -21,7 +21,7 @@ class Api extends LController {
                 $this->get("password")
             );
 
-            // Check for existence
+            // Condition is redundant, cuz that exception throws from model
             if ($user == null) {
                 throw new LNoSuchUserException("Can't resolve user's login or password");
             }
@@ -39,16 +39,16 @@ class Api extends LController {
             $this->getSession()->add("L_API/USER_PASSWORD", $this->get("password"));
 
             // Send response
-            die(json_encode([
+            $this->leave([
                 "message" => "User has successfully logged in",
-                "session" => $this->getSessionID(),
+                "session" => $this->getSession()->getSessionID(),
                 "status" => true
-            ]));
+            ]);
 
         } catch (LNoSuchUserException $e) {
-            $this->postError($e->getMessage());
+            $this->error($e->getMessage());
         } catch (Exception $e) {
-            $this->postException($e);
+            $this->exception($e);
         }
     }
 
@@ -63,7 +63,7 @@ class Api extends LController {
             }
 
         } catch (Exception $e) {
-            $this->postException($e);
+            $this->exception($e);
         }
     }
 

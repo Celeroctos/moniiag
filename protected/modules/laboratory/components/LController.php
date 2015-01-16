@@ -7,24 +7,10 @@ class LController extends CController {
      * @return CHttpSession - Yii http session
      */
     public function getSession() {
-
-        // Check session for existence
         if ($this->session == null) {
             $this->session = new CHttpSession();
         }
-
-        // Return yii session object
         return $this->session;
-    }
-
-    /**
-     * Get session identifier
-     */
-    public function getSessionID() {
-        return @session_id() !== "" ? @session_id() : die([
-                "message" => "Session hasn't been started",
-                "status" => false
-            ]);
     }
 
     /**
@@ -59,24 +45,35 @@ class LController extends CController {
      * Post error message and terminate script evaluation
      * @param $message String - Message with error
      */
-    public function postError($message) {
-        die(json_encode([
-            "status" => false,
-            "message" => $message
-        ]));
+    public function error($message) {
+        $this->leave([
+            "message" => $message,
+            "status" => false
+        ]);
+    }
+
+    /**
+     * Leave script execution and print server's response
+     * @param $parameters array - Array with parameters to return
+     */
+    public function leave($parameters) {
+        if (!isset($parameters["status"])) {
+            $parameters["status"] = true;
+        }
+        die(json_encode($parameters));
     }
 
     /**
      * Post error message and terminate script evaluation
      * @param $exception Exception - Exception
      */
-    public function postException($exception) {
-        die(json_encode([
-            "status" => false,
+    public function exception($exception) {
+        $this->leave([
             "message" => $exception->getMessage(),
             "file" => $exception->getFile(),
-            "line" => $exception->getLine()
-        ]));
+            "line" => $exception->getLine(),
+            "status" => false
+        ]);
     }
 
     private $session = null;
