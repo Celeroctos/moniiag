@@ -1,6 +1,49 @@
 <?php
 
-class LController extends CController {
+class LController extends Controller {
+
+    /**
+     * Override that method to add your chains, if path will be
+     * api validation, than access won't be denied
+     * @param $filterChain CFilterChain - Chain filter
+     */
+    public function filterGetAccessHierarchy($filterChain) {
+
+        // Get access result
+        $this->access = $this->checkAccess();
+
+        // If access is null, then run parent's filter, cuz
+        // we can't allow access to every element as default and
+        // can't prevent any actions, so we will give parent
+        // right to decide. Else we can check access status
+        // and invoke access denied method on false or simply
+        // run next filter on true
+        if ($this->access == null) {
+            parent::filterGetAccessHierarchy($filterChain);
+        } else if ($this->access == false) {
+            $this->accessDenied();
+        } else {
+            $filterChain->run();
+        }
+    }
+
+    /**
+     * Override that method to provide access denied action, for example you can
+     * return json response with error or something else
+     */
+    protected function accessDenied() {
+        $this->redirect(Yii::app()->baseUrl);
+    }
+
+    /**
+     * Check access to controller, if it will return null, then access will be
+     * checked via filterGetAccessHierarchy action in current or parent's controller
+     * @param mixed ... - Arguments to check
+     * @return bool|null - True if access allowed and false if access denied
+     */
+    protected function checkAccess() {
+        return null;
+    }
 
     /**
      * Get session instance with current session
@@ -78,5 +121,15 @@ class LController extends CController {
         ]);
     }
 
+    /**
+     * Get access, if returns null, then it has been set by
+     * one of parents controller
+     * @return bool|null - Access status
+     */
+    public function getAccess() {
+        return $this->access;
+    }
+
     private $session = null;
+    private $access = null;
 } 

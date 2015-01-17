@@ -3,6 +3,19 @@
 class ApiController extends LController {
 
     /**
+     * Override that method to add your chains, if path will be
+     * api validation, than access won't be denied
+     * @param $filterChain CFilterChain - Chain filter
+     */
+    public function filterGetAccessHierarchy($filterChain) {
+        if ($this->route != "laboratory/api/test" && !$this->checkAccess()) {
+            $this->error("Session hasn't been started or validated, access denied");
+        } else {
+            $filterChain->run();
+        }
+    }
+
+    /**
      * That action validate user's login and password and return
      * session's identifier on true. It also regenerate session's
      * identifier and browser will receive new session in cookie
@@ -18,16 +31,11 @@ class ApiController extends LController {
      */
     public function actionLogin() {
         try {
-            // Fetch user's model
-            $user = User::model()->fetchByLoginAndPassword(
+            // Authenticate user
+            $userIdentity = new UserIdentity(
                 $this->get("login"),
                 $this->get("password")
             );
-
-            // Condition is redundant, cuz that exception throws from model
-            if ($user == null) {
-                throw new LNoSuchUserException("Can't resolve user's login or password");
-            }
 
             // Open session if it hasn't been started
             if (!$this->getSession()->getIsStarted()) {
@@ -35,7 +43,15 @@ class ApiController extends LController {
             }
 
             // Regenerate session's identifier
-            $this->getSession()->regenerateID(true);
+            $this->getSession()->regenerateID();
+
+            // Authenticate user
+            if (!$userIdentity->authenticateInOneStep()) {
+                throw new LError("Can't resolve user's login or password");
+            }
+
+            // Copy states to new just generated session
+            Yii::app()->user->login($userIdentity);
 
             // Save session user's login and password
             $this->getSession()->add("L_API/USER_LOGIN", $this->get("login"));
@@ -47,9 +63,8 @@ class ApiController extends LController {
                 "session" => $this->getSession()->getSessionID(),
                 "status" => true
             ]);
-
         } catch (Exception $e) {
-            $this->exception($e);
+            $this->error($e->getMessage());
         }
     }
 
@@ -66,16 +81,6 @@ class ApiController extends LController {
      */
     public function actionLogout() {
         try {
-            // Load session
-            $this->getSession()->close();
-            $this->getSession()->setSessionID($this->get("session"));
-            $this->getSession()->open();
-
-            // Validate session
-            if (!$this->checkAccess($this->get("session"))) {
-                $this->error("Session hasn't been started or validated");
-            }
-
             // Remove API parameters (redundant)
             $this->getSession()->remove("L_API/USER_LOGIN");
             $this->getSession()->remove("L_API/USER_PASSWORD");
@@ -87,9 +92,8 @@ class ApiController extends LController {
             $this->leave([
                 "message" => "Session has been successfully closed"
             ]);
-
         } catch (Exception $e) {
-            $this->exception($e);
+            $this->error($e->getMessage());
         }
     }
 
@@ -107,12 +111,10 @@ class ApiController extends LController {
         try {
             $this->leave([
                 "session" => $this->get("session"),
-                "status" => $this->checkAccess(
-                    $this->get("session")
-                )
+                "status" => $this->checkAccess()
             ]);
         } catch (Exception $e) {
-            $this->exception($e);
+            $this->error($e->getMessage());
         }
     }
 
@@ -132,48 +134,86 @@ class ApiController extends LController {
      */
     public function actionDo() {
         try {
-            // Check access for current session's ID
-            if (!$this->checkAccess($this->get("session"))) {
-                throw new LAccessDeniedException();
+            $path = strtolower($this->get("path"));
+
+            if (isset($_GET["method"])) {
+                $method = $this->get("method");
+            } else {
+                $method = "GET";
+            }
+
+            unset($_GET["method"]);
+            unset($_GET["session"]);
+
+            if (strtoupper($method) == "POST") {
+                foreach ($_GET as $key => $value) {
+                    $_POST[$key] = $value;
+                }
+            } else if (strtoupper($method) != "GET") {
+                throw new LError("Invalid method type ({$this->get("method")})");
+            }
+
+            while (strlen($path) > 0 && $path[0] == "/") {
+                $path = substr($path, 1);
+            }
+
+            // Invoke controller's action
+            try {
+                $this->forward($path, true);
+            } catch (CException $e) {
+                $this->error("Path ({$path}) doesn't exist in laboratory scope");
             }
 
         } catch (Exception $e) {
-            $this->exception($e);
+            $this->error($e->getMessage());
         }
     }
 
     /**
-     * Check current user's session id for access
-     * @param $sessionID string - Session's identifier
-     * @return bool - True if user has access to API
+     * If access denied, then print error message
      */
-    private function checkAccess($sessionID) {
+    protected function accessDenied() {
+        $this->error("Session hasn't been started, access denied");
+    }
 
-        if (!$sessionID || !is_string($sessionID)) {
-            return false;
+    /**
+     * Check current user's session id for access
+     * @return bool - True if user has access to API
+     * @throws Exception
+     * @throws LError
+     */
+    protected function checkAccess() {
+        try {
+            // Don't check access for login action
+            if ($this->route == "laboratory/api/login") {
+                return true;
+            }
+
+            // Get session's identifier
+            $sessionID = $this->get("session");
+
+            // Close current session, set new session's identifier and reopen it
+            $this->getSession()->close();
+            $this->getSession()->setSessionID($sessionID);
+            $this->getSession()->open();
+
+            // Check for login and password existence
+            if (!$this->getSession()->contains("L_API/USER_LOGIN") ||
+                !$this->getSession()->contains("L_API/USER_PASSWORD")
+            ) {
+                return false;
+            }
+
+            // Fetch user's model from database
+            if (!User::model()->fetchByLoginAndPassword(
+                $this->getSession()->get("L_API/USER_LOGIN"),
+                $this->getSession()->get("L_API/USER_PASSWORD")
+            )) {
+                return false;
+            }
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
         }
-
-        // Close current session, set new session's identifier and reopen it
-        $this->getSession()->close();
-        $this->getSession()->setSessionID($sessionID);
-        $this->getSession()->open();
-
-        // Check for login and password existence
-        if (!$this->getSession()->contains("L_API/USER_LOGIN") ||
-            !$this->getSession()->contains("L_API/USER_PASSWORD")
-        ) {
-            return false;
-        }
-
-        // Fetch user's model from database
-        if (!User::model()->fetchByLoginAndPassword(
-            $this->getSession()->get("L_API/USER_LOGIN"),
-            $this->getSession()->get("L_API/USER_PASSWORD")
-        )) {
-            return false;
-        }
-
-        // Return success
         return true;
     }
 } 
