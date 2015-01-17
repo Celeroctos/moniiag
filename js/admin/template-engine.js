@@ -999,7 +999,7 @@ var TemplateEngine = TemplateEngine || {
                 that.category(null);
                 hasChanges = true;
             } else if (that instanceof Category) {
-                if (that.count() > 0 && !confirm("Категория имеет подкатегории, шаблон будет расформирован. Продолжить?")) {
+                if (that.count() > 0 && !confirm("Категория имеет элементы или подкатегории, шаблон будет расформирован. Продолжить?")) {
                     return true;
                 }
                 if (that.reference()) {
