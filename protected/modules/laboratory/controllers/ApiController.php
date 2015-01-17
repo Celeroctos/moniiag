@@ -53,6 +53,17 @@ class ApiController extends LController {
         }
     }
 
+    /**
+     * That action will close session. Use it after login method to load
+     * session and destroy it. Session's identifier won't be valid after
+     * action execution
+     *
+     * @in (GET):
+     *  + session - Session's identifier
+     * @out (JSON):
+     *  + message - Response message or error message
+     *  + status - True on success and false on error
+     */
     public function actionLogout() {
         try {
             // Load session
@@ -65,7 +76,7 @@ class ApiController extends LController {
                 $this->error("Session hasn't been started or validated");
             }
 
-            // Remove API parameters
+            // Remove API parameters (redundant)
             $this->getSession()->remove("L_API/USER_LOGIN");
             $this->getSession()->remove("L_API/USER_PASSWORD");
 
@@ -82,6 +93,16 @@ class ApiController extends LController {
         }
     }
 
+    /**
+     * That action will test session status and returns true in status if
+     * session still active and can be validated else it returns false
+     *
+     * @in (GET):
+     *  + session - Session's identifier
+     * @out (JSON):
+     *  + session - Just received session identifier
+     *  + status - True on valid session id and false on invalid
+     */
     public function actionTest() {
         try {
             $this->leave([
@@ -95,6 +116,20 @@ class ApiController extends LController {
         }
     }
 
+    /**
+     * That action will execute some controller's action with
+     * necessary arguments and different method type
+     *
+     * @in (GET/POST):
+     *  + session - Session's identifier
+     *  + method - Send method (GET/POST) for controller's action
+     *  + path - Path to controller's action to execute
+     * @out (JSON):
+     *  + message - Message with error text
+     *  + status - Response status (true or false)
+     *  + session - Session's identifier
+     *  +
+     */
     public function actionDo() {
         try {
             // Check access for current session's ID
