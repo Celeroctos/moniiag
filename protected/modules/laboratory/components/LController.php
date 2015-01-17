@@ -68,10 +68,12 @@ class LController extends CController {
      * @param $exception Exception - Exception
      */
     public function exception($exception) {
+        $method = $exception->getTrace()[0];
         $this->leave([
             "message" => $exception->getMessage(),
-            "file" => $exception->getFile(),
-            "line" => $exception->getLine(),
+            "file" => basename($method["file"]),
+            "method" => $method["class"]."/".$method["function"],
+            "line" => $method["line"],
             "status" => false
         ]);
     }

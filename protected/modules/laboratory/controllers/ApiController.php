@@ -55,7 +55,41 @@ class ApiController extends LController {
 
     public function actionLogout() {
         try {
-            $this->get("session");
+            // Load session
+            $this->getSession()->close();
+            $this->getSession()->setSessionID($this->get("session"));
+            $this->getSession()->open();
+
+            // Validate session
+            if (!$this->checkAccess($this->get("session"))) {
+                $this->error("Session hasn't been started or validated");
+            }
+
+            // Remove API parameters
+            $this->getSession()->remove("L_API/USER_LOGIN");
+            $this->getSession()->remove("L_API/USER_PASSWORD");
+
+            // Destroy session
+            $this->getSession()->destroy();
+
+            // Send response
+            $this->leave([
+                "message" => "Session has been successfully closed"
+            ]);
+
+        } catch (Exception $e) {
+            $this->exception($e);
+        }
+    }
+
+    public function actionTest() {
+        try {
+            $this->leave([
+                "session" => $this->get("session"),
+                "status" => $this->checkAccess(
+                    $this->get("session")
+                )
+            ]);
         } catch (Exception $e) {
             $this->exception($e);
         }
@@ -64,7 +98,7 @@ class ApiController extends LController {
     public function actionDo() {
         try {
             // Check access for current session's ID
-            if (!$this->checkAccess($this->get("key"))) {
+            if (!$this->checkAccess($this->get("session"))) {
                 throw new LAccessDeniedException();
             }
 
@@ -80,14 +114,18 @@ class ApiController extends LController {
      */
     private function checkAccess($sessionID) {
 
+        if (!$sessionID || !is_string($sessionID)) {
+            return false;
+        }
+
         // Close current session, set new session's identifier and reopen it
         $this->getSession()->close();
         $this->getSession()->setSessionID($sessionID);
         $this->getSession()->open();
 
         // Check for login and password existence
-        if (!$this->getSession()->hasProperty("L_API/USER_LOGIN") ||
-            !$this->getSession()->hasProperty("L_API/USER_PASSWORD")
+        if (!$this->getSession()->contains("L_API/USER_LOGIN") ||
+            !$this->getSession()->contains("L_API/USER_PASSWORD")
         ) {
             return false;
         }
