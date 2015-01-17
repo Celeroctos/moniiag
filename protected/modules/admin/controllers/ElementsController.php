@@ -267,7 +267,7 @@ class ElementsController extends Controller {
 		}
 
 		if(isset($model->showDynamic)) {
-			$config['showDynamic'] = 1;
+			$config['showDynamic'] = $model->showDynamic;
 		}
 		
 		if ($model->type == 6) {
