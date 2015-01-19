@@ -1,18 +1,18 @@
 <div class="col-xs-12 row">
 	<ul class="nav nav-tabs" id="hospitalizationNavbar">
 	  <li role="navigation" class="active">
-		<a href="#">Очередь</a>
+		<a href="#queue" aria-controls="queue" role="tab" data-toggle="tab">Очередь</a>
 		<span class="roundedLabel"></span>
 		<span class="roundedLabelText">1</span>
 	  </li>
 	  <li role="navigation">
-		<a href="#">Комиссия на госпитализацию</a>
+		<a href="#comission" aria-controls="comission" role="tab" data-toggle="tab">Комиссия на госпитализацию</a>
 	  </li>
 	  <li role="navigation">
-		<a href="#">Госпитализация</a>
+		<a href="#hospitalization" aria-controls="hospitalization" role="tab" data-toggle="tab">Госпитализация</a>
 	  </li>
 	  <li role="navigation">
-		<a href="#">История приёмов</a>
+		<a href="#history" aria-controls="history" role="tab" data-toggle="tab">История приёмов</a>
 	  </li>
 	</ul>
 </div>
@@ -21,35 +21,19 @@
 		<div id="sideCalendar"></div>
 	</div>
 	<div class="hospitalizationTable col-xs-8">
-		<?php
-			$this->widget('zii.widgets.grid.CGridView', array(
-				'dataProvider' => $dataProvider,
-				'enablePagination' => true,
-				'summaryCssClass' => 'summaryPanel',
-				'id' => 'hospitalizationSummary', 
-				'columns' => array(
-					array(
-						'name' => 'id',
-						'type' => 'raw',
-						'value' => '$data->id',
-					),
-					array(
-						'name' => 'last_name',
-						'type' => 'raw',
-						'value' => '$data->last_name',
-					),
-					array(
-						'name' => 'first_name',
-						'type' => 'raw',
-						'value' => '$data->first_name',
-					),
-					array(
-						'name' => 'middle_name',
-						'type' => 'raw',
-						'value' => '$data->middle_name',
-					)
-				),
-			));
-		?>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="queue">
+				<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader2.gif" width="256" height="30" alt="Загружается..." />
+			</div>
+			<div role="tabpanel" class="tab-pane" id="comission">
+				<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader2.gif" width="256" height="30" alt="Загружается..." />
+			</div>
+			<div role="tabpanel" class="tab-pane" id="hospitalization">
+				<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader2.gif" width="256" height="30" alt="Загружается..." />
+			</div>
+			<div role="tabpanel" class="tab-pane" id="history">
+				<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader2.gif" width="256" height="30" alt="Загружается..." />
+			</div>
+		</div>
 	</div>
 </div>

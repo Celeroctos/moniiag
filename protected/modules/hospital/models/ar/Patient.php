@@ -1,6 +1,7 @@
 <?php
 
 class Patient extends MisActiveRecord {
+
 	public function tableName() {
 		return 'hospital.patient';
 	}
@@ -13,6 +14,12 @@ class Patient extends MisActiveRecord {
 		  'first_name' => 'Имя',
 		  'last_name' => 'Фамилия',
 		  'middle_name' => 'Отчество',
+		  'card_number' => 'Номер карты',
+		  'fio' => 'ФИО',
+		  'type_of_writing' => 'Тип записи',
+		  'age' => 'Возраст',
+		  'number_of_weeks' => 'Срок',
+		  'hospitalization_date' => 'Дата госпитализации'
 		);
     }
 }
