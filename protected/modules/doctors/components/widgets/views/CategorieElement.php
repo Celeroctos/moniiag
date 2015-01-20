@@ -98,7 +98,7 @@ if(isset($categorie['id'])) {
                                         exit();
                                     }*/
                        	        if($element['type'] == 0) {
-									if(isset($element['config']['showDynamic'])) {
+                                    if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
 									?>
 										<span class="showDynamicWrap">
 											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
@@ -142,7 +142,7 @@ if(isset($categorie['id'])) {
                                     <?php
                                     }
                                 } elseif($element['type'] == 1) {
-									if(isset($element['config']['showDynamic'])) {
+                                    if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
 									?>
 										<span class="showDynamicWrap">
 											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
@@ -174,7 +174,7 @@ if(isset($categorie['id'])) {
                                     <?php
                                     }
                                 } elseif($element['type'] == 2) {
-									if(isset($element['config']['showDynamic'])) {
+                                    if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
 									?>
 										<span class="showDynamicWrap">
 											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
@@ -224,7 +224,7 @@ if(isset($categorie['id'])) {
                                         <?php
                                     }
                                 } elseif($element['type'] == 3) {
-									if(isset($element['config']['showDynamic'])) {
+                                    if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
 									?>
 										<span class="showDynamicWrap">
 											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
@@ -382,7 +382,7 @@ if(isset($categorie['id'])) {
                                     ?>
                                 <?php
                                 }  if($element['type'] == 5) { // numberField
-									if(isset($element['config']['showDynamic'])) {
+									if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
 									?>
 										<span class="showDynamicWrap">
 											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
@@ -423,7 +423,7 @@ if(isset($categorie['id'])) {
 										?><label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label><?php
                                     }
                                 } if($element['type'] == 6) { // dateField
-									if(isset($element['config']['showDynamic'])) {
+                                    if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
 									?>
 										<span class="showDynamicWrap">
 											<span class="showDynamicIcon glyphicon glyphicon-eye-open" title="Динамика изменения параметра"></span>
