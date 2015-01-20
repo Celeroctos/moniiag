@@ -478,9 +478,8 @@ class CategorieViewWidget extends CWidget {
                         } else {
                             $elementResult['guide'] = array();
                         }
-                        //var_dump($elementResult['guide']);
-                        //echo ("|");
-
+                    } else {
+                        $elementResult['guide'] = array();
                     }
 
                     // Добавляем в форму
