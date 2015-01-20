@@ -194,8 +194,10 @@ class ElementsController extends Controller {
         $element->is_required = $model->isRequired;
         $element->hide_label_before = $model->hideLabelBefore;
         
-        if($model->guideId != -1) { // Если справочник выбран
+        if(isset($model->guideId) && $model->guideId) { // Если справочник выбран
             $element->guide_id = $model->guideId;
+        } else {
+            $element->guide_id = -1;
         }
         if($model->type == 2 || $model->type == 3 || $model->type == 7) {
             $element->allow_add = $model->allowAdd;
