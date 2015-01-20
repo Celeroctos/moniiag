@@ -457,7 +457,7 @@ class CategorieViewWidget extends CWidget {
                     }
 
                     // Для выпадающих списков есть справочник
-                    if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null) {
+                    if(isset($elementResult['guide_id']) && $elementResult['guide_id'] != null && $elementResult['guide_id'] != -1) {
                         $medguideValuesModel = new MedcardGuideValue();
                         $medguideValues = $medguideValuesModel->getRows(false, $elementResult['guide_id'], 'value', 'asc',  false, false, $elementResult['path'], $this->greetingId);
                         //var_dump($medguideValues);
