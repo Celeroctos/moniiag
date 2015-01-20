@@ -108,7 +108,8 @@ if(isset($categorie['id'])) {
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'title' => 'ID '.$element['id'].', путь '.$element['path'],
+                                        'value' => isset($element['default_value']) ? $element['default_value'] : ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
@@ -152,7 +153,8 @@ if(isset($categorie['id'])) {
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'title' => 'ID '.$element['id'].', путь '.$element['path'],
+                                        'value' => isset($element['default_value']) ? $element['default_value'] : ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
@@ -185,7 +187,8 @@ if(isset($categorie['id'])) {
                                         'class' => 'form-control',
                                         'placeholder' => '',
                                         'options' => $element['selected'],
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'title' => 'ID '.$element['id'].', путь '.$element['path'],
+                                        'value' => isset($element['default_value']) ? $element['default_value'] : ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
@@ -236,7 +239,8 @@ if(isset($categorie['id'])) {
                                         'placeholder' => '',
                                         'options' => $element['selected'],
                                         'multiple' => 'multiple',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'title' => 'ID '.$element['id'].', путь '.$element['path'],
+                                        'value' => isset($element['default_value']) ? $element['default_value'] : ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';
@@ -392,7 +396,8 @@ if(isset($categorie['id'])) {
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'title' => 'ID '.$element['id'].', путь '.$element['path'],
+                                        'value' => isset($element['default_value']) ? $element['default_value'] : ''
                                     );
                                     if(isset($element['config'])) {
                                         if(trim($element['config']['maxValue']) != '') {
@@ -433,7 +438,8 @@ if(isset($categorie['id'])) {
                                         'id' => 'f_'.$prefix.'_'.implode('-', explode('|',$element['undotted_path'])).'_'.$element['id'],
                                         'class' => 'form-control',
                                         'placeholder' => '',
-                                        'title' => 'ID '.$element['id'].', путь '.$element['path']
+                                        'title' => 'ID '.$element['id'].', путь '.$element['path'],
+                                        'value' => isset($element['default_value']) ? $element['default_value'] : ''
                                     );
                                     if(isset($element['size']) && $element['size'] != null) {
                                         $options['style'] = 'width: '.($element['size'] * $lettersInPixel).'px;';

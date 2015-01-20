@@ -438,6 +438,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['size'] = $element['size'];
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
                         $elementResult['config'] = CJSON::decode($element['config']);
+                        if (isset($element['default_value'])) {
+                            $elementResult['default_value'] = $element['default_value'];
+                        }
                     } else {
                         $elementResult['type'] = $element['type'];
                         $elementResult['label_before'] = isset($element['label']) ? $element['label'] : $element['label_before'];
@@ -454,6 +457,9 @@ class CategorieViewWidget extends CWidget {
                         $elementResult['is_wrapped'] = $element['is_wrapped'];
 			            $elementResult['is_required'] = $element['is_required'];
                         $elementResult['config'] = CJSON::decode($element['config']);
+                        if (isset($element['default_value'])) {
+                            $elementResult['default_value'] = $element['default_value'];
+                        }
                     }
 
                     // Для выпадающих списков есть справочник

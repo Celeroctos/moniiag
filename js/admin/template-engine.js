@@ -11,9 +11,7 @@
  *      TemplateEngine. Сюда можно добавлять любые методы, какие необходимы и
  *      определять их в конце файла.
  */
-var TemplateEngine = TemplateEngine || {
-		/* API should be Here */
-	};
+var TemplateEngine = TemplateEngine || {};
 
 (function(TemplateEngine) {
 
