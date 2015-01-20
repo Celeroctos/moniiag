@@ -46,6 +46,20 @@ class LController extends Controller {
     }
 
     /**
+     * @param string $class - Path to widget to render
+     * @param array $properties - Widget's properties
+     * @param bool $return - Should widget return response or print to output stream
+     * @return mixed|void
+     */
+    public function getWidget($class, $properties = [], $return = false) {
+        $widget = $this->createWidget($class, $properties);
+        if ($return) {
+            return $widget->run(true);
+        }
+        $widget->run(false);
+    }
+
+    /**
      * Get session instance with current session
      * @return CHttpSession - Yii http session
      */
@@ -65,7 +79,7 @@ class LController extends Controller {
      */
     public function get($name) {
         if (!isset($_GET[$name])) {
-            throw new LError("GET.${name}");
+            throw new LError("GET.$name");
         }
         return $_GET[$name];
     }
@@ -79,7 +93,7 @@ class LController extends Controller {
      */
     public function post($name) {
         if (!isset($_POST[$name])) {
-            throw new LError("POST.${name}");
+            throw new LError("POST.$name");
         }
         return $_POST[$name];
     }

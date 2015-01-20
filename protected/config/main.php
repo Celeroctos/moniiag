@@ -107,9 +107,11 @@ return array(
         'laboratory' => array(
             'class' => 'application.modules.laboratory.LaboratoryModule',
             'import' => array(
+                'application.modules.laboratory.actions.*',
                 'application.modules.laboratory.components.*',
                 'application.modules.laboratory.controllers.*',
-                'application.modules.laboratory.models.*'
+                'application.modules.laboratory.models.*',
+                'application.modules.laboratory.widgets.*'
             ),
         )
 	),
