@@ -6,7 +6,8 @@ misEngine = (function() {
 				'grid' : { },
 				'module' : { }, // Module is component, really
 				'datetimepicker' : { },
-				'ajaxLoader' : { }
+				'ajaxLoader' : {},
+                'model' : {}
 			},
 			'modules'  : {
 				'hospital' : {
@@ -190,7 +191,12 @@ misEngine = (function() {
 			if(misEngine.config.debug) {
 				console.log(msg);
 			}
-		}
+		},
+
+        extends : function(parentPath) {
+            var parts = parentPath.split('.');
+            var founded = this.searchObjByPath(parts);
+        }
 	}
 	return misEngine;
 })();

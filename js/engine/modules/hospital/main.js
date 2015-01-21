@@ -58,8 +58,8 @@ misEngine.addToQueue(function() {
 								if(data.success) {
 									$('#queue')
 										.css({
-												'textAlign' : 'left'
-											})
+											'textAlign' : 'left'
+										})
 										.html(data.data);
 								} 
 							},

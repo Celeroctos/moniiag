@@ -5,11 +5,11 @@
 		},
 		
 		render : function() {
-			if(!this.config.renderConfig) {
+            console.log(this);
+            if(!this.config.renderConfig) {
 				misEngine.t('Not found renderConfig property. Rendering is not aviable');
 				return -1;
 			}
-			
 			var renderConfig = this.config.renderConfig;
 			/* 
 				Template is local access to component's view,

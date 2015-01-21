@@ -41,4 +41,7 @@
 	<li <?php echo $controller == 'payments' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Типы оплат', array('/guides/payments/view')) ?>
     </li>
+    <li <?php echo $module == 'hospital' && $controller == 'guides' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Стационар', array('/hospital/guides/view')) ?>
+    </li>
 </ul>

@@ -103,7 +103,7 @@ return array(
 				'application.modules.hospital.models.forms.*',
                 'application.modules.hospital.components.*',
                 'application.modules.hospital.controllers.*'
-            )
+            ),
         )
 	),
 
