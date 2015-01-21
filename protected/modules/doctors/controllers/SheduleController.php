@@ -9,7 +9,7 @@ class SheduleController extends Controller {
     public $currentDay = null;
     public $currentYear = null;
     public $currentMonth = null;
-	
+
 
     public function actionView() {
 		$medcardRecordId = 0;
