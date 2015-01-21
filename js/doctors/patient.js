@@ -648,7 +648,6 @@
         }
 
         var daysWithPatients = globalVariables.patientsInCalendar;
-		console.log(daysWithPatients);
 		$('.day-with').removeClass('day-with');
         for (var i in daysWithPatients) {
             var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
@@ -1906,7 +1905,7 @@ $('#nextHistoryPoint').on('click', function () {
         if(typeof onlyWaitingList != 'undefined') {
             data.onlywaitinglist = 1;
         }
-
+        console.log(globalVariables);
         $.ajax({
             'url': url,
             'data': data,
@@ -1936,13 +1935,13 @@ $('#nextHistoryPoint').on('click', function () {
 						$('#change-doctor-form select').prop('disabled', false); 
 					}
 					$('.overlayCont .overlay').remove();
-					if($('.infoCont div').length > 0) { // Внутри есть данные по пациенту, а врач сменён
-						$('.infoCont div').remove();
-					}
 					// А это - приём. Его для начала надо сохранить
-					if($('#template-edit-form').length > 0 && !$('.greetingContentCont').hasClass('no-display')) { // Внутри есть данные по пациенту, а врач сменён
-						alert($('.greetingContentCont').hasClass('no-display'));
-						$('.greetingContentCont').addClass('no-display'); // Скрываем, потому что скриптам необходимо цеплять из блока данные
+					if((($('#template-edit-form').length > 0 && !$('.greetingContentCont').hasClass('no-display')) || $('#accordionT').length > 0) && globalVariables.doctorId && globalVariables.doctorId != $('#change-doctor-form select').val()) { // Внутри есть данные по пациенту, а врач сменён
+                        if($('.infoCont div').length > 0) { // Внутри есть данные по пациенту, а врач сменён
+                            $('.infoCont div').remove();
+                        }
+                        globalVariables.doctorId = $('#change-doctor-form select').val();
+                        $('.greetingContentCont').addClass('no-display'); // Скрываем, потому что скриптам необходимо цеплять из блока данные
 						$('#sideMedcardContentSave').trigger('click');
 					}
                 }

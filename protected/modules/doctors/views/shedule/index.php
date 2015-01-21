@@ -11,6 +11,7 @@
     globalVariables.year = <?php echo $year; ?>;
     globalVariables.month = <?php echo $month; ?>;
     globalVariables.day = <?php echo $day; ?>;
+    globalVariables.doctorId = <?php echo $currentDoctorId; ?>;
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">
