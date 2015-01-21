@@ -1,3 +1,7 @@
+var ElementsApi = {
+    currentRow: null
+};
+
 function writeDefValuesFromConfig(defValues) {
 	// Вычисляем макиммальный индекс по строке и столбцу в таблице значений по умолчанию
 	var tableOfDefaults = $('div.defaultValuesTable table.controltable tbody');
@@ -366,6 +370,7 @@ function onDefaultValuesTableChanged(e) {
 }
 
 $(document).ready(function () {
+
     $("#elements").jqGrid({
         url: globalVariables.baseUrl + '/admin/elements/get',
         datatype: "json",
@@ -490,7 +495,7 @@ $(document).ready(function () {
 
     $("#dependences").jqGrid({
         url: url,
-        datatype: "local",
+        datatype: "json",
         colNames: ['Код', 'Элемент ("метка до")', 'Значение', 'Зависимый элемент', 'Действие','',''],
         colModel: [{
                 name: 'id',
@@ -853,6 +858,7 @@ $('#editElementDependences').on('click', function () {
         return false;
     }
     currentRow = $('#elements').jqGrid('getGridParam', 'selrow');
+    ElementsApi.currentRow = currentRow;
 
     $("#dependences").jqGrid('setGridParam', {
         url: url + '?id=' + currentRow,
@@ -1073,10 +1079,10 @@ $('#editElementDependences').on('click', function () {
 		$.ajax({
 			'url': globalVariables.baseUrl + '/admin/elements/savedependences',
 			'data': {
-				'values': $.toJSON(controlValues),
-				'dependenced': $.toJSON(controlDependencesList),
+				'values': JSON.stringify(controlValues),
+				'dependenced': JSON.stringify(controlDependencesList),
 				'action': controlAction,
-				'controlId': currentRow
+				'controlId': ElementsApi.currentRow
 			},
 			'cache': false,
 			'dataType': 'json',
@@ -1086,7 +1092,6 @@ $('#editElementDependences').on('click', function () {
 					$("#dependences").trigger('reloadGrid');
 					$('#controlValues').trigger('change');
 				} else {
-
 				}
 			}
 		});

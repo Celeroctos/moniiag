@@ -28,14 +28,13 @@ class FormElementAdd extends CFormModel
     public $hideLabelBefore;
 	public $directLink;
 
-    public function rules()
-    {
+    public function rules() {
         return array(
             array(
                 'type, categorieId, label, position', 'required'
             ),
             array(
-					'id, guideId, allowAdd, isRequired, labelAfter, size, isWrapped, numCols, numRows, config, labelDisplay, defaultValue, defaultValueText, dateFieldMinValue, dateFieldMaxValue, showDynamic, hideLabelBefore', 'safe'
+                'id, guideId, allowAdd, isRequired, numCols, numRows, labelAfter, size, isWrapped, config, labelDisplay, defaultValue, defaultValueText, dateFieldMinValue, dateFieldMaxValue, showDynamic, hideLabelBefore', 'safe'
             ),
             array(
                 'numberFieldMinValue, numberFieldMaxValue, numberStep, directLink', 'numerical'

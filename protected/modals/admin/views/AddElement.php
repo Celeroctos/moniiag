@@ -205,7 +205,8 @@
             <?php echo $form->textField($model,'numCols', array(
                 'id' => 'numCols',
                 'class' => 'form-control',
-                'placeholder' => 'Количество столбцов'
+                'placeholder' => 'Количество столбцов',
+                'value' => '3'
             )); ?>
         </div>
     </div>
@@ -217,7 +218,8 @@
             <?php echo $form->textField($model,'numRows', array(
                 'id' => 'numRows',
                 'class' => 'form-control',
-                'placeholder' => 'Количество строк'
+                'placeholder' => 'Количество строк',
+                'value' => '3'
             )); ?>
         </div>
         <?php echo $form->hiddenField($model,'config', array(

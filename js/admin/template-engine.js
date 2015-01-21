@@ -1278,9 +1278,6 @@ var TemplateEngine = TemplateEngine || {};
 		} else {
             this.field("categorie_id", -1);
 		}
-        //$("#date-min-field-cont").datepicker({
-        //    orientation: "auto"
-        //});
         $("input[id^='defaultValue']").val("");
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
@@ -1544,6 +1541,9 @@ var TemplateEngine = TemplateEngine || {};
             style: style || "margin-right: 5px; margin-left: 3px;"
         }).click(function() {
             if (that.has("id")) {
+                // Oh, sorry Jesus for that (variable is declared in another file :D Thanks Igor!)
+                ElementsApi.currentRow = that.field("id");
+                // Fetch dependencies
                 _fetchDependencies(that);
             }
         });
