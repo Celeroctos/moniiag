@@ -99,7 +99,7 @@ $(document).ready(function() {
 				var timeSplit = data[i].patient_time.split(':');
 				timeSplit.pop();
 				data[i].patient_time = timeSplit.join(':');
-			}
+			} 
             mediateStatus['i' + data[i].id] = {
                 id : data[i].id,
                 isMediate : data[i].card_number == null ? 1 : 0,
@@ -122,7 +122,7 @@ $(document).ready(function() {
                     '<a href="#" class="" title="Изменить дату приёма">' + data[i].patient_day + '</a>' +
                 '</td>' +
                 '<td>' +
-                    '<a href="#" class="" title="Изменить время приёма">' + (data[i].patient_time ? data[i].patient_time : 'Живая очередь') + '</a>' +
+                    (data[i].patient_time ?  '<a href="#" class="" title="Изменить время приёма">' + data[i].patient_time + '</a>' : 'Живая очередь') +
                 '</td>' +
                 '<td>' +
                     '<a href="#">' +
