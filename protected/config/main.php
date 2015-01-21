@@ -111,6 +111,7 @@ return array(
                 'application.modules.laboratory.components.*',
                 'application.modules.laboratory.controllers.*',
                 'application.modules.laboratory.models.*',
+                'application.modules.laboratory.forms.*',
                 'application.modules.laboratory.widgets.*'
             ),
         )

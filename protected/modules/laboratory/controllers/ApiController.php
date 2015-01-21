@@ -172,7 +172,7 @@ class ApiController extends LController {
     /**
      * If access denied, then print error message
      */
-    protected function accessDenied() {
+    protected function onAccessDenied() {
         $this->error("Session hasn't been started, access denied");
     }
 

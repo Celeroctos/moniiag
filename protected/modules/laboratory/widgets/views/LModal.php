@@ -25,8 +25,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function() {
-        $("#<?=$this->id?>").modal();
-    });
-</script>

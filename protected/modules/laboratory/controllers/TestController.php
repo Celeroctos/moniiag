@@ -2,7 +2,7 @@
 
 class TestController extends LController {
 
-	public function actionTest() {
+	public function actionView() {
         $this->render("test");
 	}
 }

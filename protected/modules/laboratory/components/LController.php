@@ -21,7 +21,7 @@ class LController extends Controller {
         if ($this->access == null) {
             parent::filterGetAccessHierarchy($filterChain);
         } else if ($this->access == false) {
-            $this->accessDenied();
+            $this->onAccessDenied();
         } else {
             $filterChain->run();
         }
@@ -31,8 +31,16 @@ class LController extends Controller {
      * Override that method to provide access denied action, for example you can
      * return json response with error or something else
      */
-    protected function accessDenied() {
+    protected function onAccessDenied() {
         $this->redirect(Yii::app()->baseUrl);
+    }
+
+    /**
+     * Override that method to update some widget if you want
+     * @return null|LWidget - Widget component
+     */
+    protected function onWidgetUpdate() {
+        return null;
     }
 
     /**
@@ -51,12 +59,48 @@ class LController extends Controller {
      * @param bool $return - Should widget return response or print to output stream
      * @return mixed|void
      */
-    public function getWidget($class, $properties = [], $return = false) {
+    public function widget($class, $properties = [], $return = false) {
         $widget = $this->createWidget($class, $properties);
         if ($return) {
             return $widget->run(true);
         }
         $widget->run(false);
+    }
+
+    /**
+     * That action will catch widget update and returns
+     * new just rendered component
+     */
+    public function actionGetWidget() {
+        try {
+            // Get widget's class component and unique identification number and method
+            $class = $this->getAndUnset("class");
+            $unique = $this->getAndUnset("unique");
+            $method = $this->getAndUnset("method");
+
+            if (strtoupper($method) == "POST") {
+                foreach ($_GET as $key => $value) {
+                    $_POST[$key] = $value;
+                }
+                $parameters = $_POST;
+            } else {
+                $parameters = $_GET;
+            }
+
+            // Create widget
+            $widget = $this->createWidget($class, $parameters);
+
+            if (!($widget instanceof LWidget)) {
+                throw new LError("Can't update widget that don't extends LWidget component");
+            }
+
+            $this->leave([
+                "unique" => $unique,
+                "component" => $widget->run(true)
+            ]);
+        } catch (Exception $e) {
+            $this->exception($e);
+        }
     }
 
     /**
@@ -82,6 +126,18 @@ class LController extends Controller {
             throw new LError("GET.$name");
         }
         return $_GET[$name];
+    }
+
+    /**
+     * Try to get and unset variable from GET method or throw an exception
+     * @param String $name - Name of parameter in GET array
+     * @return Mixed - Some received value
+     * @throws LError - If parameter hasn't been declared in _GET array
+     */
+    public function getAndUnset($name) {
+        $value = $this->get($name);
+        unset($_GET[$name]);
+        return $value;
     }
 
     /**
