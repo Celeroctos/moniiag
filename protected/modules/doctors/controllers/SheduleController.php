@@ -1436,7 +1436,6 @@ class SheduleController extends Controller {
     }
 
     private function getPatientList($doctorId, $formatDate, $timeBegin, $timeEnd, $withMediate = true, $onlyWaitingLine = false) {
-
         $patientsList = array();
         $sheduleByDay = new SheduleByDay();
         $weekday = date('w', strtotime($formatDate)); // День недели (число)
@@ -1475,19 +1474,19 @@ class SheduleController extends Controller {
         }
 
         for($i = $beginValue; $i < $endValue; $i += $increment) {
-            if(!$onlyWaitingLine && $currentTimestamp >= $i && $today) {
+            /* if(!$onlyWaitingLine && $currentTimestamp >= $i && $today) {
                 continue;
-            }
+            } */
             // Ищем пациента для такого времени. Если он найден, значит время занято
             $isFound = false;
             foreach($patients as $key => $patient) {
                 $timestamp = strtotime($patient['patient_time']);
                 if((!$onlyWaitingLine && $timestamp == $i) || ($onlyWaitingLine && $patient['order_number'] == $i + 1)) {
                     // Если пациент опосредованный, для него надо выбрать ФИО
-                    if($patient['mediate_id'] != null) {
+                    if ($patient['mediate_id'] != null) {
                         $mediatePatient = MediatePatient::model()->findByPk($patient['mediate_id']);
-                        if($mediatePatient != null) {
-                            $patient['fio'] = $mediatePatient['last_name'].' '.$mediatePatient['first_name'].' '.$mediatePatient['middle_name'].' (опосредованный)';
+                        if ($mediatePatient != null) {
+                            $patient['fio'] = $mediatePatient['last_name'] . ' ' . $mediatePatient['first_name'] . ' ' . $mediatePatient['middle_name'] . ' (опосредованный)';
                             $patient['greetingStatus'] = $patient['greeting_status'];
                         }
                     }
@@ -1500,8 +1499,8 @@ class SheduleController extends Controller {
                         'id' => $patient['id'],
                         'type' => $patient['mediate_id'] != null ? 1 : 0,
                         'cardNumber' => $patient['card_number'],
-                        'is_accepted' =>$patient['is_accepted'],
-                        'is_beginned' =>$patient['is_beginned'],
+                        'is_accepted' => $patient['is_accepted'],
+                        'is_beginned' => $patient['is_beginned'],
                         'medcard_id' => $patient['card_number'],
                         'patient_time' => date('G:i', $i),
                         'comment' => $patient['comment'],
@@ -1509,12 +1508,14 @@ class SheduleController extends Controller {
                         'orderNumber' => $patient['order_number'],
                         'greetingStatus' => $patient['greeting_status'],
                     );
-                    if($patient['greeting_type'] == 1) {
+
+                    if ($patient['greeting_type'] == 1) {
                         $primaryGreetings++;
                     }
-                    if($patient['greeting_type'] == 2) {
+                    if ($patient['greeting_type'] == 2) {
                         $secondaryGreetings++;
                     }
+
                     $isFound = true;
                     $numRealPatients++;
                 }
