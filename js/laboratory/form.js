@@ -36,6 +36,12 @@ var Laboratory = Laboratory || {};
     Form.prototype.activate = function() {
         var me = this;
         this.selector().find(".refresh").click(function() {
+            $(this).replaceWith(
+                $("<img>", {
+                    src: url + "/images/ajax-loader.gif",
+                    width: "25px"
+                })
+            );
             me.update();
         });
     };
