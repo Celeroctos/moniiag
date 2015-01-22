@@ -138,23 +138,11 @@ class SheduleController extends Controller {
             // $oneDoctorIds - берём IDшник и записываем строку
             $doctorsTimeTableLink = new DoctorsTimetable();
             $doctorsTimeTableLink->id_doctor = $oneDoctorIds;
-            /*if ($timeTableModel->EntryID!=null)
-            {
-                $doctorsTimeTableLink->id_timetable = $timeTableModel->EntryID;
-            }
-            else
-            {
-                $doctorsTimeTableLink->id_timetable = $_GET['timeTableId'];
-            }
-            */
+
             $doctorsTimeTableLink->id_timetable = $timetableId;
             $doctorsTimeTableLink->save();
         }
 
-        /*
-        echo CJSON::encode(array('success' => true,
-            'msg' => 'Выходные дни успешно сохранены.'));
-        */
 
         $this->checkTimetableTerms($timeTableModel, $doctorsIds[0]);
 
@@ -787,7 +775,7 @@ class SheduleController extends Controller {
     private function unwritePatientsOnTimetableChanged($doctorId, $dateBegin=false,$dateEnd=false, $timeBegin = false,$timeEnd = false)
     {
         $result = 0;
-
+        exit("??");
         if (false)
         {
             // 1. Выбираем все приёмы у врача, которые старше сегодняшнего дня и текущего времени
@@ -820,17 +808,11 @@ class SheduleController extends Controller {
             $maxGreetingDate = strtotime(date('Y-n-j'));
             $greetingDays = array();
             // Найдём максимальное число, на которое отменяется хотя бы один приём
-            foreach ($greetingToCheck as $oneGreeting)
-            {
-
-
+            foreach ($greetingToCheck as $oneGreeting) {
                 $greetingPatientDay = strtotime($oneGreeting['patient_day']);
-                if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )
-                {
+                if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )  {
                     array_push( $greetingDays ,  $oneGreeting['patient_day']);
-                }
-                if ($greetingPatientDay > $maxGreetingDate)
-                {
+                }  if ($greetingPatientDay > $maxGreetingDate) {
                     $maxGreetingDate = $greetingPatientDay;
                 }
 
@@ -881,7 +863,7 @@ class SheduleController extends Controller {
                     // Тут надо проверить - попадают ли приёмы в расписание по времени (работает ли врач в то время, на которое записан пациент)
                     // Получим правило из расписания
                     $timeTableObject = new Timetable();
-                    $ruleToCheck = $timeTableObject->getRuleFromTimetable($sheduleForDay, $oneGreetingDate);
+                    $ruleToCheck = $timeTableObject->getRuleFromTimetable($sheduleForDay, $oneGreetingDate, true);
                     // Если правила нет - то добавляем все правила на этот день в удаление
                     if ($ruleToCheck == null)
                     {
@@ -895,6 +877,8 @@ class SheduleController extends Controller {
                     }
                     else
                     {
+                        var_dump("!!!");
+                        exit();
                         // Вот тут сравниваем времена работы врача
                         foreach ($greetingToCheck as $oneGreeting)
                         {
@@ -916,7 +900,6 @@ class SheduleController extends Controller {
                     }
                 }
             }
-
 
             // отписываем приёмы, которые мы набрали
             if (  count($greetingsIdToDelete) > 0 )
