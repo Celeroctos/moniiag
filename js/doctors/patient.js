@@ -1905,7 +1905,7 @@ $('#nextHistoryPoint').on('click', function () {
         if(typeof onlyWaitingList != 'undefined') {
             data.onlywaitinglist = 1;
         }
-        console.log(globalVariables);
+
         $.ajax({
             'url': url,
             'data': data,

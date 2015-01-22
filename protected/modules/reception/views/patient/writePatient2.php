@@ -286,7 +286,7 @@
         </div>
     </div>
     <?php }  elseif($calendarType == 1) { ?>
-        <h4>Выберите врача и дату</h4>
+        <h4 class="organizerH">Выберите врача и дату</h4>
         <div class="row organizerNav no-display">
             <button class="btn btn-primary back">
                 <span class="glyphicon glyphicon-arrow-left"></span>Раньше

@@ -288,7 +288,13 @@
                     if(data.data.length == 0) {
                         $('#notFoundPopup').modal({
                         });
+                        $('.organizer, .organizerNav, .organizerH').css({
+                            'display' : 'none'
+                        });
                     } else {
+                        $('.organizer, .organizerNav, .organizerH').css({
+                            'display' : 'block'
+                        });
                         if(globalVariables.hasOwnProperty('calendarType') && globalVariables.calendarType == 0) {
                             displayAllDoctors(data.data);
                         } else {
