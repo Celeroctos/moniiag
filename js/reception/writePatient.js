@@ -272,6 +272,7 @@
         globalVariables.resetBeginDate = true;
         $('.organizer').trigger('resetClickedTime');
         $('.organizer').trigger('resetClickedDay');
+
         // Делаем поиск
         $.ajax({
             'url' : '/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,

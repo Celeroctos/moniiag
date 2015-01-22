@@ -69,11 +69,11 @@ class SheduleController extends Controller {
                 continue;
 			}
 
-            if($filter['field'] == 'patient_day' && trim($filter['data']) == '') {
+           /* if($filter['field'] == 'patient_day' && trim($filter['data']) == '') {
                 $filter['data'] = date('Y-m-j');
                 $filter['op'] = 'ge';
                 continue;
-            }
+            } */
 
 			if(!is_array($filter['data']) && trim($filter['data']) == '') {
 				unset($filter);
@@ -112,6 +112,7 @@ class SheduleController extends Controller {
             $mediateOnly = 0;
         }
 
+
         if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
             $dataD = CJSON::decode($_GET['doctors']);
             $dataP = CJSON::decode($_GET['patients']);
@@ -141,7 +142,6 @@ class SheduleController extends Controller {
                     )
                 )
             );
-
 
             $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
         } elseif($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 0) {

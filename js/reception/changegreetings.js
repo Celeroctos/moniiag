@@ -14,18 +14,58 @@ $(document).ready(function() {
             }
         }
 
+        // Смотрим на ФИО пациента
+        var patientFio = $('#patientFio').val();
+        var parts = patientFio.split(' '); // По пробелу. ФИО = Ф_И_О
+        var patientFioFields = [];
+        for(var i = 0; i < parts.length; i++) {
+            if($.trim(parts[i]) != '') {
+                patientFioFields.push($.trim(parts[i]).toLowerCase());
+            }
+        }
+
+        // Смотрим на ФИО врача
+        var doctorFio = $('#doctorFio').val();
+        var parts = doctorFio.split(' '); // По пробелу. ФИО = Ф_И_О
+        var doctorFioFields = [];
+        for(var i = 0; i < parts.length; i++) {
+            if($.trim(parts[i]) != '') {
+                doctorFioFields.push($.trim(parts[i]).toLowerCase());
+            }
+        }
+
         var result = {
             'groupOp' : 'AND',
             'rules' : [
                 {
-                    'field' : 'doctor_fio',
-                    'op' : 'bw',
-                    'data' :  $('#doctorFio').val()
+                    'field' : 'p_middle_name',
+                    'op' : 'cn',
+                    'data' : patientFioFields.length > 2 ?  patientFioFields[2] : '' //$('#middleName').val()
                 },
-				{
-                    'field' : 'patient_fio',
-                    'op' : 'bw',
-                    'data' :  $('#patientFio').val()
+                {
+                    'field' : 'p_last_name',
+                    'op' : 'cn',
+                    'data' :  patientFioFields.length > 0 ?  patientFioFields[0] : '' //$('#lastName').val()
+                },
+                {
+                    'field' : 'p_first_name',
+                    'op' : 'cn',
+                    'data' : patientFioFields.length > 1 ?  patientFioFields[1] : '' //$('#firstName').val()
+                },
+                {
+                    'field' : 'd_middle_name',
+                    'op' : 'cn',
+                    'data' : doctorFioFields.length > 2 ?  doctorFioFields[2] : '' //$('#middleName').val()
+                },
+                {
+                    'field' : 'd_last_name',
+                    'op' : 'cn',
+                    'data' :  doctorFioFields.length > 0 ?  doctorFioFields[0] : '' //$('#lastName').val()
+                },
+                {
+                    'field' : 'd_first_name',
+                    'op' : 'cn',
+                    'data' : doctorFioFields.length > 1 ?  doctorFioFields[1] : '' //$('#firstName').val()
                 },
                 {
                     'field' : 'medcard_id',
