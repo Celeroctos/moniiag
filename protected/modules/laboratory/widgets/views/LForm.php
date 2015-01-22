@@ -12,7 +12,7 @@
     </div>
     <div class="panel-body">
         <? $form = $this->beginWidget('CActiveForm', array(
-            'focus' => array($model,'name'),
+            'focus' => array($this->model,'name'),
             'id' => $this->id,
             'enableAjaxValidation' => true,
             'enableClientValidation' => true,
@@ -31,15 +31,10 @@
                     ));
                 } ?>
                 <div class="col-xs-9">
-                    <?= $this->renderField($form, $model, $key); ?>
+                    <?= $this->renderField($form, $key); ?>
                 </div>
             </div>
         <? endforeach; ?>
         <? $this->endWidget(); ?>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        console.log($("#<?= $this->id ?>"));
-    });
-</script>

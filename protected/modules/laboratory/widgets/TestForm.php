@@ -17,12 +17,8 @@ class TestForm extends LComponent {
                 "label" => "Категория-родитель",
                 "type" => "DropDown",
                 "rules" => "required, numerical",
-                "data" => [
-                    0 => "0",
-                    1 => "1",
-                    2 => "2",
-                    3 => "3"
-                ]
+                "format" => "%{id}: %{name} (%{path})",
+                "data" => MedcardCategorie::model()->findAll()
             ],
             "position" => [
                 "label" => "Позиция среди сестринских категорий и элементов",
@@ -45,7 +41,7 @@ class TestForm extends LComponent {
         return [
             "title" => "Тестовая форма",
             "id" => "test-form",
-            "url" => "/admin/categories/add"
+            "url" => "/laboratory/test/add"
         ];
     }
 }

@@ -60,6 +60,10 @@ class LController extends Controller {
      * @return mixed|void
      */
     public function widget($class, $properties = [], $return = false) {
+        if ($properties === true) {
+            $return = true;
+            $properties = [];
+        }
         $widget = $this->createWidget($class, $properties);
         if ($return) {
             return $widget->run(true);
@@ -75,8 +79,12 @@ class LController extends Controller {
         try {
             // Get widget's class component and unique identification number and method
             $class = $this->getAndUnset("class");
-            $unique = $this->getAndUnset("unique");
-            $method = $this->getAndUnset("method");
+
+            if (isset($_GET["method"])) {
+                $method = $this->getAndUnset("method");
+            } else {
+                $method = "POST";
+            }
 
             if (strtoupper($method) == "POST") {
                 foreach ($_GET as $key => $value) {
@@ -95,7 +103,7 @@ class LController extends Controller {
             }
 
             $this->leave([
-                "unique" => $unique,
+                "id" => isset($widget->id) ? $widget->id : null,
                 "component" => $widget->run(true)
             ]);
         } catch (Exception $e) {

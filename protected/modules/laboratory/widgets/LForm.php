@@ -27,14 +27,13 @@ class LForm extends LWidget {
     /**
      * That function will render all form elements based on it's type
      * @param CActiveForm $form - Form widget
-     * @param LFormModel $model - Form's model
      * @param String $key - Field name
      * @return string - Result string
      * @throws CException - If field's type hasn't been implemented in renderer
      */
-    public static function renderField($form, $model, $key) {
+    public function renderField($form, $key) {
 
-        $config = $model->config()[$key];
+        $config = $this->model->config()[$key];
 
         if (isset($config["type"])) {
             $type = strtolower($config["type"]);
@@ -48,6 +47,21 @@ class LForm extends LWidget {
             $data = [];
         }
 
+        if (isset($config["format"])) {
+            $format = $config["format"];
+            foreach ($data as $i => &$value) {
+                $model = clone $value;
+                $matches = [];
+                preg_match_all("/%\\{([a-zA-Z_]+)\\}/", $format, $matches);
+                $value = $format;
+                if (count($matches) > 0) {
+                    foreach ($matches[1] as $m) {
+                        $value = preg_replace("/%\\{([({$m})]+)\\}/", $model[$m], $value);
+                    }
+                }
+            }
+        }
+
         if (isset($config["label"])) {
             $label = $config["label"];
         } else {
@@ -56,49 +70,52 @@ class LForm extends LWidget {
 
         switch ($type) {
             case "text":
-                $result = $form->textField($model, $key, [
+                $result = $form->textField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "number":
-                $result = $form->numberField($model, $key, [
+                $result = $form->numberField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "file":
-                $result = $form->fileField($model, $key, [
+                $result = $form->fileField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "hidden":
-                $result = $form->hiddenField($model, $key, [
+                $result = $form->hiddenField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "password":
-                $result = $form->passwordField($model, $key, [
+                $result = $form->passwordField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "dropdown":
-                $result = $form->dropDownList($model, $key, $data, [
+                if (!isset($data[-1])) {
+                    $data = [ -1 => "Нет" ] + $data;
+                }
+                $result = $form->dropDownList($this->model, $key, $data, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "yesno":
-                $result = $form->dropDownList($model, $key, [
+                $result = $form->dropDownList($this->model, $key, [
                     -1 => "Нет",
                     0 => "Да"
                 ], [
@@ -108,21 +125,21 @@ class LForm extends LWidget {
                 ]);
                 break;
             case "radio":
-                $result = $form->radioButton($model, $key, [
+                $result = $form->radioButton($this->model, $key, [
                     'value' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "textarea":
-                $result = $form->textArea($model, $key, [
+                $result = $form->textArea($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'
                 ]);
                 break;
             case "date";
-                $result = $form->dateField($model, $key, [
+                $result = $form->dateField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
                     'class' => 'form-control'

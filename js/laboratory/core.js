@@ -122,12 +122,15 @@ var Laboratory = Laboratory || {};
      * Create new component's instance and render to DOM
      * @param component {Laboratory.Component|Object} - Component's instance
      * @param selector {HTMLElement|string} - Parent's selector
+     * @param [update] {Boolean} - Update component or not (default yes)
      */
-    Laboratory.create = function(component, selector) {
+    Laboratory.create = function(component, selector, update) {
         $(selector).data("laboratory", component).append(
             component.selector()
         );
-        component.update();
+        if (update !== false) {
+            component.update();
+        }
         return component;
     };
     
