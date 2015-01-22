@@ -10,3 +10,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER on_medcard_categories_delete BEFORE DELETE ON mis.medcard_categories FOR EACH ROW EXECUTE PROCEDURE
 	mis.medcard_categories_reset_children();
+	
+UPDATE mis.medcard_elements SET guide_id = -1 WHERE guide_id IS NULL;
+UPDATE mis.medcard_elements_patient SET guide_id = -1 WHERE guide_id IS NULL;
