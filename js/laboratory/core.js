@@ -130,6 +130,8 @@ var Laboratory = Laboratory || {};
         );
         if (update !== false) {
             component.update();
+        } else {
+            component.activate();
         }
         return component;
     };

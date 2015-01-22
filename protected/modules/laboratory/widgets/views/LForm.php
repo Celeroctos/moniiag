@@ -6,9 +6,12 @@
  */
 ?>
 
-<div class="panel panel-default">
+<div class="panel panel-default" id="<?= $this->id?>-panel">
     <div class="panel-heading">
-        <h4><? if ($this->title != null) { print $this->title; } ?></h4>
+        <table width="100%"><tr>
+            <td><h4><? if ($this->title != null) { print $this->title; } ?></h4></td>
+            <td style="text-align: right"><span style="font-size: 25px; cursor: pointer" class="glyphicon glyphicon-refresh refresh"></span></td>
+        </tr></table>
     </div>
     <div class="panel-body">
         <? $form = $this->beginWidget('CActiveForm', array(

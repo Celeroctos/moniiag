@@ -4,11 +4,10 @@ var Laboratory = Laboratory || {};
 
 	"use strict";
 
-    var Form = function(properties, selector) {
-        console.log(selector);
-        Laboratory.Component.call(this, properties, {
+    var url = window["globalVariables"]["baseUrl"];
 
-        }, selector);
+    var Form = function(properties, selector) {
+        Laboratory.Component.call(this, properties, {}, selector);
     };
 
     Laboratory.extend(Form, Laboratory.Component);
@@ -17,12 +16,36 @@ var Laboratory = Laboratory || {};
         /* Not Implemented */
     };
 
+    Form.prototype.update = function() {
+        var me = this;
+        $.get(url + "/laboratory/test/getWidget", {
+            class: this.selector().find("[data-form]").data("form")
+        }, function(json) {
+            if (!json.status) {
+                return Laboratory.createMessage({
+                    message: json.message
+                });
+            }
+            var parent = me.selector().parent();
+            me.selector().remove();
+            me.selector($(json["component"])).appendTo(parent);
+            me.activate();
+        }, "json");
+    };
+
+    Form.prototype.activate = function() {
+        var me = this;
+        this.selector().find(".refresh").click(function() {
+            me.update();
+        });
+    };
+
     Laboratory.createForm = function(selector, properties) {
         Laboratory.create(new Form(properties, $(selector)), selector, false);
     };
 
     $(document).ready(function() {
-        $('*[data-form]').each(function(i, item) {
+        $("[id$='-panel']").each(function(i, item) {
             Laboratory.createForm(item);
         });
     });
