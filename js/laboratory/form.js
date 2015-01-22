@@ -18,8 +18,10 @@ var Laboratory = Laboratory || {};
 
     Form.prototype.update = function() {
         var me = this;
+        var form = this.selector().find("[data-form]");
         $.get(url + "/laboratory/test/getWidget", {
-            class: this.selector().find("[data-form]").data("form")
+            class: form.data("form"),
+            model: form.serialize()
         }, function(json) {
             if (!json.status) {
                 return Laboratory.createMessage({

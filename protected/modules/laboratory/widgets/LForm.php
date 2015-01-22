@@ -47,6 +47,12 @@ class LForm extends LWidget {
             $data = [];
         }
 
+        if (isset($config["value"])) {
+            $value =  $config["value"];
+        } else {
+            $value = null;
+        }
+
         if (isset($config["format"])) {
             $format = $config["format"];
             foreach ($data as $i => &$value) {
@@ -73,35 +79,40 @@ class LForm extends LWidget {
                 $result = $form->textField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "number":
                 $result = $form->numberField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "file":
                 $result = $form->fileField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "hidden":
                 $result = $form->hiddenField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "password":
                 $result = $form->passwordField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "dropdown":
@@ -111,7 +122,9 @@ class LForm extends LWidget {
                 $result = $form->dropDownList($this->model, $key, $data, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value,
+                    'options' => [ $value => [ 'selected' => true ] ]
                 ]);
                 break;
             case "yesno":
@@ -121,28 +134,32 @@ class LForm extends LWidget {
                 ], [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "radio":
                 $result = $form->radioButton($this->model, $key, [
                     'value' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "textarea":
                 $result = $form->textArea($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "date";
                 $result = $form->dateField($this->model, $key, [
                     'placeholder' => $label,
                     'id' => $key,
-                    'class' => 'form-control'
+                    'class' => 'form-control',
+                    'value' => $value
                 ]);
                 break;
             case "reset":

@@ -86,6 +86,12 @@ class LController extends Controller {
                 $method = "POST";
             }
 
+            if (isset($_GET["model"])) {
+                $model = $this->getAndUnset("model");
+            } else {
+                $model = null;
+            }
+
             if (strtoupper($method) == "POST") {
                 foreach ($_GET as $key => $value) {
                     $_POST[$key] = $value;
@@ -100,6 +106,14 @@ class LController extends Controller {
 
             if (!($widget instanceof LWidget)) {
                 throw new LError("Can't update widget that don't extends LWidget component");
+            }
+
+            // Copy model parameters if exists
+            if ($widget instanceof LComponent && is_array($model)) {
+                foreach ($model as $key => $value) {
+                    $widget->getModel()->putValue($key, $value);
+                }
+                $widget->getModel()->reset();
             }
 
             $this->leave([

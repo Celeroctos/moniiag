@@ -47,7 +47,7 @@ abstract class LFormModel extends CFormModel {
      * Build form from models configuration
      * @param array|null $config - Array with model's configuration
      */
-    private function _buildFromConfig($config = null) {
+    protected function _buildFromConfig($config = null) {
 
         // If we have rules and labels then skip it
         if ($this->_rules && $this->_labels && $this->_types) {
@@ -94,6 +94,20 @@ abstract class LFormModel extends CFormModel {
     }
 
     /**
+     * Reset configuration
+     */
+    protected function reset() {
+
+        // Reset arrays
+        $this->_rules = null;
+        $this->_labels = null;
+        $this->_types = null;
+
+        // Recompute configuration
+        $this->_buildFromConfig();
+    }
+
+    /**
      * Get form model's rules associated with fields names
      * @return Array - Rules for form's mode;
      */
@@ -128,8 +142,8 @@ abstract class LFormModel extends CFormModel {
         return $this->_container;
     }
 
-    private $_container = [];
-    private $_rules = null;
-    private $_labels = null;
-    private $_types = null;
+    protected $_container = [];
+    protected $_rules = null;
+    protected $_labels = null;
+    protected $_types = null;
 } 

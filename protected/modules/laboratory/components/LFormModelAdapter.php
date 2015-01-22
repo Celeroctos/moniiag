@@ -11,6 +11,29 @@ class LFormModelAdapter extends LFormModel {
     }
 
     /**
+     * Put some value to configuration table
+     * @param string $key - Element's key
+     * @param mixed $value - Value to put
+     */
+    public function putValue($key, $value) {
+        $this->_config[$key]["value"] = $value;
+    }
+
+    /**
+     * Reset configuration
+     */
+    public function reset() {
+
+        // Reset arrays
+        $this->_rules = null;
+        $this->_labels = null;
+        $this->_types = null;
+
+        // Rebuild configuration
+        $this->_buildFromConfig($this->_config);
+    }
+
+    /**
      * Override that method to return config. Config should return array associated with
      * model's variables. Every field must contains 3 parameters:
      *  + label - Variable's label, will be displayed in the form
