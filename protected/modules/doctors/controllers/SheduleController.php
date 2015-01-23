@@ -283,7 +283,7 @@ class SheduleController extends Controller {
             'patientsInCalendar' => $patientsInCalendar,
             'currentPatient' => $this->currentPatient,
             'currentSheduleId' => $this->currentSheduleId,
-            'currentDoctorId' => $this->currentDoctorId,
+            'currentDoctorId' =>  $doctorId,
             'pregnantContent' => '',
             'filterModel' => $this->filterModel,
             'medcard' => isset($medcard) ? $medcard : null,
