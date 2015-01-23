@@ -103,7 +103,7 @@ $(document).ready(function () {
         // Нажатая клавиша
         var pressedKey = e.keyCode;
         // Если символ Enter или Tab - сразу возвращаем true
-        if ((pressedKey == 13) || (pressedKey == 9)||(pressedKey == 16))
+        if (pressedKey == 13 || pressedKey == 9 || pressedKey == 16)
             return true;
 
         //var isAllow = true;
@@ -136,12 +136,9 @@ $(document).ready(function () {
 
         // Если нажатая клавиша - "+",
         //   то его нужно разрешить только в первой позиции
-        if (pressedKey == 187)
-        {
-            if ($('#contact, #phone').val()!='')
-            {return false;}
-            else
-            {return true;}
+        console.log(pressedKey);
+        if (pressedKey == 187) {
+            return !$(this).val() != '';
         }
 
         // Если клавиша - цифра
@@ -150,8 +147,7 @@ $(document).ready(function () {
 
         // Делим на подгруппы номер только в том случае, если он российский.
         //  У иностранных номеров может быть коды городов разной длины
-        if (value.substr(0,2)=='+7')
-        {
+        if (value.substr(0,2) == '+7') {
             if (value.length == 2 || value.length == 6) {
                 $(this).val(value + '-');
             }
