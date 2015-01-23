@@ -4,10 +4,24 @@ class GridController extends Controller {
 	public $defaultAction = 'index';
 
 	public function actionIndex() {
-        $hGrid = new HospitalizationGrid();
-		$model = new Patient();
+        if(!isset($_GET['serverModel'])) {
+            echo CJSON::encode(array(
+                'success' => false,
+                'data' => 'Not found server model parameter'
+            ));
+            exit();
+        }
+
+        if(!isset($_GET['perPage'])) {
+            $perPage = 10;
+        } else {
+            $perPage = $_GET['perPage'];
+        }
+
+        $model = new $_GET['serverMovel']();
 		$model->unsetAttributes();
-		if(isset($_GET['Patient'])) {
+
+        if(isset($_GET['Patient'])) {
 			$model->attributes = $_GET['Patient'];
 		}
 
@@ -16,7 +30,7 @@ class GridController extends Controller {
 				//'with' => array('id', 'last_name', 'first_name', 'middle_name'),
 			),
 			'pagination' => array(
-				'pageSize' => 10,
+				'pageSize' => $perPage,
 				'route' => 'grid/index'
 			),
 			'sort' => array(
