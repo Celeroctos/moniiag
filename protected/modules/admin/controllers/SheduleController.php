@@ -775,80 +775,89 @@ class SheduleController extends Controller {
     private function unwritePatientsOnTimetableChanged($doctorId, $dateBegin=false,$dateEnd=false, $timeBegin = false,$timeEnd = false)
     {
         $result = 0;
-        exit("??");
-        if (false)
+
+        // 1. Выбираем все приёмы у врача, которые старше сегодняшнего дня и текущего времени
+        // 2. Проверяем их на то, вывалились ли они из расписания. Если приём вывалился - его надо запомнить в список
+        // 3. Отписываем вывалившиеся приёмы и считаем их
+        $findCondition = '( doctor_id = :doctor )';
+        $findArray = array(':doctor'=>$doctorId);
+
+        if ($dateBegin===false) {
+            $findCondition .= 'AND (time_begin is NULL) AND ( patient_day >= \''. date('Y-n-j') .'\')';
+        }
+
+        if ($timeBegin===false) {
+            $findCondition .= 'AND ( (patient_time > \'' .date('h:i:s'). '\') OR (patient_time is NULL))';
+        }
+
+        $sheduleByDayObject = new SheduleByDay();
+        $greetingToCheck = $sheduleByDayObject::model()->findAll(
+            $findCondition,
+            $findArray
+        );
+
+        $maxGreetingDate = strtotime(date('Y-n-j'));
+        $greetingDays = array();
+        // Найдём максимальное число, на которое отменяется хотя бы один приём
+        foreach ($greetingToCheck as $oneGreeting) {
+            $greetingPatientDay = strtotime($oneGreeting['patient_day']);
+            if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )  {
+                array_push( $greetingDays ,  $oneGreeting['patient_day']);
+            }  if ($greetingPatientDay > $maxGreetingDate) {
+                $maxGreetingDate = $greetingPatientDay;
+            }
+
+        }
+
+        $timeTable = new Timetable();
+        // Находим расписания для дат
+        $shedules = $timeTable->getRows(
+            array(
+                'doctorsIds' => array($doctorId),
+                'dateBegin' => date('Y-n-j'),
+                'dateEnd' => date('Y-n-j',$maxGreetingDate)
+            )
+        );
+
+        // Перебираем даты, на которой есть приёмы
+        //   Для даты определяем, какому расписанию подчиняется эта дата
+        //      а затем перебираем приёмы, записанные эту дату и проверяем каждый из приёмов.
+        $greetingsIdToDelete = array();
+        foreach ($greetingDays as $oneGreetingDate)
         {
-            // 1. Выбираем все приёмы у врача, которые старше сегодняшнего дня и текущего времени
-            // 2. Проверяем их на то, вывалились ли они из расписания. Если приём вывалился - его надо запомнить в список
-            // 3. Отписываем вывалившиеся приёмы и считаем их
-            $findCondition = '( doctor_id = :doctor )';
-            $findArray = array(':doctor'=>$doctorId);
-
-            if ($dateBegin===false)
+            // Находим расписание для даты
+            $sheduleForDay = null;
+            foreach ($shedules as $oneShedule)
             {
-                $findCondition .= 'AND (time_begin is NULL) AND ( patient_day > \''. date('Y-n-j') .'\')';
-            }
-
-            if ($timeBegin===false)
-            {
-                $findCondition .= 'AND ( (patient_time > \'' .date('h:i:s'). '\') OR (patient_time is NULL))';
-            }
-
-
-            //var_dump($findCondition);
-            //var_dump($findArray);
-            //exit();
-
-            $sheduleByDayObject = new SheduleByDay();
-            $greetingToCheck = $sheduleByDayObject::model()->findAll(
-                $findCondition,
-                $findArray
-            );
-
-            $maxGreetingDate = strtotime(date('Y-n-j'));
-            $greetingDays = array();
-            // Найдём максимальное число, на которое отменяется хотя бы один приём
-            foreach ($greetingToCheck as $oneGreeting) {
-                $greetingPatientDay = strtotime($oneGreeting['patient_day']);
-                if (!in_array( $oneGreeting['patient_day'],$greetingDays ) )  {
-                    array_push( $greetingDays ,  $oneGreeting['patient_day']);
-                }  if ($greetingPatientDay > $maxGreetingDate) {
-                    $maxGreetingDate = $greetingPatientDay;
-                }
-
-            }
-
-            $timeTable = new Timetable();
-            // Находим расписания для дат
-            $shedules = $timeTable->getRows(
-                array(
-                    'doctorsIds' => array($doctorId),
-                    'dateBegin' => date('Y-n-j'),
-                    'dateEnd' => date('Y-n-j',$maxGreetingDate)
-                )
-            );
-
-            // Перебираем даты, на которой есть приёмы
-            //   Для даты определяем, какому расписанию подчиняется эта дата
-            //      а затем перебираем приёмы, записанные эту дату и проверяем каждый из приёмов.
-            $greetingsIdToDelete = array();
-            foreach ($greetingDays as $oneGreetingDate)
-            {
-                // Находим расписание для даты
-                $sheduleForDay = null;
-                foreach ($shedules as $oneShedule)
+                if ( (   strtotime($oneShedule['date_begin'])<=strtotime($oneGreetingDate)   ) &&
+                    (strtotime($oneShedule['date_end'])>=strtotime($oneGreetingDate)  ) )
                 {
-                    if ( (   strtotime($oneShedule['date_begin'])<=strtotime($oneGreetingDate)   ) &&
-                        (strtotime($oneShedule['date_end'])>=strtotime($oneGreetingDate)  ) )
+                    $sheduleForDay  = $oneShedule ;
+                    break;
+                }
+            }
+
+            if ($sheduleForDay == null)
+            {
+                // Если для даты не нашли расписания - то приём на эту дату вывалились
+                foreach ($greetingToCheck as $oneGreeting)
+                {
+                    if ( strtotime($oneGreeting['patient_day']) == strtotime($oneGreetingDate)  )
                     {
-                        $sheduleForDay  = $oneShedule ;
-                        break;
+                        $greetingsIdToDelete[] = $oneGreeting['id'];
                     }
                 }
 
-                if ($sheduleForDay == null)
+            }
+            else
+            {
+                // Тут надо проверить - попадают ли приёмы в расписание по времени (работает ли врач в то время, на которое записан пациент)
+                // Получим правило из расписания
+                $timeTableObject = new Timetable();
+                $ruleToCheck = $timeTableObject->getRuleFromTimetable($sheduleForDay, $oneGreetingDate, true);
+                // Если правила нет - то добавляем все правила на этот день в удаление
+                if ($ruleToCheck == null)
                 {
-                    // Если для даты не нашли расписания - то приём на эту дату вывалились
                     foreach ($greetingToCheck as $oneGreeting)
                     {
                         if ( strtotime($oneGreeting['patient_day']) == strtotime($oneGreetingDate)  )
@@ -856,66 +865,47 @@ class SheduleController extends Controller {
                             $greetingsIdToDelete[] = $oneGreeting['id'];
                         }
                     }
-
                 }
                 else
                 {
-                    // Тут надо проверить - попадают ли приёмы в расписание по времени (работает ли врач в то время, на которое записан пациент)
-                    // Получим правило из расписания
-                    $timeTableObject = new Timetable();
-                    $ruleToCheck = $timeTableObject->getRuleFromTimetable($sheduleForDay, $oneGreetingDate, true);
-                    // Если правила нет - то добавляем все правила на этот день в удаление
-                    if ($ruleToCheck == null)
-                    {
-                        foreach ($greetingToCheck as $oneGreeting)
-                        {
-                            if ( strtotime($oneGreeting['patient_day']) == strtotime($oneGreetingDate)  )
-                            {
-                                $greetingsIdToDelete[] = $oneGreeting['id'];
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var_dump("!!!");
-                        exit();
-                        // Вот тут сравниваем времена работы врача
-                        foreach ($greetingToCheck as $oneGreeting)
-                        {
-                            if ( strtotime($oneGreeting['patient_day']) != strtotime($oneGreetingDate)  )
-                            {
-                                continue;
-                            }
-                            // Даты отсеяли - теперь проверяем на временной промежуток
-                            if (!(
-                            (  strtotime($oneGreeting['patient_time']) >=   strtotime($ruleToCheck['greetingBegin']) )
-                            &&
-                            (   strtotime($oneGreeting['patient_time']) <   strtotime($ruleToCheck['greetingEnd'])   )
-                            ))
-                            {
-                                $greetingsIdToDelete[] = $oneGreeting['id'];
-                            }
-                         //   $greetingsIdToDelete[] = $oneGreeting['id'];
-                        }
-                    }
-                }
-            }
 
-            // отписываем приёмы, которые мы набрали
-            if (  count($greetingsIdToDelete) > 0 )
-            {
-                $result = count($greetingsIdToDelete);
-
-                // Сначала находим приёмы
-                $idsStr = implode(',',$greetingsIdToDelete);
-                $greetingsToDel = SheduleByDay::model()->findAll('id in ('. $idsStr .')');
-                foreach ($greetingsToDel as $oneGreetingToDel)
-                {
-                    $this->writeCancelledGreeting($oneGreetingToDel);
-                    SheduleByDay::model()->deleteByPk($oneGreetingToDel['id']);
+                    // Вот тут сравниваем времена работы врача
+                    foreach ($greetingToCheck as $oneGreeting)
+                    {
+                        if ( strtotime($oneGreeting['patient_day']) != strtotime($oneGreetingDate)  )
+                        {
+                            continue;
+                        }
+                        // Даты отсеяли - теперь проверяем на временной промежуток
+                        if (!(
+                        (  strtotime($oneGreeting['patient_time']) >=   strtotime($ruleToCheck['greetingBegin']) )
+                        &&
+                        (   strtotime($oneGreeting['patient_time']) <   strtotime($ruleToCheck['greetingEnd'])   )
+                        ))
+                        {
+                            $greetingsIdToDelete[] = $oneGreeting['id'];
+                        }
+                     //   $greetingsIdToDelete[] = $oneGreeting['id'];
+                    }
                 }
             }
         }
+
+        // отписываем приёмы, которые мы набрали
+        if (  count($greetingsIdToDelete) > 0 )
+        {
+            $result = count($greetingsIdToDelete);
+
+            // Сначала находим приёмы
+            $idsStr = implode(',',$greetingsIdToDelete);
+            $greetingsToDel = SheduleByDay::model()->findAll('id in ('. $idsStr .')');
+            foreach ($greetingsToDel as $oneGreetingToDel)
+            {
+                $this->writeCancelledGreeting($oneGreetingToDel);
+                SheduleByDay::model()->deleteByPk($oneGreetingToDel['id']);
+            }
+        }
+
         return $result;
     }
 
