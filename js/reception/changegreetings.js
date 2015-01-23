@@ -106,6 +106,7 @@ $(document).ready(function() {
 			'data' : {
 				'mediateonly' : 0,
                 'notBeginned': 1,
+                'isCallcenter' : globalVariables.isCallCenter ? globalVariables.isCallCenter : 0,
 				'filters' : $.toJSON(filters)
 			},
             'type' : 'GET',

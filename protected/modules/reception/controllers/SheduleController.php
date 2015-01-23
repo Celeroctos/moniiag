@@ -32,8 +32,11 @@ class SheduleController extends Controller {
         $start = $page * $rows - $rows;
 
         $greetings = $model->getGreetingsPerQrit($filters, $start, $rows,false,$notBeginnedFlag );
-
+        $greetingsAnswer = array();
         foreach($greetings as &$greeting) {
+            if($greeting['order_number'] != null && isset($_GET['isCallcenter']) && $_GET['isCallcenter']) {
+                continue;
+            }
             if($greeting['contact'] == null) {
                 if($greeting['phone'] == null) {
                     $greeting['phone'] = '';
@@ -41,10 +44,11 @@ class SheduleController extends Controller {
             } else {
                 $greeting['phone'] = $greeting['contact'];
             }
+            $greetingsAnswer[] = $greeting;
         }
 
         echo CJSON::encode(
-            array('rows' => $greetings,
+            array('rows' => $greetingsAnswer,
                 'total' => $totalPages,
                 'records' => $num,
                 'success' => true)
