@@ -71,7 +71,7 @@
         <div class="form-group">
             <label for="phoneFilter" class="col-xs-2 control-label">Номер телефона</label>
             <div class="col-xs-4">
-                <input type="text" class="form-control" id="phoneFilter" placeholder="Номер телефона" title="Номер телефона">
+                <input type="text" class="form-control" id="phoneFilter" placeholder="Номер телефона" title="Номер телефона" value="+7">
             </div>
         </div>
         <div class="form-group">

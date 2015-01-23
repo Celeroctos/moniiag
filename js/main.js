@@ -99,7 +99,7 @@ $(document).ready(function () {
     }
 
 
-    $('#contact, #phone').on('keydown', function (e) {
+    $('#contact, #phone, #phoneFilter').on('keydown', function (e) {
         // Нажатая клавиша
         var pressedKey = e.keyCode;
         // Если символ Enter или Tab - сразу возвращаем true
@@ -159,7 +159,7 @@ $(document).ready(function () {
         return true;
     });
 
-    $('#phoneFilter').on('keyup', function (e) {
+    /*$('#phoneFilter').on('keyup', function (e) {
         // Нажатая клавиша
         var pressedKey = e.keyCode;
         // Если символ Enter или Tab - сразу возвращаем true
@@ -186,7 +186,7 @@ $(document).ready(function () {
         }
 
         return true;
-    });
+    }); */
 
 
     $('#cardNumber').on('keyup', function (e) {
