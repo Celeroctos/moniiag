@@ -174,7 +174,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="createNewPatientBtn">Завести нового пациента</button>
                 <button type="button" class="btn btn-success" data-dismiss="modal">Вернуться в поиск</button>
             </div>
         </div>
