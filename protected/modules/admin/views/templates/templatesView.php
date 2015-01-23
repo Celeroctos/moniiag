@@ -17,7 +17,6 @@
     <button type="button" class="btn btn-success" id="showTemplate">Просмотр шаблона</button>
 </div>
 
-
 <? $this->widget('application.modals.admin.AddTemplate') ?>
 <? $this->widget('application.modals.admin.EditTemplate') ?>
 <? $this->widget('application.modals.admin.AddTemplateError') ?>
