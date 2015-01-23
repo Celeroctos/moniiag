@@ -72,11 +72,6 @@ $(document).ready(function() {
                     'op' : 'bw',
                     'data' : $('#cardNumber').val()
                 },
-                {
-                    'field' : 'phone',
-                    'op' : 'cn',
-                    'data' : $('#phoneFilter').val()
-                },
 				{
 					'field' : 'patient_day',
 					'op' : 'eq',
@@ -84,6 +79,15 @@ $(document).ready(function() {
 				}
             ]
         };
+
+        if($.trim($('#phoneFilter').val()) != '+7') {
+            result.rules.push({
+                'field' : 'phone',
+                'op' : 'cn',
+                'data' : $('#phoneFilter').val()
+            });
+        }
+
         return result;
     }
 	
