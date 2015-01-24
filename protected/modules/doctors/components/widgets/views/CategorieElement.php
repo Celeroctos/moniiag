@@ -84,10 +84,8 @@ if(isset($categorie['id'])) {
                                         " <span class=\"required\">*</span>");
                                 }
                                ?>
-                                <?php
-
-
-                                    echo $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
+                        <div>
+                                <?= $form->labelEx($model,'f'.$element['undotted_path'].'_'.$element['id'], array(
                                     'class' => 'control-label label-before '.(($element['type'] == 6) ? 'medcard-date' : '')
                                 )); ?>
                         	<?php
@@ -383,7 +381,9 @@ if(isset($categorie['id'])) {
                                         'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
                                     );
                                     echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
-                                    ?>
+                                    if ($element['label_after'] != null) { ?>
+                                        <label class="control-label label-after"><?php echo ' '.$element['label_after'] ?></label>
+                                    <? } ?>
                                 <?php
                                 }  if($element['type'] == 5) { // numberField
 									if (isset($element['config']['showDynamic']) && $element['config']['showDynamic']) {
@@ -505,105 +505,87 @@ if(isset($categorie['id'])) {
                                         <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
                                     <?php
                                     }
-                                }?>
+                                } else if($element['type'] == 7) {
+                                  //echo "Привет! я двухколоночный список";
+                                  // var_dump($element);
+                                  //  exit();
+                                    ?>
+                                    <div class="twoColumnList">
+                                        <?php
 
-                                <?php
-                                // Выведем двухколоночный список
-                                if (true)
-                                {
-                                    if($element['type'] == 7) {
-                                      //echo "Привет! я двухколоночный список";
-                                      // var_dump($element);
-                                      //  exit();
+                                        $sizeOfTwoColumnList = 0;
+
+                                        if(isset($element['size']) && $element['size'] != null) {
+                                            $sizeOfTwoColumnList = ($element['size'] * $lettersInPixel);
+                                        } else {
+                                            $sizeOfTwoColumnList  = (40 * $lettersInPixel);
+                                        }
+
                                         ?>
-                                        <div class="twoColumnList">
+                                        <select multiple="multiple" class="form-control twoColumnListFrom" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
                                             <?php
-
-                                            $sizeOfTwoColumnList = 0;
-
-                                            if(isset($element['size']) && $element['size'] != null) {
-                                                $sizeOfTwoColumnList = ($element['size'] * $lettersInPixel);
-                                            } else {
-                                                $sizeOfTwoColumnList  = (40 * $lettersInPixel);
+                                          /*  if (!isset($element['guide']))
+                                            {
+                                                var_dump($element);
+                                                exit();
+                                            }*/
+                                            foreach ($element['guide'] as $optionId => $oneOption)
+                                            {
+                                                // Проверим - если ли в списке выбранных текущиий опшн
+                                                //  печатаем его если только его нет
+                                                if (!isset($element['selected'][$optionId]))
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $optionId; ?>"><?php echo $oneOption;?> </option>
+                                                    <?php
+                                                }
                                             }
-
                                             ?>
-                                            <select multiple="multiple" class="form-control twoColumnListFrom" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
-                                                <?php
-                                              /*  if (!isset($element['guide']))
-                                                {
-                                                    var_dump($element);
-                                                    exit();
-                                                }*/
-                                                foreach ($element['guide'] as $optionId => $oneOption)
-                                                {
-                                                    // Проверим - если ли в списке выбранных текущиий опшн
-                                                    //  печатаем его если только его нет
-                                                    if (!isset($element['selected'][$optionId]))
-                                                    {
-                                                        ?>
-                                                        <option value="<?php echo $optionId; ?>"><?php echo $oneOption;?> </option>
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </select>
-                                            <div class="TCLButtonsContainer">
-                                            <span class = "glyphicon glyphicon-arrow-right twoColumnAddBtn"></span>
-                                            <span class = "glyphicon glyphicon-arrow-left twoColumnRemoveBtn"></span>
-                                            </div>
-                                            <select multiple="multiple" class="form-control twoColumnListTo" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
-                                                <!-- Здесь будут выбранные опции -->
-                                                <?php
-                                                foreach ($element['guide'] as $optionId => $oneOption)
-                                                {
-                                                    // А теперь наоборот - выводим только те опшины,
-                                                    //    которые помечены как выделенные
-                                                    if (isset($element['selected'][$optionId]))
-                                                    {
-                                                        ?>
-                                                        <option value="<?php echo $optionId; ?>"><?php echo $oneOption;?> </option>
-                                                        <?php
-                                                    }
-                                                }
-                                                ?>
-                                            </select>
-                                            <?php
-                                            $options = array(
-                                                'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
-                                                'class' => 'twoColumnHidden'
-                                            );
-                                            echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
-                                            ?>
+                                        </select>
+                                        <div class="TCLButtonsContainer">
+                                        <span class = "glyphicon glyphicon-arrow-right twoColumnAddBtn"></span>
+                                       <span class = "glyphicon glyphicon-arrow-left twoColumnRemoveBtn"></span>
                                         </div>
-
-
-                                        <?php
-
-
-                                        if($element['allow_add'] && $canEditMedcard) {
-                                            ?>
-                                            <button type="button" id="ba<?php
-                                            //echo '_'.$prefix.'_'.$element['guide_id'];
-                                            echo '_'.$prefix.'_'.$element['id'];
-                                            ?>" class="btnAddValue btn btn-default btn-sm">
-                                                <span class="glyphicon glyphicon-plus"></span>
-                                            </button>
-                                        <?php
-                                        }
-                                        else
-                                        {
-                                            if($element['label_after'] != null) {
-                                                ?>
-                                                <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
-                                                <?php
+                                        <select multiple="multiple" class="form-control twoColumnListTo" style="width:<?php echo $sizeOfTwoColumnList; ?>px">
+                                            <!-- Здесь будут выбранные опции -->
+                                            <?php
+                                            foreach ($element['guide'] as $optionId => $oneOption)
+                                            {
+                                                // А теперь наоборот - выводим только те опшины,
+                                                //    которые помечены как выделенные
+                                                if (isset($element['selected'][$optionId]))
+                                                {
+                                                    ?>
+                                                    <option value="<?php echo $optionId; ?>"><?php echo $oneOption;?> </option>
+                                                    <?php
+                                                }
                                             }
-                                        }
-
-
+                                            ?>
+                                        </select>
+                                        <?php
+                                        $options = array(
+                                            'id' => 'f_'.$prefix.'_'.$element['undotted_path'].'_'.$element['id'],
+                                            'class' => 'twoColumnHidden'
+                                        );
+                                        echo $form->hiddenField($model,'f'.$element['undotted_path'].'_'.$element['id'], $options);
+                                        ?>
+                                    </div>
+                                    <?php
+                                    if ($element['label_after'] != null) { ?>
+                                        <label class="control-label label-after"><?php echo $element['label_after'] ?></label>
+                                    <?php }
+                                    if($element['allow_add'] && $canEditMedcard) {
+                                        ?>
+                                        <button type="button" id="ba<?php
+                                        //echo '_'.$prefix.'_'.$element['guide_id'];
+                                        echo '_'.$prefix.'_'.$element['id'];
+                                        ?>" class="btnAddValue btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-plus"></span>
+                                        </button>
+                                    <?php
                                     }
                                 }
-                                ?>
+                                ?> </div>
                             <?php
                             if(!$element['is_wrapped'] && $counter < count($categorie['childrenElementsOrder'])) {
                                 $nextWithNewRow = false;

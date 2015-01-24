@@ -1279,6 +1279,8 @@ var TemplateEngine = TemplateEngine || {};
             this.field("categorie_id", -1);
 		}
         $("input[id^='defaultValue']").val("");
+        $('#addElementPopup form .form-group input').val("");
+        $('#addElementPopup form .form-group select').val(0);
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
 				if (info.hidden) {
@@ -2340,7 +2342,6 @@ var TemplateEngine = TemplateEngine || {};
 	// register basic templates
     collection.append(new Template(collection, "category",      "Категория",           -3));
 	collection.append(new Template(collection, "clone",         "Клонировать",         -2));
-	//collection.append(new Template(collection, "static",        "Подключить",          -1));
     collection.append(new Template(collection, "text",          "Текстовое поле",       0));
     collection.append(new Template(collection, "text-area",     "Текстовая область",    1));
     collection.append(new Template(collection, "number",        "Числовое поле",        5));

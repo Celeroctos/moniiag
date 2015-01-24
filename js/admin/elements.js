@@ -1013,11 +1013,15 @@ $('#editElementDependences').on('click', function () {
 		}
     });
 
-    $('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').keyup('change', function() {
-        calculateTableConfig(this);
+    $('#numCols, #numRows').keyup(function() {
+		calculateTableConfig(this);
+		onColsHeadersClick($(".colsHeaders")[0]);
+		onRowsHeadersClick($(".rowsHeaders")[0]);
     });
-	$('#element-edit-form #numCols, #element-edit-form #numRows, #element-add-form #numCols, #element-add-form #numRows').on('change', function() {
-        calculateTableConfig(this);
+	$('#numCols, #numRows').on('change', function() {
+		calculateTableConfig(this);
+		onColsHeadersClick($(".colsHeaders")[0]);
+		onRowsHeadersClick($(".rowsHeaders")[0]);
 	});
 
     $("#addElementPopup .btn-primary").click(function() {

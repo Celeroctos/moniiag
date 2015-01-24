@@ -38,12 +38,14 @@ class FormElementAdd extends CFormModel
             ),
             array(
                 'numberFieldMinValue, numberFieldMaxValue, numberStep, directLink', 'numerical'
+            ),
+            array(
+                'guideId', 'application.modules.admin.components.validators.GuideValidator'
             )
         );
     }
 
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return array(
             'type' => 'Тип элемента',
             'categorieId' => 'Категория',
@@ -71,6 +73,3 @@ class FormElementAdd extends CFormModel
         );
     }
 }
-
-
-?>
