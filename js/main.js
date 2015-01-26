@@ -99,11 +99,11 @@ $(document).ready(function () {
     }
 
 
-    $('#contact, #phone').on('keydown', function (e) {
+    $('#contact, #phone, #phoneFilter').on('keydown', function (e) {
         // Нажатая клавиша
         var pressedKey = e.keyCode;
         // Если символ Enter или Tab - сразу возвращаем true
-        if ((pressedKey == 13) || (pressedKey == 9)||(pressedKey == 16))
+        if (pressedKey == 13 || pressedKey == 9 || pressedKey == 16)
             return true;
 
         //var isAllow = true;
@@ -136,12 +136,9 @@ $(document).ready(function () {
 
         // Если нажатая клавиша - "+",
         //   то его нужно разрешить только в первой позиции
-        if (pressedKey == 187)
-        {
-            if ($('#contact, #phone').val()!='')
-            {return false;}
-            else
-            {return true;}
+        console.log(pressedKey);
+        if (pressedKey == 187) {
+            return !$(this).val() != '';
         }
 
         // Если клавиша - цифра
@@ -150,8 +147,7 @@ $(document).ready(function () {
 
         // Делим на подгруппы номер только в том случае, если он российский.
         //  У иностранных номеров может быть коды городов разной длины
-        if (value.substr(0,2)=='+7')
-        {
+        if (value.substr(0,2) == '+7') {
             if (value.length == 2 || value.length == 6) {
                 $(this).val(value + '-');
             }
@@ -159,50 +155,34 @@ $(document).ready(function () {
         return true;
     });
 
-    $('#phoneFilter').on('keydown', function (e) {
+    /*$('#phoneFilter').on('keyup', function (e) {
         // Нажатая клавиша
         var pressedKey = e.keyCode;
         // Если символ Enter или Tab - сразу возвращаем true
-        if ((pressedKey == 13) || (pressedKey == 9)||(pressedKey == 16))
+        if ([13, 9, 16, 8, 46, 32].indexOf(pressedKey) != -1) {
             return true;
-
-        //var isAllow = true;
-        // Значение контрола
-        var value = $(this).val();
-
-        if (pressedKey == 8 || pressedKey == 46 || pressedKey == 16)
-            return true;
-
-
-            if (pressedKey == 32)
-            {
-                return true;
-            }
-
-        // Если нажатая клавиша - "+",
-        //   то его нужно разрешить только в первой позиции
-        if (pressedKey == 187)
-        {
-            if ($('#phoneFilter').val()!='')
-            {return false;}
-            else
-            {return true;}
         }
 
-        // Если клавиша - цифра
-        if (!(pressedKey  > 47 && pressedKey  < 58) && !(pressedKey > 95 && pressedKey  < 106))
+        var value = $.trim($(this).val());
+        // Если нажатая клавиша - "+",
+        // то его нужно разрешить только в первой позиции
+        if (pressedKey == 187) {
+            return !$('#phoneFilter').val() != '';
+        }
+
+        // Если клавиша - цифра или '-'
+        if (!(pressedKey  > 47 && pressedKey  < 58) && !(pressedKey > 95 && pressedKey  < 106) && pressedKey != 189) {
             return false;
+        }
 
         // Делим на подгруппы номер только в том случае, если он российский.
         //  У иностранных номеров может быть коды городов разной длины
-       // if (value.substr(0,2)=='+7')
-      //  {
-            if ( value.length == 3) {
-                $(this).val(value + '-');
-            }
-      //  }
+        if((value.length == 3 && /^\d{3}$/.test(value)) || (value.length == 1 && value == '8') || (value.length == 2 && value == '+7')) {
+            $(this).val(value + '-');
+        }
+
         return true;
-    });
+    }); */
 
 
     $('#cardNumber').on('keyup', function (e) {
@@ -680,7 +660,7 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
     // По нажатию на кнопку "удалить" - спрашиваем подтверждение на удаление
     $('button[id^=delete]').filter(
-		':not(#deleteMedworker, #deleteTemplate)'
+		':not(#deleteMedworker, #deleteTemplate, #deleteWard)'
 	).on('click',function(e)
     {
         response = confirm ('Вы действительно хотите выполнить удаление?');

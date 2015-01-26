@@ -32,8 +32,11 @@ class SheduleController extends Controller {
         $start = $page * $rows - $rows;
 
         $greetings = $model->getGreetingsPerQrit($filters, $start, $rows,false,$notBeginnedFlag );
-
+        $greetingsAnswer = array();
         foreach($greetings as &$greeting) {
+            if($greeting['order_number'] != null && isset($_GET['isCallcenter']) && $_GET['isCallcenter']) {
+                continue;
+            }
             if($greeting['contact'] == null) {
                 if($greeting['phone'] == null) {
                     $greeting['phone'] = '';
@@ -41,10 +44,11 @@ class SheduleController extends Controller {
             } else {
                 $greeting['phone'] = $greeting['contact'];
             }
+            $greetingsAnswer[] = $greeting;
         }
 
         echo CJSON::encode(
-            array('rows' => $greetings,
+            array('rows' => $greetingsAnswer,
                 'total' => $totalPages,
                 'records' => $num,
                 'success' => true)
@@ -69,11 +73,11 @@ class SheduleController extends Controller {
                 continue;
 			}
 
-            if($filter['field'] == 'patient_day' && trim($filter['data']) == '') {
+           /* if($filter['field'] == 'patient_day' && trim($filter['data']) == '') {
                 $filter['data'] = date('Y-m-j');
                 $filter['op'] = 'ge';
                 continue;
-            }
+            } */
 
 			if(!is_array($filter['data']) && trim($filter['data']) == '') {
 				unset($filter);
@@ -112,6 +116,7 @@ class SheduleController extends Controller {
             $mediateOnly = 0;
         }
 
+
         if($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 1) {
             $dataD = CJSON::decode($_GET['doctors']);
             $dataP = CJSON::decode($_GET['patients']);
@@ -141,7 +146,6 @@ class SheduleController extends Controller {
                     )
                 )
             );
-
 
             $sheduleElements = SheduleByDay::model()->getGreetingsPerQrit($filters, false, false, $mediateOnly);
         } elseif($_GET['forDoctors'] == 1 && $_GET['forPatients'] == 0) {

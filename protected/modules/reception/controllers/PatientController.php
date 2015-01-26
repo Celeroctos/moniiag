@@ -114,8 +114,6 @@ class PatientController extends Controller {
     public function actionViewRewrite()
     {
         $this->render('rewriting', array());
-
-
     }
 
 

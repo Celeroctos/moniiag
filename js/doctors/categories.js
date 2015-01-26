@@ -1,8 +1,7 @@
 $(document).ready(function() {
 
     $.fn['categories'] = {
-        initSelectOnClick: function(controlToInit)
-        {
+        initSelectOnClick: function(controlToInit)  {
             initSelectControlClick(controlToInit);
         }
     }
@@ -77,19 +76,13 @@ $(document).ready(function() {
         if(ajaxData.success == 'true') { // Запрос прошёл удачно, закрываем окно для добавления нового предприятия, перезагружаем jqGrid
             $('#addValuePopup').modal('hide');
             $("#add-value-form")[0].reset(); // Сбрасываем форму
-            //$(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
-            //$(globalVariables.domElement).val(ajaxData.id);
             // Проверим - чем является элемент, который сохранён в globalVariables.domElement. Если - select - обрабатываем
             //    одним образом - иначе, другим
-            if (  $(globalVariables.domElement).is('select') )
-            {
+            if (  $(globalVariables.domElement).is('select') ) {
                 $(globalVariables.domElement).find('option:first').before('<option value="' + ajaxData.id + '">' + ajaxData.display + '</option>');
                 $(globalVariables.domElement).val(ajaxData.id);
-            }
-            else
-            {
-                if (  $(globalVariables.domElement).is('input') )
-                {
+            } else {
+                if (  $(globalVariables.domElement).is('input') ) {
                     // Ищем таблицу
                     $.fn[ $(globalVariables.domElement).attr('id') ].addSelected(ajaxData.id,ajaxData.display);
                 }
@@ -141,36 +134,12 @@ $(document).ready(function() {
         });
     }
 
-    // Старый код, потом выкинуть
-    /*
-    $('.accordion-inner select').each(function(index, element) {
-        var currentValue = $(element).val();
-        //$(element).on('change', function(e) {
-        $(document).on('change',element, function(e) {
-            if($(this).val() == '-3') {
-                globalVariables.domElement = element;
-                var elementId =  $(element).attr('id').substr($(element).attr('id').lastIndexOf('_') + 1);
-                $('#addGreetingComboValuePopup #controlId').val(elementId);
-                $('#addGreetingComboValuePopup').modal({});
-                $(element).val(currentValue);
-                return false;
-            } else {
-                currentValue = $(this).val();
-            }
-        });
-    });
-    */
-
-
-
     $('.accordion-inner select').each(function(index,element){
         initSelectControlClick(element);
     });
-    function initSelectControlClick(element)
-    {
+    function initSelectControlClick(element) {
         var currentValue = $(element).val();
         $(element).on('change', function(e) {
-       // $(document).on('change',element, function(e) {
             if($(this).val() == '-3') {
                 globalVariables.domElement = element;
                 var elementId = undefined;
@@ -195,93 +164,30 @@ $(document).ready(function() {
         });
     }
 
-/*
-    lastSelectValue = undefined;
-    $(document).on('click','.accordion-inner select',function()
-    {
-        lastSelectValue = $(element).val();
-    });
-
-    $(document).on('change','.accordion-inner select',function()
-    {
-            if($(this).val() == '-3') {
-                globalVariables.domElement = this;
-                var elementId = undefined;
-                if ($(this).attr('id')!=undefined)
-                {
-                    elementId =  $(this).attr('id').substr($(this).attr('id').lastIndexOf('_') + 1);
-                }
-                else
-                {
-                    // Иначе берём в родителе input
-                    hiddenInput = $($(this).parents()[0]).find('input[type=hidden]');
-                    elementIdRaw = $(hiddenInput).attr('id');
-                    elementId = elementIdRaw.substr(elementIdRaw.lastIndexOf('_')+1);
-                }
-                $('#addGreetingComboValuePopup #controlId').val(elementId);
-                $('#addGreetingComboValuePopup').modal({});
-                $(this).val(currentValue);
-                return false;
-            } else {
-                currentValue = $(this).val();
-            }
-        }
-    );*/
-
-
-
     $('.templatesListNav a').click(function (e) {
         e.preventDefault();
         var tabId = $(this).prop('id').substr(1);
         heightBefore = $(document).height();
         scrollHeightTopDifference = $(document).height() - $(document).scrollTop();
-        console.log('Высота сначала '+$(document).height());
+
         $('form#template-edit-form').find('[id^=tab]').addClass('no-display');
         $('form#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
-        console.log('Высота потом '+$(document).height());
+
         heightAfter = $(document).height();
         heightDifference = heightAfter - heightBefore;
-        console.log(heightDifference);
-        console.log('ScrollTOp до '+$(document).scrollTop());
 
-
-        if ( ($(this).parents('.templatesListNav').hasClass('templatesListNavBottom'))  )
-        {
-
+        if ( ($(this).parents('.templatesListNav').hasClass('templatesListNavBottom'))  ) {
             destinationAnchor = $('a[name=topMainTemplates]');
-            if (destinationAnchor!=undefined)
-            {
+            if (destinationAnchor!=undefined) {
                 destination = $(destinationAnchor)[0].offsetTop;
                 $('body,html').animate({
                     scrollTop: destination
                 }, 599);
             }
-
-            // Старый код. Скорее всего не понадобится
-            /*  if (heightDifference>0)
-            {
-                $(document).scrollTop($(document).scrollTop()+heightDifference);
-            }
-            else
-            {
-                $(document).scrollTop(   $(document).height() -  scrollHeightTopDifference );
-            }*/
         }
 
-        console.log('ScrollTOp после '+$(document).scrollTop());
-        // Теперь нужно сдвинуть scrollTop в плюс на разницу heightDifference
-
-
-        //$(this).tab('show')
-
-        /*allTabs = $('templatesListNav a[id^=t]');
-        // Снимаем всем класс active
-        $(allTabs).parents('li').removeClass('active');
-
-        return;*/
         tabs = $('[id=t'+ tabId +']');
-        for (i=0;i<tabs.length;i++)
-        {
+        for (i=0;i<tabs.length;i++) {
             $(tabs[i]).tab('show');
         }
     });
@@ -289,55 +195,22 @@ $(document).ready(function() {
     $('.recomTemplatesListNav a').click(function (e) {
         e.preventDefault();
         var tabId = $(this).prop('id').substr(2);
-        //heightBefore = $(document).height();
-        //scrollHeightTopDifference = $(document).height() - $(document).scrollTop();
-        //console.log('Высота сначала '+$(document).height());
+
         $('form#template-edit-form').find('[id^=rtab]').addClass('no-display');
         $('form#template-edit-form').find('#rtab' + tabId).removeClass('no-display').show(500);
-        //console.log('Высота потом '+$(document).height());
-        //heightAfter = $(document).height();
-        //heightDifference = heightAfter - heightBefore;
-        //console.log(heightDifference);
-        //console.log('ScrollTOp до '+$(document).scrollTop());
 
-
-        if ( ($(this).parents('.recomTemplatesListNav').hasClass('recomTemplatesListNavBottom'))  )
-        {
-
+        if ( ($(this).parents('.recomTemplatesListNav').hasClass('recomTemplatesListNavBottom'))  ) {
             destinationAnchor = $('a[name=topRecomTemplates]');
-            if (destinationAnchor!=undefined)
-            {
+            if (destinationAnchor !=undefined) {
                 destination = $(destinationAnchor)[0].offsetTop;
                 $('body,html').animate({
                     scrollTop: destination
                 }, 599);
             }
-
-            // Старый код. Скорее всего не понадобится
-            /*  if (heightDifference>0)
-             {
-             $(document).scrollTop($(document).scrollTop()+heightDifference);
-             }
-             else
-             {
-             $(document).scrollTop(   $(document).height() -  scrollHeightTopDifference );
-             }*/
         }
 
-        //console.log('ScrollTOp после '+$(document).scrollTop());
-        // Теперь нужно сдвинуть scrollTop в плюс на разницу heightDifference
-
-
-        //$(this).tab('show')
-
-        /*allTabs = $('templatesListNav a[id^=t]');
-         // Снимаем всем класс active
-         $(allTabs).parents('li').removeClass('active');
-
-         return;*/
         tabs = $('[id=rt'+ tabId +']');
-        for (i=0;i<tabs.length;i++)
-        {
+        for (i=0;i<tabs.length;i++) {
             $(tabs[i]).tab('show');
         }
     });

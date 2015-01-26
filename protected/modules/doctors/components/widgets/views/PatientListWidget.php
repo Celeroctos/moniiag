@@ -88,7 +88,9 @@ if (($monthOfGreeting ==$currentMonth)&&($yearOfGreeting ==$currentYear))
         <td>
             <?php 
 			if($patient['medcard_id'] != null) {
-				echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid=' . $patient['medcard_id'] . '&date=' . $filterModel->date . '&rowid=' . $patient['id'])); 
+				echo CHtml::link($patient['fio'], array('/doctors/shedule/view?cardid=' . $patient['medcard_id'] . '&date=' . $filterModel->date . '&rowid=' . $patient['id']), array(
+                    'class' => 'showPatientGreetingLink'
+                ));
 			} else {
 				echo $patient['fio'];
 			}

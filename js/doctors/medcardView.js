@@ -18,8 +18,7 @@ $(document).ready(function() {
 		var counter = 0;
 		var check = [
 			$.trim($('#docnumber').val()),
-			$.trim($('#serie').val()),
-			$.trim($('#birthday').val())
+			$.trim($('#serie').val())
 		].forEach(function(element) {
 			if(element != '') {
 				counter++;
@@ -121,20 +120,6 @@ $(document).ready(function() {
         return Result;
     }
 
-    function seeNotFoundPopup() {
-        for(var i = 0; i < searchStatus.length; i++) {
-            if(searchStatus[i] == 1) {
-                $('#mediateSubmit-cont').removeClass('no-display'); // Положительный результат, кнопку раскомментировать
-                searchStatus = [];
-                return;
-            }
-        }
-        // Если все "не найдено", показывать модалку
-        searchStatus = [];
-        $('#notFoundPopup').modal({
-        });
-    }
-
     function updatePatientWithCardsList() {
         var filters = getFilters();
 		if(!filters) {
@@ -155,14 +140,8 @@ $(document).ready(function() {
                     $('#withCardCont').addClass('no-display');
 
                     if(data.rows.length == 0) {
-                        searchStatus.push(0);
-                        if(searchStatus.length == 3) {
-                            seeNotFoundPopup();
-                        } else if(globalVariables.hasOwnProperty('isMainDoctorCab') && globalVariables.isMainDoctorCab) {  // Просмотр в режиме главврача
-							searchStatus = [];
-							$('#notFoundPopup').modal({
-							});
-						}
+                        $('#notFoundPopup').modal({
+                        });
                     } else {
                         if(data.rows.length > 0) {
                             searchStatus.push(1);
@@ -397,4 +376,64 @@ $(document).ready(function() {
 			);
 		}
 	});
+
+    function serializeParameters()
+    {
+        result = '';
+
+        if ( $('#omsNumber').length>0 && $('#omsNumber').val().length>0 )
+        {
+            result += '&newOmsNumber='+encodeURIComponent($('#omsNumber').val());
+        }
+
+
+        if ( $('#lastName').length>0 && $('#lastName').val().length>0)
+        {
+            result += '&newLastName='+encodeURIComponent($('#lastName').val());
+        }
+
+        if ( $('#firstName').length>0 && $('#firstName').val().length>0)
+        {
+            result += '&newFirstName='+encodeURIComponent($('#firstName').val());
+        }
+
+        if ( $('#middleName').length>0 && $('#middleName').val().length>0)
+        {
+            result += '&newMiddleName='+encodeURIComponent($('#middleName').val());
+        }
+
+
+        if ( $('#birthday2').length>0 && $('#birthday2').val().length>0)
+        {
+            result += '&newBirthday='+encodeURIComponent($('#birthday2').val());
+        }
+
+        if ( $('#serie').length>0 && $('#serie').val().length>0)
+        {
+            result += '&newSerie='+encodeURIComponent($('#serie').val());
+        }
+
+        if ( $('#docnumber').length>0 && $('#docnumber').val().length>0)
+        {
+            result += '&newDocnumber='+encodeURIComponent($('#docnumber').val());
+        }
+
+        if ( $('#snils').length>0 && $('#snils').val().length>0)
+        {
+            result += '&newSnils='+encodeURIComponent($('#snils').val());
+        }
+
+        if ( result.length>0)
+            result = ('?'+result.substr(1));
+
+        return result;
+    }
+
+    // Переадресация на страницу создания нового пациента
+    $('#createNewPatientBtn').on('click', function(e) {
+        // В запрос подаём данные из полей, которые мы ввели в форме, чтобы при создании пациента не вводить эти
+        //   данные заново
+        location.href = '/reception/patient/viewadd' + serializeParameters();
+    });
+
 });

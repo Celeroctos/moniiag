@@ -27,8 +27,7 @@
 		var counter = 0;
 		var check = [
 			$.trim($('#docnumber').val()),
-			$.trim($('#serie').val()),
-			$.trim($('#birthday2').val())
+			$.trim($('#serie').val())
 		].forEach(function(element) {
 			if(element != '') {
 				counter++;

@@ -11,6 +11,7 @@
     globalVariables.year = <?php echo $year; ?>;
     globalVariables.month = <?php echo $month; ?>;
     globalVariables.day = <?php echo $day; ?>;
+    globalVariables.doctorId = <?php echo $currentDoctorId; ?>;
 </script>
 <?php if (Yii::app()->user->checkAccess('canViewPatientList')) { ?>
     <div class="row">
@@ -918,3 +919,19 @@ $this->widget('application.modules.reception.components.widgets.MedcardFormWidge
     'template' => 'application.modules.reception.components.widgets.views.addressEditPopup'
 ));
 ?>
+<div class="modal fade error-popup" id="noticeLeavePopup">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Покинуть страницу?</h4>
+            </div>
+            <div class="modal-body">
+                <p>Вы переходите на другую страницу. Все несохранённые данные будут потеряны. Продолжить?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="leaveYesSubmit">Да</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -25,8 +25,7 @@
 		var counter = 0;
 		var check = [
 			$.trim($('#docnumber').val()),
-			$.trim($('#serie').val()),
-			$.trim($('#birthday2').val())
+			$.trim($('#serie').val())
 		].forEach(function(element) {
 			if(element != '') {
 				counter++;
@@ -272,6 +271,7 @@
         globalVariables.resetBeginDate = true;
         $('.organizer').trigger('resetClickedTime');
         $('.organizer').trigger('resetClickedDay');
+
         // Делаем поиск
         $.ajax({
             'url' : '/reception/doctors/search/?filters=' + $.toJSON(filters) + PaginationData,
@@ -288,7 +288,13 @@
                     if(data.data.length == 0) {
                         $('#notFoundPopup').modal({
                         });
+                        $('.organizer, .organizerNav, .organizerH').css({
+                            'display' : 'none'
+                        });
                     } else {
+                        $('.organizer, .organizerNav, .organizerH').css({
+                            'display' : 'block'
+                        });
                         if(globalVariables.hasOwnProperty('calendarType') && globalVariables.calendarType == 0) {
                             displayAllDoctors(data.data);
                         } else {
