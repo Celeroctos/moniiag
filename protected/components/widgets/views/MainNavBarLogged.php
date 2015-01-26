@@ -21,7 +21,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#">Справка</a></li>
+                <li><a href="<?php echo Yii::app()->request->baseUrl; ?>/uploads/files/userguide.pdf" target="_blank">Справка</a></li>
             </ul>
             <div class="row" id="dateInfoCont">
                 Сегодня <?php echo $weekdayDesc; ?>, <br /> <?php echo $day; ?> <?php echo $monthDesc; ?> <?php echo $year; ?> года, <?php echo $time; ?>
