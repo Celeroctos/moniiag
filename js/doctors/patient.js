@@ -5,6 +5,44 @@
     globalVariables.savingProcessing = false;
     //    флаги isUnsavedUserData и wasUserFocused работают в связке
 	showMsgs = true;
+    showLeaveNotice = false; // Show notice about leaving page
+
+    // Modal window, when page prepares to reload
+    var href = null;
+    var callback = null;
+    $(document).on('click', '.showPatientGreetingLink',  function(e) {
+        href = $(this).prop('href');
+        $('#noticeLeavePopup').modal({});
+        return false;
+    });
+
+    $('#leaveYesSubmit').on('click', function(e) {
+        if(href) {
+            location.href = href;
+        }
+        if(callback) {
+            $('#noticeLeavePopup').modal('hide');
+            callback();
+            callback = null;
+        }
+    });
+
+    $('#noticeLeavePopup .btn-default').on('click', function(e) {
+        callback = null;
+        href = null;
+        $('#noticeLeavePopup').modal('hide');
+    });
+
+    $('#noticeLeavePopup').on('click', function(e) {
+        return false;
+    });
+
+    $(document).on('click', '#change-date-form .day', function(e) {
+        $('#noticeLeavePopup').modal({});
+        e.preventDefault();
+        return false;
+    });
+
 
     $(window).on(
     'beforeunload',
@@ -347,9 +385,13 @@
         }
     }
 
+
     $("#date-cont").on('changeDate', function (e) {
-        $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
-        $('#change-date-form').submit();
+        callback = function() {
+            $('#filterDate').val(e.date.getFullYear() + '-' + (e.date.getMonth() + 1) + '-' + e.date.getDate());
+            $('#change-date-form').submit();
+        }
+        $('#noticeLeavePopup').modal({});
     });
 	
     $("#date-cont").trigger("refresh");
@@ -568,7 +610,7 @@
         }
 
         var daysWithPatients = globalVariables.patientsInCalendar;
-		$('.day-with').removeClass('day-with');
+        $('.day-with').removeClass('day-with');
         for (var i in daysWithPatients) {
             var parts = daysWithPatients[i].patient_day.split('-'); // Год-месяц-день
             if (parseInt(currentDateParts[0]) == parseInt(parts[0]) && parseInt(currentDateParts[1]) == parseInt(parts[1])) {
@@ -1539,11 +1581,20 @@ $('#nextHistoryPoint').on('click', function () {
 
 	// Смена врача
 	$('#change-doctor-form select').on('change', function(e) {
-		$('#change-doctor-form select').prop('disabled', true); 
-		// Вставляем оверлей
-		$('.overlayCont').prepend($('<div>').prop('class', 'overlay').css({'marginLeft' : '10px'}));
-		$('.changeDate-cont').prepend($('<div>').prop('class', 'overlay'));
-		$('#refreshPatientList').trigger('click');
+        $('#noticeLeavePopup').modal({});
+        var choosedDoctor = $(this).val();
+        $(this).val(globalVariables.doctorId);
+        callback = function() {
+            globalVariables.doctorId = choosedDoctor;
+            $('#change-doctor-form select')
+                .val(choosedDoctor)
+                .prop('disabled', true);
+            // Вставляем оверлей
+            $('.overlayCont').prepend($('<div>').prop('class', 'overlay').css({'marginLeft' : '10px'}));
+            $('.changeDate-cont').prepend($('<div>').prop('class', 'overlay'));
+            $('#refreshPatientList').trigger('click');
+        }
+        return false;
 	});
 	
 	// Показ комментария (скрытого)
