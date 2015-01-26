@@ -16,7 +16,6 @@ class Patient extends MisActiveRecord {
 		  'middle_name' => 'Отчество',
 		  'card_number' => 'Номер карты',
 		  'fio' => 'ФИО',
-		  'type_of_writing' => 'Тип записи',
 		  'age' => 'Возраст',
 		  'number_of_weeks' => 'Срок',
 		  'hospitalization_date' => 'Дата госпитализации'

@@ -54,7 +54,7 @@ misEngine.addToQueue(function() {
                 returnAsJson : true,
                 id : 'queueGrid',
                 model : $.toJSON(queueModel.getColumns()),
-                serverModel : 'Queue',
+                serverModel : 'HospitalizationQueue',
                 gridServerModel : 'HospitalizationQueueGrid',
                 perPage : 8
             };

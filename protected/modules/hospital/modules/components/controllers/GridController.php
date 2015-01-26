@@ -18,14 +18,11 @@ class GridController extends Controller {
             $perPage = $_GET['perPage'];
         }
 
-        $model = new $_GET['serverMovel']();
-		$model->unsetAttributes();
+        $model = new $_GET['serverModel']();
 
-        if(isset($_GET['Patient'])) {
-			$model->attributes = $_GET['Patient'];
-		}
-
-		$dataProvider = new CActiveDataProvider('Patient', array(
+//var_dump($model->attributes);
+  //      exit();
+		$dataProvider = new CActiveDataProvider($_GET['serverModel'], array(
 			'criteria' => array(
 				//'with' => array('id', 'last_name', 'first_name', 'middle_name'),
 			),
