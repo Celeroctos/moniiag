@@ -76,6 +76,23 @@ class Ward extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+
+    public function getAll() {
+        try {
+            $connection = Yii::app()->db;
+            $wards = $connection->createCommand()
+                ->select('w.*, e.shortname as enterprise_name')
+                ->from('mis.wards w')
+                ->leftJoin(Enterprise::model()->tableName().' e', 'e.id = w.enterprise_id')
+                ->order('w.name asc')
+                ->queryAll();
+
+            return $wards;
+
+        } catch(Exception $e) {
+            echo $e->getMessage();
+        }
+    }
 }
 
 ?>

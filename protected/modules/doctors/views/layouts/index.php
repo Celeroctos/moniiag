@@ -7,6 +7,7 @@
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen"  />
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/jquery.jqplot.min.css">
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.less" rel="stylesheet/less" media="screen">
+    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hospital/medical_directions_form.less" rel="stylesheet/less" media="screen">
     <script type="text/javascript">
         var globalVariables = {
             baseUrl : '<?php echo Yii::app()->request->baseUrl; ?>'
