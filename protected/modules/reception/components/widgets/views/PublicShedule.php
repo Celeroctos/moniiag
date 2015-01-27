@@ -1,5 +1,5 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/publicshedule.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js"></script>
 <div class="navbar-fixed-top" id="sheduleNavbar">
     <div class="col-xs-2">
 		<a href="http://moniiag.ru" title="МОНИИАГ" id="logo">

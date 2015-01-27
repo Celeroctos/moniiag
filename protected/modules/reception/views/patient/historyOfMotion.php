@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/reception/motionHistory.js" ></script>
 <span id = 'oms-id' class = 'no-display'><?php echo ($omsid)?></span>
 <h4>История медицинской карты</h4>

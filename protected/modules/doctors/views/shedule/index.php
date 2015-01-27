@@ -4,7 +4,7 @@
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/tablecontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/twocolumncontrol.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/ajaxbutton.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js"></script>
 <script type="text/javascript">
     globalVariables.patientsInCalendar = <?php echo $patientsInCalendar; ?>;
     globalVariables.reqDiagnosis = <?php echo CJSON::encode($requiredDiagnosis); ?>;

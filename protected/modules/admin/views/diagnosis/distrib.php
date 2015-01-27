@@ -2,7 +2,7 @@
 <p>Раздел предназначен для редактирования выделения среди "любимых" диагнозов тех, по которым можно искать подходящего врача при записи пациента.</p>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/diagnosis_distrib.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/mkb10.js"></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <table id="diagnosiss"></table>
 <div id="diagnosissPager"></div>

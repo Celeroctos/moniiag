@@ -14,8 +14,8 @@
             }
         }
     </style>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/less-1.4.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/less-1.4.1.min.js"></script>
+    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-1.10.2.min.js"></script>
     <style>
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;

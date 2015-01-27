@@ -1,4 +1,4 @@
-<script type="text/javascript" src="/assets/libs/jquery-json.js"></script>
+<script type="text/javascript" src="/js/libs/jquery-json.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/guides/insurances.js"></script>
 <table id="insurances"></table>

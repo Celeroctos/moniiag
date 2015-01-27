@@ -1,21 +1,21 @@
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/src/i18n/grid.locale-ru.js" ></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jqGrid/js/jquery.jqGrid.src.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jqGrid/src/i18n/grid.locale-ru.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jqGrid/js/jquery.jqGrid.src.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/doctors/monitoringPatients.js" ></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/chooser.js"></script>
 
 <!-- Поключаем plot -->
-<!--script language="javascript" type="text/javascript" src="/assets/libs/plot/jquery.min.js"></script-->
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/jquery.jqplot.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.dateAxisRenderer.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.dateAxisRenderer.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.canvasTextRenderer.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.canvasTextRenderer.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.cursor.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.highlighter.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.pointLabels.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.barRenderer.min.js"></script>
-<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/plot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<!--script language="javascript" type="text/javascript" src="/js/libs/plot/jquery.min.js"></script-->
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/jquery.jqplot.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.dateAxisRenderer.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.canvasTextRenderer.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.cursor.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.highlighter.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.pointLabels.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.barRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
 
 <!-- -->
 

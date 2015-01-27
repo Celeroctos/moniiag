@@ -1,6 +1,6 @@
-<link href="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/fileuploader/style.css" rel="stylesheet" type="text/css" media="screen"  />
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/jquery-json.js" ></script>
-<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/assets/libs/fileuploader/script.js" ></script>
+<link href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/fileuploader/style.css" rel="stylesheet" type="text/css" media="screen"  />
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js" ></script>
+<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/fileuploader/script.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/fileuploader.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/tablechooser.js" ></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/tasu.js" ></script>
