@@ -20,6 +20,7 @@ class MedcardContentWidget extends CWidget {
         //var_dump($this->historyPoints);
         //exit();
         if($this->medcard) {
+            $greeting = SheduleByDay::model()->findByPk($this->currentSheduleId);
             echo $this->render('application.modules.doctors.components.widgets.views.MedcardContentWidget', array(
                 'medcard' => $this->medcard,
                 'historyPoints' => $this->historyPoints,
@@ -32,7 +33,9 @@ class MedcardContentWidget extends CWidget {
                 'currentDate' => date('Y-m-d h:m'),
                 'doctorComment' => $this->doctorComment,
                 'numberDoctorComments' => $this->numberDoctorComments,
-                'addCommentModel' => $this->addCommentModel
+                'addCommentModel' => $this->addCommentModel,
+                'currentDoctorId' => $greeting ? $greeting->doctor_id : null,
+                'currentOmsId' => $this->medcard['policy_id']
             ));
         }
     }

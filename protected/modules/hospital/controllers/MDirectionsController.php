@@ -20,15 +20,37 @@ class MDirectionsController extends Controller {
             ));
         }
 
-        // Create patient from data, if not exists
-        $patient = new Patient();
-        $patient->getPatient($model);
+        $oms = Oms::model()->findByPk($model->omsId);
+        if(!$oms) {
+            throw new Exception('Нет ОМС с ID = '.$model->omsId);
+        }
 
-        $answer = array();
+        // Create patient from data, if not exists
+        $patientModel = new Patient();
+        $patient = $patientModel->getPatient($model, $oms);
+        // Create medical direction for patient
+        $mDirection = new MDirection();
+        $mDirection = $mDirection->create($patient, $model);
+
         echo CJSON::encode(array(
-            'success' => true,
-            'data' => $answer
+            'success' => true
         ));
+    }
+
+    public function actionGet($omsId = false) {
+        if(!$omsId) {
+            // Get all directions
+        } else {
+            $patientPerOms = Patient::model()->find('oms_id = :oms_id', array(':oms_id' => $omsId));
+            if(!$patientPerOms) {
+                throw new Exception('Пациент с ОМС ID = '.$omsId.' не найден ');
+            }
+            $directions = MDirection::model()->findAllPerPatientId($patientPerOms->id);
+            echo CJSON::encode(array(
+                'success' => true,
+                'directions' => $directions
+            ));
+        }
     }
 }
 

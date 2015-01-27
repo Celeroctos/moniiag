@@ -6,10 +6,9 @@
         </div>
         <div class="accordion-body collapse in" id="collapseD">
             <div class="accordion-inner">
-                <div class="directionsList">
-                    <div class="cont">
-                        <a href="#">На госпитализацию в МОНИИАГ</a>
-                    </div>
+                <div class="directionsList overlayCont">
+                    <ul class="cont">
+                    </ul>
                     <div class="btns">
                         <button type="button" id="toHospitalizationBtn" class="btn btn-success">На госпитализацию</button>
                         <button type="button" id="toConsultationBtn" class="btn btn-success">На консультацию</button>
@@ -28,6 +27,14 @@
                             )
                         ));
                     ?>
+
+                    <?php echo $form->hiddenField($model, 'omsId', array(
+                        'id' => 'directionOmsId',
+                        'value' => $currentOmsId
+                    )); ?>
+                    <?php echo $form->hiddenField($model, 'doctorId', array(
+                        'value' => $currentDoctorId
+                    )); ?>
                     <div class="form-group col-xs-12">
                         <?php echo $form->labelEx($model,'type', array(
                             'class' => 'col-xs-5 control-label'
@@ -49,11 +56,11 @@
                         </div>
                     </div>
                     <div class="form-group col-xs-12">
-                        <?php echo $form->labelEx($model,'ward', array(
+                        <?php echo $form->labelEx($model,'wardId', array(
                             'class' => 'col-xs-5 control-label'
                         )); ?>
                         <div class="col-xs-7">
-                            <?php echo $form->dropDownList($model, 'ward', $wardsList, array(
+                            <?php echo $form->dropDownList($model, 'wardId', $wardsList, array(
                                 'class' => 'form-control'
                             )); ?>
                         </div>

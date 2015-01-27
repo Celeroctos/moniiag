@@ -1,6 +1,12 @@
 <?php
 
 class Patient extends MisActiveRecord {
+    public function __construct($scenario = 'insert') {
+        parent::__construct($scenario);
+    }
+    public static function model($className=__CLASS__) {
+        return parent::model($className);
+    }
 
 	public function tableName() {
 		return 'hospital.patient';
@@ -26,8 +32,10 @@ class Patient extends MisActiveRecord {
         );
         // Creates, if not exists
         if(!$result) {
-            $this->createPatient($formModel, $oms);
+            $result = $this->createPatient($formModel, $oms);
         }
+
+        return $result;
     }
 
     public function createPatient($formModel, $oms) {
@@ -40,6 +48,8 @@ class Patient extends MisActiveRecord {
         if(!$patient->save()) {
             throw new Exception();
         }
+var_dump($patient->primaryKey);
+        exit();
         return $patient;
      }
 }

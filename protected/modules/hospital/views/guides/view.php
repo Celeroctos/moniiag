@@ -9,7 +9,7 @@
     <div class="guidesTable col-xs-12">
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="queue">
-                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader2.gif" width="256" height="30" alt="Загружается..." />
+                <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/ajax-loader2.gif" width="256" height="30" alt="Загружается..." class="ajaxLoader"  />
             </div>
         </div>
     </div>

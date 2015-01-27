@@ -9,6 +9,9 @@ class MisActiveRecord extends CActiveRecord {
      * @param $fieldAliases - массив алиасов полей
      * @subGroupOp - субгрупповой оператор в формате 'Оператор' => 'Поле'
      */
+    public function __construct($scenario = 'insert') {
+        parent::__construct($scenario);
+    }
 
     protected function getSearchConditions($conn, $filters, $multipleFields, $aliases, $fieldAliases, $subGroupOp = array()) {
         foreach($filters['rules'] as $index => $filter) {

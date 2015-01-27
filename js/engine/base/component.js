@@ -5,7 +5,6 @@
 		},
 		
 		render : function() {
-            console.log(this);
             if(!this.config.renderConfig) {
 				misEngine.t('Not found renderConfig property. Rendering is not aviable');
 				return -1;

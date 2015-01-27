@@ -1,4 +1,5 @@
 <?php
+
      $columns[] = array(
         'class' => 'CButtonColumn',
         'template' => '{update}&nbsp;{delete}',

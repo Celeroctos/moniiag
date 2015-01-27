@@ -20,8 +20,6 @@ class GridController extends Controller {
 
         $model = new $_GET['serverModel']();
 
-//var_dump($model->attributes);
-  //      exit();
 		$dataProvider = new CActiveDataProvider($_GET['serverModel'], array(
 			'criteria' => array(
 				//'with' => array('id', 'last_name', 'first_name', 'middle_name'),

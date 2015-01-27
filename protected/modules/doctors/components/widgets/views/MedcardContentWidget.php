@@ -49,8 +49,13 @@
         </div>
     </div>
 </div>
+
 <!-- Секция направлений -->
-<?php $this->widget('application.modules.hospital.components.widgets.MedicalDirectionsForm'); ?>
+<?php
+    $this->widget('application.modules.hospital.components.widgets.MedicalDirectionsForm', array(
+        'currentOmsId' => $currentOmsId,
+        'currentDoctorId' => $currentDoctorId
+    )); ?>
 <!-- Секция комментарии -->
 <div id="accordionC" class="accordion col-xs-12">
     <div class="accordion-group">

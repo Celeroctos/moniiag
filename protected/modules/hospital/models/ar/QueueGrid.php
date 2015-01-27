@@ -1,5 +1,5 @@
 <?php
-class HospitalizationGrid extends MisActiveRecord {
+class QueueGrid extends MisActiveRecord {
 	public $defaultPageSize = 10;
 
     public static function model($className=__CLASS__) {
@@ -7,7 +7,7 @@ class HospitalizationGrid extends MisActiveRecord {
     }
 
     public function tableName() {
-        return 'hospital.hospitalization_grid';
+        return 'hospital.comission_grid';
     }
     public function primaryKey() {
         return 'id';
@@ -16,6 +16,10 @@ class HospitalizationGrid extends MisActiveRecord {
         return array(
             'id' => 'ID'
         );
+    }
+
+    public function getConnection() {
+        return Yii::app()->db;
     }
 }
 ?>

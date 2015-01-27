@@ -43,7 +43,10 @@ misEngine.addToQueue(function() {
 			var queueGrid = misEngine.create('component.grid');
 			var queueGridRequestData = { 
 				returnAsJson : true,
-				id : 'queueGrid'
+                model : $.toJSON(this.getQueueModel().getColumns()),
+				id : 'queueGrid',
+                serverModel : 'QueueGrid',
+                gridServerModel : 'QueueGridView'
 			};
 			
 			queueGrid
@@ -77,7 +80,10 @@ misEngine.addToQueue(function() {
 			var comissionGrid = misEngine.create('component.grid');
 			var comissionGridRequestData = { 
 				returnAsJson : true,
-				id : 'comissionGrid'
+                model : $.toJSON(this.getComissionModel().getColumns()),
+				id : 'comissionGrid',
+                serverModel : 'ComissionGrid',
+                gridServerModel : 'ComissionGridView'
 			};
 			
 			comissionGrid
@@ -111,7 +117,10 @@ misEngine.addToQueue(function() {
 			var hospitalizationGrid = misEngine.create('component.grid');
 			var hospitalizationGridRequestData = { 
 				returnAsJson : true,
-				id : 'hospitalizationGrid'
+                model : $.toJSON(this.getHospitalizationModel().getColumns()),
+				id : 'hospitalizationGrid',
+                serverModel : 'HospitalizationGrid',
+                gridServerModel : 'HospitalizationGridView'
 			};
 			
 			hospitalizationGrid
@@ -145,7 +154,10 @@ misEngine.addToQueue(function() {
 			var historyGrid = misEngine.create('component.grid');
 			var historyGridRequestData = { 
 				returnAsJson : true,
-				id : 'historyGrid'
+				id : 'historyGrid',
+                model : $.toJSON(this.getHistoryModel().getColumns()),
+                serverModel : 'HistoryGrid',
+                gridServerModel : 'HistoryGridView'
 			};
 			
 			historyGrid
@@ -174,6 +186,66 @@ misEngine.addToQueue(function() {
 				.render()
 				.on();
 		},
+
+        getQueueModel : function() {
+            var model = misEngine.create('component.model').setConfig({
+                columns : [
+                    {
+                        name: 'id',
+                        type: 'raw'
+                    }
+                ]
+            });
+            return model;
+        },
+
+        getComissionModel : function() {
+            var model = misEngine.create('component.model').setConfig({
+                columns : [
+                    {
+                        name : 'direction_id',
+                        type : 'raw'
+                    },
+                    {
+                        name : 'fio',
+                        type : 'raw'
+                    },
+                    {
+                        name : 'ward_name',
+                        type : 'raw'
+                    },
+                    {
+                        name : 'birthday',
+                        type : 'raw'
+                    }
+                ]
+            });
+            return model;
+        },
+
+        getHospitalizationModel : function() {
+            var model = misEngine.create('component.model').setConfig({
+                columns : [
+                    {
+                        name : 'id',
+                        type : 'raw'
+                    }
+                ]
+            });
+            return model;
+        },
+
+        getHistoryModel : function() {
+            var model = misEngine.create('component.model').setConfig({
+                columns : [
+                    {
+                        name : 'id',
+                        type : 'raw'
+                    }
+                ]
+            });
+            return model;
+        },
 		
 		init : function() {
 			this.displayDatetimepickers();

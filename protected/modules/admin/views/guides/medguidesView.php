@@ -15,14 +15,8 @@
         <button type="button" class="btn btn-default" id="deleteMedGuide">Удалить запись</button>
     </div>
 
-<<<<<<< HEAD
-    <? $this->widget("application.modals.admin.templates.AddMedGuide"); ?>
-    <? $this->widget("application.modals.admin.templates.AddMedGuideError"); ?>
-    <? $this->widget("application.modals.admin.templates.EditMedGuide"); ?>
-=======
     <?php $this->widget("application.modals.admin.templates.AddMedGuide"); ?>
     <?php $this->widget("application.modals.admin.templates.AddMedGuideError"); ?>
     <?php $this->widget("application.modals.admin.templates.EditMedGuide"); ?>
->>>>>>> ad39ad672c8dcd2bd7088bb798980c66486cc6ca
 
 <?php endif; ?>
