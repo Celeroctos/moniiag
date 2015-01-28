@@ -1289,11 +1289,12 @@ class PatientController extends Controller {
         if(isset($_POST['FormPatientWithCardAdd'])) {
             $model->attributes = $_POST['FormPatientWithCardAdd'];
             if($model->doctype == 1) { // Паспорт
-                $this->validatePassport($model);
+                $validRes = $this->validatePassport($model);
             }
             if($model->doctype == 1 || $model->validate()) {
                 $medcard = Medcard::model()->findByPk($_POST['FormPatientWithCardAdd']['cardNumber']);
-                $this->addEditModelMedcard($medcard, $model);
+                $oms = Oms::model()->findByPk($medcard->policy_id);
+                $this->addEditModelMedcard($medcard, $model, $oms);
 
                 if($model->privilege != -1) {
                     $patientPrivelege = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
@@ -1363,6 +1364,22 @@ class PatientController extends Controller {
 
     // Добавление медкарты
     private function addEditModelMedcard($medcard, $model, $oms = false) {
+        // Проверяем, есть документ с такими данными
+        if($oms) {
+            $issetDocument = Medcard::model()->getByDocuments($model, $oms);
+            if(count($issetDocument) > 0) {
+                echo CJSON::encode(
+                    array('success' => 'false',
+                        'errors' => array(
+                            'serie' => array(
+                                'Документ, указанный в форме, уже присутствует у другого человека!'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+        }
         // Добавление карты: нет id
 		if($medcard->card_number == null) { // Совсем новая карта
 		//	Yii::app()->user->setState('savedCardNumber', -1);
