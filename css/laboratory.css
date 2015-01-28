@@ -30,3 +30,8 @@
         transform:rotate(360deg);
     }
 }
+
+.refresh-button {
+    font-size: 25px;
+    cursor: pointer;
+}

@@ -1,12 +1,12 @@
 <?php
 
-class TestForm extends LComponent {
+class TestForm extends LFormModel {
 
     /**
      * Override that method to return model configuration
      * @return array - Model
      */
-    public function model() {
+    public function config() {
         return [
             "name" => [
                 "label" => "Название категории",
@@ -17,7 +17,7 @@ class TestForm extends LComponent {
                 "label" => "Категория-родитель",
                 "type" => "DropDown",
                 "rules" => "required, numerical",
-                "format" => "%{id}: %{name} (%{path})",
+                "format" => "%{id} - %{name} (%{path})",
                 "data" => MedcardCategorie::model()->findAll()
             ],
             "position" => [

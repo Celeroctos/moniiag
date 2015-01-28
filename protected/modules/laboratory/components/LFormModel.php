@@ -13,6 +13,14 @@ abstract class LFormModel extends CFormModel {
     public abstract function config();
 
     /**
+     * Override that method to return configuration for widget
+     * @return array - Configuration for widget to render
+     */
+    public function view() {
+        return [];
+    }
+
+    /**
      * Construct table with configuration build
      * @param array|null $config - Array with model's configuration
      */

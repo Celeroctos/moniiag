@@ -15,12 +15,21 @@
                 <?=$this->body?>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><?= "Закрыть" ?></button>
-                <? if ($this->buttons != null): ?>
-                    <? foreach ($this->buttons as $i => $button): ?>
-                        <button <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="button" class="<?=$button["class"]?>"><?=$button["text"]?></button>
-                    <? endforeach; ?>
-                <? endif; ?>
+                <table width="100%">
+                <tr>
+                <td align="left">
+                    <span class="glyphicon glyphicon-refresh refresh-button"></span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= "Закрыть" ?></button>
+                    <? if ($this->buttons != null): ?>
+                        <? foreach ($this->buttons as $i => $button): ?>
+                            <button <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="button" class="<?=$button["class"]?>"><?=$button["text"]?></button>
+                        <? endforeach; ?>
+                    <? endif; ?>
+                </td>
+                </tr>
+                </table>
             </div>
         </div>
     </div>

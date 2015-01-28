@@ -69,6 +69,34 @@ class LController extends Controller {
             return $widget->run(true);
         }
         $widget->run(false);
+        return null;
+    }
+
+    /**
+     * Decode url and convert it into array
+     * @param string $url - Encoded url
+     * @return array - Array with values
+     */
+    public function decode($url) {
+        $result = [];
+        if (!is_string($url)) {
+            return null;
+        }
+        $url = urldecode($url);
+        $array = explode("&", $url);
+        foreach ($array as $str) {
+            $match = [];
+            preg_match("/\\[[a-zA-Z0-9_]+\\]/", $str, $match);
+            if (!count($match)) {
+                continue;
+            }
+            $value = substr($str, strpos($str, "=") + 1);
+            if ($value === false) {
+                $value = "";
+            }
+            $result[substr($match[0], 1, strlen($match[0]) - 2)] = $value;
+        }
+        return $result;
     }
 
     /**
@@ -88,6 +116,9 @@ class LController extends Controller {
 
             if (isset($_GET["model"])) {
                 $model = $this->getAndUnset("model");
+                if (is_string($model)) {
+                    $model = $this->decode($model);
+                }
             } else {
                 $model = null;
             }
@@ -105,7 +136,7 @@ class LController extends Controller {
             $widget = $this->createWidget($class, $parameters);
 
             if (!($widget instanceof LWidget)) {
-                throw new LError("Can't update widget that don't extends LWidget component");
+                throw new LError("Can't update widget which don't extends LWidget component");
             }
 
             // Copy model parameters if exists
@@ -118,7 +149,8 @@ class LController extends Controller {
 
             $this->leave([
                 "id" => isset($widget->id) ? $widget->id : null,
-                "component" => $widget->run(true)
+                "component" => $widget->run(true),
+                "model" => $model
             ]);
         } catch (Exception $e) {
             $this->exception($e);

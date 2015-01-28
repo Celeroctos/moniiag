@@ -48,12 +48,29 @@ var Laboratory = Laboratory || {};
     };
 
     /**
+     * Override that method to provide some actions before update
+     */
+    Laboratory.Component.prototype.before = function() {
+        /* Ignored */
+    };
+
+    /**
+     * Override that method to provide some actions after update
+     */
+    Laboratory.Component.prototype.after = function() {
+        /* Ignored */
+    };
+
+    /**
      * Set/Get component's jquery selector
      * @param [selector] {jQuery} - New jquery to set
      * @returns {jQuery} - Component's jquery
      */
     Laboratory.Component.prototype.selector = function(selector) {
         if (arguments.length > 0) {
+            if (!selector.data("laboratory")) {
+                selector.data("laboratory", this);
+            }
             this._selector = selector;
         }
         return this._selector;
@@ -85,11 +102,11 @@ var Laboratory = Laboratory || {};
      * new, activate it and append to previous parent
      */
     Laboratory.Component.prototype.update = function() {
-        var parent = this.selector().parent();
-        this.selector().remove();
-        this.selector(
-            this.render()
-        ).appendTo(parent);
+        this.before();
+        this.selector().replaceWith(
+            this.selector(this.render())
+        );
+        this.after();
         this.activate();
     };
 
@@ -152,6 +169,15 @@ var Laboratory = Laboratory || {};
      */
     String.prototype.startsWidth = function(prefix) {
         return this.indexOf(prefix, 0) !== -1;
+    };
+
+    /**
+     * Generate url based on Yii's base url
+     * @param url {string} - Relative url
+     * @returns {string} - Absolute url
+     */
+    window.url = function(url) {
+        return window["globalVariables"]["baseUrl"] + url;
     };
 
 })(Laboratory);

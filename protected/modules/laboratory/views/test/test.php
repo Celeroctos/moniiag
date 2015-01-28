@@ -9,4 +9,6 @@
  * @var $this LController
  */
 
-$this->widget("TestForm");
+$this->widget("LModalComponent", [
+    "model" => new TestForm()
+]);

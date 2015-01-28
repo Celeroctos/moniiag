@@ -1,11 +1,10 @@
 <?php
 
-class LModal extends LWidget {
+class LPanel extends LWidget {
 
     public $title = null;
     public $id = null;
     public $body = null;
-    public $buttons = null;
 
     public function run($return = false) {
         if ($this->body instanceof LWidget) {

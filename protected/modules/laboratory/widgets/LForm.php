@@ -12,16 +12,41 @@ class LForm extends LWidget {
      */
     public $model = null;
 
+    /**
+     * Override that method to return just rendered component
+     * @param bool $return - If true, then widget shall return rendered component else it should print to output stream
+     * @throws CException
+     * @return string - Just rendered component or nothing
+     */
     public function run($return = false) {
-
         if (!$this->model || !($this->model instanceof LFormModel)) {
             throw new CException("Unresolved model field or form model isn't instance of LFormModel");
         }
-
-        return $this->render(__CLASS__, [
+        return $this->render(__CLASS__, $this->model->view() + [
             "model" => $this->model,
             "class" => __CLASS__
         ], $return);
+    }
+
+    /**
+     * Format every data field with specific format, it will get data format field's
+     * from model
+     * @param String $format - String with data format, for example ${id} or ${surname}
+     * @param Array $data - Array with data to format
+     */
+    private function format($format, array& $data) {
+        foreach ($data as $i => &$value) {
+            $model = clone $value;
+            $matches = [];
+            preg_match_all("/%\\{([a-zA-Z_]+)\\}/", $format, $matches);
+            $value = $format;
+            if (!count($matches)) {
+                continue;
+            }
+            foreach ($matches[1] as $m) {
+                $value = preg_replace("/%\\{([({$m})]+)\\}/", $model[$m], $value);
+            }
+        }
     }
 
     /**
@@ -54,18 +79,7 @@ class LForm extends LWidget {
         }
 
         if (isset($config["format"])) {
-            $format = $config["format"];
-            foreach ($data as $i => &$value) {
-                $model = clone $value;
-                $matches = [];
-                preg_match_all("/%\\{([a-zA-Z_]+)\\}/", $format, $matches);
-                $value = $format;
-                if (count($matches) > 0) {
-                    foreach ($matches[1] as $m) {
-                        $value = preg_replace("/%\\{([({$m})]+)\\}/", $model[$m], $value);
-                    }
-                }
-            }
+            $this->format($config["format"], $data);
         }
 
         if (isset($config["label"])) {
@@ -140,7 +154,6 @@ class LForm extends LWidget {
                 break;
             case "radio":
                 $result = $form->radioButton($this->model, $key, [
-                    'value' => $label,
                     'id' => $key,
                     'class' => 'form-control',
                     'value' => $value

@@ -2,7 +2,7 @@
 
 abstract class LComponent extends LForm {
 
-    public $model;
+    public $model = null;
 
     /**
      * Construct component
@@ -56,8 +56,7 @@ abstract class LComponent extends LForm {
     }
 
     /**
-     * Renders a view.
-     * The named view refers to a PHP script (resolved via {@link getViewFile})
+     * Renders a view. The named view refers to a PHP script (resolved via {@link getViewFile})
      * that is included by this method. If $data is an associative array,
      * it will be extracted as PHP variables and made available to the script.
      * @param string $view - Name of the view to be rendered. See {@link getViewFile} for details
@@ -68,8 +67,8 @@ abstract class LComponent extends LForm {
      * @throws CException - If the view does not exist
      * @see getViewFile
      */
-    public final function render($view, $data = null, $return = false) {
-        return parent::render("LForm", $data, $return);
+    public function render($view, $data = null, $return = false) {
+        return parent::render($view, $data, $return);
     }
 
     /**
