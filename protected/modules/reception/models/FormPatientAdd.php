@@ -51,7 +51,7 @@ class FormPatientAdd extends FormMisDefault
                                 'lastName, firstName, gender, birthday, doctype, addressReg, address, contact, omsType, status, privilege', 'required'
             ),
             array(
-                'policy, workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden, omsSeries, cardNumber, policyGivedate, ', 'safe'
+                'policy, workPlace, workAddress, post, snils, invalidGroup, middleName, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, policyEnddate, addressRegHidden, addressHidden, omsSeries, cardNumber, policyGivedate, serie, docnumber', 'safe'
             ),
 			array(
 				'snils', 'SNILSValidator'

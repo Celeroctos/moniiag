@@ -36,7 +36,7 @@ class FormPatientWithCardAdd extends FormMisDefault
                   'doctype, addressReg, address, contact, privilege', 'required'
             ),
             array(
-                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId, addressRegHidden, addressHidden', 'safe'
+                'workPlace, workAddress, post, snils, invalidGroup, policy, cardNumber, privDocname, privDocnumber, privDocserie, privDocGivedate, profession, mediateId, addressRegHidden, addressHidden, serie,docnumber', 'safe'
             ),
             array(
                 'snils', 'SNILSValidator'
