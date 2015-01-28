@@ -80,6 +80,14 @@ $(document).ready(function () {
         }
     });
 
+
+    $('#doctype').on('change', function(e) {
+        // Passport
+        if($(this).val() == 1) {
+            $(this).parents('form').find('#serie').val('');
+        }
+    });
+
     // При загрузке - если поле "контактные данные" пусто - надо поставить код России в начале в этом поле
     if ($('#contact, #phone').length > 0)
     {
