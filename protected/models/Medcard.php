@@ -124,6 +124,7 @@ class Medcard extends MisActiveRecord  {
             ->leftJoin('mis.oms o', 'm.policy_id = o.id')
             ->where("REPLACE(m.serie, ' ', '') = :serie", array(':serie' => str_replace(' ', '', $formModel->serie)))
             ->andWhere("REPLACE(m.docnumber, ' ', '') = :docnumber", array(':docnumber' => str_replace(' ', '', $formModel->docnumber)))
+            ->andWhere("m.doctype = :doctype", array(':doctype' => $formModel->doctype))
             ->andWhere('(UPPER(o.first_name) != :first_name
                 OR UPPER(o.last_name) != :last_name
                 OR UPPER(o.middle_name) != :middle_name
