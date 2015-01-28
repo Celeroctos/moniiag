@@ -40,9 +40,6 @@ class FormPatientWithCardAdd extends FormMisDefault
             ),
             array(
                 'snils', 'SNILSValidator'
-            ),
-            array(
-                'serie, docnumber', 'SerialNumberValidator'
             )
         );
     }

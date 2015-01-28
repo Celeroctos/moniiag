@@ -57,9 +57,6 @@ class FormPatientAdd extends FormMisDefault
 				'snils', 'SNILSValidator'
 				),
 			array(
-				'serie,docnumber', 'SerialNumberValidator'
-			),
-			array(
 				'lastName', 'FamilyValidator'
 			),
 		    array(
