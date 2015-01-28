@@ -712,17 +712,19 @@ class PatientController extends Controller {
         // На момент создания пациента не должно быть идентичного с номером СНИЛС и паспортом (серии + номер)
         $medcardSearched = null;
         if(trim($model->snils) != '') {
-            $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie)', array(
+            $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie AND doctype = :doctype)', array(
                 ':snils' => $model->snils,
                 ':docnumber' => $model->docnumber,
-                ':serie' => $model->serie)
+                ':serie' => $model->serie,
+                ':doctype' => $model->doctype)
             );
         } else {
             if (!(($model->docnumber=='')&&($model->serie=='')))
             {
-                $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
+                $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie AND doctype = :doctype', array(
                     ':docnumber' => $model->docnumber,
-                    ':serie' => $model->serie)
+                    ':serie' => $model->serie,
+                    ':doctype' => $model->doctype)
                 );
             }
         }
@@ -902,23 +904,15 @@ class PatientController extends Controller {
         $seriesNumber = str_replace(array(' ', '-'), '',  $seriesNumber);
         $oms->oms_series_number = $seriesNumber;
 
-        // Это скорее всего не надо будет
-        // Если у полиса тип постоянный - надо вставить пробел между 6-ым и 7-ым символом
-        /*if ($oms->type == 5)
-        {
-            $oms->oms_number = substr($oms->oms_number,0,6).' '.substr($oms->oms_number,6,10);
-        }*/
-
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
-
-        //var_dump();
 
         // Надо перевести ФИО в верхний регистр
         $oms->first_name = mb_strtoupper($oms->first_name, 'utf-8');
         $oms->last_name = mb_strtoupper($oms->last_name, 'utf-8');
         $oms->middle_name = mb_strtoupper($oms->middle_name, 'utf-8');
+
         if(!$oms->save()) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи нового полиса.'));
