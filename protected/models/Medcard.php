@@ -130,10 +130,10 @@ class Medcard extends MisActiveRecord  {
                 OR UPPER(o.middle_name) != :middle_name
                 OR o.birthday != :birthday)',
                 array(
-                    ':first_name' => $oms->first_name,
-                    ':last_name' => $oms->last_name,
-                    ':middle_name' => $oms->middle_name,
-                    ':birthday' => $oms->birthday
+                    ':first_name' => is_array($oms) ? $oms['first_name'] : $oms->first_name,
+                    ':last_name' => is_array($oms) ? $oms['last_name'] : $oms->last_name,
+                    ':middle_name' => is_array($oms) ? $oms['middle_name'] : $oms->middle_name,
+                    ':birthday' => is_array($oms) ? $oms['birthday'] :  $oms->birthday
                 )
             );
 
