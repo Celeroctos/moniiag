@@ -56,7 +56,7 @@ $(document).ready(function () {
 
 
     // Filter on serie and passport number
-    $('#serie').on('keydown', function(e) {
+    $('#patient-medcard-edit-form, #patient-withoutcard-form, #patient-withcard-form').find('#serie').on('keydown', function(e) {
         // Only in this form..
         var pressedKey = e.keyCode;
         var doctypeField = $(this).parents('form').find('#doctype');
@@ -73,7 +73,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#serie').on('keyup', function(e) {
+    $('#patient-medcard-edit-form, #patient-withoutcard-form, #patient-withcard-form').find('#serie').on('keyup', function(e) {
         var doctypeField = $(this).parents('form').find('#doctype');
         if(doctypeField.length > 0 && doctypeField.val() == 1 && $(this).val().length == 2 && e.keyCode != 8) {
             $(this).val($(this).val() + ' ');
