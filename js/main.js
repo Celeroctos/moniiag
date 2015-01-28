@@ -17,39 +17,7 @@ $(document).ready(function () {
         });
     };
 
-   /* $('#patient-search-form #omsNumber, #policy').keyfilter(/^[\s\d\-/]*$/);
-    // --- Begin 17.06.2014 ---
-    $('#patient-search-form #omsNumber, #policy').on('keydown', function(e) {
-        if($(this).val().length >= 16 && e.keyCode != 8 && e.keyCode != 46) {
-            if($(this).val().length == 16 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
-                return true;
-            }
-            return false;
-        }
-    });*/
-
-
-  /*  $('#docnumber').on('keydown', function(e) {
-        if($(this).val().length >= 6 && e.keyCode != 8 && e.keyCode != 46) {
-            if($(this).val().length == 6 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
-                return true;
-            }
-            return false;
-        }
-    });*/
-    /*
-    $('#serie').on('keydown', function(e) {
-        if($(this).val().length >= 4 && e.keyCode != 8 && e.keyCode != 46) {
-            if($(this).val().length == 4 && (e.keyCode == 13 || e.keyCode == 9 || e.keyCode == 8)) {
-                return true;
-            }
-            return false;
-        }
-    });*/
-    // --- End 17.06.2014 ---
-
     $('#firstName, #lastName, #middleName').keyfilter(/^[А-Яа-яЁёa-zA-Z\-]*$/);
-  //  $('#serie, #docnumber').keyfilter(/^[А-Яа-яЁёa-zA-Z\-\d\s]*$/);
 
     $('#snils').on('keyup', function (e) {
         var value = $(this).val();
@@ -87,6 +55,31 @@ $(document).ready(function () {
     });
 
 
+    // Filter on serie and passport number
+    $('#serie').on('keydown', function(e) {
+        // Only in this form..
+        var pressedKey = e.keyCode;
+        var doctypeField = $(this).parents('form').find('#doctype');
+        if(doctypeField.length > 0 && doctypeField.val() == 1) {
+            if([8, 9, 13, 16, 46].indexOf(pressedKey) != -1) {
+                return true;
+            }
+
+            if($(this).val().length != 2 && $(this).val().length < 5 && ((pressedKey  > 47 && pressedKey  < 58) || (pressedKey > 95 && pressedKey  < 106))) {
+                return true;
+            }
+
+            return false;
+        }
+    });
+
+    $('#serie').on('keyup', function(e) {
+        var doctypeField = $(this).parents('form').find('#doctype');
+        if(doctypeField.length > 0 && doctypeField.val() == 1 && $(this).val().length == 2 && e.keyCode != 8) {
+            $(this).val($(this).val() + ' ');
+        }
+    });
+
     // При загрузке - если поле "контактные данные" пусто - надо поставить код России в начале в этом поле
     if ($('#contact, #phone').length > 0)
     {
@@ -95,9 +88,7 @@ $(document).ready(function () {
         {
             $('#contact').val('+7');
         }
-
     }
-
 
     $('#contact, #phone, #phoneFilter').on('keydown', function (e) {
         // Нажатая клавиша
@@ -106,13 +97,11 @@ $(document).ready(function () {
         if (pressedKey == 13 || pressedKey == 9 || pressedKey == 16)
             return true;
 
-        //var isAllow = true;
         // Значение контрола
         var value = $(this).val();
 
         // Если телефон - российский, то разрешаем длину в 14 символов
-        if (value.substr(0,2)=='+7')
-        {
+        if (value.substr(0,2)=='+7') {
             //разрешаем длину в 14 символов
             if (value.length == 14 && !(pressedKey == 8 ||pressedKey == 37 || pressedKey == 39|| pressedKey == 46)) {
                 // Переводим фокус на следующий элемент
@@ -126,17 +115,12 @@ $(document).ready(function () {
             return true;
 
         // Если номер не российский и длина значения больше 2, то разрешаем ставить пробелы
-        if (value.substr(0,2)!='+7' && value.length>=2)
-        {
-            if (pressedKey == 32)
-            {
-                return true;
-            }
+        if (value.substr(0,2)!='+7' && value.length>=2 && pressedKey == 32) {
+            return true;
         }
 
         // Если нажатая клавиша - "+",
         //   то его нужно разрешить только в первой позиции
-        console.log(pressedKey);
         if (pressedKey == 187) {
             return !$(this).val() != '';
         }
@@ -155,47 +139,14 @@ $(document).ready(function () {
         return true;
     });
 
-    /*$('#phoneFilter').on('keyup', function (e) {
-        // Нажатая клавиша
-        var pressedKey = e.keyCode;
-        // Если символ Enter или Tab - сразу возвращаем true
-        if ([13, 9, 16, 8, 46, 32].indexOf(pressedKey) != -1) {
-            return true;
-        }
-
-        var value = $.trim($(this).val());
-        // Если нажатая клавиша - "+",
-        // то его нужно разрешить только в первой позиции
-        if (pressedKey == 187) {
-            return !$('#phoneFilter').val() != '';
-        }
-
-        // Если клавиша - цифра или '-'
-        if (!(pressedKey  > 47 && pressedKey  < 58) && !(pressedKey > 95 && pressedKey  < 106) && pressedKey != 189) {
-            return false;
-        }
-
-        // Делим на подгруппы номер только в том случае, если он российский.
-        //  У иностранных номеров может быть коды городов разной длины
-        if((value.length == 3 && /^\d{3}$/.test(value)) || (value.length == 1 && value == '8') || (value.length == 2 && value == '+7')) {
-            $(this).val(value + '-');
-        }
-
-        return true;
-    }); */
-
 
     $('#cardNumber').on('keyup', function (e) {
-        if ($(this).val().indexOf('\\')>=0)
-        {
+        if ($(this).val().indexOf('\\')>=0) {
             $(this).val(  $(this).val().replace('\\', '/')  );
         }
     });
 
     // Паспорт (номер)
-  //  $('#docnumber').keyfilter(/^[\d]+$/);
-    // Номер карты
-   // $('#cardNumber').keyfilter(/[\d\\]+/);
     $('#cardNumber').keyfilter(/^[\d]*([\\\/][\d]*){0,1}$/);
 
     this.initColorFields([
@@ -229,13 +180,11 @@ $(document).ready(function () {
 				location.href = ajaxData.data;
 			}
         } else if (ajaxData.success == 'notFoundLogin' ||ajaxData.success == 'wrongPassword' ) {
-            if (ajaxData.success == 'notFoundLogin')
-            {
+            if (ajaxData.success == 'notFoundLogin') {
                 globalVariables.wrongLogin = true;
             }
 
-            if (ajaxData.success == 'wrongPassword')
-            {
+            if (ajaxData.success == 'wrongPassword') {
                 globalVariables.wrongPassword = true;
             }
 
@@ -247,30 +196,28 @@ $(document).ready(function () {
 }
 });
 
-	$("#choose-employee-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
-		var ajaxData = $.parseJSON(ajaxData);
-		if(ajaxData.success == 'true') { 
-			location.href = ajaxData.data;
-		} else {
-			// TODO
-		}
-	});
+$("#choose-employee-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
+    var ajaxData = $.parseJSON(ajaxData);
+    if(ajaxData.success == 'true') {
+        location.href = ajaxData.data;
+    } else {
+        // TODO
+    }
+});
 
-    $('#loginNotFoundPopup').on('hidden.bs.modal',function(){
-        // Если неправильный логин - выделяем логин
-        if(globalVariables.wrongLogin)
-        {
-            $('#login').focus();
-        }
+$('#loginNotFoundPopup').on('hidden.bs.modal',function(){
+    // Если неправильный логин - выделяем логин
+    if(globalVariables.wrongLogin) {
+        $('#login').focus();
+    }
 
-        // Если не правильный пароль - выделяем пароль
-        if(globalVariables.wrongPassword)
-        {
-            $('#password').focus();
-        }
-        // В остальных случаях - ничего не делаем, отдыхаем
+    // Если не правильный пароль - выделяем пароль
+    if(globalVariables.wrongPassword) {
+        $('#password').focus();
+    }
+    // В остальных случаях - ничего не делаем, отдыхаем
 
-    });
+});
 
 // Форма разлогина
 $("#logout-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
@@ -279,11 +226,6 @@ $("#logout-form").on('success', function (eventObj, ajaxData, status, jqXHR) {
 
 // Показ подсказки по фокусу на поле
 $('input').on('focus', function (e) {
-
-    // Из-за этого рубится событие клик
-    //$('.help-block').hide();
-
-
     var helpBlock = $(this).parents('.form-group').find('.help-block');
     if (typeof helpBlock != 'undefined') {
         if ($(helpBlock).length > 0) {
@@ -297,10 +239,6 @@ $('input').on('focus', function (e) {
 $('div.date:not(.date-timetable)').addClass('date-control');
 $('div.time-control').removeClass('date-control');
 
-/* Панель быстрого доступа */
-$('#quickPanel').css({
-//'display' : 'none'
-});
 $('#quickPanelArrow').on('click', function () {
     $('#recycleBin-cont').css('display', 'none');
     $('#quickPanel').slideToggle(500, function () {
@@ -333,8 +271,6 @@ $('#recycleBin-cont img').droppable().on('drop', function (event, ui) {
             if (data.success == true) {
                 $(ui.draggable).parent().remove();
                 removeMode = true;
-            } else {
-
             }
         }
     });
@@ -434,8 +370,6 @@ $('#quickPanel').droppable({
     }
 });
 
-// $('#mainSideMenu li img').each(dragInit);
-
 function dragInit(index, element) {
     $(element).draggable();
     var parent = $(element).parent(); // Это Li
@@ -470,15 +404,6 @@ function dragInit(index, element) {
         });
     }
 }
-
-/* Tooltips */
-/*$('input[type="text"]').tooltip({
-'trigger' : 'focus',
-'delay': {
-'show': 200,
-'hide': 200
-}
-});*/
 
 $('#fontPlus').on('click', function (e) {
     var fontSize = parseInt($('.sampleLetterSize').css('font-size'));
@@ -517,42 +442,10 @@ $('#fontMinus').on('click', function (e) {
     });
 });
 
-$('select[multiple="multiple"]').each(function(index, combo) {
-	/* var beforeClicked = $(combo).val() != null ? $(combo).val() : [];
-	$(combo).find('option').each(function(index2, option) {
-		$(option).on('click', function(e) {
-			var optionValue = $(option).prop('value');
-			for(var i = 0; i < beforeClicked.length; i++) {
-				if(optionValue == beforeClicked[i]) {
-					beforeClicked.splice(i, 1);
-					$(combo).val(beforeClicked);
-					return false;
-				}
-			}
-			beforeClicked.push(optionValue);
-			$(combo).val(beforeClicked);
-			return false;
-		});
-		$(option).on('mousedown', function(e) {
-			var toVal = beforeClicked.concat([$(this).val()]);
-			$(combo).val(toVal);
-		});
-	}); */
-});
-
-$('select[multiple="multiple"]').each(function(index, select) {
-	/*$(select).on('scroll', function(e) {
-		console.log(select);
-		e.stopPropagation();
-		return false;
-	});*/ 
-});
-    $('.buttonUpContainer').click(function () {
+$('.buttonUpContainer').click(function () {
         // Смотрим - есть ли у this класс "backWardButton"
-        if ($(this).hasClass('backWardButton'))
-        {
-            if (globalVariables.lastScrollTop>0)
-            {
+        if ($(this).hasClass('backWardButton'))  {
+            if (globalVariables.lastScrollTop>0) {
                 globalVariables.notChangeNavButton = true;
                 // Ставим на setTimeOut чтобы после перевода состояния сделать кнопку "Наверх"
                 setTimeout(
@@ -574,11 +467,8 @@ $('select[multiple="multiple"]').each(function(index, select) {
                 }, 599);
             }
 
-        }
-        else
-        {
+        } else {
             globalVariables.lastScrollTop = $(window).scrollTop();
-
             globalVariables.notChangeNavButton = true;
             setTimeout(
                 function (){
@@ -597,7 +487,6 @@ $('select[multiple="multiple"]').each(function(index, select) {
             $('body,html').animate({
                 scrollTop: 0
             }, 599);
-
         }
         return false;
     });
@@ -689,26 +578,6 @@ $('select[multiple="multiple"]').each(function(index, select) {
 
             }
         });
-
-        /*
-         function showIndicators(cont)
-         {
-         $(cont).animate({
-         'left' : '0'
-         }, 500, function() {
-         $(cont).find('.panel-arrow span').removeClass('glyphicon-expand').addClass('glyphicon-collapse-down');
-         });
-         }
-
-         function closeIndicators(cont)
-         {
-         $(cont).animate({
-         'left' : '-250px'
-         }, 500, function() {
-         $(cont).find('.panel-arrow span').removeClass('glyphicon-collapse-down').addClass('glyphicon-expand');
-         });
-         }
-         */
 
         wasLoadedMessages = false;
         function refreshIndicators()
@@ -839,15 +708,8 @@ $('select[multiple="multiple"]').each(function(index, select) {
     [
     ];
     $(document).on('keydown' ,function(e){
-        if ((e.keyCode==13 || e.keyCode==9) && (!e.ctrlKey))
-        {
-            //console.log('Нажата клавиша Enter');
-            //console.log(e.currentTarget);
-            //console.log($(':focus'));
-
-
+        if ((e.keyCode==13 || e.keyCode==9) && (!e.ctrlKey)) {
             // Смотрим что в фокусе - если
-            //focusedElement = $($(':focus')[0]);
             focusedElement = $(document.activeElement);
             // Дальше может быть следующее развитие ситуации.
             //   Если в фокусе такой элемент, который не должен засабмитить форму, то нужно перекинуть
@@ -859,18 +721,10 @@ $('select[multiple="multiple"]').each(function(index, select) {
             // Если кнопка в форме одна - и она в фокусе то она вызывает сабмит
             containingForm = $(focusedElement).parents('form');
 
-            if (e.keyCode==13)
-            {
-
-                //buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
-
+            if (e.keyCode==13){
                 // Если в фокусе форма логина пароля
-                if ($(containingForm).length>0)
-                {
-                    if ( $($(containingForm)[0]).attr('id')=='login-form' )
-                    {
-                        $($(containingForm)[0]).find('input[type=submit]').click();
-                    }
+                if ($(containingForm).length>0 && $($(containingForm)[0]).attr('id')=='login-form') {
+                    $($(containingForm)[0]).find('input[type=submit]').click();
                 }
 
                 buttons = $(containingForm).find('input[type=submit], input[type=button], button:not(.accordion-clone-btn)');
@@ -1071,9 +925,9 @@ $('select[multiple="multiple"]').each(function(index, select) {
 					systemFuncs.checkOnlineData(); 
 				}, systemFuncs.checkOnlineDataTime);
 			}
-		},
+		}
 	});
 	
 	
 });
-// pre
+
