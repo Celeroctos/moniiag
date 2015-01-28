@@ -637,6 +637,24 @@ class PatientController extends Controller {
         }
     }
 
+    // Дополнительная валидация на паспорт
+    public function validatePassport($model) {
+        // Валидатор для поля типа "Паспорт"
+        Yii::import('ext.validators.PassportValidator');
+        $passValidator = CValidator::createValidator('PassportValidator', new PassportValidator(), 'serie, docnumber');
+        $passValidator->validate($model, array('serie', 'docnumber'));
+        if($model->hasErrors()) {
+            echo CJSON::encode(
+                array(
+                    'success' => 'false',
+                    'errors' => $model->errors
+                )
+            );
+
+            exit();
+        }
+    }
+
     // Добавление пациента
     public function actionAdd() {
         $model = new FormPatientAdd();
@@ -1270,7 +1288,10 @@ class PatientController extends Controller {
         $model = new FormPatientWithCardAdd();
         if(isset($_POST['FormPatientWithCardAdd'])) {
             $model->attributes = $_POST['FormPatientWithCardAdd'];
-            if($model->validate()) {
+            if($model->doctype == 1) { // Паспорт
+                $this->validatePassport($model);
+            }
+            if($model->doctype == 1 || $model->validate()) {
                 $medcard = Medcard::model()->findByPk($_POST['FormPatientWithCardAdd']['cardNumber']);
                 $this->addEditModelMedcard($medcard, $model);
 
