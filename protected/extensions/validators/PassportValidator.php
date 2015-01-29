@@ -5,13 +5,9 @@ class PassportValidator extends CValidator
 
 	protected function validateAttribute($object,$attribute) {
 		$value = $object->$attribute;
-		if($this->isEmpty($value)) {
+		if($this->isEmpty($value) || !$this->validateValue($value)) {
+            $this->addError($object,$attribute,Yii::t('yii', 'Недопустимый символ в поле {attribute}, либо поле пусто.'));
 			return false;		
-		}
-
-		if(!$this->validateValue($value)){
-			$this->addError($object,$attribute,Yii::t('yii', 'Недопустимый символ в поле {attribute}'));
-			return false;
 		}
 
 		return true;

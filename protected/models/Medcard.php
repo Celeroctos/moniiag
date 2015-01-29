@@ -116,4 +116,28 @@ class Medcard extends MisActiveRecord  {
         return $medcards->queryAll();
     }
 
+    public function getByDocuments($formModel, $oms) {
+        $connection = Yii::app()->db;
+        $medcards = $connection->createCommand()
+            ->select('m.*, o.*')
+            ->from('mis.medcards m')
+            ->leftJoin('mis.oms o', 'm.policy_id = o.id')
+            ->where("REPLACE(m.serie, ' ', '') = :serie", array(':serie' => str_replace(' ', '', $formModel->serie)))
+            ->andWhere("REPLACE(m.docnumber, ' ', '') = :docnumber", array(':docnumber' => str_replace(' ', '', $formModel->docnumber)))
+            ->andWhere("m.doctype = :doctype", array(':doctype' => $formModel->doctype))
+            ->andWhere('(UPPER(o.first_name) != :first_name
+                OR UPPER(o.last_name) != :last_name
+                OR UPPER(o.middle_name) != :middle_name
+                OR o.birthday != :birthday)',
+                array(
+                    ':first_name' => is_array($oms) ? $oms['first_name'] : $oms->first_name,
+                    ':last_name' => is_array($oms) ? $oms['last_name'] : $oms->last_name,
+                    ':middle_name' => is_array($oms) ? $oms['middle_name'] : $oms->middle_name,
+                    ':birthday' => is_array($oms) ? $oms['birthday'] :  $oms->birthday
+                )
+            );
+
+        return $medcards->queryAll();
+    }
+
 }

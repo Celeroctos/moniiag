@@ -637,6 +637,24 @@ class PatientController extends Controller {
         }
     }
 
+    // Дополнительная валидация на паспорт
+    public function validatePassport($model) {
+        // Валидатор для поля типа "Паспорт"
+        Yii::import('ext.validators.PassportValidator');
+        $passValidator = CValidator::createValidator('PassportValidator', new PassportValidator(), 'serie, docnumber');
+        $passValidator->validate($model, array('serie', 'docnumber'));
+        if($model->hasErrors()) {
+            echo CJSON::encode(
+                array(
+                    'success' => 'false',
+                    'errors' => $model->errors
+                )
+            );
+
+            exit();
+        }
+    }
+
     // Добавление пациента
     public function actionAdd() {
         $model = new FormPatientAdd();
@@ -694,17 +712,19 @@ class PatientController extends Controller {
         // На момент создания пациента не должно быть идентичного с номером СНИЛС и паспортом (серии + номер)
         $medcardSearched = null;
         if(trim($model->snils) != '') {
-            $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie)', array(
+            $medcardSearched = Medcard::model()->find('snils = :snils OR (docnumber = :docnumber AND serie = :serie AND doctype = :doctype)', array(
                 ':snils' => $model->snils,
                 ':docnumber' => $model->docnumber,
-                ':serie' => $model->serie)
+                ':serie' => $model->serie,
+                ':doctype' => $model->doctype)
             );
         } else {
             if (!(($model->docnumber=='')&&($model->serie=='')))
             {
-                $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie', array(
+                $medcardSearched = Medcard::model()->find('docnumber = :docnumber AND serie = :serie AND doctype = :doctype', array(
                     ':docnumber' => $model->docnumber,
-                    ':serie' => $model->serie)
+                    ':serie' => $model->serie,
+                    ':doctype' => $model->doctype)
                 );
             }
         }
@@ -884,23 +904,15 @@ class PatientController extends Controller {
         $seriesNumber = str_replace(array(' ', '-'), '',  $seriesNumber);
         $oms->oms_series_number = $seriesNumber;
 
-        // Это скорее всего не надо будет
-        // Если у полиса тип постоянный - надо вставить пробел между 6-ым и 7-ым символом
-        /*if ($oms->type == 5)
-        {
-            $oms->oms_number = substr($oms->oms_number,0,6).' '.substr($oms->oms_number,6,10);
-        }*/
-
         if(trim($model->policyEnddate) != '') {
             $oms->enddate = $model->policyEnddate;
         }
-
-        //var_dump();
 
         // Надо перевести ФИО в верхний регистр
         $oms->first_name = mb_strtoupper($oms->first_name, 'utf-8');
         $oms->last_name = mb_strtoupper($oms->last_name, 'utf-8');
         $oms->middle_name = mb_strtoupper($oms->middle_name, 'utf-8');
+
         if(!$oms->save()) {
             echo CJSON::encode(array('success' => 'false',
                                      'error' => 'Произошла ошибка записи нового полиса.'));
@@ -1270,9 +1282,13 @@ class PatientController extends Controller {
         $model = new FormPatientWithCardAdd();
         if(isset($_POST['FormPatientWithCardAdd'])) {
             $model->attributes = $_POST['FormPatientWithCardAdd'];
-            if($model->validate()) {
+            if($model->doctype == 1) { // Паспорт
+                $validRes = $this->validatePassport($model);
+            }
+            if($model->doctype == 1 || $model->validate()) {
                 $medcard = Medcard::model()->findByPk($_POST['FormPatientWithCardAdd']['cardNumber']);
-                $this->addEditModelMedcard($medcard, $model);
+                $oms = Oms::model()->findByPk($medcard->policy_id);
+                $this->addEditModelMedcard($medcard, $model, $oms);
 
                 if($model->privilege != -1) {
                     $patientPrivelege = PatientPrivilegie::model()->findAll('patient_id = :patient_id', array(':patient_id' => $medcard->policy_id));
@@ -1342,6 +1358,22 @@ class PatientController extends Controller {
 
     // Добавление медкарты
     private function addEditModelMedcard($medcard, $model, $oms = false) {
+        // Проверяем, есть документ с такими данными
+        if($oms) {
+            $issetDocument = Medcard::model()->getByDocuments($model, $oms);
+            if(count($issetDocument) > 0) {
+                echo CJSON::encode(
+                    array('success' => 'false',
+                        'errors' => array(
+                            'serie' => array(
+                                'Документ, указанный в форме, уже присутствует у другого человека!'
+                            )
+                        )
+                    )
+                );
+                exit();
+            }
+        }
         // Добавление карты: нет id
 		if($medcard->card_number == null) { // Совсем новая карта
 		//	Yii::app()->user->setState('savedCardNumber', -1);
