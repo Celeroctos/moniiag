@@ -170,8 +170,8 @@ $(document).ready(function() {
         heightBefore = $(document).height();
         scrollHeightTopDifference = $(document).height() - $(document).scrollTop();
 
-        $('form#template-edit-form').find('[id^=tab]').addClass('no-display');
-        $('form#template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
+        $('form.template-edit-form').find('[id^=tab]').addClass('no-display');
+        $('form.template-edit-form').find('#tab' + tabId).removeClass('no-display').show(500);
 
         heightAfter = $(document).height();
         heightDifference = heightAfter - heightBefore;
@@ -196,10 +196,10 @@ $(document).ready(function() {
         e.preventDefault();
         var tabId = $(this).prop('id').substr(2);
 
-        $('form#template-edit-form').find('[id^=rtab]').addClass('no-display');
-        $('form#template-edit-form').find('#rtab' + tabId).removeClass('no-display').show(500);
+        $('form.template-edit-form').find('[id^=rtab]').addClass('no-display');
+        $('form.template-edit-form').find('#rtab' + tabId).removeClass('no-display').show(500);
 
-        if ( ($(this).parents('.recomTemplatesListNav').hasClass('recomTemplatesListNavBottom'))  ) {
+        if (($(this).parents('.recomTemplatesListNav').hasClass('recomTemplatesListNavBottom'))  ) {
             destinationAnchor = $('a[name=topRecomTemplates]');
             if (destinationAnchor !=undefined) {
                 destination = $(destinationAnchor)[0].offsetTop;

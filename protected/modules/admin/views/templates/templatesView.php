@@ -1,4 +1,4 @@
-<?php $this->widget('application.modules.admin.components.widgets.DoctorCardTabMenu') ?>
+<?php $this->widget('application.modules.admin.components.widgets.DoctorCardTabMenu');  ?>
 
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/jquery-ui-1.11.2.js"></script>
 <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/admin/nestable.js"></script>

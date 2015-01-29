@@ -796,18 +796,6 @@ class SheduleController extends Controller {
             // Записать, что пациент принят
             $sheduleElement = SheduleByDay::model()->findByPk($_GET['id']);
             if($sheduleElement != null) {
-                // Проверим - установлен ли первичый диагноз. Если нет - выводим сообщение
-                $primaryDiagnosis = PatientDiagnosis::model()->findDiagnosis($_GET['id'], 0);
-                if ($_GET['needDiagnosis']=='1')
-                {
-                    if (count($primaryDiagnosis) == 0){
-                        echo CJSON::encode(array('success' => false,
-                            'needdiagnose' => true,
-                            'text' => 'Введите основной диагноз!'));
-                        return;
-                    }
-                }
-
                 $sheduleElement->is_accepted = 1;
                 $sheduleElement->time_end = date('h:j');
                 // Записать статус медкарты: медкарта вернулась обратно в регистратуру

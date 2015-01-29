@@ -44,44 +44,21 @@
     });
 
 
-    $(window).on(
-    'beforeunload',
-    function () {
+    $(window).on('beforeunload', function (e) {
         // Если есть несохранённые данные - спрашиваем, нужно ли их сохранить
-        if (globalVariables.isUnsavedUserData==true)
-        {
-            return 'В приёме остались несохранённые данные. Если Вы хотите их сохранить - нажмите "остаться на странице" и сохраните данные.';
-        }
-        else
-        {
-            return;
-        }
-    }
-    );
+        return globalVariables.isUnsavedUserData ? 'В приёме остались несохранённые данные. Если Вы хотите их сохранить - нажмите "остаться на странице" и сохраните данные.' : '';
+    });
 
     globalVariables.numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
-    $("#template-edit-form").on('complete', function (eventObj, dataFromQuery, status, jqXHR) {
-        console.log("savingCompleted");
-        var ajaxData = {'success':false};
-        try
-        {
-            ajaxData = $.parseJSON(dataFromQuery);
-        }
-        catch (e)
-        {
-
-        }
-        onSectionSave(ajaxData);
+    $(".template-edit-form").on('success', function (eventObj, dataFromQuery, status, jqXHR) {
+        onSectionSave($.parseJSON(dataFromQuery));
     });
 
     globalVariables.isSavingErrors = false;
     // Вызывается при событии сохранения одной секции приёма (шаблона или диагнозов)
-    function onSectionSave(ajaxData)
-    {
-        console.log(ajaxData);
-
-        if (ajaxData.success == undefined || ajaxData.success!=true) {
+    function onSectionSave(ajaxData) {
+        if(!ajaxData.success) {
             // Поднимаем флаг, что есть ошибки
             globalVariables.isSavingErrors = true;
         }
@@ -102,12 +79,10 @@
             getNewHistory();
 
             // Проверка на то, есть ли ошибки
-            if (! globalVariables.isSavingErrors)
-            {
+            if (!globalVariables.isSavingErrors) {
                 if (isThisPrint) {
                     onSaveComplete();
-                }
-                else {
+                } else {
                     //  $('#medcardContentSave').trigger('end');
                     if(showMsgs) {
                         $('#successEditPopup').modal({});
@@ -116,9 +91,7 @@
                         setTimeout(autoSave, 30000);
                     }
                 }
-            }
-            else
-            {
+            } else  {
                 if(showMsgs || isThisPrint) {
                     // Выводим сообщение, что произошла какая-то ошибка
                     alert ('Извините, при сохранении произошли ошибки. Попробуйте ещё раз сохранить приём');
@@ -191,14 +164,9 @@
     }
 
 	function onSaveComplete() {
-        if(typeof printHandler != 'undefined') {
-            printHandler = 'print-greeting-link';
-        }
-
         if (printHandler == 'print-greeting-link') {
             $('.activeGreeting .' + printHandler).trigger('print');
-        }
-        else {
+        } else {
             if (printHandler == 'print-recomendation-link') {
                 $('.' + printHandler).trigger('print');
             } else {
@@ -228,17 +196,18 @@
                     var hisArr = data;
                     var historyContainer = $('#accordionH .accordion-inner div:first');
                     $('#accordionH .accordion-inner').text('');
-                    console.log(hisArr);
                     for (i = hisArr.length - 1; i >= 0; i--) { // (идём в обратном порядке)
                         var newDiv = $('<div>');
-                        $(newDiv).append($('<a>').prop('href',
-                                '#' + globalVariables.medcardNumber + '_' + hisArr[i].greeting_id +'_'+ hisArr[i].template_id).attr(
-                                'class', 'medcard-history-showlink').text(hisArr[i].date_change + ' - ' + hisArr[i].template_name));
+                        $(newDiv).append(
+                            $('<a>')
+                                .prop('href', '#' + globalVariables.medcardNumber + '_' + hisArr[i].greeting_id +'_'+ hisArr[i].template_id)
+                                .attr('class', 'medcard-history-showlink')
+                                .text(hisArr[i].date_change + ' - ' + hisArr[i].template_name)
+                        );
                         var historyContainer = $('#accordionH .accordion-inner div:first');
                         if (historyContainer.length == 0) {
                             $('#accordionH .accordion-inner').append(newDiv);
-                        }
-                        else {
+                        } else {
                             $('#accordionH .accordion-inner div:first').before(newDiv);
                         }
                     }
@@ -248,7 +217,6 @@
         });
     }
     $('#medcardContentSave, #sideMedcardContentSave').on('click', function (e) {
-       // $(this).trigger('begin');
         isThisPrint = false;
         printHandler = 'accept-greeting-link';
         onStartSave();
@@ -295,32 +263,29 @@
     });
 
     // Метод, который выполняет только сохранение. Его использовать при вызове сохранения
-    function onStartSave(overlaySuck) // overlaySuck - флаг, нужен ли оверлей
-    {
-        if (globalVariables.savingProcessing==true) {
+    function onStartSave(overlaySuck) { // overlaySuck - флаг, нужен ли оверлей
+        if (globalVariables.savingProcessing) {
             return;
         }
 
         globalVariables.savingProcessing = true;
-        // Сделаем бекдроп
-        // Show the backdrop
-        if (overlaySuck==undefined || overlaySuck==false) {
-            $('<div class="modal-backdrop fade in backDropForSaving"></div>').appendTo(document.body);
-        }
 
         // Берём кнопки с классом
         var buttons = $('div.submitEditPatient');
-        var buttonsContainers = $('div.submitEditPatient').parents('form#template-edit-form');
+        var buttonsContainers = $('div.submitEditPatient').parents('form.template-edit-form');
         var isError = false;
+
         // Очищаем поп-ап с ошибками
         $('#errorPopup .modal-body .row').html("");
-        // Перебираем формы
-
         // Если кнопок нет - сразу вызываем функцию
-        if (buttonsContainers.length==0) {
-            $(".backDropForSaving").remove();
+        if (buttonsContainers.length == 0) {
             onSaveComplete();
         } else {
+            // Show the backdrop
+            if (!overlaySuck) {
+                $('<div class="modal-backdrop fade in backDropForSaving"></div>').appendTo(document.body);
+            }
+
             for (var i = 0; i < buttonsContainers.length; i++) {
                 // Имеем i-тую форму, контролы которой надо провалидировать
                 var controlElements = $(buttonsContainers[i]).find('div.form-group:not(.submitEditPatient)').filter(function(index) {
@@ -379,6 +344,7 @@
             }
             else {
                 // Вызываем сабмит всех кнопок
+                console.log($(buttons).find('input[type="submit"]'));
                 $(buttons).find('input[type="submit"]').click();
                 $('#submitDiagnosis').click();
             }
@@ -404,13 +370,13 @@
     expandSelectTimer = null;
     selectToExpand = null;
 
-    $('form[id=template-edit-form] select[multiple]').mouseenter(
+    $('form.template-edit-form select[multiple]').mouseenter(
         function(e) {
             onActivate(this);
         }
     );
 
-    $('form[id=template-edit-form] select[multiple]').mousemove(
+    $('form.template-edit-form select[multiple]').mousemove(
         function(e) {
             onActivate(this);
         }
@@ -426,7 +392,7 @@
         }
     }
 
-    $(document).on('focus','form[id=template-edit-form] select[multiple]',
+    $(document).on('focus','form.template-edit-form select[multiple]',
         function(e){
            expandSelect();
         }
@@ -442,7 +408,7 @@
         }
     }
 
-    $(document).on('blur','form[id=template-edit-form] select[multiple]',
+    $(document).on('blur','form.template-edit-form select[multiple]',
         function(e)
         {
             // Нужно удалить расширение
@@ -452,7 +418,7 @@
         }
     );
 
-    $('form[id=template-edit-form] select[multiple]').mouseleave(
+    $('form.template-edit-form select[multiple]').mouseleave(
         function(e)
         {
             clearTimeout(expandSelectTimer);
@@ -510,14 +476,14 @@
         elementUnderCursorOld = elementUnderCursor;
     }
 
-    $(document).on('mouseenter','form[id=template-edit-form] select[multiple]',
+    $(document).on('mouseenter','form.template-edit-form select[multiple]',
         function(e) {
             isCursorInElement = true;
             elementUnderCursor = this;
         }
     );
 
-    $(document).on('mouseleave','form[id=template-edit-form] select[multiple]',
+    $(document).on('mouseleave','form.template-edit-form select[multiple]',
         function(e)
         {
             isCursorInElement = false;
@@ -528,7 +494,7 @@
     oldClientX = 0;
     oldClientY = 0;
 
-    $(document).on('mousemove','form[id=template-edit-form] select[multiple]',
+    $(document).on('mousemove','form.template-edit-form select[multiple]',
         function(e) {
             if  (
                 ( (oldClientX- e.clientX>10 )||(oldClientY- e.clientY>10 ) )
@@ -551,7 +517,7 @@
         }
     );
 
-    $('form[id=template-edit-form] select').on('keydown',
+    $('form.template-edit-form select').on('keydown',
         function(e)
         {
             // Если кнопка delete
@@ -621,24 +587,9 @@
 	
     $('#date-cont').trigger('refresh');
 
-    greetingIdToClose = null;
     $(document).on('click', '.accept-greeting-link', function (e) {
-        greetingIdToClose = $(this).attr('href').substr(1);
-        acceptMessage = '';
-
-        if (globalVariables.reqDiagnosis==undefined || globalVariables.reqDiagnosis==0)
-        {
-            // Приём пустой - надо спросить, а нужно ли его закрывать
-            acceptMessage = 'Во время данного приёма не было произведено никаких записей. Вы действительно хотите закончить этот приём?';
-        }
-        else
-        {
-            // Приём заполненный - надо cпросить, нужно ли его закрыть.
-            acceptMessage = 'Вы действительно хотите закончить этот приём?';
-        }
-
         // Выводим сообщение о том, что нужно вывест
-        $('#closeGreetingPopup p').html(acceptMessage);
+        $('#closeGreetingPopup p').html('Вы действительно хотите закончить этот приём?');
         $('#closeGreetingPopup').modal({});
     });
 
@@ -655,60 +606,54 @@ function startAcceptGreeting() {
 
     printHandler = 'accept-greeting-link';
     isThisPrint = true;
-    onStartSave();
-    // $(this).trigger('accept');
+    acceptGreeting();
 }
 
-
 focusDiagnosisPlease = false;
-function acceptGreeting(greetingId) {
-    var needDiagMsq = '';
-    for(var i in globalVariables.reqDiagnosis) {
-        if(globalVariables.reqDiagnosis[i].isReq) {
-            needDiagMsq += globalVariables.reqDiagnosis[i].name + ', ';
+function acceptGreeting() {
+    if($('#primaryDiagnosisChooser').length > 0 && $.fn['primaryDiagnosisChooser'].getChoosed().length == 0) {
+        var needDiagMsq = '';
+        for (var i in globalVariables.reqDiagnosis) {
+            if (globalVariables.reqDiagnosis[i].isReq) {
+                needDiagMsq += globalVariables.reqDiagnosis[i].name + ', ';
+            }
+        }
+
+        if (needDiagMsq) {
+            needDiagMsq = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + needDiagMsq.substr(0, needDiagMsq.length - 2) + '</strong>';
+            $('#errorPopup .modal-body .row').html("<p>" + needDiagMsq + "</p>");
+            $('#errorPopup').modal({});
+
+            // Перебрасываем фокус на диагноз
+            destinationAnchor = $('#accordionD')[0].offsetTop;
+            ;
+            $('body,html').animate({
+                scrollTop: destinationAnchor
+            }, 599);
+
+            focusDiagnosisPlease = true;
+            return false;
         }
     }
 
-    needDiagnosis = '0';
-    if (needDiagMsq!='') {
-        needDiagnosis = '1';
-    }
+    var greetingId = $('.activeGreeting .accept-greeting-link').prop('id').substr(2);
     $.ajax({
-        'url' : '/doctors/shedule/acceptcomplete/?id=' + greetingId.toString()+'&needDiagnosis='+needDiagnosis,
+        'url' : '/doctors/shedule/acceptcomplete/?id=' + greetingId,
         'cache' : false,
         'dataType' : 'json',
         'type' : 'GET',
         'success' : function(data, textStatus, jqXHR) {
-            // Поидее сейчас здесь не может быть ошибок
-            if(data.success == true) {
-                // Перезагружаем страницу
-                location.reload();
+            if(data.success) {
+                printHandler = 'print-greeting-link';
+                onStartSave();
             } else {
-                if (data.needdiagnose) {
-                    needDiagMsq = needDiagMsq.substr(0, needDiagMsq.length - 2);
-                    needDiagMsq = 'Основной диагноз не установлен! Следующие шаблоны требуют установки основного диагноза: <strong>' + needDiagMsq + '</strong>';
-                    // Выводим сообщение о том, что нужно вывест
-                    $('#errorPopup .modal-body .row').html("<p>" + needDiagMsq + "</p>");
-                    $('#errorPopup').modal({
-
-                    });
-                    // Перебрасываем фокус на диагноз
-                    destinationAnchor = $('#accordionD')[0].offsetTop;;
-                    $('body,html').animate({
-                        scrollTop: destinationAnchor
-                    }, 599);
-                    focusDiagnosisPlease = true;
-                } else {
-                    // Выводим сообщение о том, что нужно вывест
-                    $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
-                    $('#errorPopup').modal({
-
-                    });
-                }
+                // Выводим сообщение о том, что нужно вывест
+                $('#errorPopup .modal-body .row').html("<p>" + data.text + "</p>");
+                $('#errorPopup').modal({
+                });
             }
-            // Снимаем крутилку с флажка "Закрытия приёма"
+            // Снимаем крутилку с флажка "Закрытия приёма" и блокируем все поля для ввода
             onGreetingClosingEnd();
-            return;
         }
     });
 }
@@ -721,20 +666,15 @@ $('#errorPopup').on('hidden.bs.modal', function (e){
 });
 
 function onCloseGreetingStart() {
-    acceptGreeting(greetingIdToClose);
+    acceptGreeting();
 }
 
 function onGreetingClosingEnd() {
-    // Снимаем крутилку с флажка "Закрытия приёма"
-    var gif = generateAjaxGif(16, 16);
-    // Делаем невидимым флажок
-    $('.accept-greeting-link').removeClass('no-display');
-    // Убиваем крутилку
-    $('.accept-greeting-link').parents('td').find('img').remove();
+    $('.accept-greeting-link').remove();
+    $('.template-edit-form').find('input, button, select, textarea').prop('disabled', true);
 }
 
 $(document).on('click', '.medcard-history-showlink', function (e) {
-    //return;
     $(this).parents('.accordion-inner:eq(0)').find('.active').removeClass('active').find('img').remove();
     var gif = generateAjaxGif(16, 16);
     $(this).parent().addClass('active').append(gif);
@@ -819,6 +759,14 @@ $('.print-greeting-link').on('click', function (e) {
     }
 });
 
+$('.print-greeting-link').on('print', function (e) {
+    printDataToPrintPopup();
+    $('#greetingPrintNeed input').attr('checked', '');
+    // Отмечаем пункт "Приём", а остальные - нет
+    $('#whatPrinting').modal({});
+    return false;
+});
+
 $('.print-recomendation-link').on('click', function (e) {
     printHandler = 'print-recomendation-link';
     isThisPrint = true;
@@ -878,14 +826,6 @@ function printDataToPrintPopup() {
 
 
 }
-
-$('.print-greeting-link').on('print', function (e) {
-    printDataToPrintPopup();
-    $('#greetingPrintNeed input').attr('checked', '');
-    // Отмечаем пункт "Приём", а остальные - нет
-    $('#whatPrinting').modal({});
-    return false;
-});
 
 
 // Печать листа приёма, само действие
@@ -1666,7 +1606,7 @@ $('#nextHistoryPoint').on('click', function () {
 					}
 					$('.overlayCont .overlay').remove();
 					// А это - приём. Его для начала надо сохранить
-					if((($('#template-edit-form').length > 0 && !$('.greetingContentCont').hasClass('no-display')) || $('#accordionT').length > 0) && globalVariables.doctorId && globalVariables.doctorId != $('#change-doctor-form select').val()) { // Внутри есть данные по пациенту, а врач сменён
+					if((($('.template-edit-form').length > 0 && !$('.greetingContentCont').hasClass('no-display')) || $('#accordionT').length > 0) && globalVariables.doctorId && globalVariables.doctorId != $('#change-doctor-form select').val()) { // Внутри есть данные по пациенту, а врач сменён
                         if($('.infoCont div').length > 0) { // Внутри есть данные по пациенту, а врач сменён
                             $('.infoCont div').remove();
                         }

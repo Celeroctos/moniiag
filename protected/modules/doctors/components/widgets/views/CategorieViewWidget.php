@@ -8,12 +8,11 @@
     <?php } ?>
 <?php
 	$form = $this->beginWidget('CActiveForm', array(
-		'id' => 'template-edit-form',
 		'enableAjaxValidation' => true,
 		'enableClientValidation' => true,
 		'action' => CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/shedule/editpatient'),
 		'htmlOptions' => array(
-			'class' => 'form-horizontal col-xs-12',
+			'class' => 'form-horizontal col-xs-12 template-edit-form',
 			'role' => 'form'
 		)
 	));
@@ -64,18 +63,14 @@ if(!$this->previewMode /*&& $this->templateType == 0*/) {
 		CHtml::normalizeUrl(Yii::app()->request->baseUrl.'/doctors/shedule/patientedit'),
 		array(
 			'success' => 'function(data, textStatus, jqXHR) {
-                $("#template-edit-form").trigger("success", [data, textStatus, jqXHR])
+                $(".template-edit-form").trigger("success", [data, textStatus, jqXHR])
             }',
             'complete' => 'function(data, textStatus, jqXHR) {
-                $("#template-edit-form").trigger("complete", [data.responseText, textStatus, jqXHR])
-            }',
-            'beforeSend' => 'function(){
-                /*console.log(jQuery(this).parents("form").serialize());*/
-                console.log(this);
+                $(".template-edit-form").trigger("complete", [data.responseText, textStatus, jqXHR])
             }'
 		),
 		array(
-				'class' => 'templateContentSave'
+            'class' => 'templateContentSave'
 		)
 	); ?>
 </div>

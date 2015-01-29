@@ -9,7 +9,6 @@
         };
     </script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/less-1.4.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-1.10.2.min.js"></script>
     <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-3.0.0/dist/js/bootstrap.min.js"></script>
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">

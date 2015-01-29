@@ -109,6 +109,11 @@ return array(
 
 	// application components
 	'components'=>array(
+        'clientScript' => array(
+            'scriptMap' => array(
+                'jquery.js' => Yii::app()->request->baseUrl.'/js/libs/jquery-1.10.2.min.js'
+            )
+        ),
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
