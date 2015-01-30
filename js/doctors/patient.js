@@ -52,12 +52,15 @@
     globalVariables.numCalls = 0; // Одна или две формы вызвались. Делается для того, чтобы не запускать печать два раза
     // Редактирование медкарты
     $(".template-edit-form").on('success', function (eventObj, dataFromQuery, status, jqXHR) {
-        onSectionSave($.parseJSON(dataFromQuery));
+        var ajaxData = { 'success':false };
+        ajaxData = $.parseJSON(dataFromQuery);
+        onSectionSave(ajaxData);
     });
 
     globalVariables.isSavingErrors = false;
     // Вызывается при событии сохранения одной секции приёма (шаблона или диагнозов)
     function onSectionSave(ajaxData) {
+
         if(!ajaxData.success) {
             // Поднимаем флаг, что есть ошибки
             globalVariables.isSavingErrors = true;
@@ -70,12 +73,9 @@
             // Сбрасываем режим на дефолт
             globalVariables.numCalls = 0;
             // Если класс контента приёма имеет класс неотображения, это было сохранение при смене врача
-            if($('.greetingContentCont').hasClass('no-display')) {
-                $('.backDropForSaving').remove();
-                $('.modal-backdrop').hide();
-            }
-            $(".backDropForSaving").remove();
+            $('.backDropForSaving').remove();
             $('.modal-backdrop').hide();
+
             getNewHistory();
 
             // Проверка на то, есть ли ошибки
@@ -83,11 +83,10 @@
                 if (isThisPrint) {
                     onSaveComplete();
                 } else {
-                    //  $('#medcardContentSave').trigger('end');
                     if(showMsgs) {
-                        $('#successEditPopup').modal({});
+                        ///$('#successEditPopup').modal({});
                     } else {
-                        showMsgs = true
+                        showMsgs = true;
                         setTimeout(autoSave, 30000);
                     }
                 }
@@ -344,7 +343,6 @@
             }
             else {
                 // Вызываем сабмит всех кнопок
-                console.log($(buttons).find('input[type="submit"]'));
                 $(buttons).find('input[type="submit"]').click();
                 $('#submitDiagnosis').click();
             }
