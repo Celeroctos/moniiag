@@ -7,24 +7,27 @@ abstract class LField extends CComponent {
 	 */
 	public function __construct() {
 		$this->name = $this->name();
-		$this->key = strtolower($this->key());
+		$this->type = strtolower($this->key());
 	}
 
 	/**
 	 * Render field with value or data
-	 * @param CActiveForm $form - Form
-	 * @param LFormModel $model - Model
+	 * @param CActiveForm $form - Active form for which we're rendering fields
+	 * @param LFormModel $model - Form's model with data configuration
+	 * @param String $key - Unique key for field (identification value)
 	 * @param String $label - Field's label
 	 * @param Mixed $value - Any value for field
 	 * @param Array $data - Array with values (for DropDown lists)
 	 * @return String - Just rendered field result
 	 */
-	public final function renderEx($form, $model, $label = "", $value = null, $data = []) {
+	public final function renderEx($form, $model, $key, $label = "", $value = null, $data = []) {
 
 		assert(is_string($label), "Label must be with String type");
+		assert(is_string($key), "Key must be with String type");
 		assert(is_array($data), "Data must be with Array type");
 
 		$this->label = $label;
+		$this->key = $key;
 		$this->value = $value;
 		$this->data = $data;
 
@@ -86,8 +89,16 @@ abstract class LField extends CComponent {
 		return $this->label;
 	}
 
+	/**
+	 * @return String - Field's type (unique key)
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
 	private $value;
 	private $key;
+	private $type;
 	private $name;
 	private $data;
 	private $label;

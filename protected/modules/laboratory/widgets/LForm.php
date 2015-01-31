@@ -49,7 +49,10 @@ class LForm extends LWidget {
         } else {
             $this->test($this->model);
         }
-        return $this->render(__CLASS__, $this->model->view() + [
+        foreach ($this->model->view() as $key => $value) {
+            $this->$key = $value;
+        }
+        return $this->render(__CLASS__, [
             "model" => $this->model,
             "class" => __CLASS__
         ], $return);
@@ -63,7 +66,7 @@ class LForm extends LWidget {
      */
     private function test($model) {
         if (!$model || !($model instanceof LFormModel)) {
-            throw new CException("Unresolved model field or form model isn't instance of LFormModel");
+            throw new CException("Unresolved model field or form model isn't instance of LFormModel ".(int)$model);
         }
         return true;
     }
@@ -129,7 +132,7 @@ class LForm extends LWidget {
         }
 
         $result = LFieldCollection::getCollection()->find($type)->renderEx(
-            $form, $this->model, $label, $value, $data
+            $form, $this->model, $key, $label, $value, $data
         );
 
         return $result;

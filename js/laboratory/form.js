@@ -56,17 +56,23 @@ var Laboratory = Laboratory || {};
             0, this.property("url").lastIndexOf("/")
         ) + "/getWidget";
         this.before();
+        console.log(form.serialize());
         $.get(url, {
-            class: form.data("form"),
-            model: form.serialize()
+            class: form.data("widget"),
+            form: form.serialize(),
+            id: form.attr("id"),
+            model: form.data("form"),
+            url: form.attr("action")
         }, function(json) {
             if (!json.status) {
+                me.after();
+                me.activate();
                 return Laboratory.createMessage({
                     message: json.message
                 });
             }
             me.selector().replaceWith(
-                me.selector($(json["component"]).find("form"))
+                me.selector($(json["component"]))
             );
             me.selector().find(".form-group").css("opacity",
                 me.property("opacity")

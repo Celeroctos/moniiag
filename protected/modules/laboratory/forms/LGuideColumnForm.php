@@ -15,12 +15,18 @@ class LGuideColumnForm extends LFormModel {
 			"name" => [
 				"label" => "Название столбца",
 				"type" => "text",
-				"rule" => "required"
+				"rules" => "required"
+			],
+			"type" => [
+				"label" => "Тип данных",
+				"type" => "DropDown",
+				"rules" => "required",
+				"data" => LFieldCollection::getCollection()->getDropDown()
 			],
 			"guide_id" => [
 				"label" => "Справочник",
 				"type" => "DropDown",
-				"rule" => "required",
+				"rules" => "required",
 				"data" => []
 			]
 		];

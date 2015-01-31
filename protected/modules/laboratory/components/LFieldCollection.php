@@ -19,11 +19,11 @@ class LFieldCollection extends CComponent {
 	 * @throws CException
 	 */
 	public function add($field) {
-		if (isset($this->fields[$field->getKey()])) {
-			throw new CException("Field with that key already registered in collection ({$field->getKey()})");
+		if (isset($this->fields[$field->getType()])) {
+			throw new CException("Field with that key already registered in collection ({$field->getType()})");
 		}
-		$this->fields[$field->getKey()] = $field;
-		$this->select[$field->getKey()] = $field->getName();
+		$this->fields[$field->getType()] = $field;
+		$this->select[$field->getType()] = $field->getName();
 	}
 
 	/**

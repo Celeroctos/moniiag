@@ -13,23 +13,22 @@
     'id' => $this->id,
     'enableAjaxValidation' => true,
     'enableClientValidation' => false,
-    'action' => CHtml::normalizeUrl(
-        Yii::app()->getBaseUrl() . $this->url
-    ),
+    'action' => CHtml::normalizeUrl($this->url),
     'htmlOptions' => [
         'class' => 'form-horizontal col-xs-12 col-xs-offset-1',
         'role' => 'form',
-        'data-form' => get_class($this)
+        'data-form' => get_class($this->model),
+        'data-widget' => get_class($this)
     ]
 ]); ?>
 <? foreach ($model->getContainer() as $key => $value): ?>
     <div class="form-group">
         <?php if (!$this->checkType($key, "Hidden")) {
             echo $form->labelEx($model, $key, array(
-                'class' => 'col-xs-3 control-label'
+                'class' => 'col-xs-4 control-label'
             ));
         } ?>
-        <div class="col-xs-8">
+        <div class="col-xs-7">
             <?= $this->renderField($form, $key); ?>
         </div>
         <? if ($this->checkType($key, "DropDown")): ?>

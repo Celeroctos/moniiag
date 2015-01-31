@@ -1,6 +1,6 @@
 <?php
 
-class RequiredValidator extends CRequiredValidator {
+class LRequiredValidator extends CRequiredValidator {
 
 	/**
 	 * Validates a single attribute.

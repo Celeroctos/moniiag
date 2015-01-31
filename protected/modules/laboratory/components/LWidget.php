@@ -8,7 +8,7 @@ class LWidget extends CWidget {
      * @return string - Just rendered component or nothing
      */
     public function run($return = false) {
-        return $this->render(__CLASS__);
+        return $this->render(__CLASS__, null, $return);
     }
 
     /**
@@ -21,6 +21,16 @@ class LWidget extends CWidget {
             return $this->_model[$key];
         }
         return null;
+    }
+
+    /**
+     * Render widget and return it's just rendered component
+     * @param string $class - Path to widget to render
+     * @param array $properties - Widget's properties
+     * @return mixed|void
+     */
+    public function getWidget($class, $properties = []) {
+        return $this->widget($class, $properties, true);
     }
 
     /**

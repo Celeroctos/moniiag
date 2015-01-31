@@ -12,12 +12,6 @@ class LGuideValueForm extends LFormModel {
 	 */
 	public function config() {
 		return [
-			"type" => [
-				"label" => "Тип данных",
-				"type" => "DropDown",
-				"rules" => "required",
-				"data" => LFieldCollection::getCollection()->getDropDown()
-			],
 			"value" => [
 				"label" => "Значение",
 				"type" => isset($this->type) ? $this->type : "Text",

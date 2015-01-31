@@ -79,7 +79,7 @@ class LController extends Controller {
      * @param array $properties - Widget's properties
      * @return mixed|void
      */
-    public function getWidget($class, $properties) {
+    public function getWidget($class, $properties = []) {
         return $this->widget($class, $properties, true);
     }
 
@@ -118,6 +118,7 @@ class LController extends Controller {
         try {
             // Get widget's class component and unique identification number and method
             $class = $this->getAndUnset("class");
+            $model = $this->getAndUnset("model");
 
             if (isset($_GET["method"])) {
                 $method = $this->getAndUnset("method");
@@ -125,13 +126,13 @@ class LController extends Controller {
                 $method = "POST";
             }
 
-            if (isset($_GET["model"])) {
-                $model = $this->getAndUnset("model");
-                if (is_string($model)) {
-                    $model = $this->decode($model);
+            if (isset($_GET["form"])) {
+                $form = $this->getAndUnset("form");
+                if (is_string($form)) {
+                    $form = $this->decode($form);
                 }
             } else {
-                $model = null;
+                $form = null;
             }
 
             if (strtoupper($method) == "POST") {
@@ -144,24 +145,25 @@ class LController extends Controller {
             }
 
             // Create widget
-            $widget = $this->createWidget($class, $parameters);
+            $widget = $this->createWidget($class, $parameters + [
+                    "model" => new $model(null)
+                ]);
 
             if (!($widget instanceof LWidget)) {
                 throw new LError("Can't update widget which don't extends LWidget component");
             }
 
             // Copy model parameters if exists
-            if ($widget instanceof LComponent && is_array($model)) {
-                foreach ($model as $key => $value) {
-                    $widget->getModel()->putValue($key, $value);
+            if ($widget instanceof LForm && is_array($form)) {
+                foreach ($form as $key => $value) {
+                    $widget->model->$key = $value;
                 }
-                $widget->getModel()->reset();
             }
 
             $this->leave([
                 "id" => isset($widget->id) ? $widget->id : null,
                 "component" => $widget->run(true),
-                "model" => $model
+                "model" => $form
             ]);
         } catch (Exception $e) {
             $this->exception($e);
@@ -248,11 +250,12 @@ class LController extends Controller {
     public function exception($exception) {
         $method = $exception->getTrace()[0];
         $this->leave([
-            "message" => $exception->getMessage(),
+            "message" => basename($method["file"])."[".$method["line"]."] ".$method["class"]."::".$method["function"]."(): \"".$exception->getMessage()."\"",
             "file" => basename($method["file"]),
-            "method" => $method["class"]."/".$method["function"],
+            "method" => $method["class"]."::".$method["function"]."()",
             "line" => $method["line"],
-            "status" => false
+            "status" => false,
+            "trace" => $exception->getTrace()
         ]);
     }
 
