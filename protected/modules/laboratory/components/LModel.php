@@ -3,6 +3,15 @@
 abstract class LModel extends CActiveRecord {
 
 	/**
+	 * Get model's instance from cache
+	 * @param string $className - Class's name
+	 * @return LGuide - Cached model instance
+	 */
+	public static function model($className = __CLASS__) {
+		return parent::model($className);
+	}
+
+	/**
 	 * Override that method to return command for jqGrid
 	 * @return CDbCommand - Command with query
 	 * @throws CDbException

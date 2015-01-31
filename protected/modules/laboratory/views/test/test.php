@@ -9,6 +9,20 @@
  * @var $this LController
  */
 
-$this->widget("LModalComponent", [
-    "model" => new TestForm()
+$this->widget("LModal", [
+    "body" => $this->getWidget("LForm", [
+        "id" => "add-guide-form",
+        "url" => Yii::app()->getBaseUrl() . "/laboratory/guide/register",
+        "model" => new LGuideValueForm()
+    ]),
+    "title" => "Добавление справочника",
+    "id" => "add-guide-modal"
 ]);
+
+?>
+
+<script>
+    $(document).ready(function() {
+        $("#add-guide-modal").modal();
+    });
+</script>

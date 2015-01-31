@@ -32,16 +32,4 @@ class TestForm extends LFormModel {
             ]
         ];
     }
-
-    /**
-     * Override that method to return view configuration
-     * @return mixed - View
-     */
-    public function view() {
-        return [
-            "title" => "Тестовая форма",
-            "id" => "test-form",
-            "url" => "/laboratory/test/add"
-        ];
-    }
 }

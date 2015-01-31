@@ -54,6 +54,7 @@ class LController extends Controller {
     }
 
     /**
+     * Render widget
      * @param string $class - Path to widget to render
      * @param array $properties - Widget's properties
      * @param bool $return - Should widget return response or print to output stream
@@ -70,6 +71,16 @@ class LController extends Controller {
         }
         $widget->run(false);
         return null;
+    }
+
+    /**
+     * Render widget and return it's just rendered component
+     * @param string $class - Path to widget to render
+     * @param array $properties - Widget's properties
+     * @return mixed|void
+     */
+    public function getWidget($class, $properties) {
+        return $this->widget($class, $properties, true);
     }
 
     /**

@@ -1,10 +1,29 @@
 <?php
 
+/*
+ * TODO: "Not Implemented Fields"
+
+    "Reset",
+    "Submit",
+    "Button",
+    "CheckBox",
+    "Image",
+    "Color",
+    "DateTime",
+    "DateTime-Local",
+    "Email",
+    "Range",
+    "Search",
+    "Tel",
+    "Time",
+    "Url",
+    "Month",
+    "Week"
+ */
+
 class LForm extends LWidget {
 
-    public $title = null;
     public $id = null;
-    public $fields = null;
     public $url = null;
 
     /**
@@ -19,13 +38,34 @@ class LForm extends LWidget {
      * @return string - Just rendered component or nothing
      */
     public function run($return = false) {
-        if (!$this->model || !($this->model instanceof LFormModel)) {
-            throw new CException("Unresolved model field or form model isn't instance of LFormModel");
+        if (is_array($this->model)) {
+            $config = [];
+            foreach ($this->model as $i => $model) {
+                if ($this->test($model)) {
+                    $config += $model->config();
+                }
+            }
+            $this->model = new LFormModelAdapter($config);
+        } else {
+            $this->test($this->model);
         }
         return $this->render(__CLASS__, $this->model->view() + [
             "model" => $this->model,
             "class" => __CLASS__
         ], $return);
+    }
+
+    /**
+     * Test model for LFormModel inheritance and not null
+     * @param Mixed $model - Model which must extends LFormModel
+     * @return bool - True if everything ok
+     * @throws CException
+     */
+    private function test($model) {
+        if (!$model || !($model instanceof LFormModel)) {
+            throw new CException("Unresolved model field or form model isn't instance of LFormModel");
+        }
+        return true;
     }
 
     /**
@@ -88,113 +128,24 @@ class LForm extends LWidget {
             $label = "";
         }
 
-        switch ($type) {
-            case "text":
-                $result = $form->textField($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "number":
-                $result = $form->numberField($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "file":
-                $result = $form->fileField($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "hidden":
-                $result = $form->hiddenField($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "password":
-                $result = $form->passwordField($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "dropdown":
-                if (!isset($data[-1])) {
-                    $data = [ -1 => "Нет" ] + $data;
-                }
-                $result = $form->dropDownList($this->model, $key, $data, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value,
-                    'options' => [ $value => [ 'selected' => true ] ]
-                ]);
-                break;
-            case "yesno":
-                $result = $form->dropDownList($this->model, $key, [
-                    -1 => "Нет",
-                    0 => "Да"
-                ], [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "radio":
-                $result = $form->radioButton($this->model, $key, [
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "textarea":
-                $result = $form->textArea($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "date";
-                $result = $form->dateField($this->model, $key, [
-                    'placeholder' => $label,
-                    'id' => $key,
-                    'class' => 'form-control',
-                    'value' => $value
-                ]);
-                break;
-            case "reset":
-            case "submit":
-            case "button":
-            case "checkbox":
-            case "image":
-            case "color":
-            case "datetime";
-            case "datetime-local";
-            case "email";
-            case "range";
-            case "search";
-            case "tel";
-            case "time";
-            case "url";
-            case "month";
-            case "week";
-            default:
-                throw new CException("LForm component render not implemented ({$type})");
-        }
+        $result = LFieldCollection::getCollection()->find($type)->renderEx(
+            $form, $this->model, $label, $value, $data
+        );
 
         return $result;
+    }
+
+    /**
+     * Check model's type via it's configuration
+     * @param string $key - Name of native key to check
+     * @param string $type - Type to test
+     * @return bool - True if type if equal else false
+     */
+    public function checkType($key, $type) {
+        $config = $this->model->config()[$key];
+        if (!isset($config["type"])) {
+            $config["type"] = "text";
+        }
+        return strtolower($config["type"]) == strtolower($type);
     }
 } 

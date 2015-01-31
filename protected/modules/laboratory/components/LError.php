@@ -3,5 +3,5 @@
 /**
  * Class LError - Default error exception
  */
-class LError extends Exception {
+class LError extends CException {
 }

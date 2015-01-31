@@ -6,28 +6,37 @@
  */
 ?>
 
-<? $form = $this->beginWidget('CActiveForm', array(
-    'focus' => array($this->model,'name'),
+<? $form = $this->beginWidget('CActiveForm', [
+    'focus' => [
+        $this->model, 'name'
+    ],
     'id' => $this->id,
     'enableAjaxValidation' => true,
-    'enableClientValidation' => true,
-    'action' => CHtml::normalizeUrl(Yii::app()->getBaseUrl().$this->url),
-    'htmlOptions' => array(
-        'class' => 'form-horizontal col-xs-12',
+    'enableClientValidation' => false,
+    'action' => CHtml::normalizeUrl(
+        Yii::app()->getBaseUrl() . $this->url
+    ),
+    'htmlOptions' => [
+        'class' => 'form-horizontal col-xs-12 col-xs-offset-1',
         'role' => 'form',
         'data-form' => get_class($this)
-    )
-)); ?>
+    ]
+]); ?>
 <? foreach ($model->getContainer() as $key => $value): ?>
     <div class="form-group">
-        <?php if (true) {
+        <?php if (!$this->checkType($key, "Hidden")) {
             echo $form->labelEx($model, $key, array(
                 'class' => 'col-xs-3 control-label'
             ));
         } ?>
-        <div class="col-xs-9">
+        <div class="col-xs-8">
             <?= $this->renderField($form, $key); ?>
         </div>
+        <? if ($this->checkType($key, "DropDown")): ?>
+            <a href="javascript:void(0)">
+                <span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-search"></span>
+            </a>
+        <? endif; ?>
     </div>
 <? endforeach; ?>
 <? $this->endWidget(); ?>

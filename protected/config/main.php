@@ -112,7 +112,9 @@ return array(
                 'application.modules.laboratory.controllers.*',
                 'application.modules.laboratory.models.*',
                 'application.modules.laboratory.forms.*',
-                'application.modules.laboratory.widgets.*'
+                'application.modules.laboratory.widgets.*',
+                'application.modules.laboratory.fields.*',
+                'application.modules.laboratory.validators.*'
             ),
         )
 	),

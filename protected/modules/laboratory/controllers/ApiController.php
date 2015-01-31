@@ -90,7 +90,8 @@ class ApiController extends LController {
 
             // Send response
             $this->leave([
-                "message" => "Session has been successfully closed"
+                "message" => "Session has been successfully closed",
+                "status" => true
             ]);
         } catch (Exception $e) {
             $this->error($e->getMessage());

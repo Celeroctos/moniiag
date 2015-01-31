@@ -20,17 +20,8 @@ abstract class LComponent extends LForm {
             $modelConfig
         );
 
-        // Get render configuration
-        $viewConfig = $this->view();
-
         // Save configurations
         $this->_modelConfig = $modelConfig;
-        $this->_viewConfig = $viewConfig;
-
-        // Copy view config to component
-        foreach ($viewConfig as $key => $value) {
-            $this->$key = $value;
-        }
     }
 
     /**
@@ -38,12 +29,6 @@ abstract class LComponent extends LForm {
      * @return array - Model
      */
     public abstract function model();
-
-    /**
-     * Override that method to return view configuration
-     * @return mixed - View
-     */
-    public abstract function view();
 
     /**
      * That method will run your widget and render it
@@ -94,5 +79,4 @@ abstract class LComponent extends LForm {
     }
 
     private $_modelConfig = null;
-    private $_viewConfig = null;
 } 

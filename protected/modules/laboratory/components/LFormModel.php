@@ -74,6 +74,11 @@ abstract class LFormModel extends CFormModel {
 
         foreach ($config as $key => $field) {
 
+            // If programmer forget to get value from model
+            if (!isset($field["value"]) && isset($this->$key)) {
+                $field["value"] = $this->$key;
+            }
+
             // Assign labels and rules arrays
             if (isset($field["label"])) {
                 $this->_labels[$key] = $field["label"];
@@ -154,4 +159,5 @@ abstract class LFormModel extends CFormModel {
     protected $_rules = null;
     protected $_labels = null;
     protected $_types = null;
+
 } 
