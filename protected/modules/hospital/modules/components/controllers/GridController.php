@@ -33,12 +33,14 @@ class GridController extends Controller {
 			)
 		));
 
+        $grid = new Grid(CJSON::decode($_GET['model']));
 		$answerData =  array(
 			'dataProvider' => $dataProvider,
 			'model' => $model,
 			'gridId' => $_GET['id'],
-            'columns' => CJSON::decode($_GET['model'])
+            'columns' => $grid->parse()->getColumns()
 		);
+
 		if(isset($_GET['returnAsJson'])) {
 			unset($_GET['returnAsJson']); // This fix is for CGridView, it renders only first time through JSON
 

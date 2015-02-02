@@ -7,7 +7,8 @@ misEngine = (function() {
 				'module' : { }, // Module is component, really
 				'datetimepicker' : { },
 				'ajaxLoader' : {},
-                'model' : {}
+                'model' : {},
+                'modal' : {}
 			},
 			'modules'  : {
 				'hospital' : {

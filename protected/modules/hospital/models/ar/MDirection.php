@@ -9,6 +9,7 @@ class MDirection extends MisActiveRecord {
     public $ward_id;
     public $create_date;
     public $id;
+    public $pregnant_term;
 
     public static function model($className=__CLASS__) {
         return parent::model($className);
@@ -38,6 +39,7 @@ class MDirection extends MisActiveRecord {
         $mDirection->is_pregnant = $formModel->isPregnant;
         $mDirection->ward_id = $formModel->wardId;
         $mDirection->create_date = date('Y-m-d');
+        $mDirection->pregnant_term = $formModel->pregnantTerm;
 
         if(!$mDirection->save()) {
             throw new Exception('Невозможно сохранить направление для пациента '.$patient->id);
