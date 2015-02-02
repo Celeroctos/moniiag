@@ -1,5 +1,9 @@
 <?php
-class Oms extends MisActiveRecord {
+/**
+ * Модель AR для работы с полисом
+ */
+class Oms extends MisActiveRecord 
+{
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -9,7 +13,26 @@ class Oms extends MisActiveRecord {
     {
         return 'mis.oms';
     }
-
+	
+	public function rules()
+	{
+		return [
+			['id', 'type', 'type'=>'integer', 'on'=>'reception.search'],
+		];
+	}
+	
+	/**
+	 * Метод для поиска в CGridView
+	 */
+	public function search()
+	{
+		$criteria=new CDbCriteria;
+		return new CActiveDataProvider($this, [
+			'pagination'=>['pageSize'=>20],
+			'criteria'=>$criteria,
+		]);
+	}
+	
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings=false, $onlyClosedGreetings = false, $greetingDate = false) {
 
         $result = array();

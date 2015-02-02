@@ -8,15 +8,27 @@ class PatientController extends Controller {
     }
 
     // Просмотр страницы поиска пациента
-    public function actionViewSearch() {
-        $this->render('searchPatient', array(
-            'privilegesList' => $this->getPrivileges(),
-            'modelMedcard' => new FormPatientWithCardAdd(),
-            'modelOms' => new FormOmsEdit()
-        ));
+    public function actionViewSearch()
+	{
+		$model=new Oms('reception.search'); //сценарий
+		
+		if(isset($_GET['Oms']))
+		{
+			$model->attributes=Yii::app()->request->getQuery('Oms');
+		}
+		
+		$this->render('ViewSearch', [
+			'model'=>$model,
+		]);
+		
+//        $this->render('searchPatient', array(
+//            'privilegesList' => $this->getPrivileges(),
+//            'modelMedcard' => new FormPatientWithCardAdd(),
+//            'modelOms' => new FormOmsEdit()
+//        ));
     }
 	
-
+	
     // Привязать карту к другому полису
     public function actionRebindOmsMedcard()
     {
