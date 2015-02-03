@@ -43,7 +43,15 @@ class MDirectionsController extends Controller {
         } else {
             $patientPerOms = Patient::model()->find('oms_id = :oms_id', array(':oms_id' => $omsId));
             if(!$patientPerOms) {
-                throw new Exception('Пациент с ОМС ID = '.$omsId.' не найден ');
+                if(Yii::app()->request->getIsAjaxRequest()) {
+                    echo CJSON::encode(array(
+                        'success' => true,
+                        'direction' => array()
+                    ));
+                    exit();
+                } else {
+                    throw new Exception('Пациент с ОМС ID = ' . $omsId . ' не найден ');
+                }
             }
             $directions = MDirection::model()->findAllPerPatientId($patientPerOms->id);
             echo CJSON::encode(array(

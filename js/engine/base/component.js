@@ -3,7 +3,7 @@
 		getValue : function(key) {
 			return this[key] ? this[key] : -1;
 		},
-		
+
 		render : function() {
             if(!this.config.renderConfig) {
 				misEngine.t('Not found renderConfig property. Rendering is not aviable');
@@ -43,6 +43,9 @@
 					$.ajax(renderConfig.ajaxConf);
 				}
 			}
+            if(renderConfig.mode == 'internal') {
+                return this;
+            }
 			
 			return this;
 		},
@@ -71,7 +74,14 @@
 				return -1;
 			}
 		},
-	
+
+        bindEvents : function(handlers) {
+            for(var i in handlers) {
+                $(this).on(i, handlers[i]);
+            }
+            return this;
+        },
+
 		init : function() {
 			
 		}

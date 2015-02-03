@@ -48,8 +48,7 @@ class Patient extends MisActiveRecord {
         if(!$patient->save()) {
             throw new Exception();
         }
-var_dump($patient->primaryKey);
-        exit();
+
         return $patient;
      }
 }

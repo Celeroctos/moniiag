@@ -1,6 +1,6 @@
 <?php
 
-     $columns[] = array(
+    /* $columns[] = array(
         'class' => 'CButtonColumn',
         'template' => '{update}&nbsp;{delete}',
         'buttons' => array(
@@ -17,7 +17,7 @@
                 'url' => 'Yii::app()->createUrl("/delete/$data->id")',
             ),
         ),
-    );
+    ); */
 
 	$this->widget('zii.widgets.grid.CGridView', array(
 		'dataProvider' => $dataProvider,

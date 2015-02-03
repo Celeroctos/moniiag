@@ -65,6 +65,16 @@
                             )); ?>
                         </div>
                     </div>
+                    <div class="form-group col-xs-12">
+                        <?php echo $form->labelEx($model,'pregnantTerm', array(
+                            'class' => 'col-xs-5 control-label'
+                        )); ?>
+                        <div class="col-xs-7">
+                            <?php echo $form->textField($model, 'pregnantTerm', array(
+                                'class' => 'form-control'
+                            )); ?>
+                        </div>
+                    </div>
                     <div class="form-group btns">
                         <button type="button" id="directionAddSubmit" class="btn btn-success">ОК</button>
                         <button type="button" id="directionAddClose" class="btn btn-default">Закрыть</button>

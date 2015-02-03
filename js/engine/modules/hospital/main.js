@@ -1,14 +1,20 @@
 misEngine.addToQueue(function() {
 	return {
+        comissionGrid : null,
+        comissionGridModal : null,
 		config : {
 			name : 'hospital'
 		},
 		
 		bindHandlers : function() {
-			$('#hospitalizationNavbar a').click(function (e) {
-				e.preventDefault()
-				$(this).tab('show')
+            $('#hospitalizationNavbar a').click(function (e) {
+				e.preventDefault();
 			});
+
+            $(document).on('click', '#comissionGrid .changeHospitalizationDate', $.proxy(function(e) {
+                this.comissionGridModal.show();
+            }, this));
+            return this;
 		},
 		
 		displayDatetimepickers : function() {
@@ -77,16 +83,16 @@ misEngine.addToQueue(function() {
 		},
 		
 		displayComissionGrid : function() {
-			var comissionGrid = misEngine.create('component.grid');
-			var comissionGridRequestData = { 
+			this.comissionGrid = misEngine.create('component.grid');
+			var comissionGridRequestData = {
 				returnAsJson : true,
                 model : $.toJSON(this.getComissionModel().getColumns()),
 				id : 'comissionGrid',
                 serverModel : 'ComissionGrid',
                 gridServerModel : 'ComissionGridView'
 			};
-			
-			comissionGrid
+
+			this.comissionGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -109,9 +115,14 @@ misEngine.addToQueue(function() {
 						}
 					}
 				})
-				.render()
-				.on();
-		},
+                .bindEvents({
+                    'editComissionDate' : function(e) {
+                        alert('editComissionDate event triggered');
+                    }
+                })
+                .render()
+                .on();
+        },
 		
 		displayHospitalizationGrid : function() {
 			var hospitalizationGrid = misEngine.create('component.grid');
@@ -204,20 +215,40 @@ misEngine.addToQueue(function() {
                 columns : [
                     {
                         name : 'direction_id',
-                        type : 'raw'
+                        type : 'raw',
+                        value : '%direction_id%'
                     },
                     {
                         name : 'fio',
-                        type : 'raw'
+                        type : 'raw',
+                        value : '%fio%'
+                    },
+                    {
+                        name : 'comission_type_desc',
+                        type : 'raw',
+                        value : '%comission_type_desc%'
                     },
                     {
                         name : 'ward_name',
-                        type : 'raw'
+                        type : 'raw',
+                        value : '{{%ward_name%|trim}}'
                     },
                     {
-                        name : 'birthday',
-                        type : 'raw'
+                        name : 'age',
+                        type : 'raw',
+                        value : '%age%'
+                    },
+                    {
+                        name : 'pregnant_term',
+                        type : 'raw',
+                        value : '{{%pregnant_term%|int}}." недель"'
+                    },
+                    {
+                        name : 'hospitalization_date',
+                        type : 'raw',
+                        value : '%hospitalization_date%'
                     }
+
                 ]
             });
             return model;
@@ -246,10 +277,24 @@ misEngine.addToQueue(function() {
             });
             return model;
         },
+
+        renderModals : function() {
+            this.getComissionModal();
+        },
+
+        getComissionModal : function() {
+            this.comissionGridModal = misEngine.create('component.modal').setConfig({
+                selector : '#comissionGridPopup',
+                renderConfig : {
+                    mode : 'internal'
+                }
+            }).render().on();
+        },
 		
 		init : function() {
 			this.displayDatetimepickers();
 			this.displayGrids();
+            this.renderModals();
 			this.bindHandlers();
 			return this;
 		}
