@@ -629,65 +629,76 @@ class TasuController extends Controller {
 
 
     public function actionViewIn() {
-         // Список отделений
-		$wardsListDb = Ward::model()->getRows(false, 'name', 'asc');
-
-		$wardsList = array('-1' => 'Нет');
-		foreach($wardsListDb as $value) {
-			$wardsList[(string)$value['id']] = $value['name'].', '.$value['enterprise_name'];
-		}
-		
-		// Список типов оплаты
-		$paymentsListDb = Payment::model()->getRows(false, 'id', 'asc');
-		$paymentsList = array();
-		$defaultPaymentType = false;
-		foreach($paymentsListDb as $value) {
-			// Дефолтный тип оплаты
-			if($value['is_default'] == 1) {
-				$defaultPaymentType = $value['id'];
-			}
-			$paymentsList[(string)$value['id']] = $value['name'];
-		}
-		
-		// Список услуг
-		$servicesListDb = MedService::model()->getRows(false, 'tasu_code', 'asc');
-		$serviceCodesList = array();
-		$defaultService = false;
-		foreach($servicesListDb as $value) {
-			// Дефолтная услуга
-			if($value['is_default'] == 1) {
-				$defaultService = $value['id'];
-			}
-			$serviceCodesList[(string)$value['id']] = str_replace('.', '', $value['tasu_code']).' - '.$value['name'];
-		}
-		
-		// Список врачей
-		$doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
-		$doctorsList = array();
-		foreach($doctorsListDb as $value) {
-			if($value['last_name'] == null) {
-				$value['middle_name'] = '';
-			}
-			if($value['tabel_number'] == null) {
-				$value['tabel_number'] = 'отсутствует';
-			}
-
-			$doctorsList[(string)$value['id']] = $value['last_name'].' '.$value['first_name'].' '.$value['middle_name'].', '.$value['post'].', '.$value['ward'].', табельный номер '.$value['tabel_number'];
-		}
-		
-		asort($doctorsList);
-
-        $this->render('viewin', array(
+        $this->render('viewin', $this->getAllDataForTemplate() + array(
             'modelAdd' => new FormTasuBufferAdd(),
             'modelAddFake' => new FormTasuFakeBufferAdd(),
-			'modelFilter' => new FormTasuFilterExport(),
-			'wardsList' => $wardsList,
-			'doctorsList' => $doctorsList,
-			'tasuPaymentList' => $paymentsList,
-			'serviceCodesList' => $serviceCodesList,
-			'defaultService' => $defaultService,
-			'defaultPaymentType' => $defaultPaymentType
+            'modelFilter' => new FormTasuFilterExport(),
         ));
+    }
+
+    public function actionViewMedcards() {
+        $this->render('viewmedcards', $this->getAllDataForTemplate() + array(
+            'modelFilter' => new FormTasuFilterMedcardsExport()
+        ));
+    }
+
+    private function getAllDataForTemplate() {
+        // Список отделений
+        $wardsListDb = Ward::model()->getRows(false, 'name', 'asc');
+
+        $wardsList = array('-1' => 'Нет');
+        foreach($wardsListDb as $value) {
+            $wardsList[(string)$value['id']] = $value['name'].', '.$value['enterprise_name'];
+        }
+
+        // Список типов оплаты
+        $paymentsListDb = Payment::model()->getRows(false, 'id', 'asc');
+        $paymentsList = array();
+        $defaultPaymentType = false;
+        foreach($paymentsListDb as $value) {
+            // Дефолтный тип оплаты
+            if($value['is_default'] == 1) {
+                $defaultPaymentType = $value['id'];
+            }
+            $paymentsList[(string)$value['id']] = $value['name'];
+        }
+
+        // Список услуг
+        $servicesListDb = MedService::model()->getRows(false, 'tasu_code', 'asc');
+        $serviceCodesList = array();
+        $defaultService = false;
+        foreach($servicesListDb as $value) {
+            // Дефолтная услуга
+            if($value['is_default'] == 1) {
+                $defaultService = $value['id'];
+            }
+            $serviceCodesList[(string)$value['id']] = str_replace('.', '', $value['tasu_code']).' - '.$value['name'];
+        }
+
+        // Список врачей
+        $doctorsListDb = Doctor::model()->getRows(false, 'last_name, first_name', 'asc');
+        $doctorsList = array();
+        foreach($doctorsListDb as $value) {
+            if($value['last_name'] == null) {
+                $value['middle_name'] = '';
+            }
+            if($value['tabel_number'] == null) {
+                $value['tabel_number'] = 'отсутствует';
+            }
+
+            $doctorsList[(string)$value['id']] = $value['last_name'].' '.$value['first_name'].' '.$value['middle_name'].', '.$value['post'].', '.$value['ward'].', табельный номер '.$value['tabel_number'];
+        }
+
+        asort($doctorsList);
+
+        return array(
+            'wardsList' => $wardsList,
+            'doctorsList' => $doctorsList,
+            'tasuPaymentList' => $paymentsList,
+            'serviceCodesList' => $serviceCodesList,
+            'defaultService' => $defaultService,
+            'defaultPaymentType' => $defaultPaymentType
+        );
     }
 
     // Получить все приёмы для импорта в ТАСУ для последнего задания
@@ -3220,5 +3231,146 @@ class TasuController extends Controller {
 			'data' => array()
 		));
 	}
+
+
+    public function actionGetBufferMedcards() {
+        $rows = $_GET['rows'];
+        $page = $_GET['page'];
+        $sidx = $_GET['sidx'];
+        $sord = $_GET['sord'];
+
+        // Фильтры поиска
+        if(isset($_GET['filters']) && trim($_GET['filters']) != '') {
+            $filters = CJSON::decode($_GET['filters']);
+        } else {
+            $filters = false;
+        }
+
+        if(isset($_GET['import_id'])) {
+            $importId = $_GET['import_id'];
+        } else {
+            $importId = false;
+        }
+
+        $model = new TasuMedcardsBuffer();
+        $num = $model->getLastBuffer($filters, false, false, false, false, false, $importId);
+
+        $totalPages = ceil(count($num) / $rows);
+        $start = $page * $rows - $rows;
+
+        $buffer = $model->getLastBuffer($filters, $sidx, $sord, $start, $rows, false, $importId);
+
+        echo CJSON::encode(array(
+            'success' => true,
+            'rows' => $buffer,
+            'total' => $totalPages,
+            'records' => count($num)));
+    }
+
+    public function actionGetBufferMedcardsHistory() {
+
+    }
+
+    public function actionAddAllMedcards() {
+
+    }
+
+    public function actionAddMedcards() {
+        if(!isset($_GET['medcards']) || count(CJSON::decode($_GET['medcards'])) == 0) {
+            echo CJSON::encode(
+                array(
+                    'success' => false,
+                    'data' => 'Не хватает параметров!'
+                )
+            );
+            exit();
+        }
+
+        $lastImportId = TasuMedcardsBuffer::model()->getLastImportId();
+
+        $medcards = CJSON::decode($_GET['medcards']);
+        foreach($medcards as $medcard) {
+            $buffer = new TasuMedcardsBuffer();
+            $buffer->medcard = $medcard;
+            $buffer->import_id = $lastImportId;
+            $buffer->status = 0;
+            if(!$buffer->save()) {
+                echo CJSON::encode(
+                    array(
+                        'success' => false,
+                        'data' => 'Не могу сохранить карту '.$medcard.' в буфере!'
+                    )
+                );
+                exit();
+            }
+        }
+
+        echo CJSON::encode(array(
+            'success' => true
+        ));
+    }
+
+    public function actionCancelMedcardsImport() {
+
+    }
+
+    public function actionClearMedcardsBuffer() {
+
+    }
+
+    public function actionDeleteMedcardFromBuffer($id) {
+        TasuMedcardsBuffer::model()->deleteByPk($id);
+        echo CJSON::encode(
+            array(
+                'success' => true
+            )
+        );
+    }
+
+    public function actionImportMedcards() {
+
+    }
+
+    public function actionGetNotBufferedMedcards() {
+
+    }
+
+    public function actionSearchMedcards() {
+        if(!isset($_GET['filters'])) {
+            echo CJSON::encode(
+                array(
+                    'success' => false,
+                    'data' => 'Задан пустой фильтр!'
+                )
+            );
+            exit();
+        }
+
+        $filters = CJSON::decode($_GET['filters']);
+        if(empty($filters['rules'])) {
+            echo CJSON::encode(
+                array(
+                    'success' => false,
+                    'data' => 'Задан пустой фильтр!'
+                )
+            );
+            exit();
+        }
+
+        $model = new Medcard();
+        $items = $model->getMedcardsByRegDate(CJSON::decode($_GET['filters']), true);
+
+        foreach($items as &$item) {
+            $item['birthday'] = implode(array_reverse(explode('-', $item['birthday'])), '.');
+            $item['givedate'] = implode(array_reverse(explode('-', $item['givedate'])), '.');
+        }
+
+        echo CJSON::encode(
+          array(
+              'success' => true,
+              'data' => $items
+          )
+        );
+    }
 }
 ?>

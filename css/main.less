@@ -1247,12 +1247,12 @@ div.tab-list
 		padding: 3px 15px;
 	}
 }
-#importGreetings {
+#importGreetings, #importMedcards {
 	background: #80cb56;
 	font-weight: bold;
 	color: #ffffff;
 }
-#clearGreetings {
+#clearGreetings, #clearMedcards {
 	background: #e34b34;
 	color: #ffffff;
 	font-weight: bold;
@@ -1912,7 +1912,10 @@ a.accordion-toggle:hover {
 	margin-left: 112px;
 }
 #tasuimport-filter-btn {
-	margin-left: 27%;
+	margin-left: 26%;
+}
+#tasumedcardsimport-filter-btn {
+  margin-left: 27%;
 }
 #preGreetings-controls {
 	margin-top: 5px;
@@ -2688,4 +2691,16 @@ form[id=template-edit-form] .btnAddValue
 }
 .syncAccordion {
 	max-width: 98%;
+}
+/* -------------------- */
+#addMedcardsPopup {
+  .modal-dialog {
+    width: 1200px;
+    .borderedBox {
+      width: 98%;
+      max-width: 98%;
+      max-height: 300px;
+      overflow-y: scroll;
+    }
+  }
 }

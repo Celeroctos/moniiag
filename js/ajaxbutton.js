@@ -7,7 +7,8 @@
         '#medcardContentSave',
         '#printContentButton',
         '#greetings-search-submit',
-		'#greeting-getstat-submit'
+		'#greeting-getstat-submit',
+        '#tasuimport-filter-btn'
 	];
 	
 	buttonSelectors.forEach(function(buttonSelector) {

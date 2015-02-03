@@ -13,7 +13,6 @@ class Oms extends MisActiveRecord {
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings=false, $onlyClosedGreetings = false, $greetingDate = false) {
 
         $result = array();
-
         $connection = Yii::app()->db;
         $oms = $connection->createCommand()
             ->selectDistinct('o.id, o.oms_number')
@@ -24,9 +23,7 @@ class Oms extends MisActiveRecord {
             $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
         }
 
-        if ($cancelledGreetings)
-        {
-
+        if ($cancelledGreetings) {
             $oms->join(CancelledGreeting::model()->tableName().' cg', 'm.card_number = cg.medcard_id');
             $oms->andWhere('cg.deleted = 0 AND cg.patient_day<current_date'  );
         }
@@ -44,12 +41,14 @@ class Oms extends MisActiveRecord {
                 )
             ), array(
                 'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'normalized_oms_number', 'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
-                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str'),
+                'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str', 'date_from', 'date_to'),
 				'dsbd' => array('doctor_id', 'patient_day')
             ), array(
                 'e_oms_number' => 'oms_number',
                 'k_oms_number' => 'oms_number',
-                'normalized_oms_number' => 'oms_series_number'
+                'normalized_oms_number' => 'oms_series_number',
+                'date_from' => 'reg_date',
+                'date_to' => 'reg_date'
             ), array(
                 'OR' => array(
                     'e_oms_number',
@@ -60,54 +59,32 @@ class Oms extends MisActiveRecord {
             ));
         }
 
-        // WHERE card_number==null
-        if ($onlyWithoutCards)
-        {
+        if ($onlyWithoutCards) {
             $oms->andWhere("coalesce(m.card_number,'')=''");
         }
-        // WHERE card_number!=null
-        if ($onlyWithCards)
-        {
+
+        if ($onlyWithCards) {
             $oms->andWhere("coalesce(m.card_number,'')!=''");
         }
-		
 
-        if ($sidx && $sord && $limit)
-        {
-
+        if ($sidx && $sord && $limit) {
             $oms->order($sidx.' '.$sord);
             $oms->limit($limit, $start);
         }
 
-        //var_dump($oms);
-        //exit();
         $omsPolices = $oms->queryAll();
-
-        // ������ �������. ������ �� ������ ������ ���� ��������� �� ���������
 
         $policeIds = array();
         $policeOrders = array();
         $policeOrdersIndex = 0;
-        foreach ($omsPolices as $onePoliceId)
-        {
-
+        foreach ($omsPolices as $onePoliceId){
             array_push($policeIds,$onePoliceId['id']);
-
             $policeOrders[$policeOrdersIndex] = $onePoliceId['id'];
             $policeOrdersIndex++;
         }
 
-        if (count($omsPolices)>0)
-        {
+        if (count($omsPolices)>0) {
             $inIds = implode(",",$policeIds);
-
-
-            // ��������� ������, ������� ���� ID-����� ��� � ��� ������� id-�����
-            //    1. ���� ����� ����� ��������, ��� ��������� ����� � �������� ���������� ��� ������� ������
-            //    2. ���� ������������ ���� ����������� ����, ����������� � ������� ���
-            $connection = Yii::app()->db;
-            //var_dump($inIds);
-           // exit();
             $oms2 = $connection->createCommand()
                 ->select('o.*,
                             CASE WHEN COALESCE(o.oms_series,null) is null THEN oms_number
@@ -144,7 +121,6 @@ class Oms extends MisActiveRecord {
                                  ) as reg_date
 
                 ')
-
                 ->from('mis.oms o')
                 ->where('id in ('.$inIds.')',
                     array(
@@ -152,33 +128,20 @@ class Oms extends MisActiveRecord {
 
             $omsByIds = $oms2->queryAll();
 
-            // ������ ����� oms-� �� $oms2 �������� � ���������
-            //   ���������� id-����� � ��������� �������, ������� id-����� � ������������� ���-�
-            //    � �������������� ����������
-            foreach ($policeIds as $onePoliceId)
-            {
-                foreach($omsByIds as $oneOms2)
-                {
-                    //var_dump($onePoliceId);
-                    //var_dump($oneOms2['id']);
-                    //    exit();
-                    if ($onePoliceId==$oneOms2['id'])
-                    {
+            foreach ($policeIds as $onePoliceId){
+                foreach($omsByIds as $oneOms2){
+                    if ($onePoliceId==$oneOms2['id']) {
                         array_push($result,$oneOms2);
                     }
                 }
             }
-
         }
-        //var_dump($result);
-        //exit();
+
         return $result;
     }
 
-    public static function findOmsByNumbers($number1,$number2,$number3,$numberNorm,$id = false, $fioData)
-    {
-        try
-        {
+    public static function findOmsByNumbers($number1,$number2,$number3,$numberNorm,$id = false, $fioData) {
+        try  {
             $connection = Yii::app()->db;
             $oms = $connection->createCommand()
                 ->select('o.*')
@@ -208,18 +171,11 @@ class Oms extends MisActiveRecord {
 			}
 
             // Если ид не равно false - то прихреначиваем ещё одно условие к where
-            if ($id!=false)
-            {
+            if ($id!=false){
                 $oms->andWhere('id != :policy_id', array(':policy_id'=>$id));
             }
 
             $result = $oms->queryRow();
-/*var_dump($number1); 
-var_dump($number2);
-var_dump($number3);
-var_dump($numberNorm);
-var_dump($oms->text);
-exit();*/
             return $result;
         }
         catch(Exception $e) {
@@ -230,9 +186,7 @@ exit();*/
     public function getNumRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $onlyWithCards=false,
                                $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings = false,
                                $onlyClosedGreetings = false, $greetingDate = false) {
-
-        try
-        {
+        try  {
             $connection = Yii::app()->db;
             $oms = $connection->createCommand()
                 ->select('COUNT(DISTINCT o.id) as num')
@@ -243,9 +197,7 @@ exit();*/
                 $oms->join(SheduleByDay::model()->tableName().' dsbd', 'm.card_number = dsbd.medcard_id');
             }
 
-            if ($cancelledGreetings)
-            {
-
+            if ($cancelledGreetings) {
                 $oms->join(CancelledGreeting::model()->tableName().' cg', 'm.card_number = cg.medcard_id');
                 $oms->andWhere('cg.deleted = 0 AND cg.patient_day<current_date'  );
             }
@@ -263,12 +215,14 @@ exit();*/
                     )
                 ), array(
                     'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio', 'normalized_oms_number' ,'e_oms_number', 'k_oms_number', 'a_oms_number', 'b_oms_number', 'c_oms_number'),
-                    'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str'),
+                    'm' => array('card_number', 'address', 'address_reg', 'snils', 'docnumber', 'serie', 'address_reg_str', 'address_str', 'date_from', 'date_to'),
 					'dsbd' => array('doctor_id', 'patient_day')
                 ), array(
                     'e_oms_number' => 'oms_number',
                     'k_oms_number' => 'oms_number',
-                    'normalized_oms_number' => 'oms_series_number'
+                    'normalized_oms_number' => 'oms_series_number',
+                    'date_from' => 'reg_date',
+                    'date_to' => 'reg_date'
                 ), array(
 					'OR' => array(
                         'e_oms_number',
@@ -279,22 +233,15 @@ exit();*/
                 ));
             }
 
-            // WHERE card_number==null
-            if ($onlyWithoutCards)
-            {
+            if ($onlyWithoutCards) {
                 $oms->andWhere("coalesce(m.card_number,'')=''");
             }
-            // WHERE card_number!=null
-            if ($onlyWithCards)
-            {
+
+            if ($onlyWithCards){
                 $oms->andWhere("coalesce(m.card_number,'')!=''");
             }
 
-          //  var_dump($oms->text);
-          // exit();
-
             $result = $oms->queryRow();
-
             return $result;
         }
         catch(Exception $e) {
@@ -318,7 +265,6 @@ exit();*/
             ), array(
                 'o' => array('oms_number', 'gender', 'first_name', 'middle_name', 'last_name', 'birthday', 'fio')
             ), array(
-
             ));
         }
 
