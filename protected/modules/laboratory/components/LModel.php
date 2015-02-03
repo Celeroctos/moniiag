@@ -23,6 +23,17 @@ abstract class LModel extends CActiveRecord {
 	}
 
 	/**
+	 * Override that method to return command for table widget
+	 * @return CDbCommand - Command with selection query
+	 * @throws CDbException
+	 */
+	public function getTable() {
+		return $this->getDbConnection()->createCommand()
+			->select("*")
+			->from($this->tableName());
+	}
+
+	/**
 	 * That method will return rows for jqGrid table
 	 * @param bool $sidx - Sort index
 	 * @param bool $sord - Sort order

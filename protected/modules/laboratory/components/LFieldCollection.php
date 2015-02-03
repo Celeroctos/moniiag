@@ -19,11 +19,12 @@ class LFieldCollection extends CComponent {
 	 * @throws CException
 	 */
 	public function add($field) {
-		if (isset($this->fields[$field->getType()])) {
+		$key = strtolower($field->getType());
+		if (isset($this->fields[$key])) {
 			throw new CException("Field with that key already registered in collection ({$field->getType()})");
 		}
-		$this->fields[$field->getType()] = $field;
-		$this->select[$field->getType()] = $field->getName();
+		$this->fields[$key] = $field;
+		$this->select[$key] = $field->getName();
 	}
 
 	/**
@@ -35,17 +36,25 @@ class LFieldCollection extends CComponent {
 	public function find($key) {
 		$key = strtolower($key);
 		if (!isset($this->fields[$key])) {
-			throw new CException("Not implemented field ({$key}) ");
+			throw new CException("Unresolved or not implemented field type ({$key})");
 		}
 		return $this->fields[$key];
 	}
 
 	/**
 	 * Get array with prepared array for drop down list
-	 * @return Array - Array with keys and it's associated labels
+	 * @param array $allowed - Array with allowed types
+	 * @return array - Array with keys and it's associated labels
 	 */
-	public function getDropDown() {
-		return $this->select;
+	public function getDropDown(array& $allowed = null) {
+		if ($allowed == null) {
+			return $this->select;
+		}
+		$array = [];
+		foreach ($allowed as $i => $value) {
+			$array[$value] = $this->select[$value];
+		}
+		return $array;
 	}
 
 	/**
@@ -60,24 +69,20 @@ class LFieldCollection extends CComponent {
 	private $select = [];
 
 	/**
-	 * Don't construct that class
+	 * Don't construct that class by yourself
 	 */
 	private function __construct() {
-		$declared = [
-			new LDateField(),
-			new LDropDownField(),
-			new LFileField(),
-			new LHiddenField(),
-			new LNumberField(),
-			new LPasswordField(),
-			new LRadioField(),
-			new LTextAreaField(),
-			new LTextField(),
-			new LYesNoField()
-		];
-		foreach ($declared as $field) {
-			$this->add($field);
+		$handle = opendir("protected/modules/laboratory/fields");
+		if ($handle === false) {
+			throw new CException("Can't read field with fields");
 		}
+		while (($entry = readdir($handle)) !== false) {
+			if ($entry != "." && $entry != "..") {
+				$entry = basename($entry, ".php");
+				$this->add(new $entry());
+			}
+		}
+		closedir($handle);
 	}
 
 	private static $collection = null;

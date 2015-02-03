@@ -25,10 +25,29 @@ $this->widget("LModal", [
     ]
 ]);
 
+$this->widget("LConfirmDelete", [
+    "title" => "Удалить?",
+    "id" => "confirm-delete-modal"
+]);
+
+$this->widget("LTable", [
+    "table" => new LGuide(),
+    "header" => [
+        "id" => [
+            "label" => "#",
+            "style" => "min-width: 0px; width: 10px;"
+        ],
+        "name" => [
+            "label" => "Название"
+        ]
+    ],
+    "id" => "guide-table"
+]);
+
 ?>
 
-<script>
-    $(document).ready(function() {
-        $("#add-guide-modal").modal();
-    });
-</script>
+<div class="col-xs-12">
+    <div class="col-xs-4">
+
+    </div>
+</div>

@@ -86,9 +86,10 @@ class LController extends Controller {
     /**
      * Decode url and convert it into array
      * @param string $url - Encoded url
+     * @param string $form - Form's name
      * @return array - Array with values
      */
-    public function decode($url) {
+    public function decode($url, &$form = "") {
         $result = [];
         if (!is_string($url)) {
             return null;
@@ -105,9 +106,45 @@ class LController extends Controller {
             if ($value === false) {
                 $value = "";
             }
+            if (!is_string($form) || !strlen($form)) {
+                $form = substr($str, 0, strpos($str, "["));
+            }
             $result[substr($match[0], 1, strlen($match[0]) - 2)] = $value;
         }
         return $result;
+    }
+
+    /**
+     * Get model via GET method, it will check it for array and decode if model
+     * is simply serialized string
+     * @param string $model - Model's name if GET/POST arrays
+     * @param string $method - Receive method type
+     * @return LFormModel - Model with attributes
+     * @throws CException - If form's model instance don't extends LFormModel
+     */
+    public function getFormModel($model = "model", $method = "get") {
+        $model = $this->$method($model);
+        if (!is_string($model)) {
+            return $model;
+        }
+        $name = "";
+        $array = $this->decode($model, $name);
+        $form = new $name();
+        if (!($form instanceof LFormModel)) {
+            throw new CException("Form must be instance of LFormModel class");
+        }
+        $form->attributes = $array;
+        foreach ($array as $i => $value) {
+            $form->$i = $value;
+        }
+        if (!$form->validate()) {
+            $this->leave([
+                "message" => "Произошли ошибки во время валидации формы",
+                "errors" => $form->getErrors(),
+                "status" => false
+            ]);
+        }
+        return $form;
     }
 
     /**

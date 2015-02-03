@@ -89,6 +89,9 @@ abstract class LFormModel extends CFormModel {
                 $rules = explode(",", $field["rules"]);
                 foreach ($rules as $i => $rule) {
                     $rule = trim($rule);
+                    if ($rule == "required") {
+                        $rule = "LRequiredValidator";
+                    }
                     if (!isset($this->_rules[$rule])) {
                         $this->_rules[$rule] = [];
                     }

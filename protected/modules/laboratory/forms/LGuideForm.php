@@ -16,6 +16,18 @@ class LGuideForm extends LFormModel {
 				"label" => "Название справочника",
 				"type" => "text",
 				"rules" => "required"
+			],
+			"test" => [
+				"label" => "123",
+				"type" => "DropDown",
+				"rules" => "required",
+				"data" => [
+					1 => 1,
+					2 => 2,
+					3 => 3,
+					4 => 4,
+					5 => 5
+				]
 			]
 		];
 	}

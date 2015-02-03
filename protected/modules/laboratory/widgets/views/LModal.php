@@ -22,11 +22,9 @@
                 </td>
                 <td>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?= "Закрыть" ?></button>
-                    <? if ($this->buttons != null): ?>
-                        <? foreach ($this->buttons as $i => $button): ?>
-                            <button <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="button" class="<?=$button["class"]?>"><?=$button["text"]?></button>
-                        <? endforeach; ?>
-                    <? endif; ?>
+                    <? foreach ($this->buttons as $i => $button): ?>
+                        <button id="<?=$i?>" <?=isset($button["attributes"]) ? $button["attributes"] : ""?> type="<?=$button["type"]?>" class="<?=$button["class"]?>"><?=$button["text"]?></button>
+                    <? endforeach; ?>
                 </td>
                 </tr>
                 </table>

@@ -32,9 +32,10 @@
             <?= $this->renderField($form, $key); ?>
         </div>
         <? if ($this->checkType($key, "DropDown")): ?>
-            <a href="javascript:void(0)">
-                <span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-search"></span>
-            </a>
+            <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-search form-search-button"></span></a>
+        <? elseif ($this->checkType($key, "Multiple")): ?>
+            <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-arrow-up form-up-button"></span></a>
+            <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-arrow-down form-down-button"></span></a>
         <? endif; ?>
     </div>
 <? endforeach; ?>

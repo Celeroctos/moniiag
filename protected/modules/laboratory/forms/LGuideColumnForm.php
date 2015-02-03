@@ -14,7 +14,7 @@ class LGuideColumnForm extends LFormModel {
 		return [
 			"name" => [
 				"label" => "Название столбца",
-				"type" => "text",
+				"type" => "Text",
 				"rules" => "required"
 			],
 			"type" => [

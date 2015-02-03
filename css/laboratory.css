@@ -5,6 +5,9 @@
     z-index: 2000;
     max-width: calc(100% - 10px);
 }
+.jaw-message-wrapper li {
+    margin-left: 10px;
+}
 
 .rotate {
     -webkit-animation: spin 1s linear infinite;
@@ -34,4 +37,34 @@
 .refresh-button {
     font-size: 25px;
     cursor: pointer;
+}
+
+.multiple-container {
+    min-height: 20px;
+    height: auto;
+    padding: 5px 10px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.multiple-container .multiple-chosen {
+    border-radius: 2px;
+    padding: 2px;
+}
+
+.multiple-container .multiple-chosen:hover {
+    background-color: lightblue;
+}
+
+.multiple-container:empty:after {
+    content: 'Нет элементов';
+}
+
+.multiple select {
+    min-height: 200px;
+}
+
+.table .table-remove {
+    margin-left: 5px;
+    color: #af1010;
 }
