@@ -10,6 +10,10 @@ class TasuGreetingsBufferHistory extends MisActiveRecord {
         return 'mis.tasu_greetings_buffer_history';
     }
 
+    public function primaryKey() {
+        return 'id';
+    }
+
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false) {
         try {
             $connection = Yii::app()->db;

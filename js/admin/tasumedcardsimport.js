@@ -176,10 +176,11 @@
 				return false;
 			}
 			$.ajax({
-				'url' : '/admin/tasu/cancelmedcardsimport',
+				'url' : '/admin/tasu/cancelimport',
 				'cache' : false,
 				'data' : {
-					'bufferid' : $(el).find('a').prop('id').substr(1)
+					'bufferid' : $(el).find('a').prop('id').substr(1),
+                    'type' : 1
 				},
 				'dataType' : 'json',
 				'type' : 'GET',
@@ -268,7 +269,7 @@
                     'url' : '/admin/tasu/importmedcards',
                     'cache' : false,
                     'data' : {
-                        currentGreeting : currentMedcard,
+                        currentMedcard : currentMedcard,
                         rowsPerQuery : rowsPerQuery,
                         totalMaked : totalMaked,
                         totalRows : totalRows
@@ -342,10 +343,10 @@
                         } else {
                             alert(data.error);
 							$('#importContainer').slideUp(500, function(e) {
-								$('#importGreetings').attr({
+								$('#importMedcards').attr({
 									'disabled' : false
 								}).text('Выгрузить');
-								$('#clearGreetings').attr({
+								$('#clearMedcards').attr({
 									'disabled' : false
 								});
 								$('#importProgressbarP').prop({
@@ -396,8 +397,8 @@
                     $('.continueImport, .pauseImport').removeClass('no-display');
                     $('.successImport').addClass('no-display');
                     $('.logWindow .list-group li').remove();
-                    $('#importGreetings').attr('disabled', false).text('Выгрузить');
-                    $('#clearGreetings').attr({
+                    $('#importMedcards').attr('disabled', false).text('Выгрузить');
+                    $('#clearMedcards').attr({
                         'disabled' : false
                     });
                     totalRows = null;

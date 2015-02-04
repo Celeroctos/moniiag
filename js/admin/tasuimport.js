@@ -175,7 +175,8 @@
 				'url' : '/admin/tasu/cancelimport',
 				'cache' : false,
 				'data' : {
-					'bufferid' : $(el).find('a').prop('id').substr(1)
+					'bufferid' : $(el).find('a').prop('id').substr(1),
+                    'type' : 0
 				},
 				'dataType' : 'json',
 				'type' : 'GET',
