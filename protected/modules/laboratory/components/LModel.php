@@ -20,12 +20,7 @@ abstract class LModel extends CActiveRecord {
 	public function findForDropDown($condition = '', $params = array()) {
 		$result = parent::findAll($condition, $params);
 		$select = [];
-		$pk = $this->primaryKey();
-		if (empty($pk)) {
-			$pk = "id";
-		} else if (is_array($pk)) {
-			$pk = $pk[0];
-		}
+		$pk = "id";
 		foreach ($result as $r) {
 			$select[$r->$pk] = $r;
 		}

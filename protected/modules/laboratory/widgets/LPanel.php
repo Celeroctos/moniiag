@@ -5,6 +5,7 @@ class LPanel extends LWidget {
     public $title = null;
     public $id = null;
     public $body = null;
+    public $collapse = null;
 
     public function init() {
         parent::init();

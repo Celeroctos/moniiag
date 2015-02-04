@@ -46,16 +46,25 @@ $this->widget("LModal", [
 ?>
 
 <div class="col-xs-12">
-    <div class="col-xs-5">
-        <? $this->beginWidget("LPanel", [
-            "title" => "Справочники",
-            "id" => "guide-panel"
-        ]);
-        $this->widget("LGuideTable"); ?>
+    <div class="col-xs-4">
+        <? $this->beginWidget("LPanel", [ "title" => "Справочники", "id" => "guide-panel" ]); $this->widget("LGuideTable"); ?>
         <hr>
         <button data-toggle="modal" data-target="#guide-register-modal" type="button" class="btn btn-primary btn-sm">
             Добавить справочник
         </button>
         <? $this->endWidget(); ?>
+    </div>
+    <div class="col-xs-8">
+        <div class="panel panel-default" id="guide-edit-panel">
+            <div class="panel-heading" style="font-size: 15px">
+                <b>Редактирование справочника</b>
+            </div>
+            <div class="panel-body">
+                <div class="panel-content">
+                    <h4 style="text-align: center">Не выбран справочник</h4>
+                </div>
+                <button type="submit" id="panel-update" class="btn btn-primary hidden">Сохранить</button>
+            </div>
+        </div>
     </div>
 </div>

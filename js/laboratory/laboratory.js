@@ -139,19 +139,21 @@ var GuideTable = {
 				}
 				var component = $(json["component"]);
 				$(component.find("#guide_id").parents(".form-group")[0]).addClass("hidden");
-				$("#guide-edit-modal .modal-body .row").slideUp("normal", function() {
-					$(this).empty().append(component).hide().slideDown("normal");
+
+				$("#guide-edit-panel .panel-body").slideUp("normal", function() {
+                    $("#panel-update").removeClass("hidden");
+					$(this).empty().append(component);
+                    $(this).hide().slideDown("normal");
 				});
 			}, "json");
-			$("#guide-edit-modal").modal().find(".modal-body .row").empty().append(
-				$("<div>", {
-					style: "width: 100%; text-align: center"
-				}).append(
-					$("<img>", {
-						src: url("/images/ajax-loader.gif")
-					})
-				)
-			);
+            $("#guide-edit-panel .panel-content").empty().append($("<div>", {
+                    style: "width: 100%; text-align: center"
+                }).append(
+                    $("<img>", {
+                        src: url("/images/ajax-loader.gif")
+                    })
+                )
+            ).find("#panel-update").addClass("hidden");
 		});
 		$(document).on("click", ".table-remove", function() {
 			$.get(url("/laboratory/guide/delete"), {
@@ -172,7 +174,7 @@ var GuideTable = {
 			}, "json");
 		});
 		var modal = $("#guide-edit-modal");
-		$("#guide-edit-modal #update").click(function() {
+		$("#guide-edit-modal #panel-update").click(function() {
 			modal.find(".form-group").removeClass("has-error");
 			var serialized = [];
 			$("#guide-edit-modal form").each(function(i, form) {
