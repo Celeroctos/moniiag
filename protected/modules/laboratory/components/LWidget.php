@@ -7,8 +7,19 @@ class LWidget extends CWidget {
      * @param bool $return - If true, then widget shall return rendered component else it should print to output stream
      * @return string - Just rendered component or nothing
      */
-    public function run($return = false) {
-        return $this->render(__CLASS__, null, $return);
+    public function call($return = true) {
+        if ($return) {
+            ob_start();
+        }
+        $this->run();
+        if ($return) {
+            return ob_get_clean();
+        }
+        return null;
+    }
+
+    public function run() {
+        $this->render(__CLASS__, null, false);
     }
 
     /**

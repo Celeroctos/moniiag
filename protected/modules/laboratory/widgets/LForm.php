@@ -33,11 +33,10 @@ class LForm extends LWidget {
 
     /**
      * Override that method to return just rendered component
-     * @param bool $return - If true, then widget shall return rendered component else it should print to output stream
      * @throws CException
      * @return string - Just rendered component or nothing
      */
-    public function run($return = false) {
+    public function run() {
         if (is_array($this->model)) {
             $config = [];
             foreach ($this->model as $i => $model) {
@@ -52,10 +51,10 @@ class LForm extends LWidget {
         foreach ($this->model->view() as $key => $value) {
             $this->$key = $value;
         }
-        return $this->render(__CLASS__, [
+        $this->render(__CLASS__, [
             "model" => $this->model,
             "class" => __CLASS__
-        ], $return);
+        ]);
     }
 
     /**
@@ -150,5 +149,18 @@ class LForm extends LWidget {
             $config["type"] = "text";
         }
         return strtolower($config["type"]) == strtolower($type);
+    }
+
+    /**
+     * Check if field has hidden property
+     * @param string $key - Name of native key to check
+     * @return bool - True if field must be hidden
+     */
+    public function isHidden($key) {
+        $config = $this->model->config()[$key];
+        if (!isset($config["hidden"])) {
+            return false;
+        }
+        return $config["hidden"];
     }
 } 

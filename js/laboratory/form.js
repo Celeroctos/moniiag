@@ -167,6 +167,23 @@ var Laboratory = Laboratory || {};
         });
     };
 
+    Laboratory.postFormErrors = function(where, json) {
+        var html = $("<ul>");
+        for (var i in json["errors"] || []) {
+            $(where.find("input#" + i + "[value=''], select#" + i + "[value='-1'], #" + i + "textarea[value='']")
+                .parents(".form-group")[0]).addClass("has-error");
+            for (var j in json["errors"][i]) {
+                $("<li>", {
+                    text: json["errors"][i][j]
+                }).appendTo(html);
+            }
+        }
+        return Laboratory.createMessage({
+            message: json["message"] + html.html(),
+            delay: 10000
+        });
+    };
+
     Form.prototype.send = function(after) {
         this.selector().find(".form-group").removeClass("has-error");
         var form = this.selector();
@@ -179,6 +196,7 @@ var Laboratory = Laboratory || {};
         $.get(this.property("url"), {
             "model": form.serialize()
         }, function(json) {
+            me.after();
             if (!json["status"]) {
                 after && after(me, false);
                 var html = $("<ul>");
@@ -190,7 +208,7 @@ var Laboratory = Laboratory || {};
                         }).appendTo(html);
                     }
                 }
-                 return Laboratory.createMessage({
+                return Laboratory.createMessage({
                     message: json["message"] + html.html(),
                     delay: 10000
                 });
@@ -200,6 +218,14 @@ var Laboratory = Laboratory || {};
                 }
                 after && after(me, true);
             }
+            if (json["message"]) {
+                Laboratory.createMessage({
+                    type: "success",
+                    sign: "ok",
+                    message: json["message"]
+                });
+            }
+            $("#" + me.selector().attr("id")).trigger("success", json);
         }, "json");
         form.serialize();
         return true;
@@ -212,6 +238,9 @@ var Laboratory = Laboratory || {};
     $(document).ready(function() {
         Multiple.construct();
         $("[id$='-panel'], [id$='-modal']").each(function(i, item) {
+            if (!$(item).find("form").length) {
+                return void 0;
+            }
             var f = Laboratory.createForm($(item).find("form")[0], {
                 url: $(item).find("form").attr("action"),
                 parent: $(item)
@@ -231,6 +260,13 @@ var Laboratory = Laboratory || {};
         });
         $("[id$='-modal']").on("show.bs.modal", function() {
             $(this).draggable("disable");
+            var form = $(this).find("form");
+            if (!form.length) {
+                return void 0;
+            }
+            form.find("input, textarea").val("");
+            form.find("select", -1);
+            form.find(".form-group").removeClass("has-error");
         });
     });
 

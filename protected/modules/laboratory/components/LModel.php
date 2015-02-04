@@ -12,6 +12,27 @@ abstract class LModel extends CActiveRecord {
 	}
 
 	/**
+	 * Find elements and format for drop down list
+	 * @param string $condition - List with condition
+	 * @param array $params - Query's parameters
+	 * @return array - Array where every row associated with it's id
+	 */
+	public function findForDropDown($condition = '', $params = array()) {
+		$result = parent::findAll($condition, $params);
+		$select = [];
+		$pk = $this->primaryKey();
+		if (empty($pk)) {
+			$pk = "id";
+		} else if (is_array($pk)) {
+			$pk = $pk[0];
+		}
+		foreach ($result as $r) {
+			$select[$r->$pk] = $r;
+		}
+		return $select;
+	}
+
+	/**
 	 * Override that method to return command for jqGrid
 	 * @return CDbCommand - Command with query
 	 * @throws CDbException

@@ -2,16 +2,12 @@
 
 class LTable extends LWidget {
 
-	/**
-	 * @var $table LModel
-	 * @var $header Array
-	 */
 	public $table = null;
 	public $header = null;
 	public $sort = null;
 	public $desc = null;
 
-	public function run($return = false) {
+	public function run() {
 		if (!($this->table instanceof LModel)) {
 			throw new CException("Table's model must implements LTableProtocol");
 		}
@@ -34,6 +30,6 @@ class LTable extends LWidget {
 		}
 		return $this->render(__CLASS__, [
 			"data" => $command->queryAll()
-		], $return);
+		]);
 	}
 }

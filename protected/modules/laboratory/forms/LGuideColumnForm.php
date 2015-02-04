@@ -2,6 +2,11 @@
 
 class LGuideColumnForm extends LFormModel {
 
+	public $id;
+	public $name;
+	public $type;
+	public $guide_id;
+
 	/**
 	 * Override that method to return config. Config should return array associated with
 	 * model's variables. Every field must contains 3 parameters:
@@ -12,6 +17,12 @@ class LGuideColumnForm extends LFormModel {
 	 */
 	public function config() {
 		return [
+			"id" => [
+				"label" => "Идентификатор",
+				"type" => "number",
+				"rules" => "required",
+				"hidden" => "true"
+			],
 			"name" => [
 				"label" => "Название столбца",
 				"type" => "Text",
@@ -27,7 +38,9 @@ class LGuideColumnForm extends LFormModel {
 				"label" => "Справочник",
 				"type" => "DropDown",
 				"rules" => "required",
-				"data" => []
+				"data" => LGuide::model()->findForDropDown(),
+				"format" => "%{name}",
+				"hidden" => "true"
 			]
 		];
 	}

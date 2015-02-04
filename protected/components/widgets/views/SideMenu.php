@@ -118,12 +118,15 @@
 </li>
 -->
 <?php if(Yii::app()->user->checkAccess('menuAdmin')) { ?>
-    <li <?php echo ($module == 'admin' && $controller != 'tasu') || $module == 'guides' || $module == 'settings' ? 'class="active"' : ''; ?>>
+    <li <?php echo ($module == 'laboratory') ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('<img src="'.Yii::app()->getBaseUrl().'/images/icons/laboratory.png" width="32" height="32" alt="" />Лаборатория', array('#')) ?>
         <ul class="nav">
             <?php if(Yii::app()->user->checkAccess('menuOrgGuides')) { ?>
-            <li <?php echo $module == 'guides' || ($module == 'admin' && $action == 'shedulesettings') ? 'class="active"' : ''; ?>>
+            <li <?php echo ($controller == 'test' && $action == 'view') ? 'class="active"' : ''; ?>>
                 <?php echo CHtml::link('Тест', array('/laboratory/test/view')) ?>
+            </li>
+            <li <?php echo ($controller == 'guides' && $action == 'view') ? 'class="active"' : ''; ?>>
+                <?php echo CHtml::link('Справочники', array('/laboratory/guide/view')) ?>
             </li>
             <?php } ?>
         </ul>

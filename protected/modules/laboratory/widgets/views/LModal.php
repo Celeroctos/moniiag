@@ -12,13 +12,15 @@
                 <h4 class="modal-title"><?=$this->title?></h4>
             </div>
             <div class="modal-body">
-                <?=$this->body?>
+                <div class="row">
+                    <?=$this->body?>
+                </div>
             </div>
             <div class="modal-footer">
                 <table width="100%">
                 <tr>
                 <td align="left">
-                    <span class="glyphicon glyphicon-refresh refresh-button"></span>
+                    <span class="glyphicon glyphicon-refresh refresh-button hidden"></span>
                 </td>
                 <td>
                     <button type="button" class="btn btn-default" data-dismiss="modal"><?= "Закрыть" ?></button>

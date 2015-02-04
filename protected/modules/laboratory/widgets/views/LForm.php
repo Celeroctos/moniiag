@@ -15,14 +15,14 @@
     'enableClientValidation' => false,
     'action' => CHtml::normalizeUrl($this->url),
     'htmlOptions' => [
-        'class' => 'form-horizontal col-xs-12 col-xs-offset-1',
+        'class' => 'form-horizontal col-xs-12',
         'role' => 'form',
         'data-form' => get_class($this->model),
         'data-widget' => get_class($this)
     ]
 ]); ?>
 <? foreach ($model->getContainer() as $key => $value): ?>
-    <div class="form-group">
+    <div class="form-group <?= $this->isHidden($key) ? "hidden" : "" ?>">
         <?php if (!$this->checkType($key, "Hidden")) {
             echo $form->labelEx($model, $key, array(
                 'class' => 'col-xs-4 control-label'

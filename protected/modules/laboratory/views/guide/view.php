@@ -9,13 +9,19 @@
  * @var $this LController
  */
 
+$this->widget("LConfirmDelete", [
+    "title" => "Удалить?",
+    "id" => "confirm-delete-modal"
+]);
+
 $this->widget("LModal", [
     "body" => $this->getWidget("LForm", [
         "url" => Yii::app()->getBaseUrl()."/laboratory/guide/register",
-        "model" => new LGuideForm()
+        "model" => new LGuideForm(),
+        "id" => "guide-register-form"
     ]),
     "title" => "Добавление справочника",
-    "id" => "add-guide-modal",
+    "id" => "guide-register-modal",
     "buttons" => [
         "register" => [
             "class" => "btn btn-primary",
@@ -25,29 +31,31 @@ $this->widget("LModal", [
     ]
 ]);
 
-$this->widget("LConfirmDelete", [
-    "title" => "Удалить?",
-    "id" => "confirm-delete-modal"
-]);
-
-$this->widget("LTable", [
-    "table" => new LGuide(),
-    "header" => [
-        "id" => [
-            "label" => "#",
-            "style" => "min-width: 0px; width: 10px;"
-        ],
-        "name" => [
-            "label" => "Название"
+$this->widget("LModal", [
+    "title" => "Редактирование справочника",
+    "buttons" => [
+        "update" => [
+            "class" => "btn btn-primary",
+            "type" => "submit",
+            "text" => "Сохранить"
         ]
     ],
-    "id" => "guide-table"
+    "id" => "guide-edit-modal"
 ]);
 
 ?>
 
 <div class="col-xs-12">
-    <div class="col-xs-4">
-
+    <div class="col-xs-5">
+        <? $this->beginWidget("LPanel", [
+            "title" => "Справочники",
+            "id" => "guide-panel"
+        ]);
+        $this->widget("LGuideTable"); ?>
+        <hr>
+        <button data-toggle="modal" data-target="#guide-register-modal" type="button" class="btn btn-primary btn-sm">
+            Добавить справочник
+        </button>
+        <? $this->endWidget(); ?>
     </div>
 </div>

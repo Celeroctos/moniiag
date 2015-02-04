@@ -32,12 +32,11 @@ abstract class LComponent extends LForm {
 
     /**
      * That method will run your widget and render it
-     * @param bool $return - Should widget print or return result
      * @return string - String with widget's data
-     * @throws CException
+     * @internal param bool $return - Should widget print or return result
      */
-    public function run($return = false) {
-        return parent::run($return);
+    public function run() {
+        return parent::run();
     }
 
     /**

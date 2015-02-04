@@ -2,6 +2,9 @@
 
 class LGuide extends LModel {
 
+	public $id;
+	public $name;
+
 	/**
 	 * Returns the name of the associated database table.
 	 * By default this method returns the class name as the table name.
@@ -14,10 +17,9 @@ class LGuide extends LModel {
 
 	/**
 	 * Get model's instance from cache
-	 * @param string $className - Class's name
 	 * @return LGuide - Cached model instance
 	 */
-	public static function model($className = __CLASS__) {
-		return parent::model($className);
+	public static function model() {
+		return parent::model(__CLASS__);
 	}
 }

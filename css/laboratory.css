@@ -38,6 +38,11 @@
     font-size: 25px;
     cursor: pointer;
 }
+.collapse-button {
+    font-size: 15px;
+    cursor: pointer;
+    margin-top: 5px;
+}
 
 .multiple-container {
     min-height: 20px;
@@ -65,6 +70,40 @@
 }
 
 .table .table-remove {
-    margin-left: 5px;
     color: #af1010;
+}
+
+#guide-panel .panel-body {
+    padding: 0;
+}
+#guide-panel .panel-body hr {
+    margin: 0;
+}
+#guide-panel .panel-body button {
+    margin: 5px;
+}
+
+#guide-panel .table {
+    margin: 0 2px 2px 0;
+}
+
+#guide-panel .glyphicon-plus {
+    font-size: 20px;
+    width: 100%;
+    text-align: right;
+}
+
+#guide-edit-modal .panel {
+    padding: 0;
+    margin-top: 20px;
+}
+
+.column-container form {
+    margin-bottom: 10px;
+}
+
+.column-container hr {
+    margin: 0 0 10px;
+    position: relative;
+    border: 1px dotted #d3d3d3;
 }

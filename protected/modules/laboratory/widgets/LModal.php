@@ -7,9 +7,9 @@ class LModal extends LWidget {
     public $body = null;
     public $buttons = [];
 
-    public function run($return = false) {
+    public function run() {
         if ($this->body instanceof LWidget) {
-            $this->body = $this->body->run(true);
+            $this->body = $this->body->call(true);
         }
         foreach ($this->buttons as $i => &$button) {
             if (!isset($button["type"])) {
@@ -24,6 +24,6 @@ class LModal extends LWidget {
             }
             $button["attributes"] = $attribute;
         }
-        $this->render(__CLASS__, null, $return);
+        $this->render(__CLASS__, null);
     }
 } 

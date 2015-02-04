@@ -1,26 +1,25 @@
-var GuideRegister = {
+var GuideEdit = {
 	construct: function() {
 		$(document).on("click", ".guide-remove-column", function() {
 			var me = $(this).parent("a").parent("div");
-			me.slideUp("slow", function() {
+			me.slideUp("normal", function() {
 				me.remove();
 			});
 		});
-		this.button = $("#guide-append-column").click(function() {
+		$(document).on("click", "#guide-append-column", function() {
 			if ($(this).children(".glyphicon-plus").length) {
-				GuideRegister.add();
+				GuideEdit.add($(this));
 			}
 		});
-		//$("#guide_id").parents(".form-group").addClass("hidden");
 	},
-	before: function() {
-		this.button.find("span").replaceWith($("<img>", {
+	before: function(button) {
+		button.find("span").replaceWith($("<img>", {
 			width: 15,
 			src: url("/images/ajax-loader.gif")
 		}));
 	},
-	after: function() {
-		this.button.find("img").replaceWith($("<span>", {
+	after: function(button) {
+		button.find("img").replaceWith($("<span>", {
 			class: "glyphicon glyphicon-plus"
 		}));
 	},
@@ -30,9 +29,7 @@ var GuideRegister = {
 		var p;
 		$(".column-container").append(
 			p = $("<div>").append(
-				$("<a>", {
-					href: "javascript:void(0)"
-				}).append(
+				$("<a>", { href: "javascript:void(0)" }).append(
 					$("<span>", {
 						class: "glyphicon glyphicon-remove guide-remove-column",
 						style: "color: #af1010"
@@ -40,76 +37,188 @@ var GuideRegister = {
 				)
 			).append(component).append("<hr>")
 		);
-		p.hide().slideDown("slow");
+		p.hide().slideDown("normal");
 	},
-	add: function() {
-		GuideRegister.before();
+	add: function(button) {
+		GuideEdit.before(button);
 		$.get(url("/laboratory/guide/getWidget"), {
 			class: "LForm",
-			model: "LGuideColumnForm"
+			model: "LGuideColumnForm",
+			form: { guide_id: GuideEdit.id }
 		}, function(json) {
-			GuideRegister.after();
+			GuideEdit.after(button);
 			if (!json.status) {
 				return Laboratory.createMessage({
 					message: json["message"]
 				});
 			}
-			GuideRegister.render($(json["component"]));
+			GuideEdit.render($(json["component"]));
 		}, "json");
 	},
-	button: null
+	id: -1
 };
 
 var ConfirmDelete = {
 	construct: function() {
-		$(".confirm").popover({
-			placement: "bottom",
-			html: true,
-			title: "Подтвердить действие?",
-			trigger: "manual",
-			content: ConfirmDelete.render()
-		}).on("show.bs.popover", function() {
-			ConfirmDelete.activate($(this));
+		$(document).on("click", ".confirm", function(e) {
+			if (ConfirmDelete.lock) {
+				return void 0;
+			}
+			ConfirmDelete.item = $(e.target);
+			$("#confirm-delete-modal").modal();
+			e.stopImmediatePropagation();
+			return false;
 		});
-		$(document).on("click", ".confirm", function() {
-			console.log(123);
+		$("#confirm-delete-button").click(function() {
+			ConfirmDelete.lock = true;
+			if (ConfirmDelete.item != null) {
+				ConfirmDelete.item.trigger("click");
+			}
+			setTimeout(function() {
+				ConfirmDelete.lock = false;
+			}, 250);
 		});
 	},
-	render: function() {
-		return $("<div>").append(
-			$("<button>", {
-				class: "btn btn-default",
-				text: "Отмена",
-				id: "confirm-cancel-button"
-			})
-		).append(
-			$("<button>", {
-				class: "btn btn-danger",
-				text: "Удалить",
-				style: "margin-left: 5px",
-				id: "confirm-delete-button"
-			})
-		);
-	},
-	activate: function(popover) {
-		console.log(popover[0]);
-		popover.find(".btn-default").click(function() {
-			console.log("cancel");
-		});
-		popover.find(".btn-danger").click(function() {
-			console.log("delete");
+	item: null,
+	lock: false
+};
+
+var Panel = {
+	construct: function() {
+		$(document).on("click", ".collapse-button", function() {
+			var me = $(this);
+			var body = $(me.parents(".panel")[0]).children(".panel-body");
+			if ($(this).hasClass("glyphicon-collapse-up")) {
+				body.slideUp("normal", function() {
+					me.removeClass("glyphicon-collapse-up")
+						.addClass("glyphicon-collapse-down");
+				});
+			} else {
+				body.slideDown("normal", function() {
+					me.removeClass("glyphicon-collapse-down")
+						.addClass("glyphicon-collapse-up");
+				});
+			}
 		});
 	}
 };
 
-var Table = {
-	construct: function() {
-
+var Message = {
+	display: function(json) {
+		if (!json["status"]) {
+			Laboratory.createMessage({
+				message: json["message"]
+			});
+			return false
+		} else if (json["message"]) {
+			Laboratory.createMessage({
+				type: "success",
+				sign: "ok",
+				message: json["message"]
+			});
+		}
+		return true;
 	}
+};
+
+var GuideTable = {
+	construct: function() {
+		$("#guide-register-form").on("success", function() {
+			GuideTable.update();
+		});
+		$(document).on("click", ".table-edit", function() {
+			var id = $(this).parents("tr").data("id");
+			GuideEdit.id = id;
+			$.get(url("/laboratory/guide/getWidget"), {
+				class: "LGuideEdit",
+				form: { id: id },
+				model: "LGuideForm"
+			}, function(json) {
+				if (!Message.display(json)) {
+					return void 0;
+				}
+				var component = $(json["component"]);
+				$(component.find("#guide_id").parents(".form-group")[0]).addClass("hidden");
+				$("#guide-edit-modal .modal-body .row").slideUp("normal", function() {
+					$(this).empty().append(component).hide().slideDown("normal");
+				});
+			}, "json");
+			$("#guide-edit-modal").modal().find(".modal-body .row").empty().append(
+				$("<div>", {
+					style: "width: 100%; text-align: center"
+				}).append(
+					$("<img>", {
+						src: url("/images/ajax-loader.gif")
+					})
+				)
+			);
+		});
+		$(document).on("click", ".table-remove", function() {
+			$.get(url("/laboratory/guide/delete"), {
+				id: $(this).parents("tr").data("id")
+			}, function(json) {
+				if (!json["status"]) {
+					return Laboratory.createMessage({
+						message: json["message"]
+					});
+				} else if (json["message"]) {
+					Laboratory.createMessage({
+						type: "success",
+						sign: "ok",
+						message: json["message"]
+					});
+				}
+				GuideTable.update();
+			}, "json");
+		});
+		var modal = $("#guide-edit-modal");
+		$("#guide-edit-modal #update").click(function() {
+			modal.find(".form-group").removeClass("has-error");
+			var serialized = [];
+			$("#guide-edit-modal form").each(function(i, form) {
+				serialized.push($(form).serialize());
+			});
+			$.get(url("/laboratory/guide/update"), {
+				model: serialized
+			}, function(json) {
+				if (!json["status"]) {
+					return Laboratory.postFormErrors($("#guide-edit-modal"), json);
+				} else {
+					Message.display(json);
+				}
+				modal.modal("hide");
+				GuideTable.update();
+			}, "json");
+		});
+	},
+	refresh: function(component) {
+		$("#guide-table").fadeOut("fast", function() {
+			var t;
+			$("#guide-table").replaceWith(
+				t = component
+			);
+			console.log(component[0]);
+			t.hide().fadeIn("fast");
+		});
+	},
+	update: function() {
+		$.get(url("/laboratory/guide/getWidget"), {
+			class: "LGuideTable"
+		}, function(json) {
+			if (!json["status"]) {
+				return Laboratory.createMessage({
+					message: json["message"]
+				});
+			}
+			GuideTable.refresh($(json["component"]));
+		}, "json");
+	},
+	success: false
 };
 
 $(document).ready(function() {
-	GuideRegister.construct();
-	Table.construct();
+	GuideEdit.construct();
 	ConfirmDelete.construct();
+	Panel.construct();
+	GuideTable.construct();
 });

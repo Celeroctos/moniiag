@@ -8,4 +8,12 @@ class LaboratoryController extends LController {
 			"status" => true
 		]);
 	}
+
+	/**
+	 * Override that method to return controller's model
+	 * @return LModel - Controller's model instance
+	 */
+	public function getModel() {
+		return null;
+	}
 }

@@ -2,6 +2,9 @@
 
 class LGuideForm extends LFormModel {
 
+	public $id;
+	public $name;
+
 	/**
 	 * Override that method to return config. Config should return array associated with
 	 * model's variables. Every field must contains 3 parameters:
@@ -12,22 +15,16 @@ class LGuideForm extends LFormModel {
 	 */
 	public function config() {
 		return [
+			"id" => [
+				"label" => "Идентификатор",
+				"type" => "number",
+				"rules" => "required",
+				"hidden" => true
+			],
 			"name" => [
 				"label" => "Название справочника",
 				"type" => "text",
 				"rules" => "required"
-			],
-			"test" => [
-				"label" => "123",
-				"type" => "DropDown",
-				"rules" => "required",
-				"data" => [
-					1 => 1,
-					2 => 2,
-					3 => 3,
-					4 => 4,
-					5 => 5
-				]
 			]
 		];
 	}

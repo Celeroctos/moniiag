@@ -47,7 +47,7 @@ class ApiController extends LController {
 
             // Authenticate user
             if (!$userIdentity->authenticateInOneStep()) {
-                throw new LError("Can't resolve user's login or password");
+                throw new CException("Can't resolve user's login or password");
             }
 
             // Copy states to new just generated session
@@ -151,7 +151,7 @@ class ApiController extends LController {
                     $_POST[$key] = $value;
                 }
             } else if (strtoupper($method) != "GET") {
-                throw new LError("Invalid method type ({$this->get("method")})");
+                throw new CException("Invalid method type ({$this->get("method")})");
             }
 
             while (strlen($path) > 0 && $path[0] == "/") {
@@ -181,7 +181,7 @@ class ApiController extends LController {
      * Check current user's session id for access
      * @return bool - True if user has access to API
      * @throws Exception
-     * @throws LError
+     * @throws CException
      */
     protected function checkAccess() {
         try {
@@ -217,4 +217,12 @@ class ApiController extends LController {
         }
         return true;
     }
-} 
+
+    /**
+     * Override that method to return controller's model
+     * @return LModel - Controller's model instance
+     */
+    public function getModel() {
+        return null;
+    }
+}

@@ -1,6 +1,6 @@
 <?php
 
-class LController extends Controller {
+abstract class LController extends Controller {
 
     /**
      * Override that method to add your chains, if path will be
@@ -26,6 +26,12 @@ class LController extends Controller {
             $filterChain->run();
         }
     }
+
+    /**
+     * Override that method to return controller's model
+     * @return LModel - Controller's model instance
+     */
+    public abstract function getModel();
 
     /**
      * Override that method to provide access denied action, for example you can
@@ -66,10 +72,11 @@ class LController extends Controller {
             $properties = [];
         }
         $widget = $this->createWidget($class, $properties);
-        if ($return) {
-            return $widget->run(true);
+        if ($widget instanceof LWidget && $return) {
+            return $widget->call();
+        } else {
+            $widget->run();
         }
-        $widget->run(false);
         return null;
     }
 
@@ -115,20 +122,18 @@ class LController extends Controller {
     }
 
     /**
-     * Get model via GET method, it will check it for array and decode if model
-     * is simply serialized string
-     * @param string $model - Model's name if GET/POST arrays
-     * @param string $method - Receive method type
-     * @return LFormModel - Model with attributes
-     * @throws CException - If form's model instance don't extends LFormModel
+     * Decode form's url, convert it to array try to validate it's form
+     * @param string $form - String with encode form's url
+     * @param bool $error - Set that flag to false to store errors in array
+     * @param string $name - Form's name will be in that field
+     * @return LFormModel - Form's model with attributes
+     * @throws CException
      */
-    public function getFormModel($model = "model", $method = "get") {
-        $model = $this->$method($model);
-        if (!is_string($model)) {
-            return $model;
+    public function getUrlForm($form, $error = true, &$name = "") {
+        if (!is_string($form)) {
+            throw new CException("Form's model must be serialized form string");
         }
-        $name = "";
-        $array = $this->decode($model, $name);
+        $array = $this->decode($form, $name);
         $form = new $name();
         if (!($form instanceof LFormModel)) {
             throw new CException("Form must be instance of LFormModel class");
@@ -138,29 +143,66 @@ class LController extends Controller {
             $form->$i = $value;
         }
         if (!$form->validate()) {
-            $this->leave([
-                "message" => "Произошли ошибки во время валидации формы",
-                "errors" => $form->getErrors(),
-                "status" => false
-            ]);
+            if ($error) {
+                $this->leave([
+                    "message" => "Произошли ошибки во время валидации формы",
+                    "errors" => $form->getErrors(),
+                    "status" => false
+                ]);
+            } else {
+                $this->errors += $form->getErrors();
+            }
         }
         return $form;
     }
 
     /**
+     * Get model via GET method, it will check it for array and decode if model
+     * is simply serialized string
+     * @param string $model - Model's name from GET/POST arrays
+     * @param string $method - Receive method type
+     * @return LFormModel|Array - Model with attributes or array with founded forms
+     * @throws CException - If form's model instance don't extends LFormModel
+     */
+    public function getFormModel($model = "model", $method = "get") {
+        $form = $this->$method($model);
+        if (!is_array($form)) {
+            return $this->getUrlForm($form);
+        }
+        $array = [];
+        foreach ($form as $f) {
+            $array[] = $this->getUrlForm($f, false);
+        }
+        if (count($this->errors) > 0) {
+            $this->leave([
+                "message" => "Произошли ошибки во время валидации формы",
+                "errors" => $this->errors,
+                "status" => false
+            ]);
+        }
+        return $array;
+    }
+
+    /**
      * That action will catch widget update and returns
-     * new just rendered component
+     * new just rendered component. Override that method
+     * to check necessary privileges and invoke super method
      */
     public function actionGetWidget() {
         try {
             // Get widget's class component and unique identification number and method
             $class = $this->getAndUnset("class");
-            $model = $this->getAndUnset("model");
+
+            if (isset($_GET["model"])) {
+                $model = $this->getAndUnset("model");
+            } else {
+                $model = null;
+            }
 
             if (isset($_GET["method"])) {
                 $method = $this->getAndUnset("method");
             } else {
-                $method = "POST";
+                $method = "GET";
             }
 
             if (isset($_GET["form"])) {
@@ -181,17 +223,20 @@ class LController extends Controller {
                 $parameters = $_GET;
             }
 
-            // Create widget
-            $widget = $this->createWidget($class, $parameters + [
+            if ($model != null) {
+                $parameters += [
                     "model" => new $model(null)
-                ]);
-
-            if (!($widget instanceof LWidget)) {
-                throw new LError("Can't update widget which don't extends LWidget component");
+                ];
             }
 
-            // Copy model parameters if exists
-            if ($widget instanceof LForm && is_array($form)) {
+            // Create widget, check for LWidget instance and copy parameters
+            $widget = $this->createWidget($class, $parameters);
+
+            if (!($widget instanceof LWidget)) {
+                throw new CException("Can't update widget which don't extends LWidget component");
+            }
+
+            if ($form != null && $widget instanceof LForm && is_array($form)) {
                 foreach ($form as $key => $value) {
                     $widget->model->$key = $value;
                 }
@@ -199,8 +244,25 @@ class LController extends Controller {
 
             $this->leave([
                 "id" => isset($widget->id) ? $widget->id : null,
-                "component" => $widget->run(true),
+                "component" => $widget->call(),
                 "model" => $form
+            ]);
+        } catch (Exception $e) {
+            $this->exception($e);
+        }
+    }
+
+    /**
+     * Override that method to remove element from model, by default
+     * it will try to find controller's model and remove it
+     */
+    protected function actionDelete() {
+        try {
+            $this->getModel()->deleteByPk($this->get("id"), "id = :id", [
+                ":id" => $this->get("id")
+            ]);
+            $this->leave([
+                "message" => "Элемент был успешно удален"
             ]);
         } catch (Exception $e) {
             $this->exception($e);
@@ -223,11 +285,11 @@ class LController extends Controller {
      * with error message
      * @param $name string - Name of parameter to get
      * @return mixed - Some received stuff
-     * @throws LError - If parameter hasn't been declared in _GET array
+     * @throws CException - If parameter hasn't been declared in _GET array
      */
     public function get($name) {
         if (!isset($_GET[$name])) {
-            throw new LError("GET.$name");
+            throw new CException("GET.$name");
         }
         return $_GET[$name];
     }
@@ -236,7 +298,7 @@ class LController extends Controller {
      * Try to get and unset variable from GET method or throw an exception
      * @param String $name - Name of parameter in GET array
      * @return Mixed - Some received value
-     * @throws LError - If parameter hasn't been declared in _GET array
+     * @throws CException - If parameter hasn't been declared in _GET array
      */
     public function getAndUnset($name) {
         $value = $this->get($name);
@@ -249,11 +311,11 @@ class LController extends Controller {
      * with error message
      * @param $name string - Name of parameter to get
      * @return mixed - Some received stuff
-     * @throws LError - If parameter hasn't been declared in _POST array
+     * @throws CException - If parameter hasn't been declared in _POST array
      */
     public function post($name) {
         if (!isset($_POST[$name])) {
-            throw new LError("POST.$name");
+            throw new CException("POST.$name");
         }
         return $_POST[$name];
     }
@@ -307,4 +369,5 @@ class LController extends Controller {
 
     private $session = null;
     private $access = null;
+    private $errors = [];
 } 
