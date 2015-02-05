@@ -25,10 +25,10 @@
     <div class="form-group <?= $this->isHidden($key) ? "hidden" : "" ?>">
         <?php if (!$this->checkType($key, "Hidden")) {
             echo $form->labelEx($model, $key, array(
-                'class' => 'col-xs-4 control-label'
+                'class' => 'col-xs-5 control-label'
             ));
         } ?>
-        <div class="col-xs-7">
+        <div class="col-xs-6">
             <?= $this->renderField($form, $key); ?>
         </div>
         <? if ($this->checkType($key, "DropDown")): ?>

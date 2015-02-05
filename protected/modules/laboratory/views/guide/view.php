@@ -32,7 +32,7 @@ $this->widget("LModal", [
 ]);
 
 $this->widget("LModal", [
-    "title" => "Редактирование справочника",
+    "title" => "Добавление значений",
     "buttons" => [
         "update" => [
             "class" => "btn btn-primary",

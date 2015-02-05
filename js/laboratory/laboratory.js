@@ -139,21 +139,18 @@ var GuideTable = {
 				}
 				var component = $(json["component"]);
 				$(component.find("#guide_id").parents(".form-group")[0]).addClass("hidden");
-
-				$("#guide-edit-panel .panel-body").slideUp("normal", function() {
-                    $("#panel-update").removeClass("hidden");
+				$("#guide-edit-panel .panel-content").slideUp("normal", function() {
 					$(this).empty().append(component);
-                    $(this).hide().slideDown("normal");
+                    $(this).hide().slideDown("normal", function() {
+                        $("#panel-update").removeClass("hidden").hide().fadeIn("fast");
+                    });
 				});
 			}, "json");
+            $("#panel-update").addClass("hidden");
             $("#guide-edit-panel .panel-content").empty().append($("<div>", {
                     style: "width: 100%; text-align: center"
-                }).append(
-                    $("<img>", {
-                        src: url("/images/ajax-loader.gif")
-                    })
-                )
-            ).find("#panel-update").addClass("hidden");
+                }).append($("<img>", { src: url("/images/ajax-loader.gif") }))
+            );
 		});
 		$(document).on("click", ".table-remove", function() {
 			$.get(url("/laboratory/guide/delete"), {

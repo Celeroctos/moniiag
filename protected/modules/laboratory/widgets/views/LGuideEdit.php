@@ -14,8 +14,7 @@ $this->widget("LForm", [
 
 <div class="panel panel-default col-xs-10 col-md-offset-1 col-xs-offset-1">
 	<div class="panel-heading" style="text-align: right">
-		<div class="column-container">
-			<br>
+		<div class="column-container" style="padding-top: 5px">
 			<? if (count($this->columns) == 0): ?>
 				<div><? $this->widget("LForm", [ "model" => $this->default ]) ?><hr></div>
 			<? endif; ?>
