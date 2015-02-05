@@ -261,10 +261,43 @@ var GuideTable = {
 	success: false
 };
 
+var GuideValues = {
+	reset: function(tr) {
+		tr.find("select").each(function(i, f) {
+			$(f).val(-1);
+			if (!$(f).val()) {
+				$(f).val(0);
+			}
+		});
+		tr.find("input, textarea").val("");
+	},
+	construct: function() {
+		$(document).on("click", "#guide-edit-add-fields", function() {
+			var item = $(this).parents(".guide-values-container").find("tr:last");
+			var tr = item.clone();
+			GuideValues.reset(tr);
+			item.parent().append(tr);
+			tr.hide().slideDown("slow");
+		});
+		$(document).on("click", ".guide-values-container .remove", function() {
+			var tr = $(this).parent("td").parent("tr");
+			if (tr.parent("tbody").children().length == 1) {
+				GuideValues.reset(tr);
+				Laboratory.createMessage({
+					message: "Нельзя удалить единственную строку в таблице",
+					type: "info"
+				});
+			} else {
+				tr.remove();
+			}
+		});
+	}
+};
+
 $(document).ready(function() {
-    console.log($.nestable);
 	GuideColumnEditor.construct();
 	ConfirmDelete.construct();
 	Panel.construct();
 	GuideTable.construct();
+	GuideValues.construct();
 });

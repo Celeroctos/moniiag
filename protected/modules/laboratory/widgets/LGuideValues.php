@@ -21,5 +21,5 @@ class LGuideValues extends LWidget {
         );
     }
 
-    const DEFAULT_COUNT = 5;
+    const DEFAULT_COUNT = 3;
 } 

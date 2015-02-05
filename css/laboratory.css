@@ -111,3 +111,8 @@
 #guide-table tbody tr td:not(:last-child) {
     cursor: pointer;
 }
+
+.glyphicon-red {
+    color: #af1010;
+    cursor: pointer;
+}
