@@ -1185,31 +1185,9 @@ class TasuController extends Controller {
     private function searchTasuPatient($oms) {
         $conn = Yii::app()->db2;
 		try {
-            if($oms->oms_series == null) { // Старый тип структуры базы
-                // Номер полиса состоит из двух частей: серия (пробел) номер
-                $policyParts = explode(' ', trim($oms->oms_number));
-                // Неправильный номер полиса по формату
-                if(count($policyParts) != 2) {
-                    $policyParts = array();
-                    if(mb_strlen(trim($oms->oms_number)) > 7) {
-                        $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
-                        $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
-                    } else {
-                        throw new Exception();
-                    }
-                }
-            } else {
-                $policyParts[0] = $oms->oms_series;
-                $policyParts[1] = $oms->oms_number;
-            }
-			
-			if($oms->type == 5 || $oms->type == 3) { // Единый полис ОМС в одном поле, в номере
-				$serie = '';
-				$number = trim($policyParts[0]).trim($policyParts[1]);
-			} else {
-				$serie = $policyParts[0];
-				$number = $policyParts[1];
-			}
+            $policyParts = $this->getSerieNumberPerOms($oms);
+            $serie = $policyParts[0];
+            $number = $policyParts[1];
 
             $sql = "SELECT DISTINCT
 	                  [pat].[uid] AS [PatientUID],
@@ -1247,24 +1225,9 @@ class TasuController extends Controller {
 		$conn = Yii::app()->db2;
 		try {
 			// ТАСУ правее нас: корректируем СМО и регион у полиса принудительно
-			$this->getTasuPatientByPolicy($oms, 1);
-            if($oms->oms_series == null ) {
-                // Номер полиса состоит из двух частей: серия (пробел) номер
-                $policyParts = explode(' ', trim($oms->oms_number));
-                // Неправильный номер полиса по формату
-                if(count($policyParts) != 2) {
-                    $policyParts = array();
-                    if(mb_strlen(trim($oms->oms_number)) > 7) {
-                        $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
-                        $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
-                    } else {
-                        throw new Exception();
-                    }
-                }
-            } else {
-                $policyParts[0] = $oms->oms_series;
-                $policyParts[1] = $oms->oms_number;
-            }
+			$policyParts = $this->getSerieNumberPerOms($oms);
+            $serie = $policyParts[0];
+            $number = $policyParts[1];
 
             if($medcard->doctype == 1) {
                 $medcard->doctype = '14';
@@ -1412,15 +1375,6 @@ class TasuController extends Controller {
 					exit();
 				}
 			}
-
-            // В едином и временном номере всё пишется в одно поле
-            if($oms->type == 5 || $oms->type == 3) {
-                $serie = '';
-                $number = $policyParts[0].$policyParts[1];
-            } else {
-                $serie = $policyParts[0];
-                $number = $policyParts[1];
-            }
 
             if($number) { // Номер в любом случае должен быть
                 // Если не подгружены данные по полису из ТАСУ, самое время это сделать
@@ -1676,33 +1630,9 @@ class TasuController extends Controller {
                 throw new Exception('Сотрудника не удалось создать / найти');
             }
 
-            // Номер полиса состоит из двух частей: серия (пробел) номер
-            if($oms->oms_series == null) {
-                $policyParts = explode(' ', trim($oms->oms_number));
-                // Неправильный номер полиса по формату
-
-                if(count($policyParts) != 2) {
-                    $policyParts = array();
-                    if(mb_strlen(trim($oms->oms_number)) > 7) {
-                        $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
-                        $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
-                    } else {
-                        throw new Exception();
-                    }
-                }
-            } else {
-                $policyParts[0] = $oms->oms_series;
-                $policyParts[1] = $oms->oms_number;
-            }
-			
-			// В едином номере всё пишется в одно поле
-			if($oms->type == 5 || $oms->type == 3) {
-				$serie = '';
-				$number = $policyParts[0].$policyParts[1];
-			} else {
-				$serie = $policyParts[0];
-				$number = $policyParts[1];
-			}
+            $policyParts = $this->getSerieNumberPerOms($oms, false);
+            $serie = $policyParts[0];
+            $number = $policyParts[1];
 
             $omsRow = $sql = "SELECT
 						[a].[uid]
@@ -2500,10 +2430,7 @@ class TasuController extends Controller {
         $conn2 = Yii::app()->db2;
 		$conn3 = Yii::app()->db3;
 
-		/*if(!$conn2->getActive() || !$conn3->getActive()) {
-			return -1; // Нет соединения
-		}*/
-		if($oms->oms_series == null) {
+		if($oms->oms_series == null && $oms->type == 5) {
 			$policyParts = explode(' ', trim($oms->oms_number));
 			// Неправильный номер полиса по формату....?
 			if(count($policyParts) != 2) {
@@ -2519,21 +2446,21 @@ class TasuController extends Controller {
 				$series = $policyParts[0];
 				$number = $policyParts[1];
 			}
-				
+
 			if($oms->type == 5 || $oms->type == 3) {
 				$number = $series.$number;
 				$series = '';
 			}
 		} else {
-			$series = $oms->oms_series;
-			$number = $oms->oms_number;
-			
+			$series = trim($oms->oms_series);
+			$number = trim($oms->oms_number);
+
 			if($oms->type == 5 || $oms->type == 3) {
 				$series = '';
-				$number = $oms->oms_series.$oms->oms_number;
+				$number = trim($oms->oms_series).trim($oms->oms_number);
 			} else {
-				$series = $oms->oms_series;
-				$number = $oms->oms_number;
+				$series = trim($oms->oms_series);
+				$number = trim($oms->oms_number);
 			}
 		}
 		  
@@ -3563,6 +3490,47 @@ class TasuController extends Controller {
 
         $sql = "ALTER TABLE dbo.t_book_65067 ENABLE TRIGGER trt_book_65067_update";
         $conn->createCommand($sql)->execute();
+    }
+
+    private function getSerieNumberPerOms($oms, $updateFromTasu = true) {
+        // ТАСУ правее нас: корректируем СМО и регион у полиса принудительно
+        if($updateFromTasu) {
+            $this->getTasuPatientByPolicy($oms, 1);
+        }
+        $policyParts = array();
+
+        $oms->oms_series = trim($oms->oms_series);
+        $oms->oms_number = trim($oms->oms_number);
+
+        if($oms->type == 5) {
+            if(!$oms->oms_series) { // Единый полис
+                // Номер полиса состоит из двух частей: серия (пробел) номер
+                $policyParts = explode(' ', trim($oms->oms_number));
+                // Неправильный номер полиса по формату
+                if(count($policyParts) != 2) {
+                    $policyParts = array();
+                    if(mb_strlen(trim($oms->oms_number)) > 7) {
+                        $policyParts[0] = mb_substr(trim($oms->oms_number), 0, 6);
+                        $policyParts[1] = mb_substr(trim($oms->oms_number), 6);
+                    } else {
+                        throw new Exception();
+                    }
+                }
+            } else {
+                $policyParts[0] = '';
+                $policyParts[1] = trim($oms->oms_series).trim($oms->oms_number);
+            }
+        } else {
+            if($oms->type == 3) {
+                $policyParts[0] = '';
+                $policyParts[1] = trim($oms->oms_series).trim($oms->oms_number);
+            } else {
+                $policyParts[0] = trim($oms->oms_series);
+                $policyParts[1] = trim($oms->oms_number);
+            }
+        }
+
+        return $policyParts;
     }
 }
 ?>
