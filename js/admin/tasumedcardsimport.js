@@ -392,7 +392,7 @@
 					$('#importProgressbarP').prop({
 						'aria-valuenow' : '0'
 					}).css('width', '0%');
-                    $("#greetings").trigger("reloadGrid");
+                    $("#medcards").trigger("reloadGrid");
                     $("#importHistory").trigger("reloadGrid");
                     $('.continueImport, .pauseImport').removeClass('no-display');
                     $('.successImport').addClass('no-display');
@@ -465,7 +465,7 @@
 		var currentRow = $('#importHistory').jqGrid('getGridParam','selrow');
         if(currentRow != null) {
 			var row = $('#importHistory').jqGrid('getRowData', currentRow);
-			$('#historyGreetings').jqGrid('setGridParam',
+			$('#historyMedcards').jqGrid('setGridParam',
 				{
 					url: globalVariables.baseUrl + '/admin/tasu/getbuffermedcards?import_id=' + row.import_id,
 					page: 1

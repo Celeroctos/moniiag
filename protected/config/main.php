@@ -111,7 +111,7 @@ return array(
 	'components'=>array(
         'clientScript' => array(
             'scriptMap' => array(
-                'jquery.js' => Yii::app()->request->baseUrl.'/js/libs/jquery-1.10.2.min.js'
+                'jquery.js' => '/js/libs/jquery-1.10.2.min.js'
             )
         ),
 		'user'=>array(
@@ -133,7 +133,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		'db2' => array(
 			'class'=>'system.db.CDbConnection',
-				'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPStdStorage',
+				'connectionString' => 'sqlsrv:Server=7.79.78.102\HISSQLEE,1433;Database=PDPStdStorage',
 				'username' => 'sa',
 				'password' => 'system54@nof',
 				'charset' => 'utf8'
@@ -141,7 +141,7 @@ return array(
 		
 		'db3' => array(
 			'class'=>'system.db.CDbConnection',
-				    'connectionString' => 'sqlsrv:Server=192.168.102.52\HISSQLEE,1433;Database=PDPRegStorage',
+				    'connectionString' => 'sqlsrv:Server=7.79.78.102\HISSQLEE,1433;Database=PDPRegStorage',
 				    'username' => 'sa',
 				    'password' => 'system54@nof',
 				    'charset' => 'utf8'

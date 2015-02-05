@@ -9,6 +9,9 @@ class TasuGreetingsBuffer extends MisActiveRecord {
     {
         return 'mis.tasu_greetings_buffer';
     }
+    public function primaryKey() {
+        return 'id';
+    }
 
     public function getLastBuffer($filters, $sidx = false, $sord = false, $start = false, $limit = false, $lastGreeting = false, $date = false, $doctorId = false, $importId = false) {
         try {

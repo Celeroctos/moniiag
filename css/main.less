@@ -1904,9 +1904,15 @@ a.accordion-toggle:hover {
 	overflow-x: scroll;
 }
 #showHistoryGreetingPopup {
+    .modal-body {
+      overflow: hidden;
+    }
 	.modal-dialog {
-		width: 1060px;
-	}
+		width: 1000px;
+	    .row {
+          padding-left: 20px;
+        }
+    }
 }
 #greeting-addfake-submit  {
 	margin-left: 112px;
@@ -2701,6 +2707,17 @@ form[id=template-edit-form] .btnAddValue
       max-width: 98%;
       max-height: 300px;
       overflow-y: scroll;
+    }
+  }
+}
+#showHistoryMedcardsPopup {
+  .modal-dialog {
+    width: 1050px;
+    .modal-body {
+      overflow: hidden;
+    }
+    .row {
+      padding-left: 20px;
     }
   }
 }

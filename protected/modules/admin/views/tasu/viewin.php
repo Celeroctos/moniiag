@@ -351,7 +351,7 @@
                 <h4 class="modal-title">Состав выгрузки</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
+                <div class="row col-xs-12">
 					<table id="historyGreetings"></table>
 					<div id="historyGreetingsPager"></div>
                 </div>

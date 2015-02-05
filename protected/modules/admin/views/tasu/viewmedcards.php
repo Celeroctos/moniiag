@@ -224,9 +224,9 @@
                 <h4 class="modal-title">Состав выгрузки</h4>
             </div>
             <div class="modal-body">
-                <div class="row">
-					<table id="historyGreetings"></table>
-					<div id="historyGreetingsPager"></div>
+                <div class="row col-xs-12">
+                    <table id="historyMedcards"></table>
+                    <div id="historyMedcardsPager"></div>
                 </div>
             </div>
             <div class="modal-footer">

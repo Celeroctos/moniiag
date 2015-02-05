@@ -26,19 +26,15 @@ class TasuMedcardsBuffer extends MisActiveRecord {
                 ->leftJoin(Medcard::model()->tableName().' m', 'tmb.medcard = m.card_number')
                 ->leftJoin(Oms::model()->tableName().' o', 'm.policy_id = o.id')
                 ->leftJoin(OmsStatus::model()->tableName().' os', 'os.id = o.status')
-                ->leftJoin(Insurance::model()->tableName().' i', 'i.id = o.insurance')
-                ->where('tmb.status = 0');
-			
-			if($importId === false) {
-				$buffer->andWhere('tmb.import_id = (SELECT DISTINCT MAX(tmb2.import_id) FROM '.TasuMedcardsBuffer::model()->tableName().' tmb2)');
+                ->leftJoin(Insurance::model()->tableName().' i', 'i.id = o.insurance');
+
+			if(!$importId) {
+				$buffer->andWhere('tmb.status = 0 AND tmb.import_id = (SELECT DISTINCT MAX(tmb2.import_id) FROM '.TasuMedcardsBuffer::model()->tableName().' tmb2)');
 			} else {
 				$buffer->andWhere('tmb.import_id = :import_id', array(':import_id' => $importId));
 			}
-			
-			if($importId === false) {
-				$buffer->andWhere('tmb.status = 0'); // Получить всё то, что не выгружено
-			}
-            if($lastMedcard !== false) {
+
+            if($lastMedcard) {
                 $buffer->andWhere('tmb.id > :last_medcard', array(':last_medcard' => $lastMedcard));
             }
 
