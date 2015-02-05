@@ -6,6 +6,7 @@ class LModal extends LWidget {
     public $id = null;
     public $body = null;
     public $buttons = [];
+    public $class = "";
 
     public function run() {
         if ($this->body instanceof LWidget) {

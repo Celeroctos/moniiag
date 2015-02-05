@@ -1,4 +1,67 @@
-var GuideEdit = {
+var ConfirmDelete = {
+    construct: function() {
+        $(document).on("click", ".confirm", function(e) {
+            if (ConfirmDelete.lock) {
+                return void 0;
+            }
+            ConfirmDelete.item = $(e.target);
+            $("#confirm-delete-modal").modal();
+            e.stopImmediatePropagation();
+            return false;
+        });
+        $("#confirm-delete-button").click(function() {
+            ConfirmDelete.lock = true;
+            if (ConfirmDelete.item != null) {
+                ConfirmDelete.item.trigger("click");
+            }
+            setTimeout(function() {
+                ConfirmDelete.lock = false;
+            }, 250);
+        });
+    },
+    item: null,
+    lock: false
+};
+
+var Panel = {
+    construct: function() {
+        $(document).on("click", ".collapse-button", function() {
+            var me = $(this);
+            var body = $(me.parents(".panel")[0]).children(".panel-body");
+            if ($(this).hasClass("glyphicon-collapse-up")) {
+                body.slideUp("normal", function() {
+                    me.removeClass("glyphicon-collapse-up")
+                        .addClass("glyphicon-collapse-down");
+                });
+            } else {
+                body.slideDown("normal", function() {
+                    me.removeClass("glyphicon-collapse-down")
+                        .addClass("glyphicon-collapse-up");
+                });
+            }
+        });
+    }
+};
+
+var Message = {
+    display: function(json) {
+        if (!json["status"]) {
+            Laboratory.createMessage({
+                message: json["message"]
+            });
+            return false
+        } else if (json["message"]) {
+            Laboratory.createMessage({
+                type: "success",
+                sign: "ok",
+                message: json["message"]
+            });
+        }
+        return true;
+    }
+};
+
+var GuideColumnEditor = {
 	construct: function() {
 		$(document).on("click", ".guide-remove-column", function() {
 			var me = $(this).parent("a").parent("div");
@@ -8,7 +71,7 @@ var GuideEdit = {
 		});
 		$(document).on("click", "#guide-append-column", function() {
 			if ($(this).children(".glyphicon-plus").length) {
-				GuideEdit.add($(this));
+				GuideColumnEditor.add($(this));
 			}
 		});
 	},
@@ -40,155 +103,139 @@ var GuideEdit = {
 		p.hide().slideDown("normal");
 	},
 	add: function(button) {
-		GuideEdit.before(button);
+		GuideColumnEditor.before(button);
 		$.get(url("/laboratory/guide/getWidget"), {
 			class: "LForm",
 			model: "LGuideColumnForm",
-			form: { guide_id: GuideEdit.id }
+			form: { guide_id: GuideColumnEditor.id }
 		}, function(json) {
-			GuideEdit.after(button);
+			GuideColumnEditor.after(button);
 			if (!json.status) {
 				return Laboratory.createMessage({
 					message: json["message"]
 				});
 			}
-			GuideEdit.render($(json["component"]));
+			GuideColumnEditor.render($(json["component"]));
 		}, "json");
 	},
 	id: -1
 };
 
-var ConfirmDelete = {
-	construct: function() {
-		$(document).on("click", ".confirm", function(e) {
-			if (ConfirmDelete.lock) {
-				return void 0;
-			}
-			ConfirmDelete.item = $(e.target);
-			$("#confirm-delete-modal").modal();
-			e.stopImmediatePropagation();
-			return false;
-		});
-		$("#confirm-delete-button").click(function() {
-			ConfirmDelete.lock = true;
-			if (ConfirmDelete.item != null) {
-				ConfirmDelete.item.trigger("click");
-			}
-			setTimeout(function() {
-				ConfirmDelete.lock = false;
-			}, 250);
-		});
-	},
-	item: null,
-	lock: false
-};
-
-var Panel = {
-	construct: function() {
-		$(document).on("click", ".collapse-button", function() {
-			var me = $(this);
-			var body = $(me.parents(".panel")[0]).children(".panel-body");
-			if ($(this).hasClass("glyphicon-collapse-up")) {
-				body.slideUp("normal", function() {
-					me.removeClass("glyphicon-collapse-up")
-						.addClass("glyphicon-collapse-down");
-				});
-			} else {
-				body.slideDown("normal", function() {
-					me.removeClass("glyphicon-collapse-down")
-						.addClass("glyphicon-collapse-up");
-				});
-			}
-		});
-	}
-};
-
-var Message = {
-	display: function(json) {
-		if (!json["status"]) {
-			Laboratory.createMessage({
-				message: json["message"]
-			});
-			return false
-		} else if (json["message"]) {
-			Laboratory.createMessage({
-				type: "success",
-				sign: "ok",
-				message: json["message"]
-			});
-		}
-		return true;
-	}
-};
-
 var GuideTable = {
+    defaults: function() {
+        var panel = $("#guide-edit-panel");
+        panel.find(".panel-content").slideUp("normal", function() {
+            $(this).empty().append(
+                $("<h4>", {
+                    text: "Не выбран справочник",
+                    style: "text-align: center"
+                })
+            );
+            $(this).hide().slideDown("normal");
+        });
+        panel.find("#guide-panel-button-group").fadeOut("fast");
+    },
+    load: function(id) {
+        if (!id || id < 0) {
+            return this.defaults();
+        }
+        GuideColumnEditor.id = id;
+        $.get(url("/laboratory/guide/getWidget"), {
+            class: "LGuideEdit",
+            form: { id: id },
+            model: "LGuideForm"
+        }, function(json) {
+            if (!Message.display(json)) {
+                return void 0;
+            }
+            var component = $(json["component"]);
+            $(component.find("#guide_id").parents(".form-group")[0]).addClass("hidden");
+            $("#guide-edit-panel .panel-content").slideUp("normal", function() {
+                $(this).empty().append(component);
+                $(this).hide().slideDown("normal", function() {
+                    $("#guide-panel-button-group").removeClass("hidden").hide().fadeIn("fast");
+                });
+            });
+        }, "json");
+        $("#guide-panel-button-group").addClass("hidden");
+        $("#guide-edit-panel .panel-content").empty().append($("<div>", {
+                style: "width: 100%; text-align: center"
+            }).append($("<img>", { src: url("/images/ajax-loader.gif") }))
+        );
+    },
+    remove: function(id) {
+        $.get(url("/laboratory/guide/delete"), {
+            id: id
+        }, function(json) {
+            if (!json["status"]) {
+                return Laboratory.createMessage({
+                    message: json["message"]
+                });
+            } else if (json["message"]) {
+                Laboratory.createMessage({
+                    type: "success",
+                    sign: "ok",
+                    message: json["message"]
+                });
+            }
+            GuideTable.update();
+        }, "json");
+    },
+    save: function() {
+        var panel = $("#guide-edit-panel");
+        panel.find(".form-group").removeClass("has-error");
+        var serialized = [];
+        panel.find("form").each(function(i, form) {
+            serialized.push($(form).serialize());
+        });
+        $.get(url("/laboratory/guide/update"), {
+            model: serialized
+        }, function(json) {
+            if (!json["status"]) {
+                return Laboratory.postFormErrors(panel, json);
+            } else {
+                Message.display(json);
+            }
+            GuideTable.update();
+            GuideTable.defaults();
+        }, "json");
+    },
 	construct: function() {
 		$("#guide-register-form").on("success", function() {
 			GuideTable.update();
 		});
+        $(document).on("click", "#guide-table tbody tr td:not(:last-child)", function() {
+            GuideTable.load($(this).parent("tr").data("id"));
+        });
 		$(document).on("click", ".table-edit", function() {
-			var id = $(this).parents("tr").data("id");
-			GuideEdit.id = id;
-			$.get(url("/laboratory/guide/getWidget"), {
-				class: "LGuideEdit",
-				form: { id: id },
-				model: "LGuideForm"
-			}, function(json) {
-				if (!Message.display(json)) {
-					return void 0;
-				}
-				var component = $(json["component"]);
-				$(component.find("#guide_id").parents(".form-group")[0]).addClass("hidden");
-				$("#guide-edit-panel .panel-content").slideUp("normal", function() {
-					$(this).empty().append(component);
-                    $(this).hide().slideDown("normal", function() {
-                        $("#panel-update").removeClass("hidden").hide().fadeIn("fast");
-                    });
-				});
-			}, "json");
-            $("#panel-update").addClass("hidden");
-            $("#guide-edit-panel .panel-content").empty().append($("<div>", {
-                    style: "width: 100%; text-align: center"
-                }).append($("<img>", { src: url("/images/ajax-loader.gif") }))
+            var id = $($(this).parents("tr")[0]).data("id");
+            $("#guide-edit-values-modal").modal();
+            $("#guide-edit-values-modal .modal-body .row").empty().append(
+                $("<div>", { style: "width: 100%; text-align: center" }).append($("<img>", {
+                    src: url("/images/ajax-loader.gif")
+                }))
             );
+            $.get(url("/laboratory/guide/getWidget"), {
+                class: "LGuideValues",
+                guide_id: id
+            }, function(json) {
+                if (!Message.display(json)) {
+                    return void 0;
+                }
+                $("#guide-edit-values-modal .modal-body .row").empty().append(
+                    $(json["component"])
+                );
+            }, "json");
 		});
 		$(document).on("click", ".table-remove", function() {
-			$.get(url("/laboratory/guide/delete"), {
-				id: $(this).parents("tr").data("id")
-			}, function(json) {
-				if (!json["status"]) {
-					return Laboratory.createMessage({
-						message: json["message"]
-					});
-				} else if (json["message"]) {
-					Laboratory.createMessage({
-						type: "success",
-						sign: "ok",
-						message: json["message"]
-					});
-				}
-				GuideTable.update();
-			}, "json");
+            GuideTable.remove($($(this).parents("tr")[0]).data("id"));
 		});
-		var modal = $("#guide-edit-modal");
-		$("#guide-edit-modal #panel-update").click(function() {
-			modal.find(".form-group").removeClass("has-error");
-			var serialized = [];
-			$("#guide-edit-modal form").each(function(i, form) {
-				serialized.push($(form).serialize());
-			});
-			$.get(url("/laboratory/guide/update"), {
-				model: serialized
-			}, function(json) {
-				if (!json["status"]) {
-					return Laboratory.postFormErrors($("#guide-edit-modal"), json);
-				} else {
-					Message.display(json);
-				}
-				modal.modal("hide");
-				GuideTable.update();
-			}, "json");
+		$("#guide-edit-panel #panel-update").click(function() {
+            GuideTable.save();
 		});
+        $("#guide-edit-panel #panel-cancel").click(function() {
+            GuideTable.defaults();
+        });
 	},
 	refresh: function(component) {
 		$("#guide-table").fadeOut("fast", function() {
@@ -196,7 +243,6 @@ var GuideTable = {
 			$("#guide-table").replaceWith(
 				t = component
 			);
-			console.log(component[0]);
 			t.hide().fadeIn("fast");
 		});
 	},
@@ -216,7 +262,8 @@ var GuideTable = {
 };
 
 $(document).ready(function() {
-	GuideEdit.construct();
+    console.log($.nestable);
+	GuideColumnEditor.construct();
 	ConfirmDelete.construct();
 	Panel.construct();
 	GuideTable.construct();

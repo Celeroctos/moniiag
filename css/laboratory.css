@@ -107,3 +107,7 @@
     position: relative;
     border: 1px dotted #d3d3d3;
 }
+
+#guide-table tbody tr td:not(:last-child) {
+    cursor: pointer;
+}

@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="<?= Yii::app()->getBaseUrl()?>/css/laboratory.css" />
+<script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/assets/nestable.js"></script>
 <script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/core.js"></script>
 <script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/form.js"></script>
 <script type="text/javascript" src="<?= Yii::app()->getBaseUrl()?>/js/laboratory/laboratory.js"></script>
@@ -32,15 +33,16 @@ $this->widget("LModal", [
 ]);
 
 $this->widget("LModal", [
-    "title" => "Добавление значений",
+    "title" => "Редактирование значений",
+    "id" => "guide-edit-values-modal",
     "buttons" => [
-        "update" => [
+        "register" => [
             "class" => "btn btn-primary",
             "type" => "submit",
             "text" => "Сохранить"
         ]
     ],
-    "id" => "guide-edit-modal"
+    "class" => "modal-lg"
 ]);
 
 ?>
@@ -63,7 +65,10 @@ $this->widget("LModal", [
                 <div class="panel-content">
                     <h4 style="text-align: center">Не выбран справочник</h4>
                 </div>
-                <button type="submit" id="panel-update" class="btn btn-primary hidden">Сохранить</button>
+                <div id="guide-panel-button-group" class="hidden">
+                    <button type="submit" id="panel-update" class="btn btn-primary">Сохранить</button>
+                    <button type="submit" id="panel-cancel" class="btn btn-default">Закрыть</button>
+                </div>
             </div>
         </div>
     </div>

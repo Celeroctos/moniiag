@@ -72,8 +72,10 @@ abstract class LController extends Controller {
             $properties = [];
         }
         $widget = $this->createWidget($class, $properties);
-        if ($widget instanceof LWidget && $return) {
-            return $widget->call();
+        if ($return !== false) {
+            ob_start();
+            $widget->run();
+            return ob_get_clean();
         } else {
             $widget->run();
         }

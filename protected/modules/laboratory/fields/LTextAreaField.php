@@ -14,7 +14,8 @@ class LTextAreaField extends LField {
 			'id' => $this->getKey(),
 			'class' => 'form-control',
 			'value' => $this->getValue(),
-			'style' => 'resize: vertical'
+			'style' => 'resize: vertical; height: 30px',
+            'rows' => '1'
 		]);
 	}
 

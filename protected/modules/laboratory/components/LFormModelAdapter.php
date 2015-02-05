@@ -5,7 +5,7 @@ class LFormModelAdapter extends LFormModel {
     /**
      * @param array|null $config - Model configuration
      */
-    public function __construct($config = null) {
+    public function __construct($config = []) {
         parent::__construct(($this->_config = $config));
     }
 
