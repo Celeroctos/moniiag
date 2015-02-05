@@ -1657,6 +1657,11 @@ var TemplateEngine = TemplateEngine || {};
 		});
 	});
 
+    /**
+     *
+     * @param [reference] {jQuery} - Элемент, ссылающийся на категорию
+     * @returns {jQuery} - Ссылка на категорию
+     */
     Category.prototype.reference = function(reference) {
         if (arguments.length > 0) {
             this._reference = reference;
@@ -2083,7 +2088,7 @@ var TemplateEngine = TemplateEngine || {};
 			}
             // if template has category type then remove old reference's selector
             // and append to parent's selector
-            if (itemInstance.reference()) {
+            if (itemInstance.reference() && itemInstance.reference().parent() != parentInstance) {
                 itemInstance.reference().remove();
                 if (!(parentInstance instanceof CategoryCollection)) {
                     parentInstance.append(itemInstance.reference());
