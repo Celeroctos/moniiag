@@ -1659,8 +1659,8 @@ var TemplateEngine = TemplateEngine || {};
 
     /**
      *
-     * @param [reference] {jQuery} - Элемент, ссылающийся на категорию
-     * @returns {jQuery} - Ссылка на категорию
+     * @param [reference] {Item} - Элемент, ссылающийся на категорию
+     * @returns {Item} - Ссылка на категорию
      */
     Category.prototype.reference = function(reference) {
         if (arguments.length > 0) {
@@ -2092,6 +2092,8 @@ var TemplateEngine = TemplateEngine || {};
                 itemInstance.reference().remove();
                 if (!(parentInstance instanceof CategoryCollection)) {
                     parentInstance.append(itemInstance.reference());
+                } else {
+                    itemInstance.reference().parent(parentInstance);
                 }
             }
             // set has been changed flag to true
