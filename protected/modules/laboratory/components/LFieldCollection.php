@@ -46,7 +46,7 @@ class LFieldCollection extends CComponent {
 	 * @param array $allowed - Array with allowed types
 	 * @return array - Array with keys and it's associated labels
 	 */
-	public function getDropDown(array& $allowed = null) {
+	public function getDropDown(array $allowed = null) {
 		if ($allowed == null) {
 			return $this->select;
 		}

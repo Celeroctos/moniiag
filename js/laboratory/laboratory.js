@@ -43,6 +43,42 @@ var Panel = {
     }
 };
 
+var DropDown = {
+    change: function(animate) {
+        if (animate === undefined) {
+            animate = true;
+        }
+        var hide = function(group) {
+            if (!group.hasClass("hidden")) {
+                if (animate) {
+                    group.slideUp("normal", function() {
+                        $(this).addClass("hidden");
+                    });
+                } else {
+                    group.addClass("hidden");
+                }
+            }
+        };
+        var show = function(group) {
+            if (group.hasClass("hidden")) {
+                if (animate) {
+                    group.removeClass("hidden").hide().slideDown("normal");
+                } else {
+                    group.removeClass("hidden");
+                }
+            }
+        };
+        if ($(this).attr("id") == "type") {
+            var group = $(this).parents("form").find("#lis_guide_id").parents(".form-group");
+            if ($(this).val() == "dropdown" || $(this).val() == "multiple") {
+                show(group);
+            } else {
+                hide(group);
+            }
+        }
+    }
+};
+
 var Message = {
     display: function(json) {
         if (!json["status"]) {
@@ -152,6 +188,9 @@ var GuideTable = {
             $(component.find("#guide_id").parents(".form-group")[0]).addClass("hidden");
             $("#guide-edit-panel .panel-content").slideUp("normal", function() {
                 $(this).empty().append(component);
+                component.find("select#type").each(function(i, d) {
+                    DropDown.change.call(d, false);
+                });
                 $(this).hide().slideDown("normal", function() {
                     $("#guide-panel-button-group").removeClass("hidden").hide().fadeIn("fast");
                 });
@@ -291,6 +330,9 @@ var GuideValues = {
 				tr.remove();
 			}
 		});
+        $("#guide-edit-values-modal").on("click", "#register", function() {
+            console.log(123);
+        });
 	}
 };
 

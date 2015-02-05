@@ -18,7 +18,7 @@ abstract class LModel extends CActiveRecord {
 	 * @return array - Array where every row associated with it's id
 	 */
 	public function findForDropDown($condition = '', $params = array()) {
-		$result = parent::findAll($condition, $params);
+		$result = $this->findAll($condition, $params);
 		$select = [];
 		$pk = "id";
 		foreach ($result as $r) {

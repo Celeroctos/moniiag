@@ -15,20 +15,11 @@ class LGuideValueForm extends LFormModel {
 			"value" => [
 				"label" => "Значение",
 				"type" => isset($this->type) ? $this->type : "Text",
-				"rules" => "required",
-				"dependence" => "type"
-			],
-			"guide_id" => [
-				"label" => "Справочник",
-				"type" => "DropDown",
-				"rules" => "required",
-				"data" => LGuide::model()->findAll(),
-				"format" => "%{name}"
+				"rules" => "required"
 			],
 			"guide_column_id" => [
 				"label" => "Столбец",
 				"type" => "DropDown",
-				"dependence" => "guide_id",
 				"rules" => "required",
 				"data" => isset($this->guide_id) ? LGuideColumn::model()->findAll(
 						"guide_id = :guide_id", [
@@ -36,6 +27,14 @@ class LGuideValueForm extends LFormModel {
 						]
 					) : [],
 				"format" => "%{name}"
+			],
+			"guide_id" => [
+				"label" => "Справочник",
+				"type" => "DropDown",
+				"rules" => "required",
+				"data" => LGuide::model()->findAll(),
+				"format" => "%{name}",
+				"hidden" => "true"
 			]
 		];
 	}
