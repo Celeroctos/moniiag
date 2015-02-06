@@ -1,12 +1,9 @@
-﻿<?php
-
-// uncomment the following to define a path alias
-// Yii::setPathOfAlias('local','path/to/local-folder');
-
-// This is the main Web application configuration. Any writable
-// CWebApplication properties can be configured here.
+<?php
 
 $siteName = '';
+define('_STATIC', 'static_src'); //папка с ресурсами (для дальнейших публикаций). См. CAssetManager
+
+
 // Вот за такое надо расстреливать на месте. Но автор сего шедевра не знает как сделать что-то более правильное
 //          относительно быстро (( а времени нет((
 // Если в строке есть "moniiag" - значит мы на тестовом
@@ -111,8 +108,22 @@ return array(
 	'components'=>array(
         'clientScript' => array(
             'scriptMap' => array(
-                'jquery.js' => Yii::app()->request->baseUrl.'/js/libs/jquery-1.10.2.min.js'
-            )
+                'jquery.js' => '/js/libs/jquery-1.10.2.min.js'
+            ),
+			'packages'=>[
+				'datetimepicker' => [
+					'baseUrl' => _STATIC . '/datetimepicker/',
+					'js' => [
+						'js/jquery.datetimepicker.js'
+					],
+					'css' => [
+						'css/jquery.datetimepicker.css'
+					],
+					'depends' => [
+						'jquery'
+					]
+				],
+			]
         ),
 		'user'=>array(
 			// enable cookie-based authentication

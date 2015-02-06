@@ -4,11 +4,30 @@
  */
 class Oms extends MisActiveRecord 
 {
+	public $id;
+	public $oms_number;
+	public $first_name;
+	public $middle_name;
+	public $last_name;
+	public $gender;
+	public $birthday;
+	public $type;
+	public $givedate;
+	public $enddate;
+	public $status;
+	public $tasu_id;
+	public $insurance;
+	public $region;
+	public $oms_series;
+	public $oms_series_number;
+	
+	public $lastMedcard; //используется в методе, не ялвяется атрибутом таблицы
+	public $card_number; //из модели Medcard. Используется в поиске
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
-
+	
     public function tableName()
     {
         return 'mis.oms';
@@ -17,8 +36,33 @@ class Oms extends MisActiveRecord
 	public function rules()
 	{
 		return [
-			['id', 'type', 'type'=>'integer', 'on'=>'reception.search'],
+			['oms_number', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['first_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['middle_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['last_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['birthday', 'type', 'type'=>'string', 'on'=>'reception.search'], //TODO type date
 		];
+	}
+
+	public function relations()
+	{
+		return [
+			'medcards'=>[self::HAS_MANY, 'Medcard', 'policy_id'], //oms
+		];
+	}
+
+	/**
+	 * Извлечение последней медкарты пациента
+	 * Используется в CGridView
+	 */
+	public function getLastMedcard($policy_id)
+	{
+		$criteria=new CDbCriteria;
+		$criteria->condition='policy_id=:policy_id';
+		$criteria->params=[':policy_id'=>$policy_id];
+		$criteria->order='card_number DESC';
+		$record=Medcard::model()->find($criteria); //берем последнюю медкарту
+		return isset($record->card_number) ? $record->card_number : 'Отсутствует';
 	}
 	
 	/**
@@ -27,10 +71,37 @@ class Oms extends MisActiveRecord
 	public function search()
 	{
 		$criteria=new CDbCriteria;
+		$criteria->with=['medcards'=>['together'=>true, 'joinType'=>'LEFT JOIN']]; //жадная загрузка
+		$criteria->addCondition('medcards.card_number=:card_number');
+		$criteria->params=[':card_number'=>$this->card_number];
+//		$criteria->condition="medcards.card_number='8735/11'";
+//		$criteria->params=[':oms_number'=>$this->oms_number];
+//		$criteria->compare();
+//		$criteria->compare('cast(id as text)', (string)$this->oms_number, false);
+		
 		return new CActiveDataProvider($this, [
-			'pagination'=>['pageSize'=>20],
+			'pagination'=>['pageSize'=>15],
 			'criteria'=>$criteria,
+			'sort'=>[
+					'defaultOrder'=>[
+					'id'=>CSort::SORT_DESC,
+					],
+				],
 		]);
+	}
+	
+	/**
+	 * Labels for forms
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'oms_number'=>'№ Полиса',
+			'last_name'=>'Фамилия',
+			'first_name'=>'Имя',
+			'middle_name'=>'Отчество',
+			'birthday'=>'День рождения',
+		];
 	}
 	
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $onlyWithCards=false, $onlyWithoutCards=false, $onlyInGreetings = false,$cancelledGreetings=false, $onlyClosedGreetings = false, $greetingDate = false) {

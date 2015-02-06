@@ -10,15 +10,23 @@ class PatientController extends Controller {
     // Просмотр страницы поиска пациента
     public function actionViewSearch()
 	{
-		$model=new Oms('reception.search'); //сценарий
+		$modelOms=new Oms('reception.search'); //сценарий поиска
+		$modelMedcard=new Medcard('reception.search'); //сценарий поиска
 		
 		if(isset($_GET['Oms']))
 		{
-			$model->attributes=Yii::app()->request->getQuery('Oms');
+			$modelOms->attributes=Yii::app()->request->getQuery('Oms'); //присв. безопасные атрибуты
+			$modelMedcard->attributes=Yii::app()->request->getQuery('Medcard');
+			
+			if($modelOms->validate())
+			{
+				$modelOms->card_number=$modelMedcard->card_number;
+			}
 		}
 		
 		$this->render('ViewSearch', [
-			'model'=>$model,
+			'modelOms'=>$modelOms,
+			'modelMedcard'=>$modelMedcard,
 		]);
 		
 //        $this->render('searchPatient', array(

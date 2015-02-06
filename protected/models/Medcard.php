@@ -1,5 +1,33 @@
 <?php
-class Medcard extends MisActiveRecord  {
+/**
+ * Класс для работы с медкартами пациентов
+ */
+class Medcard extends MisActiveRecord  
+{
+	public $privelege_code;
+	public $snils;
+	public $address;
+	public $address_reg;
+	public $doctype;
+	public $serie;
+	public $docnumber;
+	public $who_gived;
+	public $contant;
+	public $invalid_group;
+	public $card_number;
+	public $enterprise_id;
+	public $policy_id; //id oms
+	public $reg_date;
+	public $work_place;
+	public $work_address;
+	public $post;
+	public $profession;
+	public $motion;
+	public $address_str;
+	public $address_reg_str;
+	public $user_created;
+	public $date_created;
+ 
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -10,9 +38,35 @@ class Medcard extends MisActiveRecord  {
         return 'mis.medcards';
     }
 
+	public function relations()
+	{
+		return [
+			'oms'=>[self::BELONGS_TO, 'Oms', 'policy_id'],
+		];
+	}
+	
+	public function rules()
+	{
+		return [
+			['serie', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['address_reg', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['address', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['snils', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['card_number', 'type', 'type'=>'string', 'on'=>'reception.search'], //TODO type date
+		];
+	}
+	
+	/**
+	 * Labels for forms
+	 */
+	public function attributeLabels()
+	{
+		return [
+			'card_number'=>'№ Медкарты',
+		];
+	}
+	
     public function getAll() {
-
-
     }
 
     public function getRows($filters, $sidx = false, $sord = false, $start = false, $limit = false, $enterpriseId = false, $wardId = false, $employeeId = false) {
