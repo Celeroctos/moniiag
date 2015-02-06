@@ -1,12 +1,12 @@
 <?php
 class PatientController extends Controller {
     public $layout = 'application.modules.reception.views.layouts.index';
-
+	
     // Стартовая
     public function actionIndex() {
         $this->render('index', array());
     }
-
+	
     // Просмотр страницы поиска пациента
     public function actionViewSearch()
 	{

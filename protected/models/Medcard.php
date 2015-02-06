@@ -48,11 +48,11 @@ class Medcard extends MisActiveRecord
 	public function rules()
 	{
 		return [
+			['card_number', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['serie', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['address_reg', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['address', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['snils', 'type', 'type'=>'string', 'on'=>'reception.search'],
-			['card_number', 'type', 'type'=>'string', 'on'=>'reception.search'], //TODO type date
 		];
 	}
 	
@@ -63,6 +63,10 @@ class Medcard extends MisActiveRecord
 	{
 		return [
 			'card_number'=>'№ Медкарты',
+			'serie'=>'Серия',
+			'address_reg'=>'Адрес регистрации',
+			'address'=>'Адрес фактического проживания',
+			'snils'=>'СНИЛС',
 		];
 	}
 	

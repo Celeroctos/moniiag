@@ -36,6 +36,7 @@ class Oms extends MisActiveRecord
 	public function rules()
 	{
 		return [
+			//TODO свой валидатор на проверку пустоты всех полей
 			['oms_number', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['first_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['middle_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
@@ -72,8 +73,16 @@ class Oms extends MisActiveRecord
 	{
 		$criteria=new CDbCriteria;
 		$criteria->with=['medcards'=>['together'=>true, 'joinType'=>'LEFT JOIN']]; //жадная загрузка
-		$criteria->addCondition('medcards.card_number=:card_number');
-		$criteria->params=[':card_number'=>$this->card_number];
+	
+		if(isset($this->oms_number) || isset($this->oms_number)
+		|| isset($this->card_number) || (isset($this->last_name) && isset($this->first_name))
+		) //расписываем все возможные сценарии.
+		{
+			$criteria->addCondition('card_number='.$this->oms_number);
+		}
+		
+//		$criteria->addCondition('medcards.card_number=:card_number');
+//		$criteria->params=[':card_number'=>$this->card_number];
 //		$criteria->condition="medcards.card_number='8735/11'";
 //		$criteria->params=[':oms_number'=>$this->oms_number];
 //		$criteria->compare();
