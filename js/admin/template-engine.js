@@ -68,8 +68,8 @@ var TemplateEngine = TemplateEngine || {};
 
     /**
      * Клонировать объект JavaScript (обычные JSON объекты)
-     * @param source - Сам объект для клонирования
-     * @returns {*} - Клон переданного объекта
+     * @param source {{}} - Сам объект для клонирования
+     * @returns {{}} - Клон переданного объекта
      */
     var clone = function(source) {
         return $.extend(true, {}, source);
@@ -152,8 +152,8 @@ var TemplateEngine = TemplateEngine || {};
      *      не указан, то будет удалет текущий изел из его родителя, если
      *      такой имеется, конечно, иначе затрется весь узел со всеми его
      *      потомками, потому что существование такого узла не имеет
-     *      смысла, т.к все зависимости между узлами будет потеряно
-     * @returns {Boolean} -
+     *      смысла, т.к все зависимости между узлами будет потеряны
+     * @returns {Boolean} - True если был успешно удален
      */
     Node.prototype.remove = function(node) {
         var i = 0;
@@ -198,7 +198,7 @@ var TemplateEngine = TemplateEngine || {};
     };
 
     /**
-     * Зачистка узла осуществляет удаление текущего узла со
+     * Зачистка узла - осуществляет удаление текущего узла со
      * всеми его потомками
      */
     Node.prototype.truncate = function() {
@@ -230,6 +230,7 @@ var TemplateEngine = TemplateEngine || {};
         } else {
             this._parentIndex = index;
         }
+        return this._parentIndex;
     };
 
     /**
@@ -264,7 +265,8 @@ var TemplateEngine = TemplateEngine || {};
     };
 
 	/**
-	 * Отсортировать элементы по их индексам и пересчитать смешения
+	 * Отсортировать элементы по их индексам и пересчитать смешения, после
+     * чего будет выполнено удаление всех пустых элементов
 	 * @param callback - Обратный вызов для сортировки
 	 */
 	Node.prototype.sort = function(callback) {
@@ -651,19 +653,20 @@ var TemplateEngine = TemplateEngine || {};
      */
 
     /**
-     * @param [selector] {jQuery} - Some selector
-     * @constructor - Selectable is an object that can
-     *      store jQuery's selector
+     * Класс селектора хранит в себе объект jQuery и реализует
+     * базовые операции для работы с ним
+     * @param [selector] {jQuery} - Принимает объект jQuery, если последний будет
+     *      null или undefined, то выкинет исключение
+     * @constructor - Конструкирует обретку над объектом jQuery
      */
     var Selectable = function(selector) {
-        Selectable.prototype.selector.call(this, selector || assert(true,
-            "Selector can't be null or undefined"));
+        Selectable.prototype.selector.call(this, selector || assert("Selector can't be null or undefined"));
     };
 
     /**
-     * @param [selector] {jQuery} - Getter/Setter for
-     *      element's selector
-     * @returns {jQuery} - Current element's selector
+     * Возвращает или получает текущий объект jQuery
+     * @param [selector] {jQuery} - Объект для установки (опционально)
+     * @returns {jQuery} - Текущий или только что устаноелнный объект
      */
     Selectable.prototype.selector = function(selector) {
         if (selector !== undefined) {
@@ -676,8 +679,9 @@ var TemplateEngine = TemplateEngine || {};
     };
 
     /**
-     * @param selectable {Selectable} - Another selectable
-     *      element to append
+     * Привязывает один селектор к другому, при условии, что
+     * они уже не входят друг в друга
+     * @param selectable {Selectable} - Потомок для добавления
      */
     Selectable.prototype.append = function(selectable) {
         if (!$.contains(this._jqSelector, selectable._jqSelector)) {
@@ -686,8 +690,10 @@ var TemplateEngine = TemplateEngine || {};
     };
 
     /**
-     * @param selectable {Selectable} - Another selectable
-     *      element to append
+     * Удаляет текущий селектор из родительского, если объект
+     * для удаления не указан, то будет удален текущий узел
+     * из родительского
+     * @param [selectable] {Selectable} - Селектор на удаление
      */
     Selectable.prototype.remove = function(selectable) {
         if (selectable == undefined) {
@@ -707,9 +713,17 @@ var TemplateEngine = TemplateEngine || {};
 
      */
 
+    /**
+     * Данный интерфейс позволяет реализовать возможность компоненту
+     * быть передвигаемым
+     * @constructor - Ничего не делает
+     */
     var Draggable = function() {
     };
 
+    /**
+     * Отвечает за инициализацию передвижения объекта
+     */
     Draggable.prototype.drag = function() {
         assert("Draggable/drag() : \"You must implement 'drag' method\"");
     };
@@ -722,9 +736,17 @@ var TemplateEngine = TemplateEngine || {};
 
      */
 
+    /**
+     * Данный интерфейс позволяет реализовать возможность компоненты
+     * бросать в него другие объекты
+     * @constructor - Ничего не делает
+     */
     var Droppable = function() {
     };
 
+    /**
+     * Отвечает за инициализацию бросаемого процесса
+     */
     Droppable.prototype.drop = function() {
         assert("Droppable/drop() : \"You must implement 'drop' method\"");
     };
@@ -738,34 +760,60 @@ var TemplateEngine = TemplateEngine || {};
 	 */
 
 	/**
-	 * @param url {String}
-	 * @param modal {jQuery}
-	 * @constructor
+     * Менеджер запросов - абстрактный класс, который хранит в себе
+     * менеджер модели для инициалзиации формы и обязует компонент
+     * реализовать базовые методы для работы с запросами (запись,
+     * обновление, удаление, обновление, получение)
+	 * @param fields {String} - Список поле для менеджера форм (строка с полями их БД)
+	 * @constructor - Инициализирует менеджер формы CActiveForm
 	 */
 	var RequestManager = function(fields) {
 		this._manager = new FormModelManager(fields);
 	};
 
+    /**
+     * Возвращает менеджер для текущего компонента
+     * @returns {FormModelManager} - Менеджер компонента
+     */
 	RequestManager.prototype.manager = function() {
 		return this._manager;
 	};
 
+    /**
+     * Этот метод отвечает за сохранение копонента, вызывается после
+     * нажатия на кнопку "Сохранить" (дискета)
+     */
 	RequestManager.prototype.write = function() {
 		assert("RequestManager/save() : \"You must implement 'save' method\"");
 	};
 
+    /**
+     * Этот метод отвечает за редактирование компонента, вызывается
+     * после нажатия на кнопку "Редактировать" (карандаш)
+     */
 	RequestManager.prototype.edit = function() {
 		assert("RequestManager/edit() : \"You must implement 'edit' method\"");
 	};
 
+    /**
+     * Этот метод отвечает за удаление компонента, вызывается после
+     * нажатия на кнопку "Удалить" (крестик)
+     */
 	RequestManager.prototype.erase = function() {
 		assert("RequestManager/erase() : \"You must implement 'erase' method\"");
 	};
 
+    /**
+     * Этот метод отвечает за обновление формы компонента (не помню точно), вроде,
+     * нигде не исползуется, но не уверен
+     */
 	RequestManager.prototype.refresh = function() {
 		assert("RequestManager/refresh() : \"You must implement 'refresh' method\"");
 	};
 
+    /**
+     * Не используется
+     */
 	RequestManager.prototype.read = function() {
 		assert("RequestManager/read() : \"You must implement 'read' method\"");
 	};
@@ -778,6 +826,19 @@ var TemplateEngine = TemplateEngine || {};
 
      */
 
+    /**
+     * Просто вспомогательный рендер с базовыми методами для рендера базовых
+     * элементов компонетов, таких как кнопки сохранения, редактирование,
+     * удаление или загрузки. Вроде, так и не был полностью слит с компонентами. Не
+     * знаю почему он называется Factory, а не просто ComponentRenderer
+     *
+     * @type {{
+     *      renderSaveButton: Function,
+     *      renderDeleteButton: Function,
+     *      renderLinkButton: Function,
+     *      renderLoadingImage: Function
+     * }}
+     */
     var RenderFactory = {
         renderSaveButton: function(style) {
             var me = this;
@@ -850,17 +911,35 @@ var TemplateEngine = TemplateEngine || {};
 
      */
 
+    /**
+     * Основной абстрактный класс системы, является конечным компонентов, которые
+     * отображаются в редакторе, имеет 2 абстрактных метода для рендера элемента
+     * и его клонирования (не используется, кажется)
+     *
+     * @param parent {Node} - Родительский компонент, может быть как узлом, так и компонентом,
+     *      так и элементов или категорией
+     * @param model {{}} - У каждого компонента должна быть модель - это слепок элемента из БД,
+     *      после изменения которого вызываются метода из RequestManager и обновляют данные из этой модели
+     * @param selector {jQuery} - Селектор, к которому привязан объект, по хорошему нужно было делать
+     *      виртуальный DOM, а то уж слишком много затрат по производительности на работу с деревом
+     * @param fields {String} - Строка, в которой через запятую перечисляются все элементы из БД для
+     *      менеджера форм, он переведет их в нотацию JS и будет использовать для заполнения ID полей формы
+     * @constructor - Базовый конструктор для копонента
+     */
     var Component = function(parent, model, selector, fields) {
+        // Construct parent classes
 		Model.call(this, model);
         Node.call(this, parent);
         Selectable.call(this, selector || this.render());
 		RequestManager.call(this, fields);
+        // Fix for $.extend, can't check instance
         if (this.drag) {
             this.drag();
         }
         if (this.drop) {
             this.drop();
         }
+        // Default component model's position is 1
 		if (!this.has("position")) {
 			this.field("position", 1);
 		}
@@ -871,14 +950,34 @@ var TemplateEngine = TemplateEngine || {};
     extend(Component, Model);
 	extend(Component, RequestManager);
 
+    /**
+     * Метод переопределяется каждым адаптером копонента и возвращает
+     * объект jQuery (в нем нужно рендерить сам копонент и брать данные
+     * для отображения из модели, если такие поля имеются, конечно)
+     */
     Component.prototype.render = function() {
         assert("Component/render() : \"You must override 'render' method\"");
     };
 
+    /**
+     * Метод отвечает за клонирование копонента, не помню, но, кажется, где-то
+     * исползовался, но лучше его оставить. Конечно, можно сделать грамотную зачистку кода,
+     * но времени на это особо нет
+     * @param [parent] {Component} - Родительский элемент
+     * @param [model] {{}} - Модель по умолчанию при клонировании
+     * @param [selector] {jQuery} - Селектор элемента
+     */
 	Component.prototype.clone = function(parent, model, selector) {
 		assert("Component/clone() : \"You must implements 'clone' method\"");
 	};
 
+    /**
+     * Поиск элемента по его пути (путь - это какая-то хрень, сделанная кем-то для
+     * "оптимизации" и "облегчения" процесса сортировки элементов, из-за которой я потратил
+     * дохрена времени, чтобы засунуть её в дизайнер)
+     * @param path {String} - Путь для поиска
+     * @returns {Component} - Найденный компонент или null
+     */
     Component.prototype.findByPath = function(path) {
         if (this.has("path") && this.field("path") == path) {
             return this;
@@ -895,6 +994,14 @@ var TemplateEngine = TemplateEngine || {};
         return null;
     };
 
+    /**
+     * Примитивный класс, который возвращает тип иконки для отобраджения, в зависимости
+     * от текущего состояния компонента, т.е если у нас имеется поле "id" в модели, значит
+     * элемент уже сохранен в базе и нужно отображать кнопку редактировать, иначе отображать
+     * кнопку редактировать. Странно, почему нельзя было просто отображать готовый элемент, а
+     * не плодить одинаковые условия?
+     * @returns {string} - Класс для иконки
+     */
     Component.prototype.glyphicon = function() {
 		if (!this.length() || !this.has("id")) {
 			return "glyphicon glyphicon-floppy-save"
@@ -903,6 +1010,13 @@ var TemplateEngine = TemplateEngine || {};
 		}
     };
 
+    /**
+     * Очень важный метод, который отвечает за пересчет всех позиций всех его элементов и
+     * его потомков (опционально)
+     * @param depth {Boolean} - Если установлено на True, то также будут пересчитаны все потомки
+     * @returns {Boolean} -  Вообще, ничего не должно возвращать, но венет или False
+     *      или Undefined, видимо, было лень написать void 0
+     */
 	Component.prototype.compute = function(depth) {
 		// get parent selector
 		var parent = this.selector();
@@ -949,6 +1063,9 @@ var TemplateEngine = TemplateEngine || {};
 		}
 	};
 
+    /**
+     * Удалет все из текущего компонента и добавляет загрузку
+     */
     Component.prototype.loading = function() {
         this.selector().empty().append(
             $("<div></div>", {
@@ -961,6 +1078,12 @@ var TemplateEngine = TemplateEngine || {};
         );
     };
 
+    /**
+     * Рендерит кнопку для редактирования компонента
+     * @param style {String} - Стиль с разными фиксами
+     * @returns {jQuery} - Объект jQuery
+     * @private
+     */
 	Component.prototype._renderEditButton = function(style) {
 		var me = this;
 		return $("<span></span>", {
@@ -975,6 +1098,14 @@ var TemplateEngine = TemplateEngine || {};
 		});
 	};
 
+    /**
+     * Судя по всему, нигде не исползуется, но должна считать
+     * количество активных узлов для этого элемента и всех его потомков. Эм
+     * это очень странный метод и делает он тоже что-то очень странное, нужно
+     * будет его удалить, оставлю TD
+     * @returns {Number} - Количество активных узлом
+     * TODO: 'Delete Me'
+     */
     Component.prototype.countActiveNodes = function() {
         var count = this.has("id") ? this.field("id") : 0;
         for (var i in this.children()) {
@@ -986,6 +1117,14 @@ var TemplateEngine = TemplateEngine || {};
         return count;
     };
 
+    /**
+     * Рендерить кнопку для удаления, опять старый стиль, потому что
+     * уже есть класс для рендера базовых элементов, но так просто заменить
+     * нельзя, потому что уже реализовано поведение для всех типов компонентов
+     * @param style {String} - Стиль кнопки, чтобы пофиксить отображение
+     * @returns {jQuery} - Объект jQuery с кнопкой
+     * @private
+     */
 	Component.prototype._renderRemoveButton = function(style) {
 		var that = this;
 		return $("<span></span>", {
@@ -1010,24 +1149,31 @@ var TemplateEngine = TemplateEngine || {};
 		});
 	};
 
+    /**
+     * Метод возвращает модель по умолчанию для компонента, по умолчанию
+     * возвращает пустую модель. Раньше использовалась, сейчас нет
+     * @returns {{}} - Модель по умолчанию
+     */
 	Component.prototype.defaults = function() {
 		return {};
 	};
 
+    /**
+     * Обновление компонента, просто рендерит текущий компонент
+     * и заменяет текущий новым и устанавливает все базовые поля
+     */
 	Component.prototype.update = function() {
-		// render new selector
 		var s = this.render().data("instance", this);
-		// replace current selector with new
 		this.selector().replaceWith(s);
-		// replace instance's selector
 		this.selector(s);
 	};
 
     /**
-     * Locked method, cuz elements can't store something
-     *
-     * @param element {Component} - Item to append
-     *      with it's selector
+     * Переопределенный метод для добавления вложенных компонентов,
+     * реализуется для каждого адаптера компонента по своему, потому
+     * что добавлять нужно в разные контейнеры. Просто объединяет в
+     * себе добавление к узлам и добавление к DOM
+     * @param element {Component} - Элемент, который нужно добавить
      */
     Component.prototype.append = function(element) {
         if (this === element) {
@@ -1043,11 +1189,9 @@ var TemplateEngine = TemplateEngine || {};
     };
 
     /**
-     * Locked method, cuz elements can't store something
-     *
-     * @param [element] {Item} - Item to remove
-     *      with it's selector. If element is undefined then
-     *      element will be removed from it's parent
+     * Тоже самое, что и для добавления, только реализует удаление
+     * из родительского узла и из DOM
+     * @param [element] {Component} - Элемент для удаления
      */
     Component.prototype.remove = function(element) {
         if (this === element) {
@@ -1071,6 +1215,21 @@ var TemplateEngine = TemplateEngine || {};
 
      */
 
+    /**
+     * Шаблон - один из видов компонентов, позволяет хранить в себе шаблон
+     * для рендера элемента, по сути хранит модель по умолчанию для какого-то
+     * типа элементов (Item), в графическом предсталвении отображается справа
+     * от общего редактора в отдельном контейнере
+     * @param collection {Component} - Коллекция, в которой хранится шаблон (TemplateCollection)
+     * @param key {String} - Уникальный ключ шаблона
+     * @param title {String} - Заголовок шаблона
+     * @param id {Number} - Идиотский ключ, взятый откуда-то из какой-то модели на
+     *      серверной стороне, просто программисты, которые ее писали не додумались
+     *      использовать текст как идентификатор для элемента
+     * @constructor
+     * @see Component
+     * @see Draggable
+     */
     var Template = function(collection, key, title, id) {
 		// initialize variables first
         this._title = title;
@@ -1084,18 +1243,37 @@ var TemplateEngine = TemplateEngine || {};
     extend(Template, Component);
     extend(Template, Draggable);
 
+    /**
+     * Возвращает текущий идентификатор шаблона
+     * @returns {Number} - Идентификатор шаблона
+     */
 	Template.prototype.id = function() {
 		return this._id;
 	};
 
-    Template.prototype.title = function(title) {
+    /**
+     * Возвращает заголовок шаблона (его название на Русском)
+     * @returns {String} - Название шаблона
+     */
+    Template.prototype.title = function() {
         return this._title;
     };
 
+    /**
+     * Возвращает уникальный ключ шаблона (строка, например, text text-area, number и т.д)
+     * @returns {String} - Ключ шаблона
+     */
     Template.prototype.key = function() {
         return this._key;
     };
 
+    /**
+     * Рендерит шаблон - возвращает контейнер с классом template-engine-item,
+     * стиль которого объявлен в файле "template-engine.css"
+     * @param [title] {String} - Заголовок для отображения (опционально)
+     * @returns {jQuery} - Возвращает объект jQuery с шаблоном
+     * @see Component#render
+     */
     Template.prototype.render = function(title) {
         title = title || this.title();
         if (title.length <= 2) {
@@ -1115,9 +1293,14 @@ var TemplateEngine = TemplateEngine || {};
         }
     };
 
+    /**
+     * Шаблон элемента можно перетаскивать, поэтому реализовыванем
+     * перетаскивание в метод "drag"
+     * @see Draggable#drag
+     */
     Template.prototype.drag = function() {
         this.selector().draggable({
-            helper: function(e) {
+            helper: function() {
                 return $(this).clone().data("instance",
                     $(this).data("instance")
                 );
@@ -1140,12 +1323,25 @@ var TemplateEngine = TemplateEngine || {};
 
      */
 
+    /**
+     * Класс - коллекция для шаблонов, тоже является компонентов, хранит
+     * в себе все шаблоны и отображает их в контейнере справа от редактора
+     * @param [selector] {jQuery} - Контейнер по умолчанию (опционально)
+     * @constructor
+     * @see Component
+     */
     var TemplateCollection = function(selector) {
         Component.call(this, null, null, selector);
     };
 
     extend(TemplateCollection, Component);
 
+    /**
+     * Осуществляет поиск шаблона в коллекции, основанный на
+     * поиске ключа, а не идентификатора
+     * @param key {String} - Ключ для поиска шаблона
+     * @returns {Template} - Компонент шаблона или выкинет исключение
+     */
     TemplateCollection.prototype.find = function(key) {
         var children = this.children();
         for (var i in children) {
@@ -1156,6 +1352,11 @@ var TemplateEngine = TemplateEngine || {};
         assert("TemplateCollection/find() : \"Unresolved template key (" + key + ")\"");
     };
 
+    /**
+     * Рендерит компонент для колекции шаблонов
+     * @returns {jQuery} - Конектйнер для шаблонов
+     * @see Component#render
+     */
     TemplateCollection.prototype.render = function() {
         return $("<div></div>", {
             class: "template-engine-template"
@@ -1171,14 +1372,25 @@ var TemplateEngine = TemplateEngine || {};
      */
 
     /**
-     * @param [parent] {Item|Node|null|undefined} - Item's parent
-     * @param [selector] {jQuery|undefined} - jQuery's selector, need only for
-     *      classes which extends Item
-     * @param model
-     * @param [template] {{}} - If element is string, then element
-     *      is basic abstract template, else it's element's child
-     * @constructor - Basic TemplateNode's element, which extends
-     *      Node and implements all manipulations with elements
+     * Элемент - первый по важности элемент для отображения, включает в себя
+     * много костылей и тупых тупостей, которые избежать сложно из-за
+     * кривизны серверной архитектуры, отвечает за хранение информации
+     * о моделях всех элементов, которые можно отображать. Каждый элемент
+     * должен иметь тип данных, который берется из шаблона (см. выше)
+     *
+     * @param [parent] {Item|Node|Component|null|undefined} - Родитель элемента (опционально)
+     * @param [selector] {jQuery|undefined} - Объект jQuery по умолчанию, нужно, только если
+     *      кто-то будет расширяет текущий функционал элемента
+     * @param model {{}} - Модель элемента, которая будет установлена по умолчанию
+     * @param [template] {Template} - Шаблон, на основе котрого будет строиться элемент, по сути
+     *      просто позволяет заполнить значение типа элемента сразу (взять его из шаблона)
+     * @param [category] {Category} - Элемент, может быть не элементов, а может быть ссылкой
+     *      на какую-то категорию (бюыло принято такое решение, чтобы не плодить лишнюю сущность
+     *      класса для ссылки и просто добавить лишнее поле, учитывая жопонутость JavaScript, то
+     *      это вполне оправданное решение)
+     * @constructor
+     * @see Component
+     * @see Template
      */
     var Item = function(parent, model, selector, template, category) {
 		// we need to save template before running render
@@ -1211,6 +1423,29 @@ var TemplateEngine = TemplateEngine || {};
 
     extend(Item, Component);
 
+    /**
+     * Костыль №1 - очень важный.
+     *
+     * Проблема: нужно отправлять запрос на сервер для получения модели для компонента, а после
+     * получения обновлять компонент, но мы не можем после получения элемента его
+     * обновить, потому что мы не знаем для какого элемента мы отправили запрос.
+     *
+     * Возможное решение: нужно отправлять на сервер вместе с данными для обновления идентификатор
+     * элемента, чтобы после получения ответа грузить элемент из DOM, получать его компонент и
+     * обновлять, но все элементы дерева генерируются в коде и мы не можем хранить для каждого
+     * ID в DOM дереве, поэтому такое решение - не решение
+     *
+     * Возможное решение: нужно строить хеш-сумму на основе позиции в дереве и всех родительских позиций и
+     * отправлять это на сервер и возвращать в ответе, после чего можно будет на основе рутового
+     * узла найти наш необъодимый, при условии, что никто не будет трогать дерево и вносить в
+     * него никакие изменения
+     *
+     * Но: пока оставляем как есть, потому что текущее поведение интерфейса не подрузомевает редактирование
+     * нескольких элементов одновременно, да и проспускная способности сети достаточно выоска, чтобы отправить
+     * запрос и получить, пока пользователь будет добавлять новые данные
+     *
+     * @type {null}
+     */
 	Item["-instance"] = null;
 
 	var _updateItem = function(event, data) {
@@ -1245,6 +1480,16 @@ var TemplateEngine = TemplateEngine || {};
 		$("#element-edit-form").on("success", _updateItem);
 	});
 
+    /**
+     * Метод возвращает текущую категорию, на которую ссылается
+     * этот элемент (только если он является ссылкой на категорию, т.е
+     * отображает серым цветом). Можно как установить новую, так и получить
+     * текущую категорию. Если категория является строкой, то будет
+     * выполнен поиск категории по ее пути (если это путь, иначе будет null)
+     * @param [category] {Category|String} - Категория или путь к категории
+     * @returns {Category|null|undefined} - Текущую категорию, на которую
+     *      ссылается элемент или пусто
+     */
     Item.prototype.category = function(category) {
         if (arguments.length > 0) {
             this._category = category;
@@ -1256,6 +1501,18 @@ var TemplateEngine = TemplateEngine || {};
         return this._category;
     };
 
+    /**
+     * Переопределяет метод FormModalManager для иницилазиции поля
+     * формы. Вся разница заклюачется в том, что элемент еще проверяет
+     * себя на наличие ссылки на категорию и возвращет значения родителя
+     * категории, а не текущего элемента (т.е как-бы позволяет думать,
+     * что элемент - это указатель на категорию). Да - это неправильно,
+     * потому что нужно было создать класс Reference, который бы расширил
+     * класс Item и переопределил метод field, но насрать!
+     * @param key {String} - Ключ из модели
+     * @param [field] {*} - Значение поля
+     * @returns {*} - Значение поля
+     */
     Item.prototype.field = function(key, field) {
         if (this.category()) {
             if (key != "categorie_id") {
@@ -1268,19 +1525,30 @@ var TemplateEngine = TemplateEngine || {};
         }
     };
 
+    /**
+     * Отправляет запрос на сохранение элемента
+     * @param form {jQuery} - Форма с полями
+     * @see RequestManager#write
+     */
 	Item.prototype.write = function(form) {
 		var me = this;
+        // fix item's position
 		if (!this.has("position") || !+this.field("position")) {
 			this.field("position", 1);
 		}
+        // fix item's category parent
 		if (this.parent().has("id")) {
 			this.field("categorie_id", this.parent().field("id"));
 		} else {
             this.field("categorie_id", -1);
 		}
+        // fix: reset all default values
         $("input[id^='defaultValue']").val("");
+        // fix: reset all input fields
         $('#addElementPopup form .form-group input').val("");
+        // fix: reset all select fields
         $('#addElementPopup form .form-group select').val(0);
+        // initialize element form
 		this.manager().invoke($('#addElementPopup form'),
 			function(field, info) {
 				if (info.hidden) {
@@ -1298,29 +1566,39 @@ var TemplateEngine = TemplateEngine || {};
 			}
 		);
 		Item["-instance"] = this;
+        // set type's value to template's id
         $('#element-add-form select#type').val(this.template().id());
+        // invoke trigger to change input fields
         $('#element-add-form select#type').trigger('change');
+        // invoke modal window
 		$('#addElementPopup').modal({
             backdrop: 'static',
 			keyboard: false
 		}).draggable("disable");
 	};
 
+    /**
+     * Открывает окно для редактирования формы
+     * @see RequestManager#edit
+     */
 	Item.prototype.edit = function() {
 		var me = this;
+        // fix for position
 		if (!this.has("position") || !+this.field("position")) {
 			this.field("position", 1);
 		}
+        // fix for parent's category id
 		if (this.parent().has("id")) {
 			this.field("categorie_id", this.parent().field("id"));
 		} else {
             this.field("categorie_id", -1);
 		}
-		var data = {
-			data: me.model()
-		};
+		var data = { data: me.model() };
+        // disable show dynamic parameter for table (4)
 		$('#editElementPopup #showDynamic').prop('disabled', data.data['type'] == 4);
+        // reset default value's
         $("input[id^='defaultValue']").val("");
+        // initialize form
 		this.manager().invoke($('#editElementPopup form'),
 			function(field, info) {
 				if (info.hidden) {
@@ -1397,9 +1675,13 @@ var TemplateEngine = TemplateEngine || {};
 				return data.data[info.native];
 			}
 		);
+        // fix fix fix
 		Item["-instance"] = this;
+        // set template's id
         $('#element-add-form select#type').val(this.template().id());
+        // trigger change
         $('#element-add-form select#type').trigger('change');
+        // show modal
 		$('#editElementPopup').modal({
 			backdrop: 'static',
 			keyboard: false
