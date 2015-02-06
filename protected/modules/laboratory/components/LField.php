@@ -18,18 +18,21 @@ abstract class LField extends CComponent {
 	 * @param String $label - Field's label
 	 * @param Mixed $value - Any value for field
 	 * @param Array $data - Array with values (for DropDown lists)
+	 * @param array $options - Html options for field component
 	 * @return String - Just rendered field result
 	 */
-	public final function renderEx($form, $model, $key, $label = "", $value = null, $data = []) {
+	public final function renderEx($form, $model, $key, $label = "", $value = null, $data = [], $options = []) {
 
 		assert(is_string($label), "Label must be with String type");
 		assert(is_string($key), "Key must be with String type");
 		assert(is_array($data), "Data must be with Array type");
+		assert(is_array($options), "Options must be with Array type");
 
 		$this->label = $label;
 		$this->key = $key;
 		$this->value = $value;
 		$this->data = $data;
+		$this->options = $options;
 
 		return $this->render($form, $model);
 	}
@@ -96,10 +99,18 @@ abstract class LField extends CComponent {
 		return $this->type;
 	}
 
+	/**
+	 * @return Array - Array with html options
+	 */
+	public function getOptions() {
+		return $this->options;
+	}
+
 	private $value;
 	private $key;
 	private $type;
 	private $name;
 	private $data;
 	private $label;
+	private $options;
 }

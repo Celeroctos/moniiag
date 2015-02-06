@@ -9,7 +9,7 @@ class LNumberField extends LField {
 	 * @return String - Just rendered field result
 	 */
 	public function render($form, $model) {
-		return $form->numberField($model, $this->getKey(), [
+		return $form->numberField($model, $this->getKey(), $this->getOptions() + [
 			'placeholder' => $this->getLabel(),
 			'id' => $this->getKey(),
 			'class' => 'form-control',

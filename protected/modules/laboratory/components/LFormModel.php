@@ -13,6 +13,15 @@ abstract class LFormModel extends CFormModel {
     public abstract function config();
 
     /**
+     * That function will check model's field for valid for drop down list
+     * @param string $field - Field's name
+     * @return bool - True if field can be used for data receive from db
+     */
+    public function isActive($field) {
+        return isset($this->$field) && $this->$field && $this->$field != -1;
+    }
+
+    /**
      * Override that method to return configuration for widget
      * @return array - Configuration for widget to render
      */

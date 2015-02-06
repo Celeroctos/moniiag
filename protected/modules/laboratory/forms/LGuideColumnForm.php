@@ -3,10 +3,12 @@
 class LGuideColumnForm extends LFormModel {
 
 	public $id;
-	public $guide_id;
-	public $lis_guide_id;
 	public $name;
 	public $type;
+	public $guide_id;
+	public $lis_guide_id;
+	public $position;
+	public $display_id;
 
 	/**
 	 * Override that method to return config. Config should return array associated with
@@ -17,9 +19,15 @@ class LGuideColumnForm extends LFormModel {
 	 * @return Array - Model's config
 	 */
 	public function config() {
-
 		$guides = LGuide::model()->findForDropDown();
-
+		if ($this->isActive("lis_guide_id")) {
+			$columns = LGuideColumn::model()->findDisplayableAndOrdered("guide_id = :guide_id", [
+				$this->lis_guide_id
+			]);
+			$columns = LGuideColumn::model()->toDropDown($columns);
+		} else {
+			$columns = [];
+		}
 		return [
 			"id" => [
 				"label" => "Идентификатор",
@@ -37,13 +45,13 @@ class LGuideColumnForm extends LFormModel {
 				"type" => "DropDown",
 				"rules" => "required",
 				"data" => LFieldCollection::getCollection()->getDropDown([
-					"text",
-					"textarea",
-					"number",
-					"yesno",
-					"dropdown",
-					"multiple",
-					"date",
+					"Text",
+					"TextArea",
+					"Number",
+					"YesNo",
+					"DropDown",
+					"Multiple",
+					"Date"
 				])
 			],
 			"guide_id" => [
@@ -58,6 +66,21 @@ class LGuideColumnForm extends LFormModel {
 				"label" => "Справочник",
 				"type" => "DropDown",
 				"data" => $guides,
+				"format" => "%{name}",
+				"hidden" => "true"
+			],
+			"position" => [
+				"label" => "Позиция",
+				"type" => "Number",
+				"hidden" => "true",
+				"options" => [
+					"min" => 1
+				]
+			],
+			"display_id" => [
+				"label" => "Отображаемое значение",
+				"type" => "DropDown",
+				"data" => $columns,
 				"format" => "%{name}",
 				"hidden" => "true"
 			]

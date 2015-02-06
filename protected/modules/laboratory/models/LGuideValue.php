@@ -2,6 +2,11 @@
 
 class LGuideValue extends LModel {
 
+	public $id;
+	public $guide_row_id;
+	public $guide_column_id;
+	public $value;
+
 	/**
 	 * Returns the name of the associated database table.
 	 * By default this method returns the class name as the table name.

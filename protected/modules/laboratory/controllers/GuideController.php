@@ -91,9 +91,7 @@ class GuideController extends LController {
 				$table->save();
 				array_splice($model, 0, 1);
 				foreach ($model as $m) {
-					if ($m->id && ($index = array_search(intval($m->id), $columns)) !== false) {
-						array_splice($columns, $index, 1);
-					}
+					self::arrayInDrop($m, $columns);
 					$save($m);
 				}
 				foreach ($columns as $c) {
@@ -112,12 +110,69 @@ class GuideController extends LController {
 	}
 
 	public function actionApply() {
+		$save = function($guideId, $row, $id) {
+			if ($id) {
+				$table = LGuideRow::model()->findByPk($id);
+			} else {
+				$table = new LGuideRow();
+			}
+			$table->guide_id = $guideId;
+			$table->save();
+			foreach ($row as $c) {
+				/** @var $column LGuideColumn */
+				$column = LGuideColumn::model()->find("guide_id = :guide_id and position = :position", [
+					":guide_id" => $guideId,
+					":position" => $c["position"]
+				]);
+				if (!$column) {
+					throw new CException("Can't resolve column name for guide \"{$guideId}\" with position \"{$c["position"]}\"");
+				}
+				if (isset($c["id"])) {
+					$value = LGuideValue::model()->find("id = :id", [
+						":id" => $c["id"]
+					]);
+					if (!$value) {
+						throw new CException("Can't resolve value from guide with \"{$c["id"]}\" identification number");
+					}
+				} else {
+					$value = new LGuideValue();
+					$value->guide_column_id = $column->id;
+					$value->guide_row_id = $table->id;
+				}
+				if (!isset($c["value"])) {
+					$c["value"] = "";
+				}
+				$value->value = $c["value"];
+				if (is_array($value->value)) {
+					$value->value = json_encode($value->value);
+				}
+				$value->save();
+			}
+		};
 		try {
-			$model = $this->getFormModel();
-			if (!is_array($model)) {
-				throw new CException("Model must be array with encoded & serialized forms \"model\"");
+			$guide = intval($this->post("guide_id"));
+			$data = $this->post("data");
+			if (!is_array($data)) {
+				throw new CException("Can't resolve received data field as array \"data\"");
+			}
+			$rows = LGuideRow::model()->findIds("guide_id = :guide_id", [
+				":guide_id" => $guide
+			]);
+			foreach ($data as $row) {
+				self::arrayInDrop($row, $rows);
+				if (isset($row["id"])) {
+					$id = $row["id"];
+				} else {
+					$id = null;
+				}
+				$save($guide, $row["model"], $id);
+			}
+			foreach ($rows as $row) {
+				LGuideRow::model()->deleteByPk($row);
 			}
 			$this->leave([
+				"delete" => $rows,
+				"data" => $data,
 				"message" => "Данные были успешно добавлены"
 			]);
 		} catch (Exception $e) {

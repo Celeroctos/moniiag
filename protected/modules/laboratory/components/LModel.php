@@ -28,6 +28,42 @@ abstract class LModel extends CActiveRecord {
 	}
 
 	/**
+	 * Prepare array to drop down list
+	 * @param array $array - Array with query results
+	 * @param string $pk - Primary key name
+	 * @return array - Array where every row associated with it's primary key
+	 */
+	public function toDropDown(array $array, $pk = "id") {
+		$select = [];
+		foreach ($array as $r) {
+			if (is_array($r)) {
+				$r = $this->populateRecord($r);
+			}
+			$select[$r->$pk] = $r;
+		}
+		return $select;
+	}
+
+	/**
+	 * Find all identification numbers for this table
+	 * @param string $conditions - Search condition
+	 * @param array $params - Array with parameters
+	 * @return array - Array with identification numbers
+	 * @throws CDbException
+	 */
+	public function findIds($conditions = '', $params = []) {
+		$query = $this->getDbConnection()->createCommand()
+			->select("id")
+			->from($this->tableName())
+			->where($conditions, $params);
+		$array = [];
+		foreach ($query->queryAll() as $a) {
+			$array[] = $a["id"];
+		}
+		return $array;
+	}
+
+	/**
 	 * Override that method to return command for jqGrid
 	 * @return CDbCommand - Command with query
 	 * @throws CDbException

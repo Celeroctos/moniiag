@@ -52,7 +52,7 @@ class LFieldCollection extends CComponent {
 		}
 		$array = [];
 		foreach ($allowed as $i => $value) {
-			$array[$value] = $this->select[$value];
+			$array[strtolower($value)] = $this->select[strtolower($value)];
 		}
 		return $array;
 	}

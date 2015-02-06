@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @var $this LGuideEdit - Widget's instance
+ * @var $this LGuideColumnEditor - Widget's instance
  */
 
 $this->widget("LForm", [
@@ -19,7 +19,7 @@ $this->widget("LForm", [
 				<div><? $this->widget("LForm", [ "model" => $this->default ]) ?><hr></div>
 			<? endif; ?>
 			<? foreach ($this->columns as $column): ?>
-				<div>
+				<div class="guide-column-handle">
 					<a href="javascript:void(0)">
 						<span class="glyphicon glyphicon-remove guide-remove-column" style="color: #af1010"></span>
 					</a>

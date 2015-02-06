@@ -2,6 +2,11 @@
 
 class LGuideValueForm extends LFormModel {
 
+	public $id;
+	public $guide_row_id;
+	public $guide_column_id;
+	public $value;
+
 	/**
 	 * Override that method to return config. Config should return array associated with
 	 * model's variables. Every field must contains 3 parameters:
@@ -12,29 +17,22 @@ class LGuideValueForm extends LFormModel {
 	 */
 	public function config() {
 		return [
+			"guide_row_id" => [
+				"label" => "Строка",
+				"type" => "number",
+				"data" => LGuideColumn::model()->findForDropDown(),
+				"format" => "%{id}"
+			],
+			"guide_column_id" => [
+				"label" => "Столбец",
+				"type" => "number",
+				"data" => LGuideColumn::model()->findForDropDown(),
+				"format" => "%{name}"
+			],
 			"value" => [
 				"label" => "Значение",
 				"type" => isset($this->type) ? $this->type : "Text",
 				"rules" => "required"
-			],
-			"guide_column_id" => [
-				"label" => "Столбец",
-				"type" => "DropDown",
-				"rules" => "required",
-				"data" => isset($this->guide_id) ? LGuideColumn::model()->findAll(
-						"guide_id = :guide_id", [
-							":guide_id" => $this->guide_id
-						]
-					) : [],
-				"format" => "%{name}"
-			],
-			"guide_id" => [
-				"label" => "Справочник",
-				"type" => "DropDown",
-				"rules" => "required",
-				"data" => LGuide::model()->findAll(),
-				"format" => "%{name}",
-				"hidden" => "true"
 			]
 		];
 	}

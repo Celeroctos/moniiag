@@ -7,7 +7,7 @@ abstract class LController extends Controller {
      * api validation, than access won't be denied
      * @param $filterChain CFilterChain - Chain filter
      */
-    public function filterGetAccessHierarchy($filterChain) {
+    public function filterGetAccessHierarchy(CFilterChain $filterChain) {
 
         // Get access result
         $this->access = $this->checkAccess();
@@ -66,7 +66,7 @@ abstract class LController extends Controller {
      * @param bool $return - Should widget return response or print to output stream
      * @return mixed|void
      */
-    public function widget($class, $properties = [], $return = false) {
+    public function widget($class, array $properties = [], $return = false) {
         if ($properties === true) {
             $return = true;
             $properties = [];
@@ -88,8 +88,55 @@ abstract class LController extends Controller {
      * @param array $properties - Widget's properties
      * @return mixed|void
      */
-    public function getWidget($class, $properties = []) {
+    public function getWidget($class, array $properties = []) {
         return $this->widget($class, $properties, true);
+    }
+
+    /**
+     * That method will help to remove row from an array. Why do you need it? For example you
+     * have table with rows and also you have user interface with forms to edit/add new rows
+     * into that table. After sending request for data update you can remove all stuff
+     * from db and reappend rows but you might crash foreign keys, so you can use
+     * basic method <code>LModel::findIds</code> to fetch list with identification
+     * numbers (primary keys) and look though every received row and invoke that method. The
+     * result array of your iterations will be array with row's ids to remove from db.
+     *
+     * <pre>
+     *
+     * // Fetch rows identifications from database by some condition
+     * $rows = MyTable::model()->findIds();
+     *
+     * // look though each row in received data
+     * foreach ($_GET['data'] as $row) {
+     *     self::arrayInDrop($row, $rows);
+     *     // provide your actions with row
+     * }
+     *
+     * // remove remaining rows
+     * foreach ($rows as $id) {
+     *     MyTable::model()->deleteByPk($id);
+     * }
+     * </pre>
+     *
+     * @param $row mixed - Current row with "id" field
+     * @param $rows array - Array with rows
+     * @param string $id - Primary key name
+     */
+    public static function arrayInDrop($row, array &$rows, $id = "id") {
+        if (is_array($row)) {
+            if (!isset($row[$id])) {
+                return ;
+            }
+            $id = $row[$id];
+        } else {
+            if (!isset($row->$id)) {
+                return ;
+            }
+            $id = $row->$id;
+        }
+        if ($id && ($index = array_search(intval($id), $rows)) !== false) {
+            array_splice($rows, $index, 1);
+        }
     }
 
     /**
@@ -337,7 +384,7 @@ abstract class LController extends Controller {
      * Leave script execution and print server's response
      * @param $parameters array - Array with parameters to return
      */
-    public function leave($parameters) {
+    public function leave(array $parameters) {
         if (!isset($parameters["status"])) {
             $parameters["status"] = true;
         }
@@ -348,7 +395,7 @@ abstract class LController extends Controller {
      * Post error message and terminate script evaluation
      * @param $exception Exception - Exception
      */
-    public function exception($exception) {
+    public function exception(Exception $exception) {
         $method = $exception->getTrace()[0];
         $this->leave([
             "message" => basename($method["file"])."[".$method["line"]."] ".$method["class"]."::".$method["function"]."(): \"".$exception->getMessage()."\"",

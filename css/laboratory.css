@@ -104,8 +104,8 @@
 
 .column-container hr {
     margin: 0 0 10px;
-    position: relative;
     border: 1px dotted #d3d3d3;
+    position: relative;
 }
 
 #guide-table tbody tr td:not(:last-child) {
@@ -115,4 +115,24 @@
 .glyphicon-red {
     color: #af1010;
     cursor: pointer;
+}
+
+/* From Bootstrap 3.3.2 */
+@media (min-width: 992px) {
+    .modal-lg {
+        width: 900px;
+    }
+}
+
+.guide-column-handle {
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
+
+.column-container .ui-sortable-helper {
+    /*border: 1px dotted #d3d3d3;*/
+}
+
+#guide-edit-values-modal .modal-body {
+    padding-bottom: 0;
 }

@@ -45,13 +45,14 @@ var Panel = {
 
 var DropDown = {
     change: function(animate) {
+        const DELAY = 100;
         if (animate === undefined) {
             animate = true;
         }
         var hide = function(group) {
             if (!group.hasClass("hidden")) {
                 if (animate) {
-                    group.slideUp("normal", function() {
+                    group.slideUp(DELAY, function() {
                         $(this).addClass("hidden");
                     });
                 } else {
@@ -62,18 +63,34 @@ var DropDown = {
         var show = function(group) {
             if (group.hasClass("hidden")) {
                 if (animate) {
-                    group.removeClass("hidden").hide().slideDown("normal");
+                    group.removeClass("hidden").hide().slideDown(DELAY);
                 } else {
                     group.removeClass("hidden");
                 }
             }
         };
+        var make = function(group, it, wait) {
+            setTimeout(function() {
+                if (it.val() == "dropdown" || it.val() == "multiple") {
+                    show(group);
+                } else {
+                    hide(group);
+                }
+            }, wait)
+        };
+        var group = function(that, id) {
+            return $(that).parents("form").find("#" + id).parents(".form-group");
+        };
         if ($(this).attr("id") == "type") {
-            var group = $(this).parents("form").find("#lis_guide_id").parents(".form-group");
-            if ($(this).val() == "dropdown" || $(this).val() == "multiple") {
-                show(group);
-            } else {
-                hide(group);
+            var fields = [
+                "lis_guide_id",
+                "display_id"
+            ];
+            if ($(this).val() != "dropdown" && $(this).val() != "multiple") {
+                fields = fields.reverse();
+            }
+            for (var i in fields) {
+                make(group(this, fields[i]), $(this), i * DELAY);
             }
         }
     }
@@ -127,7 +144,7 @@ var GuideColumnEditor = {
 			.addClass("hidden");
 		var p;
 		$(".column-container").append(
-			p = $("<div>").append(
+			p = $("<div>", { class: "guide-column-handle" }).append(
 				$("<a>", { href: "javascript:void(0)" }).append(
 					$("<span>", {
 						class: "glyphicon glyphicon-remove guide-remove-column",
@@ -157,7 +174,7 @@ var GuideColumnEditor = {
 	id: -1
 };
 
-var GuideTable = {
+var GuideTableViewer = {
     defaults: function() {
         var panel = $("#guide-edit-panel");
         panel.find(".panel-content").slideUp("normal", function() {
@@ -171,13 +188,22 @@ var GuideTable = {
         });
         panel.find("#guide-panel-button-group").fadeOut("fast");
     },
+    sortable: function() {
+        $(".column-container").sortable().disableSelection();
+    },
+    calculate: function() {
+        var index = 1;
+        $(".column-container").find("input[type='number']#position").each(function(i, it) {
+            $(it).val(index++);
+        });
+    },
     load: function(id) {
         if (!id || id < 0) {
             return this.defaults();
         }
         GuideColumnEditor.id = id;
         $.get(url("/laboratory/guide/getWidget"), {
-            class: "LGuideEdit",
+            class: "LGuideColumnEditor",
             form: { id: id },
             model: "LGuideForm"
         }, function(json) {
@@ -191,8 +217,11 @@ var GuideTable = {
                 component.find("select#type").each(function(i, d) {
                     DropDown.change.call(d, false);
                 });
+                GuideTableViewer.calculate();
                 $(this).hide().slideDown("normal", function() {
-                    $("#guide-panel-button-group").removeClass("hidden").hide().fadeIn("fast");
+                    $("#guide-panel-button-group").removeClass("hidden").hide().fadeIn("fast", function() {
+                        GuideTableViewer.sortable();
+                    });
                 });
             });
         }, "json");
@@ -217,10 +246,11 @@ var GuideTable = {
                     message: json["message"]
                 });
             }
-            GuideTable.update();
+            GuideTableViewer.update();
         }, "json");
     },
     save: function() {
+        this.calculate();
         var panel = $("#guide-edit-panel");
         panel.find(".form-group").removeClass("has-error");
         var serialized = [];
@@ -235,16 +265,16 @@ var GuideTable = {
             } else {
                 Message.display(json);
             }
-            GuideTable.update();
-            GuideTable.defaults();
+            GuideTableViewer.update();
+            GuideTableViewer.defaults();
         }, "json");
     },
 	construct: function() {
 		$("#guide-register-form").on("success", function() {
-			GuideTable.update();
+			GuideTableViewer.update();
 		});
         $(document).on("click", "#guide-table tbody tr td:not(:last-child)", function() {
-            GuideTable.load($(this).parent("tr").data("id"));
+            GuideTableViewer.load($(this).parent("tr").data("id"));
         });
 		$(document).on("click", ".table-edit", function() {
             var id = $($(this).parents("tr")[0]).data("id");
@@ -255,7 +285,7 @@ var GuideTable = {
                 }))
             );
             $.get(url("/laboratory/guide/getWidget"), {
-                class: "LGuideValues",
+                class: "LGuideValueEditor",
                 guide_id: id
             }, function(json) {
                 if (!Message.display(json)) {
@@ -265,15 +295,16 @@ var GuideTable = {
                     $(json["component"])
                 );
             }, "json");
+            GuideValuesEditor.guideId = id;
 		});
 		$(document).on("click", ".table-remove", function() {
-            GuideTable.remove($($(this).parents("tr")[0]).data("id"));
+            GuideTableViewer.remove($($(this).parents("tr")[0]).data("id"));
 		});
 		$("#guide-edit-panel #panel-update").click(function() {
-            GuideTable.save();
+            GuideTableViewer.save();
 		});
         $("#guide-edit-panel #panel-cancel").click(function() {
-            GuideTable.defaults();
+            GuideTableViewer.defaults();
         });
 	},
 	refresh: function(component) {
@@ -294,13 +325,13 @@ var GuideTable = {
 					message: json["message"]
 				});
 			}
-			GuideTable.refresh($(json["component"]));
+			GuideTableViewer.refresh($(json["component"]));
 		}, "json");
 	},
 	success: false
 };
 
-var GuideValues = {
+var GuideValuesEditor = {
 	reset: function(tr) {
 		tr.find("select").each(function(i, f) {
 			$(f).val(-1);
@@ -309,37 +340,69 @@ var GuideValues = {
 			}
 		});
 		tr.find("input, textarea").val("");
+        tr.removeAttr("data-id");
+        tr.find("td").each(function(i, f) {
+            $(f).removeAttr("data-id", null);
+        });
 	},
 	construct: function() {
 		$(document).on("click", "#guide-edit-add-fields", function() {
 			var item = $(this).parents(".guide-values-container").find("tr:last");
 			var tr = item.clone();
-			GuideValues.reset(tr);
+			GuideValuesEditor.reset(tr);
 			item.parent().append(tr);
 			tr.hide().slideDown("slow");
 		});
 		$(document).on("click", ".guide-values-container .remove", function() {
 			var tr = $(this).parent("td").parent("tr");
 			if (tr.parent("tbody").children().length == 1) {
-				GuideValues.reset(tr);
+				GuideValuesEditor.reset(tr);
 				Laboratory.createMessage({
 					message: "Нельзя удалить единственную строку в таблице",
 					type: "info"
 				});
+                tr.removeAttr("data-id");
+                tr.find("td").each(function(i, f) {
+                    $(f).removeAttr("data-id", null);
+                });
 			} else {
 				tr.remove();
 			}
 		});
         $("#guide-edit-values-modal").on("click", "#register", function() {
-            console.log(123);
+            var data = [];
+            $(".guide-values-container tbody tr").each(function(i, tr) {
+                var row = [];
+                $(tr).find("input, select, textarea").each(function(i, item) {
+                    row.push({
+                        position: $(this).parents("td").data("position"),
+                        id: $(this).parents("td").data("id"),
+                        value: $(item).val()
+                    });
+                });
+                data.push({
+                    id: $(tr).data("id"),
+                    model: row
+                });
+            });
+            $.post(url("/laboratory/guide/apply"), {
+                guide_id: GuideValuesEditor.guideId,
+                data: data
+            }, function(json) {
+                if (!Message.display(json)) {
+                    return void 0;
+                }
+                $("#guide-edit-values-modal").modal("hide");
+            }, "json");
         });
-	}
+	},
+    guideId: null
 };
 
 $(document).ready(function() {
 	GuideColumnEditor.construct();
 	ConfirmDelete.construct();
 	Panel.construct();
-	GuideTable.construct();
-	GuideValues.construct();
+	GuideTableViewer.construct();
+	GuideValuesEditor.construct();
 });

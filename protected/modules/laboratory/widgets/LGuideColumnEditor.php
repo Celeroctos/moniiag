@@ -1,6 +1,6 @@
 <?php
 
-class LGuideEdit extends LForm {
+class LGuideColumnEditor extends LForm {
 
 	/**
 	 * @var LGuideForm - Guide basic form model with
@@ -32,7 +32,7 @@ class LGuideEdit extends LForm {
 		}
 		if ($this->model && $this->model->id) {
 			$this->columns = [];
-			$columns = LGuideColumn::model()->findAll("guide_id = :guide_id", [
+			$columns = LGuideColumn::model()->findOrdered("guide_id = :guide_id", [
 				":guide_id" => $this->model->id
 			]);
 			foreach ($columns as $i => $column) {

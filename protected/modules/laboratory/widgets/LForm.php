@@ -130,8 +130,14 @@ class LForm extends LWidget {
             $label = "";
         }
 
+        if (isset($config["options"])) {
+            $options = $config["options"];
+        } else {
+            $options = [];
+        }
+
         $result = LFieldCollection::getCollection()->find($type)->renderEx(
-            $form, $this->model, $key, $label, $value, $data
+            $form, $this->model, $key, $label, $value, $data, $options
         );
 
         return $result;

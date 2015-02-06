@@ -4,11 +4,55 @@ var Laboratory = Laboratory || {};
 
 	"use strict";
 
+    $.valHooks["select-multiple"] = {
+        container: function(item) {
+            return $(item).parent(".multiple").children(".multiple-container");
+        },
+        set: function(item, list) {
+            Multiple.choose($(item).parents(".multiple"), $.parseJSON(list));
+        },
+        get: function(item) {
+            var list = [];
+            this.container(item).find(".multiple-chosen div").each(function(i, div) {
+                list.push($(div).data("key"));
+            });
+            return list;
+        }
+    };
+
+    $(document).bind("ajaxSuccess", function() {
+        //$("select[multiple]").each(function() {
+        //    Multiple.load(this);
+        //});
+        //$("select[multiple][value!='']").each(function() {
+        //    $(this).val($(this).attr("value"));
+        //});
+        $("select.multiple-value[value!='']").each(function() {
+            $(this).val($(this).attr("value"));
+        });
+    });
+
+    $(document).ready(function() {
+        //$("select[multiple]").each(function() {
+        //    Multiple.load(this);
+        //});
+    });
+
     var Multiple = {
+        load: function(me) {
+            var item = $("<div>", {
+                class: "multiple"
+            }).append($(me).clone().addClass("multiple-value")).append(
+                $("<div>", {
+                    class: "multiple-container form-control"
+                })
+            );
+            $(me).replaceWith(item);
+        },
         construct: function() {
             var me = this;
             $(document).on("change", "select.multiple-value", function() {
-                me.choose($(this).parents(".multiple"), $(this).val());
+                me.choose($(this).parents(".multiple"), $.valHooks["select"].get(this));
             });
             $(document).on("click", ".form-down-button", function() {
                 $(this).parents(".form-group").find("select.multiple-value").children("option").each(function(i, item) {

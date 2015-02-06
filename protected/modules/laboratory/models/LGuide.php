@@ -16,6 +16,47 @@ class LGuide extends LModel {
 	}
 
 	/**
+	 * That method will return values ordered by columns positions for
+	 * current guide
+	 * @param $guideId
+	 * @return array
+	 * @throws CDbException
+	 */
+	public function findValues($guideId) {
+		$query = $this->getDbConnection()->createCommand()
+			->select("id")
+			->from("lis.guide_row")
+			->where("guide_id = :guide_id");
+		$rows = $query->queryAll(true, [
+			":guide_id" => $guideId
+		]);
+		$values = [];
+		foreach ($rows as $row) {
+			$values[] = LGuideRow::model()->findValues(
+				$row["id"]
+			);
+		}
+		return $values;
+	}
+
+	public function findValuesWithDisplay($guideId, $displayId) {
+		$query = $this->getDbConnection()->createCommand()
+			->select("*")
+			->from("lis.guide_row")
+			->where("guide_id = :guide_id");
+		$rows = $query->queryAll(true, [
+			":guide_id" => $guideId
+		]);
+		$values = [];
+		foreach ($rows as $row) {
+			$values[] = LGuideRow::model()->findValueWithDisplay(
+				$row["id"], $displayId
+			);
+		}
+		return $values;
+	}
+
+	/**
 	 * Get model's instance from cache
 	 * @return LGuide - Cached model instance
 	 */

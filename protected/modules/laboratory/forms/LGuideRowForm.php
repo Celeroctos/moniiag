@@ -2,6 +2,9 @@
 
 class LGuideRowForm extends LFormModel {
 
+	public $id;
+	public $guide_id;
+
 	/**
 	 * Override that method to return config. Config should return array associated with
 	 * model's variables. Every field must contains 3 parameters:
