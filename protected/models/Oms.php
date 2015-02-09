@@ -74,36 +74,35 @@ class Oms extends MisActiveRecord
 	 */
 	public function search()
 	{
-			$criteria=new CDbCriteria;
-			$criteria->with=['medcards'=>['together'=>true, 'joinType'=>'LEFT JOIN']];
+		$criteria=new CDbCriteria;
+		$criteria->with=['medcards'=>['together'=>true, 'joinType'=>'LEFT JOIN']];
 
-			if($this->validate() && !empty($this->oms_number) || !empty($this->snils) || !empty($this->card_number) //1.
-		   || (!empty($this->last_name) && !empty($this->first_name)) //2.
-		   || (!empty($this->serie) && !empty($this->docnumber)) //серия + номер
-		   || (!empty($this->last_name) && !empty($this->birthday)) //фамилия + дата
-			) //расписываем все возможные сценарии.
-			{
-				$criteria->compare('oms_number', $this->oms_number, false);
-				$criteria->compare('medcards.card_number', $this->card_number, false);
-				$criteria->compare('medcards.snils', $this->snils, false);
-				$criteria->compare('last_name', $this->last_name, false);
-				$criteria->compare('first_name', $this->first_name, false);
-				$criteria->compare('middle_name', $this->middle_name, false);
-				$criteria->compare('medcards.serie', $this->serie, false);
-				$criteria->compare('medcards.docnumber', $this->docnumber, false);
-				$criteria->compare('last_name', $this->last_name, false);
-				$criteria->compare('birthday', $this->birthday, false);
-			}
-			else 
-			{
-				$criteria->addCondition('id=-1'); //не сущ. условие, пустая таблица
-			}
+		if($this->validate() && !empty($this->oms_number) || !empty($this->snils) || !empty($this->card_number) //1.
+	   || (!empty($this->last_name) && !empty($this->first_name)) //2.
+	   || (!empty($this->serie) && !empty($this->docnumber)) //серия + номер
+	   || (!empty($this->last_name) && !empty($this->birthday)) //фамилия + дата
+		) //расписываем все возможные сценарии.
+		{
+			$criteria->compare('oms_number', $this->oms_number, false);
+			$criteria->compare('medcards.card_number', $this->card_number, false);
+			$criteria->compare('medcards.snils', $this->snils, false);
+			$criteria->compare('last_name', $this->last_name, false);
+			$criteria->compare('first_name', $this->first_name, false);
+			$criteria->compare('middle_name', $this->middle_name, false);
+			$criteria->compare('medcards.serie', $this->serie, false);
+			$criteria->compare('medcards.docnumber', $this->docnumber, false);
+			$criteria->compare('last_name', $this->last_name, false);
+			$criteria->compare('birthday', $this->birthday, false);
+		}
+		else //случай, когда искать ничего не нужно
+		{
+			$criteria->addCondition('id=-1'); //не сущ. условие, пустая таблица
+		}
 			
 		return new CActiveDataProvider($this, [
 			'pagination'=>['pageSize'=>15],
 			'criteria'=>$criteria,
 			'sort'=>[
-				
 					'attributes'=>[
 						'oms_number', 
 						'last_name', 
@@ -136,9 +135,9 @@ class Oms extends MisActiveRecord
 						],
 					],
 					'defaultOrder'=>[
-					'id'=>CSort::SORT_DESC,
+						'id'=>CSort::SORT_DESC,
 					],
-				],
+			],
 		]);
 	}
 	
