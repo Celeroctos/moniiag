@@ -43,9 +43,8 @@ class Oms extends MisActiveRecord
 	public function rules()
 	{
 		return [
-			['first_name, middle_name, last_name, card_number, serie, docnumber, address_reg, address, snils', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['first_name, oms_number, middle_name, last_name, card_number, serie, docnumber, address_reg, address, snils', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['birthday', 'type', 'type'=>'string', 'on'=>'reception.search'], //TODO type date
-			['oms_number', 'type', 'type'=>'integer', 'on'=>'reception.search'],
 		];
 	}
 
