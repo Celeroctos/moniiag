@@ -18,6 +18,10 @@ class Payment extends MisActiveRecord
 		return [
 			['id', 'type', 'type'=>'integer', 'on'=>'payment.search'],
 			['name, tasu_string', 'type', 'type'=>'string', 'on'=>'payment.search'],
+			
+			['name, tasu_string', 'required', 'on'=>'payments.create'],
+			['name, tasu_string', 'type', 'type'=>'string', 'on'=>'payments.create'],
+			
 			['name, tasu_string', 'required', 'on'=>'payments.update'],
 			['name, tasu_string', 'type', 'type'=>'string', 'on'=>'payments.update'],
 		];
