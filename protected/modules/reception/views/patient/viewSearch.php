@@ -39,9 +39,6 @@ $this->pageTitle = 'Поиск пациентов';
 			<?= $form->errorSummary($modelOms, '', '', [
 				'class'=>'alert alert-warning',
 			]); ?>
-			<?= $form->errorSummary($modelMedcard, '', '', [
-				'class'=>'alert alert-warning',
-			]); ?>
 		</div>
 	</div>
 	<div class="row">
@@ -55,9 +52,9 @@ $this->pageTitle = 'Поиск пациентов';
 				</div>
 			</div>
 			<div class="form-group">
-				<?= $form->Label($modelMedcard, 'card_number', ['class'=>'col-xs-4 control-label']); ?>
+				<?= $form->Label($modelOms, 'card_number', ['class'=>'col-xs-4 control-label']); ?>
 				<div class="col-xs-6">
-					<?= $form->TextField($modelMedcard, 'card_number', [
+					<?= $form->TextField($modelOms, 'card_number', [
 									'class'=>'form-control',
 								]); ?>
 				</div>
@@ -104,33 +101,41 @@ $this->pageTitle = 'Поиск пациентов';
 		</div>
 		<div class="col-xs-6">
 			<div class="form-group">
-				<?= $form->Label($modelMedcard, 'serie', ['class'=>'col-xs-4 control-label']); ?>
+				<?= $form->Label($modelOms, 'serie', ['class'=>'col-xs-4 control-label']); ?>
 				<div class="col-xs-6">
-					<?= $form->TextField($modelMedcard, 'serie', [
-									'class'=>'form-control',
-								]); ?>
-				</div>
-			</div>	
-			<div class="form-group">
-				<?= $form->Label($modelMedcard, 'address_reg', ['class'=>'col-xs-4 control-label']); ?>
-				<div class="col-xs-6">
-					<?= $form->TextField($modelMedcard, 'address_reg', [
+					<?= $form->TextField($modelOms, 'serie', [
 									'class'=>'form-control',
 								]); ?>
 				</div>
 			</div>
 			<div class="form-group">
-				<?= $form->Label($modelMedcard, 'address', ['class'=>'col-xs-4 control-label']); ?>
+				<?= $form->Label($modelOms, 'docnumber', ['class'=>'col-xs-4 control-label']); ?>
 				<div class="col-xs-6">
-					<?= $form->TextField($modelMedcard, 'address', [
+					<?= $form->TextField($modelOms, 'docnumber', [
 									'class'=>'form-control',
 								]); ?>
 				</div>
 			</div>
 			<div class="form-group">
-				<?= $form->Label($modelMedcard, 'snils', ['class'=>'col-xs-4 control-label']); ?>
+				<?= $form->Label($modelOms, 'address_reg', ['class'=>'col-xs-4 control-label']); ?>
 				<div class="col-xs-6">
-					<?= $form->TextField($modelMedcard, 'snils', [
+					<?= $form->TextField($modelOms, 'address_reg', [
+									'class'=>'form-control',
+								]); ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<?= $form->Label($modelOms, 'address', ['class'=>'col-xs-4 control-label']); ?>
+				<div class="col-xs-6">
+					<?= $form->TextField($modelOms, 'address', [
+									'class'=>'form-control',
+								]); ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<?= $form->Label($modelOms, 'snils', ['class'=>'col-xs-4 control-label']); ?>
+				<div class="col-xs-6">
+					<?= $form->TextField($modelOms, 'snils', [
 									'class'=>'form-control',
 								]); ?>
 				</div>
@@ -142,8 +147,9 @@ $this->pageTitle = 'Поиск пациентов';
 	<?php
 		$this->widget('zii.widgets.grid.CGridView', [
 			'dataProvider'=>$modelOms->search(),
-	//		'filter'=>$modelOms,
-			'ajaxUpdate' =>false,
+//			'filter'=>$modelOms,
+			'ajaxUpdate' =>true,
+			'enableSorting'=>false,
 			'itemsCssClass'=>'table table-bordered',
 			'pager'=>[
 				'class'=>'CLinkPager',

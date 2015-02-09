@@ -20,9 +20,16 @@ class Oms extends MisActiveRecord
 	public $region;
 	public $oms_series;
 	public $oms_series_number;
-	
 	public $lastMedcard; //используется в методе, не ялвяется атрибутом таблицы
-	public $card_number; //из модели Medcard. Используется в поиске
+	
+	/*Атрибуты таблицы Medcards. Used in CGridView*/
+	public $card_number;
+	public $serie;
+	public $docnumber;
+	public $address_reg;
+	public $address;
+	public $snils;
+	
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
@@ -36,12 +43,9 @@ class Oms extends MisActiveRecord
 	public function rules()
 	{
 		return [
-			//TODO свой валидатор на проверку пустоты всех полей
-			['oms_number', 'type', 'type'=>'string', 'on'=>'reception.search'],
-			['first_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
-			['middle_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
-			['last_name', 'type', 'type'=>'string', 'on'=>'reception.search'],
+			['first_name, middle_name, last_name, card_number, serie, docnumber, address_reg, address, snils', 'type', 'type'=>'string', 'on'=>'reception.search'],
 			['birthday', 'type', 'type'=>'string', 'on'=>'reception.search'], //TODO type date
+			['oms_number', 'type', 'type'=>'integer', 'on'=>'reception.search'],
 		];
 	}
 
@@ -54,7 +58,7 @@ class Oms extends MisActiveRecord
 
 	/**
 	 * Извлечение последней медкарты пациента
-	 * Используется в CGridView
+	 * Используется в CGridView (eval())
 	 */
 	public function getLastMedcard($policy_id)
 	{
@@ -71,27 +75,67 @@ class Oms extends MisActiveRecord
 	 */
 	public function search()
 	{
-		$criteria=new CDbCriteria;
-		$criteria->with=['medcards'=>['together'=>true, 'joinType'=>'LEFT JOIN']]; //жадная загрузка
-	
-		if(isset($this->oms_number) || isset($this->oms_number)
-		|| isset($this->card_number) || (isset($this->last_name) && isset($this->first_name))
-		) //расписываем все возможные сценарии.
-		{
-			$criteria->addCondition('card_number='.$this->oms_number);
-		}
-		
-//		$criteria->addCondition('medcards.card_number=:card_number');
-//		$criteria->params=[':card_number'=>$this->card_number];
-//		$criteria->condition="medcards.card_number='8735/11'";
-//		$criteria->params=[':oms_number'=>$this->oms_number];
-//		$criteria->compare();
-//		$criteria->compare('cast(id as text)', (string)$this->oms_number, false);
-		
+			$criteria=new CDbCriteria;
+			$criteria->with=['medcards'=>['together'=>true, 'joinType'=>'LEFT JOIN']];
+
+			if($this->validate() && !empty($this->oms_number) || !empty($this->snils) || !empty($this->card_number) //1.
+		   || (!empty($this->last_name) && !empty($this->first_name)) //2.
+		   || (!empty($this->serie) && !empty($this->docnumber)) //серия + номер
+		   || (!empty($this->last_name) && !empty($this->birthday)) //фамилия + дата
+			) //расписываем все возможные сценарии.
+			{
+				$criteria->compare('oms_number', $this->oms_number, false);
+				$criteria->compare('medcards.card_number', $this->card_number, false);
+				$criteria->compare('medcards.snils', $this->snils, false);
+				$criteria->compare('last_name', $this->last_name, false);
+				$criteria->compare('first_name', $this->first_name, false);
+				$criteria->compare('middle_name', $this->middle_name, false);
+				$criteria->compare('medcards.serie', $this->serie, false);
+				$criteria->compare('medcards.docnumber', $this->docnumber, false);
+				$criteria->compare('last_name', $this->last_name, false);
+				$criteria->compare('birthday', $this->birthday, false);
+			}
+			else 
+			{
+				$criteria->addCondition('id=-1'); //не сущ. условие, пустая таблица
+			}
+			
 		return new CActiveDataProvider($this, [
 			'pagination'=>['pageSize'=>15],
 			'criteria'=>$criteria,
 			'sort'=>[
+				
+					'attributes'=>[
+						'oms_number', 
+						'last_name', 
+						'first_name', 
+						'middle_name', 
+						'birthday',
+						'medcards.card_number'=>[
+							'asc'=>'medcards.card_number',
+							'desc'=>'medcards.card_number DESC',
+						],
+						'medcards.serie'=>[
+							'asc'=>'medcards.serie',
+							'desc'=>'medcards.serie DESC',
+						],
+						'medcards.docnumber'=>[
+							'asc'=>'medcards.docnumber',
+							'desc'=>'medcards.docnumber DESC',
+						],
+						'medcards.address'=>[
+							'asc'=>'medcards.address',
+							'desc'=>'medcards.address DESC',
+						],
+						'medcards.address_reg'=>[
+							'asc'=>'medcards.address_reg',
+							'desc'=>'medcards.address_reg DESC',
+						],
+						'medcards.snils'=>[
+							'asc'=>'medcards.snils',
+							'desc'=>'medcards.snils DESC',
+						],
+					],
 					'defaultOrder'=>[
 					'id'=>CSort::SORT_DESC,
 					],
@@ -110,6 +154,12 @@ class Oms extends MisActiveRecord
 			'first_name'=>'Имя',
 			'middle_name'=>'Отчество',
 			'birthday'=>'День рождения',
+			'card_number'=>'№ Медкарты',
+			'serie'=>'Серия',
+			'docnumber'=>'Номер',
+			'address_reg'=>'Адрес регистрации',
+			'address'=>'Адрес фактического проживания',
+			'snils'=>'СНИЛС',
 		];
 	}
 	
@@ -428,5 +478,3 @@ exit();*/
         return $oms->queryAll();
     }
 }
-
-?>

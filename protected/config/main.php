@@ -134,11 +134,11 @@ return array(
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'showScriptName' => false,
-			/*'rules'=>array(
-				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
-				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
-			),*/
+//			'rules'=>array(
+//				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
+//				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
+//				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+//			),
 		),
 		'db'=> include( dirname(__FILE__).'/db/db.php'),
 		// uncomment the following to use a MySQL database
