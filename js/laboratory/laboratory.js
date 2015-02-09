@@ -44,10 +44,13 @@ var Panel = {
 };
 
 var DropDown = {
-    change: function(animate) {
+    change: function(animate, update) {
         const DELAY = 100;
         if (animate === undefined) {
             animate = true;
+        }
+        if (update === undefined) {
+            update = true;
         }
         var hide = function(group) {
             if (!group.hasClass("hidden")) {
@@ -69,7 +72,7 @@ var DropDown = {
                 }
             }
         };
-        var make = function(group, it, wait) {
+        var toggle = function(group, it, wait) {
             setTimeout(function() {
                 if (it.val() == "dropdown" || it.val() == "multiple") {
                     show(group);
@@ -89,10 +92,31 @@ var DropDown = {
             if ($(this).val() != "dropdown" && $(this).val() != "multiple") {
                 fields = fields.reverse();
             }
-            for (var i in fields) {
-                make(group(this, fields[i]), $(this), i * DELAY);
+            var i;
+            for (i in fields) {
+                toggle(group(this, fields[i]), $(this), i * DELAY);
             }
+            if (update && $(this).attr("data-update")) {
+                setTimeout(function () {
+                    DropDown.update($(this));
+                }, i * DELAY);
+            }
+        } else if (update && $(this).attr("data-update")) {
+            DropDown.update($(this));
         }
+    },
+    update: function(select) {
+        var f;
+        var form = $(select.parents("form")[0]);
+        if (!form.data("laboratory")) {
+            form.attr("action", url("/laboratory/guide/getWidget"));
+            f = Laboratory.createForm(form[0], {
+                url: form.attr("action")
+            });
+        } else {
+            f = form.data("laboratory");
+        }
+        f.update();
     }
 };
 
@@ -232,6 +256,9 @@ var GuideTableViewer = {
         );
     },
     remove: function(id) {
+        if (id == GuideColumnEditor.id) {
+            this.defaults();
+        }
         $.get(url("/laboratory/guide/delete"), {
             id: id
         }, function(json) {
@@ -295,7 +322,7 @@ var GuideTableViewer = {
                     $(json["component"])
                 );
             }, "json");
-            GuideValuesEditor.guideId = id;
+            GuideValueEditor.guideId = id;
 		});
 		$(document).on("click", ".table-remove", function() {
             GuideTableViewer.remove($($(this).parents("tr")[0]).data("id"));
@@ -331,13 +358,17 @@ var GuideTableViewer = {
 	success: false
 };
 
-var GuideValuesEditor = {
+var GuideValueEditor = {
 	reset: function(tr) {
 		tr.find("select").each(function(i, f) {
-			$(f).val(-1);
-			if (!$(f).val()) {
-				$(f).val(0);
-			}
+            if ($(f).hasClass("multiple-value")) {
+                $(f).val("");
+            } else {
+                $(f).val(-1);
+                if (!$(f).val()) {
+                    $(f).val(0);
+                }
+            }
 		});
 		tr.find("input, textarea").val("");
         tr.removeAttr("data-id");
@@ -348,15 +379,15 @@ var GuideValuesEditor = {
 	construct: function() {
 		$(document).on("click", "#guide-edit-add-fields", function() {
 			var item = $(this).parents(".guide-values-container").find("tr:last");
-			var tr = item.clone();
-			GuideValuesEditor.reset(tr);
+			var tr = item.clone(true);
+			GuideValueEditor.reset(tr);
 			item.parent().append(tr);
 			tr.hide().slideDown("slow");
 		});
 		$(document).on("click", ".guide-values-container .remove", function() {
 			var tr = $(this).parent("td").parent("tr");
 			if (tr.parent("tbody").children().length == 1) {
-				GuideValuesEditor.reset(tr);
+				GuideValueEditor.reset(tr);
 				Laboratory.createMessage({
 					message: "Нельзя удалить единственную строку в таблице",
 					type: "info"
@@ -386,7 +417,7 @@ var GuideValuesEditor = {
                 });
             });
             $.post(url("/laboratory/guide/apply"), {
-                guide_id: GuideValuesEditor.guideId,
+                guide_id: GuideValueEditor.guideId,
                 data: data
             }, function(json) {
                 if (!Message.display(json)) {
@@ -404,5 +435,5 @@ $(document).ready(function() {
 	ConfirmDelete.construct();
 	Panel.construct();
 	GuideTableViewer.construct();
-	GuideValuesEditor.construct();
+	GuideValueEditor.construct();
 });

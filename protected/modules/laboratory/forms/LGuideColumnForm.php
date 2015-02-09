@@ -67,7 +67,8 @@ class LGuideColumnForm extends LFormModel {
 				"type" => "DropDown",
 				"data" => $guides,
 				"format" => "%{name}",
-				"hidden" => "true"
+				"hidden" => $this->hasListType(),
+				"update" => "display_id"
 			],
 			"position" => [
 				"label" => "Позиция",
@@ -82,8 +83,12 @@ class LGuideColumnForm extends LFormModel {
 				"type" => "DropDown",
 				"data" => $columns,
 				"format" => "%{name}",
-				"hidden" => "true"
+				"hidden" => $this->hasListType()
 			]
 		];
+	}
+
+	private function hasListType() {
+		return !$this->isActive("type") || ($this->type != "dropdown" && $this->type != "multiple");
 	}
 }

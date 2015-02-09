@@ -16,7 +16,7 @@ class LGuideColumnEditor extends LForm {
 
 	/**
 	 * @var null - Guide columns with form models. We need form's models, cuz
-	 * we use LForm widget to generate ana render form
+	 * we use LForm widget to generate and render form
 	 */
 	public $columns = null;
 
@@ -32,6 +32,15 @@ class LGuideColumnEditor extends LForm {
 		}
 		if ($this->model && $this->model->id) {
 			$this->columns = [];
+			$guide = LGuide::model()->find("id = :id", [
+				":id" => $this->model->id
+			]);
+			if ($guide == null) {
+				throw new CException("Can't resolve guide model with key specified \"{$this->model->id}\"");
+			}
+			foreach ($this->model as $key => $value) {
+				$this->model->$key = $guide->$key;
+			}
 			$columns = LGuideColumn::model()->findOrdered("guide_id = :guide_id", [
 				":guide_id" => $this->model->id
 			]);
@@ -42,15 +51,6 @@ class LGuideColumnEditor extends LForm {
 				}
 				$form->guide_id = $this->model->id;
 				$this->columns[] = $form;
-			}
-			$guide = LGuide::model()->find("id = :id", [
-				":id" => $this->model->id
-			]);
-			if ($guide == null) {
-				throw new CException("Can't resolve guide model with key specified \"{$this->model->id}\"");
-			}
-			foreach ($this->model as $key => $value) {
-				$this->model->$key = $guide->$key;
 			}
 			$this->default->guide_id = $this->model->id;
 		} else {

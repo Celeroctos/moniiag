@@ -136,6 +136,10 @@ class LForm extends LWidget {
             $options = [];
         }
 
+        if (isset($config["update"])) {
+            $options["data-update"] = $config["update"];
+        }
+
         $result = LFieldCollection::getCollection()->find($type)->renderEx(
             $form, $this->model, $key, $label, $value, $data, $options
         );

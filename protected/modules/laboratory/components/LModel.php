@@ -95,13 +95,13 @@ abstract class LModel extends CActiveRecord {
 	 */
 	public function getRows($sidx = false, $sord = false, $start = false, $limit = false) {
 
-		$users = $this->getJqGrid();
+		$query = $this->getJqGrid();
 
 		if($sidx !== false && $sord !== false && $start !== false && $limit !== false) {
-			$users->order($sidx.' '.$sord);
-			$users->limit($limit, $start);
+			$query->order($sidx.' '.$sord);
+			$query->limit($limit, $start);
 		}
 
-		return $users->queryAll();
+		return $query->queryAll();
 	}
 } 

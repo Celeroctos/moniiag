@@ -16,7 +16,7 @@ class LDropDownField extends LField {
 		if (!count($data)) {
 			$data = [ -1 => "Нет" ];
 		}
-		return $form->dropDownList($model, $this->getKey(), $data, [
+		return $form->dropDownList($model, $this->getKey(), $data, $this->getOptions() + [
 			'placeholder' => $this->getLabel(),
 			'id' => $this->getKey(),
 			'class' => 'form-control',

@@ -34,6 +34,11 @@ abstract class LField extends CComponent {
 		$this->data = $data;
 		$this->options = $options;
 
+		$this->options += [
+			"id" => $key,
+			"placeholder" => $label
+		];
+
 		return $this->render($form, $model);
 	}
 

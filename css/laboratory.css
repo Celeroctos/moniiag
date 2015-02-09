@@ -44,6 +44,10 @@
     margin-top: 5px;
 }
 
+.multiple .multiple-value {
+    min-height: 100px;
+}
+
 .multiple-container {
     min-height: 20px;
     height: auto;

@@ -9,7 +9,14 @@ var Laboratory = Laboratory || {};
             return $(item).parent(".multiple").children(".multiple-container");
         },
         set: function(item, list) {
-            Multiple.choose($(item).parents(".multiple"), $.parseJSON(list));
+            var multiple = $(item).parents(".multiple");
+            if (!list.length || list == "[]") {
+                multiple.find(".multiple-chosen div").each(function(i, div) {
+                    Multiple.remove($(div));
+                });
+                list = "[]";
+            }
+            Multiple.choose(multiple, $.parseJSON(list));
         },
         get: function(item) {
             var list = [];
@@ -79,10 +86,16 @@ var Laboratory = Laboratory || {};
                 for (var i in key) {
                     this.choose(multiple, key[i]);
                 }
+                if (!key.length) {
+                    multiple.find("div.multiple-container").empty();
+                }
                 return void 0;
             }
             var name = multiple.find("select.multiple-value")
                 .find("option[value='" + key + "']").remove().text();
+            if (!name.length) {
+                return void 0;
+            }
             var r, t;
             t = $("<div>", {
                 style: "text-align: left; width: 100%",
@@ -122,7 +135,7 @@ var Laboratory = Laboratory || {};
             url: null,
             parent: null
         }, selector);
-        this.property("parent").find(".form-search-button").each(function(i, item) {
+        this.property("parent") && this.property("parent").find(".form-search-button").each(function(i, item) {
             $(item).popover({
                 content: "Hello, World"
             });
@@ -139,7 +152,7 @@ var Laboratory = Laboratory || {};
         this.selector().find(".form-group").animate({
             opacity: this.property("opacity")
         }, this.property("animation"));
-        this.property("parent").find(".refresh-button").replaceWith(
+        this.property("parent") && this.property("parent").find(".refresh-button").replaceWith(
             $("<img>", {
                 src: url("/images/ajax-loader.gif"),
                 width: "25px",
@@ -152,7 +165,7 @@ var Laboratory = Laboratory || {};
         this.selector().find(".form-group").animate({
             opacity: 1
         }, this.property("animation"));
-        this.property("parent").find(".refresh-image").replaceWith(
+        this.property("parent") && this.property("parent").find(".refresh-image").replaceWith(
             $("<span>", {
                 class: "glyphicon glyphicon-refresh refresh-button",
                 style: "font-size: 25px; cursor: pointer"
@@ -160,7 +173,7 @@ var Laboratory = Laboratory || {};
         );
     };
 
-    Form.prototype.update = function() {
+    Form.prototype.update = function(after) {
         var me = this;
         var form = this.selector();
         if (!this.property("url")) {
@@ -194,12 +207,13 @@ var Laboratory = Laboratory || {};
             );
             me.after();
             me.activate();
+            after && after(me);
         }, "json");
     };
 
     Form.prototype.activate = function() {
         var me = this;
-        this.property("parent").find(".refresh-button").click(function() {
+        this.property("parent") && this.property("parent").find(".refresh-button").click(function() {
             $(this).replaceWith(
                 $("<img>", {
                     src: url("/images/ajax-loader.gif"),

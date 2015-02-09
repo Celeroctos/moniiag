@@ -21,6 +21,7 @@
         'data-widget' => get_class($this)
     ]
 ]); ?>
+
 <? foreach ($model->getContainer() as $key => $value): ?>
     <div class="form-group <?= $this->isHidden($key) ? "hidden" : "" ?>">
         <?php if (!$this->checkType($key, "Hidden")) {
@@ -39,4 +40,5 @@
         <? endif; ?>
     </div>
 <? endforeach; ?>
+
 <? $this->endWidget(); ?>

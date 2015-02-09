@@ -74,7 +74,7 @@ class LFieldCollection extends CComponent {
 	private function __construct() {
 		$handle = opendir("protected/modules/laboratory/fields");
 		if ($handle === false) {
-			throw new CException("Can't read field with fields");
+			throw new CException("Can't read folder with fields");
 		}
 		while (($entry = readdir($handle)) !== false) {
 			if ($entry != "." && $entry != "..") {
