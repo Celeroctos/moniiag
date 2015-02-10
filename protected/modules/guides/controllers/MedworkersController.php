@@ -1,36 +1,47 @@
 <?php
-class MedworkersController extends Controller {
+class MedworkersController extends Controller
+{
     public $layout = 'application.modules.guides.views.layouts.index';
     public $defaultAction = 'view';
-
-    public function actionView() {
-        try {
-            // Модель формы для добавления и редактирования записи
-            $formAddEdit = new FormMedworkerAdd;
-
-            // Список вариантов для типов медработников
-            $connection = Yii::app()->db;
-            $typesListDb = $connection->createCommand()
-                ->select('mt.*')
-                ->from('mis.medpersonal_types mt')
-                ->queryAll();
-
-            $typesList = array();
-            foreach($typesListDb as $value) {
-                $typesList[(string)$value['id']] = $value['name'];
-            }
-
-            // Выберем все шаблоны приёмов, чтобы из вывести в интерфейс
-            $allTemplates = MedcardTemplate::model()->findAll();
-            
-            $this->render('view', array(
-                'model' => $formAddEdit,
-                'typesList' => $typesList,
-                'allTemplates' => $allTemplates
-            ));
-        } catch(Exception $e) {
-            echo $e->getMessage();
-        }
+	
+	public function actionList()
+	{
+		$model=new Medpersonal;
+		$this->render('list', [
+			'model'=>$model,
+		]);
+	}
+	
+    public function actionView() 
+	{
+		return $this->actionList();
+//        try {
+//            // Модель формы для добавления и редактирования записи
+//            $formAddEdit = new FormMedworkerAdd;
+//
+//            // Список вариантов для типов медработников
+//            $connection = Yii::app()->db;
+//            $typesListDb = $connection->createCommand()
+//                ->select('mt.*')
+//                ->from('mis.medpersonal_types mt')
+//                ->queryAll();
+//
+//            $typesList = array();
+//            foreach($typesListDb as $value) {
+//                $typesList[(string)$value['id']] = $value['name'];
+//            }
+//
+//            // Выберем все шаблоны приёмов, чтобы из вывести в интерфейс
+//            $allTemplates = MedcardTemplate::model()->findAll();
+//            
+//            $this->render('view', array(
+//                'model' => $formAddEdit,
+//                'typesList' => $typesList,
+//                'allTemplates' => $allTemplates
+//            ));
+//        } catch(Exception $e) {
+//            echo $e->getMessage();
+//        }
     }
 
     public function actionEdit() {

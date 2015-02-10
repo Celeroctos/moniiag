@@ -1,4 +1,7 @@
 <?php
+/**
+ * СМОТРИ КЛАСС Medpersonal!!!
+ */
 class Medworker extends MisActiveRecord  {
     public static function model($className=__CLASS__)
     {
