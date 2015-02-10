@@ -32,7 +32,8 @@ return array(
 		'application.models.*',
         'application.models.forms.*',
 		'application.components.*',
-        'application.controllers.*'
+		'application.components.widgets.*',
+        'application.controllers.*',
 	),
 
 	'modules'=>array(
@@ -127,6 +128,7 @@ return array(
         ),
 		'user'=>array(
 			// enable cookie-based authentication
+			'class'=>'WebUser',
 			'allowAutoLogin'=>true,
 		),
 		// uncomment the following to enable URLs in path-format

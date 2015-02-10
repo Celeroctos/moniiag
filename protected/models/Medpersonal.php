@@ -21,12 +21,39 @@ class Medpersonal extends MisActiveRecord
 	public function relations()
 	{
 		return [
-			'type'=>[self::BELONGS_TO, 'Medpersonal_templates', 'type'],
+			'medpersonal_type'=>[self::BELONGS_TO, 'Medpersonal_types', 'type'],
 		];
 	}
 	
 	public function tableName()
 	{
 		return 'mis.medpersonal';
+	}
+	
+	/**
+	 * Метод для поиска в CGridView
+	 */
+	public function search()
+	{
+		$criteria=new CDbCriteria;
+		
+		if($this->validate())
+		{
+			$criteria->compare('id', $this->id, false);
+			$criteria->compare('name', $this->name, true);
+		}
+		else
+		{
+			$criteria->addCondition('id=-1');
+		}
+		return new CActiveDataProvider($this, [
+			'pagination'=>['pageSize'=>10],
+			'criteria'=>$criteria,
+			'sort'=>[
+					'defaultOrder'=>[
+						'id'=>CSort::SORT_DESC,
+					],
+			],
+		]);
 	}
 }

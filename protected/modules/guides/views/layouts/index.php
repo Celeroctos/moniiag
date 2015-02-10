@@ -48,6 +48,7 @@
         </div>
         <div class="col-xs-9">
             <?php $this->widget('application.components.widgets.GuidesTabMenu') ?>
+			<?php $this->widget('FlashMessager'); ?>
             <?php echo $content; ?>
         </div>
 
