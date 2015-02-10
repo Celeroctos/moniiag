@@ -1,10 +1,48 @@
 <?php
-class Enterprise extends MisActiveRecord {
+/**
+ * AR-модель для работы с enterprise_params
+ */
+class Enterprise extends MisActiveRecord 
+{
+	public $id;
+	public $shortname;
+	
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
-
+	
+	/**
+	 * Список для выпадающего списка (см. dropDownList Yii)
+	 * @param string $typeQuery Добавить/обновить
+	 * @return array
+	 */
+	public static function getEnterpriseListData($typeQuery)
+	{
+		$model=new Enterprise;
+		$criteria=new CDbCriteria;
+		$criteria->select='id, shortname';
+		$enterpriseList=$model->findAll($criteria);
+		
+		return CHtml::listData(
+			CMap::mergeArray([
+				[
+					'id'=>$typeQuery=='insert' ? null : null,
+					'shortname'=>'',
+				]
+			], $enterpriseList),
+			'id',
+			'shortname'
+		);
+	}	
+	
+	public function relations()
+	{
+		return [
+			'wards'=>[self::HAS_MANY, 'Ward', 'enterprise_id'],
+		];
+	}
+	
     public function tableName()
     {
         return 'mis.enterprise_params';
@@ -60,5 +98,3 @@ class Enterprise extends MisActiveRecord {
         }
     }
 }
-
-?>

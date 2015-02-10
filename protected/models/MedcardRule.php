@@ -1,14 +1,49 @@
 <?php
-class MedcardRule extends MisActiveRecord {
+class MedcardRule extends MisActiveRecord 
+{
+	public $id;
+	public $name;
+	
     public function getDbConnection(){
         return Yii::app()->db;
     }
-
+	
     public static function model($className=__CLASS__)
     {
         return parent::model($className);
     }
 
+	/**
+	 * Список для выпадающего списка (см. dropDownList Yii)
+	 * @param string $typeQuery Добавить/обновить
+	 * @return array
+	 */
+	public static function getMedcardruleListData($typeQuery)
+	{
+		$model=new MedcardRule;
+		$criteria=new CDbCriteria;
+		$criteria->select='id, name';
+		$medcardruleList=$model->findAll($criteria);
+		
+		return CHtml::listData(
+			CMap::mergeArray([
+				[
+					'id'=>$typeQuery=='insert' ? null : null,
+					'name'=>'',
+				]
+			], $medcardruleList),
+			'id',
+			'name'
+		);
+	}
+	
+	public function relations()
+	{
+		return [
+			'wards'=>[self::HAS_MANY, 'Wards', 'rule_id'],
+		];
+	}
+	
     public function tableName()
     {
         return 'mis.medcards_rules';

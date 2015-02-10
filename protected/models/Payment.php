@@ -42,8 +42,8 @@ class Payment extends MisActiveRecord
 		if($this->validate())
 		{
 			$criteria->compare('id', $this->id, false);
-			$criteria->compare('name', $this->name);
-			$criteria->compare('tasu_string', $this->tasu_string);
+			$criteria->compare('name', $this->name, true);
+			$criteria->compare('tasu_string', $this->tasu_string, true);
 		}
 		else
 		{
@@ -58,7 +58,7 @@ class Payment extends MisActiveRecord
 					],
 			],
 		]);
-	}	
+	}
 	
 	public function attributeLabels()
 	{

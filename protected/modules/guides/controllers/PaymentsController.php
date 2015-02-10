@@ -1,5 +1,6 @@
 <?php
-class PaymentsController extends Controller {
+class PaymentsController extends Controller 
+{
     public $layout = 'application.modules.guides.views.layouts.index';
     public $defaultAction = 'view';
 
@@ -24,7 +25,6 @@ class PaymentsController extends Controller {
 	public function actionUpdate($id)
 	{
 		$record=Payment::model()->findByPk($id);
-		$record->scenario='payments.update';
 		
 		if($record===null)
 		{
@@ -32,6 +32,7 @@ class PaymentsController extends Controller {
 		}
 		elseif(isset($_POST['Payment']))
 		{
+			$record->scenario='payments.update';
 			$record->attributes=Yii::app()->request->getPost('Payment');
 		
 			if($record->save())
