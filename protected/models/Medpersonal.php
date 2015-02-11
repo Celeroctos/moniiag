@@ -45,7 +45,9 @@ class Medpersonal extends MisActiveRecord
 	public function rules()
 	{
 		return [
-			['id, name, is_for_pregnants, $payment_type, is_medworker', 'type', 'type'=>'integer', 'on'=>'medworkers.create'], //[controller].[action]
+			['name', 'required', 'on'=>'medworkers.create'],
+			['name', 'type', 'type'=>'string', 'on'=>'medworkers.create'],
+			['id, is_for_pregnants, type, payment_type, is_medworker', 'type', 'type'=>'integer', 'on'=>'medworkers.create'], //[controller].[action]
 			['medcard_templates', 'safe', 'on'=>'medworkers.create'], //return array or empty
 		];
 	}
@@ -154,7 +156,7 @@ class Medpersonal extends MisActiveRecord
 	public function attributeLabels()
 	{
 		return [
-			'name'=>'Тип персонала',
+			'name'=>'Наименование',
 			'payment_type'=>'Тип оплаты',
 			'is_medworker'=>'Меддолжность',
 			'is_for_pregnants'=>'Прин. беременных',
@@ -191,10 +193,10 @@ class Medpersonal extends MisActiveRecord
 							'asc'=>'medpersonal_types.name',
 							'desc'=>'medpersonal_types.name DESC',
 						],
-						'defaultOrder'=>[
+					],
+					'defaultOrder'=>[
 							'id'=>CSort::SORT_DESC,
 						],
-					],
 			]
 		]);
 	}

@@ -14,24 +14,38 @@ class MedworkersController extends Controller
 	
 	public function actionCreate()
 	{
-		$model=new Medpersonal('medworkers.create');
+		$modelMedpersonal=new Medpersonal('medworkers.create');
 		
 		if(isset($_POST['Medpersonal']))
 		{
-			$model->attributes=Yii::app()->request->getPost('Medpersonal');
+			$modelMedpersonal->attributes=Yii::app()->request->getPost('Medpersonal');
 			$transaction=Yii::app()->db->beginTransaction();
 			try
 			{
-				$transaction->commit();
+				if($modelMedpersonal->save())
+				{
+					is_array($modelMedpersonal->medcard_templates) ? : $modelMedpersonal->medcard_templates=array();
+					foreach($modelMedpersonal->medcard_templates as $key=>$value)
+					{ //Вбиваем шаблоны у данного медперсонала
+						$modelMedpersonal_templates=new Medpersonal_templates;
+						$modelMedpersonal_templates->id_medpersonal=$modelMedpersonal->id;
+						$modelMedpersonal_templates->id_template=$value;
+						$modelMedpersonal_templates->save(); //валидация уникальности
+					}
+					$transaction->commit();
+					Yii::app()->user->addFlashMessage(WebUser::MSG_SUCCESS, 'Вы успешно добавили должность!');
+					$this->redirect(['medworkers/view']);
+				}
 			} 
 			catch (Exception $e) 
 			{
 				$transaction->rollback(); //откат транзакции.
+				Yii::app()->user->addFlashMessage(WebUser::MSG_SUCCESS, 'Ошибка в запросе к БД');
 			}
 		}
 		
 		$this->render('create', [
-			'model'=>$model,
+			'model'=>$modelMedpersonal,
 			'payment_typeList'=>Medpersonal::getPayment_typeList(),
 			'is_medworkerList'=>Medpersonal::getIs_medworkerList(),
 			'is_for_pregnantsList'=>Medpersonal::getIs_for_pregnantsList(),

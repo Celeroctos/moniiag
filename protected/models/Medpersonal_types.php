@@ -23,7 +23,7 @@ class Medpersonal_types extends MisActiveRecord
 	public function attributeLabels()
 	{
 		return [
-			'name'=>'Наименование',
+			'name'=>'Тип персонала',
 		];
 	}
 	
