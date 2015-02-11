@@ -1,17 +1,17 @@
 <?php
 /**
- * Шаблон создания медперсонала
+ * Шаблон Обновления
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
-$this->pageTitle='Создание медперсонала';
+$this->pageTitle='Обновление медперсонала';
 ?>
-<h3>Добавление</h3>
+<h3>Редактирование <?= '#'.$record->id ?></h3>
 <?php
 	$form=$this->beginWidget('CActiveForm', [
 			'method'=>'post',
 //			'enableAjaxValidation'=>true,
 //			'enableClientValidation'=>true,
-			'action'=>$this->createUrl('medworkers/create'),
+			'action'=>$this->createUrl('medworkers/update', ['id'=>$record->id]),
 			'htmlOptions' => [
 				'class' => 'form-horizontal col-xs-12',
 				'role' => 'form'
@@ -20,7 +20,7 @@ $this->pageTitle='Создание медперсонала';
 ?>
 <div class="row">
 	<div class="col-xs-12">
-		<?= $form->errorSummary($model, '', '', [
+		<?= $form->errorSummary($record, '', '', [
 			'class'=>'alert alert-warning',
 		]); ?>
 	</div>
@@ -28,55 +28,55 @@ $this->pageTitle='Создание медперсонала';
 <div class="row">
 	<div class="col-xs-12">
 		<div class="form-group">
-			<?= $form->Label($model, 'name', ['class'=>'col-xs-3 control-label']); ?>
+			<?= $form->Label($record, 'name', ['class'=>'col-xs-3 control-label']); ?>
 			<div class="col-xs-6">
-				<?= $form->TextField($model, 'name', [
+				<?= $form->TextField($record, 'name', [
 								'class'=>'form-control',
 							]); ?>
 			</div>
 		</div>
 		<div class="form-group">
-			<?= $form->Label($model, 'type', ['class'=>'col-xs-3 control-label']); ?>
+			<?= $form->Label($record, 'type', ['class'=>'col-xs-3 control-label']); ?>
 			<div class="col-xs-6">
-				<?= CHtml::activeDropDownList($model, 'type', $typeList, [
+				<?= CHtml::activeDropDownList($record, 'type', $typeList, [
 					'class'=>'form-control',
 				]); ?>
 			</div>
 		</div>
 		<div class="form-group">
-			<?= $form->Label($model, 'payment_type', ['class'=>'col-xs-3 control-label']); ?>
+			<?= $form->Label($record, 'payment_type', ['class'=>'col-xs-3 control-label']); ?>
 			<div class="col-xs-6">
-				<?= CHtml::activeDropDownList($model, 'payment_type', $payment_typeList, [
+				<?= CHtml::activeDropDownList($record, 'payment_type', $payment_typeList, [
 					'class'=>'form-control',
 				]); ?>
 			</div>
 		</div>
 		<div class="form-group">
-			<?= $form->Label($model, 'is_medworker', ['class'=>'col-xs-3 control-label']); ?>
+			<?= $form->Label($record, 'is_medworker', ['class'=>'col-xs-3 control-label']); ?>
 			<div class="col-xs-6">
-				<?= CHtml::activeDropDownList($model, 'is_medworker', $is_medworkerList, [
+				<?= CHtml::activeDropDownList($record, 'is_medworker', $is_medworkerList, [
 					'class'=>'form-control',
 				]); ?>
 			</div>
 		</div>
 		<div class="form-group">
-			<?= $form->Label($model, 'is_for_pregnants', ['class'=>'col-xs-3 control-label']); ?>
+			<?= $form->Label($record, 'is_for_pregnants', ['class'=>'col-xs-3 control-label']); ?>
 			<div class="col-xs-6">
-				<?= CHtml::activeDropDownList($model, 'is_for_pregnants', $is_for_pregnantsList, [
+				<?= CHtml::activeDropDownList($record, 'is_for_pregnants', $is_for_pregnantsList, [
 					'class'=>'form-control',
 				]); ?>
 			</div>
 		</div>
 		<div class="form-group">
-			<?= $form->Label($model, 'medcard_templates', ['class'=>'col-xs-3 control-label']); ?>
+			<?= $form->Label($record, 'medcard_templates', ['class'=>'col-xs-3 control-label']); ?>
 			<div class="col-xs-8">
-				<?= CHtml::activeCheckBoxList($model, 'medcard_templates', Medpersonal::getMedcard_templatesList(), [
+				<?= CHtml::activeCheckBoxList($record, 'medcard_templates', Medpersonal::getMedcard_templatesList(), [
 				]); ?>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-xs-7 col-xs-offset-3">
-				<?= CHtml::submitButton('Добавить', [
+				<?= CHtml::submitButton('Редактировать', [
 					'class'=>'btn btn-primary'
 				]); ?>
 				<?= CHtml::link('Вернуться назад', $this->createUrl('medworkers/view'), [

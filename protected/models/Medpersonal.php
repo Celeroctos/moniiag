@@ -45,6 +45,11 @@ class Medpersonal extends MisActiveRecord
 	public function rules()
 	{
 		return [
+			['name', 'required', 'on'=>'medworkers.update'],
+			['name', 'type', 'type'=>'string', 'on'=>'medworkers.update'],
+			['id, is_for_pregnants, type, payment_type, is_medworker', 'type', 'type'=>'integer', 'on'=>'medworkers.update'], //[controller].[action]
+			['medcard_templates', 'safe', 'on'=>'medworkers.update'], //return array or empty
+			
 			['name', 'required', 'on'=>'medworkers.create'],
 			['name', 'type', 'type'=>'string', 'on'=>'medworkers.create'],
 			['id, is_for_pregnants, type, payment_type, is_medworker', 'type', 'type'=>'integer', 'on'=>'medworkers.create'], //[controller].[action]
@@ -57,11 +62,19 @@ class Medpersonal extends MisActiveRecord
 		return 'mis.medpersonal';
 	}
 	
+	/**
+	 * Используется в activeCheckBoxList()
+	 * @return array
+	 */
 	public static function getMedcard_templatesList()
 	{
 		return CHtml::listData(MedcardTemplate::model()->findAll(), 'id', 'name');
 	}
 	
+	/**
+	 * Используется в activeDropDownList()
+	 * @return array
+	 */
 	public static function getPayment_typeList()
 	{
 		return CHtml::listData([
@@ -76,6 +89,10 @@ class Medpersonal extends MisActiveRecord
 				], 'payment_type', 'name');
 	}
 	
+	/**
+	 * Используется в activeDropDownList()
+	 * @return array
+	 */	
 	public static function getIs_medworkerList()
 	{
 		return CHtml::listData([
@@ -90,6 +107,10 @@ class Medpersonal extends MisActiveRecord
 				], 'is_medworker', 'name');
 	}
 	
+	/**
+	 * Используется в activeDropDownList()
+	 * @return array
+	 */	
 	public static function getIs_for_pregnantsList()
 	{
 		return CHtml::listData([
@@ -104,15 +125,19 @@ class Medpersonal extends MisActiveRecord
 				], 'is_for_pregnants', 'name');
 	}
 	
+	/**
+	 * Используется в CGridView
+	 * @return array
+	 */	
 	public function getPayment_type($payment_type)
 	{
 		switch($payment_type)
 		{
-			case "1":
-				return 'Бюджет';
+			case self::PAYMENT_TYPE_TRUE_ID:
+				return self::PAYMENT_TYPE_TRUE_NAME;
 				break;
-			case "0":
-				return 'ОМС';
+			case self::PAYMENT_TYPE_FALSE_ID:
+				return self::PAYMENT_TYPE_FALSE_NAME;
 				break;
 			default:
 				return 'Не указано';
@@ -120,15 +145,19 @@ class Medpersonal extends MisActiveRecord
 		}
 	}
 	
+	/**
+	 * Используется в CGridView
+	 * @return array
+	 */
 	public function getIs_medworker($is_medworker)
 	{
 		switch($is_medworker)
 		{
-			case "1":
-				return 'да';
+			case self::IS_MEDWORKER_TRUE_ID:
+				return self::IS_MEDWORKER_TRUE_NAME;
 				break;
-			case "":
-				return 'нет';
+			case self::IS_MEDWORKER_FALSE_ID:
+				return self::IS_MEDWORKER_FALSE_NAME;
 				break;
 			default:
 				return 'Не указано';
@@ -136,15 +165,19 @@ class Medpersonal extends MisActiveRecord
 		}
 	}
 	
+	/**
+	 * Используется в CGridView
+	 * @return array
+	 */
 	public function getIs_for_pregnants($is_for_pregnants)
 	{
 		switch($is_for_pregnants)
 		{
-			case "1":
-				return 'Да';
+			case self::IS_FOR_PREGNANTS_TRUE_ID:
+				return self::IS_FOR_PREGNANTS_TRUE_NAME;
 				break;
-			case "0":
-				return 'Нет';
+			case self::IS_FOR_PREGNANTS_FALSE_ID:
+				return self::IS_FOR_PREGNANTS_FALSE_NAME;
 				break;
 			default:
 				return 'Не указано';
@@ -156,10 +189,13 @@ class Medpersonal extends MisActiveRecord
 	public function attributeLabels()
 	{
 		return [
+			'id'=>'#ID',
 			'name'=>'Наименование',
 			'payment_type'=>'Тип оплаты',
 			'is_medworker'=>'Меддолжность',
 			'is_for_pregnants'=>'Прин. беременных',
+			'type'=>'Тип персонала',
+			'medcard_templates'=>'Шаблоны',
 		];
 	}
 	
@@ -197,7 +233,7 @@ class Medpersonal extends MisActiveRecord
 					'defaultOrder'=>[
 							'id'=>CSort::SORT_DESC,
 						],
-			]
+			],
 		]);
 	}
 }

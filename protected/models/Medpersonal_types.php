@@ -20,6 +20,15 @@ class Medpersonal_types extends MisActiveRecord
 		];
 	}
 
+	/**
+	 * Используется в activeDropDownList()
+	 * @return array
+	 */
+	public static function getNameList()
+	{
+		return CHtml::listData(MedPersonal_types::model()->findAll(), 'id', 'name');
+	}
+	
 	public function attributeLabels()
 	{
 		return [
