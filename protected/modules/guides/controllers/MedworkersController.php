@@ -19,7 +19,15 @@ class MedworkersController extends Controller
 		if(isset($_POST['Medpersonal']))
 		{
 			$model->attributes=Yii::app()->request->getPost('Medpersonal');
-			
+			$transaction=Yii::app()->db->beginTransaction();
+			try
+			{
+				$transaction->commit();
+			} 
+			catch (Exception $e) 
+			{
+				$transaction->rollback(); //откат транзакции.
+			}
 		}
 		
 		$this->render('create', [
