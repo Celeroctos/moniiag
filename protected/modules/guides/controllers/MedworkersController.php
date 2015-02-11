@@ -12,6 +12,29 @@ class MedworkersController extends Controller
 		]);
 	}
 	
+	public function actionCreate()
+	{
+		$model=new Medpersonal('medworkers.create');
+		
+		if(isset($_POST['Medpersonal']))
+		{
+			$model->attributes=Yii::app()->request->getPost('Medpersonal');
+			
+		}
+		
+		$this->render('create', [
+			'model'=>$model,
+			'payment_typeList'=>Medpersonal::getPayment_typeList(),
+			'is_medworkerList'=>Medpersonal::getIs_medworkerList(),
+			'is_for_pregnantsList'=>Medpersonal::getIs_for_pregnantsList(),
+		]);
+	}
+	
+	public function actionUpdate()
+	{
+		
+	}
+	
     public function actionView() 
 	{
 		return $this->actionList();

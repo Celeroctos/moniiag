@@ -5,7 +5,7 @@
  */
 $this->pageTitle = 'Отделения';
 ?>
-<?= CHtml::link('Добавить', $this->createUrl('wards/create'), [
+<?= CHtml::link('Добавить', $this->createUrl('medworkers/create'), [
 					'class'=>'btn btn-primary'
 				]); ?>
 <?php

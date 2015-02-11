@@ -12,6 +12,22 @@ class Medpersonal extends MisActiveRecord
 	public $is_for_pregnants;
 	public $payment_type;
 	public $is_medworker;
+	public $medcard_templates;
+	
+	const PAYMENT_TYPE_TRUE_ID=1;
+	const PAYMENT_TYPE_FALSE_ID=0;
+	const PAYMENT_TYPE_TRUE_NAME='Бюджет';
+	const PAYMENT_TYPE_FALSE_NAME='ОМС';
+	
+	const IS_MEDWORKER_TRUE_ID=1;
+	const IS_MEDWORKER_FALSE_ID=0;
+	const IS_MEDWORKER_TRUE_NAME='Да';
+	const IS_MEDWORKER_FALSE_NAME='Нет';
+	
+	const IS_FOR_PREGNANTS_TRUE_ID=1;
+	const IS_FOR_PREGNANTS_FALSE_ID=0;
+	const IS_FOR_PREGNANTS_TRUE_NAME='Да';
+	const IS_FOR_PREGNANTS_FALSE_NAME='Нет';
 	
 	public static function model($className=__CLASS__)
     {
@@ -22,12 +38,68 @@ class Medpersonal extends MisActiveRecord
 	{
 		return [
 			'medpersonal_type'=>[self::BELONGS_TO, 'Medpersonal_types', 'type'],
+			'medpersonal_templates'=>[self::HAS_MANY, 'Medpersonal_templates', 'id_medpersonal'],
+		];
+	}
+	
+	public function rules()
+	{
+		return [
+			['id, name, is_for_pregnants, $payment_type, is_medworker', 'type', 'type'=>'integer', 'on'=>'medworkers.create'], //[controller].[action]
+			['medcard_templates', 'safe', 'on'=>'medworkers.create'], //return array or empty
 		];
 	}
 	
 	public function tableName()
 	{
 		return 'mis.medpersonal';
+	}
+	
+	public static function getMedcard_templatesList()
+	{
+		return CHtml::listData(MedcardTemplate::model()->findAll(), 'id', 'name');
+	}
+	
+	public static function getPayment_typeList()
+	{
+		return CHtml::listData([
+					[
+						'payment_type'=>self::PAYMENT_TYPE_FALSE_ID,
+						'name'=>self::PAYMENT_TYPE_FALSE_NAME,
+					],
+					[
+						'payment_type'=>self::PAYMENT_TYPE_TRUE_ID,
+						'name'=>self::PAYMENT_TYPE_TRUE_NAME
+					],
+				], 'payment_type', 'name');
+	}
+	
+	public static function getIs_medworkerList()
+	{
+		return CHtml::listData([
+					[
+						'is_medworker'=>self::IS_MEDWORKER_FALSE_ID,
+						'name'=>self::IS_MEDWORKER_FALSE_NAME,
+					],
+					[
+						'is_medworker'=>self::IS_MEDWORKER_TRUE_ID,
+						'name'=>self::IS_MEDWORKER_TRUE_NAME
+					],
+				], 'is_medworker', 'name');
+	}
+	
+	public static function getIs_for_pregnantsList()
+	{
+		return CHtml::listData([
+					[
+						'is_for_pregnants'=>self::IS_FOR_PREGNANTS_FALSE_ID,
+						'name'=>self::IS_FOR_PREGNANTS_FALSE_NAME,
+					],
+					[
+						'is_for_pregnants'=>self::IS_FOR_PREGNANTS_TRUE_ID,
+						'name'=>self::IS_FOR_PREGNANTS_TRUE_NAME
+					],
+				], 'is_for_pregnants', 'name');
 	}
 	
 	public function getPayment_type($payment_type)
@@ -61,16 +133,6 @@ class Medpersonal extends MisActiveRecord
 				break;
 		}
 	}
-
-	public function attributeLabels()
-	{
-		return [
-			'name'=>'Тип персонала',
-			'payment_type'=>'Тип оплаты',
-			'is_medworker'=>'Меддолжность',
-			'is_for_pregnants'=>'Прин. беременных',
-		];
-	}
 	
 	public function getIs_for_pregnants($is_for_pregnants)
 	{
@@ -87,6 +149,16 @@ class Medpersonal extends MisActiveRecord
 				break;
 				
 		}
+	}
+	
+	public function attributeLabels()
+	{
+		return [
+			'name'=>'Тип персонала',
+			'payment_type'=>'Тип оплаты',
+			'is_medworker'=>'Меддолжность',
+			'is_for_pregnants'=>'Прин. беременных',
+		];
 	}
 	
 	/**
