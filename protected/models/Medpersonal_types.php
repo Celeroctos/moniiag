@@ -19,6 +19,13 @@ class Medpersonal_types extends MisActiveRecord
 			'medpersonals'=>[self::HAS_MANY, 'Medpersonal', 'type'],
 		];
 	}
+
+	public function attributeLabels()
+	{
+		return [
+			'name'=>'Наименование',
+		];
+	}
 	
 	public function tableName()
 	{

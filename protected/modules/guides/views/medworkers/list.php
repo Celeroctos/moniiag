@@ -5,12 +5,6 @@
  */
 $this->pageTitle = 'Отделения';
 ?>
-<?php if(Yii::app()->user->hasFlash('error') || Yii::app()->user->hasFlash('success')): ?>
-	<div class="alert alert-danger">
-		<?= Yii::app()->user->getFlash('error'); ?>
-		<?= Yii::app()->user->getFlash('success'); ?>
-	</div>
-<?php endif; ?>
 <?= CHtml::link('Добавить', $this->createUrl('wards/create'), [
 					'class'=>'btn btn-primary'
 				]); ?>
@@ -49,18 +43,21 @@ $this->widget('zii.widgets.grid.CGridView', [
 		],
 		[
 			'name'=>'payment_type',
+			'value'=>'$data->getPayment_type($data->payment_type)',
 			'headerHtmlOptions'=>[
 						'class'=>'col-md-4',
 				],
 		],
 		[
 			'name'=>'is_medworker',
+			'value'=>'$data->getIs_medworker($data->is_medworker)',
 			'headerHtmlOptions'=>[
 						'class'=>'col-md-4',
 				],
 		],
 		[
 			'name'=>'is_for_pregnants',
+			'value'=>'$data->getIs_for_pregnants($data->is_for_pregnants)',
 			'headerHtmlOptions'=>[
 						'class'=>'col-md-4',
 				],

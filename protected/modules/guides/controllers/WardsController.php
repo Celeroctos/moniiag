@@ -35,8 +35,6 @@ class WardsController extends Controller
 	public function actionUpdate($id)
 	{
 		$record=Ward::model()->findByPk($id); // Сценарий: [controller].[action]
-		$enterpriseList=Enterprise::getEnterpriseListData('insert');
-		$medcardruleList=MedcardRule::getMedcardruleListData('insert');
 		
 		if($record===null)
 		{
@@ -56,8 +54,8 @@ class WardsController extends Controller
 
 		$this->render('update', [
 			'record'=>$record,
-			'enterpriseList'=>$enterpriseList,
-			'medcardruleList'=>$medcardruleList,
+			'enterpriseList'=>Enterprise::getEnterpriseListData('insert'),
+			'medcardruleList'=>MedcardRule::getMedcardruleListData('insert'),
 		]);
 	}
 	
