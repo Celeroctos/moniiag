@@ -97,26 +97,26 @@ var DropDown = {
                 toggle(group(this, fields[i]), $(this), i * DELAY);
             }
             if (update && $(this).attr("data-update")) {
+                var me = this;
                 setTimeout(function () {
-                    DropDown.update($(this));
+                    DropDown.update($(me));
                 }, i * DELAY);
             }
         } else if (update && $(this).attr("data-update")) {
             DropDown.update($(this));
         }
     },
-    update: function(select) {
+    update: function(select, after) {
         var f;
         var form = $(select.parents("form")[0]);
         if (!form.data("laboratory")) {
-            form.attr("action", url("/laboratory/guide/getWidget"));
             f = Laboratory.createForm(form[0], {
-                url: form.attr("action")
+                url: url("/laboratory/guide/getWidget")
             });
         } else {
             f = form.data("laboratory");
         }
-        f.update();
+        f.update(after);
     }
 };
 

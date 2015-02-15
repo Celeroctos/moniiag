@@ -9,7 +9,7 @@ class LTextField extends LField {
 	 * @return String - Just rendered field result
 	 */
 	public function render($form, $model) {
-		return $form->textField($model, $this->getKey(), [
+		return $form->textField($model, $this->getKey(), $this->getOptions() + [
 			'placeholder' => $this->getLabel(),
 			'id' => $this->getKey(),
 			'class' => 'form-control',

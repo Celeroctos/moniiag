@@ -22,7 +22,7 @@
                 <tr>
                     <? foreach ($columns as $column): ?>
                         <td data-position="<?= $column->position ?>">
-                            <?= $this->renderField($column->type, $column->name) ?>
+                            <?= $this->renderField($column->type, $column->name, $column->default_value) ?>
                         </td>
                     <? endforeach; ?>
                     <td><span style="font-size: 15px; margin-top: 7px" class="glyphicon glyphicon-remove glyphicon-red remove"></span></td>
@@ -39,7 +39,7 @@
                             </td>
                         <? else: ?>
                             <td data-position="<?= $column->position ?>">
-                                <?= $this->renderField($column->type, $column->name) ?>
+                                <?= $this->renderField($column->type, $column->name, $column->default_value) ?>
                             </td>
                         <? endif; ?>
                     <? endforeach; ?>

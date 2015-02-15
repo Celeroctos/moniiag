@@ -9,6 +9,7 @@ class LGuideColumnForm extends LFormModel {
 	public $lis_guide_id;
 	public $position;
 	public $display_id;
+	public $default_value;
 
 	/**
 	 * Override that method to return config. Config should return array associated with
@@ -52,7 +53,8 @@ class LGuideColumnForm extends LFormModel {
 					"DropDown",
 					"Multiple",
 					"Date"
-				])
+				]),
+				"update" => "default_value"
 			],
 			"guide_id" => [
 				"label" => "Справочник",
@@ -84,6 +86,11 @@ class LGuideColumnForm extends LFormModel {
 				"data" => $columns,
 				"format" => "%{name}",
 				"hidden" => $this->hasListType()
+			],
+			"default_value" => [
+				"label" => "Значение по умолчанию",
+				"type" => $this->isActive("type") ? $this->type : "hidden",
+				"value" => $this->default_value
 			]
 		];
 	}
