@@ -67,7 +67,20 @@ HERE;
 						"id_paid_service" integer NOT NULL, --FK (table paid_services)
 					);
 HERE;
+			$command=$connection->createCommand($sql);
+			$command->execute();
 			
+			$sql=<<<HERE
+					CREATE TABLE IF NOT EXISTS "paid_referrals"
+					(
+						"id_paid_referrals" serial NOT NULL, --Уникальный номер направления
+						"id_paid_order" integer NOT NULL, --FK (table paid_order_details)
+						"date" TIMESTAMPTZ,
+						"status" character varying(255), --Новое/включено в счет (0/1)
+						"user_create_id" --Пользователь, создавший заказ
+						
+					)
+HERE;
             $transaction->commit();
             }
 		catch(Exception $e)
