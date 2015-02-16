@@ -594,4 +594,25 @@
             }
         });
     });
+
+    $('#printMedcards, #printHistoryMedcards').on('click', function(e) {
+        if($(this).prop('id') == 'printHistoryMedcards') {
+            var currentRow = $('#importHistory').jqGrid('getGridParam', 'selrow');
+            if (!currentRow) {
+                return false;
+            }
+
+            var importId = $('#importHistory').jqGrid('getRowData', currentRow).import_id;
+            var printWin = window.open('/admin/tasu/printmedcardslist/?importid=' + importId, '', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        } else {
+            var printWin = window.open('/admin/tasu/printmedcardslist','', 'width=800,height=600,menubar=no,location=no,resizable=no,scrollbars=yes,status=no');
+        }
+
+        $(printWin).on('load',
+            function () {
+                this.focus();
+            }
+        );
+    });
 });
+

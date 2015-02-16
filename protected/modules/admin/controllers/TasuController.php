@@ -3172,7 +3172,7 @@ class TasuController extends Controller {
         foreach($medcards as $medcard) {
             $buffer = new TasuMedcardsBuffer();
             $buffer->medcard = $medcard;
-            $buffer->import_id = $lastImportId;
+            $buffer->import_id = $lastImportId['max_import_id'];
             $buffer->status = 0;
             if(!$buffer->save()) {
                 echo CJSON::encode(
@@ -3531,6 +3531,24 @@ class TasuController extends Controller {
         }
 
         return $policyParts;
+    }
+
+    public function actionPrintMedcardsList($importid = false) {
+        $this->layout = 'application.modules.admin.views.layouts.print';
+        $model = new TasuMedcardsBuffer();
+        $buffer = $model->getLastBuffer(false, false, false, false, false, $importid);
+
+        $mPDF = Yii::app()->ePdf->mpdf('', 'A4-L');
+        $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css').'/paper.less');
+        $mPDF->WriteHTML($stylesheet, 1);
+
+        $htmlForPdf = $this->render('medcardsList', array(
+            'medcards' => $buffer
+        ), true);
+        $mPDF->writeHTML($htmlForPdf);
+        $this->render('print', array(
+            'pdfContent' => $mPDF->Output()
+        ));
     }
 }
 ?>
