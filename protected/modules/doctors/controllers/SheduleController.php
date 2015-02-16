@@ -35,9 +35,11 @@ class SheduleController extends Controller {
                 $this->currentPatient = trim($_GET['cardid']);
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getOne($this->currentPatient);
+                
                 // Вычисляем количество лет
-                $parts = explode('-', $medcard['birthday']);
-                $medcard['full_years'] = date('Y') - $parts[0];
+                $dateFormatter = new DateFormatterMis($medcard['birthday']);
+                $medcard['full_years'] = $dateFormatter->getFullAge();
+
                 $patientController = Yii::app()->createController('reception/patient');
                 $addressData = $patientController[0]->getAddressStr($medcard['address'], true);
                 $medcard['address'] = $addressData['addressStr'];
