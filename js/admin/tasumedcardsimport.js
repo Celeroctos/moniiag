@@ -203,7 +203,7 @@
         $('#clearMedcards').attr({
             'disabled' : true
         }).text('Подождите, идёт очистка буфера...');
-        $('#importMedcards').attr({
+        $('#importMedcards, #printMedcards').attr({
             'disabled' : true
         });
 
@@ -217,7 +217,7 @@
                     $('#clearMedcards').attr({
                         'disabled' : false
                     }).text('Очистить');
-                    $('#importMedcards').attr({
+                    $('#importMedcards, #printMedcards').attr({
                         'disabled' : false
                     });
                     $("#medcards").trigger("reloadGrid");
@@ -250,7 +250,7 @@
 	    $(this).attr({
             'disabled' : true
         }).text('Совершается выгрузка...');
-        $('#clearMedcards').attr({
+        $('#clearMedcards, #printMedcards').attr({
             'disabled' : true
         });
 
@@ -346,7 +346,7 @@
 								$('#importMedcards').attr({
 									'disabled' : false
 								}).text('Выгрузить');
-								$('#clearMedcards').attr({
+								$('#clearMedcards, #printMedcards').attr({
 									'disabled' : false
 								});
 								$('#importProgressbarP').prop({

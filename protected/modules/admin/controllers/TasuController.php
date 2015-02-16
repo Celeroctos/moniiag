@@ -3019,13 +3019,18 @@ class TasuController extends Controller {
 				));
 				exit();
 			}
+
 			$filepath = getcwd().$bufferH->log_path;
-			header("Pragma: public");
-			header('Content-Type: text/plain');
-			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-			header('Content-Disposition: attachment; filename="log.txt"');
-			$content = file_get_contents($filepath);
-			die($content);
+            if(file_exists($filepath)) {
+                header("Pragma: public");
+                header('Content-Type: text/plain');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Content-Disposition: attachment; filename="log.txt"');
+                $content = file_get_contents($filepath);
+                die($content);
+            } else {
+                exit('Файл не найден!');
+            }
 		}		
 	}
 	
