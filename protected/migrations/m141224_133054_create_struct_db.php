@@ -1,4 +1,4 @@
-<?php
+<?php //
 /**
  * Миграция на создание структуры БД всего проекта (Без данных).
  * *Схема public
@@ -7,10 +7,10 @@
 
 class m141224_133054_create_struct_db extends CDbMigration
 {
+	/*
 	public function up()
 	{
 		$connection=Yii::app()->db;
-		$transaction=$connection->beginTransaction();
 		
 		$sql_access_actions=<<<HERE
 			CREATE TABLE IF NOT EXISTS access_actions
@@ -206,7 +206,7 @@ HERE;
 			);			
 HERE;
 		$sql_degrees=<<<HERE
-			CREATE TABLE degrees
+			CREATE TABLE IF NOT EXISTS degrees
 			(
 			  id serial NOT NULL,
 			  name character varying(150), -- Название степени
@@ -217,7 +217,7 @@ HERE;
 			);			
 HERE;
 		$sql_diagnosis_per_patient=<<<HERE
-			CREATE TABLE diagnosis_per_patient
+			CREATE TABLE IF NOT EXISTS diagnosis_per_patient
 			(
 			  mkb10_id integer,
 			  greeting_id integer,
@@ -228,7 +228,7 @@ HERE;
 			);
 HERE;
 		$sql_doctor_cabinet=<<<HERE
-			CREATE TABLE  doctor_cabinet
+			CREATE TABLE IF NOT EXISTS  doctor_cabinet
 			(
 			  doctor_id integer NOT NULL, -- ID доктора
 			  cabinet_id integer NOT NULL, -- ID кабинета
@@ -246,7 +246,7 @@ HERE;
 			);			
 HERE;
 		$sql_doctor_shedule_by_day=<<<HERE
-			CREATE TABLE doctor_shedule_by_day
+			CREATE TABLE IF NOT EXISTS doctor_shedule_by_day
 			(
 			  id serial NOT NULL,
 			  doctor_id integer, -- Доктор
@@ -271,7 +271,7 @@ HERE;
 			);			
 HERE;
 		$sql_doctor_shedule_setted=<<<HERE
-			CREATE TABLE doctor_shedule_setted
+			CREATE TABLE IF NOT EXISTS doctor_shedule_setted
 			(
 			  id serial NOT NULL,
 			  cabinet_id integer, -- ID кабинета
@@ -289,7 +289,7 @@ HERE;
 			);			
 HERE;
 		$sql_doctor_shedule_setted_be=<<<HERE
-			CREATE TABLE doctor_shedule_setted_be
+			CREATE TABLE IF NOT EXISTS doctor_shedule_setted_be
 			(
 			  id serial NOT NULL,
 			  date_begin date, -- Дата начала действия раписания
@@ -302,7 +302,7 @@ HERE;
 			);			
 HERE;
 		$sql_doctors=<<<HERE
-			CREATE TABLE doctors
+			CREATE TABLE IF NOT EXISTS doctors
 			(
 			  id serial NOT NULL,
 			  first_name character varying(50), -- Имя
@@ -327,7 +327,7 @@ HERE;
 			);			
 HERE;
 		$sql_doctors_timetables=<<<HERE
-			CREATE TABLE doctors_timetables
+			CREATE TABLE IF NOT EXISTS doctors_timetables
 			(
 			  id serial NOT NULL, -- Первичка таблицы
 			  id_doctor integer, -- Ссылка на врача
@@ -338,7 +338,7 @@ HERE;
 			);			
 HERE;
 		$sql_doctypes=<<<HERE
-			CREATE TABLE doctypes
+			CREATE TABLE IF NOT EXISTS doctypes
 			(
 			  id serial NOT NULL,
 			  name character varying(100), -- Название типа документов
@@ -349,7 +349,7 @@ HERE;
 			);			
 HERE;
 		$sql_enterprise_params=<<<HERE
-			CREATE TABLE enterprise_params
+			CREATE TABLE IF NOT EXISTS enterprise_params
 			(
 			  address_fact character varying(200), -- Адрес фактический
 			  address_jur character varying(200), -- Адрес юридический
@@ -373,7 +373,7 @@ HERE;
 			);			
 HERE;
 		$sql_enterprise_types=<<<HERE
-			CREATE TABLE enterprise_types
+			CREATE TABLE IF NOT EXISTS enterprise_types
 			(
 			  id serial NOT NULL,
 			  name character varying(100) NOT NULL, -- Название типа
@@ -384,7 +384,7 @@ HERE;
 			);			
 HERE;
 		$sql_files=<<<HERE
-			CREATE TABLE files
+			CREATE TABLE IF NOT EXISTS files
 			(
 			  id serial NOT NULL,
 			  filename character varying(255), -- Имя файла (созданное)
@@ -398,7 +398,7 @@ HERE;
 			);			
 HERE;
 		$sql_insurances=<<<HERE
-			CREATE TABLE insurances
+			CREATE TABLE IF NOT EXISTS insurances
 			(
 			  id serial NOT NULL,
 			  name character varying(150), -- Название компании
@@ -411,7 +411,7 @@ HERE;
 			);			
 HERE;
 		$sql_insurances_regions=<<<HERE
-			CREATE TABLE insurances_regions
+			CREATE TABLE IF NOT EXISTS insurances_regions
 			(
 			  id serial NOT NULL, -- Первичка
 			  insurance_id integer, -- Ссылка на страховую компанию
@@ -422,7 +422,7 @@ HERE;
 			);			
 HERE;
 		$sql_logs=<<<HERE
-			CREATE TABLE logs
+			CREATE TABLE IF NOT EXISTS logs
 			(
 			  id serial NOT NULL,
 			  user_id integer, -- ID пользователя
@@ -436,7 +436,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_categories=<<<HERE
-			CREATE TABLE medcard_categories
+			CREATE TABLE IF NOT EXISTS medcard_categories
 			(
 			  id serial NOT NULL,
 			  name character varying(150), -- Название категории
@@ -452,7 +452,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_comments=<<<HERE
-			CREATE TABLE medcard_comments
+			CREATE TABLE IF NOT EXISTS medcard_comments
 			(
 			  id serial NOT NULL, -- Первичка
 			  comment text, -- Сам текст комментария
@@ -465,7 +465,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_elements=<<<HERE
-			CREATE TABLE medcard_elements
+			CREATE TABLE IF NOT EXISTS medcard_elements
 			(
 			  id serial NOT NULL,
 			  type integer, -- Тип контрола
@@ -491,7 +491,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_elements_dependences=<<<HERE
-			CREATE TABLE medcard_elements_dependences
+			CREATE TABLE IF NOT EXISTS medcard_elements_dependences
 			(
 			  id serial NOT NULL,
 			  element_id integer, -- ID элемента
@@ -505,7 +505,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_elements_patient=<<<HERE
-			CREATE TABLE medcard_elements_patient
+			CREATE TABLE IF NOT EXISTS medcard_elements_patient
 			(
 			  medcard_id character varying(50) NOT NULL, -- ID медкарты
 			  element_id integer NOT NULL, -- ID элемента для него
@@ -541,7 +541,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_elements_patient_dependences=<<<HERE
-			CREATE TABLE medcard_elements_patient_dependences
+			CREATE TABLE IF NOT EXISTS medcard_elements_patient_dependences
 			(
 			  element_path character varying(150), -- Путь элемента, от которого зависят
 			  dep_element_path character varying(150), -- Пусть элемента, который зависит
@@ -557,7 +557,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_guide_values=<<<HERE
-			CREATE TABLE medcard_guide_values
+			CREATE TABLE IF NOT EXISTS medcard_guide_values
 			(
 			  id serial NOT NULL,
 			  guide_id integer, -- ID медсправочника
@@ -574,7 +574,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_guides=<<<HERE
-			CREATE TABLE medcard_guides
+			CREATE TABLE IF NOT EXISTS medcard_guides
 			(
 			  id serial NOT NULL,
 			  name name, -- Название
@@ -585,7 +585,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_records=<<<HERE
-			CREATE TABLE medcard_records
+			CREATE TABLE IF NOT EXISTS medcard_records
 			(
 			  id serial NOT NULL, -- Первичка
 			  medcard_id character varying, -- Номер медкарты
@@ -602,7 +602,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcard_templates=<<<HERE
-			CREATE TABLE medcard_templates
+			CREATE TABLE IF NOT EXISTS medcard_templates
 			(
 			  id serial NOT NULL,
 			  name character varying(150), -- Название
@@ -617,7 +617,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcards=<<<HERE
-			CREATE TABLE medcards
+			CREATE TABLE IF NOT EXISTS medcards
 			(
 			  privelege_code integer, -- Код льготы
 			  snils character varying(50), -- СНИЛС
@@ -659,7 +659,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcards_history=<<<HERE
-			CREATE TABLE medcards_history
+			CREATE TABLE IF NOT EXISTS medcards_history
 			(
 			  id serial NOT NULL,
 			  enterprise_id integer, -- ID заведения, у кого обозначена такая карта
@@ -675,7 +675,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcards_postfixes=<<<HERE
-			CREATE TABLE medcards_postfixes
+			CREATE TABLE IF NOT EXISTS medcards_postfixes
 			(
 			  id serial NOT NULL,
 			  value character varying(50),
@@ -686,7 +686,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcards_prefixes=<<<HERE
-			CREATE TABLE medcards_prefixes
+			CREATE TABLE IF NOT EXISTS medcards_prefixes
 			(
 			  id serial NOT NULL,
 			  value character varying(50),
@@ -697,7 +697,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcards_rules=<<<HERE
-			CREATE TABLE medcards_rules
+			CREATE TABLE IF NOT EXISTS medcards_rules
 			(
 			  id serial NOT NULL,
 			  prefix_id integer, -- ID префикса
@@ -717,7 +717,7 @@ HERE;
 			);			
 HERE;
 		$sql_medcards_separators=<<<HERE
-			CREATE TABLE medcards_separators
+			CREATE TABLE IF NOT EXISTS medcards_separators
 			(
 			  id serial NOT NULL,
 			  value character varying(50), -- Сам разделитель
@@ -728,7 +728,7 @@ HERE;
 			);			
 HERE;
 		$sql_mediate_patients=<<<HERE
-			CREATE TABLE mediate_patients
+			CREATE TABLE IF NOT EXISTS mediate_patients
 			(
 			  id serial NOT NULL,
 			  first_name character varying(150), -- Имя
@@ -742,7 +742,7 @@ HERE;
 			);			
 HERE;
 		$sql_medpersonal=<<<HERE
-			CREATE TABLE medpersonal
+			CREATE TABLE IF NOT EXISTS medpersonal
 			(
 			  id serial NOT NULL,
 			  name character varying(200), -- Наименование типа работника
@@ -757,7 +757,7 @@ HERE;
 			);			
 HERE;
 		$sql_medpersonal_templates=<<<HERE
-			CREATE TABLE medpersonal_templates
+			CREATE TABLE IF NOT EXISTS medpersonal_templates
 			(
 			  id serial NOT NULL,
 			  id_medpersonal integer, -- ИД должности
@@ -768,7 +768,7 @@ HERE;
 			);			
 HERE;
 		$sql_medpersonal_types=<<<HERE
-			CREATE TABLE medpersonal_types
+			CREATE TABLE IF NOT EXISTS medpersonal_types
 			(
 			  id serial NOT NULL,
 			  name character varying, -- Название типа персонала
@@ -779,7 +779,7 @@ HERE;
 			);			
 HERE;
 		$sql_medservices=<<<HERE
-			CREATE TABLE medservices
+			CREATE TABLE IF NOT EXISTS medservices
 			(
 			  id serial NOT NULL,
 			  name text, -- Описание услуги
@@ -792,7 +792,7 @@ HERE;
 			);			
 HERE;
 		$sql_menu_pages=<<<HERE
-			CREATE TABLE menu_pages
+			CREATE TABLE IF NOT EXISTS menu_pages
 			(
 			  id serial NOT NULL,
 			  name character varying(150), -- Название страницы
@@ -805,7 +805,7 @@ HERE;
 			);			
 HERE;
 		$sql_mkb10=<<<HERE
-			CREATE TABLE mkb10
+			CREATE TABLE IF NOT EXISTS mkb10
 			(
 			  description character varying(200), -- Описание
 			  parent_id integer, -- Родительский элемент
@@ -818,7 +818,7 @@ HERE;
 			);			
 HERE;
 		$sql_mkb10_distrib=<<<HERE
-			CREATE TABLE mkb10_distrib
+			CREATE TABLE IF NOT EXISTS mkb10_distrib
 			(
 			  mkb10_id integer, -- ID диагноза в справочнике МКБ-10
 			  employee_id integer -- ID специальности медработника
@@ -828,7 +828,7 @@ HERE;
 			);			
 HERE;
 		$sql_mkb10_likes=<<<HERE
-			CREATE TABLE mkb10_likes
+			CREATE TABLE IF NOT EXISTS mkb10_likes
 			(
 			  mkb10_id integer NOT NULL,
 			  medworker_id integer NOT NULL,
@@ -839,7 +839,7 @@ HERE;
 			);			
 HERE;
 		$sql_monitoring_oms=<<<HERE
-			CREATE TABLE monitoring_oms
+			CREATE TABLE IF NOT EXISTS monitoring_oms
 			(
 			  id serial NOT NULL, -- Первичка
 			  id_patient integer, -- ИД пацента
@@ -850,7 +850,7 @@ HERE;
 			);		
 HERE;
 		$sql_monitoring_types=<<<HERE
-			CREATE TABLE monitoring_types
+			CREATE TABLE IF NOT EXISTS monitoring_types
 			(
 			  id serial NOT NULL, -- Первичка
 			  name character varying(150) -- Название мониторинга
@@ -860,7 +860,7 @@ HERE;
 			);			
 HERE;
 		$sql_oms=<<<HERE
-			CREATE TABLE oms
+			CREATE TABLE IF NOT EXISTS oms
 			(
 			  id serial NOT NULL,
 			  first_name character varying(100), -- Имя
@@ -886,7 +886,7 @@ HERE;
 			);			
 HERE;
 		$sql_oms_statuses=<<<HERE
-			CREATE TABLE oms_statuses
+			CREATE TABLE IF NOT EXISTS oms_statuses
 			(
 			  id serial NOT NULL, -- Первичка
 			  tasu_id integer, -- Код в ТАСУ
@@ -897,7 +897,7 @@ HERE;
 			);			
 HERE;
 		$sql_oms_types=<<<HERE
-			CREATE TABLE oms_types
+			CREATE TABLE IF NOT EXISTS oms_types
 			(
 			  id serial NOT NULL, -- Первичка
 			  tasu_id integer, -- Код в ТАСУ
@@ -908,7 +908,7 @@ HERE;
 			);			
 HERE;
 		$sql_patient_addresses=<<<HERE
-			CREATE TABLE patient_addresses
+			CREATE TABLE IF NOT EXISTS patient_addresses
 			(
 			  id serial NOT NULL,
 			  region_id integer, -- ID региона из КЛАДР
@@ -925,7 +925,7 @@ HERE;
 			);			
 HERE;
 		$sql_payment_types=<<<HERE
-			CREATE TABLE payment_types
+			CREATE TABLE IF NOT EXISTS payment_types
 			(
 			  id serial NOT NULL,
 			  name character varying(200), -- Название
@@ -937,7 +937,7 @@ HERE;
 			);
 HERE;
 		$sql_phones=<<<HERE
-			CREATE TABLE phones
+			CREATE TABLE IF NOT EXISTS phones
 			(
 			  medcard_id character varying(50), -- Ссылка на медкарту
 			  type integer, -- Тип (0 - домашний, 1 - сотовый, 2 - рабочий)
@@ -953,7 +953,7 @@ HERE;
 			);			
 HERE;
 		$sql_posts=<<<HERE
-			CREATE TABLE posts
+			CREATE TABLE IF NOT EXISTS posts
 			(
 			  id integer NOT NULL,
 			  post_name character varying(150), -- Название должности
@@ -964,7 +964,7 @@ HERE;
 			);			
 HERE;
 		$sql_pregnants=<<<HERE
-			CREATE TABLE pregnants
+			CREATE TABLE IF NOT EXISTS pregnants
 			(
 			  id serial NOT NULL,
 			  card_id character varying(50), -- ID медкарты
@@ -977,7 +977,7 @@ HERE;
 			);			
 HERE;
 		$sql_privileges=<<<HERE
-			CREATE TABLE privileges
+			CREATE TABLE IF NOT EXISTS privileges
 			(
 			  id serual NOT NULL,
 			  name character varying(150), -- Тип льготы (название)
@@ -989,7 +989,7 @@ HERE;
 			);			
 HERE;
 		$sql_privileges_per_patient=<<<HERE
-			CREATE TABLE privileges_per_patient
+			CREATE TABLE IF NOT EXISTS privileges_per_patient
 			(
 			  id serial NOT NULL,
 			  patient_id integer, -- ID пациента
@@ -1005,7 +1005,7 @@ HERE;
 			);			
 HERE;
 		$sql_quick_panel=<<<HERE
-			CREATE TABLE quick_panel
+			CREATE TABLE IF NOT EXISTS quick_panel
 			(
 			  id serial NOT NULL,
 			  user_id integer, -- Пользователь
@@ -1018,7 +1018,7 @@ HERE;
 			);			
 HERE;
 		$sql_rebinded_medcards=<<<HERE
-			CREATE TABLE rebinded_medcards
+			CREATE TABLE IF NOT EXISTS rebinded_medcards
 			(
 			  id serial NOT NULL, -- Первичка
 			  card_number character varying(100), -- Номер карты
@@ -1032,7 +1032,7 @@ HERE;
 			);			
 HERE;
 		$sql_remote_data=<<<HERE
-			CREATE TABLE remote_data
+			CREATE TABLE IF NOT EXISTS remote_data
 			(
 			  id serial NOT NULL, -- ИД записи
 			  indicator_value character varying(100),
@@ -1046,7 +1046,7 @@ HERE;
 			);			
 HERE;
 		$sql_role_action=<<<HERE
-			CREATE TABLE role_action
+			CREATE TABLE IF NOT EXISTS role_action
 			(
 			  role_id integer NOT NULL, -- ID роли
 			  action_id integer NOT NULL, -- ID экшена
@@ -1059,7 +1059,7 @@ HERE;
 			);			
 HERE;
 		$sql_role_to_user=<<<HERE
-			CREATE TABLE role_to_user
+			CREATE TABLE IF NOT EXISTS role_to_user
 			(
 			  user_id integer, -- ID пользователя
 			  role_id integer -- ID роли
@@ -1069,7 +1069,7 @@ HERE;
 			);			
 HERE;
 		$sql_roles=<<<HERE
-			CREATE TABLE roles
+			CREATE TABLE IF NOT EXISTS roles
 			(
 			  id serial NOT NULL,
 			  name character varying(150), -- Название роли
@@ -1082,7 +1082,7 @@ HERE;
 			);			
 HERE;
 		$sql_settings=<<<HERE
-			CREATE TABLE settings
+			CREATE TABLE IF NOT EXISTS settings
 			(
 			  id serial NOT NULL,
 			  module_id integer, -- ID модуля (-1 - без модуля)
@@ -1095,7 +1095,7 @@ HERE;
 			);			
 HERE;
 		$sql_shedule_by_days=<<<HERE
-			CREATE TABLE shedule_by_days
+			CREATE TABLE IF NOT EXISTS shedule_by_days
 			(
 			  shedule_global_id integer, -- ID расписания
 			  action_date date, -- Дата (формат: год-месяц-день)
@@ -1116,7 +1116,7 @@ HERE;
 			);			
 HERE;
 		$sql_shedule_global=<<<HERE
-			CREATE TABLE shedule_global
+			CREATE TABLE IF NOT EXISTS shedule_global
 			(
 			  id integer NOT NULL,
 			  doctor_id integer, -- ID доктора
@@ -1132,7 +1132,7 @@ HERE;
 			);			
 HERE;
 		$sql_shedule_rest=<<<HERE
-			CREATE TABLE shedule_rest
+			CREATE TABLE IF NOT EXISTS shedule_rest
 			(
 			  day integer NOT NULL, -- День (0 - 6), который считается выходным
 			  CONSTRAINT shedule_rest_pkey PRIMARY KEY (day)
@@ -1142,7 +1142,7 @@ HERE;
 			);			
 HERE;
 		$sql_shedule_rest_days=<<<HERE
-			CREATE TABLE shedule_rest_days
+			CREATE TABLE IF NOT EXISTS shedule_rest_days
 			(
 			  id serial NOT NULL,
 			  date timestamp without time zone, -- Дата выходного дня
@@ -1154,7 +1154,7 @@ HERE;
 			);			
 HERE;
 		$sql_shifts=<<<HERE
-			CREATE TABLE shifts
+			CREATE TABLE IF NOT EXISTS shifts
 			(
 			  id serial NOT NULL,
 			  time_begin time without time zone, -- Время начала приёма
@@ -1166,7 +1166,7 @@ HERE;
 			);			
 HERE;
 		$sql_syncdates=<<<HERE
-			CREATE TABLE syncdates
+			CREATE TABLE IF NOT EXISTS syncdates
 			(
 			  syncdate timestamp without time zone, -- Дата синхронизации
 			  name name NOT NULL, -- Ключ для доступа даты синхронизации
@@ -1177,7 +1177,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_fake_greetings=<<<HERE
-			CREATE TABLE tasu_fake_greetings
+			CREATE TABLE IF NOT EXISTS tasu_fake_greetings
 			(
 			  id serial NOT NULL,
 			  card_number character varying(20), -- Номер карты
@@ -1193,7 +1193,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_fake_greetings_secondary_diag=<<<HERE
-			CREATE TABLE tasu_fake_greetings_secondary_diag
+			CREATE TABLE IF NOT EXISTS tasu_fake_greetings_secondary_diag
 			(
 			  id serial NOT NULL,
 			  buffer_id integer, -- ID буфера выгрузки
@@ -1205,7 +1205,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_fields_templates_list=<<<HERE
-			CREATE TABLE tasu_fields_templates_list
+			CREATE TABLE IF NOT EXISTS tasu_fields_templates_list
 			(
 			  name character varying(200), -- Название
 			  template text, -- Сам шаблон
@@ -1218,7 +1218,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_greetings_buffer=<<<HERE
-			CREATE TABLE tasu_greetings_buffer
+			CREATE TABLE IF NOT EXISTS tasu_greetings_buffer
 			(
 			  id serial NOT NULL,
 			  greeting_id integer, -- ID приёма
@@ -1232,7 +1232,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_greetings_buffer_history=<<<HERE
-			CREATE TABLE tasu_greetings_buffer_history
+			CREATE TABLE IF NOT EXISTS tasu_greetings_buffer_history
 			(
 			  id serial NOT NULL,
 			  num_rows integer, -- Кол-во выгруженных строк
@@ -1247,7 +1247,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_history=<<<HERE
-			CREATE TABLE tasu_history
+			CREATE TABLE IF NOT EXISTS tasu_history
 			(
 			  id serial NOT NULL,
 			  obj_id character varying(50), -- ID объекта в базе
@@ -1261,7 +1261,7 @@ HERE;
 			);			
 HERE;
 		$sql_tasu_keys_templates_list=<<<HERE
-			CREATE TABLE tasu_keys_templates_list
+			CREATE TABLE IF NOT EXISTS tasu_keys_templates_list
 			(
 			  id serial NOT NULL,
 			  name character varying(200), -- Название
@@ -1274,7 +1274,7 @@ HERE;
 			);			
 HERE;
 		$sql_timetable=<<<HERE
-			CREATE TABLE timetable
+			CREATE TABLE IF NOT EXISTS timetable
 			(
 			  id serial NOT NULL, -- Первичка
 			  date_begin date, -- Дата начала действия графика
@@ -1286,7 +1286,7 @@ HERE;
 			);			
 HERE;
 		$sql_timetable_facts=<<<HERE
-			CREATE TABLE timetable_facts
+			CREATE TABLE IF NOT EXISTS timetable_facts
 			(
 			  id serial NOT NULL, -- Первичка
 			  is_range integer, -- Флаг о том, что нужно указать промежуток, а не день
@@ -1297,7 +1297,7 @@ HERE;
 			);			
 HERE;
 		$sql_tituls=<<<HERE
-			CREATE TABLE tituls
+			CREATE TABLE IF NOT EXISTS tituls
 			(
 			  id serial NOT NULL,
 			  name character varying(100) -- Название звания
@@ -1307,7 +1307,7 @@ HERE;
 			);			
 HERE;
 		$sql_users=<<<HERE
-			CREATE TABLE users
+			CREATE TABLE IF NOT EXISTS users
 			(
 			  id serial NOT NULL,
 			  username character varying(100), -- Отображаемое имя
@@ -1325,7 +1325,7 @@ HERE;
 			);			
 HERE;
 		$sql_wards=<<<HERE
-			CREATE TABLE wards
+			CREATE TABLE IF NOT EXISTS wards
 			(
 			  id integer NOT NULL DEFAULT nextval('wards_id_seq'::regclass),
 			  name character varying(70), -- Название отделения
@@ -1340,9 +1340,7 @@ HERE;
 			  OIDS=FALSE
 			);			
 HERE;
-
-		try
-		{ // Выполнение транзакции
+		
 			$command=$connection->createCommand($sql_access_actions);
 			$command->execute();
 			unset($command); // На всякий случай.
@@ -1702,17 +1700,11 @@ HERE;
 			$command=$connection->createCommand($sql_wards);
 			$command->execute();
 			unset($command);
-			
-			$transaction->commit();
-			
-		}
-		catch(Exception $e)
-		{
-			$transaction->rollback();
-		}
 	}
 
 	public function down()
 	{
 	}
+	 * 
+	 */
 }
