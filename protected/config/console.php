@@ -5,6 +5,9 @@ return array(
 	'name'=>'Console Application',
 	// preloading 'log' component
 	'preload'=>array('log'),
+	'import'=>array(
+		'application.components.*',
+	),
 	// application components
 	'components'=>array(
 		'db'=>include( dirname(__FILE__).'/db/db.php' ),

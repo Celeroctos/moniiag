@@ -1,17 +1,18 @@
 <?php
 /**
  * Структура БД для модуля платных услуг.
+ * Без FK
  * @author Dzhamal Tayibov <prohps@yandex.ru>
  */
 class m150215_142147_paid_module extends CDbMigration
 {
 	public function up()
 	{
-            $connection=Yii::app()->db;
-            $transaction=$connection->beginTransaction();
+		$connection=Yii::app()->db;
+		$transaction=$connection->beginTransaction();
         
-            try 
-            {
+		try 
+		{
             $sql=<<<HERE
                     CREATE TABLE IF NOT EXISTS "paid_groups"
                     (
@@ -53,7 +54,7 @@ HERE;
 					(
 						"id_paid_order" serial NOT NULL,
 						"name" character varying(255),
-						"id_user_create" integer NOT NULL, --Пользователь, создавший заказ
+						"id_user_create" integer NOT NULL, --Пользователь, создавший заказ и в дальнейшем платёж
 						"id_paid_expense" integer, --Номер счета, при статусе "новое" пустое значение, при статусе "включено в счет" ID счета					
 						"status" integer, --Оплачен/не оплачен (1/0)
 						PRIMARY KEY(order_id)
@@ -62,6 +63,7 @@ HERE;
 			$command=$connection->createCommand($sql);
 			$command->execute();
 			/*Таблица на самом деле является TEMP-хранилищем для создания направлений на её основе, можно чистить.*/
+			/*Использовать как реестр услуг*/
 			$sql=<<<HERE
 					CREATE TABLE IF NOT EXISTS "paid_order_details"
 					(
@@ -105,6 +107,7 @@ HERE;
 					(
 						"id_paid_expense" serial NOT NULL,
 						"date" TIMESTAMPTZ,
+						"price" integer NOT NULL, --Сумма счёта (умноженная на 100)
 						"id_paid_order" integer NOT NULL, --FK (table paid_orders)
 						"status" integer, --Сомнительно, возможно удаление (есть в paid_orders)
 						PRIMARY KEY(id_paid_expense)
@@ -118,12 +121,17 @@ HERE;
 					(
 						"id_paid_payment" serial NOT NULL,
 						"id_paid_expense" integer NOT NULL, --FK (table paid_expenses)
-						
+						"date_delete" TIMESTAMPTZ, --Дата удаления платежа
+						"date_delete_", --Причина удаления платежа
+						"id_user_delete", --Пользователь, удаливший платёж
+						PRIMARY KEY(id_paid_payment)
 					);
 HERE;
+			$command=$connection->createCommand($sql);
+			$command->execute();
 			
             $transaction->commit();
-            }
+		}
 		catch(Exception $e)
 		{
 			$transaction->rollback();
