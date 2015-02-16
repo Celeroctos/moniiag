@@ -35,7 +35,7 @@ class SheduleController extends Controller {
                 $this->currentPatient = trim($_GET['cardid']);
                 $medcardModel = new Medcard();
                 $medcard = $medcardModel->getOne($this->currentPatient);
-                
+
                 // Вычисляем количество лет
                 $dateFormatter = new DateFormatterMis($medcard['birthday']);
                 $medcard['full_years'] = $dateFormatter->getFullAge();
