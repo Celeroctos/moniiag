@@ -19,7 +19,12 @@ class LGuideColumnForm extends LFormModel {
 			"YesNo",
 			"DropDown",
 			"Multiple",
-			"Date"
+			"Date",
+			"Smoke",
+			"Pregnant",
+			"Trimester",
+			"Menstruation",
+			"Race"
 		]);
 	}
 

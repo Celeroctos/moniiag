@@ -84,7 +84,7 @@ var DropDown = {
         var group = function(that, id) {
             return $(that).parents("form").find("#" + id).parents(".form-group");
         };
-        if ($(this).attr("id") == "type" && false) {
+        if ($(this).attr("id") == "type" && !$(this).attr("data-update")) {
             var fields = [
                 "lis_guide_id",
                 "display_id"
