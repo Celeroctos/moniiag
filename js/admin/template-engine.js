@@ -1502,7 +1502,7 @@ var TemplateEngine = TemplateEngine || {};
     };
 
     /**
-     * Переопределяет метод FormModalManager для иницилазиции поля
+     * Переопределяет метод FormModelManager для иницилазиции поля
      * формы. Вся разница заклюачется в том, что элемент еще проверяет
      * себя на наличие ссылки на категорию и возвращет значения родителя
      * категории, а не текущего элемента (т.е как-бы позволяет думать,
@@ -1827,6 +1827,12 @@ var TemplateEngine = TemplateEngine || {};
             if (that.has("id")) {
                 // Oh, sorry Jesus for that (variable is declared in another file :D Thanks Igor!)
                 ElementsApi.currentRow = that.field("id");
+				// fix: issue #10354
+				$("#dependences").jqGrid('setGridParam', {
+					url: window["globalVariables"]["baseUrl"] + '/admin/elements/getDependencesList' + '?id=' + ElementsApi.currentRow,
+					datatype: 'json'
+				});
+				$("#dependences").trigger('reloadGrid');
                 // Fetch dependencies
                 _fetchDependencies(that);
             }

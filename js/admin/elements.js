@@ -1030,16 +1030,16 @@ $('#editElementDependences').on('click', function () {
     });
 
 	$('#controlDependencesList').on('change', function (e) {
-		if ($(this).val().length > 0) {
+		if ($(this).val() && $(this).val().length > 0) {
 			$('#controlDependencesPanel').find('h5:eq(1), .row:eq(1)').removeClass('no-display');
 			$('#controlActions').val([]);
 			// Вот тут надо проверить - есть ли этот элемент, к которому создаётся зависимость в списке зависимостей. Если есть -
 			//     надо проверить, какое у него действие (Спрятать или показать)
 			//     в зависимости от того, какое действие на него поставлено, нужно прятать действие, противоположное по смыслу
-			selectedValue = $(this).find(':selected');
+			var selectedValue = $(this).find(':selected');
 			//console.log('Выбранный номер элемента в списке возможных зависимых равен: '+selectedValue);
 			// Перебираем выборку
-			for(i = 0;i<selectedValue.length;i++) {
+			for(var i = 0;i<selectedValue.length;i++) {
 				oneOptionValue = selectedValue[i].value;
 				// Снимаем выбор у элементов списка
 				$('#controlActions').val('');
@@ -1047,8 +1047,8 @@ $('#editElementDependences').on('click', function () {
 				$('#controlActions option').removeClass('no-display');
 				// Теперь перебираем строки грида
 				var rows = jQuery("#dependences").getDataIDs();
-				for(j=0; j < rows.length; j++) {
-					row = jQuery("#dependences").getRowData(rows[j]);
+				for(var j=0; j < rows.length; j++) {
+					var row = jQuery("#dependences").getRowData(rows[j]);
 					// Если oneOptionValue равно dep_element_id
 					if (oneOptionValue==row.dep_element_id) {
 						// Если у элемента экшн "1" - прячем у controlAction действие с номером 2
