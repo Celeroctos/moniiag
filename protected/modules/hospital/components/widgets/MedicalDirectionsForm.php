@@ -3,11 +3,13 @@ class MedicalDirectionsForm extends CWidget {
     protected $data = array();
     public $currentOmsId = null;
     public $currentDoctorId = null;
+    public $currentMedcard = null;
     public function run() {
         $this->data['model'] = Yii::createComponent('application.modules.hospital.models.forms.FormDirectionForPatientAdd');
         $this->data['wardsList'] = array();
         $this->data['currentOmsId'] = $this->currentOmsId;
         $this->data['currentDoctorId'] = $this->currentDoctorId;
+        $this->data['currentMedcard'] = $this->currentMedcard;
 
         $wards = Ward::model()->getAll();
         foreach($wards as $key => $ward) {

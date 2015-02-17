@@ -35,6 +35,9 @@
                     <?php echo $form->hiddenField($model, 'doctorId', array(
                         'value' => $currentDoctorId
                     )); ?>
+                    <?php echo $form->hiddenField($model, 'cardNumber', array(
+                        'value' => $currentMedcard
+                    )); ?>
                     <div class="form-group col-xs-12">
                         <?php echo $form->labelEx($model,'type', array(
                             'class' => 'col-xs-5 control-label'

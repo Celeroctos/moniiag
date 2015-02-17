@@ -49,6 +49,8 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-success">Сохранить</button>
+                <button type="button" class="btn btn-default btn-danger">Отказ от госпитализации</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
             </div>
         </div>

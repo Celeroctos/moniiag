@@ -21,7 +21,8 @@ $(document).ready(function(e) {
         $.ajax({
             'url' : '/hospital/mdirections/get',
             'data' : {
-                'omsId' : $('#directionOmsId').val()
+                'omsId' : $('#directionOmsId').val(),
+                'cardNumber' : $('#cardNumber').val()
             },
             'cache' : false,
             'dataType' : 'json',

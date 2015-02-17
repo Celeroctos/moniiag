@@ -5,18 +5,7 @@ misEngine.addToQueue(function() {
 		config : {
 			name : 'hospital'
 		},
-		
-		bindHandlers : function() {
-            $('#hospitalizationNavbar a').click(function (e) {
-				e.preventDefault();
-			});
 
-            $(document).on('click', '#comissionGrid .changeHospitalizationDate', $.proxy(function(e) {
-                this.comissionGridModal.show();
-            }, this));
-            return this;
-		},
-		
 		displayDatetimepickers : function() {
 			var datetimepicker = misEngine.create('component.datetimepicker');
 			datetimepicker
@@ -49,10 +38,9 @@ misEngine.addToQueue(function() {
 			var queueGrid = misEngine.create('component.grid');
 			var queueGridRequestData = { 
 				returnAsJson : true,
-                model : $.toJSON(this.getQueueModel().getColumns()),
 				id : 'queueGrid',
                 serverModel : 'QueueGrid',
-                gridServerModel : 'QueueGridView'
+                container : '#queue'
 			};
 			
 			queueGrid
@@ -65,7 +53,7 @@ misEngine.addToQueue(function() {
 							dataType : 'json',
 							success : function(data, status, jqXHR) {
 								if(data.success) {
-									$('#queue')
+									$(queueGridRequestData.container)
 										.css({
 											'textAlign' : 'left'
 										})
@@ -86,10 +74,9 @@ misEngine.addToQueue(function() {
 			this.comissionGrid = misEngine.create('component.grid');
 			var comissionGridRequestData = {
 				returnAsJson : true,
-                model : $.toJSON(this.getComissionModel().getColumns()),
 				id : 'comissionGrid',
                 serverModel : 'ComissionGrid',
-                gridServerModel : 'ComissionGridView'
+                container : '#comission'
 			};
 
 			this.comissionGrid
@@ -100,13 +87,13 @@ misEngine.addToQueue(function() {
 							url : '/hospital/components/grid',
 							data : comissionGridRequestData,
 							dataType : 'json',
+                            type : 'GET',
 							success : function(data, status, jqXHR) {
 								if(data.success) {
-									$('#comission')
-										.css({
-											'textAlign' : 'left'
-										})
-										.html(data.data);
+									$(comissionGridRequestData.container).css({
+                                        'textAlign' : 'left'
+                                    })
+                                    .html(data.data);
 								} 
 							},
 							error: function(jqXHR, status, errorThrown) {
@@ -210,50 +197,6 @@ misEngine.addToQueue(function() {
             return model;
         },
 
-        getComissionModel : function() {
-            var model = misEngine.create('component.model').setConfig({
-                columns : [
-                    {
-                        name : 'direction_id',
-                        type : 'raw',
-                        value : '%direction_id%'
-                    },
-                    {
-                        name : 'fio',
-                        type : 'raw',
-                        value : '%fio%'
-                    },
-                    {
-                        name : 'comission_type_desc',
-                        type : 'raw',
-                        value : '%comission_type_desc%'
-                    },
-                    {
-                        name : 'ward_name',
-                        type : 'raw',
-                        value : '{{%ward_name%|trim}}'
-                    },
-                    {
-                        name : 'age',
-                        type : 'raw',
-                        value : '%age%'
-                    },
-                    {
-                        name : 'pregnant_term',
-                        type : 'raw',
-                        value : '{{%pregnant_term%|int}}." недель"'
-                    },
-                    {
-                        name : 'hospitalization_date',
-                        type : 'raw',
-                        value : '%hospitalization_date%'
-                    }
-
-                ]
-            });
-            return model;
-        },
-
         getHospitalizationModel : function() {
             var model = misEngine.create('component.model').setConfig({
                 columns : [
@@ -290,8 +233,22 @@ misEngine.addToQueue(function() {
                 }
             }).render().on();
         },
-		
-		init : function() {
+
+        bindHandlers : function() {
+            $('#hospitalizationNavbar a').click(function (e) {
+                e.preventDefault();
+            });
+
+            var selector = '#comissionGrid .changeHospitalizationDate, #queueGrid .changeHospitalizationDate'
+
+            $(document).on('click', selector, $.proxy(function(e) {
+                $(this.comissionGridModal).trigger('show');
+            }, this));
+            return this;
+        },
+
+
+        init : function() {
 			this.displayDatetimepickers();
 			this.displayGrids();
             this.renderModals();

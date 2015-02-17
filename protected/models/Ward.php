@@ -93,6 +93,15 @@ class Ward extends MisActiveRecord {
             echo $e->getMessage();
         }
     }
+
+    public function getAllForListview() {
+        $all = $this->getAll();
+        $res = array();
+        foreach($all as $ward) {
+            $res[(string)$ward['id']] = $ward['name'];
+        }
+        return $res;
+    }
 }
 
 ?>

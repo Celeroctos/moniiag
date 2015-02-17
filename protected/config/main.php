@@ -111,7 +111,7 @@ return array(
 	'components'=>array(
         'clientScript' => array(
             'scriptMap' => array(
-                'jquery.js' => Yii::app()->request->baseUrl.'/js/libs/jquery-1.10.2.min.js'
+                'jquery.js' => '/js/libs/jquery-1.10.2.min.js'
             )
         ),
 		'user'=>array(

@@ -40,6 +40,7 @@ class MDirection extends MisActiveRecord {
         $mDirection->ward_id = $formModel->wardId;
         $mDirection->create_date = date('Y-m-d');
         $mDirection->pregnant_term = $formModel->pregnantTerm;
+        $mDirection->card_number = $formModel->cardNumber;
 
         if(!$mDirection->save()) {
             throw new Exception('Невозможно сохранить направление для пациента '.$patient->id);

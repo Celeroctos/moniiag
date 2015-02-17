@@ -4,7 +4,6 @@
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-3.3.2/less/bootstrap.less" rel="stylesheet/less" media="screen">
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap-datetimepicker.min.css" rel="stylesheet/less" media="screen">
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" media="screen"  />
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jqGrid/css/ui.jqgrid.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.less" rel="stylesheet/less" media="screen">
 	<link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hospital/main.less" rel="stylesheet/less" media="screen">
     <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/plot/jquery.jqplot.min.css">

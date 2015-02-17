@@ -8,12 +8,13 @@ class FormDirectionForPatientAdd extends FormMisDefault
     public $omsId;
     public $doctorId;
     public $pregnantTerm;
+    public $cardNumber;
 
     public function rules()
     {
         return array(
             array(
-                'type, isPregnant, wardId, omsId, doctorId, pregnantTerm', 'required'
+                'type, isPregnant, wardId, omsId, doctorId, pregnantTerm, cardNumber', 'required'
             ),
             array(
                 'id', 'safe'
