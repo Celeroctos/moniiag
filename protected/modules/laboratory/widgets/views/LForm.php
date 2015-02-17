@@ -4,9 +4,8 @@
  * @var CActiveForm $form - Form widget
  * @var LFormModel $model - Form model
  */
-?>
 
-<? $form = $this->beginWidget('CActiveForm', [
+$form = $this->beginWidget('CActiveForm', [
     'focus' => [
         $this->model, 'name'
     ],
@@ -20,7 +19,9 @@
         'data-form' => get_class($this->model),
         'data-widget' => get_class($this)
     ]
-]); ?>
+]);
+
+?>
 
 <? foreach ($model->getContainer() as $key => $value): ?>
     <div class="form-group <?= $this->isHidden($key) ? "hidden" : "" ?>">
@@ -33,7 +34,7 @@
             <?= $this->renderField($form, $key); ?>
         </div>
         <? if ($this->checkType($key, "DropDown")): ?>
-            <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-search form-search-button"></span></a>
+            <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-search form-search-button hidden"></span></a>
         <? elseif ($this->checkType($key, "Multiple")): ?>
             <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-arrow-up form-up-button"></span></a>
             <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-arrow-down form-down-button"></span></a>

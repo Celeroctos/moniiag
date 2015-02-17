@@ -11,6 +11,18 @@ class LGuideColumnForm extends LFormModel {
 	public $display_id;
 	public $default_value;
 
+	public function getTypeData() {
+		return LFieldCollection::getCollection()->getDropDown([
+			"Text",
+			"TextArea",
+			"Number",
+			"YesNo",
+			"DropDown",
+			"Multiple",
+			"Date"
+		]);
+	}
+
 	/**
 	 * Override that method to return config. Config should return array associated with
 	 * model's variables. Every field must contains 3 parameters:
@@ -20,15 +32,6 @@ class LGuideColumnForm extends LFormModel {
 	 * @return Array - Model's config
 	 */
 	public function config() {
-		$guides = LGuide::model()->findForDropDown();
-		if ($this->isActive("lis_guide_id")) {
-			$columns = LGuideColumn::model()->findDisplayableAndOrdered("guide_id = :guide_id", [
-				$this->lis_guide_id
-			]);
-			$columns = LGuideColumn::model()->toDropDown($columns);
-		} else {
-			$columns = [];
-		}
 		return [
 			"id" => [
 				"label" => "Идентификатор",
@@ -45,29 +48,18 @@ class LGuideColumnForm extends LFormModel {
 				"label" => "Тип данных",
 				"type" => "DropDown",
 				"rules" => "required",
-				"data" => LFieldCollection::getCollection()->getDropDown([
-					"Text",
-					"TextArea",
-					"Number",
-					"YesNo",
-					"DropDown",
-					"Multiple",
-					"Date"
-				]),
 				"update" => "default_value"
 			],
 			"guide_id" => [
 				"label" => "Справочник",
 				"type" => "DropDown",
 				"rules" => "required",
-				"data" => $guides,
 				"format" => "%{name}",
 				"hidden" => "true"
 			],
 			"lis_guide_id" => [
 				"label" => "Справочник",
 				"type" => "DropDown",
-				"data" => $guides,
 				"format" => "%{name}",
 				"hidden" => $this->hasListType(),
 				"update" => "display_id"
@@ -83,9 +75,9 @@ class LGuideColumnForm extends LFormModel {
 			"display_id" => [
 				"label" => "Отображаемое значение",
 				"type" => "DropDown",
-				"data" => $columns,
 				"format" => "%{name}",
-				"hidden" => $this->hasListType()
+				"hidden" => $this->hasListType(),
+				"update" => "default_value"
 			],
 			"default_value" => [
 				"label" => "Значение по умолчанию",
@@ -93,6 +85,44 @@ class LGuideColumnForm extends LFormModel {
 				"value" => $this->default_value
 			]
 		];
+	}
+
+	public function getGuideIdData() {
+		return LGuide::model()->findForDropDown();
+	}
+
+	public function getLisGuideIdData() {
+		return LGuide::model()->findForDropDown();
+	}
+
+	public function getDisplayIdData() {
+		if ($this->isActive("lis_guide_id")) {
+			$columns = LGuideColumn::model()->findDisplayableAndOrdered("guide_id = :guide_id", [
+				$this->lis_guide_id
+			]);
+			$columns = LGuideColumn::model()->toDropDown($columns);
+		} else {
+			$columns = [];
+		}
+		return $columns;
+	}
+
+	public function getDefaultValueData() {
+		if (!$this->isActive("lis_guide_id") || !$this->isActive("display_id") || $this->hasListType()) {
+			return [];
+		}
+		$rows = LGuide::model()->findValuesWithDisplay(
+			$this->lis_guide_id, $this->display_id
+		);
+		if ($this->type == "dropdown") {
+			$data = [ -1 => "Нет" ];
+		} else {
+			$data = [];
+		}
+		foreach ($rows as $row) {
+			$data[$row["id"]] = $row["value"];
+		}
+		return $data;
 	}
 
 	private function hasListType() {

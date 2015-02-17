@@ -18,8 +18,8 @@ class LGuideForm extends LFormModel {
 			"id" => [
 				"label" => "Идентификатор",
 				"type" => "number",
-				"rules" => "required, numerical",
-				"hidden" => true
+				"rules" => "numerical",
+				"hidden" => "true"
 			],
 			"name" => [
 				"label" => "Название справочника",

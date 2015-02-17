@@ -48,9 +48,6 @@ class LForm extends LWidget {
         } else {
             $this->test($this->model);
         }
-        foreach ($this->model->view() as $key => $value) {
-            $this->$key = $value;
-        }
         $this->render(__CLASS__, [
             "model" => $this->model,
             "class" => __CLASS__
@@ -108,11 +105,13 @@ class LForm extends LWidget {
             $type = "text";
         }
 
-        if (isset($config["data"])) {
-            $data =  $config["data"];
-        } else {
-            $data = [];
-        }
+		if (!($data = $this->model->getKeyData($key))) {
+			if (isset($config["data"])) {
+				$data = $config["data"];
+			} else {
+				$data = [];
+			}
+		}
 
         if (isset($config["value"])) {
             $value =  $config["value"];

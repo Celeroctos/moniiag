@@ -26,7 +26,9 @@ class LGuideValueEditor extends LWidget {
                 );
                 if ($type == "dropdown") {
                     $data = [ -1 => "Нет" ];
-                }
+                } else {
+					$data = [];
+				}
                 foreach ($array as $row) {
                     $data[$row["id"]] = $row["value"];
                 }

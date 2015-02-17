@@ -22,7 +22,8 @@
                 <tr>
                     <? foreach ($columns as $column): ?>
                         <td data-position="<?= $column->position ?>">
-                            <?= $this->renderField($column->type, $column->name, $column->default_value) ?>
+                            <?= $this->renderField($column->type, $column->name, $column->default_value,
+								$column->lis_guide_id, $column->display_id) ?>
                         </td>
                     <? endforeach; ?>
                     <td><span style="font-size: 15px; margin-top: 7px" class="glyphicon glyphicon-remove glyphicon-red remove"></span></td>
@@ -30,7 +31,7 @@
             <? endfor; ?>
         <? else: ?>
             <? foreach ($values as $value): ?>
-                <tr data-id="<?= $value[0]["guide_row_id"] ?>">
+                <tr data-id="<?= isset($value[0]) > 0 ? $value[0]["guide_row_id"] : "" ?>">
                     <? foreach ($columns as $column): ?>
                         <? if (isset($value[$column->position - 1])): ?>
                             <td data-position="<?= $column->position ?>" data-id="<?= $value[$column->position - 1]["id"] ?>">
@@ -39,7 +40,8 @@
                             </td>
                         <? else: ?>
                             <td data-position="<?= $column->position ?>">
-                                <?= $this->renderField($column->type, $column->name, $column->default_value) ?>
+                                <?= $this->renderField($column->type, $column->name, $column->default_value,
+									$column->lis_guide_id, $column->display_id) ?>
                             </td>
                         <? endif; ?>
                     <? endforeach; ?>

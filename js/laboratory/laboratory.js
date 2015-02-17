@@ -84,7 +84,7 @@ var DropDown = {
         var group = function(that, id) {
             return $(that).parents("form").find("#" + id).parents(".form-group");
         };
-        if ($(this).attr("id") == "type") {
+        if ($(this).attr("id") == "type" && false) {
             var fields = [
                 "lis_guide_id",
                 "display_id"
@@ -387,15 +387,18 @@ var GuideValueEditor = {
 		$(document).on("click", ".guide-values-container .remove", function() {
 			var tr = $(this).parent("td").parent("tr");
 			if (tr.parent("tbody").children().length == 1) {
-				GuideValueEditor.reset(tr);
-				Laboratory.createMessage({
-					message: "Нельзя удалить единственную строку в таблице",
-					type: "info"
-				});
-                tr.removeAttr("data-id");
-                tr.find("td").each(function(i, f) {
-                    $(f).removeAttr("data-id", null);
-                });
+				tr.remove();
+				$("#guide-edit-values-modal #register").trigger("click");
+				$("#guide-edit-values-modal").modal("hide");
+				//GuideValueEditor.reset(tr);
+				//Laboratory.createMessage({
+					//message: "Нельзя удалить единственную строку в таблице",
+					//type: "info"
+				//});
+                //tr.removeAttr("data-id");
+                //tr.find("td").each(function(i, f) {
+                //    $(f).removeAttr("data-id", null);
+                //});
 			} else {
 				tr.remove();
 			}

@@ -151,7 +151,11 @@ class GuideController extends LController {
 		};
 		try {
 			$guide = intval($this->post("guide_id"));
-			$data = $this->post("data");
+			if (isset($_POST["data"])) {
+				$data = $this->post("data");
+			} else {
+				$data = [];
+			}
 			if (!is_array($data)) {
 				throw new CException("Can't resolve received data field as array \"data\"");
 			}
@@ -173,7 +177,7 @@ class GuideController extends LController {
 			$this->leave([
 				"delete" => $rows,
 				"data" => $data,
-				"message" => "Данные были успешно добавлены"
+				"message" => "Данные были успешно изменены"
 			]);
 		} catch (Exception $e) {
 			$this->exception($e);

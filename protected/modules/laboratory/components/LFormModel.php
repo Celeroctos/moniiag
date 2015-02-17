@@ -22,19 +22,11 @@ abstract class LFormModel extends CFormModel {
     }
 
     /**
-     * Override that method to return configuration for widget
-     * @return array - Configuration for widget to render
-     */
-    public function view() {
-        return [];
-    }
-
-    /**
      * Construct table with configuration build
      * @param array|null $config - Array with model's configuration
      */
     public function __construct($config = null) {
-        $this->_buildFromConfig($config);
+		$this->_buildFromConfig($config);
     }
 
     /**
@@ -81,7 +73,7 @@ abstract class LFormModel extends CFormModel {
         $this->_labels = [];
         $this->_types = [];
 
-        foreach ($config as $key => $field) {
+        foreach ($config as $key => &$field) {
 
             // If programmer forget to get value from model
             if (!isset($field["value"]) && isset($this->$key)) {
@@ -98,7 +90,7 @@ abstract class LFormModel extends CFormModel {
                 $rules = explode(",", $field["rules"]);
                 foreach ($rules as $i => $rule) {
                     $rule = trim($rule);
-                    if ($rule == "required") {
+                    if ($rule == "required") { // && class_exists("LRequiredValidator")) {
                         $rule = "LRequiredValidator";
                     }
                     if (!isset($this->_rules[$rule])) {
@@ -113,10 +105,44 @@ abstract class LFormModel extends CFormModel {
                 $this->_types[$key] = "";
             }
 
-            // Dynamically declare empty self's variable
+            // Dynamically declare empty variable
             $this->_container[$key] = null;
         }
     }
+
+	/**
+	 * Get data for key, that method - is result or optimization, when
+	 * all data stuff was in basic configuration
+	 * @param string $key - Name of unique field's identification number
+	 * @return array - Array with data or null, if method hasn't been declared
+	 */
+	public function getKeyData($key) {
+		$method = "get".self::changeNotation($key)."Data";
+		if (method_exists($this, $method)) {
+			return $this->$method();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * That function will change variable's notation from database's to
+	 * classic PHP without '_' as delimiter. For example, name guide_id will
+	 * be converted to GuideId
+	 * @param string $name - Name to change
+	 * @param bool $startWithUpper - Set that flag to false to set first letter to lower case
+	 * @return string - Formatted string
+	 */
+	public static function changeNotation($name, $startWithUpper = true) {
+		$result = "";
+		foreach (explode("_", $name) as $word) {
+			$result .= strtoupper(substr($word, 0, 1)) . substr($word, 1);
+		}
+		if (!$startWithUpper) {
+			$result[0] = strtolower($result[0]);
+		}
+		return $result;
+	}
 
     /**
      * Reset configuration
@@ -136,7 +162,7 @@ abstract class LFormModel extends CFormModel {
      * Get form model's rules associated with fields names
      * @return Array - Rules for form's mode;
      */
-    public final function rules() {
+    public function rules() {
         if (!$this->_rules) {
             $this->_buildFromConfig();
         }
@@ -153,8 +179,8 @@ abstract class LFormModel extends CFormModel {
      * Get form model's labels
      * @return Array - Array with labels associated with fields names
      */
-    public final function attributeLabels() {
-        if ($this->_labels) {
+    public function attributeLabels() {
+        if (!$this->_labels) {
             $this->_buildFromConfig();
         }
         return $this->_labels;
