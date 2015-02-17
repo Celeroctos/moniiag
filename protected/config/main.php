@@ -48,7 +48,7 @@ return array(
 		*/
 		'paid'=>[
 			'defaultController'=>'Cash',
-			'layout'=>'main',
+			'layout'=>'index',
 		],
         'reception' => array(
             'class' => 'application.modules.reception.ReceptionModule',

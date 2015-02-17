@@ -2,4 +2,9 @@
     Created on : 17.02.2015, 12:24:54
     Author     : Dzhamal Tayibov <prohps@yandex.ru>
 */
-
+.b-nav{
+    
+}
+    .b-nav .b-nav__href{
+       border: 1px solid rgb(51, 122, 183);;
+    }
