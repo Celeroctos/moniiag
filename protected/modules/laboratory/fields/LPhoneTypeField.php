@@ -1,6 +1,6 @@
 <?php
 
-class LSmokeField extends LDropDown {
+class LPhoneTypeField extends LDropDown {
 
 	public function isBoolean() {
 		return true;
@@ -13,8 +13,8 @@ class LSmokeField extends LDropDown {
 	 */
 	public function data() {
 		return [
-			0 => "Не курит",
-			1 => "Курит"
+			0 => "Городской",
+			1 => "Мобильный"
 		];
 	}
 
@@ -23,7 +23,7 @@ class LSmokeField extends LDropDown {
 	 * @return String - Key
 	 */
 	public function key() {
-		return "Smoke";
+		return "PhoneType";
 	}
 
 	/**
@@ -31,6 +31,6 @@ class LSmokeField extends LDropDown {
 	 * @return String - Label
 	 */
 	public function name() {
-		return "Курение";
+		return "Тип телефона";
 	}
 }

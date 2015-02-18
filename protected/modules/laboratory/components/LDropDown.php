@@ -9,13 +9,13 @@ abstract class LDropDown extends LField {
 	 * @return String - Just rendered field result
 	 */
 	public final function render($form, $model) {
-		$data = [];
-		if (!$this->isBoolean() && !isset($this->data()[-1])) {
+		$data = [] + $this->data();
+		if (!$this->isBoolean() && !isset($data[-1])) {
 			$data = [
 				-1 => "Нет"
 			];
 		}
-		return $form->dropDownList($model, $this->getKey(), $data + $this->data(), [
+		return $form->dropDownList($model, $this->getKey(), $data, [
 			'placeholder' => $this->getLabel(),
 			'id' => $this->getKey(),
 			'class' => 'form-control',

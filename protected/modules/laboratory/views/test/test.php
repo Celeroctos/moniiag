@@ -11,10 +11,10 @@
 
 $this->widget("LModal", [
     "body" => $this->getWidget("LForm", [
-        "url" => Yii::app()->getBaseUrl()."/laboratory/guide/register",
-        "model" => new LGuideForm()
+        "model" => new LDirectionForm(),
+		"url" => Yii::app()->getBaseUrl() . "/laboratory/laboratory/register"
     ]),
-    "title" => "Добавление справочника",
+    "title" => "Добавление",
     "id" => "add-guide-modal",
     "buttons" => [
         "register" => [

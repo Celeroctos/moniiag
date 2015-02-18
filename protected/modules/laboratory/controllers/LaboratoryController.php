@@ -4,7 +4,7 @@ class LaboratoryController extends LController {
 
 	public function actionRegister() {
 		print json_encode([
-			"model" => $this->post("model"),
+			"model" => $this->getFormModel("model", "post"),
 			"status" => true
 		]);
 	}

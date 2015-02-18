@@ -27,14 +27,16 @@ $form = $this->beginWidget('CActiveForm', [
     <div class="form-group <?= $this->isHidden($key) ? "hidden" : "" ?>">
         <?php if (!$this->checkType($key, "Hidden")) {
             echo $form->labelEx($model, $key, array(
-                'class' => 'col-xs-5 control-label'
+                'class' => 'col-xs-4 control-label'
             ));
         } ?>
-        <div class="col-xs-6">
+        <div class="col-xs-7">
             <?= $this->renderField($form, $key); ?>
         </div>
-        <? if ($this->checkType($key, "DropDown")): ?>
-            <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-search form-search-button hidden"></span></a>
+        <? if ($this->checkType($key, "DropDown") && $this->getForm($key)): ?>
+            <a data-form="<?= $this->getForm($key) ?>" href="javascript:void(0)">
+				<span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-plus form-search-button"></span>
+			</a>
         <? elseif ($this->checkType($key, "Multiple")): ?>
             <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-arrow-up form-up-button"></span></a>
             <a href="javascript:void(0)"><span style="font-size: 15px; margin-left: -15px; margin-top: 5px" class="col-xs-1 glyphicon glyphicon-arrow-down form-down-button"></span></a>

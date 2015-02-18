@@ -45,6 +45,25 @@ abstract class LModel extends CActiveRecord {
 	}
 
 	/**
+	 * Prepare array to drop down list
+	 * @param array $array - Array with query results
+	 * @param string $pk - Primary key name
+	 * @return array - Array where every row associated with it's primary key
+	 */
+	public static function toDropDownStatic(array $array, $pk = "id") {
+		$select = [];
+		foreach ($array as $r) {
+			if (is_array($r)) {
+				$f = $r[$pk];
+			} else {
+				$f = $r->$pk;
+			}
+			$select[$f] = $r;
+		}
+		return $select;
+	}
+
+	/**
 	 * Find all identification numbers for this table
 	 * @param string $conditions - Search condition
 	 * @param array $params - Array with parameters

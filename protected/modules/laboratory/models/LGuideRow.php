@@ -58,6 +58,28 @@ class LGuideRow extends LModel {
 	}
 
 	/**
+	 * That method will find all values for current row, but only
+	 * one field with column's id (display's id). Tt will also return
+	 * columns parameters to simplify format processes
+	 * @param int $rowId - Row's identification number
+	 * @param int $display - Column's name to display
+	 * @return array - Array with values
+	 * @throws CDbException
+	 */
+	public function findValueWithDisplayByName($rowId, $display) {
+		$query = $this->getDbConnection()->createCommand()
+			->select("v.id as id, v.value as value, c.name as name, c.type as type, c.position as position")
+			->from("lis.guide_row as r")
+			->join("lis.guide_value as v", "v.guide_row_id = r.id")
+			->join("lis.guide_column as c", "v.guide_column_id = c.id")
+			->where("r.id = :row_id and regexp_replace(lower(c.name), '\\s', '') = regexp_replace(lower(:display), '\\s', '')");
+		return $query->queryRow(true, [
+			":row_id" => $rowId,
+			":display" => $display
+		]);
+	}
+
+	/**
 	 * Get model's instance from cache
 	 * @return LGuideRow - Cached model instance
 	 */

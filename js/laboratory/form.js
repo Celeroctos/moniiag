@@ -136,9 +136,44 @@ var Laboratory = Laboratory || {};
             parent: null
         }, selector);
         this.property("parent") && this.property("parent").find(".form-search-button").each(function(i, item) {
-            $(item).popover({
-                content: "Hello, World"
-            });
+			var form = $(item).parent("a").data("form");
+			console.log(form);
+			$(item).click(function() {
+				if (!$(item).data("popover")) {
+					$.get(url("/laboratory/laboratory/getWidget"), {
+						class: "LForm",
+						model: form
+					}, function(json) {
+						if (!Message.display(json)) {
+							return void 0;
+						}
+						var component = $(json["component"]);
+						component.find(".form-group div")
+							.removeClass("col-xs-7")
+							.addClass("col-xs-8");
+						component.find(".form-group .glyphicon")
+							.remove();
+						component.find("form").css("width", "300px");
+						$(item).popover({
+							content: $("<div>", {
+								style: "margin: 0; padding 0;"
+							}).append(component).append(
+								$("<div>", {
+									style: "width: 100%; text-align: center"
+								}).append(
+									$("<button>", {
+										text: "Добавить",
+										class: "btn btn-default btn-sm btn-block"
+									})
+								)
+							),
+							placement: "top",
+							title: "Быстрое добавление",
+							html: true
+						}).popover("show").data("popover", true);
+					}, "json");
+				}
+			});
         });
     };
 
@@ -251,8 +286,8 @@ var Laboratory = Laboratory || {};
             });
         }
         var me = this;
-        $.get(this.property("url"), {
-            "model": form.serialize()
+        $.post(this.property("url"), {
+            model: form.serialize()
         }, function(json) {
             me.after();
             if (!json["status"]) {

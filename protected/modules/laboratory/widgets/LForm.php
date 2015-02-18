@@ -75,9 +75,13 @@ class LForm extends LWidget {
      */
     private function format($format, array& $data) {
         foreach ($data as $i => &$value) {
-            $model = clone $value;
+			if (is_object($value)) {
+				$model = clone $value;
+			} else {
+				$model = $value;
+			}
             $matches = [];
-            preg_match_all("/%\\{([a-zA-Z_]+)\\}/", $format, $matches);
+            preg_match_all("/%\\{([a-zA-Z_0-9]+)\\}/", $format, $matches);
             $value = $format;
             if (!count($matches)) {
                 continue;
@@ -159,6 +163,19 @@ class LForm extends LWidget {
         }
         return strtolower($config["type"]) == strtolower($type);
     }
+
+	/**
+	 * Check if field has hidden property
+	 * @param string $key - Name of native key to check
+	 * @return bool - True if field must be hidden
+	 */
+	public function getForm($key) {
+		$config = $this->model->config()[$key];
+		if (!isset($config["form"])) {
+			return false;
+		}
+		return $config["form"];
+	}
 
     /**
      * Check if field has hidden property
