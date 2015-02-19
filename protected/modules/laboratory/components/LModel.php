@@ -43,7 +43,7 @@ abstract class LModel extends CActiveRecord {
 			if (!is_array($r)) {
 				$r = $this->populateRecord($r);
 			}
-			$select[$r->$pk] = $r;
+			$select[$r[$pk]] = $r;
 		}
 		return $select;
 	}
