@@ -24,8 +24,8 @@ class GridController extends Controller {
         if(isset($_GET[$_GET['serverModel']])) {
             $model->attributes = Yii::app()->request->getQuery($_GET['serverModel']);
         }
-        $grid = new Grid($model->getColumnsModel());
         $model->parentController = $this;
+        $grid = new Grid($model->getColumnsModel());
 
 		$answerData =  array(
 			'dataProvider' => $model->search(),

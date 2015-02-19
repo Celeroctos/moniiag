@@ -1,7 +1,7 @@
 (function() { 
 	return {
 		config : {
-			name : 'component.modal',
+			name : 'component.tabmark',
             selector : null
         },
 		
@@ -15,14 +15,20 @@
 		},
 
         show : function() {
-            $(this.config.selector).modal({});
+            console.log(this);
+            $(this.config.selector).css({
+                'display' : 'inline'
+            });
         },
 
         hide : function() {
-            $(this.config.selector).modal('hide');
+            $(this.config.selector).css({
+                'display' : 'none'
+            });
         },
 	
-		init : function() {
+		init : function(config) {
+            $(config.selector).css('display', 'none');
             this.bindHandlers();
 			return this;
 		}

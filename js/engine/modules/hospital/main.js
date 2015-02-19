@@ -1,7 +1,11 @@
 misEngine.addToQueue(function() {
 	return {
         comissionGrid : null,
+        queueGrid : null,
+        historyGrid : null,
+        hospitalizationGrid : null,
         comissionGridModal : null,
+        tabmarks : [],
 		config : {
 			name : 'hospital'
 		},
@@ -26,6 +30,26 @@ misEngine.addToQueue(function() {
 				.render()
 				.on();
 		},
+
+        displayTabmarks : function() {
+            this.tabmarks = [
+                misEngine.create('component.tabmark', {
+                    selector : '#queueTabmark'
+                }),
+                misEngine.create('component.tabmark', {
+                    selector : '#comissionTabmark'
+                }),
+                misEngine.create('component.tabmark', {
+                    selector : '#hospitalizationTabmark'
+                }),
+                misEngine.create('component.tabmark', {
+                    selector : '#historyTabmark'
+                })
+            ];
+            $(this.tabmarks).each(function(index, element) {
+                $(element).trigger('show');
+            });
+        },
 		
 		displayGrids : function() {
 			this.displayQueueGrid();
@@ -35,7 +59,7 @@ misEngine.addToQueue(function() {
 		},
 		
 		displayQueueGrid : function() {
-			var queueGrid = misEngine.create('component.grid');
+			this.queueGrid = misEngine.create('component.grid');
 			var queueGridRequestData = { 
 				returnAsJson : true,
 				id : 'queueGrid',
@@ -43,7 +67,7 @@ misEngine.addToQueue(function() {
                 container : '#queue'
 			};
 			
-			queueGrid
+			this.queueGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -78,7 +102,6 @@ misEngine.addToQueue(function() {
                 serverModel : 'ComissionGrid',
                 container : '#comission'
 			};
-
 			this.comissionGrid
 				.setConfig({
 					renderConfig : {
@@ -112,16 +135,15 @@ misEngine.addToQueue(function() {
         },
 		
 		displayHospitalizationGrid : function() {
-			var hospitalizationGrid = misEngine.create('component.grid');
+			this.hospitalizationGrid = misEngine.create('component.grid');
 			var hospitalizationGridRequestData = { 
 				returnAsJson : true,
-                model : $.toJSON(this.getHospitalizationModel().getColumns()),
-				id : 'hospitalizationGrid',
                 serverModel : 'HospitalizationGrid',
-                gridServerModel : 'HospitalizationGridView'
+                container : '#hospitalization',
+                id : 'hospitalizationGrid'
 			};
 			
-			hospitalizationGrid
+			this.hospitalizationGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -149,16 +171,14 @@ misEngine.addToQueue(function() {
 		},
 		
 		displayHistoryGrid : function() {
-			var historyGrid = misEngine.create('component.grid');
+			this.historyGrid = misEngine.create('component.grid');
 			var historyGridRequestData = { 
 				returnAsJson : true,
 				id : 'historyGrid',
-                model : $.toJSON(this.getHistoryModel().getColumns()),
                 serverModel : 'HistoryGrid',
-                gridServerModel : 'HistoryGridView'
+                container : '#history'
 			};
-			
-			historyGrid
+			this.historyGrid
 				.setConfig({
 					renderConfig : {
 						mode : 'ajax',
@@ -227,7 +247,7 @@ misEngine.addToQueue(function() {
 
         getComissionModal : function() {
             this.comissionGridModal = misEngine.create('component.modal').setConfig({
-                selector : '#comissionGridPopup',
+                selector : '#changeHospitalizationDatePopup',
                 renderConfig : {
                     mode : 'internal'
                 }
@@ -239,18 +259,57 @@ misEngine.addToQueue(function() {
                 e.preventDefault();
             });
 
-            var selector = '#comissionGrid .changeHospitalizationDate, #queueGrid .changeHospitalizationDate'
-
-            $(document).on('click', selector, $.proxy(function(e) {
-                $(this.comissionGridModal).trigger('show');
-            }, this));
+            this.changeComissionDateHandler();
+            this.reloadGridsHandler();
             return this;
         },
 
+        /**
+         * Handlers
+         */
+        changeComissionDateHandler : function() {
+            var selector = '.changeHospitalizationDate'
+            var comissionGridModal = this.comissionGridModal;
+            $(document).on('click', selector, function(e) {
+                var directionId = $(this).prop('id').substr(2);
+                var gridId = $(this).parents('.grid-view').prop('id');
+                $.ajax({
+                    'url': '/hospital/hospitalization/getdirectiondata?id=' + directionId,
+                    'cache': false,
+                    'dataType': 'json',
+                    'type': 'GET',
+                    'success': function (data, textStatus, jqXHR) {
+                        if(data.success) {
+                            if(data.data.hospitalization_date) {
+                                $('input[name="FormHospitalizationDateChange[hospitalization_date]"]').val(data.data.hospitalization_date);
+                            }
+                            $('input[name="FormHospitalizationDateChange[id]"]').val(directionId);
+
+                            $('input[name="FormHospitalizationDateChange[grid_id]"]').val(gridId);
+                            $(comissionGridModal).trigger('show');
+                        }
+                    }
+                });
+            });
+        },
+
+        reloadGridsHandler : function() {
+            var comissionGrid = this.comissionGrid;
+            var queueGrid = this.queueGrid;
+            var gridModal = this.comissionGridModal;
+            $(document).on('reload', '#queueGrid, #comissionGrid', function(e) {
+                switch($(this).prop('id')) {
+                   case 'comissionGrid': comissionGrid.reloadGrid(); break;
+                   case 'queueGrid': queueGrid.reloadGrid(); break;
+                }
+                $(gridModal).trigger('hide');
+            });
+        },
 
         init : function() {
 			this.displayDatetimepickers();
 			this.displayGrids();
+            this.displayTabmarks();
             this.renderModals();
 			this.bindHandlers();
 			return this;

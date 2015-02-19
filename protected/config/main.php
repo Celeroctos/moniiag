@@ -109,6 +109,10 @@ return array(
 
 	// application components
 	'components'=>array(
+        'request' => array(
+            'enableCsrfValidation' => true,
+            'enableCookieValidation' => true,
+        ),
         'clientScript' => array(
             'scriptMap' => array(
                 'jquery.js' => '/js/libs/jquery-1.10.2.min.js'

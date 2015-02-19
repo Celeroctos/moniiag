@@ -22,8 +22,10 @@ class Grid extends CComponent {
              * 2) Function markers {{ | }}
              * Syntax sample : {{%data%|trim}}
              */
-            $column['value'] = preg_replace('/%(.+?)%/', '$data->${1}', $column['value']); // lazy search
-            $column['value'] = $this->applyFunctions($column['value']);
+            if(isset($column['value'])) {
+                $column['value'] = preg_replace('/%(.+?)%/', '$data->${1}', $column['value']); // lazy search
+                $column['value'] = $this->applyFunctions($column['value']);
+            }
         }
 
         return $this;

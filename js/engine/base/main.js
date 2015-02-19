@@ -1,5 +1,5 @@
 misEngine = (function() {
-	misEngine = {
+	var misEngine = {
 		config : {},
 		modules : {
 			'component' : {
@@ -8,7 +8,8 @@ misEngine = (function() {
 				'datetimepicker' : { },
 				'ajaxLoader' : {},
                 'model' : {},
-                'modal' : {}
+                'modal' : {},
+                'tabmark' : {}
 			},
 			'modules'  : {
 				'hospital' : {
@@ -133,7 +134,9 @@ misEngine = (function() {
 			var parts = objPath.split('.');
 			var founded = this.searchObjByPath(parts);
 			if(founded != -1) {
-				return new founded().init(config);
+                var obj = new founded();
+                obj.setConfig(config);
+				return obj.init(config);
 			} else {
 				this.t('Component "' + objPath + '" not created: error by searching component path?..');
 				return -1;

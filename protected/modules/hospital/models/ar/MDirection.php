@@ -10,6 +10,8 @@ class MDirection extends MisActiveRecord {
     public $create_date;
     public $id;
     public $pregnant_term;
+    public $hospitalization_date;
+    public $direction_id;
 
     public static function model($className=__CLASS__) {
         return parent::model($className);
@@ -25,6 +27,28 @@ class MDirection extends MisActiveRecord {
 		return array(
 		  'id' => 'ID'
 		);
+    }
+
+    public function rules() {
+        return array(
+            array(
+                'hospitalization_date', 'date', 'format' => 'yyyy-mm-dd', 'on' => 'hospital.hospitalization.hospitalizationdatechange'
+            ),
+            array(
+                'hospitalization_date', 'required', 'on' => 'hospital.hospitalization.hospitalizationdatechange'
+            ),
+            array(
+                'id', 'numerical', 'on' => 'hospital.hospitalization.hospitalizationdatechange'
+            )
+        );
+    }
+
+    public function beforeValidate() {
+        if($this->hospitalization_date) {
+            $this->hospitalization_date = implode('-', array_reverse(explode('.', $this->hospitalization_date)));
+        }
+
+        return true;
     }
 
     public function getConnection() {

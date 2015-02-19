@@ -3,6 +3,7 @@ class ComissionGrid extends MisActiveRecord {
 	public $pageSize = 10;
     public $parentController = null;
 
+    public $is_refused;
     public $card_number;
     public $fio;
     public $patient_id;
@@ -35,7 +36,7 @@ class ComissionGrid extends MisActiveRecord {
     public function rules() {
         return array(
             array(
-                'id, birthday, pregnant_term, ward_name, ward_id, fio, card_number, direction_id', 'safe', 'on' => 'grid.view'
+                'id, birthday, pregnant_term, ward_name, ward_id, fio, card_number, direction_id, hospitalization_date', 'safe', 'on' => 'grid.view'
             )
         );
     }
@@ -54,6 +55,10 @@ class ComissionGrid extends MisActiveRecord {
         );
     }
 
+    public function beforeFind() {
+        $this->hospitalization_date = implode('-', array_reverse(explode('.', $this->hospitalization_date)));
+    }
+
     // This changes model after finding
     public function afterFind() {
         // Age
@@ -63,7 +68,13 @@ class ComissionGrid extends MisActiveRecord {
 
         // Icon, if hospitalization date is not accepted
         if(!$this->hospitalization_date) {
-            $this->hospitalization_date = '<a href="#" id="hd'.$this->direction_id.'" class="changeHospitalizationDate"><img src="'.Yii::app()->request->baseUrl.'/images/icons/evolution-calendar.png" width="24" height="24" alt="Определить дату" title="Определить дату" ></a>';
+            if(!$this->is_refused) {
+                $this->hospitalization_date = '<a href="#" id="qd' . $this->direction_id . '" class="changeHospitalizationDate"><img src="' . Yii::app()->request->baseUrl . '/images/icons/evolution-calendar.png" width="24" height="24" alt="Определить дату" title="Определить дату" ></a>';
+            } else {
+                $this->hospitalization_date = 'Отказалась';
+            }
+        } else {
+            $this->hospitalization_date = implode('.', array_reverse(explode('-', $this->hospitalization_date)));
         }
     }
 
@@ -110,17 +121,7 @@ class ComissionGrid extends MisActiveRecord {
                'type' => 'raw',
                'value' => '%hospitalization_date%',
                'name' => 'hospitalization_date',
-               'filter' => $this->parentController->widget('zii.widgets.jui.CJuiDatePicker', array(
-                   'model' => $this,
-                   'attribute' => 'hospitalization_date',
-                   'language' => 'ru',
-                   'options' => array(
-                       'showAnim'=>'fold',
-                       'dateFormat'=>'yy-mm-dd',
-                       'changeMonth' => 'true',
-                       'changeYear'=>'true'
-                   ),
-               ),true),
+               'filter' => 'date'
            )
        );
     }
@@ -133,7 +134,7 @@ class ComissionGrid extends MisActiveRecord {
         $criteria->compare('type', $this->type);
         $criteria->compare('ward_id', $this->ward_id);
         $criteria->compare('pregnant_term', $this->pregnant_term);
-        $criteria->compare('hospitalization_date', $this->pregnant_term);
+        $criteria->compare('hospitalization_date', $this->hospitalization_date);
         $criteria->compare('card_number', $this->card_number);
 
         $dataProvider = new CActiveDataProvider($this, array(

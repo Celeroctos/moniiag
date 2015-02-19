@@ -95,12 +95,8 @@ class Ward extends MisActiveRecord {
     }
 
     public function getAllForListview() {
-        $all = $this->getAll();
-        $res = array();
-        foreach($all as $ward) {
-            $res[(string)$ward['id']] = $ward['name'];
-        }
-        return $res;
+        $all = $this->findAll();
+        return CHtml::listData($all, 'id', 'name');
     }
 }
 

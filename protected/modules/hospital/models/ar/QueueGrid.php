@@ -3,6 +3,7 @@ class QueueGrid extends MisActiveRecord {
     public $pageSize = 10;
     public $parentController = null;
 
+    public $is_refused;
     public $card_number;
     public $fio;
     public $patient_id;
@@ -63,7 +64,13 @@ class QueueGrid extends MisActiveRecord {
 
         // Icon, if hospitalization date is not accepted
         if(!$this->hospitalization_date) {
-            $this->hospitalization_date = '<a href="#" id="hd'.$this->direction_id.'" class="changeHospitalizationDate"><img src="'.Yii::app()->request->baseUrl.'/images/icons/evolution-calendar.png" width="24" height="24" alt="Определить дату" title="Определить дату" ></a>';
+            if(!$this->is_refused) {
+                $this->hospitalization_date = '<a href="#" id="qd' . $this->direction_id . '" class="changeHospitalizationDate"><img src="' . Yii::app()->request->baseUrl . '/images/icons/evolution-calendar.png" width="24" height="24" alt="Определить дату" title="Определить дату" ></a>';
+            } else {
+                $this->hospitalization_date = 'Отказалась';
+            }
+        } else {
+            $this->hospitalization_date = implode('.', array_reverse(explode('-', $this->hospitalization_date)));
         }
     }
 
@@ -110,7 +117,27 @@ class QueueGrid extends MisActiveRecord {
                 'type' => 'raw',
                 'value' => '%hospitalization_date%',
                 'name' => 'hospitalization_date'
-            )
+            ),
+           /* array(
+                'class'=>'CButtonColumn',
+                'template'=>'{change_comission_date}',
+                'buttons'=>array(
+                    'change_comission_date' => array(
+                        'label' => 'Определить дату комиссии',
+                        'imageUrl' => Yii::app()->request->baseUrl.'/images/icons/evolution-calendar.png',
+                        'url' => 'array("main/fieldsUpdate", "id" => $data->id)',
+                        'options' => array(
+                            'id' => 'hd'.$this->direction_id,
+                            'class' => 'changeHospitalizationDate',
+                            'ajax' => array(
+                                'type' =>'GET',
+                                'url' => "js:$(this).attr('href')",
+                                'update' => '#fieldsUpdate',
+                            ),
+                        ),
+                    )
+                ),
+            ), */
         );
     }
 
