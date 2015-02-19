@@ -18,7 +18,7 @@ trait LTableTrait {
 	 * Maximum displayed rows per page
 	 * @var int
 	 */
-	public $limit = 25;
+	public $limit = 10;
 
 	/**
 	 * Current displayed page

@@ -81,7 +81,7 @@ const PAGE_LIMIT = 10;
 						</a>
 					</li>
 				<? endif; ?>
-				<li onclick="Table.page.call(this, <?=$this->page+1?>)" <?= $this->page == $this->pages ? "class=\"disabled\"" : "" ?>>
+				<li <?= $this->page != $this->pages ? "onclick=\"Table.page.call(this, <?=$this->page+1?>)\"" : "" ?> <?= $this->page == $this->pages ? "class=\"disabled\"" : "" ?>>
 					<a href="javascript:void(0)" aria-label="Следующая">
 						<span aria-hidden="true">&raquo;</span>
 					</a>

@@ -29,5 +29,6 @@ $this->widget("LTable", [
     ],
     "pk" => "number",
 	"sort" => "number",
-	"id" => "medcard-table"
+	"id" => "medcard-table",
+	"limit" => 10
 ]);

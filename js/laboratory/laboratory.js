@@ -463,7 +463,7 @@ var GuideValueEditor = {
 
 var MedcardSearch = {
 	construct: function() {
-		$("#medcard-search-button").click(function() {
+		$("#search-medcard-button").click(function() {
 			MedcardSearch.search();
 		});
 	},
