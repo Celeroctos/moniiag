@@ -145,6 +145,22 @@ abstract class LFormModel extends CFormModel {
 	}
 
     /**
+     * Convert array with array models to list data, it will be faster
+     * and easier in use then CHtml::listData method
+     * @param array $models - Array with models
+     * @param string $id - Name of select value
+     * @param string $value - Name of select option text
+     * @return array - Array with result map
+     */
+    public static function listData($models, $id, $value) {
+        $result = [];
+        foreach ($models as &$model) {
+            $result[$model[$id]] = $model[$value];
+        }
+        return $result;
+    }
+
+    /**
      * Reset configuration
      */
     protected function reset() {

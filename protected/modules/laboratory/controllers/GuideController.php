@@ -22,7 +22,7 @@ class GuideController extends LController {
 	 */
 	public function actionRegister() {
 		try {
-			$model = $this->getFormModel();
+			$model = $this->getFormModel("model", "post");
 			if (!($model instanceof LGuideForm)) {
 				$this->error("Model must be an instance of LGuideForm");
 			}

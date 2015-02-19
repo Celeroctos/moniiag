@@ -1,15 +1,17 @@
 <?php
 class Doctor extends MisActiveRecord  {
-    public static function model($className=__CLASS__)
-    {
+
+    /**
+     * @param string $className
+     * @return Doctor
+     */
+    public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    public function tableName()
-    {
+    public function tableName() {
         return 'mis.doctors';
     }
-
 
     public function getAll($forPregnant = false) {
         try {
@@ -33,6 +35,8 @@ class Doctor extends MisActiveRecord  {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+
+        return null;
     }
 
 

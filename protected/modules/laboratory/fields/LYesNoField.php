@@ -1,21 +1,18 @@
 <?php
 
-class LYesNoField extends LField {
+class LYesNoField extends LDropDown {
 
-	/**
-	 * Override that method to render field base on it's type
-	 * @param CActiveForm $form - Form
-	 * @param LFormModel $model - Model
-	 * @return String - Just rendered field result
-	 */
-	public function render($form, $model) {
-		return $form->dropDownList($model, $this->getKey(), [ 0 => "Нет", 1 => "Да" ], [
-			'placeholder' => $this->getLabel(),
-			'id' => $this->getKey(),
-			'class' => 'form-control',
-			'options' => [ $this->getValue() => [ 'selected' => true ] ]
-		]);
-	}
+    /**
+     * Override that method to return associative array
+     * for drop down list
+     * @return array - Array with data
+     */
+    public function data() {
+        return [
+            0 => "Нет",
+            1 => "Да"
+        ];
+    }
 
 	/**
 	 * Override that method to return field's key

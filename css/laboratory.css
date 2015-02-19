@@ -145,3 +145,7 @@
     width: auto;
     max-width: 100%;
 }
+
+.patient-info label {
+    text-align: left;
+}

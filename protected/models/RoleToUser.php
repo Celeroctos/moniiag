@@ -1,7 +1,11 @@
 <?php
 class RoleToUser extends MisActiveRecord  {
-    public static function model($className=__CLASS__)
-    {
+
+    /**
+     * @param string $className
+     * @return RoleToUser
+     */
+    public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
@@ -74,6 +78,7 @@ class RoleToUser extends MisActiveRecord  {
         } catch(Exception $e) {
             echo $e->getMessage();
         }
+        return [];
     }
 }
 

@@ -122,12 +122,18 @@
         <?php echo CHtml::link('<img src="'.Yii::app()->getBaseUrl().'/images/icons/laboratory.png" width="32" height="32" alt="" />Лаборатория', array('#')) ?>
         <ul class="nav">
             <?php if(Yii::app()->user->checkAccess('menuOrgGuides')) { ?>
-            <li <?php echo ($controller == 'test' && $action == 'view') ? 'class="active"' : ''; ?>>
-                <?php echo CHtml::link('Тест', array('/laboratory/test/view')) ?>
-            </li>
-            <li <?php echo ($controller == 'guides' && $action == 'view') ? 'class="active"' : ''; ?>>
-                <?php echo CHtml::link('Справочники', array('/laboratory/guide/view')) ?>
-            </li>
+                <li <?php echo ($controller == 'medcard' && $action == 'view') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Медицинские карты', array('/laboratory/medcard/view')) ?>
+                </li>
+                <li <?php echo ($controller == 'direction' && $action == 'view') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Направления', array('/laboratory/direction/view')) ?>
+                </li>
+                <li <?php echo ($controller == 'test' && $action == 'view') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Тест', array('/laboratory/test/view')) ?>
+                </li>
+                <li <?php echo ($controller == 'guide' && $action == 'view') ? 'class="active"' : ''; ?>>
+                    <?php echo CHtml::link('Справочники', array('/laboratory/guide/view')) ?>
+                </li>
             <?php } ?>
         </ul>
     </li>

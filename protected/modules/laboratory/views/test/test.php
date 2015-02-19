@@ -14,8 +14,8 @@ $this->widget("LModal", [
         "model" => new LDirectionForm(),
 		"url" => Yii::app()->getBaseUrl() . "/laboratory/laboratory/register"
     ]),
-    "title" => "Добавление",
-    "id" => "add-guide-modal",
+    "title" => "Создание направления",
+    "id" => "add-direction-modal",
     "buttons" => [
         "register" => [
             "class" => "btn btn-primary",
@@ -23,6 +23,13 @@ $this->widget("LModal", [
             "text" => "Добавить"
         ]
     ]
+]);
+
+$this->widget("LPanel", [
+    "body" => $this->getWidget("LMedcardSearch"),
+    "title" => "Поиск по ЛКП",
+    "collapse" => "true",
+    "id" => "body-test-collapse"
 ]);
 
 ?>

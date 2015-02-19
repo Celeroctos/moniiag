@@ -28,15 +28,15 @@ var Panel = {
         $(document).on("click", ".collapse-button", function() {
             var me = $(this);
             var body = $(me.parents(".panel")[0]).children(".panel-body");
-            if ($(this).hasClass("glyphicon-collapse-up")) {
+            if ($(this).hasClass("glyphicon-chevron-up")) {
                 body.slideUp("normal", function() {
-                    me.removeClass("glyphicon-collapse-up")
-                        .addClass("glyphicon-collapse-down");
+                    me.removeClass("glyphicon-chevron-up")
+                        .addClass("glyphicon-chevron-down");
                 });
             } else {
                 body.slideDown("normal", function() {
                     me.removeClass("glyphicon-collapse-down")
-                        .addClass("glyphicon-collapse-up");
+                        .addClass("glyphicon-chevron-up");
                 });
             }
         });
@@ -96,13 +96,13 @@ var DropDown = {
             for (i in fields) {
                 toggle(group(this, fields[i]), $(this), i * DELAY);
             }
-            if (update && $(this).attr("data-update")) {
+            if (update && $(this).attr("data-update") && !this.disable) {
                 var me = this;
                 setTimeout(function () {
                     DropDown.update($(me));
                 }, i * DELAY);
             }
-        } else if (update && $(this).attr("data-update")) {
+        } else if (update && $(this).attr("data-update") && !this.disable) {
             DropDown.update($(this));
         }
     },
@@ -117,7 +117,8 @@ var DropDown = {
             f = form.data("laboratory");
         }
         f.update(after);
-    }
+    },
+    disable: false
 };
 
 var Message = {

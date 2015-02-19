@@ -11,18 +11,22 @@ abstract class LModel extends CActiveRecord {
 		return parent::model($className);
 	}
 
-	/**
-	 * Find elements and format for drop down list
-	 * @param string $condition - List with condition
-	 * @param array $params - Query's parameters
-	 * @return array - Array where every row associated with it's id
-	 */
-	public function findForDropDown($condition = '', $params = array()) {
-		$result = $this->findAll($condition, $params);
+    /**
+     * Find elements and format for drop down list
+     * @param string $condition - List with condition
+     * @param array $params - Query's parameters
+     * @param string $pk - Name of primary key (or another value)
+     * @return array - Array where every row associated with it's id
+     */
+	public function findForDropDown($condition = '', $params = array(), $pk = "id") {
+        $result = $this->getDbConnection()->createCommand()
+            ->select("*")
+            ->from($this->tableName())
+            ->where($condition, $params)
+            ->queryAll();
 		$select = [];
-		$pk = "id";
 		foreach ($result as $r) {
-			$select[$r->$pk] = $r;
+			$select[$r[$pk]] = $this->populateRecord($r);
 		}
 		return $select;
 	}
@@ -36,7 +40,7 @@ abstract class LModel extends CActiveRecord {
 	public function toDropDown(array $array, $pk = "id") {
 		$select = [];
 		foreach ($array as $r) {
-			if (is_array($r)) {
+			if (!is_array($r)) {
 				$r = $this->populateRecord($r);
 			}
 			$select[$r->$pk] = $r;

@@ -27,14 +27,17 @@ class LDirectionForm extends LFormModel {
 				"type" => "DirectionStatus",
 				"rules" => "required"
 			],
+            "history" => [
+                "label" => "Медикаментозный анамнез",
+                "type" => "TextArea"
+            ],
 			"comment" => [
 				"label" => "Комментарий",
 				"type" => "TextArea"
 			],
-			"department_id" => [
+			"ward_id" => [
 				"label" => "Отдел",
 				"type" => "DropDown",
-				"format" => "%{name}",
 				"rules" => "required"
 			],
 			"sending_date" => [
@@ -56,8 +59,34 @@ class LDirectionForm extends LFormModel {
 		];
 	}
 
-	public function getDepartmentIdData() {
-		return [
-		];
+	public function getWardIdData() {
+        return $this->getWards();
 	}
+
+    public function getTreatmentRootEmployeeIdData() {
+        return $this->getDoctors();
+    }
+
+    public function getLaboratoryEmployeeIdData() {
+        return $this->getDoctors();
+    }
+
+    private function getWards() {
+        if (!$this->wards) {
+            return ($this->wards = CHtml::listData(Ward::model()->getAll(), "id", "name"));
+        } else {
+            return $this->wards;
+        }
+    }
+
+    private function getDoctors() {
+        if (!$this->doctors) {
+            return ($this->doctors = CHtml::listData(Doctor::model()->getAll(), "id", "fio"));
+        } else {
+            return $this->doctors;
+        }
+    }
+
+    private $wards = null;
+    private $doctors = null;
 }

@@ -32,7 +32,7 @@ class ApiController extends LController {
     public function actionLogin() {
         try {
             // Authenticate user
-            $userIdentity = new UserIdentity(
+            $userIdentity = new LUserIdentity(
                 $this->get("login"),
                 $this->get("password")
             );
@@ -46,7 +46,7 @@ class ApiController extends LController {
             $this->getSession()->regenerateID();
 
             // Authenticate user
-            if (!$userIdentity->authenticateInOneStep()) {
+            if (!$userIdentity->authenticate()) {
                 throw new CException("Can't resolve user's login or password");
             }
 

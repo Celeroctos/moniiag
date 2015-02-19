@@ -1,12 +1,15 @@
 <?php
 class Ward extends MisActiveRecord {
-    public static function model($className=__CLASS__)
-    {
+
+    /**
+     * @param string $className
+     * @return Ward
+     */
+    public static function model($className=__CLASS__) {
         return parent::model($className);
     }
 
-    public function tableName()
-    {
+    public function tableName() {
         return 'mis.wards';
     }
 
