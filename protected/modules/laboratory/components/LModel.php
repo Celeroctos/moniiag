@@ -40,10 +40,10 @@ abstract class LModel extends CActiveRecord {
 	public function toDropDown(array $array, $pk = "id") {
 		$select = [];
 		foreach ($array as $r) {
-			if (!is_array($r)) {
+			if (is_array($r)) {
 				$r = $this->populateRecord($r);
 			}
-			$select[$r[$pk]] = $r;
+			$select[$r->$pk] = $r;
 		}
 		return $select;
 	}
