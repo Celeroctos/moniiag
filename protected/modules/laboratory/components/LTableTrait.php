@@ -28,7 +28,17 @@ trait LTableTrait {
 
 	/**
 	 * Search criteria
-	 * @var CDbCriteria
+	 * @var CDbCriteria|string
 	 */
-	public $criteria;
+	public $criteria = null;
+
+	/**
+	 * @var string - CDbCriteria condition
+	 */
+	public $condition = null;
+
+	/**
+	 * @var array - CDbCriteria parameters
+	 */
+	public $params = null;
 }

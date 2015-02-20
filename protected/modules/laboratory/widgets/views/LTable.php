@@ -6,7 +6,7 @@
  */
 const PAGE_LIMIT = 10;
 ?>
-<table class="table table-striped table-hover" data-class="<?=$parent?>" id="<?=$this->id?>">
+<table class="table table-striped table-hover" data-condition="<?=$this->criteria->condition?>" data-parameters="<?=urlencode(serialize($this->criteria->params))?>" data-class="<?=$parent?>" id="<?=$this->id?>">
 	<thead>
 	<tr>
 	<? foreach ($this->header as $key => $value): ?>
@@ -60,11 +60,11 @@ const PAGE_LIMIT = 10;
 						</li>
 					<? endfor; ?>
 					<? if ($i < $this->page): ?>
-					<li class="disabled">
-						<a href="javascript:void(0)" aria-label="Empty">
-							<span aria-hidden="true">...</span>
-						</a>
-					</li>
+						<li class="disabled">
+							<a href="javascript:void(0)" aria-label="Empty">
+								<span aria-hidden="true">...</span>
+							</a>
+						</li>
 					<? endif; ?>
 				<? endif; ?>
 				<? for ($i = $this->page; $i <= $this->pages && $i <= PAGE_LIMIT + $this->page; $i++): ?>

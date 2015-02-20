@@ -36,8 +36,20 @@ class LTable extends LWidget {
 			$this->sort = "id";
 		}
 
+		if (is_string($this->params)) {
+			$this->params = unserialize(urldecode($this->params));
+		}
+		if (!is_object($this->criteria)) {
+			$this->criteria = new CDbCriteria();
+		}
+
+		if (is_string($this->condition) && is_array($this->parameters)) {
+			$this->criteria->condition = $this->condition;
+			$this->criteria->params = $this->params;
+		}
+
 		// Get total rows
-		$total = $this->table->getTableCount();
+		$total = $this->table->getTableCount($this->criteria);
 
 		// Get command for current table
 		$command = $this->table->getTable($this->conditions, $this->parameters)->order(
@@ -45,12 +57,16 @@ class LTable extends LWidget {
 		);
 
 		// Attach criteria condition to query
-		if ($this->criteria && $this->criteria instanceof CDbCriteria) {
+		if ($this->criteria) {
 			$command->andWhere($this->criteria->condition, $this->criteria->params);
 		}
 
 		// Calculate offset
 		$this->pages = intval($total / $this->limit + ($total / $this->limit * $this->limit != $total ? 1 : 0));
+
+		if (!$this->pages) {
+			$this->pages = 1;
+		}
 
 		// Set limit
 		$command->limit($this->limit);

@@ -8,9 +8,9 @@ class MedcardController extends LController {
 
 	public function actionSearch() {
 		try {
-			$models = $this->getFormModel("model", "post");
+			// Build an array with search parameters
 			$parameters = [];
-			foreach ($models as $model) {
+			foreach ($this->getFormModel("model", "post") as $model) {
 				foreach ($model->attributes as $key => $value) {
 					if (!empty($value)) {
 						$parameters[$key] = $value;
@@ -18,15 +18,17 @@ class MedcardController extends LController {
 				}
 			}
 			$criteria = new CDbCriteria();
-			if (isset($parameters["begin_date"]) && isset($parameters["end_date"])) {
+//			if (isset($parameters["begin_date"]) && isset($parameters["end_date"])) {
 //				$criteria->addBetweenCondition("date", $parameters["begin_date"], $parameters["end_date"]);
-			}
+//			}
 			unset($parameters["begin_date"]);
 			unset($parameters["end_date"]);
 			if ($parameters["charged_by"] == -1) {
 				unset($parameters["charged_by"]);
 			}
-			$criteria->addColumnCondition($parameters);
+			foreach ($parameters as $key => $value) {
+				$criteria->addSearchCondition($key, $value);
+			}
 			$this->leave([
 				"component" => $this->getWidget("LMedcardTable", [
 					"criteria" => $criteria

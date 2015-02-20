@@ -45,8 +45,11 @@ var Panel = {
 
 var Table = {
 	fetch: function(me, parameters) {
+		var table = $(me).parents(".table[data-class]");
 		$.get(url("/laboratory/medcard/getWidget"), $.extend(parameters, {
-			class: $(me).parents(".table[data-class]").data("class")
+			class: table.data("class"),
+			condition: table.data("condition"),
+			params: table.data("parameters")
 		}), function(json) {
 			if (!Message.display(json)) {
 				return void 0;

@@ -113,15 +113,18 @@ abstract class LModel extends CActiveRecord {
 
 	/**
 	 * Override that method to return count of rows in table
+	 * @param CDbCriteria $criteria - Search criteria
 	 * @return int - Count of rows in current table
 	 * @throws CDbException
 	 */
-	public function getTableCount() {
-		$row = $this->getDbConnection()->createCommand()
+	public function getTableCount(CDbCriteria $criteria = null) {
+		$query = $this->getDbConnection()->createCommand()
 			->select("count(*) as count")
-			->from($this->tableName())
-			->queryRow();
-		return $row["count"];
+			->from($this->tableName());
+		if ($criteria != null && $criteria instanceof CDbCriteria) {
+			$query->andWhere($criteria->condition, $criteria->params);
+		}
+		return $query->queryRow()["count"];
 	}
 
 	/**
