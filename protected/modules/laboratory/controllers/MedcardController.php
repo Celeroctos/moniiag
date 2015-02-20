@@ -18,9 +18,9 @@ class MedcardController extends LController {
 				}
 			}
 			$criteria = new CDbCriteria();
-//			if (isset($parameters["begin_date"]) && isset($parameters["end_date"])) {
-//				$criteria->addBetweenCondition("date", $parameters["begin_date"], $parameters["end_date"]);
-//			}
+			if (isset($parameters["begin_date"]) && isset($parameters["end_date"])) {
+				$criteria->addBetweenCondition("registration_date", $parameters["begin_date"], $parameters["end_date"]);
+			}
 			unset($parameters["begin_date"]);
 			unset($parameters["end_date"]);
 			if ($parameters["charged_by"] == -1) {
