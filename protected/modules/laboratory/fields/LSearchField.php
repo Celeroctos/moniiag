@@ -1,6 +1,6 @@
 <?php
 
-class LDateField extends LField {
+class LSearchField extends LField {
 
 	/**
 	 * Override that method to render field base on it's type
@@ -9,7 +9,8 @@ class LDateField extends LField {
 	 * @return String - Just rendered field result
 	 */
 	public function render($form, $model) {
-		return $form->dateField($model, $this->getKey(), [
+		return $form->searchField($model, $this->getKey(), $this->getOptions() + [
+			'placeholder' => $this->getLabel(),
 			'id' => $this->getKey(),
 			'class' => 'form-control',
 			'value' => $this->getValue()
@@ -21,7 +22,7 @@ class LDateField extends LField {
 	 * @return String - Key
 	 */
 	public function key() {
-		return "Date";
+		return "Search";
 	}
 
 	/**
@@ -29,6 +30,6 @@ class LDateField extends LField {
 	 * @return String - Label
 	 */
 	public function name() {
-		return "Дата";
+		return "Поиск";
 	}
 }

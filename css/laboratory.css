@@ -149,3 +149,15 @@
 .patient-info label {
     text-align: left;
 }
+
+#search-medcard-button,
+#register-medcard-button {
+    width: 200px;
+}
+
+#medcard-search-table-wrapper {
+    height: auto;
+    /*overflow: scroll;*/
+    text-align: center;
+    margin-bottom: -50px;
+}
