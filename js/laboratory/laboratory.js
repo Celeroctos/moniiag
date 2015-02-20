@@ -43,6 +43,39 @@ var Panel = {
     }
 };
 
+var Table = {
+	fetch: function(me, parameters) {
+		$.get(url("/laboratory/medcard/getWidget"), $.extend(parameters, {
+			class: $(me).parents(".table[data-class]").data("class")
+		}), function(json) {
+			if (!Message.display(json)) {
+				return void 0;
+			}
+			$(me).parents(".table[data-class]").replaceWith(
+				$(json["component"])
+			);
+		}, "json");
+	},
+	order: function(row) {
+		var parameters = {};
+		if ($(this).find(".glyphicon-chevron-down").length) {
+			parameters["desc"] = true;
+		}
+		parameters["sort"] = row;
+		Table.fetch(this, parameters);
+	},
+	page: function(page) {
+		var td = $(this).parents(".table[data-class]").find("tr:first-child td .glyphicon").parents("td");
+		var parameters = {};
+		if (td.find(".glyphicon-chevron-up").length) {
+			parameters["desc"] = true;
+		}
+		parameters["sort"] = td.data("key");
+		parameters["page"] = page;
+		Table.fetch(this, parameters);
+	}
+};
+
 var DropDown = {
     change: function(animate, update) {
         const DELAY = 100;
@@ -391,15 +424,6 @@ var GuideValueEditor = {
 				tr.remove();
 				$("#guide-edit-values-modal #register").trigger("click");
 				$("#guide-edit-values-modal").modal("hide");
-				//GuideValueEditor.reset(tr);
-				//Laboratory.createMessage({
-					//message: "Нельзя удалить единственную строку в таблице",
-					//type: "info"
-				//});
-                //tr.removeAttr("data-id");
-                //tr.find("td").each(function(i, f) {
-                //    $(f).removeAttr("data-id", null);
-                //});
 			} else {
 				tr.remove();
 			}
@@ -434,10 +458,34 @@ var GuideValueEditor = {
     guideId: null
 };
 
+var MedcardSearch = {
+	construct: function() {
+		$("#medcard-search-button").click(function() {
+			MedcardSearch.search();
+		});
+	},
+	search: function() {
+		$.post(url("/laboratory/medcard/search"), {
+			model: [
+				$("#medcard-search-form").serialize(),
+				$("#medcard-range-form").serialize()
+			]
+		}, function(json) {
+			if (!Message.display(json)) {
+				return void 0;
+			}
+			$("#medcard-table").replaceWith(
+				$(json["component"])
+			);
+		}, "json");
+	}
+};
+
 $(document).ready(function() {
 	GuideColumnEditor.construct();
 	ConfirmDelete.construct();
 	Panel.construct();
 	GuideTableViewer.construct();
 	GuideValueEditor.construct();
+	MedcardSearch.construct();
 });

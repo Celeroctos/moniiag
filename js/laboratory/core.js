@@ -334,6 +334,9 @@ var Laboratory = Laboratory || {};
      * @returns {string} - Absolute url
      */
     window.url = function(url) {
+		if (!url.startsWidth("/")) {
+			url = "/" + url;
+		}
         return window["globalVariables"]["baseUrl"] + url;
     };
 

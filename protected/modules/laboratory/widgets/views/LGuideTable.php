@@ -15,5 +15,11 @@ $this->widget("LTable", [
 			"label" => "Название справочника"
 		]
 	],
-	"id" => "guide-table"
+	"id" => "guide-table",
+	"hideArrow" => "true",
+	"controls" => [
+		"table-edit" => "glyphicon glyphicon-pencil",
+		"table-remove" => "glyphicon glyphicon-remove confirm"
+	],
+	"disablePagination" => "true"
 ]);

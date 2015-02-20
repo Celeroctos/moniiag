@@ -8,7 +8,7 @@
 
 class LMedcardTable extends LWidget {
 
-    public $id;
+	use LTableTrait;
 
     public function run() {
         $this->render(__CLASS__, []);

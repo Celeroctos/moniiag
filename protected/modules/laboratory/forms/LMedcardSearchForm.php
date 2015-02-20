@@ -12,7 +12,7 @@ class LMedcardSearchForm extends LFormModel {
      */
     public function config() {
         return [
-            "number" => [
+            "card_number" => [
                 "label" => "Номер ЛКП",
                 "type" => "text"
             ],
@@ -25,15 +25,15 @@ class LMedcardSearchForm extends LFormModel {
                 "type" => "Phone",
                 "rules" => "LPhoneValidator"
             ],
-            "surname" => [
+            "first_name" => [
                 "label" => "Фамилия",
                 "type" => "text"
             ],
-            "name" => [
+            "middle_name" => [
                 "label" => "Имя",
                 "type" => "text"
             ],
-            "patronymic" => [
+            "last_name" => [
                 "label" => "Отчество",
                 "type" => "text"
             ]

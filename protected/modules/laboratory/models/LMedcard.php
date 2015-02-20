@@ -18,12 +18,14 @@ class LMedcard extends LModel {
             ->queryAll();
     }
 
-    /**
-     * Override that method to return command for table widget
-     * @return CDbCommand - Command with selection query
-     * @throws CDbException
-     */
-    public function getTable() {
+	/**
+	 * Override that method to return command for table widget
+	 * @param string $condition - Where conditions
+	 * @param array $parameters - Query parameters
+	 * @return CDbCommand - Command with selection query
+	 * @throws CDbException
+	 */
+    public function getTable($condition = "", $parameters = []) {
         return $this->getDbConnection()->createCommand()
             ->select("
                 m.card_number as number,
@@ -33,7 +35,8 @@ class LMedcard extends LModel {
                 o.last_name as patronymic,
                 o.birthday as birthday")
             ->from("mis.medcards as m")
-            ->join("mis.oms as o", "m.policy_id = o.id");
+            ->join("mis.oms as o", "m.policy_id = o.id")
+			->where($condition, $parameters);
     }
 
     /**

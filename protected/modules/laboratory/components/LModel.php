@@ -99,13 +99,29 @@ abstract class LModel extends CActiveRecord {
 
 	/**
 	 * Override that method to return command for table widget
+	 * @param string $condition - Where conditions
+	 * @param array $parameters - Query parameters
 	 * @return CDbCommand - Command with selection query
 	 * @throws CDbException
 	 */
-	public function getTable() {
+	public function getTable($condition = "", $parameters = []) {
 		return $this->getDbConnection()->createCommand()
 			->select("*")
-			->from($this->tableName());
+			->from($this->tableName())
+			->where($condition, $parameters);
+	}
+
+	/**
+	 * Override that method to return count of rows in table
+	 * @return int - Count of rows in current table
+	 * @throws CDbException
+	 */
+	public function getTableCount() {
+		$row = $this->getDbConnection()->createCommand()
+			->select("count(*) as count")
+			->from($this->tableName())
+			->queryRow();
+		return $row["count"];
 	}
 
 	/**
