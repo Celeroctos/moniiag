@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <head>
     <title>МИС МОНИИАГ</title>
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-3.3.2/less/bootstrap.less" rel="stylesheet/less" media="screen">
-    <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/bootstrap-datetimepicker.min.css" rel="stylesheet/less" media="screen">
+    <link href="<?= Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-3.3.2/less/bootstrap.less" rel="stylesheet/less" media="screen">
+    <link href="<?= Yii::app()->request->baseUrl; ?>/css/bootstrap-datetimepicker.min.css" rel="stylesheet/less" media="screen">
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-ui-bootstrap/css/custom-theme/jquery-ui-1.10.0.custom.css" rel="stylesheet" type="text/css" media="screen"  />
     <link href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.less" rel="stylesheet/less" media="screen">
 	<link href="<?php echo Yii::app()->request->baseUrl; ?>/css/hospital/main.less" rel="stylesheet/less" media="screen">
@@ -12,17 +12,25 @@
             baseUrl : '<?php echo Yii::app()->request->baseUrl; ?>'
         };
     </script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/less-1.4.1.min.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-3.3.2/dist/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery.selection.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-browser.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery.keyfilter-1.7.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-datetimepicker.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-datetimepicker.ru.js"></script>
-    <script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/engine/base/main.js"></script>
-	<script type="text/javascript" src="<?php echo Yii::app()->request->baseUrl; ?>/js/engine/modules/hospital/main.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/less-1.4.1.min.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-3.3.2/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/jquery.selection.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/jquery-browser.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/jquery.keyfilter-1.7.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/jquery-json.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/libs/bootstrap-datetimepicker.ru.js"></script>
+    <script type="text/javascript" src="<?= Yii::app()->request->baseUrl; ?>/js/engine/main.js"></script>
+	<script type="text/javascript">
+        var timer = setInterval(function() {
+            var module = misEngine.create('component.module.hospital');
+            if(module != -1) {
+                clearInterval(timer);
+                module.init();
+            }
+        }, 200);
+	</script>
     <style>
         body {
             font-size: <?php echo Yii::app()->user->fontSize; ?>px !important;

@@ -1,4 +1,4 @@
-misEngine.addToQueue(function() {
+misEngine.class('component.module.hospital', function() {
 	return {
         comissionGrid : null,
         queueGrid : null,
