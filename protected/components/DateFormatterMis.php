@@ -27,6 +27,7 @@ class DateFormatterMis extends CComponent {
         $sec_now = time();
         $sec_birthday = $this->_dateToFormat;
         // Подсчитываем количество месяцев, лет
+        $rtime = 0;
         for($time = $sec_birthday, $month = 0;
             $time < $sec_now;
             $time = $time + date('t', $time) * 86400, $month++){
