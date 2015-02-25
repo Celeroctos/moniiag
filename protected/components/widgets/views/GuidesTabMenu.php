@@ -38,4 +38,10 @@
 	<li <?php echo $controller == 'medcards' ? 'class="active"' : ''; ?>>
         <?php echo CHtml::link('Номера медкарт', array('/guides/medcards/viewprefixes')) ?>
     </li>
+    <li <?php echo $controller == 'analysistypes' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Типы анализов', array('/guides/analysistypes/view')) ?>
+    </li>
+    <li <?php echo $controller == 'analysisparams' ? 'class="active"' : ''; ?>>
+        <?php echo CHtml::link('Параметры анализов', array('/guides/analysisparams/view')) ?>
+    </li>
 </ul>
